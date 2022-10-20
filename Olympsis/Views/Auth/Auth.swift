@@ -6,10 +6,87 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct Auth: View {
+    @State var token = ""
+    @State var tag: Int?
+    @State var userStatus: USER_STATUS?
+    @State var showHome: Bool = false
+    var index:Int = 0
+    var images:[String] = ["basketball-bw", "basketball-layup", "soccer-shooting"]
+    @State var routes:[AuthNavigation] = []
+    @StateObject var observer = AuthObserver()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack(path: $routes){
+            ZStack {
+                Image(images[index])
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .blur(radius: 2, opaque: true)
+                
+                VStack {
+                    VStack {
+                        Image("logo")
+                    }.frame(height: SCREEN_HEIGHT/3)
+                        
+                    Spacer()
+                    
+                    VStack {
+                        Text("PlayFest")
+                            .bold()
+                            .font(.custom("ITCAvantGardeStd-Bold", size: 35, relativeTo: .largeTitle))
+                            .foregroundColor(.white)
+                        Text("Join a community made by athletes for athletes.")
+                            .frame(width: SCREEN_WIDTH)
+                            .multilineTextAlignment(.center)
+                            .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
+                            .foregroundColor(.white)
+                        
+                    }.padding(.bottom, 75)
+                    
+                    
+                    SignInWithAppleButton(
+                        onRequest: { request in
+                            request.requestedScopes = [.fullName, .email]
+                        },
+                        onCompletion: { result in
+                            Task {
+                                do {
+                                    let res = try await observer.handleSignInWithApple(result: result)
+                                    DispatchQueue.main.async {
+                                        userStatus = res
+                                        if userStatus == USER_STATUS.New {
+                                            routes.append(.new)
+                                        } else if userStatus == USER_STATUS.Returning {
+                                            routes.append(.new)
+                                        }
+                                    }
+                                    
+                                } catch {
+                                    ()
+                                }
+                            }
+                        }
+                    ).signInWithAppleButtonStyle(.white)
+                        .cornerRadius(25)
+                        .frame(minWidth: 200, idealWidth: SCREEN_WIDTH-50, maxWidth: SCREEN_WIDTH-50, minHeight: 30, idealHeight: 60, maxHeight: 60, alignment: .center)
+                        .padding(.bottom, 50)
+                }
+            }
+        }.navigationDestination(for: AuthNavigation.self) { value in
+            switch value {
+            case .auth:
+                Auth()
+            case .new:
+                CreateAccount()
+            case .home:
+                ViewContainer()
+            case .permissions:
+                Permissions()
+            }
+        }
     }
 }
 

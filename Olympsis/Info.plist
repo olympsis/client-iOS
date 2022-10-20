@@ -13,6 +13,17 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+		</dict>
+	</array>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeBike</string>
@@ -23,6 +34,31 @@
 		<string>MKDirectionsModeSubway</string>
 		<string>MKDirectionsModeTaxi</string>
 		<string>MKDirectionsModeTrain</string>
+	</array>
+	<key>SERVER_URL</key>
+	<string>https://api.olympsis.com</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ITCAvantGardeStd-Bk.ttf</string>
+		<string>ITCAvantGardeStd-BkCn.ttf</string>
+		<string>ITCAvantGardeStd-BkCnObl.ttf</string>
+		<string>ITCAvantGardeStd-BkObl.ttf</string>
+		<string>ITCAvantGardeStd-Bold.ttf</string>
+		<string>ITCAvantGardeStd-BoldCn.ttf</string>
+		<string>ITCAvantGardeStd-BoldCnObl.ttf</string>
+		<string>ITCAvantGardeStd-BoldObl.ttf</string>
+		<string>ITCAvantGardeStd-Demi.ttf</string>
+		<string>ITCAvantGardeStd-DemiCn.ttf</string>
+		<string>ITCAvantGardeStd-DemiCnObl.ttf</string>
+		<string>ITCAvantGardeStd-DemiObl.ttf</string>
+		<string>ITCAvantGardeStd-Md.ttf</string>
+		<string>ITCAvantGardeStd-MdCn.ttf</string>
+		<string>ITCAvantGardeStd-MdCnObl.ttf</string>
+		<string>ITCAvantGardeStd-MdObl.ttf</string>
+		<string>ITCAvantGardeStd-XLt.ttf</string>
+		<string>ITCAvantGardeStd-XLtCn.ttf</string>
+		<string>ITCAvantGardeStd-XLtCnObl.ttf</string>
+		<string>ITCAvantGardeStd-XLtObl.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3928BDD4BA00ACB20A /* UserService.swift */; };
+		9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */; };
+		9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */; };
+		9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */; };
 		9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */; };
 		9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */; };
 		9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */; };
@@ -14,9 +18,42 @@
 		9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */; };
 		9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */; };
 		9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */; };
+		9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */; };
+		9A8FF0D628BB33B800DE4CF8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0D528BB33B800DE4CF8 /* Service.swift */; };
+		9A8FF0D828BB33D700DE4CF8 /* HttpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0D728BB33D700DE4CF8 /* HttpService.swift */; };
+		9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */; };
+		9A8FF0DE28BB444C00DE4CF8 /* AuthRequestSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DD28BB444C00DE4CF8 /* AuthRequestSignIn.swift */; };
+		9A8FF0E028BB446900DE4CF8 /* AuthResponseDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DF28BB446900DE4CF8 /* AuthResponseDao.swift */; };
+		9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */; };
+		9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */; };
+		9A8FF14A28BC261000DE4CF8 /* ITCAvantGardeStd-BkObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13628BC260F00DE4CF8 /* ITCAvantGardeStd-BkObl.ttf */; };
+		9A8FF14B28BC261000DE4CF8 /* ITCAvantGardeStd-MdObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13728BC260F00DE4CF8 /* ITCAvantGardeStd-MdObl.ttf */; };
+		9A8FF14C28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13828BC260F00DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf */; };
+		9A8FF14D28BC261000DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13928BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf */; };
+		9A8FF14E28BC261000DE4CF8 /* ITCAvantGardeStd-Bk.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13A28BC260F00DE4CF8 /* ITCAvantGardeStd-Bk.ttf */; };
+		9A8FF14F28BC261000DE4CF8 /* ITCAvantGardeStd-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13B28BC260F00DE4CF8 /* ITCAvantGardeStd-Bold.ttf */; };
+		9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13C28BC260F00DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf */; };
+		9A8FF15128BC261000DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13D28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf */; };
+		9A8FF15228BC261000DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13E28BC260F00DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf */; };
+		9A8FF15328BC261000DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
+		9A8FF15428BC261000DE4CF8 /* ITCAvantGardeStd-Md.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14028BC260F00DE4CF8 /* ITCAvantGardeStd-Md.ttf */; };
+		9A8FF15528BC261000DE4CF8 /* ITCAvantGardeStd-MdCn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14128BC260F00DE4CF8 /* ITCAvantGardeStd-MdCn.ttf */; };
+		9A8FF15628BC261000DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14228BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf */; };
+		9A8FF15728BC261000DE4CF8 /* ITCAvantGardeStd-BkCn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14328BC260F00DE4CF8 /* ITCAvantGardeStd-BkCn.ttf */; };
+		9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14428BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf */; };
+		9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14528BC260F00DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf */; };
+		9A8FF15A28BC261000DE4CF8 /* ITCAvantGardeStd-XLt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14628BC260F00DE4CF8 /* ITCAvantGardeStd-XLt.ttf */; };
+		9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14728BC260F00DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf */; };
+		9A8FF15C28BC261000DE4CF8 /* ITCAvantGardeStd-Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14828BC260F00DE4CF8 /* ITCAvantGardeStd-Demi.ttf */; };
+		9A8FF15D28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF14928BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf */; };
+		9A8FF15F28BC6AC100DE4CF8 /* SportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF15E28BC6AC100DE4CF8 /* SportView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9A39ED3928BDD4BA00ACB20A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameRequest.swift; sourceTree = "<group>"; };
+		9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObserver.swift; sourceTree = "<group>"; };
+		9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
 		9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisApp.swift; sourceTree = "<group>"; };
 		9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewContainer.swift; sourceTree = "<group>"; };
@@ -27,6 +64,35 @@
 		9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccount.swift; sourceTree = "<group>"; };
 		9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Olympsis.entitlements; sourceTree = "<group>"; };
 		9A8FF0CE28BB1AF900DE4CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
+		9A8FF0D528BB33B800DE4CF8 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		9A8FF0D728BB33D700DE4CF8 /* HttpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpService.swift; sourceTree = "<group>"; };
+		9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dao.swift; sourceTree = "<group>"; };
+		9A8FF0DD28BB444C00DE4CF8 /* AuthRequestSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestSignIn.swift; sourceTree = "<group>"; };
+		9A8FF0DF28BB446900DE4CF8 /* AuthResponseDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseDao.swift; sourceTree = "<group>"; };
+		9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthObserver.swift; sourceTree = "<group>"; };
+		9A8FF13628BC260F00DE4CF8 /* ITCAvantGardeStd-BkObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BkObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13728BC260F00DE4CF8 /* ITCAvantGardeStd-MdObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-MdObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13828BC260F00DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-DemiCnObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13928BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BoldCnObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13A28BC260F00DE4CF8 /* ITCAvantGardeStd-Bk.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-Bk.ttf"; sourceTree = "<group>"; };
+		9A8FF13B28BC260F00DE4CF8 /* ITCAvantGardeStd-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-Bold.ttf"; sourceTree = "<group>"; };
+		9A8FF13C28BC260F00DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-DemiObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13D28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BoldCn.ttf"; sourceTree = "<group>"; };
+		9A8FF13E28BC260F00DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BkCnObl.ttf"; sourceTree = "<group>"; };
+		9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BoldObl.ttf"; sourceTree = "<group>"; };
+		9A8FF14028BC260F00DE4CF8 /* ITCAvantGardeStd-Md.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-Md.ttf"; sourceTree = "<group>"; };
+		9A8FF14128BC260F00DE4CF8 /* ITCAvantGardeStd-MdCn.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-MdCn.ttf"; sourceTree = "<group>"; };
+		9A8FF14228BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLtCnObl.ttf"; sourceTree = "<group>"; };
+		9A8FF14328BC260F00DE4CF8 /* ITCAvantGardeStd-BkCn.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BkCn.ttf"; sourceTree = "<group>"; };
+		9A8FF14428BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLtCn.ttf"; sourceTree = "<group>"; };
+		9A8FF14528BC260F00DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-MdCnObl.ttf"; sourceTree = "<group>"; };
+		9A8FF14628BC260F00DE4CF8 /* ITCAvantGardeStd-XLt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLt.ttf"; sourceTree = "<group>"; };
+		9A8FF14728BC260F00DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-XLtObl.ttf"; sourceTree = "<group>"; };
+		9A8FF14828BC260F00DE4CF8 /* ITCAvantGardeStd-Demi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-Demi.ttf"; sourceTree = "<group>"; };
+		9A8FF14928BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-DemiCn.ttf"; sourceTree = "<group>"; };
+		9A8FF15E28BC6AC100DE4CF8 /* SportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +106,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A39ED3B28BDD59500ACB20A /* User */ = {
+			isa = PBXGroup;
+			children = (
+				9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */,
+				9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		9A8FF0A428BB14BF00DE4CF8 = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +138,7 @@
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
 				9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */,
 				9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */,
+				9A8FF0E528BBD7CA00DE4CF8 /* Fonts */,
 				9A8FF0BF28BB18C300DE4CF8 /* Data */,
 				9A8FF0BE28BB18B800DE4CF8 /* Views */,
 				9A8FF0B628BB14C100DE4CF8 /* Preview Content */,
@@ -90,6 +166,10 @@
 		9A8FF0BF28BB18C300DE4CF8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				9A8FF0D428BB337C00DE4CF8 /* Observers */,
+				9A8FF0D228BB336B00DE4CF8 /* Services */,
+				9A8FF0D128BB336600DE4CF8 /* Models */,
+				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -100,8 +180,83 @@
 				9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */,
 				9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */,
 				9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */,
+				9A8FF15E28BC6AC100DE4CF8 /* SportView.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		9A8FF0D128BB336600DE4CF8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FF0D928BB33E800DE4CF8 /* Dao */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9A8FF0D228BB336B00DE4CF8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FF0D528BB33B800DE4CF8 /* Service.swift */,
+				9A8FF0D728BB33D700DE4CF8 /* HttpService.swift */,
+				9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */,
+				9A39ED3928BDD4BA00ACB20A /* UserService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9A8FF0D428BB337C00DE4CF8 /* Observers */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */,
+				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
+			);
+			path = Observers;
+			sourceTree = "<group>";
+		};
+		9A8FF0D928BB33E800DE4CF8 /* Dao */ = {
+			isa = PBXGroup;
+			children = (
+				9A39ED3B28BDD59500ACB20A /* User */,
+				9A8FF0DC28BB442600DE4CF8 /* Auth */,
+				9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */,
+			);
+			path = Dao;
+			sourceTree = "<group>";
+		};
+		9A8FF0DC28BB442600DE4CF8 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FF0DD28BB444C00DE4CF8 /* AuthRequestSignIn.swift */,
+				9A8FF0DF28BB446900DE4CF8 /* AuthResponseDao.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		9A8FF0E528BBD7CA00DE4CF8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FF13A28BC260F00DE4CF8 /* ITCAvantGardeStd-Bk.ttf */,
+				9A8FF14328BC260F00DE4CF8 /* ITCAvantGardeStd-BkCn.ttf */,
+				9A8FF13E28BC260F00DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf */,
+				9A8FF13628BC260F00DE4CF8 /* ITCAvantGardeStd-BkObl.ttf */,
+				9A8FF13B28BC260F00DE4CF8 /* ITCAvantGardeStd-Bold.ttf */,
+				9A8FF13D28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf */,
+				9A8FF13928BC260F00DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf */,
+				9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */,
+				9A8FF14828BC260F00DE4CF8 /* ITCAvantGardeStd-Demi.ttf */,
+				9A8FF14928BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf */,
+				9A8FF13828BC260F00DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf */,
+				9A8FF13C28BC260F00DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf */,
+				9A8FF14028BC260F00DE4CF8 /* ITCAvantGardeStd-Md.ttf */,
+				9A8FF14128BC260F00DE4CF8 /* ITCAvantGardeStd-MdCn.ttf */,
+				9A8FF14528BC260F00DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf */,
+				9A8FF13728BC260F00DE4CF8 /* ITCAvantGardeStd-MdObl.ttf */,
+				9A8FF14628BC260F00DE4CF8 /* ITCAvantGardeStd-XLt.ttf */,
+				9A8FF14428BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf */,
+				9A8FF14228BC260F00DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf */,
+				9A8FF14728BC260F00DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,8 +317,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A8FF15D28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf in Resources */,
+				9A8FF14E28BC261000DE4CF8 /* ITCAvantGardeStd-Bk.ttf in Resources */,
+				9A8FF14D28BC261000DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf in Resources */,
+				9A8FF15128BC261000DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf in Resources */,
+				9A8FF14A28BC261000DE4CF8 /* ITCAvantGardeStd-BkObl.ttf in Resources */,
+				9A8FF15A28BC261000DE4CF8 /* ITCAvantGardeStd-XLt.ttf in Resources */,
+				9A8FF15228BC261000DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf in Resources */,
+				9A8FF15428BC261000DE4CF8 /* ITCAvantGardeStd-Md.ttf in Resources */,
+				9A8FF14F28BC261000DE4CF8 /* ITCAvantGardeStd-Bold.ttf in Resources */,
+				9A8FF14B28BC261000DE4CF8 /* ITCAvantGardeStd-MdObl.ttf in Resources */,
+				9A8FF15728BC261000DE4CF8 /* ITCAvantGardeStd-BkCn.ttf in Resources */,
+				9A8FF15328BC261000DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf in Resources */,
+				9A8FF15628BC261000DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf in Resources */,
+				9A8FF14C28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf in Resources */,
+				9A8FF15528BC261000DE4CF8 /* ITCAvantGardeStd-MdCn.ttf in Resources */,
 				9A8FF0B828BB14C100DE4CF8 /* Preview Assets.xcassets in Resources */,
+				9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */,
+				9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */,
+				9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */,
+				9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */,
 				9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */,
+				9A8FF15C28BC261000DE4CF8 /* ITCAvantGardeStd-Demi.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,10 +350,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */,
+				9A8FF0D628BB33B800DE4CF8 /* Service.swift in Sources */,
+				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
+				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
+				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
+				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
+				9A8FF0E028BB446900DE4CF8 /* AuthResponseDao.swift in Sources */,
+				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
+				9A8FF0D828BB33D700DE4CF8 /* HttpService.swift in Sources */,
+				9A8FF0DE28BB444C00DE4CF8 /* AuthRequestSignIn.swift in Sources */,
+				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
+				9A8FF15F28BC6AC100DE4CF8 /* SportView.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
+				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
+				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +502,7 @@
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -350,6 +539,7 @@
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

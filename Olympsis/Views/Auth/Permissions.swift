@@ -9,7 +9,65 @@ import SwiftUI
 
 struct Permissions: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(){
+            Text("One more thing 😅, we need your permission for a couple of things: ")
+                .font(.custom("ITCAvantGardeStd-Md", size: 30, relativeTo: .title))
+                .frame(width: SCREEN_WIDTH-50)
+                .multilineTextAlignment(.center)
+                .padding(.top, 30)
+            
+            Text("To provide a better experience and more accurate data, we need to have your location even when the app is in the background.")
+                .font(.custom("ITCAvantGardeStd-Bk", size: 20, relativeTo: .body))
+                .multilineTextAlignment(.center)
+                .frame(width: SCREEN_WIDTH-50)
+                .padding(.top, 20)
+            
+            Button(action:{}){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundColor(Color("primary-color"))
+                        .frame(width: 250, height: 45)
+                        
+                    Text("location")
+                        .foregroundColor(.white)
+                        .font(.custom("ITCAvantGardeStd-bold", size: 20, relativeTo: .body))
+                }
+            }.padding(.top)
+            
+            
+            Text("In order to notify you of local events, and club activities we need to be able to send you notifications.")
+                .font(.custom("ITCAvantGardeStd-Bk", size: 20, relativeTo: .body))
+                .multilineTextAlignment(.center)
+                .frame(width: SCREEN_WIDTH-50)
+                .padding(.top, 50)
+            
+            Button(action:{}){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundColor(Color("primary-color"))
+                        .frame(width: 250, height: 45)
+                        
+                    Text("notifications")
+                        .foregroundColor(.white)
+                        .font(.custom("ITCAvantGardeStd-bold", size: 20, relativeTo: .body))
+                }
+            }.padding(.top)
+            Spacer()
+            
+            NavigationLink {
+                ViewContainer()
+                    .toolbar(.hidden, for: .automatic)
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundColor(Color("primary-color"))
+                        .frame(width: 100, height: 45)
+                    Text("done")
+                        .foregroundColor(.white)
+                        .font(.custom("ITCAvantGardeStd-bold", size: 20, relativeTo: .body))
+                }
+            }.padding(.bottom)
+        }
     }
 }
 
