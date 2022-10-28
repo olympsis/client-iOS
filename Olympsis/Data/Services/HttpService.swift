@@ -6,6 +6,7 @@
 //
 
 import os
+import SwiftUI
 import Foundation
 
 
@@ -34,20 +35,28 @@ extension NetworkError: LocalizedError {
     }
 }
 
-class HttpService {
+class HttpService: ObservableObject {
     
-    private var token:String = ""
-    private let logger = Logger()
-    private let serverUrl = Bundle.main.object(forInfoDictionaryKey: "SERVER_URL") as! String
-    
-    func setToken(token:String) {
-        self.token = token;
+    private var token:String
+    private let logger:Logger
+    private let serverUrl:String
+    private var cacheService: CacheService
+   
+    init() {
+        logger = Logger()
+        serverUrl = Bundle.main.object(forInfoDictionaryKey: "SERVER_URL") as! String
+        cacheService = CacheService()
+        token = cacheService.fetchToken()
     }
     
-    func request(url:String, method:Method, param:Dao? = nil) async throws -> Data {
+    func fetchToken() {
+        token = cacheService.fetchToken()
+    }
+    
+    func request(url:String, method:Method, body:Dao? = nil) async throws -> (Data, URLResponse) {
         
         // encode request
-        let encodedRequest = try! JSONEncoder().encode(param)
+        let encodedRequest = try! JSONEncoder().encode(body)
         
         // create session, url and request
         let session = URLSession.shared
@@ -82,7 +91,7 @@ class HttpService {
             
             /*guard (response as? HTTPURLResponse)?.statusCode == 200 || (response as? HTTPURLResponse)?.statusCode == 201 || (response as? HTTPURLResponse)?.statusCode == 404 else { fatalError("Error while fetching data") }*/
             
-            return data
+            return (data, response)
         } catch {
             logger.error("\(error.localizedDescription)")
             throw NetworkError.unableToMakeRequest(error)

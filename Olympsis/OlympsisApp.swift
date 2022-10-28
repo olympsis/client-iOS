@@ -9,14 +9,18 @@ import SwiftUI
 
 @main
 struct OlympsisApp: App {
-    @AppStorage("token") var token:String? // auth token from server
+    
+    @AppStorage("loggedIn") var loggedIn: Bool?
+    @StateObject var sessionStore = SessionStore()
+    
     var body: some Scene {
         WindowGroup {
-            if let _ = token {
+            if let _ = loggedIn {
                 ViewContainer() // home view
+                    .environmentObject(sessionStore)
             } else {
-                //Auth() // auth view
-                CreateAccount()
+                AuthContainer() // auth view
+                    .environmentObject(sessionStore)
             }
         }
     }

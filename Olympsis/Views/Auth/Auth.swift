@@ -9,18 +9,15 @@ import SwiftUI
 import AuthenticationServices
 
 struct Auth: View {
-    @State var token = ""
-    @State var tag: Int?
+    
+    @Binding var currentView: AuthTab
     @State var userStatus: USER_STATUS?
-    @State var showHome: Bool = false
-    var index:Int = 0
-    var images:[String] = ["basketball-bw", "basketball-layup", "soccer-shooting"]
-    @State var routes:[AuthNavigation] = []
     @StateObject var observer = AuthObserver()
+    
     var body: some View {
-        NavigationStack(path: $routes){
+        VStack(){
             ZStack {
-                Image(images[index])
+                Image("basketball-bw")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -58,9 +55,9 @@ struct Auth: View {
                                     DispatchQueue.main.async {
                                         userStatus = res
                                         if userStatus == USER_STATUS.New {
-                                            routes.append(.new)
+                                            currentView = .create
                                         } else if userStatus == USER_STATUS.Returning {
-                                            routes.append(.new)
+                                            currentView = .permissions
                                         }
                                     }
                                     
@@ -75,23 +72,12 @@ struct Auth: View {
                         .padding(.bottom, 50)
                 }
             }
-        }.navigationDestination(for: AuthNavigation.self) { value in
-            switch value {
-            case .auth:
-                Auth()
-            case .new:
-                CreateAccount()
-            case .home:
-                ViewContainer()
-            case .permissions:
-                Permissions()
-            }
         }
     }
 }
 
 struct Auth_Previews: PreviewProvider {
     static var previews: some View {
-        Auth()
+        Auth(currentView: .constant(.auth))
     }
 }

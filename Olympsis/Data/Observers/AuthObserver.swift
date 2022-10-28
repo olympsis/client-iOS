@@ -12,30 +12,27 @@ import Foundation
 import AuthenticationServices
 
 class AuthObserver: ObservableObject {
+
+    let decoder: JSONDecoder
+    let authService: AuthService
+    let cacheService: CacheService
     
-    var log = Logger()
-    
-    @AppStorage("firstName")    var firstName: String? // user email
-    @AppStorage("lastName")     var lastName: String? // user last name
-    @AppStorage("email")        var email:String?  // user email
-    @AppStorage("token")        var token:String? // auth token from server
-    @AppStorage("userId")       var userId: String? // user id from apple servers
-    
-    let authService = AuthService()
-    //let userService = UserService()
-    
-    func SignUp(firstName:String, lastName:String, email:String, token: String) async throws -> String {
-        let response = try await authService.SignUp(firstName: firstName, lastName: lastName, email: email, token: token)
-        let decoder = JSONDecoder()
-        let object = try decoder.decode(AuthResponseDao.self, from: response)
-        return object.token
+    init() {
+        decoder = JSONDecoder()
+        authService = AuthService()
+        cacheService = CacheService()
     }
     
-    func LogIn(token: String) async throws -> String {
-        let response = try await authService.LogIn(token: token)
-        let decoder = JSONDecoder()
+    func SignUp(firstName:String, lastName:String, email:String, token: String) async throws {
+        let response = try await authService.SignUp(firstName: firstName, lastName: lastName, email: email, token: token)
         let object = try decoder.decode(AuthResponseDao.self, from: response)
-        return object.token
+        await cacheService.cacheToken(token: object.token)
+    }
+    
+    func LogIn(token: String) async throws {
+        let response = try await authService.LogIn(token: token)
+        let object = try decoder.decode(AuthResponseDao.self, from: response)
+        await cacheService.cacheToken(token: object.token)
     }
     
     func handleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS{
@@ -46,40 +43,30 @@ class AuthObserver: ObservableObject {
                     /*
                         New User
                      */
-                    log.log("New User")
-                    let _userId = appleIdCredential.user
-                    let _token = String(data: appleIdCredential.identityToken!, encoding: .utf8)!
+                    let userId = appleIdCredential.user
+                    let token = String(data: appleIdCredential.identityToken!, encoding: .utf8)!
                     let _ = appleIdCredential.authorizationCode
-                    let _email = appleIdCredential.email!
-                    let _firstName = (appleIdCredential.fullName?.givenName!)!
-                    let _lastName = (appleIdCredential.fullName?.familyName!)!
+                    let email = appleIdCredential.email!
+                    let firstName = (appleIdCredential.fullName?.givenName!)!
+                    let lastName = (appleIdCredential.fullName?.familyName!)!
                     let _ = appleIdCredential.state
                     
-                    await MainActor.run{
-                        firstName = _firstName
-                        lastName = _lastName
-                        email = _email
-                        userId = _userId
-                    }
-                    Task {
-                        let res = try await SignUp(firstName: _firstName, lastName: _lastName, email: _email, token: _token)
-                        DispatchQueue.main.async {
-                            self.token = res
-                        }
-                    }
+                    // store private user info on device
+                    await cacheService.cachePartialUserData(firstName: firstName, lastName: lastName, email: email, uuid: userId)
+                    
+                    // Network request to create auth user in database
+                    try await SignUp(firstName: firstName, lastName: lastName, email: email, token: token)
+                    
                     return USER_STATUS.New
                 } else {
                     /*
                         Existing User
                      */
-                    log.log("Returning User")
                     let _token = String(data: appleIdCredential.identityToken!, encoding: .utf8)!
-                    Task {
-                        let res = try await LogIn(token: _token)
-                        DispatchQueue.main.async {
-                            self.token = res
-                        }
-                    }
+                    
+                    // Network request to login user into backend
+                    try await LogIn(token: _token)
+                    
                     return USER_STATUS.Returning
                 }
             }

@@ -24,8 +24,21 @@ class UserService: Service {
     func CheckUserName(name: String) async throws -> Data {
         let req = UserNameRequest(name: name)
         req.userName = name
-        log.log("Initiating request to server(POST): /user/userName")
-        let data = try await http.request(url: "/v1/user/userName?userName=\(req.userName)", method: Method.GET, param: req)
+        log.log("Initiating request to server(GET): /user/userName")
+        let (data, _) = try await http.request(url: "/v1/user/userName?userName=\(req.userName)", method: Method.GET, body: req)
+        return data
+    }
+    
+    func CreateUserData(userName: String, sports:[String]) async throws -> Bool {
+        let req = CreateUserDataRequest(userName: userName, sports: sports)
+        log.log("Initiating request to server(PUT): /user/userData")
+        let (_, resp) = try await http.request(url: "/v1/user/userData", method: Method.PUT, body: req)
+        return (resp as? HTTPURLResponse)?.statusCode == 201 ? true : false
+    }
+    
+    func GetUserData() async throws -> Data {
+        log.log("Initiating request to server(GET): /user/userData")
+        let (data, _) = try await http.request(url: "/v1/user/userData", method: Method.GET)
         return data
     }
 }

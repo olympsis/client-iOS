@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ViewContainer: View {
+    @State var currentTab = Tab.home
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+            TabView(selection: $currentTab) {
+                Home().tag(Tab.home)
+                Clubs().tag(Tab.club)
+                MapView().tag(Tab.map)
+                Tournaments().tag(Tab.tournament)
+                Settings().tag(Tab.setting)
+            }
+            TabBar(currentTab: $currentTab)
+        }.background(Color("dark-color"))
     }
 }
 

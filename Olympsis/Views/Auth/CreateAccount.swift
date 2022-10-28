@@ -18,13 +18,14 @@ struct CreateAccount: View {
     @State var userName: String = ""
     @State var userNameStatus: Bool?
     @State var isSearching = false
+    @State var signUpCompleted = false
+    @Binding var currentView: AuthTab
     @State var selectedSports:[String] = []
     @StateObject var observer = UserObserver()
-    @State var sports = ["soccer"]
+    @State var sports = ["soccer", "basketball"]
     
     func updateSports(sport:String){
         selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
-        print(selectedSports)
     }
     
     func isSelected(sport:String) -> Bool {
@@ -92,7 +93,7 @@ struct CreateAccount: View {
                 VStack(alignment: .leading){
                     Text("pick your favorite sports:")
                         .font(.custom("ITCAvantGardeStd-Md", size: 20, relativeTo: .body))
-                    HStack {
+                    VStack {
                         ForEach($sports, id: \.self){ _sport in
                             HStack {
                                 Button(action: {updateSports(sport: _sport.wrappedValue)}){
@@ -103,27 +104,36 @@ struct CreateAccount: View {
                                 Text(_sport.wrappedValue)
                                     .font(.custom("ITCAvantGardeStd-Bk", size: 20, relativeTo: .body))
                                 Spacer()
-                            }
+                            }.padding(.top)
                         }
                     }.padding(.top)
                 }.padding(.bottom, 30)
                     .frame(width: SCREEN_WIDTH - 50)
                 
                 Spacer()
-                NavigationLink {
-                    Permissions()
-                        .toolbar(.hidden, for: .automatic)
-                } label: {
+                Button(action:{
+                    if !isSearching && userNameStatus != nil && !userNameStatus! {
+                        Task {
+                            let _ = try await observer.CreateUserData(userName: userName, sports: selectedSports)
+                        }
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            signUpCompleted = true
+                            currentView = .permissions
+                        }
+                    }
+                }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
                             .foregroundColor(Color("primary-color"))
                             .frame(width: 100, height: 45)
-                        Text("next")
+                        Text("signup")
                             .foregroundColor(.white)
                             .font(.custom("ITCAvantGardeStd-bold", size: 20, relativeTo: .body))
                     }
                 }.padding(.bottom)
                 
+            }.onAppear{
+                observer.fetchToken()
             }
         }
     }
@@ -131,7 +141,7 @@ struct CreateAccount: View {
 
 struct CreateAccount_Previews: PreviewProvider {
     static var previews: some View {
-        CreateAccount()
+        CreateAccount(currentView: .constant(.create))
     }
 }
 

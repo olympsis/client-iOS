@@ -28,7 +28,7 @@ class AuthService: Service {
         req.email       = email
         req.token       = token
         log.log("Initiating request to server (PUT): /auth/signup")
-        let data = try await http.request(url: "/V1/auth/signup", method: Method.PUT, param: req)
+        let (data, _) = try await http.request(url: "/v1/auth/signup", method: Method.PUT, body: req)
         return data
     }
     
@@ -36,7 +36,7 @@ class AuthService: Service {
         let req = AuthRequestLogin()
         req.token = token
         log.log("Initiating request to server(POST): /auth/login")
-        let data = try await http.request(url: "/v1/auth/login", method: Method.POST, param: req)
+        let (data, _) = try await http.request(url: "/v1/auth/login", method: Method.POST, body: req)
         return data
     }
 }

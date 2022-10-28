@@ -8,6 +8,17 @@
 import SwiftUI
 
 struct Permissions: View {
+    
+    @Binding var currentView: AuthTab
+
+    @State private var hasLocation = false;
+    @State private var hasNotifications = false;
+    @State private var location = LocationObserver()
+    @State private var notifications = NotificationsHandler()
+    
+    @EnvironmentObject var session: SessionStore
+    @AppStorage("loggedIn") private var loggedIn: Bool?
+    
     var body: some View {
         VStack(){
             Text("One more thing 😅, we need your permission for a couple of things: ")
@@ -22,7 +33,12 @@ struct Permissions: View {
                 .frame(width: SCREEN_WIDTH-50)
                 .padding(.top, 20)
             
-            Button(action:{}){
+            Button(action:{
+                Task {
+                    try await location.requestAuthorization()
+                    hasLocation = true
+                }
+            }){
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundColor(Color("primary-color"))
@@ -41,7 +57,12 @@ struct Permissions: View {
                 .frame(width: SCREEN_WIDTH-50)
                 .padding(.top, 50)
             
-            Button(action:{}){
+            Button(action:{
+                Task {
+                    try await notifications.requestAuthorization()
+                    hasNotifications = true
+                }
+            }){
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundColor(Color("primary-color"))
@@ -54,10 +75,11 @@ struct Permissions: View {
             }.padding(.top)
             Spacer()
             
-            NavigationLink {
-                ViewContainer()
-                    .toolbar(.hidden, for: .automatic)
-            } label: {
+            Button(action: {
+                session.fetchDataFromCache()
+                self.loggedIn = true
+                
+            }){
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundColor(Color("primary-color"))
@@ -67,12 +89,13 @@ struct Permissions: View {
                         .font(.custom("ITCAvantGardeStd-bold", size: 20, relativeTo: .body))
                 }
             }.padding(.bottom)
+                
         }
     }
 }
 
 struct Permissions_Previews: PreviewProvider {
     static var previews: some View {
-        Permissions()
+        Permissions(currentView: .constant(.permissions))
     }
 }
