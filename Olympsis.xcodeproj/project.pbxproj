@@ -11,6 +11,23 @@
 		9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */; };
 		9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */; };
 		9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */; };
+		9A81B60729241ED4009CA6ED /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60629241ED4009CA6ED /* Event.swift */; };
+		9A81B6092924235D009CA6ED /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6082924235D009CA6ED /* Field.swift */; };
+		9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* FieldObserver.swift */; };
+		9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* FieldService.swift */; };
+		9A81B61029242B21009CA6ED /* FieldsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60F29242B21009CA6ED /* FieldsResponse.swift */; };
+		9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* FieldView.swift */; };
+		9A81B61429245DB0009CA6ED /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61329245DB0009CA6ED /* Endpoint.swift */; };
+		9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */; };
+		9A81B619292472B3009CA6ED /* ClubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B618292472B3009CA6ED /* ClubService.swift */; };
+		9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61B29247326009CA6ED /* ClubsResponse.swift */; };
+		9A81B61E29247378009CA6ED /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61D29247378009CA6ED /* Club.swift */; };
+		9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61F292475B1009CA6ED /* ClubObserver.swift */; };
+		9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6222924771A009CA6ED /* SearchBar.swift */; };
+		9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62429247F87009CA6ED /* SmallClubView.swift */; };
+		9A81B627292485A3009CA6ED /* ClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B626292485A3009CA6ED /* ClubView.swift */; };
+		9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62829249B11009CA6ED /* ClubApplicationRequestDao.swift */; };
+		9A81B62B2924A701009CA6ED /* ClubApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62A2924A701009CA6ED /* ClubApplication.swift */; };
 		9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */; };
 		9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */; };
 		9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */; };
@@ -53,7 +70,7 @@
 		9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6B22903BE2F0003D501 /* CacheService.swift */; };
 		9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F422901F0E6008C07F1 /* CreateUserDataRequest.swift */; };
 		9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F4629023E9F008C07F1 /* LocationObserver.swift */; };
-		9AB02F4E290246BD008C07F1 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F4D290246BD008C07F1 /* NotificationsHandler.swift */; };
+		9AB02F4E290246BD008C07F1 /* NotificationsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F4D290246BD008C07F1 /* NotificationsObserver.swift */; };
 		9AB02F5729024D04008C07F1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5629024D04008C07F1 /* Home.swift */; };
 		9AB02F5929024D24008C07F1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5829024D24008C07F1 /* MapView.swift */; };
 		9AB02F5B29024D2E008C07F1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5A29024D2E008C07F1 /* Settings.swift */; };
@@ -73,6 +90,23 @@
 		9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameRequest.swift; sourceTree = "<group>"; };
 		9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObserver.swift; sourceTree = "<group>"; };
 		9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
+		9A81B60629241ED4009CA6ED /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		9A81B6082924235D009CA6ED /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
+		9A81B60A2924254D009CA6ED /* FieldObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldObserver.swift; sourceTree = "<group>"; };
+		9A81B60C292425B8009CA6ED /* FieldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldService.swift; sourceTree = "<group>"; };
+		9A81B60F29242B21009CA6ED /* FieldsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsResponse.swift; sourceTree = "<group>"; };
+		9A81B61129242EBA009CA6ED /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
+		9A81B61329245DB0009CA6ED /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldViewTemplate.swift; sourceTree = "<group>"; };
+		9A81B618292472B3009CA6ED /* ClubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubService.swift; sourceTree = "<group>"; };
+		9A81B61B29247326009CA6ED /* ClubsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsResponse.swift; sourceTree = "<group>"; };
+		9A81B61D29247378009CA6ED /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
+		9A81B61F292475B1009CA6ED /* ClubObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubObserver.swift; sourceTree = "<group>"; };
+		9A81B6222924771A009CA6ED /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		9A81B62429247F87009CA6ED /* SmallClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallClubView.swift; sourceTree = "<group>"; };
+		9A81B626292485A3009CA6ED /* ClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubView.swift; sourceTree = "<group>"; };
+		9A81B62829249B11009CA6ED /* ClubApplicationRequestDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationRequestDao.swift; sourceTree = "<group>"; };
+		9A81B62A2924A701009CA6ED /* ClubApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplication.swift; sourceTree = "<group>"; };
 		9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisApp.swift; sourceTree = "<group>"; };
 		9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewContainer.swift; sourceTree = "<group>"; };
@@ -118,7 +152,7 @@
 		9AAAA6B22903BE2F0003D501 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		9AB02F422901F0E6008C07F1 /* CreateUserDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserDataRequest.swift; sourceTree = "<group>"; };
 		9AB02F4629023E9F008C07F1 /* LocationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationObserver.swift; sourceTree = "<group>"; };
-		9AB02F4D290246BD008C07F1 /* NotificationsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		9AB02F4D290246BD008C07F1 /* NotificationsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsObserver.swift; sourceTree = "<group>"; };
 		9AB02F5629024D04008C07F1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		9AB02F5829024D24008C07F1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9AB02F5A29024D2E008C07F1 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -151,6 +185,32 @@
 				9AB02F402901F0BD008C07F1 /* Request */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		9A81B60E29242B14009CA6ED /* Field */ = {
+			isa = PBXGroup;
+			children = (
+				9A81B60F29242B21009CA6ED /* FieldsResponse.swift */,
+			);
+			path = Field;
+			sourceTree = "<group>";
+		};
+		9A81B61A2924730F009CA6ED /* Club */ = {
+			isa = PBXGroup;
+			children = (
+				9A81B61B29247326009CA6ED /* ClubsResponse.swift */,
+				9A81B62829249B11009CA6ED /* ClubApplicationRequestDao.swift */,
+				9A81B62A2924A701009CA6ED /* ClubApplication.swift */,
+			);
+			path = Club;
+			sourceTree = "<group>";
+		};
+		9A81B62129247707009CA6ED /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				9A81B6222924771A009CA6ED /* SearchBar.swift */,
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 		9A8FF0A428BB14BF00DE4CF8 = {
@@ -195,6 +255,7 @@
 		9A8FF0BE28BB18B800DE4CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9A81B62129247707009CA6ED /* CustomViews */,
 				9AB02F5529024C9C008C07F1 /* Tournaments */,
 				9AB02F5429024C69008C07F1 /* Clubs */,
 				9AB02F5329024C61008C07F1 /* Settings */,
@@ -240,6 +301,10 @@
 				9AAAA6AC2903AF2F0003D501 /* Trophy.swift */,
 				9AAAA6AE2903AF360003D501 /* Badge.swift */,
 				9ABB1EC02905F9F90050C0F0 /* Announcement.swift */,
+				9A81B60629241ED4009CA6ED /* Event.swift */,
+				9A81B6082924235D009CA6ED /* Field.swift */,
+				9A81B61329245DB0009CA6ED /* Endpoint.swift */,
+				9A81B61D29247378009CA6ED /* Club.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -252,6 +317,8 @@
 				9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */,
 				9A39ED3928BDD4BA00ACB20A /* UserService.swift */,
 				9AAAA6B22903BE2F0003D501 /* CacheService.swift */,
+				9A81B60C292425B8009CA6ED /* FieldService.swift */,
+				9A81B618292472B3009CA6ED /* ClubService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -259,10 +326,13 @@
 		9A8FF0D428BB337C00DE4CF8 /* Observers */ = {
 			isa = PBXGroup;
 			children = (
+				9AB02F4D290246BD008C07F1 /* NotificationsObserver.swift */,
 				9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */,
 				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
 				9AB02F4629023E9F008C07F1 /* LocationObserver.swift */,
 				9ABB1EC2290604060050C0F0 /* FeedObserver.swift */,
+				9A81B60A2924254D009CA6ED /* FieldObserver.swift */,
+				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 			);
 			path = Observers;
 			sourceTree = "<group>";
@@ -270,6 +340,8 @@
 		9A8FF0D928BB33E800DE4CF8 /* Dao */ = {
 			isa = PBXGroup;
 			children = (
+				9A81B61A2924730F009CA6ED /* Club */,
+				9A81B60E29242B14009CA6ED /* Field */,
 				9A39ED3B28BDD59500ACB20A /* User */,
 				9A8FF0DC28BB442600DE4CF8 /* Auth */,
 				9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */,
@@ -342,7 +414,6 @@
 		9AB02F4A29024300008C07F1 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
-				9AB02F4D290246BD008C07F1 /* NotificationsHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -350,8 +421,10 @@
 		9AB02F5129024C58008C07F1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				9AB02F5629024D04008C07F1 /* Home.swift */,
+				9A81B61129242EBA009CA6ED /* FieldView.swift */,
+				9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */,
 				9ABB1EBE2905F9B90050C0F0 /* AnnouncementView.swift */,
+				9AB02F5629024D04008C07F1 /* Home.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -376,6 +449,8 @@
 			isa = PBXGroup;
 			children = (
 				9AB02F5C29024D35008C07F1 /* Clubs.swift */,
+				9A81B62429247F87009CA6ED /* SmallClubView.swift */,
+				9A81B626292485A3009CA6ED /* ClubView.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -481,39 +556,56 @@
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
+				9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */,
 				9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */,
 				9A8FF0D628BB33B800DE4CF8 /* Service.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
+				9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */,
+				9A81B60729241ED4009CA6ED /* Event.swift in Sources */,
+				9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				9AB02F5D29024D35008C07F1 /* Clubs.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
+				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
+				9A81B62B2924A701009CA6ED /* ClubApplication.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
+				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
+				9A81B6092924235D009CA6ED /* Field.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
+				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
 				9A8FF0E028BB446900DE4CF8 /* AuthResponseDao.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
+				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
+				9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */,
 				9A8FF0D828BB33D700DE4CF8 /* HttpService.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
 				9A8FF0DE28BB444C00DE4CF8 /* AuthRequestSignIn.swift in Sources */,
+				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
 				9AAAA6AB2903A58D0003D501 /* User.swift in Sources */,
+				9A81B61029242B21009CA6ED /* FieldsResponse.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Settings.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
+				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
-				9AB02F4E290246BD008C07F1 /* NotificationsHandler.swift in Sources */,
+				9A81B61E29247378009CA6ED /* Club.swift in Sources */,
+				9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */,
+				9AB02F4E290246BD008C07F1 /* NotificationsObserver.swift in Sources */,
+				9A81B61429245DB0009CA6ED /* Endpoint.swift in Sources */,
 				9AB02F63290265F8008C07F1 /* Tab.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

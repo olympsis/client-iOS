@@ -24,6 +24,8 @@
 			<string>None</string>
 		</dict>
 	</array>
+	<key>HOST</key>
+	<string>api.olympsis.com</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeBike</string>
@@ -37,8 +39,6 @@
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>In order to notify you of local events, and club activities we need to be able to send you notifications.</string>
-	<key>SERVER_URL</key>
-	<string>https://api.olympsis.com</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ITCAvantGardeStd-Bk.ttf</string>

@@ -8,7 +8,7 @@
 import Foundation
 import NotificationCenter
 
-class NotificationsHandler: ObservableObject{
+class NotificationsObserver: ObservableObject{
     let center = UNUserNotificationCenter.current()
     
     init(){

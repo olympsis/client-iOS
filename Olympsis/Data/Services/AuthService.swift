@@ -27,16 +27,24 @@ class AuthService: Service {
         req.lastName    = lastName
         req.email       = email
         req.token       = token
-        log.log("Initiating request to server (PUT): /auth/signup")
-        let (data, _) = try await http.request(url: "/v1/auth/signup", method: Method.PUT, body: req)
+        
+        let endpoint = Endpoint(path: "/v1/auth/signup", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server (POST): \(endpoint.path)")
+        
+        let (data, _) = try await http.request(endpoint: endpoint , method: Method.POST, body: req)
         return data
     }
     
     func LogIn(token: String) async throws -> Data{
         let req = AuthRequestLogin()
         req.token = token
-        log.log("Initiating request to server(POST): /auth/login")
-        let (data, _) = try await http.request(url: "/v1/auth/login", method: Method.POST, body: req)
+        
+        let endpoint = Endpoint(path: "/v1/auth/login", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(PUT): \(endpoint.path)")
+        
+        let (data, _) = try await http.request(endpoint: endpoint, method: Method.PUT, body: req)
         return data
     }
 }

@@ -30,8 +30,8 @@
             filePath = "Olympsis/Data/SessionStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "getFirstName()"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "Olympsis/Data/SessionStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "fetchDataFromCache()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,9 +62,73 @@
             filePath = "Olympsis/Data/SessionStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "fetchDataFromCache()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E2F4DB78-A1C4-4CC7-B0E5-59E3E780AB2A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Data/Observers/AuthObserver.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "SignUp(firstName:lastName:email:token:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E2F4DB78-A1C4-4CC7-B0E5-59E3E780AB2A - 1599bf40ed87ddbc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Olympsis.AuthObserver.SignUp(firstName: Swift.String, lastName: Swift.String, email: Swift.String, token: Swift.String) async throws -&gt; ()"
+                  moduleName = "Olympsis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joeljoseph/Library/Mobile%20Documents/com~apple~CloudDocs/Coronis%20Labs/olympsis/Olympsis/Olympsis/Data/Observers/AuthObserver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "260">
+               </Location>
+               <Location
+                  uuid = "E2F4DB78-A1C4-4CC7-B0E5-59E3E780AB2A - f63890eb42f55e29"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Olympsis.AuthObserver.SignUp(firstName: Swift.String, lastName: Swift.String, email: Swift.String, token: Swift.String) async throws -&gt; ()"
+                  moduleName = "Olympsis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joeljoseph/Library/Mobile%20Documents/com~apple~CloudDocs/Coronis%20Labs/olympsis/Olympsis/Olympsis/Data/Observers/AuthObserver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6749F485-3D17-4A1E-8870-4B77501D12FE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Data/Observers/FieldObserver.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "fetchFields()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

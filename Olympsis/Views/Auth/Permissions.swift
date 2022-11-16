@@ -14,7 +14,7 @@ struct Permissions: View {
     @State private var hasLocation = false;
     @State private var hasNotifications = false;
     @State private var location = LocationObserver()
-    @State private var notifications = NotificationsHandler()
+    @State private var notifications = NotificationsObserver()
     
     @EnvironmentObject var session: SessionStore
     @AppStorage("loggedIn") private var loggedIn: Bool?

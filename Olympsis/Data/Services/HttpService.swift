@@ -22,6 +22,7 @@ enum NetworkError: Error {
     case serverError(statusCode: Int)
     case encodingError(Error)
     case unableToMakeRequest(Error)
+    case invalidURL
 }
 
 extension NetworkError: LocalizedError {
@@ -39,12 +40,12 @@ class HttpService: ObservableObject {
     
     private var token:String
     private let logger:Logger
-    private let serverUrl:String
+    private let host:String
     private var cacheService: CacheService
    
     init() {
         logger = Logger()
-        serverUrl = Bundle.main.object(forInfoDictionaryKey: "SERVER_URL") as! String
+        host = Bundle.main.object(forInfoDictionaryKey: "HOST") as! String
         cacheService = CacheService()
         token = cacheService.fetchToken()
     }
@@ -53,14 +54,31 @@ class HttpService: ObservableObject {
         token = cacheService.fetchToken()
     }
     
-    func request(url:String, method:Method, body:Dao? = nil) async throws -> (Data, URLResponse) {
+    /// Creates an HTTP request
+    /// - Parameter endpoint:`Endpoint` path values and query parameters
+    /// - Parameter method: `Method` http method enum type
+    /// - Parameter body: `Dao` body of the the request, a Dao Object
+    /// - Note: i need to add better error handling
+    func request(endpoint: Endpoint, method:Method, body:Dao? = nil) async throws -> (Data, URLResponse) {
+        
+        // create session, url and request
+        let session = URLSession.shared
         
         // encode request
         let encodedRequest = try! JSONEncoder().encode(body)
         
-        // create session, url and request
-        let session = URLSession.shared
-        let url = URL(string: serverUrl + url)!
+        // construct request url
+        var urlComp = URLComponents()
+        urlComp.scheme = "https"
+        urlComp.host = host
+        urlComp.path = endpoint.path
+        urlComp.queryItems = endpoint.queryItems
+        
+        // create url
+        guard let url = urlComp.url else {
+            throw NetworkError.invalidURL
+        }
+        
         var request = URLRequest(url: url)
         
         do {
@@ -84,11 +102,10 @@ class HttpService: ObservableObject {
             request.setValue("Connection", forHTTPHeaderField: "keep-alive")
             
             // log request
-            logger.log("Making a \(request.httpMethod!) request to \(url.absoluteString)")
+            logger.log("Making a \(request.httpMethod!) request to \(url)")
 
             // grab and decode data
             let (data, response) = try await session.data(for: request)
-            
             /*guard (response as? HTTPURLResponse)?.statusCode == 200 || (response as? HTTPURLResponse)?.statusCode == 201 || (response as? HTTPURLResponse)?.statusCode == 404 else { fatalError("Error while fetching data") }*/
             
             return (data, response)

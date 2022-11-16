@@ -11,6 +11,7 @@ struct Home: View {
     
     @State private var index = "0";
     @StateObject private var observer = FeedObserver()
+    @StateObject private var fieldObserver = FieldObserver()
     @EnvironmentObject var session: SessionStore
     
     var body: some View {
@@ -67,6 +68,42 @@ struct Home: View {
                     }
                     
                     //MARK: - Nearby Fields
+                        HStack {
+                            VStack(alignment: .leading){
+                                HStack {
+                                    Text("Nearby Fields")
+                                        .font(.system(.headline))
+                                    .padding()
+                                    Spacer()
+                                    // This will be added back in later
+                                   /* Button(action:{}){
+                                        Text("View All")
+                                        Image(systemName: "chevron.down")
+                                    }.padding()
+                                        .foregroundColor(Color.primary)*/
+                                }
+                                
+                                if fieldObserver.isLoading {
+                                    FieldViewTemplate()
+                                } else {
+                                    ScrollView(.horizontal, showsIndicators: false){
+                                        HStack{
+                                            ForEach(fieldObserver.fields, id: \.name){ field in
+                                                FieldView(field: field)
+                                            }
+                                        }
+                                    }.frame(width: SCREEN_WIDTH, height: 365, alignment: .center)
+                                }
+                            }
+                            
+                        }.padding(.bottom, 100)
+                        .task {
+                            if fieldObserver.fieldsCount == 0 {
+                                await fieldObserver.fetchFields()
+                                session.fields = fieldObserver.fields
+                                fieldObserver.isLoading = false
+                            }
+                        }
                 }.navigationTitle("Home")
             }
         }

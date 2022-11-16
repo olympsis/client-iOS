@@ -21,24 +21,29 @@ class UserService: Service {
     
     let urlSession = URLSession.shared
     
+    
     func CheckUserName(name: String) async throws -> Data {
-        let req = UserNameRequest(name: name)
-        req.userName = name
-        log.log("Initiating request to server(GET): /user/userName")
-        let (data, _) = try await http.request(url: "/v1/user/userName?userName=\(req.userName)", method: Method.GET, body: req)
+        let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem(name: "userName", value: name)])
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
         return data
     }
     
     func CreateUserData(userName: String, sports:[String]) async throws -> Bool {
         let req = CreateUserDataRequest(userName: userName, sports: sports)
-        log.log("Initiating request to server(PUT): /user/userData")
-        let (_, resp) = try await http.request(url: "/v1/user/userData", method: Method.PUT, body: req)
+        let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(POST): \(endpoint.path)")
+        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.POST, body: req)
         return (resp as? HTTPURLResponse)?.statusCode == 201 ? true : false
     }
     
     func GetUserData() async throws -> Data {
-        log.log("Initiating request to server(GET): /user/userData")
-        let (data, _) = try await http.request(url: "/v1/user/userData", method: Method.GET)
+        let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
         return data
     }
 }
