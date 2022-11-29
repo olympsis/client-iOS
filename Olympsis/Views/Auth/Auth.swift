@@ -22,16 +22,19 @@ struct Auth: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                     .blur(radius: 2, opaque: true)
+                    
                 
                 VStack {
                     VStack {
-                        Image("logo")
+                        Image("white-logo")
+                            .resizable()
+                            .frame(width: 200, height: 200)
                     }.frame(height: SCREEN_HEIGHT/3)
                         
                     Spacer()
                     
                     VStack {
-                        Text("PlayFest")
+                        Text("Olympsis")
                             .bold()
                             .font(.custom("ITCAvantGardeStd-Bold", size: 35, relativeTo: .largeTitle))
                             .foregroundColor(.white)
