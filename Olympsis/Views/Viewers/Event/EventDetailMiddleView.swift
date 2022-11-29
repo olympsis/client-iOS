@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct EventDetailMiddleView: View {
-    @State var event: Event
-    @State var timeDifference = 0
     
-    func getTimeDifference() async -> Int {
+    @Binding var event: Event
+    @State private var isBlinking = false
+    @State private var timeDifference = 0
+    
+    func getTimeDifference() -> Int {
         guard let startTime = event.actualStartTime else {
             return 2
         }
@@ -40,11 +42,28 @@ struct EventDetailMiddleView: View {
                             .foregroundColor(.red)
                             
                         }
-                        Text("\(timeDifference) mins")
+                        Text("\(getTimeDifference()) mins")
                             .foregroundColor(.white)
                             .bold()
-                    } else {
-                        Text("Pending")
+                    } else if event.status == "pending"{
+                        VStack {
+                            Text("Pending")
+                                .foregroundColor(Color("primary-color"))
+                            Text(Date(timeIntervalSince1970: TimeInterval(event.startTime)).formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.green)
+                                .bold()
+                        }
+                    } else if event.status == "completed" {
+                        VStack {
+                            Text("Completed")
+                                .foregroundColor(.gray)
+                                .bold()
+                            if let sT = event.stopTime {
+                                Text(Date(timeIntervalSince1970: TimeInterval(sT)).formatted(.dateTime.hour().minute()))
+                                    .foregroundColor(.white)
+                                    .bold()
+                            }
+                        }
                     }
                 }.frame(width: 100)
                     .padding(.leading)
@@ -106,16 +125,13 @@ struct EventDetailMiddleView: View {
                 .frame(width: SCREEN_WIDTH - 50,height: 2)
                 .foregroundColor(.white)
         }.frame(width: SCREEN_WIDTH - 50)
-        .task {
-            timeDifference = await getTimeDifference()
-        }
     }
 }
 
 struct EventDetailMiddleView_Previews: PreviewProvider {
     static var previews: some View {
-        let event = Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "", title: "event", body: "eventBody", sport: "soccer", level: 3, status: "in-progress", startTime: 0, maxParticipants: 0)
-        EventDetailMiddleView(event: event)
+        let event = Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "", title: "event", body: "eventBody", sport: "soccer", level: 3, status: "in-progress", startTime: 1669763400, actualStartTime: 1669759200, maxParticipants: 0)
+        EventDetailMiddleView(event: .constant(event))
             .background {
                 Color.black
             }

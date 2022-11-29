@@ -10,11 +10,12 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    @State var event:           Event
-    @State var field:           Field
-    @State private var club:    Club?
+    @Binding var event:             Event
+    @State var field:               Field
+    @Binding var events:            [Event]
+    @State private var club:        Club?
     
-    @Binding var events: [Event]
+    
     
     @State private var showMenu = false
     
@@ -28,7 +29,7 @@ struct EventDetailView: View {
         UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[0]),\(field.location.coordinates[1])")! as URL)
     }
     
-    func RSVP(status: String) async {
+    func rsvp(status: String) async {
         if let user = session.user {
             let dao = ParticipantDao(_uuid: user.uuid, _status: status)
             let res = await eventObserver.addParticipant(id: event.id, dao: dao)
@@ -43,16 +44,47 @@ struct EventDetailView: View {
                 }
             }
         }
-
     }
     
-    func Cancel() async {
+    func cancel() async {
         if let user = session.user {
             if let pid = event.participants?.first(where: {$0.uuid == user.uuid}){
                 let res = await eventObserver.removeParticipant(id: event.id, pid: pid.id)
                 if res {
                     withAnimation(.easeOut) {
                         event.participants?.removeAll(where: {$0.uuid == user.uuid})
+                    }
+                }
+            }
+        }
+    }
+    
+    func startEvent() async {
+        let status = "in-progress"
+        let now = Int(Date.now.timeIntervalSince1970)
+        let dao = EventDao(_title: event.title, _body: event.body, _clubId: event.clubId, _fieldId: event.fieldId, _imageURL: event.imageURL, _sport: event.sport, _startTime: event.startTime, _maxParticipants: event.maxParticipants, _level: event.level, _actualSTime: now, _status: status)
+        let res = await eventObserver.updateEvent(id: event.id, dao: dao)
+        if res {
+            await MainActor.run {
+                withAnimation(.spring()){
+                    event.actualStartTime = now
+                    event.status = status
+                }
+            }
+        }
+    }
+    
+    func stopEvent() async {
+        let status = "completed"
+        let now = Int(Date.now.timeIntervalSince1970)
+        if let sT = event.actualStartTime {
+            let dao = EventDao(_title: event.title, _body: event.body, _clubId: event.clubId, _fieldId: event.fieldId, _imageURL: event.imageURL, _sport: event.sport, _startTime: event.startTime, _maxParticipants: event.maxParticipants, _level: event.level, _actualSTime: sT, _stopTime: now, _status: status)
+            let res = await eventObserver.updateEvent(id: event.id, dao: dao)
+            if res {
+                await MainActor.run {
+                    withAnimation(.spring()){
+                        event.stopTime = now
+                        event.status = status
                     }
                 }
             }
@@ -73,10 +105,31 @@ struct EventDetailView: View {
                         
                         Spacer()
                         
+                        if event.status == "pending" {
+                            Button(action:{
+                                Task {
+                                    await startEvent()
+                                }
+                            }){
+                                Image(systemName: "play.fill")
+                                    .foregroundColor(.green)
+                            }
+                        } else if event.status == "in-progress" {
+                            Button(action:{
+                                Task {
+                                    await stopEvent()
+                                }
+                            }){
+                                Image(systemName: "stop.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                        
                         Button(action:{}){
                             Image(systemName: "heart")
                                 .foregroundColor(.white)
                         }
+                        
                         
                         Button(action:{}){
                             Image(systemName: "bell")
@@ -124,7 +177,7 @@ struct EventDetailView: View {
                     }.padding(.top)
                     
                     // MARK: - Middle View
-                    EventDetailMiddleView(event: event)
+                    EventDetailMiddleView(event: $event)
                     
                     // MARK: - Event Body
                     HStack {
@@ -134,6 +187,7 @@ struct EventDetailView: View {
                             .font(.body)
                             .foregroundColor(.white)
                             .bold()
+                            .multilineTextAlignment(.leading)
                         Spacer()
                     }
                     
@@ -148,57 +202,57 @@ struct EventDetailView: View {
                             }
                         }
                     }
-                    if let user = session.user {
-                        if (event.participants?.first(where: {$0.uuid == user.uuid})) == nil {
-                            HStack {
+                    if event.status == "pending" {
+                        if let user = session.user {
+                            if (event.participants?.first(where: {$0.uuid == user.uuid})) == nil {
+                                HStack {
+                                    Button(action:{
+                                        Task {
+                                            await rsvp(status: "going")
+                                        }
+                                    }){
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: 100, height: 30)
+                                                .foregroundColor(Color("primary-color"))
+                                            Text("I'm going")
+                                                .foregroundColor(.white)
+                                                .bold()
+                                        }
+                                    }.padding(.top, 20)
+                                    Button(action:{
+                                        Task {
+                                            await rsvp(status: "not sure")
+                                        }
+                                    }){
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: 100, height: 30)
+                                                .foregroundColor(.gray)
+                                            Text("Not sure")
+                                                .foregroundColor(.white)
+                                                .bold()
+                                        }
+                                    }.padding(.top, 20)
+                                }
+                            } else {
                                 Button(action:{
                                     Task {
-                                        await RSVP(status: "going")
+                                        await cancel()
                                     }
                                 }){
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 100, height: 30)
-                                            .foregroundColor(Color("primary-color"))
-                                        Text("I'm going")
-                                            .foregroundColor(.white)
-                                            .bold()
-                                    }
-                                }.padding(.top, 20)
-                                Button(action:{
-                                    Task {
-                                        await RSVP(status: "not sure")
-                                    }
-                                }){
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 100, height: 30)
-                                            .foregroundColor(.gray)
-                                        Text("Not sure")
+                                            .foregroundColor(.red)
+                                        Text("Cancel")
                                             .foregroundColor(.white)
                                             .bold()
                                     }
                                 }.padding(.top, 20)
                             }
-                        } else {
-                            Button(action:{
-                                Task {
-                                    await Cancel()
-                                }
-                            }){
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 100, height: 30)
-                                        .foregroundColor(.red)
-                                    Text("Cancel")
-                                        .foregroundColor(.white)
-                                        .bold()
-                                }
-                            }.padding(.top, 20)
                         }
                     }
-                    
-                   
                     
                     // MARK: - Map View
                     VStack(){
@@ -217,7 +271,7 @@ struct EventDetailView: View {
                             .multilineTextAlignment(.leading)
                             .padding(.leading, 10)
                             
-                        Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[0], longitude: field.location.coordinates[1]), span: MKCoordinateSpan(latitudeDelta: 0.0025, longitudeDelta: 0.0030))), interactionModes: .pan, showsUserLocation: false, annotationItems: [field], annotationContent: { field in
+                        Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[0], longitude: field.location.coordinates[1]), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))), interactionModes: .pan, showsUserLocation: false, annotationItems: [field], annotationContent: { field in
                             MapMarker(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[0], longitude: field.location.coordinates[1]), tint: Color("primary-color"))
                         }).frame(width: SCREEN_WIDTH-20, height: 270)
                             .cornerRadius(10)
@@ -262,6 +316,7 @@ struct EventDetailView: View {
                                 .foregroundColor(.white)
                                 .padding(.top, 5)
                                 .padding(.bottom)
+                                .multilineTextAlignment(.leading)
                         }
                         
                     }.frame(width: SCREEN_WIDTH-20)
@@ -292,7 +347,7 @@ struct EventDetailView: View {
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
         let event = Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [Participant(id: "", uuid: "", status: "going", imageURL: "https://storage.googleapis.com/olympsis-1/profile-img/dorrell-tibbs-GntSiIMHyVM-unsplash.jpg", createdAt: 0)])
-        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "Private field owned by BYU. Turf field with medium sized goals.", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0, 0.0]), city: "Provo", state: "Utah", country: "United States of America", isPublic: false)
-        EventDetailView(event: event, field: field, events: .constant([Event]())).environmentObject(SessionStore())
+        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "Private field owned by BYU. Turf field with medium sized goals.", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [40.247278, -111.656757]), city: "Provo", state: "Utah", country: "United States of America", isPublic: false)
+        EventDetailView(event: .constant(event), field: field, events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

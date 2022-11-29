@@ -46,7 +46,9 @@ struct FieldView: View {
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
-                                .scaledToFit()
+                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
                         } else if phase.error != nil {
                             Color.red // Indicates an error.
                         } else {
@@ -100,7 +102,7 @@ struct FieldView: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", isPublic: false)
+        let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: ["https://storage.googleapis.com/olympsis-1/fields/BYU-Practice-Facility-Exteriror-8.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", isPublic: false)
         FieldView(field: field)
     }
 }

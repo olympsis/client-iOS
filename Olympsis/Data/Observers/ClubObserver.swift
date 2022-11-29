@@ -98,7 +98,6 @@ class ClubObserver: ObservableObject{
         do {
             let res = try await clubService.updateApplication(id: id, dao: dao)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                print((res as? HTTPURLResponse)?.statusCode)
                 return false
             }
             return true

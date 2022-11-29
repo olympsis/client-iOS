@@ -31,6 +31,7 @@ struct ClubMenu: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .scaledToFill()
+                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                                 .clipped()
                             
                         } else if phase.error != nil {
@@ -237,7 +238,7 @@ struct ClubMenu: View {
 
 struct ClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, isVisible: true, members: [Member(id: "0", uuid: "00", role: "admin", joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", joinedAt: 0)], rules: ["No fighting"])
+        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/308973276_8080928561980330_1395494675708418495_n.jpg", isPrivate: false, isVisible: true, members: [Member(id: "0", uuid: "00", role: "admin", joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", joinedAt: 0)], rules: ["No fighting"])
         ClubMenu(club: club, index: .constant(0), posts: .constant([Post]())).environmentObject(SessionStore())
     }
 }

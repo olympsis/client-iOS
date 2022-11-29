@@ -79,7 +79,7 @@ struct NewEventView: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              Sports = .soccer
-    @State private var eventLevel:              Int    = 0
+    @State private var eventLevel:              Int    = 1
     @State private var eventMaxParticipants:    Double = 0
     
     @State private var showSuccess  = false
@@ -91,7 +91,10 @@ struct NewEventView: View {
     @Environment(\.presentationMode) var presentationMode
     
     func CreateEvent() async {
-        let dao = EventDao(_title: eventTitle, _body: eventBody, _clubId: eventClubId, _fieldId: eventFieldId, _imageURL: eventImageURL, _sport: getSportRawText(for: eventSport), _startTime: Int(eventStartTime.timeIntervalSince1970), _maxParticipants: Int(eventMaxParticipants), _level: eventLevel)
+        let status = "pending"
+        let now = Int(eventStartTime.timeIntervalSince1970)
+        print(eventClubId)
+        let dao = EventDao(_title: eventTitle, _body: eventBody, _clubId: eventClubId, _fieldId: eventFieldId, _imageURL: eventImageURL, _sport: getSportRawText(for: eventSport), _startTime: now, _maxParticipants: Int(eventMaxParticipants), _level: eventLevel, _status: status)
         let res = await eventObserver.createEvent(dao: dao)
         if res {
             self.showCompletedToast.toggle()
@@ -237,7 +240,7 @@ struct NewEventView: View {
                             .frame(height: 40)
                         Picker(selection: $eventLevel, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
                             ForEach(SkillLevel.allCases, id: \.rawValue) { skill in
-                                Text(skill.rawValue).tag(skill.rawValue)
+                                Text(skill.rawValue).tag(getSkillRaw(for: skill))
                             }
                         }.frame(width: SCREEN_WIDTH/2)
                             .tint(Color("primary-color"))
@@ -334,11 +337,11 @@ struct NewEventView: View {
                 })
                 .task {
                     if !session.fields.isEmpty {
-                        self.eventFieldId = session.fields[0].id
+                        eventFieldId = session.fields[0].id
                     }
                     
                     if !session.myClubs.isEmpty {
-                        self.eventClubId = session.myClubs[0].id
+                        eventClubId = session.myClubs[0].id
                     }
                     
                 }

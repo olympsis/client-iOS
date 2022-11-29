@@ -110,7 +110,7 @@ struct EventView: View {
                         }
                         Spacer()
                         VStack (alignment: .trailing){
-                            Text(convertTime())
+                            Text(Date(timeIntervalSince1970: TimeInterval(event.startTime)).formatted(.dateTime.hour().minute()))
                                 .bold()
                                 .padding(.bottom)
                                 .foregroundColor(.primary)
@@ -125,7 +125,7 @@ struct EventView: View {
                     }
                 }.frame(height: 100)
             }.fullScreenCover(isPresented: $showDetails) {
-                EventDetailView(event: event, field: field, events: $events)
+                EventDetailView(event: $event, field: field, events: $events)
             }
         }
     }

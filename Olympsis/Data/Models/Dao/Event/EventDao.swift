@@ -17,12 +17,13 @@ class EventDao: Dao {
     let startTime:          Int
     let maxParticipants:    Int
     let level:              Int
+    let status:             String
     
     // optionals
     let actualStartTime:    Int?
     let stopTime:           Int?
 
-    init(_title: String, _body: String, _clubId: String? = nil, _fieldId: String, _imageURL: String, _sport: String, _startTime: Int, _maxParticipants: Int, _level: Int, _actualSTime: Int? = nil, _stopTime: Int? = nil){
+    init(_title: String, _body: String, _clubId: String? = nil, _fieldId: String, _imageURL: String, _sport: String, _startTime: Int, _maxParticipants: Int, _level: Int, _actualSTime: Int? = nil, _stopTime: Int? = nil, _status: String){
         self.title = _title
         self.body = _body
         self.clubId = _clubId
@@ -34,6 +35,7 @@ class EventDao: Dao {
         self.level = _level
         self.actualStartTime = _actualSTime
         self.stopTime = _stopTime
+        self.status = _status
         super.init()
     }
     
@@ -45,6 +47,7 @@ class EventDao: Dao {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
+        try container.encode(clubId, forKey: .clubId)
         if let cid = clubId {
             try container.encode(cid, forKey: .clubId)
         }
@@ -60,6 +63,7 @@ class EventDao: Dao {
         if let st = stopTime {
             try container.encode(st, forKey: .stopTime)
         }
+        try container.encode(status, forKey: .status)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -74,5 +78,6 @@ class EventDao: Dao {
         case level
         case actualStartTime
         case stopTime
+        case status
     }
 }
