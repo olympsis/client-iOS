@@ -9,9 +9,25 @@ import SwiftUI
 
 struct Home: View {
     
-    @State private var index = "0";
+    // status of loading event
+    enum Status {
+        case loading
+        case failed
+        case done
+    }
+    
+    @State private var index = "0"
+    @State private var fieldIndex = "0"
+    @State private var hasLoaded = false // to make sure user location is updated once
+    @State private var showDetail = false
+    @State private var hasOpened = false
+    @State private var status: Status = .loading
+
     @StateObject private var observer = FeedObserver()
+    @StateObject private var eventObserver = EventObserver()
     @StateObject private var fieldObserver = FieldObserver()
+    @StateObject private var locationManager = LocationManager()
+    
     @EnvironmentObject var session: SessionStore
     
     var body: some View {
@@ -86,24 +102,68 @@ struct Home: View {
                                 if fieldObserver.isLoading {
                                     FieldViewTemplate()
                                 } else {
-                                    ScrollView(.horizontal, showsIndicators: false){
-                                        HStack{
-                                            ForEach(fieldObserver.fields, id: \.name){ field in
-                                                FieldView(field: field)
+                                    if session.fields.isEmpty {
+                                        VStack(alignment: .center){
+                                            Text("😞 Sorry there are no fields in your area.")
+                                        }.frame(width: SCREEN_WIDTH, height: 200)
+                                    } else {
+                                        ScrollView(.horizontal, showsIndicators: false){
+                                            HStack{
+                                                ForEach(session.fields, id: \.name){ field in
+                                                    FieldView(field: field)
+                                                }
                                             }
-                                        }
-                                    }.frame(width: SCREEN_WIDTH, height: 365, alignment: .center)
+                                        }.frame(width: SCREEN_WIDTH, height: 365, alignment: .center)
+                                    }
                                 }
                             }
-                            
-                        }.padding(.bottom, 100)
-                        .task {
-                            if fieldObserver.fieldsCount == 0 {
-                                await fieldObserver.fetchFields()
-                                session.fields = fieldObserver.fields
+                        }.onReceive(locationManager.$location) { newLoc in
+                            // we have to wait an undetermined amount of time to hear back from the gps to get location
+                            // so i used on recieve and after that info is delivered we can start fetching for fields by location
+                            if let location = newLoc {
+                                guard hasLoaded == false else {
+                                    return
+                                }
+                                Task {
+                                    // fetch nearby fields
+                                    await fieldObserver.fetchFields(longitude: location.longitude, latitude: location.latitude, radius: 10)
+                                    session.fields = fieldObserver.fields
+                                    
+                                    // fetch nearby events
+                                    await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: 10, sport: "soccer")
+                                    session.events = eventObserver.events
+                                    
+                                }
+                                
+                                // prevents us from doing this everytime we get new info from gps
+                                // thus we only load data the first time
+                                // later i might add a button for you to reload, however, i dont see the need to
+                                // unless you are in map view.
+                                // TODO: Maybe add reload button to mapview
+                                hasLoaded = true
+                                
+                                // stops the view from showing the template loader
                                 fieldObserver.isLoading = false
                             }
                         }
+                        .padding(.bottom, 100)
+                        .task {
+                            guard hasOpened == false else {
+                                return
+                            }
+                            
+                            locationManager.requestLocation()
+                            
+                            // mix stored user data with backend data
+                            await session.generateUpdatedUserData()
+                            
+                            // grab clubs data
+                            await session.generateClubsData()
+                            
+                            hasOpened = true
+                            // makes sure we are only getting this data the first time only
+                        }
+
                 }.navigationTitle("Home")
             }
         }

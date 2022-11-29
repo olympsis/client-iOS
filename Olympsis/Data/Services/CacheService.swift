@@ -52,4 +52,12 @@ class CacheService: ObservableObject {
     func fetchClubs() -> [String] {
         return self.defaults.object(forKey: "clubs") as? [String] ?? [String]()
     }
+    
+    func cacheUser(user: UserStore) async {
+        self.defaults.set(user, forKey: "user")
+    }
+    
+    func fetchUser() -> UserStore? {
+        return self.defaults.object(forKey: "user") as? UserStore
+    }
 }

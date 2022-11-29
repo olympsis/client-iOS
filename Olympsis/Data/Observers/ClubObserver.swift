@@ -15,7 +15,8 @@ class ClubObserver: ObservableObject{
     @Published var isLoading = true
     @Published var clubsCount = 0
     @Published var clubs = [Club]()
-    @Published var applications = [ClubApplication]()
+    @Published var myClubs = [Club]()
+    @Published var applications = [NewClubApplication]()
     
     
     init(){
@@ -26,7 +27,7 @@ class ClubObserver: ObservableObject{
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func fetchClubs() async {
+    func getClubs() async {
         do {
             let resp = try await clubService.getClubs()
             let object = try decoder.decode(ClubsResponse.self, from: resp)
@@ -34,12 +35,23 @@ class ClubObserver: ObservableObject{
                 self.clubs = object.clubs
                 self.clubsCount = object.totalClubs
             }
-        } catch (let err) {
-            print(err)
+        } catch {
+            print(error)
         }
     }
     
-    func fetchClubApplications() async {
+    func getClub(id: String) async -> Club?{
+        do {
+            let res = try await clubService.getClub(id: id)
+            let object = try decoder.decode(Club.self, from: res)
+            return object
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
+    func getClubApplications() async {
         do {
             let resp = try await clubService.getClubs()
             let object = try decoder.decode(ClubsResponse.self, from: resp)
@@ -55,10 +67,44 @@ class ClubObserver: ObservableObject{
     func createClubApplication(clubId: String) async -> Bool {
         let req = ClubApplicationRequestDao(clubId: clubId)
         do {
-            return try await clubService.CreateClubApplication(req: req)
+            return try await clubService.createClubApplication(req: req)
         } catch (let err) {
             print(err)
             return false
         }
+    }
+    
+    func createClub(dao: ClubDao) async throws -> Club {
+        let res = try await clubService.createClub(dao: dao)
+        let object = try decoder.decode(Club.self, from: res)
+        return object
+    }
+    
+    func getApplications(id: String) async -> [ClubApplication] {
+        do {
+            let (data, res) = try await clubService.getApplications(id: id)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return [ClubApplication]()
+            }
+            let object = try decoder.decode(ClubApplicationsResponse.self, from: data)
+            return object.applications
+        } catch {
+            print(error)
+        }
+        return [ClubApplication]()
+    }
+    
+    func updateApplication(id: String, dao: UpdateApplicationDao) async -> Bool {
+        do {
+            let res = try await clubService.updateApplication(id: id, dao: dao)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                print((res as? HTTPURLResponse)?.statusCode)
+                return false
+            }
+            return true
+        } catch {
+            print(error)
+        }
+        return false
     }
 }

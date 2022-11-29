@@ -32,9 +32,9 @@ class ClubService: Service {
         let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
         return data
     }
-    // TODO: FOR ADMINS
-    func getClubApplications() async throws -> Data {
-        let endpoint = Endpoint(path: "/v1/clubs", queryItems: [URLQueryItem]())
+    
+    func getClub(id: String) async throws -> Data {
+        let endpoint = Endpoint(path: "/v1/clubs/\(id)", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
@@ -42,7 +42,19 @@ class ClubService: Service {
         return data
     }
     
-    func CreateClubApplication(req: ClubApplicationRequestDao) async throws -> Bool {
+    // TODO: Add club to body need to create a club DAO
+    func createClub(dao: ClubDao) async throws -> Data {
+        let endpoint = Endpoint(path: "/v1/clubs", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(POST): \(endpoint.path)")
+        
+        let (data, _) = try await http.request(endpoint: endpoint, method: Method.POST, body: dao)
+        return data
+    }
+    
+    // TODO: FOR ADMINS
+    
+    func createClubApplication(req: ClubApplicationRequestDao) async throws -> Bool {
         let endpoint = Endpoint(path: "/v1/clubs/applications", queryItems: [URLQueryItem]())
      
         log.log("Initiating request to server(POST): \(endpoint.path)")
@@ -54,13 +66,31 @@ class ClubService: Service {
         return true
     }
     
-    func DeleteClubApplication(id: String) async throws -> Data {
+    func deleteClubApplication(id: String) async throws -> Data {
         let endpoint = Endpoint(path: "/v1/clubs/applications/\(id)", queryItems: [URLQueryItem]())
      
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
         let (data, _) = try await http.request(endpoint: endpoint, method: Method.DELETE)
         return data
+    }
+    
+    func getApplications(id: String) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/v1/clubs/\(id)/applications", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        
+        let (data, resp) = try await http.request(endpoint: endpoint, method: Method.GET)
+        return (data, resp)
+    }
+    
+    func updateApplication(id: String, dao: UpdateApplicationDao) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/v1/clubs/applications/\(id)", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(PUT): \(endpoint.path)")
+        
+        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.PUT, body: dao)
+        return resp
     }
 }
 

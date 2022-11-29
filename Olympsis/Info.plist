@@ -28,14 +28,7 @@
 	<string>api.olympsis.com</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
-		<string>MKDirectionsModeBike</string>
-		<string>MKDirectionsModeBus</string>
 		<string>MKDirectionsModeCar</string>
-		<string>MKDirectionsModePedestrian</string>
-		<string>MKDirectionsModeRideShare</string>
-		<string>MKDirectionsModeSubway</string>
-		<string>MKDirectionsModeTaxi</string>
-		<string>MKDirectionsModeTrain</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>In order to notify you of local events, and club activities we need to be able to send you notifications.</string>

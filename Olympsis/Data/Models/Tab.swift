@@ -11,23 +11,8 @@ enum Tab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
     case map = "Map"
-    case tournament = "Tournament"
-    case setting = "Setting"
-    
-    func getIcon() -> String {
-        switch(self){
-        case .home:
-            return "house"
-        case .club:
-            return "person.2"
-        case .map:
-            return "map"
-        case .tournament:
-            return "crown"
-        case .setting:
-            return "gearshape"
-        }
-    }
+    case messages = "Messages"
+    case profile = "Setting"
 }
 
 enum AuthTab: String, CaseIterable {

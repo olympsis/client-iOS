@@ -29,10 +29,24 @@ class UserObserver: ObservableObject {
         return response
     }
     
-    func GetUserData() async throws -> UserDataResponse {
+    func GetUserData() async throws -> UserDao {
         let response = try await userService.GetUserData()
-        let object = try decoder.decode(UserDataResponse.self, from: response)
+        let object = try decoder.decode(UserDao.self, from: response)
         return object
+    }
+    
+    // have this return a bool if status 200
+    func UpdateUserData(update: UpdateUserDataDao) async -> Bool {
+        do {
+            let res = try await userService.UpdateUserData(update: update)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            print(error)
+        }
+        return false
     }
     
     func getUserPrivateInfo() -> (String, String, String, String) {

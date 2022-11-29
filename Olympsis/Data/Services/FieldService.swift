@@ -21,10 +21,11 @@ class FieldService: Service {
     
     let urlSession = URLSession.shared
     
-    func getFields() async throws -> Data {
+    func getFields(long: Double, lat: Double, radius: Int) async throws -> Data {
         let endpoint = Endpoint(path: "/v1/fields", queryItems: [
-            URLQueryItem(name: "country", value: "United States of America"),
-            URLQueryItem(name: "state", value: "Utah")
+            URLQueryItem(name: "longitude", value: String(long)),
+            URLQueryItem(name: "latitude", value: String(lat)),
+            URLQueryItem(name: "radius", value: String(radius))
         ])
         
         log.log("Initiating request to server(GET): \(endpoint.path)")

@@ -22,11 +22,12 @@ class FieldObserver: ObservableObject{
     }
     
     /// Calls the field service to get fields based on certain params
-    /// - Parameter location: `[String]` latitude, longitude
-    /// - Parameter descritiveLocation: `[String]` city, state, country
-    func fetchFields() async {
+    /// - Parameter longitude: `Double`
+    /// - Parameter latitude: `Double`
+    /// - Parameter radius: `Int`
+    func fetchFields(longitude: Double, latitude: Double, radius: Int) async {
         do {
-            let response = try await fieldService.getFields()
+            let response = try await fieldService.getFields(long: longitude, lat: latitude, radius: radius)
             let object = try decoder.decode(FieldsResponse.self, from: response)
             await MainActor.run { // TODO: Check later about threads
                 self.fields = object.fields

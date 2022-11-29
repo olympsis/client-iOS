@@ -10,17 +10,17 @@ import Foundation
 class UserDataResponse: Codable {
     let uuid: String
     let userName: String
-    let profileImage: String
-    let clubs: [String]
+    let imageURL: String
+    let clubs: [String]?
     let sports: [String]
-    let badges: [Badge]
-    let trophies: [Trophy]
-    let friends: [String]
+    let badges: [Badge]?
+    let trophies: [Trophy]?
+    let friends: [String]?
     
     enum CodingKeys: String, CodingKey {
         case uuid
         case userName
-        case profileImage
+        case imageURL
         case clubs
         case sports
         case badges

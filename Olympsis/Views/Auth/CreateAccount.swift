@@ -117,7 +117,7 @@ struct CreateAccount: View {
                             let _ = try await observer.CreateUserData(userName: userName, sports: selectedSports)
                         }
                         withAnimation(.easeOut(duration: 0.2)) {
-                            signUpCompleted = true
+                            signUpCompleted = true 
                             currentView = .permissions
                         }
                     }

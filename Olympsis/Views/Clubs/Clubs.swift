@@ -6,68 +6,74 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct Clubs: View {
+    
     @State var index = 0
-    @State var text: String = ""
-    @StateObject private var clubObserver = ClubObserver()
+    @State private var posts = [Post]()
+    @State private var showMenu         = false
+    @State private var showNewClubCover = false
+    
     @EnvironmentObject var session: SessionStore
+    
     var body: some View {
         NavigationView {
-            if session.clubsId.isEmpty {
-                VStack {
-                    SearchBar(text: $text)
-                        .frame(width: SCREEN_WIDTH - 25)
-                    if clubObserver.isLoading {
-                        ProgressView()
-                    } else {
-                        ScrollView(.vertical, showsIndicators: false){
-                            HStack{
-                                ForEach(clubObserver.clubs, id: \.id){ c in
-                                    SmallClubView(club: c, observer: clubObserver)
-                                        .frame(width: SCREEN_WIDTH, height: 110, alignment: .center)
-                                }
-                            }
+            VStack {
+                if $session.myClubs.isEmpty {
+                    NoClubView()
+                } else {
+                    MyClubView(club: $session.myClubs[index], posts: $posts)
+                        .fullScreenCover(isPresented: $showMenu) {
+                            ClubMenu(club: session.myClubs[index], index: $index, posts: $posts)
                         }
-                    }
-                    Spacer()
-                }.toolbar {
+                }
+            }.toolbar {
+                if session.myClubs.isEmpty {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Text("Clubs")
                             .font(.largeTitle)
                             .bold()
                     }
                     
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Image(systemName: "c.circle.fill")
-                            .imageScale(.large)
-                            .foregroundColor(.gray)
+                    ToolbarItem(placement: .navigationBarTrailing){
+                        Menu {
+                            Button(action: { showNewClubCover.toggle() }){
+                                Label("Create a Club", systemImage: "person.2")
+                            }
+                        } label: {
+                            Image(systemName: "c.circle.fill")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.gray)
+                        }
                     }
-                }
-                .task {
-                    await clubObserver.fetchClubs()
-                    session.clubs = clubObserver.clubs
-                    clubObserver.isLoading = false
-                }
-                
-            } else {
-                VStack {
-                    
-                }.toolbar {
+                } else {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Text(clubObserver.clubs[index].name)
-                            .font(.largeTitle)
+                        Text(session.myClubs[index].name)
+                            .font(.title)
                             .bold()
                     }
 
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Image(systemName: "c.circle.fill")
-                            .imageScale(.large)
-                            .foregroundColor(.gray)
+                        Button(action:{ self.showMenu.toggle() }) {
+                            AsyncImage(url: URL(string: session.myClubs[index].imageURL)){ image in
+                                image.resizable()
+                                    .clipShape(Circle())
+                                    .frame(width: 30, height: 30)
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipped()
+                                    
+                            } placeholder: {
+                                Circle()
+                                    .foregroundColor(.gray)
+                                    .opacity(0.3)
+                                    .frame(width: 40)
+                            }
+                        }
                     }
                 }
             }
-
         }
     }
 }

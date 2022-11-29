@@ -37,14 +37,13 @@ class AuthService: Service {
     }
     
     func LogIn(token: String) async throws -> Data{
-        let req = AuthRequestLogin()
-        req.token = token
         
+        http.setToken(t: token)
         let endpoint = Endpoint(path: "/v1/auth/login", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.PUT, body: req)
+        let (data, _) = try await http.request(endpoint: endpoint, method: Method.POST)
         return data
     }
 }

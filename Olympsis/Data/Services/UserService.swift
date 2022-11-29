@@ -46,4 +46,12 @@ class UserService: Service {
         let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
         return data
     }
+    
+    func UpdateUserData(update: UpdateUserDataDao) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(PUT): \(endpoint.path)")
+        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.PUT, body: update)
+        return resp
+    }
 }

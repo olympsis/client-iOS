@@ -54,6 +54,10 @@ class HttpService: ObservableObject {
         token = cacheService.fetchToken()
     }
     
+    func setToken(t: String) {
+        token = t
+    }
+    
     /// Creates an HTTP request
     /// - Parameter endpoint:`Endpoint` path values and query parameters
     /// - Parameter method: `Method` http method enum type
@@ -65,7 +69,7 @@ class HttpService: ObservableObject {
         let session = URLSession.shared
         
         // encode request
-        let encodedRequest = try! JSONEncoder().encode(body)
+        let encodedRequest = try JSONEncoder().encode(body)
         
         // construct request url
         var urlComp = URLComponents()
