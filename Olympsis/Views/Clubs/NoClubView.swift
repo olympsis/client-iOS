@@ -27,7 +27,7 @@ struct NoClubView: View {
                 ProgressView()
             } else {
                 ScrollView(.vertical, showsIndicators: false){
-                    HStack{
+                    VStack{
                         if text != ""{
                             ForEach(clubObserver.clubs.filter{$0.name.lowercased().contains(text.lowercased())}, id: \.id){ c in
                                 SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: clubObserver)
