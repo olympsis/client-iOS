@@ -22,6 +22,9 @@ struct Clubs: View {
             VStack {
                 if $session.myClubs.isEmpty {
                     NoClubView()
+                        .fullScreenCover(isPresented: $showNewClubCover) {
+                            CreateNewClub()
+                        }
                 } else {
                     MyClubView(club: $session.myClubs[index], posts: $posts)
                         .fullScreenCover(isPresented: $showMenu) {
