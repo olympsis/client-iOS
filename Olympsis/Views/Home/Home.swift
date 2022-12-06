@@ -155,7 +155,7 @@ struct Home: View {
                             locationManager.requestLocation()
                             
                             // mix stored user data with backend data
-                            await session.generateUpdatedUserData()
+                            await session.GenerateUpdatedUserData()
                             
                             // grab clubs data
                             await session.generateClubsData()

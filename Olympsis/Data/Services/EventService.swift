@@ -21,7 +21,7 @@ class EventService: Service {
     
     let urlSession = URLSession.shared
     
-    func getEvents(long: Double, lat: Double, radius: Int, sport: String) async throws -> Data {
+    func getEvents(long: Double, lat: Double, radius: Int, sport: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/events", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
@@ -31,8 +31,8 @@ class EventService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
-        return data
+        let (data, resp) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        return (data, resp)
     }
     
     func createEvent(dao: EventDao) async throws -> URLResponse {
@@ -40,7 +40,7 @@ class EventService: Service {
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.POST, body: dao)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
         return resp
     }
     
@@ -49,7 +49,7 @@ class EventService: Service {
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.PUT, body: dao)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
         return resp
     }
     
@@ -58,7 +58,7 @@ class EventService: Service {
         
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
         return resp
     }
     
@@ -67,7 +67,7 @@ class EventService: Service {
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        return try await http.request(endpoint: endpoint, method: Method.POST, body: dao)
+        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
     }
     
     func removeParticipant(id: String, pid: String) async throws -> URLResponse {
@@ -75,7 +75,7 @@ class EventService: Service {
         
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
         return resp
     }
 }

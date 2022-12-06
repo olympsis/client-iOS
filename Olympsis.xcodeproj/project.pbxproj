@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A042443293C016E00763E95 /* BlobStorageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A042442293C016E00763E95 /* BlobStorageHandler.swift */; };
 		9A3536F92927E6D5005EC806 /* DevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3536F82927E6D5005EC806 /* DevData.swift */; };
 		9A3536FA2927EAE0005EC806 /* dev-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AE36B192926C4E300C0C334 /* dev-data.json */; };
 		9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3536FD29282CDA005EC806 /* EventTemplateView.swift */; };
@@ -17,6 +18,10 @@
 		9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */; };
 		9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */; };
 		9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */; };
+		9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A550846293D9C3C00B924B1 /* UploadObserver.swift */; };
+		9A550849293E335500B924B1 /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A550848293E335500B924B1 /* ImageHandler.swift */; };
+		9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084A293FC80100B924B1 /* ProfileModel.swift */; };
+		9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */; };
 		9A5D3362292A9E56008CF61D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3361292A9E56008CF61D /* Post.swift */; };
 		9A5D3365292AAA71008CF61D /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3364292AAA71008CF61D /* PostView.swift */; };
 		9A5D3369292AC610008CF61D /* PostComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3368292AC610008CF61D /* PostComments.swift */; };
@@ -145,6 +150,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9A042442293C016E00763E95 /* BlobStorageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobStorageHandler.swift; sourceTree = "<group>"; };
 		9A3536F82927E6D5005EC806 /* DevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevData.swift; sourceTree = "<group>"; };
 		9A3536FD29282CDA005EC806 /* EventTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTemplateView.swift; sourceTree = "<group>"; };
 		9A35370329289396005EC806 /* ParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
@@ -154,6 +160,10 @@
 		9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameRequest.swift; sourceTree = "<group>"; };
 		9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObserver.swift; sourceTree = "<group>"; };
 		9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
+		9A550846293D9C3C00B924B1 /* UploadObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadObserver.swift; sourceTree = "<group>"; };
+		9A550848293E335500B924B1 /* ImageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
+		9A55084A293FC80100B924B1 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMenu.swift; sourceTree = "<group>"; };
 		9A5D3361292A9E56008CF61D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		9A5D3364292AAA71008CF61D /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		9A5D3368292AC610008CF61D /* PostComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComments.swift; sourceTree = "<group>"; };
@@ -560,6 +570,7 @@
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9AF0A1BA29313E350055D1F6 /* PostObserver.swift */,
+				9A550846293D9C3C00B924B1 /* UploadObserver.swift */,
 			);
 			path = Observers;
 			sourceTree = "<group>";
@@ -649,6 +660,8 @@
 			isa = PBXGroup;
 			children = (
 				9A81B63D2925DE1A009CA6ED /* LocationManager.swift */,
+				9A042442293C016E00763E95 /* BlobStorageHandler.swift */,
+				9A550848293E335500B924B1 /* ImageHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -676,6 +689,8 @@
 				9AB02F5A29024D2E008C07F1 /* Profile.swift */,
 				9A81B6352925C23D009CA6ED /* EditProfileButton.swift */,
 				9A81B6372925C97A009CA6ED /* EditProfile.swift */,
+				9A55084A293FC80100B924B1 /* ProfileModel.swift */,
+				9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -868,6 +883,7 @@
 				9AB02F5D29024D35008C07F1 /* Clubs.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
+				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
@@ -882,6 +898,7 @@
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
 				9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
+				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
 				9AD208F8293429E3007A62C4 /* NoClubView.swift in Sources */,
@@ -903,6 +920,8 @@
 				9A81B63029256A57009CA6ED /* CreateNewClub.swift in Sources */,
 				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
 				9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */,
+				9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */,
+				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
 				9A8FF0D828BB33D700DE4CF8 /* HttpService.swift in Sources */,
 				9A5D3369292AC610008CF61D /* PostComments.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
@@ -925,6 +944,7 @@
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				9AD208E92931C62E007A62C4 /* PostDao.swift in Sources */,
 				9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */,
+				9A042443293C016E00763E95 /* BlobStorageHandler.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */,
 				9A81B63C2925DD07009CA6ED /* BetaPage.swift in Sources */,
 				9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */,
@@ -1079,7 +1099,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Olympsis/Olympsis.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"Olympsis/Preview Content\"";
 				DEVELOPMENT_TEAM = 5A6H49Q85D;
 				ENABLE_PREVIEWS = YES;
@@ -1089,7 +1109,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to your health data to keep track of your activity metrics.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate data, we need to have your location even when the app\n is in the background.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1119,7 +1139,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Olympsis/Olympsis.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"Olympsis/Preview Content\"";
 				DEVELOPMENT_TEAM = 5A6H49Q85D;
 				ENABLE_PREVIEWS = YES;
@@ -1129,7 +1149,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to your health data to keep track of your activity metrics.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate data, we need to have your location even when the app\n is in the background.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

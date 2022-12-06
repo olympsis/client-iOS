@@ -32,9 +32,9 @@ struct PostView: View {
                 AsyncImage(url: URL(string: post.owner.imageURL)){ image in
                     image.resizable()
                         .clipShape(Circle())
-                        .frame(width: 40, height: 70)
                         .aspectRatio(contentMode: .fill)
                         .clipped()
+                        .frame(width: 40, height: 40)
                         
                 } placeholder: {
                     Circle()
@@ -131,6 +131,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", body: "event-body", images: [], likes: [String](), comments: [Comment](), createdAt: 0), posts: .constant([Post]())).environmentObject(SessionStore())
+        PostView(post: Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: "https://storage.googleapis.com/olympsis-1/profile-img/88F8C460-0E29-40D4-9D18-31F6B5600553"), clubId: "", body: "event-body", images: [], likes: [String](), comments: [Comment](), createdAt: 0), posts: .constant([Post]())).environmentObject(SessionStore())
     }
 }

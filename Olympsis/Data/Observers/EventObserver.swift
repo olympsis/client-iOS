@@ -26,8 +26,15 @@ class EventObserver: ObservableObject{
     /// - Parameter descritiveLocation: `[String]` city, state, country
     func fetchEvents(longitude: Double, latitude: Double, radius: Int, sport: String) async {
         do {
-            let response = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sport: sport)
-            let object = try decoder.decode(EventsResponse.self, from: response)
+            let (data, resp) = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sport: sport)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                await MainActor.run {
+                    self.events = [Event]()
+                    self.eventsCount = 0
+                }
+                return
+            }
+            let object = try decoder.decode(EventsResponse.self, from: data)
             await MainActor.run { // TODO: Check later about threads
                 self.events = object.events
                 self.eventsCount = object.totalEvents

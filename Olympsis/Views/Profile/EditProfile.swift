@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfile: View {
     
@@ -14,22 +15,58 @@ struct EditProfile: View {
     @State private var imageUrl: String?
     @State private var isPublic: Bool = true
     
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    
     @StateObject var userObserver = UserObserver()
+    @StateObject var uploadObserver = UploadObserver()
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
     func UpdateProfile() async {
+        
         guard bio.count > 5 else {
             return
         }
+        
+        // new image
+        var imageId = ""
+        
+        if session.user?.imageURL == "" {
+            imageId = UUID().uuidString
+        } else {
+            if let img = session.user?.imageURL {
+                let substr = img.suffix(36)
+                imageId = String(substr)
+            }
+        }
+        
+        // get upload link
+        // upload image
+        do{
+            let url = try await GenerateImageUploadLink(id: imageId)
+            if let data = selectedImageData {
+                let res = try await uploadObserver.UploadObject(url: url, object: data)
+                if !res {
+                    print("Failed to upload image")
+                }
+            }
+        } catch {
+            print(error)
+        }
+        
         if let user = session.user {
-            let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: user.imageURL!, _clubs: user.clubs!, _isPublic: isPublic, _sports: user.sports!)
+            let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: imageId, _clubs: user.clubs ?? [""], _isPublic: isPublic, _sports: user.sports ?? [""])
             let res = await userObserver.UpdateUserData(update: update)
             if res {
-                await session.generateUpdatedUserData()
+                await session.GenerateUpdatedUserData()
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
+    }
+    
+    func GenerateImageUploadLink(id: String) async throws -> String {
+        return try await uploadObserver.CreateUploadURL(folder: "profile-img", object: id)
     }
     
     var body: some View {
@@ -38,8 +75,15 @@ struct EditProfile: View {
                 VStack {
                     VStack {
                         VStack {
-                            AsyncImage(url: URL(string: session.user?.imageURL ?? "")){ phase in
-                                if let image = phase.image {
+                            if let data = selectedImageData {
+                                Image(uiImage: UIImage(data: data)!)
+                                    .resizable()
+                                    .clipShape(Circle())
+                                    .scaledToFit()
+                                    .frame(width: 100, height: 100)
+                            } else {
+                                AsyncImage(url: URL(string: session.user?.imageURL ?? "")){ phase in
+                                    if let image = phase.image {
                                         image // Displays the loaded image.
                                             .resizable()
                                             .clipShape(Circle())
@@ -49,15 +93,33 @@ struct EditProfile: View {
                                             .clipShape(Circle())
                                             .opacity(0.15)
                                     } else {
-                                        Color.gray // Acts as a placeholder.
-                                            .clipShape(Circle())
-                                            .opacity(0.3)
+                                        ZStack {
+                                            Image(systemName: "person")
+                                                .resizable()
+                                                .frame(width: 50, height: 50)
+                                                .foregroundColor(Color("primary-color"))
+                                            Color.gray // Acts as a placeholder.
+                                                .clipShape(Circle())
+                                                .opacity(0.3)
+                                        }
                                     }
-                            }.frame(width: 100, height: 100)
-                            
-                            Button(action: {}){
-                                Text("Edit picture")
-                                    .foregroundColor(Color("primary-color"))
+                                }.frame(width: 100, height: 100)
+                            }
+                            PhotosPicker(
+                                selection: $selectedItem,
+                                matching: .images,
+                                photoLibrary: .shared()) {
+                                    Text("Edit picture")
+                                        .foregroundColor(Color("primary-color"))
+                            }.onChange(of: selectedItem) { newItem in
+                                Task {
+                                    // Retrive selected asset in the form of Data
+                                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                        selectedImageData = data
+                                    }
+                                    
+                                    
+                                }
                             }
                             
                         }.padding(.bottom, 30)
@@ -76,9 +138,10 @@ struct EditProfile: View {
                                     .disabled(true)
                             }
                         }
-                        HStack {
+                        HStack (alignment: .top){
                             Text("Bio")
                                 .padding(.leading)
+                                .padding(.top)
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(height: 80)
@@ -101,7 +164,7 @@ struct EditProfile: View {
                         
                         VStack(alignment: .leading){
                             Toggle(isOn: $isPublic) {
-                                Text("Public")
+                                Text("Profile Visivility")
                             }.frame(width: SCREEN_WIDTH-30, height: 40)
                                 .tint(Color("secondary-color"))
                             Text("Allow users not on your friends list to see your profile")
@@ -111,6 +174,20 @@ struct EditProfile: View {
                         
                     }
                     Spacer()
+                    
+                    Button(action:{
+                        Task {
+                            await UpdateProfile()
+                        }
+                    }){
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color("primary-color"))
+                                .frame(width: 150, height: 40)
+                            Text("Save Changes")
+                                .foregroundColor(.white)
+                        }
+                    }.padding(.top, 50)
                 }.navigationTitle("Edit Profile")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -122,9 +199,7 @@ struct EditProfile: View {
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action:{
-                                Task {
-                                    await UpdateProfile()
-                                }
+
                             }){
                                 Text("Done")
                                     .foregroundColor(Color("primary-color"))

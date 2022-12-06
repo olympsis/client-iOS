@@ -29,7 +29,7 @@ class ClubService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return data
     }
     
@@ -38,7 +38,7 @@ class ClubService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return data
     }
     
@@ -48,7 +48,7 @@ class ClubService: Service {
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.POST, body: dao)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
         return data
     }
     
@@ -59,7 +59,7 @@ class ClubService: Service {
      
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.POST, body: req)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: req)
         guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
             return false
         }
@@ -71,7 +71,7 @@ class ClubService: Service {
      
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.DELETE)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
         return data
     }
     
@@ -80,7 +80,7 @@ class ClubService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, resp) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, resp) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return (data, resp)
     }
     
@@ -89,7 +89,7 @@ class ClubService: Service {
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.PUT, body: dao)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
         return resp
     }
 }

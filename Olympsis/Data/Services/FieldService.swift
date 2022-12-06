@@ -30,7 +30,7 @@ class FieldService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return data
     }
 }

@@ -28,7 +28,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        return try await http.request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: Method.GET)
     }
     
     func createPost(post: PostDao) async throws -> Data {
@@ -36,7 +36,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.POST, body: post)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.POST, body: post)
         return data
     }
     
@@ -45,7 +45,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
         return resp
     }
     
@@ -54,7 +54,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        return try await http.request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: Method.GET)
     }
     
     func addComment(id: String, dao:CommentDao) async throws -> (Data, URLResponse) {
@@ -62,7 +62,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        return try await http.request(endpoint: endpoint, method: Method.POST, body: dao)
+        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
     }
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
@@ -70,7 +70,7 @@ class PostService: Service {
         
         log.log("Initiating request to server(DELETE): \(endpoint.path)")
         
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
         return resp
     }
 }

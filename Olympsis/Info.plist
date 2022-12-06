@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Our app needs access to your photo library to upload profile images and to post images on your club&apos;s timeline.</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -31,7 +33,7 @@
 		<string>MKDirectionsModeCar</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>In order to notify you of local events, and club activities we need to be able to send you notifications.</string>
+	<string>In order to notify you of local events, and club activities our app needs to be able send you notifications.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ITCAvantGardeStd-Bk.ttf</string>

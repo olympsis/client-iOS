@@ -70,41 +70,25 @@ class SessionStore: ObservableObject {
         return uuid ?? "error";
     }
     
-    /// This function fetches user data from storage and the backend. It combines the two and stores it in the session.
-    func generateUpdatedUserData() async {
-        if var storedUser = cacheService.fetchUser() {
-            do {
-                let updatedData = try await userObserver.GetUserData()
-                storedUser.uuid = updatedData.uuid
-                storedUser.username = updatedData.username
-                storedUser.bio = updatedData.bio
-                storedUser.imageURL = updatedData.imageURL
-                storedUser.isPublic = updatedData.isPublic
-                storedUser.sports = updatedData.sports
-                storedUser.clubs = updatedData.clubs
-                storedUser.badges = updatedData.badges
-                storedUser.trophies = updatedData.trophies
-                storedUser.friends = updatedData.friends
-            } catch {
-                // do nothing we will just work with old stored data instead
-                print(error)
-                print("Failed to get user data from the backend")
-            }
-        } else {
-            // if there is no stored user then use updated the one from the backend
-            do {
-                let updatedData = try await userObserver.GetUserData()
-                (firstName, lastName, email, uuid) = cacheService.fetchPartialUserData()
-                await MainActor.run {
-                    self.user = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
-                                          uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: updatedData.imageURL, isPublic: updatedData.isPublic,
-                                          sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
+    /// This function fetches user data from the backend. It combines the two and stores it in the session.
+    func GenerateUpdatedUserData() async {
+        do {
+            let updatedData = try await userObserver.GetUserData()
+            (firstName, lastName, email, uuid) = cacheService.fetchPartialUserData()
+            await MainActor.run {
+                // were just going to store the image id in the user data so we dont depend on google storage
+                // so we will create a function later to generate the right url
+                var imageURL = ""
+                if updatedData.imageURL != "" {
+                    imageURL = "https://storage.googleapis.com/olympsis-1/profile-img/" + updatedData.imageURL!
                 }
-
-            } catch {
-                print(error)
-                print("Could not get stored user data.")
+                
+                self.user = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
+                                      uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: imageURL, isPublic: updatedData.isPublic,
+                                      sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
             }
+        } catch {
+            print("GenerateUpdatedUserData Error:" + error.localizedDescription)
         }
     }
     

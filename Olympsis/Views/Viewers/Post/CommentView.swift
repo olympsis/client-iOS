@@ -12,12 +12,12 @@ struct CommentView: View {
     var body: some View {
         HStack {
             HStack(alignment: .top){
-                AsyncImage(url: URL(string: comment.imageURL)){ image in
+                AsyncImage(url: URL(string: "https://storage.googleapis.com/olympsis-1/profile-img/" + comment.imageURL)){ image in
                     image.resizable()
                         .clipShape(Circle())
-                        .frame(width: 40, height: 60)
                         .aspectRatio(contentMode: .fill)
                         .clipped()
+                        .frame(width: 40, height: 40)
                         
                 } placeholder: {
                     Circle()
@@ -44,6 +44,6 @@ struct CommentView: View {
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        CommentView(comment: Comment(id: "", username: "johndoe", uuid: "000", text: "Lets go!!!", imageURL: "https://storage.googleapis.com/olympsis-1/profile-img/dorrell-tibbs-GntSiIMHyVM-unsplash.jpg", createdAt: 1669663779))
+        CommentView(comment: Comment(id: "", username: "johndoe", uuid: "000", text: "Lets go!!!", imageURL: "88F8C460-0E29-40D4-9D18-31F6B5600553", createdAt: 1669663779))
     }
 }

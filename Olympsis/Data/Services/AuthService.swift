@@ -32,7 +32,7 @@ class AuthService: Service {
         
         log.log("Initiating request to server (POST): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint , method: Method.POST, body: req)
+        let (data, _) = try await http.Request(endpoint: endpoint , method: Method.POST, body: req)
         return data
     }
     
@@ -43,7 +43,7 @@ class AuthService: Service {
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
         
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.POST)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.POST)
         return data
     }
 }

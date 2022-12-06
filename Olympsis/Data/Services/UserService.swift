@@ -26,7 +26,7 @@ class UserService: Service {
         let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem(name: "userName", value: name)])
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return data
     }
     
@@ -35,7 +35,7 @@ class UserService: Service {
         let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.POST, body: req)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: req)
         return (resp as? HTTPURLResponse)?.statusCode == 201 ? true : false
     }
     
@@ -43,7 +43,7 @@ class UserService: Service {
         let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, _) = try await http.request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
         return data
     }
     
@@ -51,7 +51,7 @@ class UserService: Service {
         let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
-        let (_, resp) = try await http.request(endpoint: endpoint, method: Method.PUT, body: update)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: update)
         return resp
     }
 }
