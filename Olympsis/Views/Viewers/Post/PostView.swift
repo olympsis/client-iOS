@@ -29,7 +29,7 @@ struct PostView: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: post.owner.imageURL)){ image in
+                AsyncImage(url: URL(string: "https://storage.googleapis.com/olympsis-1/profile-img/" + post.owner.imageURL)){ image in
                     image.resizable()
                         .clipShape(Circle())
                         .aspectRatio(contentMode: .fill)
@@ -131,6 +131,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: "https://storage.googleapis.com/olympsis-1/profile-img/88F8C460-0E29-40D4-9D18-31F6B5600553"), clubId: "", body: "event-body", images: [], likes: [String](), comments: [Comment](), createdAt: 0), posts: .constant([Post]())).environmentObject(SessionStore())
+        PostView(post: Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: "88F8C460-0E29-40D4-9D18-31F6B5600553"), clubId: "", body: "event-body", images: [], likes: [String](), comments: [Comment](), createdAt: 0), posts: .constant([Post]())).environmentObject(SessionStore())
     }
 }
