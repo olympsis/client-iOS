@@ -22,15 +22,19 @@ struct ViewContainer: View {
                 Home().tag(Tab.home)
                 Clubs().tag(Tab.club)
                 MapView().tag(Tab.map)
-                Messages().tag(Tab.messages)
+                Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)
             }
             TabBar(currentTab: $currentTab)
                 .ignoresSafeArea(.keyboard)
         }.background(Color("dark-color"))
-            /*.onAppear {
-                showBeta = true
-            }*/
+            .task {
+                // mix stored user data with backend data
+                await session.GenerateUpdatedUserData()
+                
+                // grab clubs data
+                await session.generateClubsData()
+            }
             .fullScreenCover(isPresented: $showBeta) {
                 BetaPage()
             }

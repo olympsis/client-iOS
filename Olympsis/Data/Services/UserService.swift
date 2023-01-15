@@ -30,13 +30,36 @@ class UserService: Service {
         return data
     }
     
-    func CreateUserData(userName: String, sports:[String]) async throws -> Bool {
+    func Lookup(username: String) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/v1/lookup/username/\(username)", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        return (data, res)
+    }
+    
+    func GetFriendRequests() async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/v1/users/friends/requests", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        return (data, res)
+    }
+    
+    func UpdateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/v1/users/friends/requests/\(id)", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(PUT): \(endpoint.path)")
+        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
+        return (data, res)
+    }
+    
+    func CreateUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
         let req = CreateUserDataRequest(userName: userName, sports: sports)
         let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: req)
-        return (resp as? HTTPURLResponse)?.statusCode == 201 ? true : false
+        return try await http.Request(endpoint: endpoint, method: Method.POST, body: req)
     }
     
     func GetUserData() async throws -> Data {

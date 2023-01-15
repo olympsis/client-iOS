@@ -124,15 +124,17 @@ struct EventView: View {
                         .padding(.trailing)
                     }
                 }.frame(height: 100)
-            }.fullScreenCover(isPresented: $showDetails) {
-                EventDetailView(event: $event, field: field, events: $events)
             }
+        }.fullScreenCover(isPresented: $showDetails) {
+            EventDetailView(event: $event, field: field, events: $events)
         }
     }
 }
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
-        EventView(event: Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "soccer-2", title: "Pick Up Soccer", body: "event-body", sport: "soccer", level: 0, status: "pending", startTime: 0, maxParticipants: 0),field: Field(id: "", owner: "", name: "field-name", notes: "field-notes", sports: ["soccer"], images: [String](), location: GeoJSON(type: "point", coordinates: [0.0]), city: "city", state: "state", country: "country", isPublic: true), events: .constant([Event]()))
+        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
+        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        EventView(event: Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-2", title: "Pick Up Soccer", body: "event-body", sport: "soccer", level: 0, status: "pending", startTime: 0, maxParticipants: 0),field: Field(id: "", owner: "", name: "field-name", notes: "field-notes", sports: ["soccer"], images: [String](), location: GeoJSON(type: "point", coordinates: [0.0]), city: "city", state: "state", country: "country", isPublic: true), events: .constant([Event]()))
     }
 }

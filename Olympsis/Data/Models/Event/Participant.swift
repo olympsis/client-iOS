@@ -11,14 +11,14 @@ struct Participant: Codable, Identifiable {
     let id: String
     let uuid: String
     let status: String
-    let imageURL: String
+    let data: UserPeek
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case uuid
         case status
-        case imageURL
+        case data
         case createdAt
     }
 }

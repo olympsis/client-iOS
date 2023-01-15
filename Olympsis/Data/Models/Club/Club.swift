@@ -10,20 +10,19 @@ import Foundation
 struct Club: Codable, Identifiable {
     let id:             String
     var name:           String
-    var description:    String
+    var description:    String?
     var sport:          String
     var city:           String
     var state:          String
     var country:        String
-    var imageURL:       String
-    var isPrivate:      Bool
-    var isVisible:      Bool
+    var imageURL:       String?
+    var isPrivate:      Bool?
     var members:        [Member]
-    var rules:          [String]
-    var createdAt:      Int?
+    var rules:          [String]?
+    var createdAt:      Int64?
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case name
         case description
         case sport
@@ -32,23 +31,24 @@ struct Club: Codable, Identifiable {
         case country
         case imageURL
         case isPrivate
-        case isVisible
         case members
         case rules
         case createdAt
     }
 }
 
-struct Member: Codable {
-    let id: String?
+struct Member: Codable, Identifiable {
+    let id: String
     let uuid: String
-    let role: String
-    let joinedAt: Int?
+    var role: String
+    let data: UserPeek?
+    let joinedAt: Int64
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case uuid
         case role
+        case data
         case joinedAt
     }
 }

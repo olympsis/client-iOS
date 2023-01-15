@@ -8,38 +8,21 @@
 import SwiftUI
 import Foundation
 
-struct SearchBar: UIViewRepresentable {
-
+struct SearchBar: View {
     @Binding var text: String
+    var onCommit: () -> Void = {}
 
-    class Coordinator: NSObject, UISearchBarDelegate {
-
-        @Binding var text: String
-
-        init(text: Binding<String>) {
-            _text = text
+    var body: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+            TextField("Search...", text: $text, onCommit: onCommit)
+                .foregroundColor(.primary)
+                .keyboardType(.webSearch)
         }
-
-        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            text = searchText
-        }
-    }
-
-    func makeCoordinator() -> SearchBar.Coordinator {
-        return Coordinator(text: $text)
-    }
-
-    func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
-        let searchBar = UISearchBar(frame: .zero)
-        searchBar.delegate = context.coordinator
-        searchBar.searchBarStyle = .minimal
-        searchBar.autocapitalizationType = .none
-        searchBar.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: 40))
-        return searchBar
-    }
-
-    func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
-        uiView.text = text
+        .padding(8)
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(10.0)
     }
 }
 

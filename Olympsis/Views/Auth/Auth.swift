@@ -5,11 +5,12 @@
 //  Created by Joel Joseph on 8/27/22.
 //
 
+import os
 import SwiftUI
 import AuthenticationServices
 
 struct Auth: View {
-    
+    @State private var log = Logger()
     @Binding var currentView: AuthTab
     @State var userStatus: USER_STATUS?
     @StateObject var observer = AuthObserver()
@@ -22,7 +23,6 @@ struct Auth: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                     .blur(radius: 2, opaque: true)
-                    
                 
                 VStack {
                     VStack {
@@ -55,7 +55,7 @@ struct Auth: View {
                             Task {
                                 do {
                                     let res = try await observer.handleSignInWithApple(result: result)
-                                    DispatchQueue.main.async {
+                                    await MainActor.run {
                                         userStatus = res
                                         if userStatus == USER_STATUS.New {
                                             currentView = .create
@@ -63,9 +63,8 @@ struct Auth: View {
                                             currentView = .permissions
                                         }
                                     }
-                                    
                                 } catch {
-                                    ()
+                                    log.debug("Sign In cancelled or an error occured: \(error)")
                                 }
                             }
                         }

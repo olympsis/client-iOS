@@ -16,10 +16,9 @@ class ClubDao: Dao {
     var country:        String
     var imageURL:       String
     var isPrivate:      Bool
-    var isVisible:      Bool
-    var rules:          [String]
+    var rules:          [String]?
     
-    init(_name: String, _description: String, _sport: String, _city: String, _state: String, _country: String, _imageURL: String, _isPrivate: Bool, _isVisible: Bool, _rules: [String]) {
+    init(_name: String, _description: String, _sport: String, _city: String, _state: String, _country: String, _imageURL: String, _isPrivate: Bool, _rules: [String]?=[String]()) {
         self.name = _name
         self.description = _description
         self.sport = _sport
@@ -28,7 +27,6 @@ class ClubDao: Dao {
         self.country = _country
         self.imageURL = _imageURL
         self.isPrivate = _isPrivate
-        self.isVisible = _isVisible
         self.rules = _rules
         super.init()
     }
@@ -47,12 +45,11 @@ class ClubDao: Dao {
         try container.encode(country, forKey: .country)
         try container.encode(imageURL, forKey: .imageURL)
         try container.encode(isPrivate, forKey: .isPrivate)
-        try container.encode(isVisible, forKey: .isVisible)
         try container.encode(rules, forKey: .rules)
     }
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case name
         case description
         case sport
@@ -61,7 +58,6 @@ class ClubDao: Dao {
         case country
         case imageURL
         case isPrivate
-        case isVisible
         case members
         case rules
         case createdAt

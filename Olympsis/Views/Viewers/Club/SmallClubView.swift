@@ -25,55 +25,67 @@ struct SmallClubView: View {
             return ""
         }
     }
-    
+    @State private var status: LOADING_STATE = .pending
     @State var club: Club
     @Binding var showToast: Bool
     @ObservedObject var observer: ClubObserver
+    
+    func Apply() async {
+        status = .loading
+        let res = await observer.createClubApplication(clubId:club.id)
+        if res {
+            self.showToast = true
+            status = .success
+        }
+    }
+    
     var body: some View {
         VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(.primary)
-                    .opacity(0.1)
-                    .frame(width: SCREEN_WIDTH-20, height: 240)
-                VStack {
-                    AsyncImage(url: URL(string: club.imageURL)){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .fixedSize()
-                                    .frame(width: SCREEN_WIDTH-40, height: 100, alignment: .center)
-                                    .cornerRadius(5)
-                                    .clipped()
-                                    
-                            } else if phase.error != nil {
-                                Color.red // Indicates an error.
-                                    .cornerRadius(5)
-                                    .frame(width: SCREEN_WIDTH-40, height: 100, alignment: .center)
-                            } else {
-                                Color.gray // Acts as a placeholder.
-                                    .cornerRadius(5)
-                                    .frame(width: SCREEN_WIDTH-40, height: 100, alignment: .center)
-                            }
-                    }.frame(width: SCREEN_WIDTH-20, height: 100, alignment: .center)
+            ZStack (alignment: .bottom){
+                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (club.imageURL ?? ""))){ phase in
+                    if let image = phase.image {
+                        image // Displays the loaded image.
+                            .fixedSize()
+                            .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                            .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+                            .clipped()
+                        
+                    } else if phase.error != nil {
+                        ZStack {
+                            Color.gray // Indicates an error.
+                                .opacity(0.3)
+                                .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+                            Image(systemName: "exclamationmark.circle")
+                        }
+                    } else {
+                        ZStack {
+                            Color.gray // Acts as a placeholder.
+                                .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+                            ProgressView()
+                        }
+                    }
+                }.frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                
+                ZStack {
+                    Rectangle()
+                        .cornerRadius(radius: 10, corners: [.bottomLeft, .bottomRight])
+                        .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                     HStack {
                         VStack(alignment:.leading){
                             Text(club.name)
-                                .font(.title)
+                                .font(.title2)
                                 .bold()
                                 .foregroundColor(.primary)
                                 .opacity(0.7)
                             Text("\(club.city), ") + Text(club.state)
                             Spacer()
-                            
-                            
 
-                            if club.isPrivate {
+                            if club.isPrivate ?? false {
                                 VStack {
                                     Text("Private")
                                         .foregroundColor(.red)
                                         .font(.caption)
                                 }
-                                
                             } else {
                                 VStack {
                                     Text("Public")
@@ -90,32 +102,22 @@ struct SmallClubView: View {
                                     .opacity(0.7)
                                     .foregroundColor(.primary)
                             }
-
                         }
-                            .padding(.leading)
+                        .padding(.leading)
                         Spacer()
                         VStack(alignment: .trailing){
                             Text(getSportIcon(sport: club.sport))
                                 .font(.largeTitle)
                                 .padding(.trailing)
                             Spacer()
-                            Button(action:{Task{
-                                let res = await observer.createClubApplication(clubId:club.id)
-                                if res {
-                                    self.showToast = true
-                                }
-                            }}) {
-                                ZStack{
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(Color("primary-color"))
-                                        .frame(width: 100, height: 40)
-                                    Text("apply")
-                                        .foregroundColor(.white)
-                                }
-                            }.padding(.trailing)
+                            Button(action:{ Task{ await Apply() } }) {
+                                LoadingButton(text: "Apply", width: 100, status: $status)
+                                    .padding(.trailing)
+                            }
                         }
-                    }
-                }.frame(height: 220)
+                    }.padding(.bottom)
+                        .padding(.top)
+                }.frame(width: SCREEN_WIDTH-20, height: 100)
             }
         }
     }
@@ -123,6 +125,6 @@ struct SmallClubView: View {
 
 struct SmallClubView_Previews: PreviewProvider {
     static var previews: some View {
-        SmallClubView(club: Club(id: "", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/fields/1309-22-3679.jpg", isPrivate: false, isVisible: true, members: [Member](), rules: ["Don't steal", "No Fighting"]), showToast: .constant(false), observer: ClubObserver())
+        SmallClubView(club: Club(id: "", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0), showToast: .constant(false), observer: ClubObserver())
     }
 }

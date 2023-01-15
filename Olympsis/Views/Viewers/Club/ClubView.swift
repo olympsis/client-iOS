@@ -11,7 +11,7 @@ struct ClubView: View {
     @State var club: Club
     var body: some View {
         VStack(alignment: .leading){
-            AsyncImage(url: URL(string: club.imageURL)){ phase in
+            AsyncImage(url: URL(string: club.imageURL ?? "")){ phase in
                 if let image = phase.image {
                         image // Displays the loaded image.
                             .resizable()
@@ -32,7 +32,7 @@ struct ClubView: View {
                 .font(.largeTitle)
                 .bold()
                 .padding(.leading)
-            Text(club.description)
+            Text(club.description ?? "")
                 .padding(.leading)
             if club.members.count > 1 {
                 Text("\(club.members.count) members")
@@ -40,7 +40,7 @@ struct ClubView: View {
                     .foregroundColor(.primary)
                     .padding(.leading)
             } else {
-                Text("\(club.members.count) member")
+                Text("\(club.members.count ) member")
                     .opacity(0.7)
                     .foregroundColor(.primary)
                     .padding(.leading)
@@ -52,6 +52,6 @@ struct ClubView: View {
 
 struct ClubView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubView(club: Club(id: "", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/fields/1309-22-3679.jpg", isPrivate: false, isVisible: true, members: [Member](), rules: ["Don't steal", "No Fighting"]))
+        ClubView(club: Club(id: "", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/fields/1309-22-3679.jpg", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0))
     }
 }

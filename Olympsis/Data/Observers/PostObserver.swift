@@ -31,11 +31,11 @@ class PostObserver: ObservableObject{
         return [Post]()
     }
     
-    func createPost(owner: String, clubId: String, body: String) async -> NewPostResponseDao? {
+    func createPost(owner: String, clubId: String, body: String, images:[String]?=nil) async -> Post? {
         do {
-            let dao = PostDao(owner: owner, clubId: clubId, body: body)
+            let dao = PostDao(owner: owner, clubId: clubId, body: body, images: images)
             let res = try await postService.createPost(post: dao)
-            let object = try decoder.decode(NewPostResponseDao.self, from: res)
+            let object = try decoder.decode(Post.self, from: res)
             return object
         } catch {
             print(error)

@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import FirebaseStorage
 
 class UploadObserver: ObservableObject {
     private let decoder: JSONDecoder
     private let uploadService: UploadService
+    private let storage = Storage.storage()
     
     init() {
         decoder = JSONDecoder()
@@ -39,4 +41,39 @@ class UploadObserver: ObservableObject {
             return false
         }
     }
+    
+    func UploadImage(location: String, data: Data) async -> String {
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        
+        return await _uploadObject(o: data, m: metadata, l: location)
+    }
+    
+    
+    func _uploadObject(o: Data, m: StorageMetadata, l: String) async -> String {
+        let storageRef = storage.reference().child(l)
+        do{
+            let data = try await storageRef.putDataAsync(o, metadata: m)
+            if let url = data.path {
+                return url
+            }
+            return "error"
+        } catch {
+            print(error)
+            return "error"
+        }
+    }
+    
+    func DeleteObject(path: String) async -> Bool {
+        let storageRef = storage.reference().child(path)
+        do{
+            try await storageRef.delete()
+            return true
+        } catch {
+            print(error)
+            return false
+        }
+    }
+    
 }

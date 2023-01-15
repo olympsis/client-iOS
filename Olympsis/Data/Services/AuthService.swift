@@ -36,15 +36,23 @@ class AuthService: Service {
         return data
     }
     
-    func LogIn(token: String) async throws -> Data{
+    func LogIn(token: String) async throws -> (Data, URLResponse){
         
         http.setToken(t: token)
         let endpoint = Endpoint(path: "/v1/auth/login", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(PUT): \(endpoint.path)")
         
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.POST)
-        return data
+        return try await http.Request(endpoint: endpoint, method: Method.PUT)
+    }
+    
+    func LogOut() async throws -> (Data, URLResponse){
+        
+        let endpoint = Endpoint(path: "/v1/auth/logout", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(PUT): \(endpoint.path)")
+        
+        return try await http.Request(endpoint: endpoint, method: Method.PUT)
     }
 }
 

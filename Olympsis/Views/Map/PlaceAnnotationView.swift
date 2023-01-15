@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceAnnotationView: View {
     @State var field: Field
+    @Binding var events: [Event]
     @State var showDetails = false
     var body: some View {
         VStack(spacing: 0) {
@@ -26,7 +27,7 @@ struct PlaceAnnotationView: View {
             }
           }
         .fullScreenCover(isPresented: $showDetails) {
-            FieldDetailView(field: field)
+            FieldDetailView(field: field, events: $events)
         }
     }
 }
@@ -34,6 +35,6 @@ struct PlaceAnnotationView: View {
 struct PlaceAnnotationView_Previews: PreviewProvider {
     static var previews: some View {
         let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", isPublic: false)
-        PlaceAnnotationView(field: field)
+        PlaceAnnotationView(field: field, events: .constant([Event]()))
     }
 }

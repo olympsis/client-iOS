@@ -8,20 +8,22 @@
 import Foundation
 
 class UpdateUserDataDao: Dao {
-    let username:   String
-    let bio:        String
-    let imageURL:   String
-    let clubs:      [String]
-    let isPublic:   Bool
-    let sports:     [String]
+    let username:   String?
+    let bio:        String?
+    let imageURL:   String?
+    let clubs:      [String]?
+    let isPublic:   Bool?
+    let sports:     [String]?
+    let deviceToken: String?
     
-    init(_username: String, _bio: String, _imageURL: String, _clubs: [String], _isPublic: Bool, _sports: [String]) {
+    init(_username: String?=nil, _bio: String?=nil, _imageURL: String?=nil, _clubs: [String]?=nil, _isPublic: Bool?=nil, _sports: [String]?=nil, _deviceToken: String?=nil) {
         self.username = _username
         self.bio = _bio
         self.imageURL = _imageURL
         self.clubs = _clubs
         self.isPublic = _isPublic
         self.sports = _sports
+        self.deviceToken = _deviceToken
         super.init()
     }
     
@@ -37,6 +39,7 @@ class UpdateUserDataDao: Dao {
         try container.encode(clubs, forKey: .clubs)
         try container.encode(isPublic, forKey: .isPublic)
         try container.encode(sports, forKey: .sports)
+        try container.encode(deviceToken, forKey: .deviceToken)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -46,5 +49,6 @@ class UpdateUserDataDao: Dao {
         case clubs
         case isPublic
         case sports
+        case deviceToken
     }
 }

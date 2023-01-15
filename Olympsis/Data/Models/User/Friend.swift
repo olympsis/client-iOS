@@ -11,10 +11,10 @@ import Foundation
 struct Friend: Codable, Identifiable {
     let id: String
     let uuid: String
-    let createdAt: String
+    let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case uuid
         case createdAt
     }

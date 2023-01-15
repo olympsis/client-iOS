@@ -9,7 +9,7 @@ import Foundation
 
 struct Post: Decodable, Identifiable {
     let id: String
-    let owner: Owner
+    let owner: String
     let clubId: String
     let body: String
     let images: [String]?
@@ -28,11 +28,4 @@ struct Post: Decodable, Identifiable {
         case createdAt
     }
 }
-
-struct Owner: Decodable {
-    let uuid: String
-    let username: String
-    let imageURL: String
-}
-
 

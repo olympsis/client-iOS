@@ -29,22 +29,27 @@ struct EventDetailMiddleView: View {
         VStack {
             Rectangle()
                 .frame(width: SCREEN_WIDTH - 50,height: 2)
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
             HStack (alignment: .center){
                 VStack(alignment: .center){
                     if event.status == "in-progress" {
                         HStack {
-                            Circle()
-                                .frame(width: 10)
-                                .foregroundColor(.red)
+                            BlinkingCircle()
+                                .frame(width: 10, height: 10)
                             Text("Live")
                                 .bold()
                             .foregroundColor(.red)
                             
                         }
-                        Text("\(getTimeDifference()) mins")
-                            .foregroundColor(.white)
+                        Text("\(timeDifference) mins")
+                            .foregroundColor(.primary)
                             .bold()
+                            .onAppear {
+                                timeDifference = getTimeDifference()
+                                Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { t in
+                                    timeDifference = getTimeDifference()
+                                }
+                            }
                     } else if event.status == "pending"{
                         VStack {
                             Text("Pending")
@@ -60,7 +65,7 @@ struct EventDetailMiddleView: View {
                                 .bold()
                             if let sT = event.stopTime {
                                 Text(Date(timeIntervalSince1970: TimeInterval(sT)).formatted(.dateTime.hour().minute()))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.primary)
                                     .bold()
                             }
                         }
@@ -69,10 +74,10 @@ struct EventDetailMiddleView: View {
                     .padding(.leading)
                 Rectangle()
                     .frame(width: 2, height: 50)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 Rectangle()
                     .frame(width: 2, height: 50)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .padding(.leading, SCREEN_WIDTH/3)
                 
                 VStack(alignment: .center){
@@ -116,24 +121,23 @@ struct EventDetailMiddleView: View {
                     }
                     
                     Text("level")
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                         .bold()
                 }.frame(width: 100)
                     .padding(.trailing)
             }
             Rectangle()
                 .frame(width: SCREEN_WIDTH - 50,height: 2)
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         }.frame(width: SCREEN_WIDTH - 50)
     }
 }
 
 struct EventDetailMiddleView_Previews: PreviewProvider {
     static var previews: some View {
-        let event = Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "", title: "event", body: "eventBody", sport: "soccer", level: 3, status: "in-progress", startTime: 1669763400, actualStartTime: 1669759200, maxParticipants: 0)
+        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
+        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "", title: "event", body: "eventBody", sport: "soccer", level: 3, status: "in-progress", startTime: 1669763400, actualStartTime: 1669759200, maxParticipants: 0)
         EventDetailMiddleView(event: .constant(event))
-            .background {
-                Color.black
-            }
     }
 }

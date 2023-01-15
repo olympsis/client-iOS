@@ -14,6 +14,7 @@ struct FieldView: View {
     @State var field: Field
     @State var showDetail = false // show field view detail
     @State var showReport = false // show make a report view
+    @EnvironmentObject var session:SessionStore
     
     func leadToMaps(){
         UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[0]),\(field.location.coordinates[1])")! as URL)
@@ -25,7 +26,7 @@ struct FieldView: View {
             //MARK: - Top view
             HStack{
                 Spacer()
-
+                
                 Menu{
                     Button(action:{self.showDetail.toggle()}){
                         Label("View Details", systemImage: "info.circle")
@@ -39,45 +40,49 @@ struct FieldView: View {
                         .padding(.trailing)
                         .foregroundColor(Color(uiColor: .label))
                 }
-            }
+            }.padding(.bottom, 5)
             //MARK: - ASYNC Image
             VStack {
-                AsyncImage(url: URL(string: field.images[0])){ phase in
+                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + field.images[0])){ phase in
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
-                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                                 .aspectRatio(contentMode: .fill)
                                 .clipped()
+                                .cornerRadius(10)
                         } else if phase.error != nil {
-                            Color.red // Indicates an error.
+                            ZStack {
+                                Color.gray // Indicates an error.
+                                    .cornerRadius(10)
+                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                Image(systemName: "exclamationmark.circle")
+                            }
                         } else {
-                            Color.gray // Acts as a placeholder.
+                            ZStack {
+                                Color.gray // Acts as a placeholder.
+                                    .cornerRadius(10)
+                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                ProgressView()
+                            }
                         }
-                }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-            }
+                }
+            }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
             
             //MARK: - Buttom view
             HStack{
                 VStack(alignment: .leading){
-                    Text(field.city)
-                        .font(.custom("ITCAvantGardeStd-Bold", size: 20))
-                        .frame(height: 20)
-                    HStack {
-                        Text(field.name)
-                            .font(.custom("ITCAvantGardeStd-Bk", size: 18))
-                        if field.isPublic {
-                            Image(systemName: "circle.circle.fill")
-                                .padding(.leading)
-                                .padding(.bottom, 3)
-                                .foregroundColor(.green)
-                        } else {
-                            Image(systemName: "circle.circle.fill")
-                                .padding(.leading)
-                                .padding(.bottom, 3)
-                                .foregroundColor(.red)
-                        }
-                    }.frame(height: 20)
+                    Text(field.city + ", ")
+                        .foregroundColor(.gray)
+                        .font(.body)
+                    + Text(field.state)
+                        .foregroundColor(.gray)
+                        .font(.body)
+                    
+                    Text(field.name)
+                        .font(.title2)
+                        .bold()
+                    
                 }.padding(.leading)
                     .frame(height: 45)
                 Spacer()
@@ -95,14 +100,15 @@ struct FieldView: View {
                 
             }
         }.fullScreenCover(isPresented: $showDetail) {
-            FieldDetailView(field: field)
+            FieldDetailView(field: field, events: $session.events)
         }
     }
 }
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: ["https://storage.googleapis.com/olympsis-1/fields/BYU-Practice-Facility-Exteriror-8.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", isPublic: false)
+        let field = Field(id: "", owner: "", name: "Lionne Park", notes: "Grass Field", sports: ["soccer"], images: ["fields/78c7efcd-6ec3-4324-a468-ad0ea1e0c177.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Stamford", state: "Connecticut", country: "United States", isPublic: false)
         FieldView(field: field)
+            .environmentObject(SessionStore())
     }
 }

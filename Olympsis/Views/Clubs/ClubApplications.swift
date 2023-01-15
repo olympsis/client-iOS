@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ClubApplications: View {
+    
     @State var club: Club
     @State var applications = [ClubApplication]()
     
     @StateObject var clubObserver = ClubObserver()
     @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -25,6 +27,11 @@ struct ClubApplications: View {
                         Text("No Applications")
                     }
                     
+                }.refreshable {
+                    let res = await clubObserver.getApplications(id: club.id)
+                    await MainActor.run {
+                        applications = res
+                    }
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -38,7 +45,9 @@ struct ClubApplications: View {
             .navigationBarTitleDisplayMode(.inline)
             .task {
                 let res = await clubObserver.getApplications(id: club.id)
-                applications = res
+                await MainActor.run {
+                    applications = res
+                }
             }
         }
     }
@@ -47,9 +56,9 @@ struct ClubApplications: View {
 struct ClubApplications_Previews: PreviewProvider {
     static var previews: some View {
         let _ = [
-            ClubApplication(id: "0", uuid: "", user: UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", sports: ["soccer","tennis"], badges: [Badge](), trophies: [Trophy](), friends: [Friend]()), status: "pending", createdAt: 1669245600),
-            ClubApplication(id: "1", uuid: "", user: UserPeek(firstName: "Jane", lastName: "Doe", username: "janeDoe", imageURL: "", sports: ["soccer","tennis"], badges: [Badge](), trophies: [Trophy](), friends: [Friend]()), status: "pending", createdAt: 1669245600)
+            ClubApplication(id: "0", uuid: "", data: UserPeek( firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer","tennis"]), status: "pending", createdAt: 1669245600),
+            ClubApplication(id: "1", uuid: "", data: UserPeek( firstName: "Jane", lastName: "Doe", username: "janeDoe", imageURL: "", bio: "", sports: ["soccer","tennis"]), status: "pending", createdAt: 1669245600)
         ]
-        ClubApplications(club: Club(id: "", name: "", description: "", sport: "", city: "", state: "", country: "", imageURL: "", isPrivate: false, isVisible: false, members: [Member](), rules: [String]()))
+        ClubApplications(club: Club(id: "", name: "", description: "", sport: "", city: "", state: "", country: "", imageURL: "", isPrivate: false, members: [Member](), rules: [String](), createdAt: 0))
     }
 }

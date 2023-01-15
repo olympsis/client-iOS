@@ -34,23 +34,18 @@ struct EventMenu: View {
                 .padding(.bottom)
                 .padding(.top, 5)
             Button(action:{}) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.gray)
-                        .opacity(0.3)
-                    HStack {
-                        Image(systemName: "exclamationmark.shield")
-                            .imageScale(.large)
-                            .padding(.leading)
-                            .foregroundColor(.black)
-                        Text("Report an Issue")
-                            .foregroundColor(.black)
-                        Spacer()
-                    }
-                }.frame(width: SCREEN_WIDTH-25, height: 50)
+                HStack {
+                    Image(systemName: "exclamationmark.shield")
+                        .imageScale(.large)
+                        .padding(.leading)
+                        .foregroundColor(.black)
+                    Text("Report an Issue")
+                        .foregroundColor(.black)
+                    Spacer()
+                }.modifier(MenuButton())
             }
             if let user = session.user {
-                if user.uuid == event.owner.uuid {
+                if user.uuid == event.ownerId {
                     Button(action:{
                         Task {
                             await deleteEvent()
@@ -80,7 +75,9 @@ struct EventMenu: View {
 
 struct EventMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let event = Event(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [Participant]())
+        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
+        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [Participant]())
         EventMenu(event: event, events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

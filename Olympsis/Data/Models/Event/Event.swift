@@ -9,7 +9,8 @@ import Foundation
 
 struct Event: Decodable, Identifiable {
     let id: String
-    let owner: Owner
+    let ownerId: String
+    var ownerData: UserPeek?
     var clubId: String
     var fieldId: String
     var imageURL: String
@@ -27,8 +28,9 @@ struct Event: Decodable, Identifiable {
     
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
-        case owner
+        case id
+        case ownerId
+        case ownerData
         case clubId
         case fieldId
         case imageURL
@@ -45,3 +47,4 @@ struct Event: Decodable, Identifiable {
         case likes
     }
 }
+

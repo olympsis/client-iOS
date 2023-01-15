@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct PostView: View {
-    
+    @State var club: Club
     @State var post: Post
+    @State var data: UserPeek?
     @Binding var posts: [Post]
     @State private var index = ""
     @State private var isLiked = false
     @State private var showComments = false
-    
+    @State private var status: LOADING_STATE = .pending
     @StateObject private var postObserver = PostObserver()
     
     @EnvironmentObject var session: SessionStore
@@ -26,27 +27,54 @@ struct PostView: View {
         }
     }
     
+    
+    
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: "https://storage.googleapis.com/olympsis-1/profile-img/" + post.owner.imageURL)){ image in
-                    image.resizable()
-                        .clipShape(Circle())
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                        .frame(width: 40, height: 40)
-                        
-                } placeholder: {
+                if let d = data {
+                    if let img = d.imageURL {
+                        AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
+                            if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .clipShape(Circle())
+                                    .scaledToFill()
+                                    .clipped()
+                            } else if phase.error != nil {
+                                Color.gray // Indicates an error.
+                                    .clipShape(Circle())
+                                    .opacity(0.3)
+                            } else {
+                                ZStack {
+                                    Color.gray // Acts as a placeholder.
+                                        .clipShape(Circle())
+                                    .opacity(0.3)
+                                    ProgressView()
+                                }
+                            }
+                        } .frame(width: 35)
+                            .padding(.leading, 5)
+                    } else {
+                        Circle()
+                            .foregroundColor(.gray)
+                            .opacity(0.3)
+                            .frame(width: 35)
+                            .padding(.leading, 5)
+                    }
+                    Text(d.username)
+                        .padding(.leading, 5)
+                        .bold()
+                } else {
                     Circle()
                         .foregroundColor(.gray)
                         .opacity(0.3)
-                        .frame(width: 40)
-                }.frame(height: 40)
-                    .padding(.leading)
-                
-                Text(post.owner.username)
-                    .padding(.leading, 5)
-                    .bold()
+                        .frame(width: 35)
+                        .padding(.leading, 5)
+                    Text("Unknown User")
+                        .padding(.leading, 5)
+                        .bold()
+                }
                 Spacer()
                 
                 Menu{
@@ -54,7 +82,7 @@ struct PostView: View {
                         Label("Report an Issue", systemImage: "exclamationmark.shield")
                     }
                     if let user = session.user {
-                        if user.uuid == post.owner.uuid {
+                        if user.uuid == post.owner {
                             Button(role:.destructive, action:{
                                 Task{
                                     await deletePost()
@@ -73,26 +101,29 @@ struct PostView: View {
                         .padding(.trailing)
                         .foregroundColor(Color(uiColor: .label))
                 }
-            }.frame(height: 50)
+            }.frame(height: 35)
             
             if let images = post.images {
                 if !images.isEmpty {
                     TabView(selection: $index){
                         ForEach(images, id: \.self){ image in
-                            AsyncImage(url: URL(string: image)){ image in
+                            AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + image)){ image in
                                 image.resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .clipped()
                             } placeholder: {
-                                Rectangle()
-                                    .foregroundColor(.gray)
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.gray)
                                     .opacity(0.3)
+                                    ProgressView()
+                                }
                                     
                             }
                                 .tag(image)
                         }
                     }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                        .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/1.7, alignment: .center)
+                        .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
                 }
             }
             
@@ -124,13 +155,15 @@ struct PostView: View {
             }
         }
         .fullScreenCover(isPresented: $showComments) {
-            PostComments(post: post)
+            PostComments(club: club, post: post)
         }
     }
 }
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: "88F8C460-0E29-40D4-9D18-31F6B5600553"), clubId: "", body: "event-body", images: [], likes: [String](), comments: [Comment](), createdAt: 0), posts: .constant([Post]())).environmentObject(SessionStore())
+        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: ["soccer"])
+        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        PostView(club: club, post: Post(id: "", owner: "", clubId: "", body: "event-body", images: ["profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F"], likes: [String](), comments: [Comment](), createdAt: 0), data: peek, posts: .constant([Post]())).environmentObject(SessionStore())
     }
 }

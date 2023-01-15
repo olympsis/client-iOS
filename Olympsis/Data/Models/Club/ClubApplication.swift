@@ -10,14 +10,14 @@ import Foundation
 struct ClubApplication: Decodable, Identifiable {
     let id: String
     let uuid: String
-    let user: UserPeek
+    let data: UserPeek
     let status: String
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case uuid
-        case user
+        case data
         case status
         case createdAt
     }

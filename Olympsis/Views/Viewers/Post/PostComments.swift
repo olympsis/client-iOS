@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PostComments: View {
+    @State var club: Club
     @State var post: Post
     @State private var comments = [Comment]()
     @State private var text = ""
@@ -17,6 +18,13 @@ struct PostComments: View {
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
+    func GetData(uuid: String) -> UserPeek? {
+        let usr = club.members.first(where: {$0.uuid == uuid})
+            if let u = usr {
+                return u.data
+            }
+        return nil
+    }
     
     func addComment() async {
         if let user = session.user {
@@ -48,7 +56,7 @@ struct PostComments: View {
                     if !comments.isEmpty {
                         List {
                             ForEach(comments.sorted{$0.createdAt > $1.createdAt}, id: \.createdAt){ comment in
-                                CommentView(comment: comment)
+                                CommentView(data: GetData(uuid: comment.uuid), comment: comment)
                             }.onDelete(perform: deleteComment)
                         }.listStyle(.plain)
                     } else {
@@ -94,7 +102,8 @@ struct PostComments: View {
 
 struct PostComments_Previews: PreviewProvider {
     static var previews: some View {
-        let post = Post(id: "", owner: Owner(uuid: "", username: "unnamed_user", imageURL: ""), clubId: "", body: "post-body", images: [String](), likes: [String](), comments: [Comment](), createdAt: 0)
-        PostComments(post: post)
+        let post = Post(id: "", owner: "", clubId: "", body: "post-body", images: [String](), likes: [String](), comments: [Comment](), createdAt: 0)
+        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        PostComments(club: club, post: post)
     }
 }

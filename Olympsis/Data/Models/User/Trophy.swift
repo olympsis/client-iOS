@@ -18,7 +18,7 @@ struct Trophy: Codable, Identifiable {
     let achievedAt: String
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case name
         case title
         case imageURL

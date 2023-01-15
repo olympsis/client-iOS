@@ -8,7 +8,7 @@
 import Foundation
 import NotificationCenter
 
-class NotificationsObserver: ObservableObject{
+class NotificationsManager: ObservableObject{
     let center = UNUserNotificationCenter.current()
     
     init(){
@@ -17,7 +17,8 @@ class NotificationsObserver: ObservableObject{
     
     // Request alert sound and badge notifications
     func requestAuthorization() async throws {
-        _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay])
+        await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
+        _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay]) // 
     }
     
     // checks and makes sure all the notification authorizations are there
@@ -25,7 +26,7 @@ class NotificationsObserver: ObservableObject{
         let status =  await center.notificationSettings()
         
         guard (status.authorizationStatus == .authorized) || (status.authorizationStatus == .provisional) else { return false }
-        
+
         return true
     }
     
@@ -42,8 +43,5 @@ class NotificationsObserver: ObservableObject{
         }
     }
     
-    func application(_ application: UIApplication,
-                didRegisterForRemoteNotificationsWithDeviceToken
-                    deviceToken: Data) {
-    }
+
 }

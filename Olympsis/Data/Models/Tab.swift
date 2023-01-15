@@ -11,7 +11,7 @@ enum Tab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
     case map = "Map"
-    case messages = "Messages"
+    case activity = "Activity"
     case profile = "Setting"
 }
 

@@ -48,14 +48,14 @@ struct TabBar: View {
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .messages
+                        currentTab = .activity
                     }
                 } label: {
-                    Image(systemName: currentTab == .messages ? "bubble.right.fill" : "bubble.right")
+                    Image(systemName: currentTab == .activity ? "chart.bar.fill" : "chart.bar")
                         .imageScale(.large)
                         .frame(width: 28, height: 28)
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .messages ? Color("secondary-color") : .white )
+                        .foregroundColor(currentTab == .activity ? Color("secondary-color") : .white )
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
@@ -69,23 +69,25 @@ struct TabBar: View {
                                 .frame(width: 28, height: 28)
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(currentTab == .profile ? Color("secondary-color") : .white )
-                            AsyncImage(url: URL(string: user.imageURL ?? "")){ phase in
-                                if let image = phase.image {
-                                        image // Displays the loaded image.
-                                            .resizable()
-                                            .clipShape(Circle())
-                                            .scaledToFill()
-                                            .clipped()
-                                    } else if phase.error != nil {
-                                        Color.red // Indicates an error.
-                                            .clipShape(Circle())
-                                            .opacity(0.3)
-                                    } else {
-                                        Color.gray // Acts as a placeholder.
-                                            .clipShape(Circle())
-                                            .opacity(0.3)
-                                    }
-                            }.frame(width: 25, height: 25)
+                            if let img = user.imageURL {
+                                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
+                                    if let image = phase.image {
+                                            image // Displays the loaded image.
+                                                .resizable()
+                                                .clipShape(Circle())
+                                                .scaledToFill()
+                                                .clipped()
+                                        } else if phase.error != nil {
+                                            Color.red // Indicates an error.
+                                                .clipShape(Circle())
+                                                .opacity(0.3)
+                                        } else {
+                                            Color.gray // Acts as a placeholder.
+                                                .clipShape(Circle())
+                                                .opacity(0.3)
+                                        }
+                                }.frame(width: 25, height: 25)
+                            }
                         }
                     } else {
                         Image(systemName: "circle.fill")
@@ -94,11 +96,10 @@ struct TabBar: View {
                             .frame(maxWidth: .infinity)
                             .foregroundColor(currentTab == .profile ? Color("secondary-color") : .white )
                     }
-                    
                 }
             }.frame(maxWidth: .infinity)
-        }.frame(height: 20)
-        .padding(.bottom, 10)
+        }.frame(height: 40)
+        .padding(.bottom, 5)
         .padding([.horizontal, .top])
     }
 }

@@ -31,17 +31,23 @@ class EventService: Service {
         
         log.log("Initiating request to server(GET): \(endpoint.path)")
         
-        let (data, resp) = try await http.Request(endpoint: endpoint, method: Method.GET)
-        return (data, resp)
+        return try await http.Request(endpoint: endpoint, method: Method.GET)
     }
     
-    func createEvent(dao: EventDao) async throws -> URLResponse {
+    func getEvent(id: String) async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
+        
+        log.log("Initiating request to server(GET): \(endpoint.path)")
+        
+        return try await http.Request(endpoint: endpoint, method: Method.GET)
+    }
+    
+    func createEvent(dao: EventDao) async throws -> (Data,URLResponse) {
         let endpoint = Endpoint(path: "/v1/events", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
-        return resp
+        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
@@ -62,12 +68,13 @@ class EventService: Service {
         return resp
     }
     
-    func addParticipant(id: String, dao: ParticipantDao) async throws -> (Data,URLResponse) {
+    func addParticipant(id: String, dao: ParticipantDao) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
         log.log("Initiating request to server(POST): \(endpoint.path)")
         
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        let (_,resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        return resp
     }
     
     func removeParticipant(id: String, pid: String) async throws -> URLResponse {

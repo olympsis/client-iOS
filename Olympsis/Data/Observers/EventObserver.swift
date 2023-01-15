@@ -24,37 +24,46 @@ class EventObserver: ObservableObject{
     /// Calls the field service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sport: String) async {
+    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sport: String) async -> [Event]? {
         do {
             let (data, resp) = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sport: sport)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-                await MainActor.run {
-                    self.events = [Event]()
-                    self.eventsCount = 0
-                }
-                return
+                return nil
             }
             let object = try decoder.decode(EventsResponse.self, from: data)
-            await MainActor.run { // TODO: Check later about threads
-                self.events = object.events
-                self.eventsCount = object.totalEvents
-            }
-        } catch (let err) {
-            print(err)
-        }
-    }
-    
-    func createEvent(dao: EventDao) async -> Bool {
-        do {
-            let res = try await eventService.createEvent(dao: dao)
-            guard (res as? HTTPURLResponse)?.statusCode == 201 else {
-                return false
-            }
-            return true
+            return object.events
         } catch {
             print(error)
         }
-        return false
+        return nil
+    }
+    
+    func fetchEvent(id: String) async -> Event? {
+        do {
+            let (data, resp) = try await eventService.getEvent(id: id)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(Event.self, from: data)
+            return object
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
+    func createEvent(dao: EventDao) async -> Event? {
+        do {
+            let (data,resp) = try await eventService.createEvent(dao: dao)
+            guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
+                return nil
+            }
+            let obj = try decoder.decode(Event.self, from: data)
+            return obj
+        } catch {
+            print(error)
+        }
+        return nil
     }
     
     func updateEvent(id: String, dao: EventDao) async -> Bool {
@@ -83,18 +92,17 @@ class EventObserver: ObservableObject{
         return false
     }
     
-    func addParticipant(id: String, dao: ParticipantDao) async -> AddParticipantResponse? {
+    func addParticipant(id: String, dao: ParticipantDao) async -> Bool {
         do {
-            let (data,res) = try await eventService.addParticipant(id: id, dao: dao)
+            let res = try await eventService.addParticipant(id: id, dao: dao)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return nil
+                return false
             }
-            let object = try decoder.decode(AddParticipantResponse.self, from: data)
-            return object
+            return true
         } catch {
             print(error)
         }
-        return nil
+        return false
     }
     
     func removeParticipant(id: String, pid: String) async -> Bool {

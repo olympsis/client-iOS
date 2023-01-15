@@ -9,53 +9,51 @@ import SwiftUI
 import Foundation
 
 class SessionStore: ObservableObject {
-
-    private var token: String?
     
+    // this might be removed later on
     private var firstName: String?
     private var lastName: String?
     private var email: String?
     private var uuid: String?
     
-    @Published var user: UserStore?
+    @Published var user: UserStore? // user data
     
     @Published var fields = [Field]()    // Fields Cache
     @Published var clubs = [Club]()      // Clubs Cache
     @Published var events = [Event]()    // Events Cache
     @Published var posts = [Post]()      // Posts Cache
-    
     @Published var myClubs = [Club]()
-    
-//    @Published var dataLoader: DevDataLoader
     
     
     let cacheService: CacheService
     let userObserver: UserObserver
     let clubObserver: ClubObserver
-    let postObserver: PostObserver
+    
+    @ObservedObject var locationManager: LocationManager
+    @ObservedObject var notificationsManager: NotificationsManager
+    
+    @AppStorage("loggedIn") private var loggedIn: Bool? // makes sure the user is completely logged in
+    @AppStorage("searchRadius") var radius: Double? // search radius for fields in miles
     
     init() {
-        
-        // DEV DATA
-//        dataLoader = DevDataLoader()
         cacheService = CacheService()
         userObserver = UserObserver()
         clubObserver = ClubObserver()
-        postObserver = PostObserver()
         
-        fetchDataFromCache()
-//        dataLoader.getData() // DEV DATA
-//        self.fields = dataLoader.getFields()
-//        self.clubs = dataLoader.getClubs()
-//        self.events = dataLoader.getEvents()
+        locationManager = LocationManager()
+        notificationsManager = NotificationsManager()
+        
+        fetchIdentifiableDataFromCache()
+        
+        if let login = loggedIn {
+            if login {
+                user = cacheService.fetchUser()
+            }
+        }
     }
     
-    func fetchDataFromCache() {
-        (firstName, lastName, email, uuid) = cacheService.fetchPartialUserData()
-    }
-    
-    func fetchToken() {
-        self.token = cacheService.fetchToken()
+    func fetchIdentifiableDataFromCache() {
+        (firstName, lastName, email) = cacheService.fetchIdentifiableData()
     }
     
     func getFirstName() -> String {
@@ -66,30 +64,34 @@ class SessionStore: ObservableObject {
         return lastName ?? "user";
     }
     
-    func getUUID() -> String {
-        return uuid ?? "error";
-    }
-    
     /// This function fetches user data from the backend. It combines the two and stores it in the session.
     func GenerateUpdatedUserData() async {
         do {
+            // fetch data from server
             let updatedData = try await userObserver.GetUserData()
-            (firstName, lastName, email, uuid) = cacheService.fetchPartialUserData()
+            (firstName, lastName, email) = cacheService.fetchIdentifiableData()
+            let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
+                                    uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: updatedData.imageURL, isPublic: updatedData.isPublic,
+                                    sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
+            // update session store
             await MainActor.run {
-                // were just going to store the image id in the user data so we dont depend on google storage
-                // so we will create a function later to generate the right url
-                var imageURL = ""
-                if updatedData.imageURL != "" {
-                    imageURL = "https://storage.googleapis.com/olympsis-1/profile-img/" + updatedData.imageURL!
-                }
-                
-                self.user = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
-                                      uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: imageURL, isPublic: updatedData.isPublic,
-                                      sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
+                self.user = newUser
             }
+            // cache user data
+            await cacheService.cacheUser(user: newUser)
         } catch {
             print("GenerateUpdatedUserData Error:" + error.localizedDescription)
         }
+    }
+    
+    func GenerateUserDataFirstTime(username: String, sports:[String]) async {
+        (firstName, lastName, email) = cacheService.fetchIdentifiableData()
+        
+        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", isPublic: false, sports: sports)
+        await MainActor.run {
+            self.user = newUser
+        }
+        await cacheService.cacheUser(user: newUser)
     }
     
     func generateClubsData() async {

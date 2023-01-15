@@ -17,10 +17,12 @@ struct FieldDetailView: View {
     }
     
     @State var field: Field
-    @State private var events = [Event]()
+    @Binding var events: [Event]
 
     @State private var showNewEvent = false
     @State private var status: Status = .loading
+    
+    @StateObject var eventObserver = EventObserver()
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
@@ -29,49 +31,56 @@ struct FieldDetailView: View {
         UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[0]),\(field.location.coordinates[1])")! as URL)
     }
     
-    func fetchEvents() async -> [Event]? {
-        return session.events.filter{$0.fieldId == field.id}
-    }
-    
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack {
                     //MARK: - ASYNC Image
                     ZStack(alignment: .top){
-                        AsyncImage(url: URL(string: field.images[0])){ phase in
+                        AsyncImage(url: URL(string:  "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + field.images[0])){ phase in
                             if let image = phase.image {
                                     image // Displays the loaded image.
                                         .resizable()
-                                        .scaledToFit()
+                                        .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                        .aspectRatio(contentMode: .fill)
+                                        .clipped()
                                         .cornerRadius(10)
+                                
                                 } else if phase.error != nil {
                                     Color.red // Indicates an error.
                                         .cornerRadius(10)
+                                        .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                                 } else {
                                     Color.gray // Acts as a placeholder.
                                         .cornerRadius(10)
+                                        .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                                 }
-                        }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                    }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                        }
+                    }
                     
                     //MARK: - Buttom view
                     HStack{
                         VStack(alignment: .leading){
-                            HStack {
-                                Text(field.name)
-                                    .font(.title2)
-                            }.frame(height: 20)
-                            Text(field.city)
-                                .font(.title3)
+                            
+                            Text(field.name)
+                                .font(.title2)
+                                .bold()
+                            
+                            Text(field.city + ", ")
                                 .foregroundColor(.gray)
-                                .frame(height: 20)
+                                .font(.body)
+                            + Text(field.state)
+                                .foregroundColor(.gray)
+                                .font(.body)
+                                
                             if field.isPublic {
                                 Text("Public")
+                                    .font(.caption2)
                                     .foregroundColor(.green)
                                     .bold()
                             } else {
                                 Text("Private")
+                                    .font(.caption2)
                                     .foregroundColor(.red)
                                     .bold()
                             }
@@ -145,8 +154,10 @@ struct FieldDetailView: View {
                         }
                     }.padding(.top, 50)
                 }.task {
-                    self.events = session.events.filter{$0.fieldId == self.field.id}
-                    self.status = .done
+                    await MainActor.run {
+                        self.events = session.events.filter{$0.fieldId == self.field.id}
+                        self.status = .done
+                    }
                 }
                 .sheet(isPresented: $showNewEvent) {
                     NewEventView()
@@ -171,13 +182,27 @@ struct FieldDetailView: View {
                     }
                 }
             }
+            .refreshable {
+                if let location = session.locationManager.location {
+                    for sport in field.sports {
+                        Task {
+                            let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sport: sport)
+                            if let e = res {
+                                await MainActor.run {
+                                    self.events = e
+                                }
+                            }
+                        }
+                    }
+                } 
+            }
         }
     }
 }
 
 struct FieldDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Orem", country: "", isPublic: false)
-        FieldDetailView(field: field).environmentObject(SessionStore())
+        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: ["fields/226f8aef-247f-4015-8426-85aa93c0e5e6.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Utah", country: "United States", isPublic: false)
+        FieldDetailView(field: field, events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

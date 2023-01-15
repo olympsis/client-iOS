@@ -12,7 +12,7 @@ struct TrophiesView: View {
         VStack {
             HStack {
                 Text("Trophies")
-                    .font(.custom("ITCAvantGardeStd-Bold", size: 25, relativeTo: .largeTitle))
+                    .font(.title)
                     .bold()
                     .padding(.leading, 25)
                 Rectangle()

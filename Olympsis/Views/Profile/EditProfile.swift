@@ -10,63 +10,74 @@ import PhotosUI
 
 struct EditProfile: View {
     
+    @Binding var imageURL: String
+    
     @State private var bio: String = ""
     @State private var username: String = ""
     @State private var imageUrl: String?
     @State private var isPublic: Bool = true
-    
+
+    @State private var selectedSports: [String] = [String]()
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     
+    @State private var uploadingStatus: LOADING_STATE = .pending
+    
     @StateObject var userObserver = UserObserver()
     @StateObject var uploadObserver = UploadObserver()
+    
+    
+    
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func UpdateProfile() async {
-        
-        guard bio.count > 5 else {
-            return
-        }
+    func UpdateProfile() async -> Bool {
         
         // new image
-        var imageId = ""
+        let imageId = UUID().uuidString
         
-        if session.user?.imageURL == "" {
-            imageId = UUID().uuidString
-        } else {
-            if let img = session.user?.imageURL {
-                let substr = img.suffix(36)
-                imageId = String(substr)
+        if let data = selectedImageData {
+            let url = await uploadObserver.UploadImage(location: "/profile-images/\(imageId)", data: data)
+            self.imageURL = url
+            if url != "error" {
+                if let user = session.user {
+                    if let img = user.imageURL {
+                        let res = await uploadObserver.DeleteObject(path: img)
+                        if !res {
+                            print("failed to delete image")
+                        }
+                    }
+                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: url, _isPublic: isPublic, _sports: selectedSports)
+                    let res = await userObserver.UpdateUserData(update: update)
+                    if res {
+                        return true
+                    }
+                }
+            } else {
+                print("failed to upload image")
+                return false
             }
-        }
-        
-        // get upload link
-        // upload image
-        do{
-            let url = try await GenerateImageUploadLink(id: imageId)
-            if let data = selectedImageData {
-                let res = try await uploadObserver.UploadObject(url: url, object: data)
-                if !res {
-                    print("Failed to upload image")
+        } else {
+            // if there is no new image data just update user data then
+            if let user = session.user {
+                let update = UpdateUserDataDao(_username: user.username, _bio: bio, _isPublic: isPublic, _sports: selectedSports)
+                let res = await userObserver.UpdateUserData(update: update)
+                if res {
+                    return true
                 }
             }
-        } catch {
-            print(error)
+            return false
         }
         
-        if let user = session.user {
-            let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: imageId, _clubs: user.clubs ?? [""], _isPublic: isPublic, _sports: user.sports ?? [""])
-            let res = await userObserver.UpdateUserData(update: update)
-            if res {
-                await session.GenerateUpdatedUserData()
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
+        return false
     }
     
-    func GenerateImageUploadLink(id: String) async throws -> String {
-        return try await uploadObserver.CreateUploadURL(folder: "profile-img", object: id)
+    func updateSports(sport:String){
+        selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
+    }
+    
+    func isSelected(sport:String) -> Bool {
+        return selectedSports.contains(where: {$0 == sport})
     }
     
     var body: some View {
@@ -76,34 +87,48 @@ struct EditProfile: View {
                     VStack {
                         VStack {
                             if let data = selectedImageData {
-                                Image(uiImage: UIImage(data: data)!)
-                                    .resizable()
-                                    .clipShape(Circle())
-                                    .scaledToFit()
-                                    .frame(width: 100, height: 100)
+                                if let img = UIImage(data: data) {
+                                    Image(uiImage: img)
+                                        .resizable()
+                                        .clipShape(Circle())
+                                        .scaledToFit()
+                                        .frame(width: 100, height: 100)
+                                }
                             } else {
-                                AsyncImage(url: URL(string: session.user?.imageURL ?? "")){ phase in
-                                    if let image = phase.image {
-                                        image // Displays the loaded image.
-                                            .resizable()
-                                            .clipShape(Circle())
-                                            .scaledToFit()
-                                    } else if phase.error != nil {
-                                        Color.red // Indicates an error.
-                                            .clipShape(Circle())
-                                            .opacity(0.15)
-                                    } else {
-                                        ZStack {
-                                            Image(systemName: "person")
+                                if let img = session.user?.imageURL {
+                                    AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
+                                        if let image = phase.image {
+                                            image // Displays the loaded image.
                                                 .resizable()
-                                                .frame(width: 50, height: 50)
-                                                .foregroundColor(Color("primary-color"))
-                                            Color.gray // Acts as a placeholder.
                                                 .clipShape(Circle())
-                                                .opacity(0.3)
+                                                .scaledToFit()
+                                        } else if phase.error != nil {
+                                            Color.red // Indicates an error.
+                                                .clipShape(Circle())
+                                                .opacity(0.15)
+                                        } else {
+                                            ZStack {
+                                                Image(systemName: "person")
+                                                    .resizable()
+                                                    .frame(width: 50, height: 50)
+                                                    .foregroundColor(Color("primary-color"))
+                                                Color.gray // Acts as a placeholder.
+                                                    .clipShape(Circle())
+                                                    .opacity(0.3)
+                                            }
                                         }
-                                    }
-                                }.frame(width: 100, height: 100)
+                                    }.frame(width: 100, height: 100)
+                                } else {
+                                    ZStack {
+                                        Image(systemName: "person")
+                                            .resizable()
+                                            .frame(width: 50, height: 50)
+                                            .foregroundColor(Color("primary-color"))
+                                        Color.gray // Acts as a placeholder.
+                                            .clipShape(Circle())
+                                            .opacity(0.3)
+                                    }.frame(width: 100, height: 100)
+                                }
                             }
                             PhotosPicker(
                                 selection: $selectedItem,
@@ -117,8 +142,6 @@ struct EditProfile: View {
                                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                         selectedImageData = data
                                     }
-                                    
-                                    
                                 }
                             }
                             
@@ -156,7 +179,7 @@ struct EditProfile: View {
                             }
                         }.task {
                             if let user = session.user {
-                                bio = user.bio
+                                bio = user.bio ?? ""
                                 isPublic = user.isPublic
                             }
                             
@@ -172,22 +195,47 @@ struct EditProfile: View {
                                 .foregroundColor(.gray)
                         }
                         
+                        VStack(alignment: .leading) {
+                            Text("Sports:")
+                                .bold()
+                            ForEach(SPORTS.allCases, id: \.self){ _sport in
+                                HStack {
+                                    Button(action: {updateSports(sport: _sport.rawValue)}){
+                                        isSelected(sport: _sport.rawValue) ? Image(systemName: "circle.fill")
+                                            .foregroundColor(Color("primary-color")).imageScale(.medium) : Image(systemName:"circle")
+                                            .foregroundColor(.primary).imageScale(.medium)
+                                    }
+                                    Text(_sport.rawValue)
+                                        .font(.body)
+                                    Spacer()
+                                }.padding(.top)
+                            }
+                        }.padding(.leading)
+                            .padding(.top)
+                        
                     }
                     Spacer()
                     
                     Button(action:{
+                
                         Task {
-                            await UpdateProfile()
+                            uploadingStatus = .loading
+                            let res = await UpdateProfile()
+                            await session.GenerateUpdatedUserData()
+                            if res {
+                                uploadingStatus = .success
+                            } else {
+                                uploadingStatus = .failure
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
                         }
+                        
                     }){
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color("primary-color"))
-                                .frame(width: 150, height: 40)
-                            Text("Save Changes")
-                                .foregroundColor(.white)
-                        }
+                        LoadingButton(text: "Save Changes", width: 150, status: $uploadingStatus)
                     }.padding(.top, 50)
+                    
                 }.navigationTitle("Edit Profile")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -197,23 +245,22 @@ struct EditProfile: View {
                                     .foregroundColor(.primary)
                             }
                         }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action:{
-
-                            }){
-                                Text("Done")
-                                    .foregroundColor(Color("primary-color"))
+                    }
+                    .task {
+                        if let usr = session.user {
+                            if let sports = usr.sports {
+                                selectedSports = sports
                             }
                         }
-                }
+                        
+                    }
             }
-            
         }
     }
 }
 
 struct EditProfile_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfile().environmentObject(SessionStore())
+        EditProfile(imageURL: .constant("")).environmentObject(SessionStore())
     }
 }

@@ -29,20 +29,18 @@ class CacheService: ObservableObject {
         return token
     }
     
-    func cachePartialUserData(firstName: String, lastName: String, email: String, uuid: String) async {
+    func chacheIdentifiableData(firstName: String, lastName: String, email: String) async {
         self.defaults.set(firstName, forKey: "firstName")
         self.defaults.set(lastName, forKey: "lastName")
         self.defaults.set(email, forKey: "email")
-        self.defaults.set(uuid, forKey: "uuid")
     }
     
-    func fetchPartialUserData() -> (String, String, String, String) {
-        let fN = self.defaults.string(forKey: "firstName") ?? ""
-        let lN = self.defaults.string(forKey: "lastName") ?? ""
-        let em = self.defaults.string(forKey: "email") ?? ""
-        let ud = self.defaults.string(forKey: "uuid") ?? ""
+    func fetchIdentifiableData() -> (String, String, String) {
+        let f = self.defaults.string(forKey: "firstName") ?? ""
+        let l = self.defaults.string(forKey: "lastName") ?? ""
+        let e = self.defaults.string(forKey: "email") ?? ""
         
-        return (fN, lN, em, ud)
+        return (f, l, e)
     }
         
     func cacheClubs(clubs:[String]) async {
@@ -54,10 +52,27 @@ class CacheService: ObservableObject {
     }
     
     func cacheUser(user: UserStore) async {
-        self.defaults.set(user, forKey: "user")
+        do {
+            
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(user)
+            
+            self.defaults.set(data, forKey: "user")
+        } catch {
+            print("failed to store user data: \(error)")
+        }
     }
     
     func fetchUser() -> UserStore? {
-        return self.defaults.object(forKey: "user") as? UserStore
+        do {
+            if let data = self.defaults.data(forKey: "user") {
+                let decoder = JSONDecoder()
+                let usr = try decoder.decode(UserStore.self, from: data)
+                return usr
+            }
+        } catch {
+            print("failed to fetch user data: \(error)")
+        }
+        return nil
     }
 }

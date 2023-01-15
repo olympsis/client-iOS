@@ -16,39 +16,31 @@ struct MapView: View {
     @State private var showBottomSheet  = false
     @State private var showFieldDetail  = false
     @State private var showNewEvent     = false
+    @State private var showOptions      = false
     
     @StateObject var fieldObserver      = FieldObserver()
     @StateObject var eventObserver      = EventObserver()
-    @StateObject var locationManager    = LocationManager()
     
     @State var trackingMode: MapUserTrackingMode = .follow
     @State var region : MKCoordinateRegion = .init()
-    @EnvironmentObject var session:SessionStore;
-    
-    func newEventDidDismiss() {
-        Task {
-            await eventObserver.fetchEvents(longitude: locationManager.region.center.longitude, latitude: locationManager.region.center.latitude, radius: 10, sport: "soccer")
-            session.events = eventObserver.events
-        }
-    }
+    @EnvironmentObject var session:SessionStore
     
     var body: some View {
         NavigationView {
             VStack{
                 ZStack(alignment: .bottomTrailing){
-                    Map(coordinateRegion: $locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
-                        MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[0], longitude: field.location.coordinates[1]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
-                            PlaceAnnotationView(field: field)
+                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
+                        MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
+                            PlaceAnnotationView(field: field, events: $session.events)
                         }
                     })
                         .edgesIgnoringSafeArea(.all)
+                
                     
                     VStack {
-                        
                         Button(action:{self.showNewEvent.toggle()}){
                             ZStack {
                                 Circle()
-                                    .frame(width: 40)
                                     .tint(Color("secondary-color"))
                                 Image(systemName: "plus")
                                     .imageScale(.large)
@@ -56,14 +48,14 @@ struct MapView: View {
                                     .foregroundColor(.white)
                             }
                         }.padding(.bottom, 20)
-                            .sheet(isPresented: $showNewEvent, onDismiss: {newEventDidDismiss()}) {
+                            .sheet(isPresented: $showNewEvent) {
                             NewEventView()
                         }
+                        .frame(width: 40)
                         
                         Button(action:{self.showBottomSheet.toggle()}){
                             ZStack {
                                 Circle()
-                                    .frame(width: 40)
                                     .tint(Color("secondary-color"))
                                 Image(systemName: "line.3.horizontal.decrease")
                                     .imageScale(.large)
@@ -71,12 +63,13 @@ struct MapView: View {
                                     .foregroundColor(.white)
                             }
                         }.sheet(isPresented: $showBottomSheet) {
-                            EventsModalView(events: session.events, fields: session.fields)
+                            EventsModalView(events: $session.events, fields: session.fields)
                                 .presentationDetents([.height(250)])
                         }
+                        .frame(width: 40)
                         
                         LocationButton(.currentLocation){
-                            locationManager.manager.requestWhenInUseAuthorization()
+                            session.locationManager.manager.requestWhenInUseAuthorization()
                             withAnimation{
                                 trackingMode = .follow;
                             }
@@ -91,6 +84,11 @@ struct MapView: View {
                     .padding(.bottom)
                     }
                     
+                }.sheet(isPresented: $showOptions) {
+                    if let usr = session.user {
+                        MapOptions(availableSports: usr.sports ?? [String]())
+                            .presentationDetents([.height(300)])
+                    }
                 }
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -98,6 +96,19 @@ struct MapView: View {
                         .font(.title)
                         .bold()
                         .foregroundColor(.primary)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action:{self.showOptions.toggle()}){
+                        ZStack {
+                            Circle()
+                                .frame(width: 40)
+                                .tint(Color("secondary-color"))
+                            Image(systemName: "slider.vertical.3")
+                                .imageScale(.large)
+                                .symbolRenderingMode(.palette)
+                                .foregroundColor(.white)
+                        }
+                    }
                 }
             }
             .alert(isPresented: $showError){

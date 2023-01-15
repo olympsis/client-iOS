@@ -18,7 +18,7 @@ struct UserStore: Codable {
     
     // Personal Data
     var username: String
-    var bio: String
+    var bio: String?
     var imageURL: String?
     var isPublic: Bool
     var sports: [String]?

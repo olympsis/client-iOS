@@ -13,7 +13,7 @@ struct ClubsResponse: Decodable {
     let clubs: [Club]
     
     enum CodingKeys: String, CodingKey {
-        case totalClubs = "totalClubs"
-        case clubs = "clubs"
+        case totalClubs
+        case clubs
     }
 }

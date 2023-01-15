@@ -10,49 +10,6 @@ import AlertToast
 
 struct NewEventView: View {
     
-    enum Sports: String, CaseIterable {
-        case soccer     = "⚽️ Soccer"
-        case basketball = "🏀 Basketball"
-        case cricket    = "🏏 Cricket"
-        case volleyball = "🏐 Volleyball"
-        case tennis     = "🎾 Tennis"
-        case pickleball = "pickleball"
-    }
-    
-    func getSportRawText(for sport: Sports) -> String {
-        switch sport {
-        case .soccer:
-            return "soccer"
-        case .basketball:
-            return "basketball"
-        case .cricket:
-            return "cricket"
-        case .volleyball:
-            return "volleyball"
-        case .tennis:
-            return "tennis"
-        case .pickleball:
-            return "pickleball"
-        }
-    }
-    
-    func getSportImages(for sport: Sports) -> [String] {
-        switch sport {
-        case .soccer:
-            return ["soccer-0","soccer-1"]
-        case .basketball:
-            return ["basketball-0", "basketball-1", "basketball-2","basketball-4", "basketball-5"]
-        case .cricket:
-            return [""]
-        case .volleyball:
-            return [""]
-        case .tennis:
-            return ["tennis-0", "tennis-1", "tennis-2", "tennis-3"]
-        case .pickleball:
-            return [""]
-        }
-    }
-    
     enum SkillLevel: String, CaseIterable {
         case beginner   = "Beginner"
         case amateur    = "Amateur"
@@ -78,12 +35,10 @@ struct NewEventView: View {
     @State private var eventClubId:             String = ""
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
-    @State private var eventSport:              Sports = .soccer
+    @State private var eventSport:              SPORTS = .soccer
     @State private var eventLevel:              Int    = 1
     @State private var eventMaxParticipants:    Double = 0
-    
-    @State private var showSuccess  = false
-    @State private var showFaillure = false
+    @State private var status:                  LOADING_STATE = .pending
     
     @StateObject private var eventObserver =  EventObserver()
     
@@ -91,13 +46,17 @@ struct NewEventView: View {
     @Environment(\.presentationMode) var presentationMode
     
     func CreateEvent() async {
-        let status = "pending"
-        let now = Int(eventStartTime.timeIntervalSince1970)
-        print(eventClubId)
-        let dao = EventDao(_title: eventTitle, _body: eventBody, _clubId: eventClubId, _fieldId: eventFieldId, _imageURL: eventImageURL, _sport: getSportRawText(for: eventSport), _startTime: now, _maxParticipants: Int(eventMaxParticipants), _level: eventLevel, _status: status)
-        let res = await eventObserver.createEvent(dao: dao)
-        if res {
-            self.showCompletedToast.toggle()
+        status = .loading
+        let dao = EventDao(title: eventTitle, body: eventBody, clubId: eventClubId, fieldId: eventFieldId, imageURL: eventImageURL, sport: eventSport.rawValue, startTime: Int(eventStartTime.timeIntervalSince1970), maxParticipants: Int(eventMaxParticipants), level: eventLevel, status: "pending")
+        let resp = await eventObserver.createEvent(dao: dao)
+        if var r = resp {
+            if let usr = session.user {
+                r.ownerData = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
+            }
+            status = .success
+            await MainActor.run {
+                session.events.append(r)
+            }
             self.presentationMode.wrappedValue.dismiss()
         }
     }
@@ -119,17 +78,14 @@ struct NewEventView: View {
                     Text("Title")
                         .font(.title3)
                         .bold()
-                        
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
-                            .frame(height: 40)
+                    Text("What to call the event")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    
                         TextField("title", text: $eventTitle)
                             .padding(.leading)
                             .tint(Color("primary-color"))
-                            
-                    }.frame(width: SCREEN_WIDTH-50)
+                            .modifier(MenuButton())
                 }
                 
                 // MARK: - Sports picker
@@ -137,19 +93,17 @@ struct NewEventView: View {
                     Text("Sport")
                         .font(.title3)
                         .bold()
-
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
-                            .frame(height: 40)
-                        Picker(selection: $eventSport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            ForEach(Sports.allCases, id: \.rawValue) { sport in
-                                Text(sport.rawValue).tag(sport)
-                            }
-                        }.frame(width: SCREEN_WIDTH/2)
-                            .tint(Color("primary-color"))
-                    }
+                    Text("The sport you're going to play")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                    
+                    Picker(selection: $eventSport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                        ForEach(SPORTS.allCases, id: \.rawValue) { sport in
+                            Text(sport.Icon() + " " + sport.rawValue).tag(sport)
+                        }
+                    }.modifier(MenuButton())
+                        .tint(Color("primary-color"))
+                    
                 }.padding(.top)
                     .frame(width: SCREEN_WIDTH-50)
                 
@@ -158,18 +112,19 @@ struct NewEventView: View {
                     Text("Description")
                         .font(.title3)
                         .bold()
+                    Text("Give details about the event")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
+                            .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                             .frame(height: 100)
                         TextEditor(text: $eventBody)
-                            .padding(.leading)
                             .frame(height: 80)
                             .scrollContentBackground(.hidden)
                             .tint(Color("primary-color"))
                     }
-                }.frame(width: SCREEN_WIDTH-50)
+                }.frame(width: SCREEN_WIDTH-25)
                 
                 
                 
@@ -180,47 +135,44 @@ struct NewEventView: View {
                         Text("Club")
                             .font(.title3)
                             .bold()
-
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color("secondary-color"))
-                                .opacity(0.3)
-                                .frame(height: 40)
-                            Picker(selection: $eventClubId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                                ForEach(session.myClubs, id: \.id) { club in
-                                    Text(club.name).tag(club.id)
-                                }
-                            }.frame(width: SCREEN_WIDTH/2)
-                                .tint(Color("primary-color"))
-                        }
+                        Text("The club affiliated with the event")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        Picker(selection: $eventClubId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                            ForEach(session.myClubs, id: \.id) { club in
+                                Text(club.name).tag(club.id)
+                            }
+                        }.modifier(MenuButton())
+                            .tint(Color("primary-color"))
+                            
+                        
                     }.padding(.top)
-                        .frame(width: SCREEN_WIDTH-50)
+
                         .padding(.bottom)
                     Text("Field")
                         .font(.title3)
                         .bold()
-
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
-                            .frame(height: 40)
-                        Picker(selection: $eventFieldId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            ForEach(session.fields, id: \.id) { field in
-                                Text(field.name).tag(field.id)
-                            }
-                        }.frame(width: SCREEN_WIDTH/2)
-                            .tint(Color("primary-color"))
-                    }
+                    Text("Location of the event")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                    
+                    Picker(selection: $eventFieldId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                        ForEach(session.fields, id: \.id) { field in
+                            Text(field.name).tag(field.id)
+                        }
+                    }.modifier(MenuButton())
+                        .tint(Color("primary-color"))
+                    
                 }.padding(.top)
-                    .frame(width: SCREEN_WIDTH-50)
+                    .frame(width: SCREEN_WIDTH-25)
                 
                 // MARK: - Date/Time picker
                 VStack(alignment: .leading){
                     Text("Start Date/Time")
                         .font(.title3)
                         .bold()
-                    DatePicker(selection: $eventStartTime, label: { Text("") })
+                    DatePicker("", selection: $eventStartTime, in: Date()...)
                         .datePickerStyle(.graphical)
                         .tint(Color("primary-color"))
 
@@ -232,19 +184,15 @@ struct NewEventView: View {
                     Text("Skill Level")
                         .font(.title3)
                         .bold()
-
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
-                            .frame(height: 40)
-                        Picker(selection: $eventLevel, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            ForEach(SkillLevel.allCases, id: \.rawValue) { skill in
-                                Text(skill.rawValue).tag(getSkillRaw(for: skill))
-                            }
-                        }.frame(width: SCREEN_WIDTH/2)
-                            .tint(Color("primary-color"))
-                    }
+                    Text("Participants expected experience")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                    Picker(selection: $eventLevel, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                        ForEach(SkillLevel.allCases, id: \.rawValue) { skill in
+                            Text(skill.rawValue).tag(getSkillRaw(for: skill))
+                        }
+                    }.modifier(MenuButton())
+                        .tint(Color("primary-color"))
                 }.padding(.top)
                     .frame(width: SCREEN_WIDTH-50)
                 
@@ -253,12 +201,10 @@ struct NewEventView: View {
                     Text("Max Participants")
                         .font(.title3)
                         .bold()
+                    Text("Limit on headcount")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("secondary-color"))
-                            .opacity(0.3)
-                            .frame(height: 40)
                         HStack {
                             Slider(
                                 value: $eventMaxParticipants,
@@ -272,8 +218,8 @@ struct NewEventView: View {
                             Text("\(Int(eventMaxParticipants))")
                                 .foregroundColor(isEditing ? .red : Color("primary-color"))
                                 .padding(.trailing)
-                        }
-                    }
+                        }.modifier(MenuButton())
+                    
                 }.padding(.top)
                     .frame(width: SCREEN_WIDTH-50)
                 
@@ -287,7 +233,7 @@ struct NewEventView: View {
                     }
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(getSportImages(for: eventSport), id: \.self) { image in
+                            ForEach(eventSport.Images(), id: \.self) { image in
                                 Button(action:{self.eventImageURL = image}) {
                                     ZStack(alignment: .bottomTrailing){
                                         Image(image)
@@ -316,41 +262,23 @@ struct NewEventView: View {
                     .padding(.top)
                 // MARK: - Action Button
                 VStack(alignment: .center){
-                    Button(action: {
-                        Task {
-                            await CreateEvent()
-                        }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 100, height: 35)
-                                .foregroundColor(Color("primary-color"))
-                            Text("Create")
-                                .foregroundColor(.white)
-                        }
+                    Button(action: { Task { await CreateEvent() } }) {
+                        LoadingButton(text: "Create", width: 150, status: $status)
                     }
                 }.padding(.top, 50)
                     
             }.frame(width: SCREEN_WIDTH)
-                .toast(isPresenting: $showCompletedToast,duration: 1, alert: {
-                    AlertToast(displayMode: .banner(.pop), type: .regular, title: "Event Created!", style: .style(titleColor: .white, titleFont: .callout))
-                })
-                .task {
-                    if !session.fields.isEmpty {
-                        eventFieldId = session.fields[0].id
-                    }
-                    
-                    if !session.myClubs.isEmpty {
-                        eventClubId = session.myClubs[0].id
-                    }
-                    
-                }
+        }.task {
+            eventClubId = session.myClubs[0].id
+            eventFieldId = session.fields[0].id
+            eventSport = .soccer
         }
     }
 }
 
 struct NewEventView_Previews: PreviewProvider {
     static var previews: some View {
-        NewEventView().environmentObject(SessionStore())
+        NewEventView()
+            .environmentObject(SessionStore())
     }
 }

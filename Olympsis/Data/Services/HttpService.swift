@@ -40,12 +40,16 @@ class HttpService: ObservableObject {
     
     private var token:String
     private let logger:Logger
-    private let host:String
+    private var host:String
     private var cacheService: CacheService
    
-    init() {
+    init(chat: Bool=false) {
         logger = Logger()
-        host = Bundle.main.object(forInfoDictionaryKey: "HOST") as! String
+        if chat {
+            host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+        } else {
+            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        }
         cacheService = CacheService()
         token = cacheService.fetchToken()
     }
@@ -56,6 +60,10 @@ class HttpService: ObservableObject {
     
     func setToken(t: String) {
         token = t
+    }
+    
+    func setHost(h: String) {
+        host = h
     }
     
     /// Creates an HTTP request
@@ -103,7 +111,7 @@ class HttpService: ObservableObject {
             request.setValue("olympsis-ios", forHTTPHeaderField: "User-Agent")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("Connection", forHTTPHeaderField: "keep-alive")
+            request.setValue("keep-alive", forHTTPHeaderField: "Connection")
             
             // log request
             logger.log("Making a \(request.httpMethod!) request to \(url)")

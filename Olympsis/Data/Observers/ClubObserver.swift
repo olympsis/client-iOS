@@ -27,10 +27,13 @@ class ClubObserver: ObservableObject{
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func getClubs() async {
+    func getClubs(country: String, state: String) async {
         do {
-            let resp = try await clubService.getClubs()
-            let object = try decoder.decode(ClubsResponse.self, from: resp)
+            let (data, res) = try await clubService.getClubs(c: country, s: state)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return
+            }
+            let object = try decoder.decode(ClubsResponse.self, from: data)
             await MainActor.run { // TODO: Check later about threads
                 self.clubs = object.clubs
                 self.clubsCount = object.totalClubs
@@ -51,23 +54,9 @@ class ClubObserver: ObservableObject{
         return nil
     }
     
-    func getClubApplications() async {
-        do {
-            let resp = try await clubService.getClubs()
-            let object = try decoder.decode(ClubsResponse.self, from: resp)
-            await MainActor.run { // TODO: Check later about threads
-                self.clubs = object.clubs
-                self.clubsCount = object.totalClubs
-            }
-        } catch (let err) {
-            print(err)
-        }
-    }
-    
     func createClubApplication(clubId: String) async -> Bool {
-        let req = ClubApplicationRequestDao(clubId: clubId)
         do {
-            return try await clubService.createClubApplication(req: req)
+            return try await clubService.createClubApplication(id: clubId)
         } catch (let err) {
             print(err)
             return false
@@ -94,9 +83,36 @@ class ClubObserver: ObservableObject{
         return [ClubApplication]()
     }
     
-    func updateApplication(id: String, dao: UpdateApplicationDao) async -> Bool {
+    func updateApplication(id: String, appId: String, dao: UpdateApplicationDao) async -> Bool {
         do {
-            let res = try await clubService.updateApplication(id: id, dao: dao)
+            let res = try await clubService.updateApplication(id: id, appId: appId, dao: dao)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            print(error)
+        }
+        return false
+    }
+    
+    func changeMemberRank(id: String, memberId: String, role: String) async -> Bool {
+        do {
+            let dao = ChangeRankDao(role: role)
+            let res = try await clubService.changeRank(id: id, memberId: memberId, dao: dao)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            print(error)
+        }
+        return false
+    }
+    
+    func kickMember(id: String, memberId: String) async -> Bool {
+        do {
+            let res = try await clubService.kickMember(id: id, memberId: memberId)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }

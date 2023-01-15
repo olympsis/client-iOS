@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import CoreLocation
+import NotificationCenter
 
 struct Home: View {
     
@@ -21,12 +23,12 @@ struct Home: View {
     @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
     @State private var hasOpened = false
+    @State private var showMoreFields = false
     @State private var status: Status = .loading
 
     @StateObject private var observer = FeedObserver()
     @StateObject private var eventObserver = EventObserver()
     @StateObject private var fieldObserver = FieldObserver()
-    @StateObject private var locationManager = LocationManager()
     
     @EnvironmentObject var session: SessionStore
     
@@ -36,13 +38,25 @@ struct Home: View {
                 VStack {
                     HStack {
                         VStack(alignment: .leading){
-                            Text("Welcome back \(session.getFirstName())")
-                                .font(.custom("Helvetica Neue", size: 25))
-                                .fontWeight(.regular)
-                            Text("ready to play?")
-                                .font(.custom("Helvetica Neue", size: 20))
-                                .fontWeight(.light)
-                                .foregroundColor(.gray)
+                            if let name = session.user?.firstName {
+                                Text("Welcome back \(name)")
+                                    .font(.custom("Helvetica Neue", size: 25))
+                                    .fontWeight(.regular)
+                                Text("ready to play?")
+                                    .font(.custom("Helvetica Neue", size: 20))
+                                    .fontWeight(.light)
+                                    .foregroundColor(.gray)
+                            } else {
+                                Rectangle()
+                                    .frame(width: 300, height: 30)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.3)
+                                
+                                Rectangle()
+                                    .frame(width: 150, height: 20)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.3)
+                            }
                         }.padding(.leading)
                             .padding(.top, 25)
                         Spacer()
@@ -62,7 +76,7 @@ struct Home: View {
                                         AnnouncementView(announcement: announcement).tag(announcement.id)
                                     }
                                 }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                                    .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/2, alignment: .center)
+                                    .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
                                 
                                 // Page View Indicator
                                 VStack{
@@ -91,12 +105,14 @@ struct Home: View {
                                         .font(.system(.headline))
                                     .padding()
                                     Spacer()
-                                    // This will be added back in later
-                                   /* Button(action:{}){
+                                    Button(action:{self.showMoreFields.toggle()}){
                                         Text("View All")
+                                           .bold()
                                         Image(systemName: "chevron.down")
                                     }.padding()
-                                        .foregroundColor(Color.primary)*/
+                                        .foregroundColor(Color.primary)
+                                }.fullScreenCover(isPresented: $showMoreFields) {
+                                    FieldsList(fields: session.fields)
                                 }
                                 
                                 if fieldObserver.isLoading {
@@ -109,7 +125,7 @@ struct Home: View {
                                     } else {
                                         ScrollView(.horizontal, showsIndicators: false){
                                             HStack{
-                                                ForEach(session.fields, id: \.name){ field in
+                                                ForEach(session.fields.prefix(3), id: \.name){ field in
                                                     FieldView(field: field)
                                                 }
                                             }
@@ -117,7 +133,7 @@ struct Home: View {
                                     }
                                 }
                             }
-                        }.onReceive(locationManager.$location) { newLoc in
+                        }.onReceive(session.locationManager.$location) { newLoc in
                             // we have to wait an undetermined amount of time to hear back from the gps to get location
                             // so i used on recieve and after that info is delivered we can start fetching for fields by location
                             if let location = newLoc {
@@ -126,20 +142,33 @@ struct Home: View {
                                 }
                                 Task {
                                     // fetch nearby fields
-                                    await fieldObserver.fetchFields(longitude: location.longitude, latitude: location.latitude, radius: 10)
-                                    session.fields = fieldObserver.fields
+                                    await fieldObserver.fetchFields(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10))
+                                    await MainActor.run {
+                                        session.fields = fieldObserver.fields
+                                    }
                                     
-                                    // fetch nearby events
-                                    await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: 10, sport: "soccer")
-                                    session.events = eventObserver.events
-                                    
+                                    // fetch nearby events that user has subscribed to
+                                    if let usr = session.user {
+                                        if let sport = usr.sports {
+                                            for s in sport {
+                                                // fetch nearby events
+                                                let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sport: s)
+                                                if let events = res {
+                                                    await MainActor.run {
+                                                        for event in events {
+                                                            session.events.append(event)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                                 
                                 // prevents us from doing this everytime we get new info from gps
                                 // thus we only load data the first time
                                 // later i might add a button for you to reload, however, i dont see the need to
                                 // unless you are in map view.
-                                // TODO: Maybe add reload button to mapview
                                 hasLoaded = true
                                 
                                 // stops the view from showing the template loader
@@ -151,19 +180,10 @@ struct Home: View {
                             guard hasOpened == false else {
                                 return
                             }
-                            
-                            locationManager.requestLocation()
-                            
-                            // mix stored user data with backend data
-                            await session.GenerateUpdatedUserData()
-                            
-                            // grab clubs data
-                            await session.generateClubsData()
-                            
-                            hasOpened = true
+                            session.locationManager.requestLocation()
                             // makes sure we are only getting this data the first time only
+                            hasOpened = true
                         }
-
                 }.navigationTitle("Home")
             }
         }

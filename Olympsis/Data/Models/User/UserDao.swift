@@ -11,7 +11,7 @@ import Foundation
 struct UserDao: Codable {
     var uuid: String
     var username: String
-    var bio: String
+    var bio: String?
     var imageURL: String?
     var isPublic: Bool
     var sports: [String]?
@@ -19,6 +19,7 @@ struct UserDao: Codable {
     var badges: [Badge]?
     var trophies: [Trophy]?
     var friends: [Friend]?
+    var deviceToken: String?
     
     enum CodingKeys: String, CodingKey {
         case uuid
@@ -31,5 +32,6 @@ struct UserDao: Codable {
         case badges
         case trophies
         case friends
+        case deviceToken
     }
 }
