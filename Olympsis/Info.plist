@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Our app needs access to your photo library to upload profile images and to post images on your club&apos;s timeline.</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -26,14 +24,20 @@
 			<string>None</string>
 		</dict>
 	</array>
+	<key>Enable Multiple Windows</key>
+	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
+	<key>CHAT</key>
+	<string>chat.olympsis.com</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeCar</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>In order to notify you of local events, and club activities our app needs to be able send you notifications.</string>
+	<key>Scene Configuration</key>
+	<dict/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ITCAvantGardeStd-Bk.ttf</string>
@@ -57,6 +61,13 @@
 		<string>ITCAvantGardeStd-XLtCnObl.ttf</string>
 		<string>ITCAvantGardeStd-XLtObl.ttf</string>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
