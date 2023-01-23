@@ -157,7 +157,7 @@ struct CreateNewClub: View {
                                 .opacity(0.1)
                                 .frame(height: 40)
                             Picker(selection: $sport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                                ForEach(SPORTS.allCases, id: \.rawValue) { sport in
+                                ForEach(SPORT.allCases, id: \.rawValue) { sport in
                                     Text(sport.Icon() + " " + sport.rawValue).tag(sport.rawValue)
                                 }
                             }.frame(width: SCREEN_WIDTH/2)

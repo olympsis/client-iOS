@@ -32,7 +32,7 @@ struct ParticipantView: View {
                             .clipShape(Circle())
                             .frame(width: 55, height: 55)
                         Image(systemName: "exclamationmark.circle")
-                    }
+                    }.frame(width: 65, height: 65)
                 } else {
                     ZStack {
                         Circle()
@@ -42,7 +42,7 @@ struct ParticipantView: View {
                             .clipShape(Circle())
                             .frame(width: 55, height: 55)
                         ProgressView()
-                    }
+                    }.frame(width: 65, height: 65)
                 }
             }
         } else {
@@ -54,7 +54,7 @@ struct ParticipantView: View {
                     .clipShape(Circle())
                     .frame(width: 55, height: 55)
                 ProgressView()
-            }
+            }.frame(width: 65, height: 65)
         }
     }
 }

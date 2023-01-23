@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct RoomListView: View {
+    
     @State var room: Room
     @Binding var rooms: [Room]
     @State var observer: ChatObserver
-    @State private var hasJoined = false
+    @State private var joined = false
+    @State private var state: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
+    
     var body: some View {
         HStack {
             Circle()
@@ -24,9 +27,12 @@ struct RoomListView: View {
                 .padding(.leading, 10)
                 .foregroundColor(.primary)
             Spacer()
-            if !hasJoined {
+            if !joined {
                 Button(action:{
                     Task{
+                        withAnimation(.easeInOut) {
+                            state = .loading
+                        }
                         let res = await observer.JoinRoom(id:room.id)
                         if let r = res {
                             let index = self.$rooms.firstIndex(where: {$0.id == r.id})
@@ -34,28 +40,23 @@ struct RoomListView: View {
                                 self.rooms.remove(at: i)
                                 rooms.append(r)
                                 withAnimation(.easeOut){
-                                    hasJoined = true
+                                    state = .success
+                                    joined = true
                                 }
                             }
                         }
                     }
                 }){
-                    ZStack {
-                        Rectangle()
-                            .frame(width: 100, height: 50)
-                            .foregroundColor(Color("primary-color"))
-                        Text("Join")
-                            .foregroundColor(.white)
-                    }
+                    LoadingButton(text: "Join", width: 100, status: $state)
                 }
                 .padding(.trailing)
             }
         }.task {
             if let usr = session.user {
                 if !room.members.contains(where: {$0.uuid == usr.uuid}){
-                    hasJoined = false
+                    joined = false
                 } else {
-                    hasJoined = true
+                    joined = true
                 }
             }
         }

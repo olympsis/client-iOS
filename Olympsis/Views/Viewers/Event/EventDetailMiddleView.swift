@@ -58,9 +58,9 @@ struct EventDetailMiddleView: View {
                                 .foregroundColor(.green)
                                 .bold()
                         }
-                    } else if event.status == "completed" {
+                    } else if event.status == "ended" {
                         VStack {
-                            Text("Completed")
+                            Text("Ended")
                                 .foregroundColor(.gray)
                                 .bold()
                             if let sT = event.stopTime {

@@ -49,7 +49,11 @@ struct MapView: View {
                             }
                         }.padding(.bottom, 20)
                             .sheet(isPresented: $showNewEvent) {
-                            NewEventView()
+                                if let usr = session.user {
+                                    if let sports = usr.sports {
+                                        NewEventView(clubs: session.myClubs, fields: session.fields, sports: sports)
+                                    }
+                                }
                         }
                         .frame(width: 40)
                         

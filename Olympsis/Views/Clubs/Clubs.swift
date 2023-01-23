@@ -35,7 +35,9 @@ struct Clubs: View {
                                 ClubMenu(club: session.myClubs[index], index: $index)
                             }
                             .fullScreenCover(isPresented: $showMessages) {
-                                Messages(club: session.myClubs[index])
+                                if let usr = session.user {
+                                    Messages(club: session.myClubs[index], user: usr)
+                                }
                             }
                     }
                 }
@@ -63,10 +65,10 @@ struct Clubs: View {
                         
                         ToolbarItem(placement: .navigationBarTrailing){
                             Button(action:{ self.showMenu.toggle() }) {
-                                Image(systemName: "c.circle.fill")
+                                Image(systemName: "line.3.horizontal")
                                     .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(.gray)
+                                    .frame(width: 25, height: 15)
+                                    .foregroundColor(.primary)
                             }
                         }
                     } else {

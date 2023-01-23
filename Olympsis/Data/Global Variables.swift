@@ -44,7 +44,7 @@ enum LOADING_STATE {
     case failure
 }
 
-enum SPORTS: String, CaseIterable {
+enum SPORT: String, CaseIterable {
     case soccer = "soccer"
     case volleyball = "volleyball"
     case basketball = "basketball"
@@ -74,21 +74,38 @@ enum SPORTS: String, CaseIterable {
         case .soccer:
             return ["soccer-0","soccer-1"]
         case .basketball:
-            return ["basketball-0", "basketball-1", "basketball-2","basketball-4", "basketball-5"]
+            return ["basketball-0", "basketball-1", "basketball-2"]
         case .volleyball:
-            return [""]
+            return ["volleyball-0","volleyball-1","volleyball-2"]
         case .tennis:
-            return ["tennis-0", "tennis-1", "tennis-2", "tennis-3"]
+            return ["tennis-0", "tennis-1", "tennis-2"]
         case .pickleball:
-            return [""]
+            return ["pickleball-0","pickleball-1","pickleball-2"]
         case .golf:
-            return [""]
+            return ["golf-0","golf-1","golf-2"]
         }
     }
 }
 
+func SportFromString(s: String) -> SPORT {
+    switch s {
+    case "soccer":
+        return .soccer
+    case "basketball":
+        return .basketball
+    case "pickleball":
+        return .pickleball
+    case "tennis":
+        return .tennis
+    case "golf":
+        return .golf
+    default:
+        return .allCases[0]
+    }
+}
+
 enum MEMBER_ROLES: String, CaseIterable {
-    case Admin = "mdmin"
+    case Admin = "admin"
     case Moderator = "moderator"
     case Member = "member"
 }

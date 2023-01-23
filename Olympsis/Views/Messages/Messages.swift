@@ -11,6 +11,7 @@ struct Messages: View {
     
 
     @State var club: Club
+    @State var user: UserStore
     @State var rooms = [Room]()
     @State private var text = ""
     @State private var showRooms = false
@@ -24,6 +25,9 @@ struct Messages: View {
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
+    private var joinedRooms: [Room] {
+        return rooms.filter({$0.members.contains(where: {$0.uuid == user.uuid})})
+    }
     
     var body: some View {
         NavigationView {
@@ -54,7 +58,7 @@ struct Messages: View {
                         }.padding(.bottom, 5)
                         ForEach(1..<20, id: \.self) { number in
                             RoomTemplateView()
-                                .padding(.bottom)
+                                .padding(.bottom, 5)
                         }
                     }
                 } else if state == .success{
@@ -82,20 +86,10 @@ struct Messages: View {
                                     }.padding(.trailing)
                                 }
                             }.padding(.bottom, 5)
-                            ForEach(rooms) { room in
-                                Button(action:{
-                                    if let usr = session.user {
-                                        if room.members.contains(where: {$0.uuid == usr.uuid}){
-                                            self.showDetail.toggle()
-                                        }
-                                    }
-                                }){
-                                    if let usr = session.user {
-                                        if room.members.contains(where: {$0.uuid == usr.uuid}){
-                                            RoomListView(room: room, rooms: $rooms, observer: chatObserver)
-                                                .padding(.bottom)
-                                        }
-                                    }
+                            ForEach(joinedRooms) { room in
+                                Button(action:{ self.showDetail.toggle() }){
+                                    RoomListView(room: room, rooms: $rooms, observer: chatObserver)
+                                        .padding(.bottom)
                                 }.fullScreenCover(isPresented: $showDetail) {
                                     RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
                                 }
@@ -158,9 +152,11 @@ struct Messages: View {
                 if let r = resp {
                     await MainActor.run {
                         rooms = r.rooms
+                        state = .success
                     }
+                } else {
+                    state = .success
                 }
-                state = .success
             }
             .fullScreenCover(isPresented: $showRooms) {
                 RoomsSearch(club: $club, rooms: $rooms, observer: chatObserver)
@@ -176,7 +172,8 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember](), history: [Message]())
-        Messages(club: club, rooms: [room]).environmentObject(SessionStore())
+        let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
+        let user = UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", isPublic: true)
+        Messages(club: club, user: user, rooms: [room]).environmentObject(SessionStore())
     }
 }

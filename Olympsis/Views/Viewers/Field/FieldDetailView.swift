@@ -28,7 +28,20 @@ struct FieldDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     func leadToMaps() {
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[0]),\(field.location.coordinates[1])")! as URL)
+        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
+    }
+    
+    func IsIn(s: String) -> Bool {
+        if let usr = session.user {
+            if let sports = usr.sports {
+                return sports.contains(where: {$0 == s})
+            }
+        }
+        return false
+    }
+    
+    var associatedClubs: [Club] {
+        return session.myClubs.filter({ IsIn(s: $0.sport) })
     }
     
     var body: some View {
@@ -160,7 +173,11 @@ struct FieldDetailView: View {
                     }
                 }
                 .sheet(isPresented: $showNewEvent) {
-                    NewEventView()
+                    if let usr = session.user {
+                        if let sports = usr.sports {
+                            NewEventView(clubs: associatedClubs, fields: session.fields, sports: sports)
+                        }
+                    }
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading){

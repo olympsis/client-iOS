@@ -167,7 +167,7 @@ struct CreateAccount: View {
                             .font(.caption2)
                             .foregroundColor(.gray)
                         VStack {
-                            ForEach(SPORTS.allCases, id: \.self){ _sport in
+                            ForEach(SPORT.allCases, id: \.self){ _sport in
                                 HStack {
                                     Button(action: {updateSports(sport: _sport.rawValue)}){
                                         isSelected(sport: _sport.rawValue) ? Image(systemName: "circle.fill")
