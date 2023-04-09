@@ -32,6 +32,7 @@ class SessionStore: ObservableObject {
     @ObservedObject var locationManager: LocationManager
     @ObservedObject var notificationsManager: NotificationsManager
     
+    @AppStorage("authToken") var authToken: String?
     @AppStorage("loggedIn") private var loggedIn: Bool? // makes sure the user is completely logged in
     @AppStorage("searchRadius") var radius: Double? // search radius for fields in miles
     
@@ -71,7 +72,7 @@ class SessionStore: ObservableObject {
             let updatedData = try await userObserver.GetUserData()
             (firstName, lastName, email) = cacheService.fetchIdentifiableData()
             let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
-                                    uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: updatedData.imageURL, isPublic: updatedData.isPublic,
+                                    uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: updatedData.imageURL, visibility: updatedData.visibility,
                                     sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
             // update session store
             await MainActor.run {
@@ -87,7 +88,7 @@ class SessionStore: ObservableObject {
     func GenerateUserDataFirstTime(username: String, sports:[String]) async {
         (firstName, lastName, email) = cacheService.fetchIdentifiableData()
         
-        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", isPublic: false, sports: sports)
+        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", visibility: "private", sports: sports)
         await MainActor.run {
             self.user = newUser
         }

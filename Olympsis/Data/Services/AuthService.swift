@@ -6,53 +6,33 @@
 //
 
 import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class AuthService: Service {
+class AuthService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key)
     }
     
-    let urlSession = URLSession.shared
-    
-    func SignUp(firstName:String, lastName:String, email:String, token:String) async throws -> Data{
-        let req = AuthRequestSignIn()
-        req.firstName   = firstName
-        req.lastName    = lastName
-        req.email       = email
-        req.token       = token
-        
+    func SignUp(request: SignInRequest) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/auth/signup", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server (POST): \(endpoint.path)")
-        
-        let (data, _) = try await http.Request(endpoint: endpoint , method: Method.POST, body: req)
-        return data
+        return try await http.Request(endpoint: endpoint , method: .POST, body: EncodeToData(request))
     }
     
-    func LogIn(token: String) async throws -> (Data, URLResponse){
-        
-        http.setToken(t: token)
+    func LogIn(request: LoginRequest) async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/v1/auth/login", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.PUT)
+        return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(request))
     }
     
-    func LogOut() async throws -> (Data, URLResponse){
-        
-        let endpoint = Endpoint(path: "/v1/auth/logout", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.PUT)
+    func DeleteAccount() async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/v1/auth/delete", queryItems: [URLQueryItem]())
+        return try await http.Request(endpoint: endpoint, method: .DELETE)
     }
 }
 

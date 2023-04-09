@@ -5,87 +5,71 @@
 //  Created by Joel Joseph on 1/1/23.
 //
 
-import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class ChatService: Service {
+class ChatService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService(chat: true)
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
-    
-    let urlSession = URLSession.shared
-    
     
     func createRoom(dao: RoomDao) async throws -> (Data, URLResponse) {
         
-        let endpoint = Endpoint(path: "/v1/chats", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
     }
     
     func getRooms(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/chats/club/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/club/\(id)", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func getRoom(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func updateRoom(id: String, dao: RoomDao) async throws -> (Data, URLResponse) {
         
-        let endpoint = Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
+        return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao))
     }
     
     func deleteRoom(id: String) async throws -> (Data, URLResponse) {
         
-        let endpoint = Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(DELETE): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.DELETE)
+        return try await http.Request(endpoint: endpoint, method: .DELETE)
     }
     
     func joinRoom(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/chats/\(id)/join", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)/join", queryItems: [
             URLQueryItem]())
-        
-        log.log("Initiating request to server(POST): \(endpoint.path)")
         
         return try await http.Request(endpoint: endpoint, method: Method.POST)
     }
     
     func leaveRoom(id: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/chats/\(id)/leave", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)/leave", queryItems: [
             URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.POST)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST)
         return resp
     }
 }

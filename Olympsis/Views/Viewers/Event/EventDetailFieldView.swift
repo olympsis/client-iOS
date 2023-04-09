@@ -30,7 +30,7 @@ struct EventDetailFieldView: View {
 
 struct EventDetailFieldView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "Just right across the way from the Orem Fitness Center and Mountain View High School, Community Park is a very large park with lots to offer residents. It has 5 baseball fields, 9 tennis courts, and plenty of open space for soccer, football, and outdoor games.", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [-111.656757, 40.247278]), city: "Provo", state: "Utah", country: "United States of America", isPublic: false)
+        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "Just right across the way from the Orem Fitness Center and Mountain View High School, Community Park is a very large park with lots to offer residents. It has 5 baseball fields, 9 tennis courts, and plenty of open space for soccer, football, and outdoor games.", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [-111.656757, 40.247278]), city: "Provo", state: "Utah", country: "United States of America", ownership: "private")
         EventDetailFieldView(field: field)
     }
 }

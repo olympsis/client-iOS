@@ -6,71 +6,59 @@
 //
 
 import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class PostService: Service {
+class PostService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
-    
-    let urlSession = URLSession.shared
     
     func getPosts(id: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/posts", queryItems: [
             URLQueryItem(name: "clubId", value: id),
         ])
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET)
     }
     
     func createPost(post: PostDao) async throws -> Data {
         let endpoint = Endpoint(path: "/v1/posts", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.POST, body: post)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post))
         return data
     }
     
     func deletePost(postId: String) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/posts/\(postId)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(DELETE): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
         return resp
     }
     
     func getComments(id: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/posts/\(id)/comments", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET)
     }
     
     func addComment(id: String, dao:CommentDao) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/posts/\(id)/comments", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(dao))
     }
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/posts/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(DELETE): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
         return resp
     }
 }

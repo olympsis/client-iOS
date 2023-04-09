@@ -16,6 +16,7 @@ struct EditProfile: View {
     @State private var username: String = ""
     @State private var imageUrl: String?
     @State private var isPublic: Bool = true
+    @State private var visibility: String = "public"
 
     @State private var selectedSports: [String] = [String]()
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -23,11 +24,11 @@ struct EditProfile: View {
     
     @State private var uploadingStatus: LOADING_STATE = .pending
     
-    @StateObject var userObserver = UserObserver()
+    @State var userObserver: UserObserver?
     @StateObject var uploadObserver = UploadObserver()
     
     
-    
+    @AppStorage("authToken") var authToken: String?
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
@@ -48,10 +49,13 @@ struct EditProfile: View {
                         }
                     }
                     let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: url, _isPublic: isPublic, _sports: selectedSports)
-                    let res = await userObserver.UpdateUserData(update: update)
-                    if res {
-                        return true
+                    if let observer = userObserver {
+                        let res = await observer.UpdateUserData(update: update)
+                        if res {
+                            return true
+                        }
                     }
+                    
                 }
             } else {
                 print("failed to upload image")
@@ -61,10 +65,13 @@ struct EditProfile: View {
             // if there is no new image data just update user data then
             if let user = session.user {
                 let update = UpdateUserDataDao(_username: user.username, _bio: bio, _isPublic: isPublic, _sports: selectedSports)
-                let res = await userObserver.UpdateUserData(update: update)
-                if res {
-                    return true
+                if let observer = userObserver {
+                    let res = await observer.UpdateUserData(update: update)
+                    if res {
+                        return true
+                    }
                 }
+                
             }
             return false
         }
@@ -180,7 +187,7 @@ struct EditProfile: View {
                         }.task {
                             if let user = session.user {
                                 bio = user.bio ?? ""
-                                isPublic = user.isPublic
+                                isPublic = (user.visibility == "private" ? false : true)
                             }
                             
                         }
@@ -190,6 +197,13 @@ struct EditProfile: View {
                                 Text("Profile Visivility")
                             }.frame(width: SCREEN_WIDTH-30, height: 40)
                                 .tint(Color("secondary-color"))
+                                .onChange(of: isPublic) { newValue in
+                                    if newValue {
+                                        visibility = "public"
+                                    } else {
+                                        visibility = "private"
+                                    }
+                                }
                             Text("Allow users not on your friends list to see your profile")
                                 .font(.caption)
                                 .foregroundColor(.gray)

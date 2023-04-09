@@ -54,7 +54,7 @@ struct Auth: View {
                         onCompletion: { result in
                             Task {
                                 do {
-                                    let res = try await observer.handleSignInWithApple(result: result)
+                                    let res = try await observer.HandleSignInWithApple(result: result)
                                     await MainActor.run {
                                         userStatus = res
                                         if userStatus == USER_STATUS.New {
@@ -69,8 +69,8 @@ struct Auth: View {
                             }
                         }
                     ).signInWithAppleButtonStyle(.white)
-                        .cornerRadius(25)
-                        .frame(minWidth: 200, idealWidth: SCREEN_WIDTH-50, maxWidth: SCREEN_WIDTH-50, minHeight: 30, idealHeight: 60, maxHeight: 60, alignment: .center)
+                        .cornerRadius(10)
+                        .frame(width: SCREEN_WIDTH-100, height: 50)
                         .padding(.bottom, 50)
                 }
             }

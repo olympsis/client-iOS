@@ -16,6 +16,7 @@ class AuthObserver: ObservableObject {
     let decoder: JSONDecoder
     let authService: AuthService
     let cacheService: CacheService
+    let tokenStore = TokenStore()
     
     init() {
         decoder = JSONDecoder()
@@ -23,22 +24,40 @@ class AuthObserver: ObservableObject {
         cacheService = CacheService()
     }
     
-    func SignUp(firstName:String, lastName:String, email:String, token: String) async throws {
-        let response = try await authService.SignUp(firstName: firstName, lastName: lastName, email: email, token: token)
-        let object = try decoder.decode(AuthResponseDao.self, from: response)
-        await cacheService.cacheToken(token: object.token)
-    }
-    
-    func LogIn(token: String) async throws {
-        let (data, _) = try await authService.LogIn(token: token)
-        let object = try decoder.decode(LoginResponse.self, from: data)
+    func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
+        let req = SignInRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
         
-        // cache user identifiable data and session token
-        await cacheService.chacheIdentifiableData(firstName: object.firstName, lastName: object.lastName, email: object.email)
-        await cacheService.cacheToken(token: object.sessionToken)
+        let (data, _) = try await authService.SignUp(request: req)
+        
+        let object = try decoder.decode(AuthResponse.self, from: data)
+        await cacheService.cacheToken(token: object.token)
+        
+        _ = await MainActor.run {
+            tokenStore.SaveTokenToKeyChain(token: object.token)
+        }
     }
     
-    func handleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS{
+    func LogIn(code: String) async throws {
+        let req = LoginRequest()
+        req.code = code
+        req.provider = "https://appleid.apple.com"
+        
+        let (data, _) = try await authService.LogIn(request: req)
+
+        let object = try decoder.decode(AuthResponse.self, from: data)
+        await cacheService.chacheIdentifiableData(firstName: object.firstName, lastName: object.lastName, email: object.email)
+        await cacheService.cacheToken(token: object.token)
+        
+        _ = await MainActor.run(body: {
+            tokenStore.SaveTokenToKeyChain(token: object.token)
+        })
+    }
+    
+    func DeleteAccount() async throws {
+        
+    }
+    
+    func HandleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS{
         switch result {
         case .success(let authorization):
             if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -46,29 +65,19 @@ class AuthObserver: ObservableObject {
                     /*
                         New User
                      */
-                    let token = String(data: appleIdCredential.identityToken!, encoding: .utf8)!
-                    let _ = appleIdCredential.authorizationCode
+                    let code = appleIdCredential.authorizationCode!
                     let email = appleIdCredential.email!
                     let firstName = (appleIdCredential.fullName?.givenName!)!
                     let lastName = (appleIdCredential.fullName?.familyName!)!
-                    let _ = appleIdCredential.state
-                    
-                    // store private user info on device
                     await cacheService.chacheIdentifiableData(firstName: firstName, lastName: lastName, email: email)
-                    
-                    // http request to sign user up to backend
-                    try await SignUp(firstName: firstName, lastName: lastName, email: email, token: token)
-                    
+                    try await SignUp(firstName: firstName, lastName: lastName, email: email, code: String(data: code, encoding: .utf8)!)
                     return USER_STATUS.New
                 } else {
                     /*
                         Existing User
                      */
-                    let _token = String(data: appleIdCredential.identityToken!, encoding: .utf8)!
-                    
-                    // http request to backend to login
-                    try await LogIn(token: _token)
-                    
+                    let code = appleIdCredential.authorizationCode!
+                    try await LogIn(code: String(data: code, encoding: .utf8)!)
                     return USER_STATUS.Returning
                 }
             }

@@ -79,21 +79,19 @@ struct ClubMenu: View {
                     }
                     
                     if let user = session.user {
-                        if let members = club.members {
-                            if let member = members.first(where: {$0.uuid == user.uuid}) {
-                                if member.role == "admin" {
-                                    Button(action:{ self.showApplications.toggle() }) {
-                                        HStack {
-                                            Image(systemName: "note")
-                                                .imageScale(.large)
-                                                .padding(.leading)
-                                                .foregroundColor(.primary)
-                                            Text("Club Applications")
-                                                .foregroundColor(.primary)
-                                            Spacer()
-                                        }.modifier(MenuButton())
-                                    }.padding(.top)
-                                }
+                        if let member = club.members.first(where: {$0.uuid == user.uuid}) {
+                            if member.role == "admin" {
+                                Button(action:{ self.showApplications.toggle() }) {
+                                    HStack {
+                                        Image(systemName: "note")
+                                            .imageScale(.large)
+                                            .padding(.leading)
+                                            .foregroundColor(.primary)
+                                        Text("Club Applications")
+                                            .foregroundColor(.primary)
+                                        Spacer()
+                                    }.modifier(MenuButton())
+                                }.padding(.top)
                             }
                         }
                     }
@@ -173,20 +171,18 @@ struct ClubMenu: View {
                     }
                     
                     if let user = session.user {
-                        if let members = club.members {
-                            if let member = members.first(where: {$0.uuid == user.uuid}) {
-                                if member.role == "admin" {
-                                    Button(action:{ }) {
-                                        HStack {
-                                            Image(systemName: "trash.fill")
-                                                .imageScale(.large)
-                                                .padding(.leading)
-                                                .foregroundColor(.red)
-                                            Text("Delete Club")
-                                                .foregroundColor(.red)
-                                            Spacer()
-                                        }.modifier(MenuButton())
-                                    }
+                        if let member = club.members.first(where: {$0.uuid == user.uuid}) {
+                            if member.role == "admin" {
+                                Button(action:{ }) {
+                                    HStack {
+                                        Image(systemName: "trash.fill")
+                                            .imageScale(.large)
+                                            .padding(.leading)
+                                            .foregroundColor(.red)
+                                        Text("Delete Club")
+                                            .foregroundColor(.red)
+                                        Spacer()
+                                    }.modifier(MenuButton())
                                 }
                             }
                         }

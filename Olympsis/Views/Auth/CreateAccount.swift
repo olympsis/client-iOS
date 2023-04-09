@@ -42,6 +42,7 @@ struct CreateAccount: View {
     
     @State private var cache = CacheService()
     @State private var observer = UserObserver()
+    @AppStorage("authToken") var authToken: String?
     @EnvironmentObject private var session: SessionStore
     
     func updateSports(sport:String){
@@ -50,6 +51,12 @@ struct CreateAccount: View {
     
     func isSelected(sport:String) -> Bool {
         return selectedSports.contains(where: {$0 == sport})
+    }
+    
+    func validateInput(_ input: String) -> Bool {
+        let regex = "^[a-z0-9]{5,15}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        return predicate.evaluate(with: input)
     }
     
     func validateView() -> CREATE_ERROR? {
@@ -96,7 +103,7 @@ struct CreateAccount: View {
                                         .keyboardType(.alphabet)
                                         .onSubmit {
                                             Task {
-                                                if userName.count > 5 && userName.count < 15 {
+                                                if validateInput(userName) {
                                                     self.keyboardIsShown = false
                                                     uStatus = .searching
                                                     let res = try await observer.CheckUserName(name: userName)
@@ -107,6 +114,7 @@ struct CreateAccount: View {
                                                     }
                                                 } else {
                                                     uStatus = .invalid
+                                                    status = .noUsername
                                                 }
                                             }
                                         }
@@ -120,6 +128,14 @@ struct CreateAccount: View {
                                         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)) { _ in
                                             withAnimation(.easeInOut){
                                                 self.keyboardIsShown = false
+                                            }
+                                        }
+                                        .onChange(of: userName) { newValue in
+                                            let isValid = validateInput(newValue)
+                                            if !isValid {
+                                                status = .noUsername
+                                            } else {
+                                                status = nil
                                             }
                                         }
                                     HStack {
@@ -214,8 +230,6 @@ struct CreateAccount: View {
                         }
                     }.padding(.top, 50)
                     
-                }.onAppear{
-                    observer.fetchToken()
                 }
             }
         }

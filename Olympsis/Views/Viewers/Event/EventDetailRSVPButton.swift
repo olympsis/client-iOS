@@ -100,7 +100,7 @@ struct EventDetailRSVPButton_Previews: PreviewProvider {
         let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
         let participant = Participant(id: "", uuid: "", status: "going", data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), createdAt: 0)
         let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [participant])
-        let usr = UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", isPublic: false)
+        let usr = UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", visibility: "private")
         EventDetailRSVPButton(event: .constant(event), user: usr, eventObserver: EventObserver())
             .environmentObject(SessionStore())
     }

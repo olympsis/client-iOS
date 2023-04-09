@@ -12,7 +12,7 @@ struct Profile: View {
     @State private var imageURL = ""
     @State private var user: UserStore?
     @State private var showMenu = false
-    @StateObject private var userObserver = UserObserver()
+    @State private var userObserver = UserObserver()
     
     @EnvironmentObject private var session: SessionStore
     

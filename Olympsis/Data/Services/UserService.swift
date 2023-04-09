@@ -6,75 +6,60 @@
 //
 
 import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class UserService: Service {
+class UserService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    let urlSession = URLSession.shared
-    
-    
     func CheckUserName(name: String) async throws -> Data {
-        let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem(name: "userName", value: name)])
-        
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        let endpoint = Endpoint(path: "/v1/users/username", queryItems: [URLQueryItem(name: "userName", value: name)])
+        let (data, _) = try await http.Request(endpoint: endpoint, method: .GET)
         return data
     }
     
     func Lookup(username: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/lookup/username/\(username)", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        let (data, res) = try await http.Request(endpoint: endpoint, method: .GET)
         return (data, res)
     }
     
     func GetFriendRequests() async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/users/friends/requests", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        let (data, res) = try await http.Request(endpoint: endpoint, method: .GET)
         return (data, res)
     }
     
     func UpdateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/v1/users/friends/requests/\(id)", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        let (data, res) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
+        let (data, res) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao))
         return (data, res)
     }
     
     func CreateUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
         let req = CreateUserDataRequest(userName: userName, sports: sports)
         let endpoint = Endpoint(path: "/v1/users", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: req)
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(req))
     }
     
     func GetUserData() async throws -> Data {
         let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: .GET)
         return data
     }
     
     func UpdateUserData(update: UpdateUserDataDao) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/users/user", queryItems: [URLQueryItem]())
-        
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: update)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(update))
         return resp
     }
 }

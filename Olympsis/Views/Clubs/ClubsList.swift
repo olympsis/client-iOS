@@ -34,6 +34,7 @@ struct ClubsList: View {
                 .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
                 .padding(.leading, 5)
                 .padding(.trailing, 5)
+                .padding(.top)
                 if showCancel {
                     Button(action:{
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
@@ -42,6 +43,7 @@ struct ClubsList: View {
                         Text("Cancel")
                             .foregroundColor(.gray)
                             .frame(height: 40)
+                            .padding(.top)
                     }.padding(.trailing)
                 }
             }
@@ -52,7 +54,14 @@ struct ClubsList: View {
                 } else {
                     VStack{
                         if clubObserver.clubs.isEmpty {
-                            Text("There are no Clubs in your Area")
+                            Text("There are no clubs in your area. Broaden your search or...")
+                                .font(.caption)
+                                .padding(.top, 50)
+                            Button(action:{ showNewClubCover.toggle() }){
+                                Text("Create One?")
+                                    .font(.caption)
+                            }
+                                
                         } else {
                             if text != ""{
                                 ForEach(clubObserver.clubs.filter{$0.name.lowercased().contains(text.lowercased())}, id: \.id){ c in
@@ -107,8 +116,8 @@ struct ClubsList: View {
                                         }
                                     }
                                     clubObserver.isLoading = false
+                                    status = .success
                                 }
-                                status = .success
                             }
                         }
                     } catch {

@@ -7,14 +7,12 @@
 
 import os
 import SwiftUI
-import FirebaseMessaging
 
 struct Permissions: View {
     
     @Binding var currentView: AuthTab
     
     @State private var log = Logger()
-    @State private var deviceToken:String?
     @State private var hasLocation = false;
     @State private var hasNotifications = false;
     @State private var location = LocationObserver()
@@ -22,7 +20,9 @@ struct Permissions: View {
     
     @State private var userObserver = UserObserver()
     
+    @AppStorage("authToken") var authToken: String?
     @AppStorage("loggedIn") private var loggedIn: Bool?
+    @AppStorage("deviceToken") private var deviceToken: String?
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
@@ -70,14 +70,6 @@ struct Permissions: View {
                     Task {
                         try await notifications.requestAuthorization()
                         hasNotifications = true
-                        Messaging.messaging().token { token, error in
-                          if let error = error {
-                              log.debug("Error fetching FCM registration token: \(error)")
-                          } else if let token = token {
-                              log.debug("FCM token fetched successfully: \(token)")
-                              deviceToken = token
-                          }
-                        }
                     }
                 }){
                     ZStack {
@@ -114,8 +106,6 @@ struct Permissions: View {
                     }
                 }.padding(.bottom)
                     .padding(.top, 80)
-            }.onAppear{
-                userObserver.fetchToken()
             }
         }
     }

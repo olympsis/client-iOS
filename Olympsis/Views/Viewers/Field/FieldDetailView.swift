@@ -86,7 +86,7 @@ struct FieldDetailView: View {
                                 .foregroundColor(.gray)
                                 .font(.body)
                                 
-                            if field.isPublic {
+                            if field.ownership == "public" {
                                 Text("Public")
                                     .font(.caption2)
                                     .foregroundColor(.green)
@@ -219,7 +219,7 @@ struct FieldDetailView: View {
 
 struct FieldDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: ["fields/226f8aef-247f-4015-8426-85aa93c0e5e6.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Utah", country: "United States", isPublic: false)
+        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: ["fields/226f8aef-247f-4015-8426-85aa93c0e5e6.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Utah", country: "United States", ownership: "private")
         FieldDetailView(field: field, events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

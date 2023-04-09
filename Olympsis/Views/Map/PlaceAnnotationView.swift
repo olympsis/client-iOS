@@ -34,7 +34,7 @@ struct PlaceAnnotationView: View {
 
 struct PlaceAnnotationView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", isPublic: false)
+        let field = Field(id: "", owner: "", name: "field-name", notes: "field-name", sports: [""], images: [""], location: GeoJSON(type: "", coordinates: [0.0]), city: "", state: "", country: "", ownership: "private")
         PlaceAnnotationView(field: field, events: .constant([Event]()))
     }
 }

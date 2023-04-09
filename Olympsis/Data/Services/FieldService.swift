@@ -5,21 +5,20 @@
 //  Created by Joel Joseph on 11/15/22.
 //
 
-import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class FieldService: Service {
+class FieldService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
-    
-    let urlSession = URLSession.shared
     
     func getFields(long: Double, lat: Double, radius: Int) async throws -> Data {
         let endpoint = Endpoint(path: "/v1/fields", queryItems: [
@@ -28,9 +27,7 @@ class FieldService: Service {
             URLQueryItem(name: "radius", value: String(radius))
         ])
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Method.GET)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: .GET)
         return data
     }
 }

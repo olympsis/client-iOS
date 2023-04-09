@@ -8,6 +8,7 @@ import os
 import Foundation
 
 class UserObserver: ObservableObject {
+    
     private let decoder: JSONDecoder
     private let userService: UserService
     private let cacheService: CacheService
@@ -25,37 +26,25 @@ class UserObserver: ObservableObject {
     }
     
     func Lookup(username: String) async throws -> UserPeek? {
-        let (data,res) = try await userService.Lookup(username: username)
-        guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-            return nil
-        }
+        let (data,_) = try await userService.Lookup(username: username)
         let object = try decoder.decode(UserPeek.self, from: data)
         return object
     }
     
     func GetFriendRequests() async throws -> [FriendRequest]? {
-        let (data,res) = try await userService.GetFriendRequests()
-        guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-            return nil
-        }
+        let (data,_) = try await userService.GetFriendRequests()
         let object = try decoder.decode(FriendRequests.self, from: data)
         return object.requests
     }
     
     func UpdateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> Friend? {
-        let (data,res) = try await userService.UpdateFriendRequest(id: id, dao: dao)
-        guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-            return nil
-        }
+        let (data,_) = try await userService.UpdateFriendRequest(id: id, dao: dao)
         let object = try decoder.decode(Friend.self, from: data)
         return object
     }
     
     func CreateUserData(userName: String, sports:[String]) async throws -> UserDao? {
-        let (data,res) = try await userService.CreateUserData(userName: userName, sports: sports)
-        guard (res as? HTTPURLResponse)?.statusCode == 201 else {
-            return nil
-        }
+        let (data,_) = try await userService.CreateUserData(userName: userName, sports: sports)
         let object = try decoder.decode(UserDao.self, from: data)
         return object
     }
@@ -69,10 +58,7 @@ class UserObserver: ObservableObject {
     // have this return a bool if status 200
     func UpdateUserData(update: UpdateUserDataDao) async -> Bool {
         do {
-            let res = try await userService.UpdateUserData(update: update)
-            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return false
-            }
+            _ = try await userService.UpdateUserData(update: update)
             return true
         } catch {
             print(error)
@@ -82,9 +68,5 @@ class UserObserver: ObservableObject {
     
     func getUserPrivateInfo() -> (String, String, String) {
         return cacheService.fetchIdentifiableData()
-    }
-    
-    func fetchToken() {
-        userService.http.fetchToken()
     }
 }

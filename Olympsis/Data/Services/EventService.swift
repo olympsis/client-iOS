@@ -5,84 +5,69 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
-import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class EventService: Service {
+class EventService {
     
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    let urlSession = URLSession.shared
-    
     func getEvents(long: Double, lat: Double, radius: Int, sport: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/events", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/v1/events", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sport", value: sport)
         ])
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func getEvent(id: String) async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(GET): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.GET)
+        return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func createEvent(dao: EventDao) async throws -> (Data,URLResponse) {
         let endpoint = Endpoint(path: "/v1/events", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(PUT): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.PUT, body: dao)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao))
         return resp
     }
     
     func deleteEvent(id: String) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(DELETE): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE)
         return resp
     }
     
     func addParticipant(id: String, dao: ParticipantDao) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(POST): \(endpoint.path)")
-        
-        let (_,resp) = try await http.Request(endpoint: endpoint, method: Method.POST, body: dao)
+        let (_,resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
         return resp
     }
     
     func removeParticipant(id: String, pid: String) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/v1/events/\(id)/participants/\(pid)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server(DELETE): \(endpoint.path)")
-        
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE)
         return resp
     }
 }

@@ -13,7 +13,7 @@ struct UserDao: Codable {
     var username: String
     var bio: String?
     var imageURL: String?
-    var isPublic: Bool
+    var visibility: String
     var sports: [String]?
     var clubs: [String]?
     var badges: [Badge]?
@@ -26,7 +26,7 @@ struct UserDao: Codable {
         case username
         case bio
         case imageURL
-        case isPublic
+        case visibility
         case sports
         case clubs
         case badges

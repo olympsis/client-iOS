@@ -18,10 +18,10 @@ struct Field: Decodable, Identifiable {
     var city: String
     var state: String
     var country: String
-    var isPublic: Bool
+    var ownership: String
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case owner
         case name
         case notes
@@ -31,7 +31,7 @@ struct Field: Decodable, Identifiable {
         case city
         case state
         case country
-        case isPublic
+        case ownership
     }
 }
 

@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/15/22.
 //
 
+import SwiftUI
 import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields

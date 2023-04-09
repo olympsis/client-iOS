@@ -16,11 +16,11 @@ struct UserStore: Codable {
     var email:      String
     var uuid:       String
     
-    // Personal Data
+    // App Data
     var username: String
     var bio: String?
     var imageURL: String?
-    var isPublic: Bool
+    var visibility: String
     var sports: [String]?
     var clubs: [String]?
     var badges: [Badge]?

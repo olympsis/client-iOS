@@ -7,8 +7,6 @@
 
 import os
 import SwiftUI
-import FirebaseCore
-import FirebaseMessaging
 import UserNotifications
 
 @main
@@ -34,23 +32,16 @@ struct OlympsisApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     let log = Logger()
-    let gcmMessageIDKey = "gcm.message_id"
+    @AppStorage("deviceToken") private var _token: String?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
         return true
     }
 }
 
-extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    }
-}
-
 extension AppDelegate : UNUserNotificationCenterDelegate {
-
+    
     // Receive displayed notifications for iOS 10 devices.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // Change this to your preferred presentation option
@@ -58,7 +49,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Messaging.messaging().apnsToken = deviceToken
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        _token = token;
         log.debug("Registered for remote notifications successfull")
     }
     

@@ -6,12 +6,25 @@
 //
 
 import SwiftUI
+import Security
+import AuthenticationServices
 
 struct ViewContainer: View {
-    @State var currentTab = Tab.home
-    @State var showBeta = false
+    enum ACCOUNT_STATE {
+        case Authorized
+        case Revoked
+        case NotFound
+        case Transferred
+        case Unknown
+    }
+    
+    @State var currentTab: Tab = .home
+    @State private var showBeta: Bool = false
+    @State private var accountState: ACCOUNT_STATE = .Unknown
     
     @EnvironmentObject var session: SessionStore
+    @AppStorage("loggedIn") private var loggedIn: Bool?
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -29,10 +42,7 @@ struct ViewContainer: View {
                 .ignoresSafeArea(.keyboard)
         }.background(Color("dark-color"))
             .task {
-                // mix stored user data with backend data
                 await session.GenerateUpdatedUserData()
-                
-                // grab clubs data
                 await session.generateClubsData()
             }
             .fullScreenCover(isPresented: $showBeta) {
@@ -43,6 +53,6 @@ struct ViewContainer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewContainer()
+        ViewContainer().environmentObject(SessionStore())
     }
 }

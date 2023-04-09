@@ -5,30 +5,26 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
-import os
+import Hermes
 import SwiftUI
 import Foundation
 
-class UploadService: Service {
+class UploadService {
     
-    
-    var log: Logger
-    var http: HttpService
+    private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
-        self.log = Logger()
-        self.http = HttpService()
+        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
-    
-    let urlSession = URLSession.shared
     
     func GetUploadUrl(folder: String, object: String) async throws -> Data {
         
         let endpoint = Endpoint(path: "/v1/storage/\(folder)/\(object)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server (PUT): \(endpoint.path)")
-        
-        let (data, _) = try await http.Request(endpoint: endpoint , method: Method.PUT)
+        let (data, _) = try await http.Request(endpoint: endpoint , method: .PUT)
         return data
     }
     
@@ -36,17 +32,14 @@ class UploadService: Service {
         
         let endpoint = Endpoint(path: "/v1/storage/\(folder)/\(object)", queryItems: [URLQueryItem]())
         
-        log.log("Initiating request to server (DELETE): \(endpoint.path)")
-        
-        let (data, _) = try await http.Request(endpoint: endpoint , method: Method.DELETE)
+        let (data, _) = try await http.Request(endpoint: endpoint , method: .DELETE)
         return data
     }
     
     func UploadObject(url: String, body: Data) async throws -> URLResponse {
         
-        log.log("Initiating request to server (PUT): to Google Storage")
-        
-        let (_, resp) = try await http.UploadImage(url: url, body: body)
-        return resp
+        //let (_, resp) = try await http.UploadImage(url: url, body: body)
+        return URLResponse()
+//        return resp
     }
 }
