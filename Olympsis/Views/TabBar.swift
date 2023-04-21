@@ -70,7 +70,7 @@ struct TabBar: View {
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(currentTab == .profile ? Color("secondary-color") : .white )
                             if let img = user.imageURL {
-                                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
+                                AsyncImage(url: URL(string: GenerateImageURL(img))){ phase in
                                     if let image = phase.image {
                                             image // Displays the loaded image.
                                                 .resizable()

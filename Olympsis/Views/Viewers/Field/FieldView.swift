@@ -43,7 +43,7 @@ struct FieldView: View {
             }.padding(.bottom, 5)
             //MARK: - ASYNC Image
             VStack {
-                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + field.images[0])){ phase in
+                AsyncImage(url: URL(string: GenerateImageURL(field.images[0]))){ phase in
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()

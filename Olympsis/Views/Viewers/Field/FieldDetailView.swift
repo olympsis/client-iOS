@@ -50,7 +50,7 @@ struct FieldDetailView: View {
                 VStack {
                     //MARK: - ASYNC Image
                     ZStack(alignment: .top){
-                        AsyncImage(url: URL(string:  "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + field.images[0])){ phase in
+                        AsyncImage(url: URL(string:  GenerateImageURL(field.images[0]))){ phase in
                             if let image = phase.image {
                                     image // Displays the loaded image.
                                         .resizable()
@@ -219,7 +219,7 @@ struct FieldDetailView: View {
 
 struct FieldDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: ["fields/226f8aef-247f-4015-8426-85aa93c0e5e6.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Utah", country: "United States", ownership: "private")
+        let field = Field(id: "", owner: "", name: "Richard Building Fields", notes: "The Richard Building Fields is a private field owned by Brigham Young Univeristy. It has a newly installed turf field. It's often used as the football team's practice field. Parking is available near the field; however it's restricted. It's available on weekdays after 4pm and it's free on the wekends.", sports: [""], images: [GenerateImageURL("field-images/5af55fc2-5435-419d-957b-e526c1e83751.jpg")], location: GeoJSON(type: "", coordinates: [0.0]), city: "Provo", state: "Utah", country: "United States", ownership: "private")
         FieldDetailView(field: field, events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

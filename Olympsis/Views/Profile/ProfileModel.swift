@@ -18,7 +18,7 @@ struct ProfileModel: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + imageURL)){ phase in
+                AsyncImage(url: URL(string: GenerateImageURL(imageURL))){ phase in
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()

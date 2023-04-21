@@ -194,6 +194,7 @@
 		BE9C45FA29E268CB008EA591 /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = BE9C45F929E268CB008EA591 /* Hermes */; };
 		BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FC29E279C9008EA591 /* EncodeToData.swift */; };
 		BE9C45FF29E36DB0008EA591 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FE29E36DB0008EA591 /* TokenStore.swift */; };
+		BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C460029E38936008EA591 /* GenerateImageURL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -385,6 +386,7 @@
 		BE9C45F829E26848008EA591 /* Hermes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Hermes; path = ../../Hermes; sourceTree = "<group>"; };
 		BE9C45FC29E279C9008EA591 /* EncodeToData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeToData.swift; sourceTree = "<group>"; };
 		BE9C45FE29E36DB0008EA591 /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
+		BE9C460029E38936008EA591 /* GenerateImageURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateImageURL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -959,6 +961,7 @@
 			children = (
 				BE9C45FC29E279C9008EA591 /* EncodeToData.swift */,
 				BE9C45FE29E36DB0008EA591 /* TokenStore.swift */,
+				BE9C460029E38936008EA591 /* GenerateImageURL.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1109,6 +1112,7 @@
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
 				9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
+				BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */,
 				9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */,
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,

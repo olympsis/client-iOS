@@ -20,26 +20,25 @@ class UploadService {
         self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    func GetUploadUrl(folder: String, object: String) async throws -> Data {
+    func DeleteObject(url: String, name: String) async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/v1" + url)
         
-        let endpoint = Endpoint(path: "/v1/storage/\(folder)/\(object)", queryItems: [URLQueryItem]())
-        
-        let (data, _) = try await http.Request(endpoint: endpoint , method: .PUT)
-        return data
+        let (data, resp) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: [name: "X-FileName"])
+        return (data, resp)
     }
     
-    func GetDeleteUrl(folder: String, object: String) async throws -> Data {
-        
-        let endpoint = Endpoint(path: "/v1/storage/\(folder)/\(object)", queryItems: [URLQueryItem]())
-        
-        let (data, _) = try await http.Request(endpoint: endpoint , method: .DELETE)
-        return data
+    func UploadObject(url: String, fileType: String, fileName: String, body: Data) async throws {
+        let endpoint = Endpoint(path: "/v1/storage" + url)
+        if fileType == "image" {
+            try await _uploadImage(endpoint: endpoint, name: fileName, data: body)
+        } else {
+            
+        }
     }
     
-    func UploadObject(url: String, body: Data) async throws -> URLResponse {
-        
-        //let (_, resp) = try await http.UploadImage(url: url, body: body)
-        return URLResponse()
-//        return resp
+    func _uploadImage(endpoint: Endpoint, name: String, data: Data) async throws {
+        let type = ".jpeg"
+        let contentType = "image/jpeg"
+        try await self.http.Upload(endpoint: endpoint, fileName: name, fileType: type, contentType: contentType, data: data)
     }
 }

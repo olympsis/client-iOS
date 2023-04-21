@@ -24,7 +24,7 @@ struct EditProfile: View {
     
     @State private var uploadingStatus: LOADING_STATE = .pending
     
-    @State var userObserver: UserObserver?
+    @State var userObserver = UserObserver()
     @StateObject var uploadObserver = UploadObserver()
     
     
@@ -38,22 +38,20 @@ struct EditProfile: View {
         let imageId = UUID().uuidString
         
         if let data = selectedImageData {
-            let url = await uploadObserver.UploadImage(location: "/profile-images/\(imageId)", data: data)
-            self.imageURL = url
+            let url = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+            self.imageURL = "profile-images/\(imageId).jpeg"
             if url != "error" {
                 if let user = session.user {
                     if let img = user.imageURL {
-                        let res = await uploadObserver.DeleteObject(path: img)
+                        let res = await uploadObserver.DeleteObject(path: "/profile-image", name: GrabImageIdFromURL(img))
                         if !res {
                             print("failed to delete image")
                         }
                     }
-                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: url, _isPublic: isPublic, _sports: selectedSports)
-                    if let observer = userObserver {
-                        let res = await observer.UpdateUserData(update: update)
-                        if res {
-                            return true
-                        }
+                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: self.imageURL, _isPublic: isPublic, _sports: selectedSports)
+                    let res = await userObserver.UpdateUserData(update: update)
+                    if res {
+                        return true
                     }
                     
                 }
@@ -65,11 +63,9 @@ struct EditProfile: View {
             // if there is no new image data just update user data then
             if let user = session.user {
                 let update = UpdateUserDataDao(_username: user.username, _bio: bio, _isPublic: isPublic, _sports: selectedSports)
-                if let observer = userObserver {
-                    let res = await observer.UpdateUserData(update: update)
-                    if res {
-                        return true
-                    }
+                let res = await userObserver.UpdateUserData(update: update)
+                if res {
+                    return true
                 }
                 
             }
@@ -85,6 +81,17 @@ struct EditProfile: View {
     
     func isSelected(sport:String) -> Bool {
         return selectedSports.contains(where: {$0 == sport})
+    }
+    
+    func compressImage(image: UIImage) -> Data? {
+        var compressionQuality: CGFloat = 1.0 // start with maximum quality
+        
+        while let compressedData = image.jpegData(compressionQuality: compressionQuality),
+              compressedData.count > 1000000 { // reduce quality until the size is less than 1 MB
+            compressionQuality -= 0.1
+        }
+        
+        return image.jpegData(compressionQuality: compressionQuality)
     }
     
     var body: some View {
@@ -103,7 +110,7 @@ struct EditProfile: View {
                                 }
                             } else {
                                 if let img = session.user?.imageURL {
-                                    AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
+                                    AsyncImage(url: URL(string: GenerateImageURL(img))){ phase in
                                         if let image = phase.image {
                                             image // Displays the loaded image.
                                                 .resizable()
@@ -147,7 +154,8 @@ struct EditProfile: View {
                                 Task {
                                     // Retrive selected asset in the form of Data
                                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                        selectedImageData = data
+                                        let img = UIImage(data: data)
+                                        selectedImageData = compressImage(image: img!)
                                     }
                                 }
                             }
