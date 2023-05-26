@@ -107,8 +107,7 @@ struct FieldView: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        let field = Field(id: "", owner: "", name: "Lionne Park", notes: "Grass Field", sports: ["soccer"], images: ["fields/78c7efcd-6ec3-4324-a468-ad0ea1e0c177.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Stamford", state: "Connecticut", country: "United States", ownership: "private")
-        FieldView(field: field)
+        FieldView(field: FIELDS[0])
             .environmentObject(SessionStore())
     }
 }

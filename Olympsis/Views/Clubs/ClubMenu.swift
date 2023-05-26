@@ -27,7 +27,7 @@ struct ClubMenu: View {
         NavigationView {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (club.imageURL ?? ""))){ phase in
+                    AsyncImage(url: URL(string: GenerateImageURL(club.imageURL ?? ""))){ phase in
                         if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()

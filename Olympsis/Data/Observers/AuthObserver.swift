@@ -25,8 +25,7 @@ class AuthObserver: ObservableObject {
     }
     
     func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
-        let req = SignInRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
-        
+        let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
         let (data, _) = try await authService.SignUp(request: req)
         
         let object = try decoder.decode(AuthResponse.self, from: data)
@@ -38,14 +37,12 @@ class AuthObserver: ObservableObject {
     }
     
     func LogIn(code: String) async throws {
-        let req = LoginRequest()
-        req.code = code
-        req.provider = "https://appleid.apple.com"
+        let req = AuthRequest(code: code, provider: "https://appleid.apple.com")
         
         let (data, _) = try await authService.LogIn(request: req)
 
         let object = try decoder.decode(AuthResponse.self, from: data)
-        await cacheService.chacheIdentifiableData(firstName: object.firstName, lastName: object.lastName, email: object.email)
+        await cacheService.chacheIdentifiableData(firstName: object.firstName!, lastName: object.lastName!, email: object.email!)
         await cacheService.cacheToken(token: object.token)
         
         _ = await MainActor.run(body: {
@@ -53,8 +50,12 @@ class AuthObserver: ObservableObject {
         })
     }
     
-    func DeleteAccount() async throws {
-        
+    func DeleteAccount() async throws -> Bool {
+        let (_, resp) = try await authService.DeleteAccount()
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return false
+        }
+        return true
     }
     
     func HandleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS{

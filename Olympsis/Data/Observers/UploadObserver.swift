@@ -17,32 +17,28 @@ class UploadObserver: ObservableObject {
     }
     
     
-    func UploadObject(url: String, object: Data) async throws -> Bool {
-        return true
-    }
-    
-    func UploadImage(location: String, fileName: String, data: Data) async -> String {
+    func UploadImage(location: String, fileName: String, data: Data) async -> Bool {
         do {
-            try await uploadService.UploadObject(url: location, fileType: "image", fileName: fileName, body: data)
-            return location
+            let (_, res) = try await uploadService.UploadObject(url: location, fileType: "image", fileName: fileName, body: data)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
         } catch {
-            print(error)
-            return ""
+            return false
         }
     }
     
     
     func DeleteObject(path: String, name: String) async -> Bool {
         do {
-            let (_, res) = try await uploadService.DeleteObject(url: path, name: name)
+            let (_, res) = try await uploadService.DeleteObject(url: path, fileName: name)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
             return true
         } catch {
-            print(error)
+            return false
         }
-        return false
     }
-    
 }

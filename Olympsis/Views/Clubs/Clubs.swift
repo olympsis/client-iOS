@@ -87,7 +87,7 @@ struct Clubs: View {
                         
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
-                                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (session.myClubs[index].imageURL ?? ""))){ image in
+                                AsyncImage(url: URL(string: GenerateImageURL((session.myClubs[index].imageURL ?? "")))){ image in
                                     image.resizable()
                                         .clipShape(Circle())
                                         .frame(width: 30, height: 30)

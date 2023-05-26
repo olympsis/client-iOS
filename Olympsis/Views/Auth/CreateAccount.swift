@@ -108,9 +108,9 @@ struct CreateAccount: View {
                                                     uStatus = .searching
                                                     let res = try await observer.CheckUserName(name: userName)
                                                     if res {
-                                                        uStatus = .found
-                                                    } else {
                                                         uStatus = .valid
+                                                    } else {
+                                                        uStatus = .found
                                                     }
                                                 } else {
                                                     uStatus = .invalid

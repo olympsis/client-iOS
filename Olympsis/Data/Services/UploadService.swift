@@ -20,25 +20,24 @@ class UploadService {
         self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    func DeleteObject(url: String, name: String) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/v1" + url)
+    func UploadObject(url: String, fileType: String, fileName: String, body: Data) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/v1/storage" + url)
         
-        let (data, resp) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: [name: "X-FileName"])
+        let (data, resp) = try await _uploadImage(endpoint: endpoint, name: fileName, data: body)
         return (data, resp)
     }
     
-    func UploadObject(url: String, fileType: String, fileName: String, body: Data) async throws {
+    func DeleteObject(url: String, fileName: String) async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/v1/storage" + url)
-        if fileType == "image" {
-            try await _uploadImage(endpoint: endpoint, name: fileName, data: body)
-        } else {
-            
-        }
+        
+        let (data, resp) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["X-Filename" : fileName])
+        return (data, resp)
     }
     
-    func _uploadImage(endpoint: Endpoint, name: String, data: Data) async throws {
+    func _uploadImage(endpoint: Endpoint, name: String, data: Data) async throws -> (Data, URLResponse) {
         let type = ".jpeg"
         let contentType = "image/jpeg"
-        try await self.http.Upload(endpoint: endpoint, fileName: name, fileType: type, contentType: contentType, data: data)
+        let (data, response) = try await self.http.Upload(endpoint: endpoint, fileName: name, fileType: type, contentType: contentType, data: data)
+        return (data, response)
     }
 }

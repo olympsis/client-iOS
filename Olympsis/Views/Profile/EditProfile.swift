@@ -32,32 +32,38 @@ struct EditProfile: View {
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func UpdateProfile() async -> Bool {
-        
+    func UpdateProfile() async {
+        uploadingStatus = .loading
         // new image
         let imageId = UUID().uuidString
         
         if let data = selectedImageData {
-            let url = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
-            self.imageURL = "profile-images/\(imageId).jpeg"
-            if url != "error" {
+            // upload image
+            let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+            if res {
+                self.imageURL = "profile-images/\(imageId).jpeg"
                 if let user = session.user {
                     if let img = user.imageURL {
-                        let res = await uploadObserver.DeleteObject(path: "/profile-image", name: GrabImageIdFromURL(img))
-                        if !res {
-                            print("failed to delete image")
-                        }
-                    }
-                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: self.imageURL, _isPublic: isPublic, _sports: selectedSports)
-                    let res = await userObserver.UpdateUserData(update: update)
-                    if res {
-                        return true
+                        // delete old picture
+                        _ = await uploadObserver.DeleteObject(path: "/profile-images", name: GrabImageIdFromURL(img))
                     }
                     
+                    // update user data
+                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: self.imageURL, _isPublic: isPublic, _sports: selectedSports)
+                    let res = await userObserver.UpdateUserData(update: update)
+                    
+                    if res {
+                        session.user?.imageURL = self.imageURL
+                        uploadingStatus = .success
+                        return
+                    } else {
+                        uploadingStatus = .failure
+                        return
+                    }
                 }
             } else {
-                print("failed to upload image")
-                return false
+                uploadingStatus = .failure
+                return
             }
         } else {
             // if there is no new image data just update user data then
@@ -65,14 +71,14 @@ struct EditProfile: View {
                 let update = UpdateUserDataDao(_username: user.username, _bio: bio, _isPublic: isPublic, _sports: selectedSports)
                 let res = await userObserver.UpdateUserData(update: update)
                 if res {
-                    return true
+                    uploadingStatus = .success
+                    return
+                } else {
+                    uploadingStatus = .failure
+                    return
                 }
-                
             }
-            return false
         }
-        
-        return false
     }
     
     func updateSports(sport:String){
@@ -81,17 +87,6 @@ struct EditProfile: View {
     
     func isSelected(sport:String) -> Bool {
         return selectedSports.contains(where: {$0 == sport})
-    }
-    
-    func compressImage(image: UIImage) -> Data? {
-        var compressionQuality: CGFloat = 1.0 // start with maximum quality
-        
-        while let compressedData = image.jpegData(compressionQuality: compressionQuality),
-              compressedData.count > 1000000 { // reduce quality until the size is less than 1 MB
-            compressionQuality -= 0.1
-        }
-        
-        return image.jpegData(compressionQuality: compressionQuality)
     }
     
     var body: some View {
@@ -155,7 +150,7 @@ struct EditProfile: View {
                                     // Retrive selected asset in the form of Data
                                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                         let img = UIImage(data: data)
-                                        selectedImageData = compressImage(image: img!)
+                                        selectedImageData = img!.jpegData(compressionQuality: 0.5)
                                     }
                                 }
                             }
@@ -241,14 +236,8 @@ struct EditProfile: View {
                     Button(action:{
                 
                         Task {
-                            uploadingStatus = .loading
-                            let res = await UpdateProfile()
+                            await UpdateProfile()
                             await session.GenerateUpdatedUserData()
-                            if res {
-                                uploadingStatus = .success
-                            } else {
-                                uploadingStatus = .failure
-                            }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 self.presentationMode.wrappedValue.dismiss()
                             }

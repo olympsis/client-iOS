@@ -63,9 +63,9 @@ class ClubObserver: ObservableObject{
         }
     }
     
-    func createClub(dao: ClubDao) async throws -> Club {
-        let res = try await clubService.createClub(dao: dao)
-        let object = try decoder.decode(Club.self, from: res)
+    func createClub(club: Club) async throws -> ClubResponse {
+        let res = try await clubService.createClub(club: club)
+        let object = try decoder.decode(ClubResponse.self, from: res)
         return object
     }
     

@@ -5,8 +5,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/elai950/AlertToast",
       "state" : {
-        "revision" : "a4f4267f6454259ba4ed8f9dadb87334a789c26c",
-        "version" : "1.3.7"
+        "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
+        "version" : "1.3.9"
+      }
+    },
+    {
+      "identity" : "hermes",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NokoAnubis/Hermes.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "888ad1ba3c7519e213ce60acb0fa046c6b38c646"
       }
     },
     {

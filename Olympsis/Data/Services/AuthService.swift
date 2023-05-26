@@ -17,21 +17,21 @@ class AuthService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key)
+        self.http = Courrier(scheme: "https", host: host, apiKey: key)
     }
     
-    func SignUp(request: SignInRequest) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/auth/signup", queryItems: [URLQueryItem]())
+    func SignUp(request: AuthRequest) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/auth/signup", queryItems: [URLQueryItem]())
         return try await http.Request(endpoint: endpoint , method: .POST, body: EncodeToData(request))
     }
     
-    func LogIn(request: LoginRequest) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/v1/auth/login", queryItems: [URLQueryItem]())
+    func LogIn(request: AuthRequest) async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/auth/login", queryItems: [URLQueryItem]())
         return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(request))
     }
     
     func DeleteAccount() async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/v1/auth/delete", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/auth/delete", queryItems: [URLQueryItem]())
         return try await http.Request(endpoint: endpoint, method: .DELETE)
     }
 }

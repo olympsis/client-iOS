@@ -346,12 +346,7 @@ struct NewEventView_Previews: PreviewProvider {
             Club(id: "0", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0),
             Club(id: "1", name: "Provo Golf", description: "Come play golf with us.", sport: "golf", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0)
             ]
-        let fields = [
-            Field(id: "0", owner: "", name: "Lionne Park", notes: "Grass Field", sports: ["soccer"], images: ["fields/78c7efcd-6ec3-4324-a468-ad0ea1e0c177.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Stamford", state: "Connecticut", country: "United States", ownership: "private"),
-            Field(id: "1", owner: "", name: "Country Club Park", notes: "Grass Field", sports: ["golf"], images: ["fields/78c7efcd-6ec3-4324-a468-ad0ea1e0c177.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Stamford", state: "Connecticut", country: "United States", ownership: "private"),
-            Field(id: "2", owner: "", name: "Other Club Park", notes: "Grass Field", sports: ["golf", "soccer"], images: ["fields/78c7efcd-6ec3-4324-a468-ad0ea1e0c177.jpg"], location: GeoJSON(type: "", coordinates: [0.0]), city: "Stamford", state: "Connecticut", country: "United States", ownership: "private")
-        ]
-        NewEventView(clubs: clubs, fields: fields, sports: ["soccer", "golf"])
+        NewEventView(clubs: clubs, fields: FIELDS, sports: ["soccer", "golf"])
             .environmentObject(SessionStore())
     }
 }

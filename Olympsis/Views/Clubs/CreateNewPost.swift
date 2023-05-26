@@ -59,9 +59,9 @@ struct CreateNewPost: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let url = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
-            if url != "error" {
-                images = [url]
+            let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+            if res {
+                images = ["/profile-images/\(imageId).jpeg"]
             }
         }
     }

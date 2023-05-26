@@ -21,7 +21,7 @@ class FieldService {
     }
     
     func getFields(long: Double, lat: Double, radius: Int) async throws -> Data {
-        let endpoint = Endpoint(path: "/v1/fields", queryItems: [
+        let endpoint = Endpoint(path: "/fields", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius))

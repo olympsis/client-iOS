@@ -20,9 +20,9 @@ class UserObserver: ObservableObject {
     }
     
     func CheckUserName(name: String) async throws -> Bool {
-        let response = try await userService.CheckUserName(name: name)
-        let object = try decoder.decode(UserNameResponse.self, from: response)
-        return object.isFound
+        let response = try await userService.UserNameAvailability(name: name)
+        let object = try decoder.decode(UsernameAvailabilityResponse.self, from: response)
+        return object.isAvailable
     }
     
     func Lookup(username: String) async throws -> UserPeek? {

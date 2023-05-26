@@ -24,6 +24,7 @@ class SessionStore: ObservableObject {
     @Published var posts = [Post]()      // Posts Cache
     @Published var myClubs = [Club]()
     
+    var clubTokens = [String:String]()
     
     let cacheService: CacheService
     let userObserver: UserObserver

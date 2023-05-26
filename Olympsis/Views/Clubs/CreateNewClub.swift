@@ -42,10 +42,8 @@ struct CreateNewClub: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let url = await uploadObserver.UploadImage(location: "/club-images", fileName: imageId, data: data)
-            if url != "error" {
-                imageURL = url
-            }
+            let _ = await uploadObserver.UploadImage(location: "/club-images", fileName: imageId, data: data)
+            self.imageURL = "club-images/\(imageId).jpeg"
         }
     }
     
@@ -86,17 +84,20 @@ struct CreateNewClub: View {
                 if let country = pk.first?.country {
                     if let state = pk.first?.administrativeArea{
                         if let city = pk.first?.locality {
-                            let c = ClubDao(_name: clubName, _description: description, _sport: sport, _city: city, _state: state, _country: country, _imageURL: imageURL, _isPrivate: false)
-                            let club = try await clubObserver.createClub(dao: c)
+                            let c = Club(id: "", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, isPrivate: false, members: [Member]())
+                            let resp = try await clubObserver.createClub(club: c)
+                            session.clubTokens[resp.club.id] = resp.token
                             await MainActor.run {
-                                session.myClubs.append(club)
+                                session.myClubs.append(resp.club)
                             }
                             showToast = true
+                            self.state = .success
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
                 }
             } catch {
+                self.state = .failure
                 print(error)
             }
         }

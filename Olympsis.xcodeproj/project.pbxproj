@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13A82A1EDD260054F631 /* AuthModels.swift */; };
+		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
+		5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
+		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
 		9A042443293C016E00763E95 /* BlobStorageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A042442293C016E00763E95 /* BlobStorageHandler.swift */; };
 		9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A204755295FD28200CDF3A3 /* ChatObserver.swift */; };
 		9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3536FD29282CDA005EC806 /* EventTemplateView.swift */; };
@@ -34,6 +38,7 @@
 		9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336B292AE5DE008CF61D /* CommentView.swift */; };
 		9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* CreateNewPost.swift */; };
 		9A68EFEA292EFC0300D4E38E /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68EFE9292EFC0300D4E38E /* UserStore.swift */; };
+		9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 9A69CDDE2A1727BB00C37C1C /* Hermes */; };
 		9A69FE492971FCE600EBC5F9 /* EventDetailFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */; };
 		9A69FE4B297202A000EBC5F9 /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */; };
 		9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */; };
@@ -55,10 +60,8 @@
 		9A8162AA2966BD380042F0A6 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 9A8162A92966BD380042F0A6 /* SocketIO */; };
 		9A8162AC29677D200042F0A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A8162AB29677D200042F0A6 /* Launch Screen.storyboard */; };
 		9A81B60729241ED4009CA6ED /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60629241ED4009CA6ED /* Event.swift */; };
-		9A81B6092924235D009CA6ED /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6082924235D009CA6ED /* Field.swift */; };
 		9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* FieldObserver.swift */; };
 		9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* FieldService.swift */; };
-		9A81B61029242B21009CA6ED /* FieldsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60F29242B21009CA6ED /* FieldsResponse.swift */; };
 		9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* FieldView.swift */; };
 		9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */; };
 		9A81B619292472B3009CA6ED /* ClubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B618292472B3009CA6ED /* ClubService.swift */; };
@@ -95,8 +98,6 @@
 		9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */; };
 		9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */; };
 		9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */; };
-		9A8FF0DE28BB444C00DE4CF8 /* AuthRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DD28BB444C00DE4CF8 /* AuthRequests.swift */; };
-		9A8FF0E028BB446900DE4CF8 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DF28BB446900DE4CF8 /* AuthResponse.swift */; };
 		9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */; };
 		9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */; };
 		9A8FF14A28BC261000DE4CF8 /* ITCAvantGardeStd-BkObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13628BC260F00DE4CF8 /* ITCAvantGardeStd-BkObl.ttf */; };
@@ -177,6 +178,7 @@
 		9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94B296A78CF00245CCE /* NewRoom.swift */; };
 		9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94F296A807A00245CCE /* RoomDao.swift */; };
 		9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD951296A89C300245CCE /* RoomSettings.swift */; };
+		9AE1545829F60BF3009E2699 /* ClubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1545729F60BF3009E2699 /* ClubResponse.swift */; };
 		9AE36B1D2927390500C0C334 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B1C2927390500C0C334 /* Friend.swift */; };
 		9AE36B2029273E9A00C0C334 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B1F29273E9A00C0C334 /* Participant.swift */; };
 		9AE36B2229273F1700C0C334 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B2129273F1700C0C334 /* Like.swift */; };
@@ -191,13 +193,16 @@
 		9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1B829313D430055D1F6 /* PostService.swift */; };
 		9AF0A1BB29313E350055D1F6 /* PostObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1BA29313E350055D1F6 /* PostObserver.swift */; };
 		9AF0A1BE29316E6E0055D1F6 /* PostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1BD29316E6E0055D1F6 /* PostsResponse.swift */; };
-		BE9C45FA29E268CB008EA591 /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = BE9C45F929E268CB008EA591 /* Hermes */; };
 		BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FC29E279C9008EA591 /* EncodeToData.swift */; };
 		BE9C45FF29E36DB0008EA591 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FE29E36DB0008EA591 /* TokenStore.swift */; };
 		BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C460029E38936008EA591 /* GenerateImageURL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F8D13A82A1EDD260054F631 /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
+		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
+		5F8D13AC2A213C150054F631 /* FieldModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldModels.swift; sourceTree = "<group>"; };
+		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		9A042442293C016E00763E95 /* BlobStorageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobStorageHandler.swift; sourceTree = "<group>"; };
 		9A204755295FD28200CDF3A3 /* ChatObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatObserver.swift; sourceTree = "<group>"; };
 		9A3536FD29282CDA005EC806 /* EventTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTemplateView.swift; sourceTree = "<group>"; };
@@ -245,10 +250,8 @@
 		9A8162A629669A370042F0A6 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		9A8162AB29677D200042F0A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9A81B60629241ED4009CA6ED /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		9A81B6082924235D009CA6ED /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		9A81B60A2924254D009CA6ED /* FieldObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldObserver.swift; sourceTree = "<group>"; };
 		9A81B60C292425B8009CA6ED /* FieldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldService.swift; sourceTree = "<group>"; };
-		9A81B60F29242B21009CA6ED /* FieldsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsResponse.swift; sourceTree = "<group>"; };
 		9A81B61129242EBA009CA6ED /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldViewTemplate.swift; sourceTree = "<group>"; };
 		9A81B618292472B3009CA6ED /* ClubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubService.swift; sourceTree = "<group>"; };
@@ -286,8 +289,6 @@
 		9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Olympsis.entitlements; sourceTree = "<group>"; };
 		9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
 		9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dao.swift; sourceTree = "<group>"; };
-		9A8FF0DD28BB444C00DE4CF8 /* AuthRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequests.swift; sourceTree = "<group>"; };
-		9A8FF0DF28BB446900DE4CF8 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthObserver.swift; sourceTree = "<group>"; };
 		9A8FF13628BC260F00DE4CF8 /* ITCAvantGardeStd-BkObl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ITCAvantGardeStd-BkObl.ttf"; sourceTree = "<group>"; };
@@ -369,6 +370,7 @@
 		9ADDD94B296A78CF00245CCE /* NewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoom.swift; sourceTree = "<group>"; };
 		9ADDD94F296A807A00245CCE /* RoomDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDao.swift; sourceTree = "<group>"; };
 		9ADDD951296A89C300245CCE /* RoomSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettings.swift; sourceTree = "<group>"; };
+		9AE1545729F60BF3009E2699 /* ClubResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubResponse.swift; sourceTree = "<group>"; };
 		9AE36B1C2927390500C0C334 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9AE36B1F29273E9A00C0C334 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
 		9AE36B2129273F1700C0C334 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
@@ -383,7 +385,6 @@
 		9AF0A1B829313D430055D1F6 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		9AF0A1BA29313E350055D1F6 /* PostObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostObserver.swift; sourceTree = "<group>"; };
 		9AF0A1BD29316E6E0055D1F6 /* PostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsResponse.swift; sourceTree = "<group>"; };
-		BE9C45F829E26848008EA591 /* Hermes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Hermes; path = ../../Hermes; sourceTree = "<group>"; };
 		BE9C45FC29E279C9008EA591 /* EncodeToData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeToData.swift; sourceTree = "<group>"; };
 		BE9C45FE29E36DB0008EA591 /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
 		BE9C460029E38936008EA591 /* GenerateImageURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateImageURL.swift; sourceTree = "<group>"; };
@@ -395,7 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A8162AA2966BD380042F0A6 /* SocketIO in Frameworks */,
-				BE9C45FA29E268CB008EA591 /* Hermes in Frameworks */,
+				9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */,
 				9A81B62E292559F7009CA6ED /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,16 +409,9 @@
 			children = (
 				9A81B61D29247378009CA6ED /* Club.swift */,
 				9AD2090329344610007A62C4 /* ClubApplication.swift */,
+				9AE1545729F60BF3009E2699 /* ClubResponse.swift */,
 			);
 			path = Club;
-			sourceTree = "<group>";
-		};
-		9A3536F72927E63F005EC806 /* Field */ = {
-			isa = PBXGroup;
-			children = (
-				9A81B6082924235D009CA6ED /* Field.swift */,
-			);
-			path = Field;
 			sourceTree = "<group>";
 		};
 		9A3536FF2928930D005EC806 /* Viewers */ = {
@@ -527,14 +521,6 @@
 			path = Chat;
 			sourceTree = "<group>";
 		};
-		9A81B60E29242B14009CA6ED /* Field */ = {
-			isa = PBXGroup;
-			children = (
-				9A81B60F29242B21009CA6ED /* FieldsResponse.swift */,
-			);
-			path = Field;
-			sourceTree = "<group>";
-		};
 		9A81B61A2924730F009CA6ED /* Club */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,7 +567,6 @@
 		9A8FF0A428BB14BF00DE4CF8 = {
 			isa = PBXGroup;
 			children = (
-				BE9C45F429E264E8008EA591 /* Packages */,
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
@@ -650,6 +635,7 @@
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
 				9A8FF0D128BB336600DE4CF8 /* Models */,
+				5F8D13AE2A213CC30054F631 /* TempData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -670,13 +656,15 @@
 			children = (
 				9A8162962966516D0042F0A6 /* Message */,
 				9A5D336A292AC79B008CF61D /* Post */,
-				9A3536F72927E63F005EC806 /* Field */,
 				9A3536F62927E634005EC806 /* Club */,
 				9AE36B1E29273E7B00C0C334 /* Event */,
 				9AAAA6A92903A57E0003D501 /* User */,
 				9A8FF0D928BB33E800DE4CF8 /* Dao */,
 				9AB02F62290265F8008C07F1 /* Tab.swift */,
 				9ABB1EC02905F9F90050C0F0 /* Announcement.swift */,
+				5F8D13A82A1EDD260054F631 /* AuthModels.swift */,
+				5F8D13AA2A1EDFF30054F631 /* UserModels.swift */,
+				5F8D13AC2A213C150054F631 /* FieldModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -723,21 +711,10 @@
 				9AF0A1BC29316D530055D1F6 /* Post */,
 				9A81B6472925EB6F009CA6ED /* Event */,
 				9A81B61A2924730F009CA6ED /* Club */,
-				9A81B60E29242B14009CA6ED /* Field */,
 				9A39ED3B28BDD59500ACB20A /* User */,
-				9A8FF0DC28BB442600DE4CF8 /* Auth */,
 				9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */,
 			);
 			path = Dao;
-			sourceTree = "<group>";
-		};
-		9A8FF0DC28BB442600DE4CF8 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				9A8FF0DD28BB444C00DE4CF8 /* AuthRequests.swift */,
-				9A8FF0DF28BB446900DE4CF8 /* AuthResponse.swift */,
-			);
-			path = Auth;
 			sourceTree = "<group>";
 		};
 		9A8FF0E528BBD7CA00DE4CF8 /* Fonts */ = {
@@ -948,14 +925,6 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
-		BE9C45F429E264E8008EA591 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				BE9C45F829E26848008EA591 /* Hermes */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		BE9C45FB29E279B0008EA591 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,7 +954,7 @@
 			packageProductDependencies = (
 				9A81B62D292559F7009CA6ED /* AlertToast */,
 				9A8162A92966BD380042F0A6 /* SocketIO */,
-				BE9C45F929E268CB008EA591 /* Hermes */,
+				9A69CDDE2A1727BB00C37C1C /* Hermes */,
 			);
 			productName = Olympsis;
 			productReference = 9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */;
@@ -1018,6 +987,7 @@
 			packageReferences = (
 				9A81B62C292559F7009CA6ED /* XCRemoteSwiftPackageReference "AlertToast" */,
 				9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */,
+				9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */,
 			);
 			productRefGroup = 9A8FF0AE28BB14BF00DE4CF8 /* Products */;
 			projectDirPath = "";
@@ -1103,6 +1073,8 @@
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
+				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
+				9AE1545829F60BF3009E2699 /* ClubResponse.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */,
@@ -1136,13 +1108,12 @@
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
 				9A35370429289396005EC806 /* ParticipantView.swift in Sources */,
 				BE9C45FF29E36DB0008EA591 /* TokenStore.swift in Sources */,
+				5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationView.swift in Sources */,
-				9A81B6092924235D009CA6ED /* Field.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* ClubMemberView.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
-				9A8FF0E028BB446900DE4CF8 /* AuthResponse.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
@@ -1154,12 +1125,14 @@
 				9AD2090429344610007A62C4 /* ClubApplication.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEventView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
+				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
 				9A81B63029256A57009CA6ED /* CreateNewClub.swift in Sources */,
 				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
 				9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */,
 				9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */,
 				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
 				9A69FE532972390900EBC5F9 /* EventDetailActions.swift in Sources */,
+				5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */,
 				9A5D3369292AC610008CF61D /* PostComments.swift in Sources */,
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
@@ -1169,7 +1142,6 @@
 				9A8162A729669A370042F0A6 /* MessageView.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
-				9A8FF0DE28BB444C00DE4CF8 /* AuthRequests.swift in Sources */,
 				9A5D3365292AAA71008CF61D /* PostView.swift in Sources */,
 				9AD208FA29342E6B007A62C4 /* NoPostsView.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
@@ -1183,7 +1155,6 @@
 				9AD208EF293279AA007A62C4 /* EventDao.swift in Sources */,
 				9AD2090829348DA6007A62C4 /* ClubDao.swift in Sources */,
 				9A81B6402925E191009CA6ED /* FieldDetailView.swift in Sources */,
-				9A81B61029242B21009CA6ED /* FieldsResponse.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				9AD208E92931C62E007A62C4 /* PostDao.swift in Sources */,
 				9A9AD8942955FB900096D65B /* FriendRequestView.swift in Sources */,
@@ -1454,6 +1425,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NokoAnubis/Hermes.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
@@ -1473,6 +1452,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9A69CDDE2A1727BB00C37C1C /* Hermes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */;
+			productName = Hermes;
+		};
 		9A8162A92966BD380042F0A6 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */;
@@ -1482,10 +1466,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9A81B62C292559F7009CA6ED /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
-		};
-		BE9C45F929E268CB008EA591 /* Hermes */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Hermes;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

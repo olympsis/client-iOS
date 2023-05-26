@@ -18,7 +18,7 @@ class ClubService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
+        self.http = Courrier(host: host, apiKey: key, token: "Bearer " + tokenStore.FetchTokenFromKeyChain())
     }
     
     func getClubs(c: String, s: String) async throws -> (Data, URLResponse) {
@@ -39,10 +39,10 @@ class ClubService {
     }
     
     // TODO: Add club to body need to create a club DAO
-    func createClub(dao: ClubDao) async throws -> Data {
+    func createClub(club: Club) async throws -> Data {
         let endpoint = Endpoint(path: "/v1/clubs", queryItems: [URLQueryItem]())
         
-        let (data, _) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
+        let (data, _) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(club))
         return data
     }
     
