@@ -64,7 +64,7 @@ struct ClubsList: View {
                                 
                         } else {
                             if text != ""{
-                                ForEach(clubObserver.clubs.filter{$0.name.lowercased().contains(text.lowercased())}, id: \.id){ c in
+                                ForEach(clubObserver.clubs.filter{$0.name!.lowercased().contains(text.lowercased())}, id: \.id){ c in
                                     SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: clubObserver)
                                 }
                             } else {

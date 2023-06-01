@@ -85,7 +85,7 @@ struct EventDetailView: View {
                             .padding(.top, 20)
                     }
                 }.task {
-                    let resp = await clubObserver.getClub(id: event.clubId)
+                    let resp = await clubObserver.getClub(id: event.clubID)
                     if let c = resp {
                         await MainActor.run {
                             self.club = c
@@ -124,7 +124,7 @@ struct EventDetailView: View {
                     EventDetailActions(event: $event, showMenu: $showMenu, user: usr, eventObserver: eventObserver)
                         .opacity(event.status == "ended" ? 0 : 1)
                 } else {
-                    EventDetailActions(event: $event, showMenu: $showMenu, user: UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", visibility: "private"), eventObserver: eventObserver)
+                    EventDetailActions(event: $event, showMenu: $showMenu, user: USERS_DATA[0], eventObserver: eventObserver)
                         .opacity(event.status == "ended" ? 0 : 1)
                 }
             }
@@ -134,13 +134,7 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let participant = Participant(id: "0", uuid: "", status: "going", data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), createdAt: 0)
-        let participant2 = Participant(id: "1", uuid: "", status: "going", data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: [""]), createdAt: 0)
-        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [participant2,participant])
-        let field = FIELDS[0]
-        let club = Club(id: "", name: "Provo Soccer", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member(id: "0", uuid: "00", role: "admin", data: nil, joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", data: nil, joinedAt: 0)], rules: ["No fighting"], createdAt: 0)
-        EventDetailView(event: .constant(event), field: field, events: .constant([Event]()), club: club)
+        EventDetailView(event: .constant(EVENTS[0]), field: FIELDS[0], events: .constant(EVENTS), club: CLUBS[0])
             .environmentObject(SessionStore())
     }
 }

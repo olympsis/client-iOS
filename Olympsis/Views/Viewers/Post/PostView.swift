@@ -10,7 +10,7 @@ import SwiftUI
 struct PostView: View {
     @State var club: Club
     @State var post: Post
-    @State var data: UserPeek?
+    @State var data: UserData?
     @Binding var posts: [Post]
     @State private var index = ""
     @State private var isLiked = false
@@ -62,7 +62,7 @@ struct PostView: View {
                             .frame(width: 35)
                             .padding(.leading, 5)
                     }
-                    Text(d.username)
+                    Text(d.username!)
                         .padding(.leading, 5)
                         .bold()
                 } else {
@@ -162,8 +162,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: ["soccer"])
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        PostView(club: club, post: Post(id: "", owner: "", clubId: "", body: "event-body", images: ["profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F"], likes: [String](), comments: [Comment](), createdAt: 0), data: peek, posts: .constant([Post]())).environmentObject(SessionStore())
+        PostView(club: CLUBS[0], post: POSTS[0], data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: nil, clubs: nil, sports: nil, deviceToken: nil), posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }

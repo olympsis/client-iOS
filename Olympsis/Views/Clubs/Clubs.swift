@@ -35,15 +35,15 @@ struct Clubs: View {
                                 ClubMenu(club: session.myClubs[index], index: $index)
                             }
                             .fullScreenCover(isPresented: $showMessages) {
-                                if let usr = session.user {
-                                    Messages(club: session.myClubs[index], user: usr)
-                                }
+//                                if let usr = $session.user {
+//                                    Messages(club: session.myClubs[index], user: usr)
+//                                }
                             }
                     }
                 }
                 
             }.toolbar {
-                if status == .loading {
+                /*if status == .loading {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Rectangle()
                             .foregroundColor(.gray)
@@ -103,10 +103,10 @@ struct Clubs: View {
                             }
                         }
                     }
-                }
+                }*/
             }
             .task {
-                if session.myClubs.isEmpty {
+                /*if session.myClubs.isEmpty {
                     if let usr = session.user {
                         if let myClubs = usr.clubs {
                             if !myClubs.isEmpty {
@@ -117,7 +117,7 @@ struct Clubs: View {
                             }
                         }
                     }
-                }
+                }*/
             }
         }
     }

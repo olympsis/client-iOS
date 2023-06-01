@@ -11,7 +11,7 @@ struct Messages: View {
     
 
     @State var club: Club
-    @State var user: UserStore
+    @State var user: UserData
     @State var rooms = [Room]()
     @State private var text = ""
     @State private var showRooms = false
@@ -95,7 +95,7 @@ struct Messages: View {
                                 }
                             }
                         }.refreshable {
-                            let resp = await chatObserver.GetRooms(id: club.id)
+                            let resp = await chatObserver.GetRooms(id: club.id!)
                             await MainActor.run {
                                 if let r = resp {
                                     self.rooms = r.rooms
@@ -148,7 +148,7 @@ struct Messages: View {
             }
             .task {
                 state = .loading
-                let resp = await chatObserver.GetRooms(id: club.id)
+                let resp = await chatObserver.GetRooms(id: club.id!)
                 if let r = resp {
                     await MainActor.run {
                         rooms = r.rooms
@@ -171,9 +171,7 @@ struct Messages: View {
 
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        let user = UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", visibility: "public")
-        Messages(club: club, user: user, rooms: [room]).environmentObject(SessionStore())
+        Messages(club: CLUBS[0], user: USERS_DATA[0], rooms: [room]).environmentObject(SessionStore())
     }
 }

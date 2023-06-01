@@ -14,30 +14,20 @@ struct ClubMemberMenu: View {
     @State var observer = ClubObserver()
     
     func Promote() async {
-        let res = await observer.changeMemberRank(id: club.id, memberId: member.id, role: "admin")
-        if res {
-            await MainActor.run {
-                member.role = "admin"
-            }
-        }
+        let res = await observer.changeMemberRank(id: club.id!, memberId: member.id!, role: "admin")
+        // FETCH NEW CLUB DATA TO UPDATE MEMBERS
     }
     
     func Demote() async {
-        let res = await observer.changeMemberRank(id: club.id, memberId: member.id, role: "member")
+        let res = await observer.changeMemberRank(id: club.id!, memberId: member.id!, role: "member")
         if res {
-            await MainActor.run {
-                member.role = "member"
-            }
+            // FETCH NEW CLUB DATA TO UPDATE MEMBERS
         }
     }
     
     func Kick() async {
-        let res = await observer.kickMember(id: club.id, memberId: member.id)
-        if res {
-            await MainActor.run {
-                club.members.removeAll(where: {$0.id == member.id})
-            }
-        }
+        let res = await observer.kickMember(id: club.id!, memberId: member.id!)
+        // FETCH NEW CLUB DATA TO UPDATE MEMBERS
     }
     
     var body: some View {
@@ -105,9 +95,6 @@ struct ClubMemberMenu: View {
 
 struct ClubMemberMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let member = Member(id: "", uuid: "", role: "admin", data: peek, joinedAt: 0)
-        ClubMemberMenu(club: club, role: .Member, member: member)
+        ClubMemberMenu(club: CLUBS[0], role: .Member, member: CLUBS[0].members!.first!)
     }
 }

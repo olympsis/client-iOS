@@ -22,21 +22,21 @@ class ChatService {
     
     func createRoom(dao: RoomDao) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/v1/chats", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
     }
     
     func getRooms(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/club/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/club/\(id)", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func getRoom(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/\(id)", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .GET)
@@ -44,7 +44,7 @@ class ChatService {
     
     func updateRoom(id: String, dao: RoomDao) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/\(id)", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao))
@@ -52,21 +52,21 @@ class ChatService {
     
     func deleteRoom(id: String) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/\(id)", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .DELETE)
     }
     
     func joinRoom(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)/join", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/\(id)/join", queryItems: [
             URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: Method.POST)
     }
     
     func leaveRoom(id: String) async throws -> URLResponse {
-        let endpoint = Hermes.Endpoint(path: "/v1/chats/\(id)/leave", queryItems: [
+        let endpoint = Hermes.Endpoint(path: "/chats/\(id)/leave", queryItems: [
             URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST)

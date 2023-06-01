@@ -44,7 +44,7 @@ struct EventsModalView: View {
             }
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(todayEvents, id: \.title) { event in
-                    if let f = getField(fieldId: event.fieldId) {
+                    if let f = getField(fieldId: event.fieldID) {
                         EventView(event: event, field: f, events: $events)
                     } else {
                         EventTemplateView()

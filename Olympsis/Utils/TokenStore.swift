@@ -5,23 +5,38 @@
 //  Created by Noko Anubis on 4/9/23.
 //
 
+import os
 import Foundation
 
 class TokenStore {
     
+    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "token_store")
     let tokenKey: String = "authToken"
     
-    func SaveTokenToKeyChain(token: String) -> Bool {
-        let data = token.data(using: .utf8)!
+    func SaveTokenToKeyChain(token: String) {
+        let tokenData = token.data(using: .utf8)!
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: tokenKey,
-            kSecValueData as String: data,
-            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
         ]
-        let status = SecItemAdd(query as CFDictionary, nil)
-        guard status == errSecSuccess else { return false }
-        return true
+        let update: [String: Any] = [
+            kSecValueData as String: tokenData
+        ]
+        
+        let status = SecItemUpdate(query as CFDictionary, update as CFDictionary)
+        
+        if status == errSecSuccess {
+            log.info("Token updated in Keychain successfully.")
+        } else if status == errSecItemNotFound {
+            let addStatus = SecItemAdd(query as CFDictionary, nil)
+            if addStatus == errSecSuccess {
+                log.info("Token saved to Keychain successfully.")
+            } else {
+                log.error("Failed to save token to Keychain. Error: \(addStatus)")
+            }
+        } else {
+            log.info("Failed to update token in Keychain. Error: \(status)")
+        }
     }
     
     func FetchTokenFromKeyChain() -> String {

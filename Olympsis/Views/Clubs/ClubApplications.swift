@@ -28,7 +28,7 @@ struct ClubApplications: View {
                     }
                     
                 }.refreshable {
-                    let res = await clubObserver.getApplications(id: club.id)
+                    let res = await clubObserver.getApplications(id: club.id!)
                     await MainActor.run {
                         applications = res
                     }
@@ -44,7 +44,7 @@ struct ClubApplications: View {
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                let res = await clubObserver.getApplications(id: club.id)
+                let res = await clubObserver.getApplications(id: club.id!)
                 await MainActor.run {
                     applications = res
                 }
@@ -55,10 +55,6 @@ struct ClubApplications: View {
 
 struct ClubApplications_Previews: PreviewProvider {
     static var previews: some View {
-        let _ = [
-            ClubApplication(id: "0", uuid: "", data: UserPeek( firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer","tennis"]), status: "pending", createdAt: 1669245600),
-            ClubApplication(id: "1", uuid: "", data: UserPeek( firstName: "Jane", lastName: "Doe", username: "janeDoe", imageURL: "", bio: "", sports: ["soccer","tennis"]), status: "pending", createdAt: 1669245600)
-        ]
-        ClubApplications(club: Club(id: "", name: "", description: "", sport: "", city: "", state: "", country: "", imageURL: "", isPrivate: false, members: [Member](), rules: [String](), createdAt: 0))
+        ClubApplications(club: CLUBS[0])
     }
 }

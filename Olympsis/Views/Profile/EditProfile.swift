@@ -49,7 +49,7 @@ struct EditProfile: View {
                     }
                     
                     // update user data
-                    let update = UpdateUserDataDao(_username: user.username, _bio: bio, _imageURL: self.imageURL, _isPublic: isPublic, _sports: selectedSports)
+                    let update = User(username: user.username, bio: bio, imageURL: imageURL, sports: selectedSports)
                     let res = await userObserver.UpdateUserData(update: update)
                     
                     if res {
@@ -68,7 +68,7 @@ struct EditProfile: View {
         } else {
             // if there is no new image data just update user data then
             if let user = session.user {
-                let update = UpdateUserDataDao(_username: user.username, _bio: bio, _isPublic: isPublic, _sports: selectedSports)
+                let update = User(username: user.username, bio: bio, sports: selectedSports)
                 let res = await userObserver.UpdateUserData(update: update)
                 if res {
                     uploadingStatus = .success

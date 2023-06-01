@@ -20,52 +20,52 @@ class EventService {
         self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    func getEvents(long: Double, lat: Double, radius: Int, sport: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/v1/events", queryItems: [
+    func getEvents(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
+        let endpoint = Hermes.Endpoint(path: "/events", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius)),
-            URLQueryItem(name: "sport", value: sport)
+            URLQueryItem(name: "sports", value: sports)
         ])
         
         return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func getEvent(id: String) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events/\(id)", queryItems: [URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .GET)
     }
     
     func createEvent(dao: EventDao) async throws -> (Data,URLResponse) {
-        let endpoint = Endpoint(path: "/v1/events", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events", queryItems: [URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events/\(id)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao))
         return resp
     }
     
     func deleteEvent(id: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/events/\(id)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events/\(id)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE)
         return resp
     }
     
     func addParticipant(id: String, dao: ParticipantDao) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events/\(id)/participants", queryItems: [URLQueryItem]())
         
         let (_,resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao))
         return resp
     }
     
     func removeParticipant(id: String, pid: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/events/\(id)/participants/\(pid)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/events/\(id)/participants/\(pid)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE)
         return resp

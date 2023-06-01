@@ -37,17 +37,19 @@ struct MapOptions: View {
         }
         if let loc = session.locationManager.location {
             // fetch nearby fields
-            await fieldObserver.fetchFields(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius))
+            guard let usr = session.user else {
+                return
+            }
+            let sports = usr.sports!.joined(separator: ",")
+            await fieldObserver.fetchFields(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sports)
             await MainActor.run {
                 session.fields = fieldObserver.fields
             }
-            for sport in selectedSports {
-                // fetch nearby events
-                let res = await eventObserver.fetchEvents(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sport: sport)
-                if let e = res {
-                    await MainActor.run {
-                        session.events += e
-                    }
+            let sportsJoined = selectedSports.joined(separator: ",")
+            let res = await eventObserver.fetchEvents(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sportsJoined)
+            if let e = res {
+                await MainActor.run {
+                    session.events += e
                 }
             }
         }

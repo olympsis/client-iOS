@@ -135,9 +135,6 @@ struct EventDetailMiddleView: View {
 
 struct EventDetailMiddleView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "", title: "event", body: "eventBody", sport: "soccer", level: 3, status: "in-progress", startTime: 1669763400, actualStartTime: 1669759200, maxParticipants: 0)
-        EventDetailMiddleView(event: .constant(event))
+        EventDetailMiddleView(event: .constant(EVENTS[0]))
     }
 }

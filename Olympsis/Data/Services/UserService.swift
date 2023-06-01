@@ -52,13 +52,13 @@ class UserService {
     }
     
     func GetUserData() async throws -> Data {
-        let endpoint = Endpoint(path: "/users", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/users/user", queryItems: [URLQueryItem]())
         let (data, _) = try await http.Request(endpoint: endpoint, method: .GET)
         return data
     }
     
-    func UpdateUserData(update: UpdateUserDataDao) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/users", queryItems: [URLQueryItem]())
+    func UpdateUserData(update: User) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/users/user", queryItems: [URLQueryItem]())
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(update))
         return resp
     }

@@ -89,9 +89,9 @@ struct Permissions: View {
                     Task {
                         if let tk = deviceToken {
                             // update device token
-                            // for now i have to put isPublic in every update user function due to golang not taking in nil for a bool or a string
-                            let d = UpdateUserDataDao(_isPublic: true, _deviceToken: tk)
-                            _ = await userObserver.UpdateUserData(update: d)
+                            userObserver = UserObserver()
+                            let u = User(deviceToken: tk)
+                            _ = await userObserver.UpdateUserData(update: u)
                         }
                     }
                 }){

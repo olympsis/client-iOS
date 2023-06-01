@@ -18,8 +18,8 @@ struct PostComments: View {
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func GetData(uuid: String) -> UserPeek? {
-        let usr = club.members.first(where: {$0.uuid == uuid})
+    func GetData(uuid: String) -> UserData? {
+        let usr = club.members!.first(where: {$0.uuid == uuid})
             if let u = usr {
                 return u.data
             }
@@ -28,7 +28,7 @@ struct PostComments: View {
     
     func addComment() async {
         if let user = session.user {
-            let dao = CommentDao(_uuid: user.uuid, _text: text)
+            let dao = CommentDao(_uuid: user.uuid!, _text: text)
             let res = await postObserver.addComment(id: post.id, dao: dao)
             if res {
                 let _comments = await postObserver.getComments(id: post.id)
@@ -102,8 +102,6 @@ struct PostComments: View {
 
 struct PostComments_Previews: PreviewProvider {
     static var previews: some View {
-        let post = Post(id: "", owner: "", clubId: "", body: "post-body", images: [String](), likes: [String](), comments: [Comment](), createdAt: 0)
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        PostComments(club: club, post: post)
+        PostComments(club: CLUBS[0], post: POSTS[0])
     }
 }

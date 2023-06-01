@@ -52,13 +52,13 @@ struct RoomListView: View {
                 .padding(.trailing)
             }
         }.task {
-            if let usr = session.user {
-                if !room.members.contains(where: {$0.uuid == usr.uuid}){
-                    joined = false
-                } else {
-                    joined = true
-                }
-            }
+//            if let usr = session.user {
+//                if !room.members.contains(where: {$0.uuid == usr.uuid}){
+//                    joined = false
+//                } else {
+//                    joined = true
+//                }
+//            }
         }
     }
 }

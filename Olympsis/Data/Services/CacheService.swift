@@ -5,20 +5,17 @@
 //  Created by Joel Joseph on 10/21/22.
 //
 
+import os
 import Foundation
 
 class CacheService: ObservableObject {
-    let encoder: JSONEncoder
-    let decoder: JSONDecoder
-    let defaults: UserDefaults
     
-    init() {
-        encoder = JSONEncoder()
-        decoder = JSONDecoder()
-        defaults = UserDefaults()
-    }
+    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "cache_service")
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
+    let defaults = UserDefaults()
     
-    func cacheToken(token: String) async {
+    func cacheToken(token: String) {
         self.defaults.set(token, forKey: "token")
     }
     
@@ -43,7 +40,7 @@ class CacheService: ObservableObject {
         return (f, l, e)
     }
         
-    func cacheClubs(clubs:[String]) async {
+    func cacheClubs(clubs:[String]) {
         self.defaults.set(clubs, forKey: "clubs")
     }
     
@@ -51,7 +48,7 @@ class CacheService: ObservableObject {
         return self.defaults.object(forKey: "clubs") as? [String] ?? [String]()
     }
     
-    func cacheUser(user: UserStore) async {
+    func cacheUser(user: UserData) {
         do {
             
             let encoder = JSONEncoder()
@@ -59,19 +56,19 @@ class CacheService: ObservableObject {
             
             self.defaults.set(data, forKey: "user")
         } catch {
-            print("failed to store user data: \(error)")
+            log.error("failed to store user data: \(error)")
         }
     }
     
-    func fetchUser() -> UserStore? {
+    func fetchUser() -> UserData? {
         do {
             if let data = self.defaults.data(forKey: "user") {
                 let decoder = JSONDecoder()
-                let usr = try decoder.decode(UserStore.self, from: data)
+                let usr = try decoder.decode(UserData.self, from: data)
                 return usr
             }
         } catch {
-            print("failed to fetch user data: \(error)")
+            log.error("failed to fetch user data: \(error)")
         }
         return nil
     }

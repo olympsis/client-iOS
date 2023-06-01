@@ -10,6 +10,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct Auth: View {
+    
     @State private var log = Logger()
     @Binding var currentView: AuthTab
     @State var userStatus: USER_STATUS?

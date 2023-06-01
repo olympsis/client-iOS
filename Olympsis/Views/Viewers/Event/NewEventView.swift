@@ -76,7 +76,7 @@ struct NewEventView: View {
         if eventClubId != "" {
             return eventClubId
         } else {
-            return associatedClubs[0].id
+            return associatedClubs[0].id!
         }
     }
     
@@ -118,7 +118,7 @@ struct NewEventView: View {
         let resp = await eventObserver.createEvent(dao: dao)
         if var r = resp {
             if let usr = session.user {
-                r.ownerData = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
+//                r.poster = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
             }
             status = .success
             await MainActor.run {
@@ -207,7 +207,7 @@ struct NewEventView: View {
                         
                         Picker(selection: $eventClubId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
                             ForEach(associatedClubs, id: \.id) { club in
-                                Text(club.name).tag(club.id)
+                                Text(club.name!).tag(club.id)
                             }
                         }.modifier(MenuButton())
                             .tint(Color("primary-color"))
@@ -333,7 +333,7 @@ struct NewEventView: View {
                     
             }.frame(width: SCREEN_WIDTH)
         }.task {
-            eventClubId = clubs[0].id
+            eventClubId = clubs[0].id!
             //eventFieldId = session.fields[0].id
             eventSport = SportFromString(s: sports[0])
         }
@@ -342,11 +342,7 @@ struct NewEventView: View {
 
 struct NewEventView_Previews: PreviewProvider {
     static var previews: some View {
-        let clubs = [
-            Club(id: "0", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0),
-            Club(id: "1", name: "Provo Golf", description: "Come play golf with us.", sport: "golf", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0)
-            ]
-        NewEventView(clubs: clubs, fields: FIELDS, sports: ["soccer", "golf"])
+        NewEventView(clubs: CLUBS, fields: FIELDS, sports: ["soccer", "golf"])
             .environmentObject(SessionStore())
     }
 }

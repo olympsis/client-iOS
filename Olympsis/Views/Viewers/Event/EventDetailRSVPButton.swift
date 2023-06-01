@@ -10,32 +10,32 @@ import SwiftUI
 struct EventDetailRSVPButton: View {
     
     @Binding var event: Event
-    @State var user: UserStore
+    @State var user: UserData
     @State var eventObserver: EventObserver
     @State private var state: LOADING_STATE = .pending
     
     func rsvp(status: String) async {
         state = .loading
-        let dao = ParticipantDao(_uuid: user.uuid, _status: status)
+        let dao = ParticipantDao(_uuid: user.uuid!, _status: status)
         let _ = await eventObserver.addParticipant(id: event.id, dao: dao)
         if let img = user.imageURL {
-            let p = Participant(id: UUID().uuidString, uuid: user.uuid, status: status, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: img, bio: "", sports: [""]), createdAt: 0)
-            withAnimation(.spring()){
-                if event.participants != nil {
-                    event.participants!.append(p)
-                } else {
-                    event.participants = [p]
-                }
-            }
+//            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: img, bio: "", sports: [""]), status: status, createdAt: 0)
+//            withAnimation(.spring()){
+//                if event.participants != nil {
+//                    event.participants!.append(p)
+//                } else {
+//                    event.participants = [p]
+//                }
+//            }
         } else {
-            let p = Participant(id: UUID().uuidString, uuid: user.uuid, status: status, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), createdAt: 0)
-            withAnimation(.spring()){
-                if event.participants != nil {
-                    event.participants!.append(p)
-                } else {
-                    event.participants = [p]
-                }
-            }
+//            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), status: status, createdAt: 0)
+//            withAnimation(.spring()){
+//                if event.participants != nil {
+//                    event.participants!.append(p)
+//                } else {
+//                    event.participants = [p]
+//                }
+//            }
         }
         state = .success
     }
@@ -43,7 +43,7 @@ struct EventDetailRSVPButton: View {
     func cancel() async {
         state = .loading
         if let pid = event.participants?.first(where: {$0.uuid == user.uuid}){
-            let res = await eventObserver.removeParticipant(id: event.id, pid: pid.id)
+            let res = await eventObserver.removeParticipant(id: event.id, pid: pid.id!)
             if res {
                 withAnimation(.easeOut) {
                     event.participants?.removeAll(where: {$0.uuid == user.uuid})
@@ -97,11 +97,7 @@ struct EventDetailRSVPButton: View {
 
 struct EventDetailRSVPButton_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let participant = Participant(id: "", uuid: "", status: "going", data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), createdAt: 0)
-        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [participant])
-        let usr = UserStore(firstName: "", lastName: "", email: "", uuid: "", username: "", visibility: "private")
-        EventDetailRSVPButton(event: .constant(event), user: usr, eventObserver: EventObserver())
+        EventDetailRSVPButton(event: .constant(EVENTS[0]), user: USERS_DATA[0], eventObserver: EventObserver())
             .environmentObject(SessionStore())
     }
 }

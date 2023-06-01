@@ -24,7 +24,7 @@ struct NewRoom: View {
                 state = .loading
             }
             if let usr = session.user {
-                let res = await chatObserver.CreateRoom(club: club.id, name: text, uuid: usr.uuid)
+                let res = await chatObserver.CreateRoom(club: club.id!, name: text, uuid: usr.uuid!)
                 if let r = res {
                     print(r.id)
                     rooms.append(r)
@@ -88,7 +88,7 @@ struct NewRoom: View {
 
 struct NewRoom_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
+        let club = CLUBS[0]
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember](), history: [Message]())
         NewRoom(club: .constant(club), rooms: .constant([room]))
     }

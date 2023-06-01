@@ -10,7 +10,7 @@ import SwiftUI
 struct ParticipantView: View {
     @State var participant: Participant
     var body: some View {
-        if let img = participant.data.imageURL {
+        if let img = participant.data?.imageURL {
             AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
                 if let image = phase.image {
                     ZStack {
@@ -61,7 +61,6 @@ struct ParticipantView: View {
 
 struct ParticipantView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: ["soccer"])
-        ParticipantView(participant: Participant(id: "", uuid: "", status: "going", data: peek, createdAt: 0))
+        ParticipantView(participant: EVENTS[0].participants![0])
     }
 }

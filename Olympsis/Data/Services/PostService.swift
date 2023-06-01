@@ -22,7 +22,7 @@ class PostService {
     }
     
     func getPosts(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/posts", queryItems: [
+        let endpoint = Endpoint(path: "/posts", queryItems: [
             URLQueryItem(name: "clubId", value: id),
         ])
         
@@ -30,33 +30,33 @@ class PostService {
     }
     
     func createPost(post: PostDao) async throws -> Data {
-        let endpoint = Endpoint(path: "/v1/posts", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts", queryItems: [URLQueryItem]())
         
         let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post))
         return data
     }
     
     func deletePost(postId: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/posts/\(postId)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts/\(postId)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
         return resp
     }
     
     func getComments(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/posts/\(id)/comments", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts/\(id)/comments", queryItems: [URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET)
     }
     
     func addComment(id: String, dao:CommentDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/posts/\(id)/comments", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts/\(id)/comments", queryItems: [URLQueryItem]())
         
         return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(dao))
     }
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/v1/posts/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
         return resp

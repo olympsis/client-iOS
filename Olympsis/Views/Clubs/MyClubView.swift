@@ -19,8 +19,8 @@ struct MyClubView: View {
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func GetData(uuid: String) -> UserPeek? {
-        let usr = club.members.first(where: {$0.uuid == uuid})
+    func GetData(uuid: String) -> UserData? {
+        let usr = club.members!.first(where: {$0.uuid == uuid})
         if let u = usr {
             return u.data
         }
@@ -43,9 +43,9 @@ struct MyClubView: View {
                     .fullScreenCover(isPresented: $showCreatePost) { CreateNewPost(club: club, posts: $posts) }
                         .refreshable {
                             Task {
-                                let _posts = await postObserver.fetchPosts(clubId:club.id)
+                                let newPosts = await postObserver.fetchPosts(clubId:club.id!)
                                 await MainActor.run {
-                                    posts = _posts
+                                    posts = newPosts
                                 }
                             }
                         }
@@ -69,7 +69,7 @@ struct MyClubView: View {
         .task {
             if posts.isEmpty  {
                 status = .loading
-                let resp = await postObserver.fetchPosts(clubId: club.id)
+                let resp = await postObserver.fetchPosts(clubId: club.id!)
                 posts = resp
                 status = .success
             }
@@ -79,7 +79,6 @@ struct MyClubView: View {
 
 struct MyClubView_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        MyClubView(club: .constant(club)).environmentObject(SessionStore())
+        MyClubView(club: .constant(CLUBS[0])).environmentObject(SessionStore())
     }
 }

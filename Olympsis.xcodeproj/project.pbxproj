@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
+		5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
 		5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13A82A1EDD260054F631 /* AuthModels.swift */; };
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
@@ -37,7 +39,6 @@
 		9A5D3369292AC610008CF61D /* PostComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3368292AC610008CF61D /* PostComments.swift */; };
 		9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336B292AE5DE008CF61D /* CommentView.swift */; };
 		9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* CreateNewPost.swift */; };
-		9A68EFEA292EFC0300D4E38E /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68EFE9292EFC0300D4E38E /* UserStore.swift */; };
 		9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 9A69CDDE2A1727BB00C37C1C /* Hermes */; };
 		9A69FE492971FCE600EBC5F9 /* EventDetailFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */; };
 		9A69FE4B297202A000EBC5F9 /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */; };
@@ -59,14 +60,11 @@
 		9A8162A729669A370042F0A6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A629669A370042F0A6 /* MessageView.swift */; };
 		9A8162AA2966BD380042F0A6 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 9A8162A92966BD380042F0A6 /* SocketIO */; };
 		9A8162AC29677D200042F0A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A8162AB29677D200042F0A6 /* Launch Screen.storyboard */; };
-		9A81B60729241ED4009CA6ED /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60629241ED4009CA6ED /* Event.swift */; };
 		9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* FieldObserver.swift */; };
 		9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* FieldService.swift */; };
 		9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* FieldView.swift */; };
 		9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */; };
 		9A81B619292472B3009CA6ED /* ClubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B618292472B3009CA6ED /* ClubService.swift */; };
-		9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61B29247326009CA6ED /* ClubsResponse.swift */; };
-		9A81B61E29247378009CA6ED /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61D29247378009CA6ED /* Club.swift */; };
 		9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61F292475B1009CA6ED /* ClubObserver.swift */; };
 		9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6222924771A009CA6ED /* SearchBar.swift */; };
 		9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62429247F87009CA6ED /* SmallClubView.swift */; };
@@ -125,7 +123,6 @@
 		9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */; };
 		9AA5F617294DB0F900219B95 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F616294DB0F900219B95 /* LoadingButton.swift */; };
 		9AA5F619294DCBF700219B95 /* MapOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F618294DCBF700219B95 /* MapOptions.swift */; };
-		9AAAA6AB2903A58D0003D501 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6AA2903A58D0003D501 /* UserDao.swift */; };
 		9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6AC2903AF2F0003D501 /* Trophy.swift */; };
 		9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6AE2903AF360003D501 /* Badge.swift */; };
 		9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */; };
@@ -141,7 +138,6 @@
 		9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F60290265B4008C07F1 /* TabBar.swift */; };
 		9AB02F63290265F8008C07F1 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F62290265F8008C07F1 /* Tab.swift */; };
 		9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */; };
-		9AB470E42935AF6100EE81CF /* ClubApplicationsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB470E32935AF6000EE81CF /* ClubApplicationsResponse.swift */; };
 		9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC32961537E00C7E427 /* ChatService.swift */; };
 		9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC5296154D500C7E427 /* ChatTokenRequest.swift */; };
 		9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC7296155E800C7E427 /* ChatTokenResponse.swift */; };
@@ -165,7 +161,6 @@
 		9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FD2934448D007A62C4 /* ClubApplications.swift */; };
 		9AD2090029344498007A62C4 /* ClubApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FF29344498007A62C4 /* ClubApplicationView.swift */; };
 		9AD20902293444A4007A62C4 /* ClubMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20901293444A4007A62C4 /* ClubMemberView.swift */; };
-		9AD2090429344610007A62C4 /* ClubApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2090329344610007A62C4 /* ClubApplication.swift */; };
 		9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20905293446A4007A62C4 /* UserPeek.swift */; };
 		9AD2090829348DA6007A62C4 /* ClubDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2090729348DA6007A62C4 /* ClubDao.swift */; };
 		9AD2090B2935464D007A62C4 /* CommentDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2090A2935464D007A62C4 /* CommentDao.swift */; };
@@ -178,14 +173,10 @@
 		9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94B296A78CF00245CCE /* NewRoom.swift */; };
 		9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94F296A807A00245CCE /* RoomDao.swift */; };
 		9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD951296A89C300245CCE /* RoomSettings.swift */; };
-		9AE1545829F60BF3009E2699 /* ClubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1545729F60BF3009E2699 /* ClubResponse.swift */; };
 		9AE36B1D2927390500C0C334 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B1C2927390500C0C334 /* Friend.swift */; };
-		9AE36B2029273E9A00C0C334 /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B1F29273E9A00C0C334 /* Participant.swift */; };
-		9AE36B2229273F1700C0C334 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B2129273F1700C0C334 /* Like.swift */; };
 		9AECDA4029540FE9007956FB /* LookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA3F29540FE9007956FB /* LookupView.swift */; };
 		9AECDA4229542108007956FB /* LookUpMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4129542108007956FB /* LookUpMenu.swift */; };
 		9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4329544CAB007956FB /* NoClubMenu.swift */; };
-		9AECDA4629545118007956FB /* ClubInvites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4529545118007956FB /* ClubInvites.swift */; };
 		9AECDA4829545242007956FB /* LookUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4729545242007956FB /* LookUp.swift */; };
 		9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA492954528A007956FB /* FriendRequestsView.swift */; };
 		9AECDA4C295452BB007956FB /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4B295452BB007956FB /* People.swift */; };
@@ -199,6 +190,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
+		5F1329B92A282BE200B31170 /* EventModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModels.swift; sourceTree = "<group>"; };
 		5F8D13A82A1EDD260054F631 /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* FieldModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldModels.swift; sourceTree = "<group>"; };
@@ -229,7 +222,6 @@
 		9A5D3368292AC610008CF61D /* PostComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComments.swift; sourceTree = "<group>"; };
 		9A5D336B292AE5DE008CF61D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		9A5D336D292AF813008CF61D /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
-		9A68EFE9292EFC0300D4E38E /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailFieldView.swift; sourceTree = "<group>"; };
 		9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantsView.swift; sourceTree = "<group>"; };
 		9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActionButton.swift; sourceTree = "<group>"; };
@@ -249,14 +241,11 @@
 		9A8162A429668CC90042F0A6 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		9A8162A629669A370042F0A6 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		9A8162AB29677D200042F0A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		9A81B60629241ED4009CA6ED /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		9A81B60A2924254D009CA6ED /* FieldObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldObserver.swift; sourceTree = "<group>"; };
 		9A81B60C292425B8009CA6ED /* FieldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldService.swift; sourceTree = "<group>"; };
 		9A81B61129242EBA009CA6ED /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		9A81B61629246AF9009CA6ED /* FieldViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldViewTemplate.swift; sourceTree = "<group>"; };
 		9A81B618292472B3009CA6ED /* ClubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubService.swift; sourceTree = "<group>"; };
-		9A81B61B29247326009CA6ED /* ClubsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsResponse.swift; sourceTree = "<group>"; };
-		9A81B61D29247378009CA6ED /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		9A81B61F292475B1009CA6ED /* ClubObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubObserver.swift; sourceTree = "<group>"; };
 		9A81B6222924771A009CA6ED /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		9A81B62429247F87009CA6ED /* SmallClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallClubView.swift; sourceTree = "<group>"; };
@@ -316,7 +305,6 @@
 		9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelTemplate.swift; sourceTree = "<group>"; };
 		9AA5F616294DB0F900219B95 /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
 		9AA5F618294DCBF700219B95 /* MapOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapOptions.swift; sourceTree = "<group>"; };
-		9AAAA6AA2903A58D0003D501 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		9AAAA6AC2903AF2F0003D501 /* Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trophy.swift; sourceTree = "<group>"; };
 		9AAAA6AE2903AF360003D501 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataResponse.swift; sourceTree = "<group>"; };
@@ -332,7 +320,6 @@
 		9AB02F60290265B4008C07F1 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		9AB02F62290265F8008C07F1 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateApplicationDao.swift; sourceTree = "<group>"; };
-		9AB470E32935AF6000EE81CF /* ClubApplicationsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationsResponse.swift; sourceTree = "<group>"; };
 		9AB6DDC32961537E00C7E427 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		9AB6DDC5296154D500C7E427 /* ChatTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTokenRequest.swift; sourceTree = "<group>"; };
 		9AB6DDC7296155E800C7E427 /* ChatTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTokenResponse.swift; sourceTree = "<group>"; };
@@ -357,7 +344,6 @@
 		9AD208FD2934448D007A62C4 /* ClubApplications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplications.swift; sourceTree = "<group>"; };
 		9AD208FF29344498007A62C4 /* ClubApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationView.swift; sourceTree = "<group>"; };
 		9AD20901293444A4007A62C4 /* ClubMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMemberView.swift; sourceTree = "<group>"; };
-		9AD2090329344610007A62C4 /* ClubApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplication.swift; sourceTree = "<group>"; };
 		9AD20905293446A4007A62C4 /* UserPeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPeek.swift; sourceTree = "<group>"; };
 		9AD2090729348DA6007A62C4 /* ClubDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDao.swift; sourceTree = "<group>"; };
 		9AD2090A2935464D007A62C4 /* CommentDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDao.swift; sourceTree = "<group>"; };
@@ -370,14 +356,10 @@
 		9ADDD94B296A78CF00245CCE /* NewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoom.swift; sourceTree = "<group>"; };
 		9ADDD94F296A807A00245CCE /* RoomDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDao.swift; sourceTree = "<group>"; };
 		9ADDD951296A89C300245CCE /* RoomSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSettings.swift; sourceTree = "<group>"; };
-		9AE1545729F60BF3009E2699 /* ClubResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubResponse.swift; sourceTree = "<group>"; };
 		9AE36B1C2927390500C0C334 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
-		9AE36B1F29273E9A00C0C334 /* Participant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
-		9AE36B2129273F1700C0C334 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		9AECDA3F29540FE9007956FB /* LookupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupView.swift; sourceTree = "<group>"; };
 		9AECDA4129542108007956FB /* LookUpMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpMenu.swift; sourceTree = "<group>"; };
 		9AECDA4329544CAB007956FB /* NoClubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClubMenu.swift; sourceTree = "<group>"; };
-		9AECDA4529545118007956FB /* ClubInvites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubInvites.swift; sourceTree = "<group>"; };
 		9AECDA4729545242007956FB /* LookUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUp.swift; sourceTree = "<group>"; };
 		9AECDA492954528A007956FB /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		9AECDA4B295452BB007956FB /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
@@ -404,16 +386,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9A3536F62927E634005EC806 /* Club */ = {
-			isa = PBXGroup;
-			children = (
-				9A81B61D29247378009CA6ED /* Club.swift */,
-				9AD2090329344610007A62C4 /* ClubApplication.swift */,
-				9AE1545729F60BF3009E2699 /* ClubResponse.swift */,
-			);
-			path = Club;
-			sourceTree = "<group>";
-		};
 		9A3536FF2928930D005EC806 /* Viewers */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,12 +496,10 @@
 		9A81B61A2924730F009CA6ED /* Club */ = {
 			isa = PBXGroup;
 			children = (
-				9A81B61B29247326009CA6ED /* ClubsResponse.swift */,
 				9A81B62829249B11009CA6ED /* ClubApplicationRequestDao.swift */,
 				9A81B62A2924A701009CA6ED /* NewClubApplication.swift */,
 				9AD2090729348DA6007A62C4 /* ClubDao.swift */,
 				9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */,
-				9AB470E32935AF6000EE81CF /* ClubApplicationsResponse.swift */,
 				9A4FF8982974886F008F1613 /* ChangeRankDao.swift */,
 			);
 			path = Club;
@@ -656,8 +626,6 @@
 			children = (
 				9A8162962966516D0042F0A6 /* Message */,
 				9A5D336A292AC79B008CF61D /* Post */,
-				9A3536F62927E634005EC806 /* Club */,
-				9AE36B1E29273E7B00C0C334 /* Event */,
 				9AAAA6A92903A57E0003D501 /* User */,
 				9A8FF0D928BB33E800DE4CF8 /* Dao */,
 				9AB02F62290265F8008C07F1 /* Tab.swift */,
@@ -665,6 +633,8 @@
 				5F8D13A82A1EDD260054F631 /* AuthModels.swift */,
 				5F8D13AA2A1EDFF30054F631 /* UserModels.swift */,
 				5F8D13AC2A213C150054F631 /* FieldModels.swift */,
+				5F1329B72A26F02200B31170 /* ClubModels.swift */,
+				5F1329B92A282BE200B31170 /* EventModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -747,11 +717,9 @@
 		9AAAA6A92903A57E0003D501 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				9AAAA6AA2903A58D0003D501 /* UserDao.swift */,
 				9AAAA6AC2903AF2F0003D501 /* Trophy.swift */,
 				9AAAA6AE2903AF360003D501 /* Badge.swift */,
 				9AE36B1C2927390500C0C334 /* Friend.swift */,
-				9A68EFE9292EFC0300D4E38E /* UserStore.swift */,
 				9AD20905293446A4007A62C4 /* UserPeek.swift */,
 				9A9AD8912954E2370096D65B /* FriendRequest.swift */,
 			);
@@ -835,7 +803,6 @@
 				9AD20901293444A4007A62C4 /* ClubMemberView.swift */,
 				9A5CA4DC296F7DA300C63A32 /* ClubMemberMenu.swift */,
 				9AECDA4329544CAB007956FB /* NoClubMenu.swift */,
-				9AECDA4529545118007956FB /* ClubInvites.swift */,
 				9A5CA4DA296F725C00C63A32 /* MembersListView.swift */,
 			);
 			path = Clubs;
@@ -902,16 +869,6 @@
 				9ADDD94F296A807A00245CCE /* RoomDao.swift */,
 			);
 			path = Message;
-			sourceTree = "<group>";
-		};
-		9AE36B1E29273E7B00C0C334 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				9A81B60629241ED4009CA6ED /* Event.swift */,
-				9AE36B1F29273E9A00C0C334 /* Participant.swift */,
-				9AE36B2129273F1700C0C334 /* Like.swift */,
-			);
-			path = Event;
 			sourceTree = "<group>";
 		};
 		9AF0A1BC29316D530055D1F6 /* Post */ = {
@@ -1053,16 +1010,12 @@
 				9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
 				9A81B6422925E50C009CA6ED /* EventView.swift in Sources */,
+				5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */,
 				9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
-				9AE36B2029273E9A00C0C334 /* Participant.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
-				9A81B60729241ED4009CA6ED /* Event.swift in Sources */,
 				9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */,
-				9AE36B2229273F1700C0C334 /* Like.swift in Sources */,
-				9AECDA4629545118007956FB /* ClubInvites.swift in Sources */,
-				9AB470E42935AF6100EE81CF /* ClubApplicationsResponse.swift in Sources */,
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
@@ -1074,7 +1027,6 @@
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
-				9AE1545829F60BF3009E2699 /* ClubResponse.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */,
@@ -1122,13 +1074,12 @@
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
 				9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */,
-				9AD2090429344610007A62C4 /* ClubApplication.swift in Sources */,
+				5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEventView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
 				9A81B63029256A57009CA6ED /* CreateNewClub.swift in Sources */,
 				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
-				9A81B61C29247326009CA6ED /* ClubsResponse.swift in Sources */,
 				9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */,
 				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
 				9A69FE532972390900EBC5F9 /* EventDetailActions.swift in Sources */,
@@ -1148,7 +1099,6 @@
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
-				9AAAA6AB2903A58D0003D501 /* UserDao.swift in Sources */,
 				9AD2090F29355DD4007A62C4 /* CommentsResponse.swift in Sources */,
 				9A81629A296651BC0042F0A6 /* Message.swift in Sources */,
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
@@ -1186,11 +1136,9 @@
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
 				9AF0A1BE29316E6E0055D1F6 /* PostsResponse.swift in Sources */,
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
-				9A81B61E29247378009CA6ED /* Club.swift in Sources */,
 				9A5CA4DD296F7DA300C63A32 /* ClubMemberMenu.swift in Sources */,
 				9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */,
 				9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */,
-				9A68EFEA292EFC0300D4E38E /* UserStore.swift in Sources */,
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationsManager.swift in Sources */,
 				9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */,

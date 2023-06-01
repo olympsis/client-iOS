@@ -10,7 +10,7 @@ import SwiftUI
 struct Profile: View {
     
     @State private var imageURL = ""
-    @State private var user: UserStore?
+    @State private var user: UserData?
     @State private var showMenu = false
     @State private var userObserver = UserObserver()
     
@@ -21,7 +21,7 @@ struct Profile: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
                     if let u = user {
-                        ProfileModel(imageURL: $imageURL, firstName: u.firstName, lastName: u.lastName, friendsCount: u.friends?.count ?? 0, bio: u.bio ?? "")
+                        ProfileModel(imageURL: $imageURL, firstName: u.firstName!, lastName: u.lastName!, friendsCount:  0, bio: u.bio ?? "")
                             .padding(.top, 20)
                             .padding(.leading)
                     } else {
@@ -44,7 +44,7 @@ struct Profile: View {
                 }.toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         if let usr = session.user {
-                            Text("@ \(usr.username)")
+                            Text("@ \(usr.username!)")
                                 .foregroundColor(.primary)
                                 .font(.title2)
                                 .fontWeight(.regular)
@@ -64,7 +64,7 @@ struct Profile: View {
                     }
                 }
                 .onAppear {
-                    user = session.user
+                    user = session.user                    
                     imageURL = user?.imageURL ?? ""
                 }
             }

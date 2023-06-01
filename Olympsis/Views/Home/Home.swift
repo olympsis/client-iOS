@@ -38,25 +38,25 @@ struct Home: View {
                 VStack {
                     HStack {
                         VStack(alignment: .leading){
-                            if let name = session.user?.firstName {
-                                Text("Welcome back \(name)")
-                                    .font(.custom("Helvetica Neue", size: 25))
-                                    .fontWeight(.regular)
-                                Text("ready to play?")
-                                    .font(.custom("Helvetica Neue", size: 20))
-                                    .fontWeight(.light)
-                                    .foregroundColor(.gray)
-                            } else {
-                                Rectangle()
-                                    .frame(width: 300, height: 30)
-                                    .foregroundColor(.gray)
-                                    .opacity(0.3)
-                                
-                                Rectangle()
-                                    .frame(width: 150, height: 20)
-                                    .foregroundColor(.gray)
-                                    .opacity(0.3)
-                            }
+//                            if let name = session.user?.firstName {
+//                                Text("Welcome back \(name)")
+//                                    .font(.custom("Helvetica Neue", size: 25))
+//                                    .fontWeight(.regular)
+//                                Text("ready to play?")
+//                                    .font(.custom("Helvetica Neue", size: 20))
+//                                    .fontWeight(.light)
+//                                    .foregroundColor(.gray)
+//                            } else {
+//                                Rectangle()
+//                                    .frame(width: 300, height: 30)
+//                                    .foregroundColor(.gray)
+//                                    .opacity(0.3)
+//                                
+//                                Rectangle()
+//                                    .frame(width: 150, height: 20)
+//                                    .foregroundColor(.gray)
+//                                    .opacity(0.3)
+//                            }
                         }.padding(.leading)
                             .padding(.top, 25)
                         Spacer()
@@ -142,27 +142,29 @@ struct Home: View {
                                 }
                                 Task {
                                     // fetch nearby fields
-                                    await fieldObserver.fetchFields(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10))
-                                    await MainActor.run {
-                                        session.fields = fieldObserver.fields
-                                    }
-                                    
-                                    // fetch nearby events that user has subscribed to
-                                    if let usr = session.user {
-                                        if let sport = usr.sports {
-                                            for s in sport {
-                                                // fetch nearby events
-                                                let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sport: s)
-                                                if let events = res {
-                                                    await MainActor.run {
-                                                        for event in events {
-                                                            session.events.append(event)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+//                                    guard let usr = session.user else {
+//                                        return
+//                                    }
+//                                    let sports = usr.sports!.joined(separator: ",")
+//                                    await fieldObserver.fetchFields(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sports)
+//                                    await MainActor.run {
+//                                        session.fields = fieldObserver.fields
+//                                    }
+//                                    
+//                                    // fetch nearby events that user has subscribed to
+//                                    if let usr = session.user {
+//                                        if let sports = usr.sports {
+//                                            let sportsJoined = sports.joined(separator: ",")
+//                                            let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sportsJoined)
+//                                            if let events = res {
+//                                                await MainActor.run {
+//                                                    for event in events {
+//                                                        session.events.append(event)
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
                                 }
                                 
                                 // prevents us from doing this everytime we get new info from gps

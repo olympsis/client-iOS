@@ -42,7 +42,7 @@ struct CreateNewPost: View {
         
         // create post
         if let user = session.user {
-            let post = await postObserver.createPost(owner: user.uuid, clubId: club.id, body: text, images: images)
+            let post = await postObserver.createPost(owner: user.uuid!, clubId: club.id!, body: text, images: images)
             
             // add to club view
             if let p = post {
@@ -164,7 +164,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        CreateNewPost(club: club, posts: .constant([Post]()))
+        CreateNewPost(club: CLUBS[0], posts: .constant([Post]()))
     }
 }

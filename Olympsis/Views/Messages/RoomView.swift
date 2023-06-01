@@ -29,17 +29,17 @@ struct RoomView: View {
         guard text.count > 0 else {
             return
         }
-        if let usr = session.user {
-            let message = Message(id: "", type: "text", from: usr.uuid, body: text, timestamp: 0)
-            Task {
-                let res = await observer.SendMessage(msg: message)
-                if !res {
-                    print("failed to send message")
-                }
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                text = ""
-            }
-        }
+//        if let usr = session.user {
+//            let message = Message(id: "", type: "text", from: usr.uuid, body: text, timestamp: 0)
+//            Task {
+//                let res = await observer.SendMessage(msg: message)
+//                if !res {
+//                    print("failed to send message")
+//                }
+//                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+//                text = ""
+//            }
+//        }
     }
     
     func DidDismiss(){
@@ -50,9 +50,9 @@ struct RoomView: View {
     }
     
     func GetData(uuid: String) -> UserPeek? {
-        let usr = club.members.first(where: {$0.uuid == uuid})
+        let usr = club.members!.first(where: {$0.uuid == uuid})
         if let u = usr {
-            return u.data
+            return nil // FIX NEEDS TO USE USER DATA
         }
         return nil
     }
@@ -160,8 +160,8 @@ struct RoomView: View {
 struct RoomView_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember](), history: [Message]())
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        RoomView(club: club, room: room, rooms: .constant([room]), observer: ChatObserver())
+
+        RoomView(club: CLUBS[0], room: room, rooms: .constant([room]), observer: ChatObserver())
             .environmentObject(SessionStore())
     }
 }

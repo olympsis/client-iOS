@@ -52,7 +52,7 @@ struct ClubMenu: View {
                     }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                         .padding(.top)
                     VStack {
-                        if club.isPrivate ?? false {
+                        if club.visibility == "private" {
                             HStack {
                                 Image(systemName: "lock.fill")
                                 Text("Private group")
@@ -71,7 +71,7 @@ struct ClubMenu: View {
                         }
                         
                         HStack {
-                            Text("\(club.members.count)") +
+                            Text("\(club.members!.count)") +
                             Text(" members")
                             Spacer()
                         }.padding(.leading)
@@ -79,7 +79,7 @@ struct ClubMenu: View {
                     }
                     
                     if let user = session.user {
-                        if let member = club.members.first(where: {$0.uuid == user.uuid}) {
+                        if let member = club.members!.first(where: {$0.uuid == user.uuid}) {
                             if member.role == "admin" {
                                 Button(action:{ self.showApplications.toggle() }) {
                                     HStack {
@@ -104,7 +104,7 @@ struct ClubMenu: View {
                                 }
                             }
                             ){
-                                Text(club.name)
+                                Text(club.name!)
                             }
                         }
                     }label: {
@@ -171,7 +171,7 @@ struct ClubMenu: View {
                     }
                     
                     if let user = session.user {
-                        if let member = club.members.first(where: {$0.uuid == user.uuid}) {
+                        if let member = club.members!.first(where: {$0.uuid == user.uuid}) {
                             if member.role == "admin" {
                                 Button(action:{ }) {
                                     HStack {
@@ -197,7 +197,7 @@ struct ClubMenu: View {
                     }
                 }
             }
-            .navigationTitle(club.name)
+            .navigationTitle(club.name!)
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
                 CreateNewClub()
@@ -214,7 +214,6 @@ struct ClubMenu: View {
 
 struct ClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/308973276_8080928561980330_1395494675708418495_n.jpg", isPrivate: false, members: [Member(id: "0", uuid: "00", role: "admin", data: nil, joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", data: nil, joinedAt: 0)], rules: ["No fighting"], createdAt: 0)
-        ClubMenu(club: club, index: .constant(0)).environmentObject(SessionStore())
+        ClubMenu(club: CLUBS[0], index: .constant(0)).environmentObject(SessionStore())
     }
 }

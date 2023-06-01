@@ -32,7 +32,7 @@ struct EventsList: View {
             VStack {
                 ScrollView {
                     ForEach(currentEvents, id: \.title) { event in
-                        if let f = getField(fieldId: event.fieldId) {
+                        if let f = getField(fieldId: event.fieldID) {
                             EventView(event: event, field: f, events: $events)
                         } else {
                             EventTemplateView()
@@ -59,6 +59,6 @@ struct EventsList: View {
 
 struct EventsList_Previews: PreviewProvider {
     static var previews: some View {
-        EventsList(fields: [Field](), events: .constant([Event]()))
+        EventsList(fields: FIELDS, events: .constant([Event]()))
     }
 }

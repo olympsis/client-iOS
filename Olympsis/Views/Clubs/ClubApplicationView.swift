@@ -15,8 +15,8 @@ struct ClubApplicationView: View {
     @StateObject private var observer = ClubObserver()
     
     func accept() async {
-        let dao = UpdateApplicationDao(_clubId: club.id, _status: "accepted")
-        let res = await observer.updateApplication(id: club.id, appId: application.id, dao: dao)
+        let dao = UpdateApplicationDao(_clubId: club.id!, _status: "accepted")
+        let res = await observer.updateApplication(app: application)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -25,8 +25,8 @@ struct ClubApplicationView: View {
     }
     
     func deny() async {
-        let dao = UpdateApplicationDao(_clubId: club.id, _status: "denied")
-        let res = await observer.updateApplication(id: club.id, appId: application.id, dao: dao)
+        let dao = UpdateApplicationDao(_clubId: club.id!, _status: "denied")
+        let res = await observer.updateApplication(app: application)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -41,7 +41,7 @@ struct ClubApplicationView: View {
                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                 VStack (alignment: .leading){
                     HStack {
-                        AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (application.data.imageURL ?? ""))){ phase in
+                        AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (application.data?.imageURL ?? ""))){ phase in
                             if let image = phase.image {
                                     image // Displays the loaded image.
                                         .resizable()
@@ -66,12 +66,12 @@ struct ClubApplicationView: View {
                         }.frame(width: 60, height: 60)
                             .padding(.leading, 5)
                         VStack (alignment: .leading){
-                            Text(application.data.firstName)
+                            Text(application.data!.firstName!)
                                 .font(.headline)
                             +
-                            Text(" \(application.data.lastName)")
+                            Text(" \(application.data!.lastName!)")
                                 .font(.headline)
-                            Text("@\(application.data.username)")
+                            Text("@\(application.data!.username!)")
                                 .font(.body)
                                 .foregroundColor(.gray)
                             Text("Created at:")
@@ -118,8 +118,7 @@ struct ClubApplicationView: View {
 
 struct ClubApplicationView_Previews: PreviewProvider {
     static var previews: some View {
-        let app = ClubApplication(id: "", uuid: "", data: UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: ["soccer","tennis"], badges: [Badge](), trophies: [Trophy](), friends: [Friend]()), status: "pending", createdAt: 1669245600)
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member(id: "", uuid: "00", role: "admin", data: nil, joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", data: nil, joinedAt: 0)], rules: ["No fighting"], createdAt: 0)
-        ClubApplicationView(club: club, application: app, applications: .constant([ClubApplication]()))
+        let app = ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), createdAt: 1669245600)
+        ClubApplicationView(club: CLUBS[0], application: app, applications: .constant([ClubApplication]()))
     }
 }

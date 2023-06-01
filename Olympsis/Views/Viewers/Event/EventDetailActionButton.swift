@@ -25,7 +25,7 @@ struct EventDetailActionButton: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.actualStartTime = now
+                    event.actualStartTime = Int64(now)
                     event.status = status
                     state = .success
                 }
@@ -42,7 +42,7 @@ struct EventDetailActionButton: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.stopTime = now
+                    event.stopTime = Int64(now)
                     event.status = status
                     state = .success
                 }
@@ -83,9 +83,6 @@ struct EventDetailActionButton: View {
 
 struct EventDetailActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let participant = Participant(id: "", uuid: "", status: "going", data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), createdAt: 0)
-        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "in-progress", startTime: 0, maxParticipants: 0, participants: [participant])
-        EventDetailActionButton(event: .constant(event), showMenu: .constant(false), eventObserver: EventObserver())
+        EventDetailActionButton(event: .constant(EVENTS[0]), showMenu: .constant(false), eventObserver: EventObserver())
     }
 }

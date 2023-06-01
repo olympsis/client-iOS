@@ -18,7 +18,7 @@ struct ClubMemberView: View {
     
     func CheckRole() -> MEMBER_ROLES {
         if let usr = session.user {
-            let mbr = club.members.first(where: {$0.uuid == usr.uuid})
+            let mbr = club.members?.first(where: {$0.uuid == usr.uuid})
                 if let m = mbr {
                     if m.role == "admin" {
                         return .Admin
@@ -71,8 +71,8 @@ struct ClubMemberView: View {
             
             VStack(alignment: .leading) {
                 if let data = member.data {
-                    Text(data.firstName + " " + data.lastName)
-                    Text(data.username)
+                    Text(data.firstName! + " " + data.lastName!)
+                    Text(data.username!)
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 } else {
@@ -123,10 +123,7 @@ struct ClubMemberView: View {
 
 struct ClubMemberView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let member = Member(id: "", uuid: "", role: "admin", data: peek, joinedAt: 0)
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        ClubMemberView(club: club, member: member)
+        ClubMemberView(club: CLUBS[0], member: (CLUBS[0].members?.first)!)
             .environmentObject(SessionStore())
     }
 }

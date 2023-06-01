@@ -32,7 +32,7 @@ struct SmallClubView: View {
     
     func Apply() async {
         status = .loading
-        let res = await observer.createClubApplication(clubId:club.id)
+        let res = await observer.createClubApplication(clubId:club.id!)
         if res {
             self.showToast = true
             status = .success
@@ -72,15 +72,15 @@ struct SmallClubView: View {
                         .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                     HStack {
                         VStack(alignment:.leading){
-                            Text(club.name)
+                            Text(club.name!)
                                 .font(.title2)
                                 .bold()
                                 .foregroundColor(.primary)
                                 .opacity(0.7)
-                            Text("\(club.city), ") + Text(club.state)
+                            Text("\(club.city!), ") + Text(club.state!)
                             Spacer()
 
-                            if club.isPrivate ?? false {
+                            if club.visibility == "private" {
                                 VStack {
                                     Text("Private")
                                         .foregroundColor(.red)
@@ -93,12 +93,12 @@ struct SmallClubView: View {
                                 }
                             }
                             
-                            if club.members.count > 1 {
-                                Text("\(club.members.count) members")
+                            if club.members!.count > 1 {
+                                Text("\(club.members!.count) members")
                                     .opacity(0.5)
                                     .foregroundColor(.primary)
                             } else {
-                                Text("\(club.members.count) member")
+                                Text("\(club.members!.count) member")
                                     .opacity(0.7)
                                     .foregroundColor(.primary)
                             }
@@ -106,7 +106,7 @@ struct SmallClubView: View {
                         .padding(.leading)
                         Spacer()
                         VStack(alignment: .trailing){
-                            Text(getSportIcon(sport: club.sport))
+                            Text(getSportIcon(sport: club.sport!))
                                 .font(.largeTitle)
                                 .padding(.trailing)
                             Spacer()
@@ -125,6 +125,6 @@ struct SmallClubView: View {
 
 struct SmallClubView_Previews: PreviewProvider {
     static var previews: some View {
-        SmallClubView(club: Club(id: "", name: "Provo Soccer", description: "Come play soccer with us.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member](), rules: ["Don't steal", "No Fighting"], createdAt: 0), showToast: .constant(false), observer: ClubObserver())
+        SmallClubView(club: CLUBS[0], showToast: .constant(false), observer: ClubObserver())
     }
 }

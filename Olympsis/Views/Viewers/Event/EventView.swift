@@ -134,7 +134,6 @@ struct EventView: View {
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
         let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        EventView(event: Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-2", title: "Pick Up Soccer", body: "event-body", sport: "soccer", level: 0, status: "pending", startTime: 0, maxParticipants: 0),field: FIELDS[0], events: .constant([Event]()))
+        EventView(event: EVENTS[0], field: FIELDS[0], events: .constant([Event]()))
     }
 }

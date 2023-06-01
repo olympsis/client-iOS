@@ -207,6 +207,8 @@ struct CreateAccount: View {
                         status = validateView()
                         if status == nil {
                             Task {
+                                // re initializing because the keychain needs to retrieve token if token key is already in keychain
+                                observer = UserObserver()
                                 let dao = try await observer.CreateUserData(userName: userName, sports: selectedSports)
                                 guard let _ = dao else {
                                     status = .unexpected

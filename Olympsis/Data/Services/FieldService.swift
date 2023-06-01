@@ -20,11 +20,12 @@ class FieldService {
         self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
     }
     
-    func getFields(long: Double, lat: Double, radius: Int) async throws -> Data {
+    func getFields(long: Double, lat: Double, radius: Int, sports: String) async throws -> Data {
         let endpoint = Endpoint(path: "/fields", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
-            URLQueryItem(name: "radius", value: String(radius))
+            URLQueryItem(name: "radius", value: String(radius)),
+            URLQueryItem(name: "sports", value: String(sports))
         ])
         
         let (data, _) = try await http.Request(endpoint: endpoint, method: .GET)

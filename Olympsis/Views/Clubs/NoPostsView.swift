@@ -26,7 +26,7 @@ struct NoPostsView: View {
                     .padding(.top)
                 .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/1.2)
             }.refreshable {
-                let posts = await postObserver.fetchPosts(clubId:club.id)
+                let posts = await postObserver.fetchPosts(clubId:club.id!)
                 await MainActor.run(body: {
                     for post in posts {
                         session.posts.append(post)
@@ -47,7 +47,7 @@ struct NoPostsView: View {
                 .fullScreenCover(isPresented: $showCreatePost, onDismiss: {
                     isLoading = true
                     Task {
-                        let posts = await postObserver.fetchPosts(clubId:club.id)
+                        let posts = await postObserver.fetchPosts(clubId:club.id!)
                         await MainActor.run(body: {
                             for post in posts {
                                 session.posts.append(post)
@@ -63,7 +63,6 @@ struct NoPostsView: View {
 
 struct NoPostsView_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "https://storage.googleapis.com/olympsis-1/clubs/315204106_2320093024813897_5616555109943012779_n.jpg", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        NoPostsView(club: club, posts: .constant([Post]()))
+        NoPostsView(club: CLUBS[0], posts: .constant([Post]()))
     }
 }

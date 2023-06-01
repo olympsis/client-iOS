@@ -43,7 +43,7 @@ class ClubObserver: ObservableObject{
         }
     }
     
-    func getClub(id: String) async -> Club?{
+    func getClub(id: String) async -> Club? {
         do {
             let res = try await clubService.getClub(id: id)
             let object = try decoder.decode(Club.self, from: res)
@@ -63,9 +63,9 @@ class ClubObserver: ObservableObject{
         }
     }
     
-    func createClub(club: Club) async throws -> ClubResponse {
+    func createClub(club: Club) async throws -> CreateClubResponse {
         let res = try await clubService.createClub(club: club)
-        let object = try decoder.decode(ClubResponse.self, from: res)
+        let object = try decoder.decode(CreateClubResponse.self, from: res)
         return object
     }
     
@@ -83,9 +83,9 @@ class ClubObserver: ObservableObject{
         return [ClubApplication]()
     }
     
-    func updateApplication(id: String, appId: String, dao: UpdateApplicationDao) async -> Bool {
+    func updateApplication(app: ClubApplication) async -> Bool {
         do {
-            let res = try await clubService.updateApplication(id: id, appId: appId, dao: dao)
+            let res = try await clubService.updateApplication(app: app)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }

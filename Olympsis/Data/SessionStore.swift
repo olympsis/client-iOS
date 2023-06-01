@@ -16,13 +16,13 @@ class SessionStore: ObservableObject {
     private var email: String?
     private var uuid: String?
     
-    @Published var user: UserStore? // user data
+    @Published var user: UserData? // user data
     
     @Published var fields = [Field]()    // Fields Cache
     @Published var clubs = [Club]()      // Clubs Cache
     @Published var events = [Event]()    // Events Cache
     @Published var posts = [Post]()      // Posts Cache
-    @Published var myClubs = [Club]()
+    @Published var myClubs = [Club]()    // Clubs Cache
     
     var clubTokens = [String:String]()
     
@@ -72,15 +72,15 @@ class SessionStore: ObservableObject {
             // fetch data from server
             let updatedData = try await userObserver.GetUserData()
             (firstName, lastName, email) = cacheService.fetchIdentifiableData()
-            let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
-                                    uuid: updatedData.uuid, username: updatedData.username, bio: updatedData.bio, imageURL: updatedData.imageURL, visibility: updatedData.visibility,
-                                    sports: updatedData.sports, clubs: updatedData.clubs, badges: updatedData.badges, trophies: updatedData.trophies, friends: updatedData.friends)
-            // update session store
-            await MainActor.run {
-                self.user = newUser
-            }
-            // cache user data
-            await cacheService.cacheUser(user: newUser)
+//            let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
+//                                    uuid: updatedData.uuid!, username: updatedData.username!, bio: updatedData.bio ?? "", imageURL: updatedData.imageURL ?? "", visibility: updatedData.visibility!,
+//                                    sports: updatedData.sports, clubs: updatedData.clubs)
+//            // update session store
+//            await MainActor.run {
+//                self.user = newUser
+//            }
+//            // cache user data
+//            await cacheService.cacheUser(user: newUser)
         } catch {
             print("GenerateUpdatedUserData Error:" + error.localizedDescription)
         }
@@ -89,11 +89,11 @@ class SessionStore: ObservableObject {
     func GenerateUserDataFirstTime(username: String, sports:[String]) async {
         (firstName, lastName, email) = cacheService.fetchIdentifiableData()
         
-        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", visibility: "private", sports: sports)
-        await MainActor.run {
-            self.user = newUser
-        }
-        await cacheService.cacheUser(user: newUser)
+//        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", visibility: "private", sports: sports)
+//        await MainActor.run {
+//            self.user = newUser
+//        }
+//        await cacheService.cacheUser(user: newUser)
     }
     
     func generateClubsData() async {

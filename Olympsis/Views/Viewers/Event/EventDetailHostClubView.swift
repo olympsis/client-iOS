@@ -16,7 +16,7 @@ struct EventDetailHostClubView: View {
                 .foregroundColor(.primary)
                 .bold()
             
-            Text(club.name)
+            Text(club.name!)
                 .font(.title2)
                 .foregroundColor(.primary)
                 .bold()
@@ -55,7 +55,6 @@ struct EventDetailHostClubView: View {
 
 struct EventDetailHostClubView_Previews: PreviewProvider {
     static var previews: some View {
-        let club = Club(id: "", name: "Provo Soccer", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "clubs/36B2B94A-8152-4CE5-AC9B-94455DBE9643", isPrivate: false, members: [Member(id: "0", uuid: "00", role: "admin", data: nil, joinedAt: 0), Member(id: "1", uuid: "000", role: "admin", data: nil, joinedAt: 0)], rules: ["No fighting"], createdAt: 0)
-        EventDetailHostClubView(club: club)
+        EventDetailHostClubView(club: CLUBS[0])
     }
 }

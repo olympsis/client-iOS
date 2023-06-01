@@ -44,30 +44,30 @@ struct EventMenu: View {
                     Spacer()
                 }.modifier(MenuButton())
             }
-            if let user = session.user {
-                if user.uuid == event.ownerId {
-                    Button(action:{
-                        Task {
-                            await deleteEvent()
-                        }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(.gray)
-                                .opacity(0.3)
-                            HStack {
-                                Image(systemName: "trash")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.red)
-                                Text("Delete Event")
-                                    .foregroundColor(.red)
-                                Spacer()
-                            }
-                        }.frame(width: SCREEN_WIDTH-25, height: 50)
-                    }
-                }
-            }
+//            if let user = session.user {
+//                if user.uuid == event.poster {
+//                    Button(action:{
+//                        Task {
+//                            await deleteEvent()
+//                        }
+//                    }) {
+//                        ZStack {
+//                            RoundedRectangle(cornerRadius: 10)
+//                                .foregroundColor(.gray)
+//                                .opacity(0.3)
+//                            HStack {
+//                                Image(systemName: "trash")
+//                                    .imageScale(.large)
+//                                    .padding(.leading)
+//                                    .foregroundColor(.red)
+//                                Text("Delete Event")
+//                                    .foregroundColor(.red)
+//                                Spacer()
+//                            }
+//                        }.frame(width: SCREEN_WIDTH-25, height: 50)
+//                    }
+//                }
+//            }
             Spacer()
         }
     }
@@ -75,9 +75,6 @@ struct EventMenu: View {
 
 struct EventMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        let _ = Club(id: "", name: "International Soccer Utah", description: "A club in provo to play soccer.", sport: "soccer", city: "Provo", state: "Utah", country: "United States of America", imageURL: "", isPrivate: false, members: [Member](), rules: ["No fighting"], createdAt: 0)
-        let event = Event(id: "", ownerId: "", ownerData: peek, clubId: "", fieldId: "", imageURL: "soccer-0", title: "Pick Up Soccer", body: "Just come out and play boys.", sport: "soccer", level: 3, status: "pending", startTime: 0, maxParticipants: 0, participants: [Participant]())
-        EventMenu(event: event, events: .constant([Event]())).environmentObject(SessionStore())
+        EventMenu(event: EVENTS[0], events: .constant([Event]())).environmentObject(SessionStore())
     }
 }

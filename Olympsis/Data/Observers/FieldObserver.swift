@@ -26,9 +26,9 @@ class FieldObserver: ObservableObject{
     /// - Parameter longitude: `Double`
     /// - Parameter latitude: `Double`
     /// - Parameter radius: `Int`
-    func fetchFields(longitude: Double, latitude: Double, radius: Int) async {
+    func fetchFields(longitude: Double, latitude: Double, radius: Int, sports: String) async {
         do {
-            let response = try await fieldService.getFields(long: longitude, lat: latitude, radius: radius)
+            let response = try await fieldService.getFields(long: longitude, lat: latitude, radius: radius, sports: sports)
             let object = try decoder.decode(FieldsResponse.self, from: response)
             await MainActor.run { // TODO: Check later about threads
                 self.fields = object.fields

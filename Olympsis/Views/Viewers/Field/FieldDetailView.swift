@@ -41,7 +41,7 @@ struct FieldDetailView: View {
     }
     
     var associatedClubs: [Club] {
-        return session.myClubs.filter({ IsIn(s: $0.sport) })
+        return session.myClubs.filter({ IsIn(s: $0.sport!) })
     }
     
     var body: some View {
@@ -168,7 +168,7 @@ struct FieldDetailView: View {
                     }.padding(.top, 50)
                 }.task {
                     await MainActor.run {
-                        self.events = session.events.filter{$0.fieldId == self.field.id}
+                        self.events = session.events.filter{$0.fieldID == self.field.id}
                         self.status = .done
                     }
                 }
@@ -201,9 +201,11 @@ struct FieldDetailView: View {
             }
             .refreshable {
                 if let location = session.locationManager.location {
-                    for sport in field.sports {
+                    if let usr = session.user {
+                        let sportsFiltered = field.sports.filter { usr.sports!.contains($0) }
+                        let sportsJoined = sportsFiltered.joined(separator: ",")
                         Task {
-                            let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sport: sport)
+                            let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sportsJoined)
                             if let e = res {
                                 await MainActor.run {
                                     self.events = e
@@ -211,6 +213,7 @@ struct FieldDetailView: View {
                             }
                         }
                     }
+                    
                 } 
             }
         }
