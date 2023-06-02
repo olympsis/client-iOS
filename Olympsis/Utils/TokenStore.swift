@@ -13,7 +13,7 @@ class TokenStore {
     let log = Logger(subsystem: "com.josephlabs.olympsis", category: "token_store")
     let tokenKey: String = "authToken"
     
-    func SaveTokenToKeyChain(token: String) {
+    func saveTokenToKeyChain(token: String) {
         let tokenData = token.data(using: .utf8)!
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -39,7 +39,7 @@ class TokenStore {
         }
     }
     
-    func FetchTokenFromKeyChain() -> String {
+    func fetchTokenFromKeyChain() -> String {
         var result: AnyObject?
         let fetchQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -51,5 +51,25 @@ class TokenStore {
         guard fetchStatus == errSecSuccess, let data = result as? Data else { return "" }
         let fetchedToken = String(data: data, encoding: .utf8) ?? ""
         return fetchedToken
+    }
+    
+    func clearKeyChain() -> Bool {
+        guard let bundle = Bundle.main.bundleIdentifier else {
+            log.error("Failed to get bundle identifier")
+            return false
+        }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: bundle,
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess {
+            log.error("Error deleting Keychain data: \(status)")
+            return false
+        }
+        
+        return true
     }
 }

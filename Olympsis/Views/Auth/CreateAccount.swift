@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 8/27/22.
 //
 
+import os
 import SwiftUI
 
 enum UN_STATUS {
@@ -32,7 +33,7 @@ struct CreateAccount: View {
         case searching
     }
     
-    @State private var userName = ""
+    @State private var username = ""
     @State private var keyboardIsShown = false
     @State private var status: CREATE_ERROR?
     @State private var uStatus = UNAME_STATUS.none
@@ -40,10 +41,10 @@ struct CreateAccount: View {
     
     @Binding var currentView: AuthTab
     
-    @State private var cache = CacheService()
-    @State private var observer = UserObserver()
-    @AppStorage("authToken") var authToken: String?
+    @State private var cacheService = CacheService()
+    @State private var userObserver = UserObserver()
     @EnvironmentObject private var session: SessionStore
+    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_account_view")
     
     func updateSports(sport:String){
         selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
@@ -60,7 +61,7 @@ struct CreateAccount: View {
     }
     
     func validateView() -> CREATE_ERROR? {
-        if userName == "" {
+        if username == "" {
             return CREATE_ERROR.noUsername
         } else if uStatus == .searching {
             return CREATE_ERROR.validationInProgress
@@ -70,6 +71,23 @@ struct CreateAccount: View {
             return CREATE_ERROR.noSport
         }
         return nil
+    }
+    
+    func createUserData() async {
+        do {
+            let data = try await userObserver.createUserData(username: username, sports: selectedSports)
+
+            if let user = data {
+                if var cache = cacheService.fetchUser() {
+                    cache.uuid = user.uuid
+                    cache.username = user.username
+                    cache.sports = user.sports
+                    cacheService.cacheUser(user: cache)
+                }
+            }
+        } catch {
+            log.error("\(error)")
+        }
     }
     
     var body: some View {
@@ -95,7 +113,7 @@ struct CreateAccount: View {
                                     .foregroundColor(.gray)
                                     .opacity(0.3)
                                 HStack {
-                                    TextField("", text: $userName)
+                                    TextField("", text: $username)
                                         .padding(.leading)
                                         .frame(height: 40)
                                         .textInputAutocapitalization(.never)
@@ -103,10 +121,10 @@ struct CreateAccount: View {
                                         .keyboardType(.alphabet)
                                         .onSubmit {
                                             Task {
-                                                if validateInput(userName) {
+                                                if validateInput(username) {
                                                     self.keyboardIsShown = false
                                                     uStatus = .searching
-                                                    let res = try await observer.CheckUserName(name: userName)
+                                                    let res = try await userObserver.CheckUserName(name: username)
                                                     if res {
                                                         uStatus = .valid
                                                     } else {
@@ -130,7 +148,7 @@ struct CreateAccount: View {
                                                 self.keyboardIsShown = false
                                             }
                                         }
-                                        .onChange(of: userName) { newValue in
+                                        .onChange(of: username) { newValue in
                                             let isValid = validateInput(newValue)
                                             if !isValid {
                                                 status = .noUsername
@@ -162,7 +180,7 @@ struct CreateAccount: View {
                             }
                             if keyboardIsShown {
                                 Button(action:{
-                                    userName = ""
+                                    username = ""
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                                 }){
                                     Text("cancel")
@@ -207,15 +225,7 @@ struct CreateAccount: View {
                         status = validateView()
                         if status == nil {
                             Task {
-                                // re initializing because the keychain needs to retrieve token if token key is already in keychain
-                                observer = UserObserver()
-                                let dao = try await observer.CreateUserData(userName: userName, sports: selectedSports)
-                                guard let _ = dao else {
-                                    status = .unexpected
-                                    return
-                                }
-                                // store user data
-                                await session.GenerateUserDataFirstTime(username: userName, sports: selectedSports)
+                                await self.createUserData()
                             }
                             withAnimation(.easeOut(duration: 0.2)) {
                                 currentView = .permissions
@@ -233,6 +243,9 @@ struct CreateAccount: View {
                     }.padding(.top, 50)
                     
                 }
+            }.task {
+                // re initializing because the service needs to retrieve new token from the keychain
+                userObserver = UserObserver()
             }
         }
     }

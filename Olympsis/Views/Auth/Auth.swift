@@ -11,10 +11,10 @@ import AuthenticationServices
 
 struct Auth: View {
     
-    @State private var log = Logger()
     @Binding var currentView: AuthTab
-    @State var userStatus: USER_STATUS?
-    @StateObject var observer = AuthObserver()
+    @State private var userStatus: USER_STATUS?
+    @StateObject private var observer = AuthObserver()
+    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
     
     var body: some View {
         VStack(){
@@ -65,7 +65,7 @@ struct Auth: View {
                                         }
                                     }
                                 } catch {
-                                    log.debug("Sign In cancelled or an error occured: \(error)")
+                                    log.error("\(error)")
                                 }
                             }
                         }

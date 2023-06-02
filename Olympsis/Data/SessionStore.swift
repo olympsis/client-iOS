@@ -5,19 +5,20 @@
 //  Created by Joel Joseph on 10/23/22.
 //
 
+import os
 import SwiftUI
 import Foundation
+import CoreLocation
 
 class SessionStore: ObservableObject {
     
-    // this might be removed later on
-    private var firstName: String?
-    private var lastName: String?
-    private var email: String?
-    private var uuid: String?
+    /**
+     App session data, fetched every session
+     Stored in memory until app is closed
+     */
+    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
-    @Published var user: UserData? // user data
-    
+    @Published var user: UserData?       // user data
     @Published var fields = [Field]()    // Fields Cache
     @Published var clubs = [Club]()      // Clubs Cache
     @Published var events = [Event]()    // Events Cache
@@ -26,27 +27,25 @@ class SessionStore: ObservableObject {
     
     var clubTokens = [String:String]()
     
-    let cacheService: CacheService
-    let userObserver: UserObserver
-    let clubObserver: ClubObserver
+    @ObservedObject var cacheService = CacheService()
+    @ObservedObject var userObserver = UserObserver()
+    @ObservedObject var clubObserver = ClubObserver()
+    @ObservedObject var fieldObserver = FieldObserver()
+    @ObservedObject var eventObserver = EventObserver()
     
-    @ObservedObject var locationManager: LocationManager
-    @ObservedObject var notificationsManager: NotificationsManager
+    @ObservedObject var locationManager = LocationManager()
+    @ObservedObject var notificationsManager = NotificationsManager()
     
-    @AppStorage("authToken") var authToken: String?
-    @AppStorage("loggedIn") private var loggedIn: Bool? // makes sure the user is completely logged in
-    @AppStorage("searchRadius") var radius: Double? // search radius for fields in miles
+    /**
+     App lifetime data
+     Whenever set, this is cached in app until changed or app is removed
+     */
+    @AppStorage("loggedIn") var loggedIn: Bool? // makes sure the user is completely logged in
+    @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    
+    
     
     init() {
-        cacheService = CacheService()
-        userObserver = UserObserver()
-        clubObserver = ClubObserver()
-        
-        locationManager = LocationManager()
-        notificationsManager = NotificationsManager()
-        
-        fetchIdentifiableDataFromCache()
-        
         if let login = loggedIn {
             if login {
                 user = cacheService.fetchUser()
@@ -54,46 +53,45 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func fetchIdentifiableDataFromCache() {
-        (firstName, lastName, email) = cacheService.fetchIdentifiableData()
-    }
-    
-    func getFirstName() -> String {
-        return firstName ?? "unnamed";
-    }
-    
-    func getLastName() -> String {
-        return lastName ?? "user";
+    func reInitObservers() {
+        cacheService = CacheService()
+        userObserver = UserObserver()
+        clubObserver = ClubObserver()
+        fieldObserver = FieldObserver()
+        eventObserver = EventObserver()
     }
     
     /// This function fetches user data from the backend. It combines the two and stores it in the session.
-    func GenerateUpdatedUserData() async {
+    func generateUserData() async {
         do {
+            reInitObservers()
+            
             // fetch data from server
             let updatedData = try await userObserver.GetUserData()
-            (firstName, lastName, email) = cacheService.fetchIdentifiableData()
-//            let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!,
-//                                    uuid: updatedData.uuid!, username: updatedData.username!, bio: updatedData.bio ?? "", imageURL: updatedData.imageURL ?? "", visibility: updatedData.visibility!,
-//                                    sports: updatedData.sports, clubs: updatedData.clubs)
-//            // update session store
-//            await MainActor.run {
-//                self.user = newUser
-//            }
-//            // cache user data
-//            await cacheService.cacheUser(user: newUser)
+            
+            // fetch data from cache
+            guard var cache = cacheService.fetchUser() else {
+                return
+            }
+            cache.uuid = updatedData.uuid
+            cache.username = updatedData.username
+            cache.bio = updatedData.bio
+            cache.imageURL = updatedData.imageURL
+            cache.visibility = updatedData.visibility
+            cache.clubs = updatedData.clubs
+            cache.sports = updatedData.sports
+            cache.deviceToken = updatedData.deviceToken
+            
+            // cache this new updated data
+            cacheService.cacheUser(user: cache)
+            
+            // update session store
+            await MainActor.run {
+                self.user = cache
+            }
         } catch {
-            print("GenerateUpdatedUserData Error:" + error.localizedDescription)
+            log.error("generateUpdatedUserData error: \(error.localizedDescription)")
         }
-    }
-    
-    func GenerateUserDataFirstTime(username: String, sports:[String]) async {
-        (firstName, lastName, email) = cacheService.fetchIdentifiableData()
-        
-//        let newUser = UserStore(firstName: firstName!, lastName: lastName!, email: email!, uuid: "", username: username, bio: "", visibility: "private", sports: sports)
-//        await MainActor.run {
-//            self.user = newUser
-//        }
-//        await cacheService.cacheUser(user: newUser)
     }
     
     func generateClubsData() async {
@@ -107,6 +105,29 @@ class SessionStore: ObservableObject {
                 }
             }
         }
+    }
+    
+    func fetchHomeViewData(location: CLLocationCoordinate2D) async {
+        guard let user = self.user,
+              let sports = user.sports else {
+            return
+        }
+        
+        let sportsJoined = sports.joined(separator: ",")
+        
+        // fetch nearby fields
+        await self.fieldObserver.fetchFields(
+            longitude: location.longitude,
+            latitude: location.latitude,
+            radius: Int(self.radius ?? 17000), // meters
+            sports: sportsJoined);
+        
+        // fetch nearby events
+        await self.eventObserver.fetchEvents(
+            longitude: location.longitude,
+            latitude: location.latitude,
+            radius: Int(self.radius ?? 17000),
+            sports: sportsJoined);
     }
     
 }

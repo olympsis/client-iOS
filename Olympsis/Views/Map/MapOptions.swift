@@ -46,11 +46,9 @@ struct MapOptions: View {
                 session.fields = fieldObserver.fields
             }
             let sportsJoined = selectedSports.joined(separator: ",")
-            let res = await eventObserver.fetchEvents(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sportsJoined)
-            if let e = res {
-                await MainActor.run {
-                    session.events += e
-                }
+            await eventObserver.fetchEvents(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sportsJoined)
+            await MainActor.run {
+                session.events += eventObserver.events
             }
         }
     }

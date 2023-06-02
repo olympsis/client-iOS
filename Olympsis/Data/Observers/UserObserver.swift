@@ -11,7 +11,6 @@ class UserObserver: ObservableObject {
     
     private let decoder = JSONDecoder()
     private let userService = UserService()
-    private let cacheService = CacheService()
     
     func CheckUserName(name: String) async throws -> Bool {
         let response = try await userService.UserNameAvailability(name: name)
@@ -37,8 +36,8 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func CreateUserData(userName: String, sports:[String]) async throws -> User? {
-        let (data,_) = try await userService.CreateUserData(userName: userName, sports: sports)
+    func createUserData(username: String, sports:[String]) async throws -> User? {
+        let (data,_) = try await userService.createUserData(userName: username, sports: sports)
         let object = try decoder.decode(User.self, from: data)
         return object
     }
@@ -58,9 +57,5 @@ class UserObserver: ObservableObject {
             print(error)
         }
         return false
-    }
-    
-    func getUserPrivateInfo() -> (String, String, String) {
-        return cacheService.fetchIdentifiableData()
     }
 }

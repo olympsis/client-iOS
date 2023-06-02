@@ -5,19 +5,19 @@
 //  Created by Joel Joseph on 11/27/22.
 //
 
+import os
 import SwiftUI
 import AlertToast
 import CoreLocation
 
 struct ClubsList: View {
     
+    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "clubs_list_view")
     @State private var text: String = ""
     @State private var showCancel: Bool = false
     @State private var showNewClubCover: Bool = false
     @State private var status: LOADING_STATE = .pending
     @State private var showCompletedApplicationToast:Bool = false
-    
-    @StateObject private var clubObserver = ClubObserver()
     
     @EnvironmentObject var session: SessionStore
     
@@ -53,7 +53,7 @@ struct ClubsList: View {
                         .padding(.top)
                 } else {
                     VStack{
-                        if clubObserver.clubs.isEmpty {
+                        if session.clubObserver.clubs.isEmpty {
                             Text("There are no clubs in your area. Broaden your search or...")
                                 .font(.caption)
                                 .padding(.top, 50)
@@ -64,12 +64,12 @@ struct ClubsList: View {
                                 
                         } else {
                             if text != ""{
-                                ForEach(clubObserver.clubs.filter{$0.name!.lowercased().contains(text.lowercased())}, id: \.id){ c in
-                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: clubObserver)
+                                ForEach(session.clubObserver.clubs.filter{$0.name!.lowercased().contains(text.lowercased())}, id: \.id){ c in
+                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
                                 }
                             } else {
-                                ForEach(clubObserver.clubs, id: \.id){ c in
-                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: clubObserver)
+                                ForEach(session.clubObserver.clubs, id: \.id){ c in
+                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
                                 }
                             }
                         }
@@ -88,11 +88,11 @@ struct ClubsList: View {
                         let pk = try await geoCoder.reverseGeocodeLocation(l)
                         if let country = pk.first?.country {
                             if let state = pk.first?.subAdministrativeArea{
-                                await clubObserver.getClubs(country: country, state: state)
+                                await session.clubObserver.getClubs(country: country, state: state)
                             }
                         }
                     } catch {
-                        print(error)
+                        log.error("\(error)")
                     }
                 }
             }
@@ -107,21 +107,14 @@ struct ClubsList: View {
                         let pk = try await geoCoder.reverseGeocodeLocation(l)
                         if let country = pk.first?.country {
                             if let state = pk.first?.administrativeArea{
-                                await clubObserver.getClubs(country: country, state: state)
+                                await session.clubObserver.getClubs(country: country, state: state)
                                 await MainActor.run {
-                                    session.clubs = clubObserver.clubs
-                                    if !session.myClubs.isEmpty {
-                                        for aClub in session.myClubs {
-                                            clubObserver.clubs.removeAll(where: {$0.id == aClub.id})
-                                        }
-                                    }
-                                    clubObserver.isLoading = false
                                     status = .success
                                 }
                             }
                         }
                     } catch {
-                        print(error)
+                        log.error("\(error)")
                     }
                 }
             }

@@ -48,16 +48,16 @@ struct UsernameAvailabilityResponse: Codable {
 }
 
 struct UserData: Codable {
-    let uuid: String?
-    let username: String?
+    var uuid: String?
+    var username: String?
     let firstName: String?
     let lastName: String?
     var imageURL: String?
-    let visibility: String?
-    let bio: String?
-    let clubs: [String]?
-    let sports: [String]?
-    let deviceToken: String?
+    var visibility: String?
+    var bio: String?
+    var clubs: [String]?
+    var sports: [String]?
+    var deviceToken: String?
     
     enum CodingKeys: String, CodingKey {
         case uuid

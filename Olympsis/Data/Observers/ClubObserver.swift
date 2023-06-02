@@ -5,12 +5,16 @@
 //  Created by Joel Joseph on 11/15/22.
 //
 
+import os
 import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class ClubObserver: ObservableObject{
-    private let decoder: JSONDecoder
-    private let clubService: ClubService
+    
+    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "club_observer")
+    private let decoder = JSONDecoder()
+    private let clubService = ClubService()
+    private let cacheService = CacheService()
     
     @Published var isLoading = true
     @Published var clubsCount = 0
@@ -18,11 +22,6 @@ class ClubObserver: ObservableObject{
     @Published var myClubs = [Club]()
     @Published var applications = [NewClubApplication]()
     
-    
-    init(){
-        decoder = JSONDecoder()
-        clubService = ClubService()
-    }
     
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
@@ -39,7 +38,7 @@ class ClubObserver: ObservableObject{
                 self.clubsCount = object.totalClubs
             }
         } catch {
-            print(error)
+            log.error("\(error)")
         }
     }
     
@@ -49,7 +48,7 @@ class ClubObserver: ObservableObject{
             let object = try decoder.decode(Club.self, from: res)
             return object
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return nil
     }
@@ -57,8 +56,8 @@ class ClubObserver: ObservableObject{
     func createClubApplication(clubId: String) async -> Bool {
         do {
             return try await clubService.createClubApplication(id: clubId)
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("\(error)")
             return false
         }
     }
@@ -66,6 +65,7 @@ class ClubObserver: ObservableObject{
     func createClub(club: Club) async throws -> CreateClubResponse {
         let res = try await clubService.createClub(club: club)
         let object = try decoder.decode(CreateClubResponse.self, from: res)
+        cacheService.cacheClubAdminToken(id: object.club.id!, token: object.token)
         return object
     }
     
@@ -78,7 +78,7 @@ class ClubObserver: ObservableObject{
             let object = try decoder.decode(ClubApplicationsResponse.self, from: data)
             return object.applications
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return [ClubApplication]()
     }
@@ -91,7 +91,7 @@ class ClubObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
@@ -105,7 +105,7 @@ class ClubObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
@@ -118,7 +118,7 @@ class ClubObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }

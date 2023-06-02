@@ -31,7 +31,7 @@ struct OlympsisApp: App {
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    let log = Logger()
+    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "app_delegate")
     @AppStorage("deviceToken") private var _token: String?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

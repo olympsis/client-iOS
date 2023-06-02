@@ -12,15 +12,14 @@ struct Permissions: View {
     
     @Binding var currentView: AuthTab
     
-    @State private var log = Logger()
     @State private var hasLocation = false;
     @State private var hasNotifications = false;
     @State private var location = LocationObserver()
     @State private var notifications = NotificationsManager()
-    
     @State private var userObserver = UserObserver()
     
-    @AppStorage("authToken") var authToken: String?
+    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "permissions_view")
+    
     @AppStorage("loggedIn") private var loggedIn: Bool?
     @AppStorage("deviceToken") private var deviceToken: String?
     @EnvironmentObject private var session: SessionStore

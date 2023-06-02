@@ -44,7 +44,7 @@ struct Profile: View {
                 }.toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         if let usr = session.user {
-                            Text("@ \(usr.username!)")
+                            Text("@ \(usr.username ?? "")")
                                 .foregroundColor(.primary)
                                 .font(.title2)
                                 .fontWeight(.regular)

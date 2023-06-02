@@ -18,7 +18,7 @@ class UserService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(scheme: "https", host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
+        self.http = Courrier(scheme: "https", host: host, apiKey: key, token: tokenStore.fetchTokenFromKeyChain())
     }
     
     func UserNameAvailability(name: String) async throws -> Data {
@@ -45,7 +45,7 @@ class UserService {
         return (data, res)
     }
     
-    func CreateUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
+    func createUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
         let req = User(username: userName, visibility: "public", sports: sports)
         let endpoint = Endpoint(path: "/users", queryItems: [URLQueryItem]())
         return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(req))

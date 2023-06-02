@@ -15,31 +15,6 @@ class CacheService: ObservableObject {
     let decoder = JSONDecoder()
     let defaults = UserDefaults()
     
-    func cacheToken(token: String) {
-        self.defaults.set(token, forKey: "token")
-    }
-    
-    func fetchToken() -> String {
-        guard let token = self.defaults.string(forKey: "token") else {
-            return ""
-        }
-        return token
-    }
-    
-    func chacheIdentifiableData(firstName: String, lastName: String, email: String) async {
-        self.defaults.set(firstName, forKey: "firstName")
-        self.defaults.set(lastName, forKey: "lastName")
-        self.defaults.set(email, forKey: "email")
-    }
-    
-    func fetchIdentifiableData() -> (String, String, String) {
-        let f = self.defaults.string(forKey: "firstName") ?? ""
-        let l = self.defaults.string(forKey: "lastName") ?? ""
-        let e = self.defaults.string(forKey: "email") ?? ""
-        
-        return (f, l, e)
-    }
-        
     func cacheClubs(clubs:[String]) {
         self.defaults.set(clubs, forKey: "clubs")
     }
@@ -71,5 +46,22 @@ class CacheService: ObservableObject {
             log.error("failed to fetch user data: \(error)")
         }
         return nil
+    }
+    
+    func cacheClubAdminToken(id: String, token: String) {
+        self.defaults.set(token, forKey: id)
+    }
+    
+    func fetchClubAdminToken(id: String) -> String {
+        return self.defaults.object(forKey: id) as? String ?? ""
+    }
+    
+    func clearCache() -> Bool {
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            return false
+        }
+        UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
+        UserDefaults.standard.synchronize()
+        return true
     }
 }

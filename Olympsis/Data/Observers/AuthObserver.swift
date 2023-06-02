@@ -22,37 +22,43 @@ class AuthObserver: ObservableObject {
     func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
         let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
         let (data, _) = try await authService.SignUp(request: req)
-        
         let object = try decoder.decode(AuthResponse.self, from: data)
         
         let usr = UserData(uuid: nil, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
         
         // cache user data & token
         cacheService.cacheUser(user: usr)
-        cacheService.cacheToken(token: object.token) // TODO REMOVE THIS EVENTUALLY
-        tokenStore.SaveTokenToKeyChain(token: object.token)
+        tokenStore.saveTokenToKeyChain(token: object.token)
     }
     
     func LogIn(code: String) async throws {
         let req = AuthRequest(code: code, provider: "https://appleid.apple.com")
-        
         let (data, _) = try await authService.LogIn(request: req)
-
         let object = try decoder.decode(AuthResponse.self, from: data)
         
         let usr = UserData(uuid: nil, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
         
         // cache user data & token
         cacheService.cacheUser(user: usr)
-        cacheService.cacheToken(token: object.token) // TODO REMOVE THIS EVENTUALLY
-        tokenStore.SaveTokenToKeyChain(token: object.token)
+        tokenStore.saveTokenToKeyChain(token: object.token)
     }
     
     func DeleteAccount() async throws -> Bool {
+        // clear server data
         let (_, resp) = try await authService.DeleteAccount()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            log.error("Failed to delete user data remotely")
             return false
         }
+        
+        // clear cached app data
+        let cacheResp = cacheService.clearCache()
+        let storeResp = tokenStore.clearKeyChain()
+        guard cacheResp == true, storeResp == true else {
+            log.error("failed to clear device data")
+            return false
+        }
+        
         return true
     }
     
@@ -64,18 +70,24 @@ class AuthObserver: ObservableObject {
                     /*
                         New User
                      */
-                    let code = appleIdCredential.authorizationCode!
-                    let email = appleIdCredential.email!
-                    let firstName = (appleIdCredential.fullName?.givenName!)!
-                    let lastName = (appleIdCredential.fullName?.familyName!)!
-                    await cacheService.chacheIdentifiableData(firstName: firstName, lastName: lastName, email: email)
+                    
+                    guard let code = appleIdCredential.authorizationCode,
+                          let email = appleIdCredential.email,
+                          let fullName = appleIdCredential.fullName,
+                          let firstName = fullName.givenName,
+                          let lastName = fullName.familyName else {
+                        return USER_STATUS.Unknown
+                    }
                     try await SignUp(firstName: firstName, lastName: lastName, email: email, code: String(data: code, encoding: .utf8)!)
                     return USER_STATUS.New
                 } else {
                     /*
                         Existing User
                      */
-                    let code = appleIdCredential.authorizationCode!
+        
+                    guard let code = appleIdCredential.authorizationCode else {
+                        return USER_STATUS.Unknown
+                    }
                     try await LogIn(code: String(data: code, encoding: .utf8)!)
                     return USER_STATUS.Returning
                 }

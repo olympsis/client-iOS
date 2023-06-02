@@ -18,9 +18,6 @@ struct MapView: View {
     @State private var showNewEvent     = false
     @State private var showOptions      = false
     
-    @StateObject var fieldObserver      = FieldObserver()
-    @StateObject var eventObserver      = EventObserver()
-    
     @State var trackingMode: MapUserTrackingMode = .follow
     @State var region : MKCoordinateRegion = .init()
     @EnvironmentObject var session:SessionStore
@@ -29,9 +26,9 @@ struct MapView: View {
         NavigationView {
             VStack{
                 ZStack(alignment: .bottomTrailing){
-                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
+                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fieldObserver.fields, annotationContent: { field in
                         MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
-                            PlaceAnnotationView(field: field, events: $session.events)
+                            PlaceAnnotationView(field: field, events: $session.eventObserver.events)
                         }
                     })
                         .edgesIgnoringSafeArea(.all)
@@ -51,7 +48,7 @@ struct MapView: View {
                             .sheet(isPresented: $showNewEvent) {
                                 if let usr = session.user {
                                     if let sports = usr.sports {
-                                        NewEventView(clubs: session.myClubs, fields: session.fields, sports: sports)
+                                        NewEventView(clubs: session.myClubs, fields: session.fieldObserver.fields, sports: sports)
                                     }
                                 }
                         }
@@ -77,7 +74,6 @@ struct MapView: View {
                             withAnimation{
                                 trackingMode = .follow;
                             }
-                            
                         }
                         .clipShape(Circle())
                         .labelStyle(.iconOnly)

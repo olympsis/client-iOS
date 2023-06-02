@@ -17,7 +17,7 @@ class FieldService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key, token: tokenStore.FetchTokenFromKeyChain())
+        self.http = Courrier(host: host, apiKey: key, token: tokenStore.fetchTokenFromKeyChain())
     }
     
     func getFields(long: Double, lat: Double, radius: Int, sports: String) async throws -> Data {

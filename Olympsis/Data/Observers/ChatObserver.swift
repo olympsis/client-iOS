@@ -132,7 +132,7 @@ class ChatObserver: ObservableObject {
     }
     
     func InitiateSocketConnection(id: String) async {
-        let token = cache.fetchToken()
+        let token = ""
         self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
         guard var request = request else {
             return

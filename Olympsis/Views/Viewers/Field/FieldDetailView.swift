@@ -205,11 +205,9 @@ struct FieldDetailView: View {
                         let sportsFiltered = field.sports.filter { usr.sports!.contains($0) }
                         let sportsJoined = sportsFiltered.joined(separator: ",")
                         Task {
-                            let res = await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sportsJoined)
-                            if let e = res {
-                                await MainActor.run {
-                                    self.events = e
-                                }
+                            await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sportsJoined)
+                            await MainActor.run {
+                                self.events = eventObserver.events
                             }
                         }
                     }

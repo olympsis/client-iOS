@@ -24,18 +24,20 @@ class EventObserver: ObservableObject{
     /// Calls the field service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Event]? {
+    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sports: String) async {
         do {
             let (data, resp) = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sports: sports)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-                return nil
+                return
             }
             let object = try decoder.decode(EventsResponse.self, from: data)
-            return object.events
+            await MainActor.run {
+                self.events = object.events
+                self.eventsCount = object.totalEvents
+            }
         } catch {
             print(error)
         }
-        return nil
     }
     
     func fetchEvent(id: String) async -> Event? {

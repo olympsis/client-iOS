@@ -21,9 +21,7 @@ struct ViewContainer: View {
     @State var currentTab: Tab = .home
     @State private var showBeta: Bool = false
     @State private var accountState: ACCOUNT_STATE = .Unknown
-    
     @EnvironmentObject var session: SessionStore
-    @AppStorage("loggedIn") private var loggedIn: Bool?
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -41,18 +39,18 @@ struct ViewContainer: View {
             TabBar(currentTab: $currentTab)
                 .ignoresSafeArea(.keyboard)
         }.background(Color("dark-color"))
-            .task {
-                await session.GenerateUpdatedUserData()
-                await session.generateClubsData()
-            }
             .fullScreenCover(isPresented: $showBeta) {
                 BetaPage()
+            }
+            .task {
+                await session.generateUserData()
+                session.locationManager.requestLocation()
             }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewContainer().environmentObject(SessionStore())
+        ViewContainer()
     }
 }

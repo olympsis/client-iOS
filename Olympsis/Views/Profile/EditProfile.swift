@@ -27,8 +27,6 @@ struct EditProfile: View {
     @State var userObserver = UserObserver()
     @StateObject var uploadObserver = UploadObserver()
     
-    
-    @AppStorage("authToken") var authToken: String?
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
@@ -237,7 +235,7 @@ struct EditProfile: View {
                 
                         Task {
                             await UpdateProfile()
-                            await session.GenerateUpdatedUserData()
+                            await session.generateUserData()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 self.presentationMode.wrappedValue.dismiss()
                             }

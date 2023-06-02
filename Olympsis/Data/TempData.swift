@@ -35,3 +35,8 @@ let USERS_DATA = [
 let USERS = [
     User(uuid: "", username: "", bio: "", imageURL: "", visibility: "", sports: nil, deviceToken: "")
 ]
+
+let ANNOUCEMENTS = [
+    Announcement(id: "0", image: "https://api.olympsis.com/feed-images/89b037d3-e4d6-4e65-86a4-27ef09983489.jpg"),
+    Announcement(id: "1", image: "https://api.olympsis.com/feed-images/072bb74c-bebe-449d-9d1f-efe26b974081.jpg")
+]
