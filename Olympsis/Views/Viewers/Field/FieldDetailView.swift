@@ -198,12 +198,16 @@ struct FieldDetailView: View {
                     }
                 }
             }
+            /*
             .refreshable {
+                // MIGHT TURN OFF THIS FEATURE TILL I PUT IN FETCH EVENTS BY FIELD IN THE API
+                
                 guard let location = session.locationManager.location else {
                     return
                 }
                 await session.getNearbyData(location: location)
-            }
+                 
+            }*/
         }
     }
 }
