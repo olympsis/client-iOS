@@ -51,7 +51,7 @@ struct RoomView: View {
     
     func GetData(uuid: String) -> UserPeek? {
         let usr = club.members!.first(where: {$0.uuid == uuid})
-        if let u = usr {
+        if let _ = usr {
             return nil // FIX NEEDS TO USE USER DATA
         }
         return nil

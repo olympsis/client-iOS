@@ -33,16 +33,13 @@ struct NewEventView: View {
         }
     }
     
-    @State var clubs: [Club]
     @State var fields: [Field]
-    @State var sports: [String]
-    
     @State private var isEditing:               Bool = false
     @State private var showCompletedToast:      Bool = false
     @State private var eventTitle:              String = ""
     @State private var eventBody:               String = ""
-    @State private var eventFieldId:            String = ""
-    @State private var eventClubId:             String = ""
+    @State private var eventFieldID:            String = ""
+    @State private var eventClubID:             String = ""
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              SPORT = .soccer
@@ -51,10 +48,16 @@ struct NewEventView: View {
     @State private var status:                  LOADING_STATE = .pending
     @State private var validationStatus:        NEW_EVENT_ERROR = .unexpected
     
-    @StateObject private var eventObserver =  EventObserver()
-    
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
+    
+    var sports: [String] {
+        guard let user = session.user,
+              let sports = user.sports else {
+            return [""]
+        }
+        return sports
+    }
     
     var convertedSports: [SPORT] {
         var res = [SPORT]()
@@ -64,25 +67,21 @@ struct NewEventView: View {
         return res
     }
     
-    var associatedClubs: [Club] {
-        return clubs.filter({$0.sport == eventSport.rawValue})
-    }
-    
     var associatedFields: [Field] {
-        return fields.filter({$0.sports.contains(where: {$0 == eventSport.rawValue})})
+        return fields.filter({$0.sports.contains(where:{ $0 == eventSport.rawValue })})
     }
     
     var selectedClub: String {
-        if eventClubId != "" {
-            return eventClubId
+        if eventClubID != "" {
+            return eventClubID
         } else {
-            return associatedClubs[0].id!
+            return session.clubs[0].id!
         }
     }
     
     var selectedField: String {
-        if eventFieldId != "" {
-            return eventFieldId
+        if eventFieldID != "" {
+            return eventFieldID
         } else {
             return associatedFields[0].id
         }
@@ -114,18 +113,22 @@ struct NewEventView: View {
             return
         }
         status = .loading
-        let dao = EventDao(title: eventTitle, body: eventBody, clubId: selectedClub, fieldId: selectedField, imageURL: eventImageURL, sport: eventSport.rawValue, startTime: Int(eventStartTime.timeIntervalSince1970), maxParticipants: Int(eventMaxParticipants), level: eventLevel, status: "pending")
-        let resp = await eventObserver.createEvent(dao: dao)
-        if var r = resp {
-            if let usr = session.user {
-//                r.poster = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
-            }
-            status = .success
-            await MainActor.run {
-                session.events.append(r)
-            }
-            self.presentationMode.wrappedValue.dismiss()
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return
         }
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
+        let _ = await session.eventObserver.createEvent(event: event)
+//        if var r = resp {
+//            if let usr = session.user {
+////                r.poster = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
+//            }
+//            status = .success
+//            await MainActor.run {
+//                session.events.append(r)
+//            }
+//            self.presentationMode.wrappedValue.dismiss()
+//        }
     }
     
     var body: some View {
@@ -205,8 +208,8 @@ struct NewEventView: View {
                             .foregroundColor(.gray)
                             .font(.subheadline)
                         
-                        Picker(selection: $eventClubId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            ForEach(associatedClubs, id: \.id) { club in
+                        Picker(selection: $eventClubID, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                            ForEach(session.clubs, id: \.id) { club in
                                 Text(club.name!).tag(club.id)
                             }
                         }.modifier(MenuButton())
@@ -223,7 +226,7 @@ struct NewEventView: View {
                         .foregroundColor(.gray)
                         .font(.subheadline)
                     
-                    Picker(selection: $eventFieldId, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                    Picker(selection: $eventFieldID, label: Text("")) {
                         ForEach(associatedFields, id: \.id) { field in
                             Text(field.name).tag(field.id)
                         }
@@ -333,8 +336,8 @@ struct NewEventView: View {
                     
             }.frame(width: SCREEN_WIDTH)
         }.task {
-            eventClubId = clubs[0].id!
-            //eventFieldId = session.fields[0].id
+            eventClubID = session.clubs[0].id ?? ""
+            eventFieldID = fields[0].id
             eventSport = SportFromString(s: sports[0])
         }
     }
@@ -342,7 +345,7 @@ struct NewEventView: View {
 
 struct NewEventView_Previews: PreviewProvider {
     static var previews: some View {
-        NewEventView(clubs: CLUBS, fields: FIELDS, sports: ["soccer", "golf"])
+        NewEventView(fields: FIELDS)
             .environmentObject(SessionStore())
     }
 }

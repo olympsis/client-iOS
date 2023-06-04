@@ -10,7 +10,6 @@ import SwiftUI
 struct NoPostsView: View {
     
     @State var club: Club
-    @Binding var posts: [Post]
     @State private var isLoading        = true
     @State private var showCreatePost   = false
     
@@ -26,36 +25,29 @@ struct NoPostsView: View {
                     .padding(.top)
                 .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/1.2)
             }.refreshable {
-                let posts = await postObserver.fetchPosts(clubId:club.id!)
-                await MainActor.run(body: {
+                Task {
+                    guard let id = club.id else {
+                        return
+                    }
+                    let posts = await postObserver.getPosts(clubId: id)
                     for post in posts {
-                        session.posts.append(post)
+                        session.posts[id]?.append(post)
                     }
-                })
-            }
-            Button(action: { self.showCreatePost.toggle() }){
-                ZStack {
-                    Circle()
-                        .foregroundColor(Color("secondary-color"))
-                        .frame(width: 50)
-                    Image(systemName: "square.and.pencil")
-                        .imageScale(.large)
-                        .foregroundColor(.white)
                 }
-            }.padding(.trailing)
-                .padding(.bottom, 30)
-                .fullScreenCover(isPresented: $showCreatePost, onDismiss: {
-                    isLoading = true
-                    Task {
-                        let posts = await postObserver.fetchPosts(clubId:club.id!)
-                        await MainActor.run(body: {
-                            for post in posts {
-                                session.posts.append(post)
-                            }
-                        })
+            }
+            .fullScreenCover(isPresented: $showCreatePost, onDismiss: {
+                isLoading = true
+                Task {
+                    guard let id = club.id else {
+                        return
                     }
-                    isLoading = false
-                }) { CreateNewPost(club: club, posts: $posts) }
+                    let posts = await postObserver.getPosts(clubId: id)
+                    for post in posts {
+                        session.posts[id]?.append(post)
+                    }
+                }
+                isLoading = false
+            }) { CreateNewPost(club: club) }
         }
     }
 }
@@ -63,6 +55,6 @@ struct NoPostsView: View {
 
 struct NoPostsView_Previews: PreviewProvider {
     static var previews: some View {
-        NoPostsView(club: CLUBS[0], posts: .constant([Post]()))
+        NoPostsView(club: CLUBS[0])
     }
 }

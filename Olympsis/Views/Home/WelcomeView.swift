@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @Binding var firstName: String
+    @State var firstName: String
     @Binding var status: LOADING_STATE
     var body: some View {
         VStack(alignment: .leading){
@@ -37,6 +37,6 @@ struct WelcomeView: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(firstName: .constant("Joel"), status: .constant(.success))
+        WelcomeView(firstName: "Joel", status: .constant(.success))
     }
 }

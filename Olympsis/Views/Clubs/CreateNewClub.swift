@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import SwiftUI
 import PhotosUI
 import AlertToast
@@ -24,19 +25,19 @@ struct CreateNewClub: View {
     @State private var state: LOADING_STATE = .pending
     @State private var clubName: String = ""
     @State private var description: String = ""
-    @State private var sport: String   = "soccer"
+    @State private var sport: String = "soccer"
+    @State private var userSports = [String]()
     @State private var imageURL: String = ""
-    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    
     @State private var showToast = false
     
     @StateObject var uploadObserver = UploadObserver()
-    @StateObject private var clubObserver = ClubObserver()
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
+    
+    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_new_club_view")
     
     func UploadImage() async {
         if let data = selectedImageData {
@@ -59,7 +60,7 @@ struct CreateNewClub: View {
         // validate view
         let val = Validate()
         guard val == nil else {
-            print("err")
+            log.error("err")
             state = .failure
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 state = .pending
@@ -76,30 +77,33 @@ struct CreateNewClub: View {
         
         // grab current location and create club
         let geoCoder = CLGeocoder()
-        let location = session.locationManager.location
-        if let loc = location {
-            let l = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
-            do {
-                let pk = try await geoCoder.reverseGeocodeLocation(l)
-                if let country = pk.first?.country {
-                    if let state = pk.first?.administrativeArea{
-                        if let city = pk.first?.locality {
-                            let club = Club(id: nil, name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, visibility: "public", members: nil, rules: nil, createdAt: nil)
-                            let resp = try await clubObserver.createClub(club: club)
-                            
-                            await MainActor.run {
-                                session.myClubs.append(resp.club)
-                            }
-                            showToast = true
-                            self.state = .success
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
-            } catch {
-                self.state = .failure
-                print(error)
+        guard let location = session.locationManager.location else {
+            return
+        }
+        let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        do {
+            let pk = try await geoCoder.reverseGeocodeLocation(l)
+            guard let country = pk.first?.country,
+                  let state = pk.first?.administrativeArea,
+                  let city = pk.first?.locality else {
+                return
             }
+            let club = Club(id: nil, name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, visibility: "public", members: nil, rules: nil, createdAt: nil)
+            
+            // create new club
+            let _ = try await session.clubObserver.createClub(club: club)
+            
+            // update user data
+            await session.generateUserData()
+            await session.fetchUserClubs()
+            
+            
+            showToast = true
+            self.state = .success
+            self.presentationMode.wrappedValue.dismiss()
+        } catch {
+            self.state = .failure
+            log.error("\(error)")
         }
     }
     
@@ -127,7 +131,7 @@ struct CreateNewClub: View {
                             .font(.title3)
                             .bold()
                         .padding(.top)
-                        Text("Explain what club is about?")
+                        Text("What your club is about?")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -261,6 +265,12 @@ struct CreateNewClub: View {
                             .font(.title3)
                             .bold()
                     }
+                }
+                .task {
+                    guard let user = session.user, let sports = user.sports else {
+                        return
+                    }
+                    self.userSports = sports
                 }
         }
     }

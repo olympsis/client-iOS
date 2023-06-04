@@ -32,25 +32,10 @@ struct MapOptions: View {
     }
     
     func NewSearch() async {
-        await MainActor.run {
-            session.events = [Event]()
+        guard let location = session.locationManager.location else {
+            return
         }
-        if let loc = session.locationManager.location {
-            // fetch nearby fields
-            guard let usr = session.user else {
-                return
-            }
-            let sports = usr.sports!.joined(separator: ",")
-            await fieldObserver.fetchFields(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sports)
-            await MainActor.run {
-                session.fields = fieldObserver.fields
-            }
-            let sportsJoined = selectedSports.joined(separator: ",")
-            await eventObserver.fetchEvents(longitude: loc.longitude, latitude: loc.latitude, radius: milesToMeters(radius: radius), sports: sportsJoined)
-            await MainActor.run {
-                session.events += eventObserver.events
-            }
-        }
+        await session.getNearbyData(location: location)
     }
     
     var body: some View {

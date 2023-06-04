@@ -12,11 +12,14 @@ struct ClubApplicationView: View {
     @State var club: Club
     @State var application: ClubApplication
     @Binding var applications: [ClubApplication]
-    @StateObject private var observer = ClubObserver()
+    @EnvironmentObject var session: SessionStore
     
     func accept() async {
-        let dao = UpdateApplicationDao(_clubId: club.id!, _status: "accepted")
-        let res = await observer.updateApplication(app: application)
+        guard let id = club.id else {
+            return
+        }
+        let req = ApplicationUpdateRequest(status: "accepted")
+        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -25,13 +28,37 @@ struct ClubApplicationView: View {
     }
     
     func deny() async {
-        let dao = UpdateApplicationDao(_clubId: club.id!, _status: "denied")
-        let res = await observer.updateApplication(app: application)
+        guard let id = club.id else {
+            return
+        }
+        let req = ApplicationUpdateRequest(status: "denied")
+        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
             }
         }
+    }
+    
+    var fullName: String {
+        guard let data = application.data,
+              let firstName = data.firstName,
+              let lastName = data.lastName else {
+            return "Olympsis User"
+        }
+        return firstName + " " + lastName;
+    }
+    
+    var username: String {
+        guard let data = application.data,
+              let username = data.username else {
+            return "@olympsis-user"
+        }
+        return "@\(username)";
+    }
+    
+    var dateTimeInString: String {
+        return "Created at: " + Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year());
     }
     
     var body: some View {
@@ -41,7 +68,7 @@ struct ClubApplicationView: View {
                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                 VStack (alignment: .leading){
                     HStack {
-                        AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (application.data?.imageURL ?? ""))){ phase in
+                        AsyncImage(url: URL(string: GenerateImageURL((application.data?.imageURL ?? "")))){ phase in
                             if let image = phase.image {
                                     image // Displays the loaded image.
                                         .resizable()
@@ -66,18 +93,13 @@ struct ClubApplicationView: View {
                         }.frame(width: 60, height: 60)
                             .padding(.leading, 5)
                         VStack (alignment: .leading){
-                            Text(application.data!.firstName!)
+                            Text(fullName)
                                 .font(.headline)
-                            +
-                            Text(" \(application.data!.lastName!)")
-                                .font(.headline)
-                            Text("@\(application.data!.username!)")
+                            Text(username)
                                 .font(.body)
                                 .foregroundColor(.gray)
-                            Text("Created at:")
+                            Text(dateTimeInString)
                                 .font(.callout)
-                            +
-                            Text(" \(Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year()))")
                         }.padding(.leading, 5)
                     }.padding(.top, 5)
 
@@ -118,7 +140,6 @@ struct ClubApplicationView: View {
 
 struct ClubApplicationView_Previews: PreviewProvider {
     static var previews: some View {
-        let app = ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), createdAt: 1669245600)
-        ClubApplicationView(club: CLUBS[0], application: app, applications: .constant([ClubApplication]()))
+        ClubApplicationView(club: CLUBS[0], application: CLUB_APPLICATIONS[0], applications: .constant([ClubApplication]()))
     }
 }

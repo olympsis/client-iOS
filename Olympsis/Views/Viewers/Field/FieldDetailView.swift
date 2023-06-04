@@ -17,7 +17,7 @@ struct FieldDetailView: View {
     }
     
     @State var field: Field
-    @Binding var events: [Event]
+    @State var events = [Event]()
 
     @State private var showNewEvent = false
     @State private var status: Status = .loading
@@ -31,19 +31,29 @@ struct FieldDetailView: View {
         UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
     }
     
-    func IsIn(s: String) -> Bool {
-        if let usr = session.user {
-            if let sports = usr.sports {
-                return sports.contains(where: {$0 == s})
-            }
+    var canCreateEvent: Bool {
+        guard let user = session.user,
+              let clubs = user.clubs,
+              user.sports != nil,       // at least have a sport
+              clubs.count > 0,          // at least have a club
+              session.fields.count > 0, // at least one field in the area
+              session.clubs.count > 0 else { // data for club has been fetched
+            return false
         }
-        return false
+        return true
     }
     
-    var associatedClubs: [Club] {
-        return session.myClubs.filter({ IsIn(s: $0.sport!) })
+    var ownershipStatus: String {
+        if field.owner.type == "private" {
+            return "Private"
+        } else {
+            return "Public"
+        }
     }
     
+    var fieldLocationString: String {
+        return field.city + ", " + field.state
+    }
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
@@ -79,24 +89,15 @@ struct FieldDetailView: View {
                                 .font(.title2)
                                 .bold()
                             
-                            Text(field.city + ", ")
-                                .foregroundColor(.gray)
-                                .font(.body)
-                            + Text(field.state)
+                            Text(fieldLocationString)
                                 .foregroundColor(.gray)
                                 .font(.body)
                                 
-                            if field.owner.type == "public" {
-                                Text("Public")
-                                    .font(.caption2)
-                                    .foregroundColor(.green)
-                                    .bold()
-                            } else {
-                                Text("Private")
-                                    .font(.caption2)
-                                    .foregroundColor(.red)
-                                    .bold()
-                            }
+                            Text(ownershipStatus)
+                                .font(.caption2)
+                                .foregroundColor(.red)
+                                .bold()
+                            
                         }.padding(.leading)
                             .frame(height: 45)
                         Spacer()
@@ -119,18 +120,20 @@ struct FieldDetailView: View {
                         .frame(width: SCREEN_WIDTH-25)
                         .font(.callout)
                     
-                    HStack {
-                        Spacer()
-                        Button(action:{self.showNewEvent.toggle()}) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 120, height: 30)
-                                    .foregroundColor(Color("primary-color"))
-                                Text("Create Event")
-                                    .foregroundColor(.white)
-                            }
-                        }.padding(.trailing)
-                            .padding(.top)
+                    if canCreateEvent {
+                        HStack {
+                            Spacer()
+                            Button(action:{ self.showNewEvent.toggle() }) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 120, height: 30)
+                                        .foregroundColor(Color("primary-color"))
+                                    Text("Create Event")
+                                        .foregroundColor(.white)
+                                }
+                            }.padding(.trailing)
+                                .padding(.top)
+                        }
                     }
                     
                     //MARK: - Events View
@@ -160,7 +163,7 @@ struct FieldDetailView: View {
                                         .padding(.top)
                                 }else {
                                     ForEach(events) { event in
-                                        EventView(event: event, field: field, events: $events)
+                                        EventView(event: event, events: $events)
                                     }
                                 }
                             }.frame(width: SCREEN_WIDTH-25)
@@ -168,16 +171,12 @@ struct FieldDetailView: View {
                     }.padding(.top, 50)
                 }.task {
                     await MainActor.run {
-                        self.events = session.events.filter{$0.fieldID == self.field.id}
+                        self.events = session.events.filter{ $0.fieldID == self.field.id }
                         self.status = .done
                     }
                 }
                 .sheet(isPresented: $showNewEvent) {
-                    if let usr = session.user {
-                        if let sports = usr.sports {
-                            NewEventView(clubs: associatedClubs, fields: session.fields, sports: sports)
-                        }
-                    }
+                    NewEventView(fields: [field])
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading){
@@ -200,19 +199,10 @@ struct FieldDetailView: View {
                 }
             }
             .refreshable {
-                if let location = session.locationManager.location {
-                    if let usr = session.user {
-                        let sportsFiltered = field.sports.filter { usr.sports!.contains($0) }
-                        let sportsJoined = sportsFiltered.joined(separator: ",")
-                        Task {
-                            await eventObserver.fetchEvents(longitude: location.longitude, latitude: location.latitude, radius: milesToMeters(radius: session.radius ?? 10), sports: sportsJoined)
-                            await MainActor.run {
-                                self.events = eventObserver.events
-                            }
-                        }
-                    }
-                    
-                } 
+                guard let location = session.locationManager.location else {
+                    return
+                }
+                await session.getNearbyData(location: location)
             }
         }
     }
@@ -220,6 +210,6 @@ struct FieldDetailView: View {
 
 struct FieldDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        FieldDetailView(field: FIELDS[0], events: .constant([Event]())).environmentObject(SessionStore())
+        FieldDetailView(field: FIELDS[0], events: EVENTS).environmentObject(SessionStore())
     }
 }

@@ -11,7 +11,6 @@ import SwiftUI
 struct EventDetailView: View {
     
     @Binding var event:             Event
-    @State var field:               Field
     @Binding var events:            [Event]
     @State var club:                Club?
     
@@ -24,7 +23,53 @@ struct EventDetailView: View {
     @EnvironmentObject var session: SessionStore
     
     func leadToMaps(){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
+        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(fieldLocation.coordinates[1]),\(fieldLocation.coordinates[0])")! as URL)
+    }
+    
+    var title: String {
+        guard let title = event.title else {
+            return "Event"
+        }
+        return title
+    }
+    
+    var eventBody: String {
+        guard let b = event.body else {
+            return "Event Body"
+        }
+        return b
+    }
+    
+    var city: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "City"
+        }
+        return field.city
+    }
+    
+    var state: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "City"
+        }
+        return field.state
+    }
+    
+    var fieldLocation: GeoJSON {
+        guard let data = event.data,
+              let field = data.field else {
+            return GeoJSON(type: "", coordinates: [0,0])
+        }
+        return field.location
+    }
+    
+    var fieldName: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "Field Name"
+        }
+        return field.name
     }
     
     var body: some View {
@@ -33,19 +78,19 @@ struct EventDetailView: View {
                 ScrollView(showsIndicators: false) {
                     // MARK: - Event Info
                     VStack(alignment: .leading){
-                        Text(event.title)
+                        Text(title)
                             .foregroundColor(.primary)
                             .bold()
                             .font(.largeTitle)
                         HStack {
-                            Text(field.city)
+                            Text(city)
                                 .foregroundColor(.primary)
                                 .font(.title)
-                            Text(", \(field.state)")
+                            Text(", \(state)")
                                 .foregroundColor(.primary)
                                 .font(.title)
                         }
-                        Text(field.name)
+                        Text(fieldName)
                             .foregroundColor(.primary)
                             .font(.title3)
                         HStack {
@@ -66,7 +111,7 @@ struct EventDetailView: View {
                     
                     // MARK: - Event Body
                     VStack(alignment: .leading) {
-                        Text(event.body)
+                        Text(eventBody)
                         Text("To learn more about this event, join the hosting club.")
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -77,22 +122,16 @@ struct EventDetailView: View {
                     
                     EventParticipantsView(event: $event)
                     
-                    EventDetailFieldView(field: field)
-                        .padding(.top)
+                    if let field = event.data?.field {
+                        EventDetailFieldView(field: field)
+                            .padding(.top)
+                    }
                     
-                    if let c = club {
-                        EventDetailHostClubView(club: c)
+                    if let club = event.data?.club {
+                        EventDetailHostClubView(club: club)
                             .padding(.top, 20)
                     }
-                }.task {
-                    let resp = await clubObserver.getClub(id: event.clubID)
-                    if let c = resp {
-                        await MainActor.run {
-                            self.club = c
-                        }
-                    }
-                }
-                .sheet(isPresented: $showMenu) {
+                }.sheet(isPresented: $showMenu) {
                     EventMenu(event: event, events: $events)
                         .presentationDetents([.height(200)])
                 }
@@ -113,7 +152,10 @@ struct EventDetailView: View {
                     }
                 }
                 .refreshable {
-                    let resp = await eventObserver.fetchEvent(id: event.id)
+                    guard let id = event.id else {
+                        return
+                    }
+                    let resp = await eventObserver.fetchEvent(id: id)
                     if let e = resp {
                         await MainActor.run {
                             event = e
@@ -134,7 +176,7 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(event: .constant(EVENTS[0]), field: FIELDS[0], events: .constant(EVENTS), club: CLUBS[0])
+        EventDetailView(event: .constant(EVENTS[0]), events: .constant(EVENTS))
             .environmentObject(SessionStore())
     }
 }

@@ -18,21 +18,21 @@ class SessionStore: ObservableObject {
      */
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
-    @Published var user: UserData?       // user data
-    @Published var fields = [Field]()    // Fields Cache
+    @Published var user: UserData?       // User data
     @Published var clubs = [Club]()      // Clubs Cache
     @Published var events = [Event]()    // Events Cache
-    @Published var posts = [Post]()      // Posts Cache
-    @Published var myClubs = [Club]()    // Clubs Cache
+    @Published var fields = [Field]()    // Fields Cache
+    @Published var posts: [String: [Post]] = [:]    // Posts Cache
     
     var clubTokens = [String:String]()
     
+    @ObservedObject var feedObserver = FeedObserver()
     @ObservedObject var cacheService = CacheService()
     @ObservedObject var userObserver = UserObserver()
     @ObservedObject var clubObserver = ClubObserver()
+    @ObservedObject var postObserver = PostObserver()
     @ObservedObject var fieldObserver = FieldObserver()
     @ObservedObject var eventObserver = EventObserver()
-    
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var notificationsManager = NotificationsManager()
     
@@ -51,6 +51,19 @@ class SessionStore: ObservableObject {
                 user = cacheService.fetchUser()
             }
         }
+    }
+    
+    func fetchClubPosts(id: String) async {
+        self.posts[id] = await postObserver.getPosts(clubId: id)
+    }
+    
+    func fetchUserClubs() async {
+        // check to see if user has clubs
+        guard let u = user, let clubIDs = u.clubs else {
+            return
+        }
+
+        self.clubs = await clubObserver.generateUserClubs(clubIDs: clubIDs)
     }
     
     func reInitObservers() {
@@ -81,7 +94,7 @@ class SessionStore: ObservableObject {
             cache.clubs = updatedData.clubs
             cache.sports = updatedData.sports
             cache.deviceToken = updatedData.deviceToken
-            
+
             // cache this new updated data
             cacheService.cacheUser(user: cache)
             
@@ -94,40 +107,36 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func generateClubsData() async {
-        if let clubs = user?.clubs {
-            for club in clubs {
-                let club = await self.clubObserver.getClub(id: club)
-                if let c = club {
-                    await MainActor.run(body: {
-                        myClubs.append(c)
-                    })
-                }
-            }
-        }
-    }
-    
-    func fetchHomeViewData(location: CLLocationCoordinate2D) async {
+    func getNearbyData(location: CLLocationCoordinate2D) async {
         guard let user = self.user,
               let sports = user.sports else {
             return
         }
-        
         let sportsJoined = sports.joined(separator: ",")
         
         // fetch nearby fields
-        await self.fieldObserver.fetchFields(
+        let fieldsResp = await self.fieldObserver.fetchFields(
             longitude: location.longitude,
             latitude: location.latitude,
             radius: Int(self.radius ?? 17000), // meters
             sports: sportsJoined);
         
+        // if there are no fields in the area then there are no events
+        guard fieldsResp != nil else {
+            return
+        }
+        
         // fetch nearby events
-        await self.eventObserver.fetchEvents(
+        let eventsResp = await self.eventObserver.fetchEvents(
             longitude: location.longitude,
             latitude: location.latitude,
             radius: Int(self.radius ?? 17000),
             sports: sportsJoined);
+        
+        await MainActor.run {
+            self.fields = fieldsResp ?? [Field]()
+            self.events = eventsResp ?? [Event]()
+        }
     }
     
 }

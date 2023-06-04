@@ -21,7 +21,10 @@ struct EventDetailActionButton: View {
         let now = Int(Date.now.timeIntervalSince1970)
         let dao = EventDao(actualSTime: now, status: status)
         state = .loading
-        let res = await eventObserver.updateEvent(id: event.id, dao: dao)
+        guard let id = event.id else {
+            return
+        }
+        let res = await eventObserver.updateEvent(id: id, dao: dao)
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
@@ -38,7 +41,10 @@ struct EventDetailActionButton: View {
         let now = Int(Date.now.timeIntervalSince1970)
         let dao = EventDao(stopTime: now, status: status)
         state = .loading
-        let res = await eventObserver.updateEvent(id: event.id, dao: dao)
+        guard let id = event.id else {
+            return
+        }
+        let res = await eventObserver.updateEvent(id: id, dao: dao)
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){

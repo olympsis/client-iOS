@@ -17,33 +17,33 @@ struct EventDetailRSVPButton: View {
     func rsvp(status: String) async {
         state = .loading
         let dao = ParticipantDao(_uuid: user.uuid!, _status: status)
-        let _ = await eventObserver.addParticipant(id: event.id, dao: dao)
-        if let img = user.imageURL {
-//            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: img, bio: "", sports: [""]), status: status, createdAt: 0)
-//            withAnimation(.spring()){
-//                if event.participants != nil {
-//                    event.participants!.append(p)
-//                } else {
-//                    event.participants = [p]
-//                }
-//            }
-        } else {
-//            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), status: status, createdAt: 0)
-//            withAnimation(.spring()){
-//                if event.participants != nil {
-//                    event.participants!.append(p)
-//                } else {
-//                    event.participants = [p]
-//                }
-//            }
-        }
+        let _ = await eventObserver.addParticipant(id: event.id!, dao: dao)
+//        if let img = user.imageURL {
+////            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: img, bio: "", sports: [""]), status: status, createdAt: 0)
+////            withAnimation(.spring()){
+////                if event.participants != nil {
+////                    event.participants!.append(p)
+////                } else {
+////                    event.participants = [p]
+////                }
+////            }
+//        } else {
+////            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), status: status, createdAt: 0)
+////            withAnimation(.spring()){
+////                if event.participants != nil {
+////                    event.participants!.append(p)
+////                } else {
+////                    event.participants = [p]
+////                }
+////            }
+//        }
         state = .success
     }
     
     func cancel() async {
         state = .loading
         if let pid = event.participants?.first(where: {$0.uuid == user.uuid}){
-            let res = await eventObserver.removeParticipant(id: event.id, pid: pid.id!)
+            let res = await eventObserver.removeParticipant(id: event.id!, pid: pid.id!)
             if res {
                 withAnimation(.easeOut) {
                     event.participants?.removeAll(where: {$0.uuid == user.uuid})

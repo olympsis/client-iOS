@@ -27,7 +27,7 @@ struct PlaceAnnotationView: View {
             }
           }
         .fullScreenCover(isPresented: $showDetails) {
-            FieldDetailView(field: field, events: $events)
+            FieldDetailView(field: field, events: events)
         }
     }
 }

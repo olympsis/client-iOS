@@ -10,12 +10,8 @@ import SwiftUI
 struct MyClubView: View {
     
     @Binding var club: Club
-    @State var posts = [Post]()
-    @State var status: LOADING_STATE = .pending
-    @State private var showCreatePost       = false
-    
-    @StateObject private var postObserver = PostObserver()
-    
+    @State var status: LOADING_STATE = .loading
+    @State private var showCreatePost = false
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
     
@@ -27,52 +23,43 @@ struct MyClubView: View {
         return nil
     }
     
+    var posts: [Post] {
+        return session.posts[club.id ?? ""] ?? [Post]()
+    }
+    
     var body: some View {
         VStack {
-            if !posts.filter({$0.clubId == club.id}).isEmpty{
+            if !posts.isEmpty {
                 ZStack(alignment: .bottomTrailing){
                     ScrollView(showsIndicators: false) {
                         if status == .loading {
                             ProgressView()
                         } else {
-                            ForEach(posts.filter({$0.clubId == club.id}).sorted{$0.createdAt > $1.createdAt}){ post in
-                                PostView(club: club, post: post, data: GetData(uuid: post.owner), posts: $posts)
+                            ForEach(posts.sorted{$0.createdAt! > $1.createdAt!}){ post in
+                                PostView(club: club, post: post, data: post.data)
                             }.padding(.top)
                         }
                     }
-                    .fullScreenCover(isPresented: $showCreatePost) { CreateNewPost(club: club, posts: $posts) }
-                        .refreshable {
-                            Task {
-                                let newPosts = await postObserver.fetchPosts(clubId:club.id!)
-                                await MainActor.run {
-                                    posts = newPosts
-                                }
+                    .refreshable {
+                        Task {
+                            guard let id = club.id else {
+                                return
                             }
+                            await session.fetchClubPosts(id: id)
                         }
-                    
-                    Button(action: { self.showCreatePost.toggle() }){
-                        ZStack {
-                            Circle()
-                                .foregroundColor(Color("secondary-color"))
-                                .frame(width: 50)
-                            Image(systemName: "square.and.pencil")
-                                .imageScale(.large)
-                                .foregroundColor(.white)
-                        }
-                    }.padding(.trailing)
-                        .padding(.bottom, 20)
+                    }
                 }.frame(width: SCREEN_WIDTH)
             } else {
-                NoPostsView(club: club, posts: $posts)
+                NoPostsView(club: club)
             }
         }
         .task {
-            if posts.isEmpty  {
-                status = .loading
-                let resp = await postObserver.fetchPosts(clubId: club.id!)
-                posts = resp
-                status = .success
+            guard posts.isEmpty, let id = club.id else {
+                return
             }
+            status = .loading
+            await session.fetchClubPosts(id: id)
+            status = .success
         }
     }
 }

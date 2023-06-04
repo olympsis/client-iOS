@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NoClubMenu: View {
+    @Binding var status: LOADING_STATE
     @State private var showNewClub: Bool = false
     @State private var showInvites: Bool = false
     var body: some View {
@@ -45,6 +46,6 @@ struct NoClubMenu: View {
 
 struct NoClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        NoClubMenu()
+        NoClubMenu(status: .constant(.failure))
     }
 }

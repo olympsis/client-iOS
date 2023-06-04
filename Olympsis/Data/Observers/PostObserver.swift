@@ -5,19 +5,16 @@
 //  Created by Joel Joseph on 11/25/22.
 //
 
+import os
 import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class PostObserver: ObservableObject{
-    private let decoder: JSONDecoder
-    private let postService: PostService
+    private let decoder = JSONDecoder()
+    private let postService = PostService()
+    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "post_observer")
     
-    init(){
-        decoder = JSONDecoder()
-        postService = PostService()
-    }
-    
-    func fetchPosts(clubId: String) async -> [Post]{
+    func getPosts(clubId: String) async -> [Post] {
         do {
             let (data, res) = try await postService.getPosts(id: clubId)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
@@ -25,62 +22,84 @@ class PostObserver: ObservableObject{
             }
             let object = try decoder.decode(PostsResponse.self, from: data)
             return object.posts
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("\(error)")
         }
         return [Post]()
     }
     
-    func createPost(owner: String, clubId: String, body: String, images:[String]?=nil) async -> Post? {
+    func getPost(id: String) async -> Post? {
         do {
-            let dao = PostDao(owner: owner, clubId: clubId, body: body, images: images)
-            let res = try await postService.createPost(post: dao)
-            let object = try decoder.decode(Post.self, from: res)
+            let data = try await postService.getPost(id: id)
+            let object = try decoder.decode(Post.self, from: data)
             return object
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return nil
     }
     
-    func deletePost(postId: String) async -> Bool {
+    func addLike(id: String, like: Like) async -> Like? {
         do {
-            let res = try await postService.deletePost(postId: postId)
+            let res = try await postService.addLike(id: id, like: like)
+            let object = try decoder.decode(Like.self, from: res)
+            return object
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
+    }
+    
+    func deleteLike(id: String, likeID: String) async -> Bool {
+        do {
+            let res = try await postService.removeLike(id: id, likeID: likeID)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
     
-    func getComments(id: String) async -> [Comment]{
+    func createPost(owner: String, clubId: String, body: String, images:[String]?=nil) async -> Post? {
         do {
-            let (data, res) = try await postService.getComments(id: id)
-            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return [Comment]()
-            }
-            let object = try decoder.decode(CommentsResponse.self, from: data)
-            return object.comments
+            let post = Post(id: nil, poster: owner, clubID: clubId, body: body, images: images, data: nil, likes: nil, comments: nil, createdAt: nil)
+            let res = try await postService.createPost(post: post)
+            let object = try decoder.decode(Post.self, from: res)
+            return object
         } catch {
-            print(error)
+            log.error("\(error)")
         }
-        return [Comment]()
+        return nil
     }
     
-    func addComment(id: String, dao: CommentDao) async -> Bool {
+    func deletePost(postID: String) async -> Bool {
         do {
-            let (_, res) = try await postService.addComment(id: id, dao: dao)
+            let res = try await postService.deletePost(postID: postID)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
+    }
+    
+    func addComment(id: String, comment: Comment) async -> Comment? {
+        do {
+            let (data, res) = try await postService.addComment(id: id, comment: comment)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(Comment.self, from: data)
+            return object
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
     }
     
     func deleteComment(id: String, cid: String) async -> Bool {
@@ -91,7 +110,7 @@ class PostObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }

@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct ClubLoadingTemplateView: View {
-    @State private var templates = ["IMAGE", "IMAGE", "IMAGE", "NO IMAGE", "IMAGE", "NO IMAGE", "IMAGE", "NO IMAGE"]
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(templates, id: \.self){ t in
-                    PostTemplateView(type: t)
-                        .padding(.bottom)
-                }
+                PostTemplateView(type: "IMAGE")
+                PostTemplateView(type: "IMAGE")
+                PostTemplateView(type: "IMAGE")
+                PostTemplateView(type: "IMAGE")
             }
         }.padding(.top)
     }

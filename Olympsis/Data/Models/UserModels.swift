@@ -13,16 +13,17 @@ struct User: Codable {
     let bio: String?
     let imageURL: String?
     let visibility: String?
-    let clubs: [String]?    = nil
+    let clubs: [String]?
     let sports: [String]?
     let deviceToken: String?
 
-    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, sports: [String]?=nil,deviceToken: String? = nil) {
+    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, clubs: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
         self.uuid = uuid
         self.username = username
         self.bio = bio
         self.imageURL = imageURL
         self.visibility = visibility
+        self.clubs = clubs
         self.sports = sports
         self.deviceToken = deviceToken
     }

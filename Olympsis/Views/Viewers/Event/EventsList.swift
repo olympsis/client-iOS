@@ -24,7 +24,7 @@ struct EventsList: View {
     
     var currentEvents: [Event] {
         let calendar = Calendar.current
-        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime))) == calendar.component(.day, from: selectedDate)})
+        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: selectedDate)})
     }
     
     var body: some View {
@@ -32,12 +32,7 @@ struct EventsList: View {
             VStack {
                 ScrollView {
                     ForEach(currentEvents, id: \.title) { event in
-                        if let f = getField(fieldId: event.fieldID) {
-                            EventView(event: event, field: f, events: $events)
-                        } else {
-                            EventTemplateView()
-                        }
-                        
+                        EventView(event: event, events: $events)
                     }
                 }
             }.toolbar {

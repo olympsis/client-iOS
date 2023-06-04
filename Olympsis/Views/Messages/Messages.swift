@@ -10,7 +10,7 @@ import SwiftUI
 struct Messages: View {
     
 
-    @State var club: Club
+    @Binding var club: Club
     @State var user: UserData
     @State var rooms = [Room]()
     @State private var text = ""
@@ -172,6 +172,6 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: CLUBS[0], user: USERS_DATA[0], rooms: [room]).environmentObject(SessionStore())
+        Messages(club: .constant(CLUBS[0]), user: USERS_DATA[0], rooms: [room]).environmentObject(SessionStore())
     }
 }

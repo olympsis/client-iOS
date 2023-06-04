@@ -32,7 +32,10 @@ struct SmallClubView: View {
     
     func Apply() async {
         status = .loading
-        let res = await observer.createClubApplication(clubId:club.id!)
+        guard let id = club.id else {
+            return
+        }
+        let res = await observer.createClubApplication(clubId: id)
         if res {
             self.showToast = true
             status = .success
@@ -42,7 +45,7 @@ struct SmallClubView: View {
     var body: some View {
         VStack {
             ZStack (alignment: .bottom){
-                AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (club.imageURL ?? ""))){ phase in
+                AsyncImage(url: URL(string: GenerateImageURL((club.imageURL ?? "")))){ phase in
                     if let image = phase.image {
                         image // Displays the loaded image.
                             .fixedSize()

@@ -69,6 +69,16 @@ struct ClubInvite: Codable, Identifiable {
     }
 }
 
+struct ClubResponse: Codable {
+    let token: String?
+    let club: Club
+    
+    enum CodingKeys: String, CodingKey {
+        case token
+        case club
+    }
+}
+
 struct ClubsResponse: Codable {
     let totalClubs: Int
     let clubs: [Club]
@@ -126,7 +136,7 @@ struct ClubApplicationsResponse: Codable {
     
     enum CodingKeys: String, CodingKey {
         case totalApplications = "total_applications"
-        case applications
+        case applications = "club_applications"
     }
 }
 

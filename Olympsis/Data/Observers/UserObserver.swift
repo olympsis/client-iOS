@@ -18,12 +18,6 @@ class UserObserver: ObservableObject {
         return object.isAvailable
     }
     
-    func Lookup(username: String) async throws -> UserPeek? {
-        let (data,_) = try await userService.Lookup(username: username)
-        let object = try decoder.decode(UserPeek.self, from: data)
-        return object
-    }
-    
     func GetFriendRequests() async throws -> [FriendRequest]? {
         let (data,_) = try await userService.GetFriendRequests()
         let object = try decoder.decode(FriendRequests.self, from: data)

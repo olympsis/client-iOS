@@ -16,41 +16,57 @@ class ClubObserver: ObservableObject{
     private let clubService = ClubService()
     private let cacheService = CacheService()
     
-    @Published var isLoading = true
-    @Published var clubsCount = 0
-    @Published var clubs = [Club]()
     @Published var myClubs = [Club]()
-    @Published var applications = [NewClubApplication]()
     
+    func generateUserClubs(clubIDs: [String]) async -> [Club] {
+        var clubs = [Club]()
+        for id in clubIDs {
+            let resp = await getClub(id: id)
+            guard let r = resp else {
+                return [Club]()
+            }
+            clubs.append(r.club)
+            guard let tk = r.token else {
+                return clubs
+            }
+            cacheService.cacheClubAdminToken(id: r.club.id!, token: tk)
+        }
+        return clubs
+    }
     
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func getClubs(country: String, state: String) async {
+    func getClubs(country: String, state: String) async -> [Club]? {
         do {
             let (data, res) = try await clubService.getClubs(c: country, s: state)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return
+                return nil
             }
             let object = try decoder.decode(ClubsResponse.self, from: data)
-            await MainActor.run { // TODO: Check later about threads
-                self.clubs = object.clubs
-                self.clubsCount = object.totalClubs
-            }
+            return object.clubs
         } catch {
             log.error("\(error)")
+            return nil
         }
     }
     
-    func getClub(id: String) async -> Club? {
+    func getClub(id: String) async -> ClubResponse? {
         do {
             let res = try await clubService.getClub(id: id)
-            let object = try decoder.decode(Club.self, from: res)
+            let object = try decoder.decode(ClubResponse.self, from: res)
             return object
         } catch {
             log.error("\(error)")
         }
         return nil
+    }
+    
+    func createClub(club: Club) async throws -> Club {
+        let res = try await clubService.createClub(club: club)
+        let object = try decoder.decode(CreateClubResponse.self, from: res)
+        cacheService.cacheClubAdminToken(id: object.club.id!, token: object.token)
+        return object.club
     }
     
     func createClubApplication(clubId: String) async -> Bool {
@@ -60,13 +76,6 @@ class ClubObserver: ObservableObject{
             log.error("\(error)")
             return false
         }
-    }
-    
-    func createClub(club: Club) async throws -> CreateClubResponse {
-        let res = try await clubService.createClub(club: club)
-        let object = try decoder.decode(CreateClubResponse.self, from: res)
-        cacheService.cacheClubAdminToken(id: object.club.id!, token: object.token)
-        return object
     }
     
     func getApplications(id: String) async -> [ClubApplication] {
@@ -83,9 +92,9 @@ class ClubObserver: ObservableObject{
         return [ClubApplication]()
     }
     
-    func updateApplication(app: ClubApplication) async -> Bool {
+    func updateApplication(id: String, appID: String, req: ApplicationUpdateRequest) async -> Bool {
         do {
-            let res = try await clubService.updateApplication(app: app)
+            let res = try await clubService.updateApplication(id: id, appID: appID, req: req)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
@@ -98,8 +107,7 @@ class ClubObserver: ObservableObject{
     
     func changeMemberRank(id: String, memberId: String, role: String) async -> Bool {
         do {
-            let dao = ChangeRankDao(role: role)
-            let res = try await clubService.changeRank(id: id, memberId: memberId, dao: dao)
+            let res = try await clubService.changeRank(id: id, memberId: memberId, role: role)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
@@ -113,6 +121,32 @@ class ClubObserver: ObservableObject{
     func kickMember(id: String, memberId: String) async -> Bool {
         do {
             let res = try await clubService.kickMember(id: id, memberId: memberId)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
+    
+    func deleteClub(id: String) async -> Bool {
+        do {
+            let res = try await clubService.deleteClub(id: id)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
+    
+    func leaveClub(id: String) async -> Bool {
+        do {
+            let res = try await clubService.leaveClub(id: id)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }

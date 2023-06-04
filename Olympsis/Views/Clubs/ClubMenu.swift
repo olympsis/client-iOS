@@ -9,19 +9,47 @@ import SwiftUI
 
 struct ClubMenu: View {
     
-    @State var club: Club
+    enum Alerts {
+        case LeaveClub
+        case DeleteClub
+    }
+    
+    @Binding var club: Club
     @Binding var index: Int
     
+    @State private var showAlert = false
     @State private var showClubs = false
     @State private var showNewClub = false
     @State private var showMembers = false
     @State private var showApplications = false
+    @State private var showLeaveClubAlert = false
+    @State private var showDeleteClubAlert = false
+    
+    @State private var alertType = Alerts.LeaveClub
     
     @StateObject private var clubObserver = ClubObserver()
     @StateObject private var postObserver = PostObserver()
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
+    
+    var role: String {
+        guard let user = session.user,
+              let members = club.members,
+            let member = members.first(where: {$0.uuid == user.uuid}) else {
+            return "member"
+        }
+        return member.role
+    }
+    
+    // this will be handled in the backend as well
+    var isOnlyOwner: Bool {
+        guard let members = club.members else {
+            return false
+        }
+        let owners = members.filter({ $0.role == "owner" })
+        return owners.count < 2
+    }
     
     var body: some View {
         NavigationView {
@@ -78,33 +106,29 @@ struct ClubMenu: View {
                         
                     }
                     
-                    if let user = session.user {
-                        if let member = club.members!.first(where: {$0.uuid == user.uuid}) {
-                            if member.role == "admin" {
-                                Button(action:{ self.showApplications.toggle() }) {
-                                    HStack {
-                                        Image(systemName: "note")
-                                            .imageScale(.large)
-                                            .padding(.leading)
-                                            .foregroundColor(.primary)
-                                        Text("Club Applications")
-                                            .foregroundColor(.primary)
-                                        Spacer()
-                                    }.modifier(MenuButton())
-                                }.padding(.top)
-                            }
-                        }
+                    if role == "owner" || role == "admin" || role == "moderator" {
+                        Button(action:{ self.showApplications.toggle() }) {
+                            HStack {
+                                Image(systemName: "note")
+                                    .imageScale(.large)
+                                    .padding(.leading)
+                                    .foregroundColor(.primary)
+                                Text("Club Applications")
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }.modifier(MenuButton())
+                        }.padding(.top)
                     }
 
                     Menu {
-                        ForEach(session.myClubs) { club in
+                        ForEach(session.clubs) { club in
                             Button(action:{
-                                if let i = session.myClubs.firstIndex(where: { $0.id == club.id }) {
+                                if let i = session.clubs.firstIndex(where: { $0.id == club.id }) {
                                     index = i
                                 }
                             }
                             ){
-                                Text(club.name!)
+                                Text(club.name ?? "Club")
                             }
                         }
                     }label: {
@@ -158,7 +182,11 @@ struct ClubMenu: View {
                         MembersListView(club: club)
                     }
                     
-                    Button(action:{ }) {
+                    Button(action:{
+                        showAlert = false
+                        alertType = .LeaveClub
+                        showAlert.toggle()
+                    }) {
                         HStack {
                             Image(systemName: "door.left.hand.open")
                                 .imageScale(.large)
@@ -170,21 +198,21 @@ struct ClubMenu: View {
                         }.modifier(MenuButton())
                     }
                     
-                    if let user = session.user {
-                        if let member = club.members!.first(where: {$0.uuid == user.uuid}) {
-                            if member.role == "admin" {
-                                Button(action:{ }) {
-                                    HStack {
-                                        Image(systemName: "trash.fill")
-                                            .imageScale(.large)
-                                            .padding(.leading)
-                                            .foregroundColor(.red)
-                                        Text("Delete Club")
-                                            .foregroundColor(.red)
-                                        Spacer()
-                                    }.modifier(MenuButton())
-                                }
-                            }
+                    if role == "owner" {
+                        Button(action:{
+                            showAlert = false
+                            alertType = .DeleteClub
+                            showAlert.toggle()
+                        }) {
+                            HStack {
+                                Image(systemName: "trash.fill")
+                                    .imageScale(.large)
+                                    .padding(.leading)
+                                    .foregroundColor(.red)
+                                Text("Delete Club")
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }.modifier(MenuButton())
                         }
                     }
                     
@@ -197,7 +225,7 @@ struct ClubMenu: View {
                     }
                 }
             }
-            .navigationTitle(club.name!)
+            .navigationTitle(club.name ?? "Clubs")
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
                 CreateNewClub()
@@ -208,12 +236,84 @@ struct ClubMenu: View {
             .fullScreenCover(isPresented: $showClubs) {
                 ClubsList2()
             }
+            .alert(isPresented: $showAlert) {
+                switch alertType {
+                case .LeaveClub:
+                    switch role {
+                    case "owner":
+                        if isOnlyOwner {
+                            return Alert(
+                                title: Text("About Leaving Club"),
+                                message: Text("You cannot leave this club. You are the only owner. Please delete the club or appoint new owners."),
+                                dismissButton: .default(Text("Ok"))
+                            )
+                        } else {
+                            return Alert(
+                                title: Text("Leaving Club"),
+                                message: Text("Are you sure you want to leave this club?"),
+                                primaryButton: .cancel(),
+                                secondaryButton: .destructive(Text("Leave"), action: {
+                                    Task { // Perform delete operation
+                                        guard let id = club.id else {
+                                            return
+                                        }
+                                        let res = await session.clubObserver.leaveClub(id: id)
+                                        if res {
+                                            await session.generateUserData()
+                                            session.clubs.removeAll(where: { $0.id == id })
+                                            self.presentationMode.wrappedValue.dismiss()
+                                        }
+                                    }
+                                })
+                            );
+                        }
+                    default:
+                        return Alert(
+                            title: Text("Leaving Club"),
+                            message: Text("Are you sure you want to leave this club?"),
+                            primaryButton: .cancel(),
+                            secondaryButton: .destructive(Text("Leave"), action: {
+                                Task { // Perform delete operation
+                                    guard let id = club.id else {
+                                        return
+                                    }
+                                    let res = await session.clubObserver.leaveClub(id: id)
+                                    if res {
+                                        await session.generateUserData()
+                                        session.clubs.removeAll(where: { $0.id == id })
+                                        self.presentationMode.wrappedValue.dismiss()
+                                    }
+                                }
+                            })
+                        );
+                    }
+                case .DeleteClub:
+                    return Alert(
+                        title: Text("Delete Club"),
+                        message: Text("Are you sure you want to delete this club?"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text("Delete"), action: {
+                            Task { // Perform delete operation
+                                guard let id = club.id else {
+                                    return
+                                }
+                                let res = await session.clubObserver.deleteClub(id: id)
+                                if res {
+                                    await session.generateUserData()
+                                    session.clubs.removeAll(where: { $0.id == id })
+                                    self.presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                        })
+                    );
+                }
+            }
         }
     }
 }
 
 struct ClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        ClubMenu(club: CLUBS[0], index: .constant(0)).environmentObject(SessionStore())
+        ClubMenu(club: .constant(CLUBS[0]), index: .constant(0)).environmentObject(SessionStore())
     }
 }

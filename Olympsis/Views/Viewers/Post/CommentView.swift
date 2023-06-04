@@ -8,80 +8,79 @@
 import SwiftUI
 
 struct CommentView: View {
-    @State var data: UserData?
+    
     @State var comment: Comment
+    @EnvironmentObject var session: SessionStore
+    @Environment(\.presentationMode) var presentationMode
+
+    var imageURL: String {
+        guard let user = comment.data,
+              let image = user.imageURL else {
+            return ""
+        }
+        return GenerateImageURL(image)
+    }
+    
+    var username: String {
+        guard let data = comment.data,
+              let username = data.username else {
+            return "olympsis-user"
+        }
+        return username
+    }
+    
+    var timeStamp: String {
+        guard let time = comment.createdAt else {
+            return "0 minutes ago"
+        }
+        return calculateTimeAgo(from: time)
+    }
+    
     var body: some View {
         HStack {
             HStack(alignment: .top){
-                if let d = data {
-                    if let img = d.imageURL {
-                        AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + img)){ phase in
-                            if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .clipShape(Circle())
-                                    .scaledToFill()
-                                    .clipped()
-                            } else if phase.error != nil {
-                                Color.gray // Indicates an error.
-                                    .clipShape(Circle())
-                                    .opacity(0.3)
-                            } else {
-                                ZStack {
-                                    Color.gray // Acts as a placeholder.
-                                        .clipShape(Circle())
-                                    .opacity(0.3)
-                                    ProgressView()
-                                }
-                            }
-                        }.frame(width: 35, height: 35)
-                            .padding(.leading, 5)
+                AsyncImage(url: URL(string: imageURL)){ phase in
+                    if let image = phase.image {
+                        image // Displays the loaded image.
+                            .resizable()
+                            .clipShape(Circle())
+                            .scaledToFill()
+                            .clipped()
+                    } else if phase.error != nil {
+                        Color.gray // Indicates an error.
+                            .clipShape(Circle())
+                            .opacity(0.3)
                     } else {
-                        Circle()
-                            .foregroundColor(.gray)
+                        ZStack {
+                            Color.gray // Acts as a placeholder.
+                                .clipShape(Circle())
                             .opacity(0.3)
-                            .frame(width: 35)
-                            .padding(.leading, 5)
+                            ProgressView()
+                        }
                     }
-                    VStack (alignment: .leading){
-                        Group {
-                            Text(d.username!)
-                                .fontWeight(.bold)
-                            + Text(" \(comment.text)")
-                        }.padding(.leading, 4)
-                        Text(" \(Date(timeIntervalSince1970: TimeInterval(comment.createdAt)).formatted(.dateTime.day().month().year().hour().minute()))")
+                }.frame(width: 35, height: 35)
+                    .padding(.leading, 5)
+                VStack (alignment: .leading){
+                    Group {
+                        Text(username)
                             .font(.caption)
-                            .foregroundColor(.gray)
-                    }.padding(.trailing)
-                } else {
-                    HStack {
-                        Circle()
-                            .foregroundColor(.gray)
-                            .opacity(0.3)
-                            .frame(width: 35)
-                        .padding(.leading, 5)
-                        
-                        VStack (alignment: .leading){
-                            Group {
-                                Text("olympsis-user")
-                                    .fontWeight(.bold)
-                                + Text(" \(comment.text)")
-                            }.padding(.leading, 4)
-                            Text(" \(Date(timeIntervalSince1970: TimeInterval(comment.createdAt)).formatted(.dateTime.day().month().year().hour().minute()))")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }.padding(.trailing)
+                            .fontWeight(.bold)
+                        Text("\(comment.text)")
+                            .font(.custom("helvetica", size: 15))
                     }
-                }
-            }
+                    Text(timeStamp)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }.padding(.trailing)
+            }.foregroundColor(.primary)
+                .padding(.bottom)
             Spacer()
-        }
+        }.padding(.leading, 5)
     }
 }
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "profile-images/62D674D2-59D2-4095-952B-4CE6F55F681F", bio: "", sports: ["soccer"])
-        CommentView(data: USERS_DATA[0], comment: Comment(id: "", uuid: "000", text: "Lets go!!!", createdAt: 1669663779))
+        CommentView(comment: Comment(id: "", uuid: "000", text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", data: nil, createdAt: 1639364779)).environmentObject(SessionStore())
     }
 }

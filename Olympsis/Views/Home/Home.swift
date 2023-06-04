@@ -21,17 +21,20 @@ struct Home: View {
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
     @State private var fieldIndex = "0"
-    @State private var firstName = "User"
     @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
     @State private var showMoreFields = false
     @State private var status: LOADING_STATE = .loading
-
-    @StateObject private var observer = FeedObserver()
-    @StateObject private var eventObserver = EventObserver()
-    @StateObject private var fieldObserver = FieldObserver()
     
     @EnvironmentObject var session: SessionStore
+    
+    private var name: String {
+        guard let user = session.user, let name = user.firstName else {
+            log.error("failed to get user's name")
+            return "User"
+        }
+        return name
+    }
     
     var body: some View {
         NavigationView {
@@ -41,7 +44,7 @@ struct Home: View {
                     //MARK: - Welcome message
                     HStack {
                         VStack(alignment: .leading){
-                            WelcomeView(firstName: $firstName, status: $status)
+                            WelcomeView(firstName: name, status: $status)
                         }.padding(.top, 25)
                         Spacer()
                     }
@@ -53,7 +56,7 @@ struct Home: View {
                                 .font(.custom("Helvetica Neue", size: 17))
                                 .bold()
                                 .padding()
-                            AnnouncementsView(status: $status, announcements: $observer.announcements)
+                            AnnouncementsView(status: $status, announcements: $session.feedObserver.announcements)
                         }
                     }
                     
@@ -72,12 +75,14 @@ struct Home: View {
                                 }.padding()
                                     .foregroundColor(Color.primary)
                             }.fullScreenCover(isPresented: $showMoreFields) {
-                                FieldsList(fields: session.fieldObserver.fields)
+                                FieldsList(fields: session.fields)
                             }
                             
-                            FieldsView(fields: $session.fieldObserver.fields, status: $status)
+                            FieldsView(fields: $session.fields, status: $status)
                         }
                     }.onReceive(session.locationManager.$location) { newLoc in
+                        
+                        // make sure new location is valid
                         guard let location = newLoc else {
                             return
                         }
@@ -95,15 +100,11 @@ struct Home: View {
                         hasLoaded = true
                         
                         Task {
-                            // grab user data and set first name for welcome message
-                            guard let user = session.user, let firstName = user.firstName else {
-                                log.error("failed to get user data")
-                                return
-                            }
-                            self.firstName = firstName
-                            
                             // fetch home view data such as fields/events
-                            await session.fetchHomeViewData(location: location)
+                            await session.getNearbyData(location: location)
+                            
+                            // fetch club data
+                            await session.fetchUserClubs()
                             self.status = .success
                         }
                     }

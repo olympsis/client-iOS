@@ -21,7 +21,7 @@ struct EventsModalView: View {
     
     var todayEvents: [Event] {
         let calendar = Calendar.current
-        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime))) == calendar.component(.day, from: Date())})
+        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: Date())})
     }
     
     var body: some View {
@@ -44,12 +44,7 @@ struct EventsModalView: View {
             }
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(todayEvents, id: \.title) { event in
-                    if let f = getField(fieldId: event.fieldID) {
-                        EventView(event: event, field: f, events: $events)
-                    } else {
-                        EventTemplateView()
-                    }
-                    
+                    EventView(event: event, events: $events)
                 }
             }.fullScreenCover(isPresented: $showMore) {
                 EventsList(fields: fields, events: $events)

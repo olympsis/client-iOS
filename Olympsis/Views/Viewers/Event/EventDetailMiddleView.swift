@@ -25,6 +25,13 @@ struct EventDetailMiddleView: View {
         return 1
     }
     
+    var startTime: Int64 {
+        guard let time = event.startTime else {
+            return 0
+        }
+        return time
+    }
+    
     var body: some View {
         VStack {
             Rectangle()
@@ -54,7 +61,7 @@ struct EventDetailMiddleView: View {
                         VStack {
                             Text("Pending")
                                 .foregroundColor(Color("primary-color"))
-                            Text(Date(timeIntervalSince1970: TimeInterval(event.startTime)).formatted(.dateTime.hour().minute()))
+                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.green)
                                 .bold()
                         }

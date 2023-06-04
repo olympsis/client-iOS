@@ -9,25 +9,29 @@ import SwiftUI
 
 struct ClubMemberMenu: View {
     @State var club: Club
-    @State var role: MEMBER_ROLES
+    @State var role: String
     @State var member: Member
-    @State var observer = ClubObserver()
+    @EnvironmentObject var session:SessionStore
     
-    func Promote() async {
-        let res = await observer.changeMemberRank(id: club.id!, memberId: member.id!, role: "admin")
-        // FETCH NEW CLUB DATA TO UPDATE MEMBERS
+    func Promote(_ role: String) async {
+        let res = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
+        if res {
+            await session.fetchUserClubs()
+        }
     }
     
-    func Demote() async {
-        let res = await observer.changeMemberRank(id: club.id!, memberId: member.id!, role: "member")
+    func Demote(_ role: String) async {
+        let res = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
         if res {
-            // FETCH NEW CLUB DATA TO UPDATE MEMBERS
+            await session.fetchUserClubs()
         }
     }
     
     func Kick() async {
-        let res = await observer.kickMember(id: club.id!, memberId: member.id!)
-        // FETCH NEW CLUB DATA TO UPDATE MEMBERS
+        let res = await session.clubObserver.kickMember(id: club.id!, memberId: member.id!)
+        if res {
+            await session.fetchUserClubs()
+        }
     }
     
     var body: some View {
@@ -39,12 +43,15 @@ struct ClubMemberMenu: View {
                 .padding(.bottom, 1)
                 .padding(.top, 7)
             
-            if role != .Member {
+            if role != "member" {
                 Menu {
-                    Button(action:{ Task{ await Promote() } }) {
+                    Button(action:{ Task{ await Promote("owner") } }) {
+                        Text("Promote to Owner")
+                    }
+                    Button(action:{ Task{ await Promote("admin") } }) {
                         Text("Promote to Admin")
                     }
-                    Button(action:{ Task{ await Demote() } }) {
+                    Button(action:{ Task{ await Demote("member") } }) {
                         Text("Demote to Member")
                     }
                     
@@ -74,7 +81,7 @@ struct ClubMemberMenu: View {
                 }.modifier(MenuButton())
             }
             
-            if role != .Member {
+            if role != "member" {
                 Button(action:{ Task{ await Kick() } }) {
                     HStack {
                         Image(systemName: "door.right.hand.open")
@@ -95,6 +102,6 @@ struct ClubMemberMenu: View {
 
 struct ClubMemberMenu_Previews: PreviewProvider {
     static var previews: some View {
-        ClubMemberMenu(club: CLUBS[0], role: .Member, member: CLUBS[0].members!.first!)
+        ClubMemberMenu(club: CLUBS[0], role: "member", member: CLUBS[0].members!.first!)
     }
 }

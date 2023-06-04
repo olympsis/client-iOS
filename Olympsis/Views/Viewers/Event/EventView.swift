@@ -17,11 +17,69 @@ struct EventView: View {
     }
     
     @State var event: Event
-    @State var field: Field
     @State var status: Status = .loading
     @State var showDetails = false
     
     @Binding var events: [Event]
+    
+    var title: String {
+        guard let title = event.title else {
+            return "Event"
+        }
+        return title
+    }
+    
+    var eventBody: String {
+        guard let b = event.body else {
+            return "Event Body"
+        }
+        return b
+    }
+    
+    var eventLevel: Int {
+        guard let level = event.level else {
+            return 1
+        }
+        return level
+    }
+    
+    var imageURL: String {
+        guard let img = event.imageURL else {
+            return ""
+        }
+        return img
+    }
+    
+    var city: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "City"
+        }
+        return field.city
+    }
+    
+    var state: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "City"
+        }
+        return field.state
+    }
+    
+    var fieldName: String {
+        guard let data = event.data,
+              let field = data.field else {
+            return "Field Name"
+        }
+        return field.name
+    }
+    
+    var startTime: Int64 {
+        guard let time = event.startTime else {
+            return 0
+        }
+        return time
+    }
     
     func convertTime() -> String {
         let formatter = DateFormatter()
@@ -32,7 +90,10 @@ struct EventView: View {
             let date = Date(timeIntervalSince1970: TimeInterval(t))
             return formatter.string(from: date)
         } else {
-            let date = Date(timeIntervalSince1970: TimeInterval(event.startTime))
+            guard let sTime = event.startTime else {
+                return ""
+            }
+            let date = Date(timeIntervalSince1970: TimeInterval(sTime))
             return formatter.string(from: date)
         }
     }
@@ -46,11 +107,11 @@ struct EventView: View {
     }
     
     var body: some View {
-        Button(action:{self.showDetails.toggle()}) {
+        Button(action:{ self.showDetails.toggle() }) {
             VStack {
                 VStack(alignment: .leading){
                     HStack {
-                        Image(event.imageURL)
+                        Image(imageURL)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 80, height: 80)
@@ -58,16 +119,16 @@ struct EventView: View {
                             .cornerRadius(10)
                             .padding(.leading)
                         VStack(alignment: .leading){
-                            Text(event.title)
+                            Text(title)
                                 .font(.custom("Helvetica-Nue", size: 20))
                                 .bold()
                                 .frame(height: 20)
                                 .padding(.top)
                                 .foregroundColor(.primary)
-                            Text(field.name)
+                            Text(fieldName)
                                 .foregroundColor(.gray)
                             
-                            switch(event.level){
+                            switch(eventLevel){
                             case 1:
                                 Circle()
                                     .frame(width: 10)
@@ -110,7 +171,7 @@ struct EventView: View {
                         }
                         Spacer()
                         VStack (alignment: .trailing){
-                            Text(Date(timeIntervalSince1970: TimeInterval(event.startTime)).formatted(.dateTime.hour().minute()))
+                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
                                 .bold()
                                 .padding(.bottom)
                                 .foregroundColor(.primary)
@@ -126,14 +187,13 @@ struct EventView: View {
                 }.frame(height: 100)
             }
         }.fullScreenCover(isPresented: $showDetails) {
-            EventDetailView(event: $event, field: field, events: $events)
+            EventDetailView(event: $event, events: $events)
         }
     }
 }
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
-        let peek = UserPeek(firstName: "John", lastName: "Doe", username: "johndoe", imageURL: "", bio: "", sports: ["soccer"])
-        EventView(event: EVENTS[0], field: FIELDS[0], events: .constant([Event]()))
+        EventView(event: EVENTS[0], events: .constant([Event]()))
     }
 }

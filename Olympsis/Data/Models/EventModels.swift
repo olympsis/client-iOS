@@ -8,23 +8,24 @@
 import Foundation
 
 struct Event: Codable, Identifiable {
-    let id: String
-    let poster: String
-    let clubID: String
-    let fieldID: String
-    let imageURL: String
-    let title: String
-    let body: String
-    let sport: String
-    let level: Int8
-    var status: String
-    var startTime: Int64
+    let id: String?
+    let poster: String?
+    let clubID: String?
+    let fieldID: String?
+    let imageURL: String?
+    let title: String?
+    let body: String?
+    let sport: String?
+    let level: Int?
+    var status: String?
+    var startTime: Int64?
     var actualStartTime: Int64?
     var stopTime: Int64?
-    let maxParticipants: Int8
+    let maxParticipants: Int?
     var participants: [Participant]?
     let likes: [Like]?
-    let visibility: String
+    let visibility: String?
+    let data: EventData?
     let createdAt: Int64?
     
     enum CodingKeys: String, CodingKey {
@@ -45,6 +46,7 @@ struct Event: Codable, Identifiable {
         case participants
         case likes
         case visibility
+        case data
         case createdAt = "created_at"
     }
 }
@@ -75,4 +77,10 @@ struct Like: Codable, Identifiable {
         case uuid
         case createdAt = "created_at"
     }
+}
+
+struct EventData: Codable {
+    let poster: UserData?
+    let club: Club?
+    let field: Field?
 }

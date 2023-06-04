@@ -18,47 +18,64 @@ class PostService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key, token: tokenStore.fetchTokenFromKeyChain())
+        self.http = Courrier(host: host, apiKey: key)
     }
     
     func getPosts(id: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/posts", queryItems: [
-            URLQueryItem(name: "clubId", value: id),
+            URLQueryItem(name: "clubID", value: id),
         ])
         
-        return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET)
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
-    func createPost(post: PostDao) async throws -> Data {
-        let endpoint = Endpoint(path: "/posts", queryItems: [URLQueryItem]())
-        
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post))
+    func getPost(id: String) async throws -> (Data) {
+        let endpoint = Endpoint(path: "/posts/\(id)")
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return data
     }
     
-    func deletePost(postId: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/posts/\(postId)", queryItems: [URLQueryItem]())
+    func createPost(post: Post) async throws -> Data {
+        let endpoint = Endpoint(path: "/posts")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return data
+    }
+    
+    func deletePost(postID: String) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/posts/\(postID)")
+        
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
     
-    func getComments(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/posts/\(id)/comments", queryItems: [URLQueryItem]())
-        
-        return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET)
+    func addLike(id: String, like: Like) async throws -> (Data) {
+        let endpoint = Endpoint(path: "/posts/\(id)/likes")
+        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(like), headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain()
+        ])
+        return data
     }
     
-    func addComment(id: String, dao:CommentDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/posts/\(id)/comments", queryItems: [URLQueryItem]())
+    func removeLike(id: String, likeID: String) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/posts/\(id)/likes/\(likeID)")
         
-        return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(dao))
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return resp
+    }
+    
+    func addComment(id: String, comment: Comment) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/posts/\(id)/comments")
+        
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(comment), headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain()
+        ])
     }
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/posts/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/posts/\(id)/comments/\(cid)")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE)
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: Hermes.Method.DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
 }

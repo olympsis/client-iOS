@@ -17,7 +17,10 @@ struct EventMenu: View {
     @Environment(\.presentationMode) private var presentationMode
     
     func deleteEvent() async {
-        let res = await observer.deleteEvent(id: event.id)
+        guard let id = event.id else {
+            return
+        }
+        let res = await observer.deleteEvent(id: id)
         if res {
             session.events.removeAll(where: {$0.id == event.id})
             events.removeAll(where: {$0.id == event.id})

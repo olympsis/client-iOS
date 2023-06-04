@@ -26,9 +26,9 @@ struct MapView: View {
         NavigationView {
             VStack{
                 ZStack(alignment: .bottomTrailing){
-                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fieldObserver.fields, annotationContent: { field in
+                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
                         MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
-                            PlaceAnnotationView(field: field, events: $session.eventObserver.events)
+                            PlaceAnnotationView(field: field, events: $session.events)
                         }
                     })
                         .edgesIgnoringSafeArea(.all)
@@ -46,11 +46,7 @@ struct MapView: View {
                             }
                         }.padding(.bottom, 20)
                             .sheet(isPresented: $showNewEvent) {
-                                if let usr = session.user {
-                                    if let sports = usr.sports {
-                                        NewEventView(clubs: session.myClubs, fields: session.fieldObserver.fields, sports: sports)
-                                    }
-                                }
+                                NewEventView(fields: session.fields)
                         }
                         .frame(width: 40)
                         

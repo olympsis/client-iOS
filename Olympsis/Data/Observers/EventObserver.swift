@@ -5,39 +5,30 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class EventObserver: ObservableObject{
-    private let decoder: JSONDecoder
-    private let eventService: EventService
-    
-    @Published var isLoading = true
-    @Published var eventsCount = 0
-    @Published var events = [Event]()
-    
-    init(){
-        decoder = JSONDecoder()
-        eventService = EventService()
-    }
+    private let decoder = JSONDecoder()
+    private let eventService = EventService()
+    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "event_observer")
     
     /// Calls the field service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sports: String) async {
+    func fetchEvents(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Event]? {
         do {
             let (data, resp) = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sports: sports)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-                return
+                return nil
             }
             let object = try decoder.decode(EventsResponse.self, from: data)
-            await MainActor.run {
-                self.events = object.events
-                self.eventsCount = object.totalEvents
-            }
+            return object.events
         } catch {
-            print(error)
+            log.error("\(error)")
         }
+        return nil
     }
     
     func fetchEvent(id: String) async -> Event? {
@@ -49,21 +40,21 @@ class EventObserver: ObservableObject{
             let object = try decoder.decode(Event.self, from: data)
             return object
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return nil
     }
     
-    func createEvent(dao: EventDao) async -> Event? {
+    func createEvent(event: Event) async -> Event? {
         do {
-            let (data,resp) = try await eventService.createEvent(dao: dao)
+            let (data,resp) = try await eventService.createEvent(event: event)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
                 return nil
             }
             let obj = try decoder.decode(Event.self, from: data)
             return obj
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return nil
     }
@@ -76,7 +67,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
@@ -89,7 +80,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
@@ -102,7 +93,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }
@@ -115,7 +106,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            print(error)
+            log.error("\(error)")
         }
         return false
     }

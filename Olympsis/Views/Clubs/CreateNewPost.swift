@@ -7,12 +7,10 @@
 
 import SwiftUI
 import PhotosUI
-import AlertToast
 
 struct CreateNewPost: View {
     
     @State var club: Club
-    @Binding var posts: [Post]
     @State private var state: LOADING_STATE = .pending
     @State private var text = ""
     @State private var images: [String]?
@@ -22,13 +20,12 @@ struct CreateNewPost: View {
     @State private var selectedImageData: Data? = nil
     
     @StateObject var uploadObserver = UploadObserver()
-    @StateObject private var postObserver = PostObserver()
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
     func CreateNewPost() async {
-        if text == "" || text.count < 5 {
+        guard text != "" || text.count > 5 else {
             return
         }
         
@@ -39,29 +36,28 @@ struct CreateNewPost: View {
         if selectedImageData != nil {
             await UploadImage()
         }
-        
-        // create post
-        if let user = session.user {
-            let post = await postObserver.createPost(owner: user.uuid!, clubId: club.id!, body: text, images: images)
-            
-            // add to club view
-            if let p = post {
-                await MainActor.run {
-                    posts.append(p)
-                }
-            }
-            state = .success
-            self.showCompletedToast.toggle()
+        guard let user = session.user, let uuid = user.uuid, let id = club.id else {
+            return
         }
+        // create post
+        let post = await session.postObserver.createPost(owner: uuid, clubId: id, body: text, images: images)
+        
+        // add to club view
+        guard post != nil else {
+            state = .failure
+            return
+        }
+        state = .success
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     func UploadImage() async {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+            let res = await uploadObserver.UploadImage(location: "/feed-images", fileName: imageId, data: data)
             if res {
-                images = ["/profile-images/\(imageId).jpeg"]
+                images = ["feed-images/\(imageId).jpeg"]
             }
         }
     }
@@ -135,11 +131,7 @@ struct CreateNewPost: View {
                     
                 }
                 Spacer()
-            }.toast(isPresenting: $showCompletedToast,duration: 1, alert: {
-                AlertToast(displayMode: .banner(.pop), type: .regular, title: "Post Created!", style: .style(titleColor: .white, titleFont: .callout))
-            }, completion: {
-                self.presentationMode.wrappedValue.dismiss()
-            })
+            }
             .toolbar {
                 ToolbarItem(placement:.navigationBarLeading){
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
@@ -164,6 +156,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewPost(club: CLUBS[0], posts: .constant([Post]()))
+        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
     }
 }
