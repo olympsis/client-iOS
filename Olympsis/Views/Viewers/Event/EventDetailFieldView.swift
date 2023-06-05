@@ -17,14 +17,14 @@ struct EventDetailFieldView: View {
                     .font(.title)
                     .bold()
                 Text(field.description)
-            }.frame(width: SCREEN_WIDTH-20)
+            }
             VStack {
                 Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))), interactionModes: .pan, showsUserLocation: false, annotationItems: [field], annotationContent: { field in
                     MapMarker(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), tint: Color("primary-color"))
-                }).frame(width: SCREEN_WIDTH-20, height: 270)
+                }).frame(height: 270)
                     .cornerRadius(10)
-            }.frame(width: SCREEN_WIDTH-20)
-        }
+            }
+        }.frame(width: SCREEN_WIDTH-20)
     }
 }
 

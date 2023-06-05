@@ -16,9 +16,16 @@ struct OlympsisApp: App {
     @StateObject var sessionStore = SessionStore()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
+    var isLoggedIn: Bool {
+        guard let log = loggedIn else {
+            return false
+        }
+        return log
+    }
+    
     var body: some Scene {
         WindowGroup {
-            if let _ = loggedIn {
+            if isLoggedIn {
                 ViewContainer() // home view
                     .environmentObject(sessionStore)
             } else {

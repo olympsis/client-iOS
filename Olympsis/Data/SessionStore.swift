@@ -16,6 +16,7 @@ class SessionStore: ObservableObject {
      App session data, fetched every session
      Stored in memory until app is closed
      */
+    let tokenStore = TokenStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
     @Published var user: UserData?       // User data
@@ -26,6 +27,7 @@ class SessionStore: ObservableObject {
     
     var clubTokens = [String:String]()
     
+    @ObservedObject var authObserver = AuthObserver()
     @ObservedObject var feedObserver = FeedObserver()
     @ObservedObject var cacheService = CacheService()
     @ObservedObject var userObserver = UserObserver()
@@ -40,17 +42,15 @@ class SessionStore: ObservableObject {
      App lifetime data
      Whenever set, this is cached in app until changed or app is removed
      */
-    @AppStorage("loggedIn") var loggedIn: Bool? // makes sure the user is completely logged in
+    @AppStorage("loggedIn") var loggedIn: Bool? // makes sure the user is completely logged in. eventually will be replaced with apple auth call
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
     
-    
-    
     init() {
-        if let login = loggedIn {
-            if login {
-                user = cacheService.fetchUser()
-            }
+        guard let login = loggedIn,
+        login == true else {
+            return
         }
+        user = cacheService.fetchUser()
     }
     
     func fetchClubPosts(id: String) async {
@@ -139,4 +139,61 @@ class SessionStore: ObservableObject {
         }
     }
     
+    func getEvents() async {
+        guard let user = self.user,
+              let sports = user.sports else {
+            return
+        }
+        let sportsJoined = sports.joined(separator: ",")
+        
+        // location
+        guard let location = self.locationManager.location else {
+            return
+        }
+        
+        // fetch nearby events
+        let eventsResp = await self.eventObserver.fetchEvents(
+            longitude: location.longitude,
+            latitude: location.latitude,
+            radius: Int(self.radius ?? 17000),
+            sports: sportsJoined);
+        
+        await MainActor.run {
+            self.events = eventsResp ?? [Event]()
+        }
+    }
+    
+    func logout() async {
+        // clear cached app data
+        let cacheResp = cacheService.clearCache()
+        // let storeResp = tokenStore.clearKeyChain() // bug on delete
+        guard cacheResp == true/*, storeResp == true*/ else {
+            log.error("failed to clear device data")
+            return
+        }
+        loggedIn = false
+        return
+    }
+    
+    func deleteAccount() async -> Bool {
+        do {
+            let resp = try await authObserver.DeleteAccount()
+            
+            guard resp == true else {
+                return false
+            }
+            // clear cached app data
+            let cacheResp = cacheService.clearCache()
+            let storeResp = tokenStore.clearKeyChain()
+            guard cacheResp == true, storeResp == true else {
+                log.error("failed to clear device data")
+                return false
+            }
+            loggedIn = false // replace this to apple's option later
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
 }

@@ -41,7 +41,10 @@ struct Profile: View {
                     // Trophies View
                     TrophiesView()
                     
-                }.toolbar {
+                }.fullScreenCover(isPresented: $showMenu, content: {
+                    ProfileMenu()
+                })
+                .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         if let usr = session.user {
                             Text("@ \(usr.username ?? "")")

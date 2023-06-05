@@ -31,7 +31,7 @@ struct Home: View {
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
             log.error("failed to get user's name")
-            return "User"
+            return ""
         }
         return name
     }
@@ -44,7 +44,7 @@ struct Home: View {
                     //MARK: - Welcome message
                     HStack {
                         VStack(alignment: .leading){
-                            WelcomeView(firstName: name, status: $status)
+                            WelcomeView(name: name, status: $status)
                         }.padding(.top, 25)
                         Spacer()
                     }
@@ -108,8 +108,14 @@ struct Home: View {
                             self.status = .success
                         }
                     }
+                    
                     .padding(.bottom, 100)
                 }.navigationTitle("Home")
+                    .task {
+                        await session.generateUserData()
+                        session.locationManager.requestLocation()
+                    }
+                    
             }
         }
     }

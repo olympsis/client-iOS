@@ -10,15 +10,10 @@ import SwiftUI
 
 struct EventDetailView: View {
     
-    @Binding var event:             Event
-    @Binding var events:            [Event]
-    @State var club:                Club?
-    
+    @Binding var event:   Event
+    @Binding var events:  [Event]
+    @State var club:      Club?
     @State private var showMenu = false
-    
-    @StateObject private var clubObserver = ClubObserver()
-    @StateObject private var eventObserver = EventObserver()
-    
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var session: SessionStore
     
@@ -70,6 +65,10 @@ struct EventDetailView: View {
             return "Field Name"
         }
         return field.name
+    }
+    
+    var eventEnded: Bool {
+        return event.status == "ended" ? true : false
     }
     
     var body: some View {
@@ -155,20 +154,16 @@ struct EventDetailView: View {
                     guard let id = event.id else {
                         return
                     }
-                    let resp = await eventObserver.fetchEvent(id: id)
+                    let resp = await session.eventObserver.fetchEvent(id: id)
                     if let e = resp {
                         await MainActor.run {
                             event = e
                         }
                     }
                 }
-                if let usr = session.user {
-                    EventDetailActions(event: $event, showMenu: $showMenu, user: usr, eventObserver: eventObserver)
-                        .opacity(event.status == "ended" ? 0 : 1)
-                } else {
-                    EventDetailActions(event: $event, showMenu: $showMenu, user: USERS_DATA[0], eventObserver: eventObserver)
-                        .opacity(event.status == "ended" ? 0 : 1)
-                }
+                EventDetailActions(event: $event, showMenu: $showMenu)
+                    .opacity(event.status == "ended" ? 0 : 1)
+                    .disabled(eventEnded)
             }
         }
     }

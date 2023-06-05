@@ -7,7 +7,6 @@
 
 import os
 import SwiftUI
-import Dispatch
 import Foundation
 import AuthenticationServices
 
@@ -18,6 +17,7 @@ class AuthObserver: ObservableObject {
     let tokenStore = TokenStore()
     let authService = AuthService()
     let cacheService = CacheService()
+    @AppStorage("loggedIn") var loggedIn: Bool?
     
     func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
         let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
@@ -50,15 +50,6 @@ class AuthObserver: ObservableObject {
             log.error("Failed to delete user data remotely")
             return false
         }
-        
-        // clear cached app data
-        let cacheResp = cacheService.clearCache()
-        let storeResp = tokenStore.clearKeyChain()
-        guard cacheResp == true, storeResp == true else {
-            log.error("failed to clear device data")
-            return false
-        }
-        
         return true
     }
     

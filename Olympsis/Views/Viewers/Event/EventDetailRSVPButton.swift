@@ -10,53 +10,63 @@ import SwiftUI
 struct EventDetailRSVPButton: View {
     
     @Binding var event: Event
-    @State var user: UserData
-    @State var eventObserver: EventObserver
     @State private var state: LOADING_STATE = .pending
+    @EnvironmentObject var session:SessionStore
     
     func rsvp(status: String) async {
         state = .loading
-        let dao = ParticipantDao(_uuid: user.uuid!, _status: status)
-        let _ = await eventObserver.addParticipant(id: event.id!, dao: dao)
-//        if let img = user.imageURL {
-////            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: img, bio: "", sports: [""]), status: status, createdAt: 0)
-////            withAnimation(.spring()){
-////                if event.participants != nil {
-////                    event.participants!.append(p)
-////                } else {
-////                    event.participants = [p]
-////                }
-////            }
-//        } else {
-////            let p = Participant(id: UUID().uuidString, uuid: user.uuid, data: UserPeek(firstName: "", lastName: "", username: "", imageURL: "", bio: "", sports: [""]), status: status, createdAt: 0)
-////            withAnimation(.spring()){
-////                if event.participants != nil {
-////                    event.participants!.append(p)
-////                } else {
-////                    event.participants = [p]
-////                }
-////            }
-//        }
+        guard let user = session.user,
+              let uuid = user.uuid else {
+                  return
+              }
+        
+        let participant = Participant(id: nil, uuid: uuid, data: nil, status: status, createdAt: nil)
+        let resp = await session.eventObserver.addParticipant(id: event.id!, participant)
+        
+        guard resp == true,
+            let id = event.id,
+            let update = await session.eventObserver.fetchEvent(id: id) else {
+            state = .failure
+            return
+        }
+        self.event = update
         state = .success
     }
     
     func cancel() async {
         state = .loading
-        if let pid = event.participants?.first(where: {$0.uuid == user.uuid}){
-            let res = await eventObserver.removeParticipant(id: event.id!, pid: pid.id!)
-            if res {
-                withAnimation(.easeOut) {
-                    event.participants?.removeAll(where: {$0.uuid == user.uuid})
-                }
-            }
+        guard let id = event.id,
+            let user = session.user,
+              let uuid = user.uuid,
+              let participants = event.participants,
+            let participantID = participants.first(where: { $0.uuid == uuid })?.id else {
+            return
         }
+        
+        let resp = await session.eventObserver.removeParticipant(id: id, pid: participantID)
+        guard resp == true,
+            let id = event.id,
+            let update = await session.eventObserver.fetchEvent(id: id) else {
+            state = .failure
+            return
+        }
+        self.event = update
         state = .success
+    }
+    
+    var hasResponded: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid,
+              let participants = event.participants else {
+            return false
+        }
+        return participants.first(where: { $0.uuid == uuid }) != nil
     }
     
     var body: some View {
         VStack {
             if event.status == "pending" {
-                if (event.participants?.first(where: {$0.uuid == user.uuid})) == nil {
+                if !hasResponded {
                     Menu {
                         Button(action: { Task{  await rsvp(status: "not sure") } }) {
                             Text("Not Sure")
@@ -97,7 +107,7 @@ struct EventDetailRSVPButton: View {
 
 struct EventDetailRSVPButton_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailRSVPButton(event: .constant(EVENTS[0]), user: USERS_DATA[0], eventObserver: EventObserver())
+        EventDetailRSVPButton(event: .constant(EVENTS[0]))
             .environmentObject(SessionStore())
     }
 }

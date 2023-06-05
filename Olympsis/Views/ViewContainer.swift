@@ -42,10 +42,6 @@ struct ViewContainer: View {
             .fullScreenCover(isPresented: $showBeta) {
                 BetaPage()
             }
-            .task {
-                await session.generateUserData()
-                session.locationManager.requestLocation()
-            }
     }
 }
 

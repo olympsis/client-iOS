@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Club: Codable, Identifiable {
+struct Club: Codable, Identifiable, Hashable {
+
     let id: String?
     let name: String?
     let description: String?
@@ -20,6 +21,14 @@ struct Club: Codable, Identifiable {
     let members: [Member]?
     let rules: [String]?
     let createdAt: Int64?
+    
+    static func == (lhs: Club, rhs: Club) -> Bool {
+        guard let lhsID = lhs.id,
+              let rhsID = rhs.id else {
+            return false
+        }
+        return lhsID == rhsID
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -37,12 +46,21 @@ struct Club: Codable, Identifiable {
     }
 }
 
-struct Member: Codable, Identifiable {
+struct Member: Codable, Identifiable, Hashable {
+    
     let id: String?
     let uuid: String
     let role: String
     let data: UserData?
     let joinedAt: Int64?
+    
+    static func == (lhs: Member, rhs: Member) -> Bool {
+        guard let lhsID = lhs.id,
+              let rhsID = rhs.id else {
+            return false
+        }
+        return lhsID == rhsID
+    }
     
     enum CodingKeys: String, CodingKey {
         case id

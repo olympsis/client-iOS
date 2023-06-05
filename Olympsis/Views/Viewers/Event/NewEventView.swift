@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/19/22.
 //
 
+import os
 import SwiftUI
 import AlertToast
 
@@ -38,8 +39,8 @@ struct NewEventView: View {
     @State private var showCompletedToast:      Bool = false
     @State private var eventTitle:              String = ""
     @State private var eventBody:               String = ""
-    @State private var eventFieldID:            String = ""
-    @State private var eventClubID:             String = ""
+    @State private var fieldIndex:              Int = 0
+    @State private var clubIndex:               Int = 0
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              SPORT = .soccer
@@ -51,48 +52,28 @@ struct NewEventView: View {
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    var sports: [String] {
-        guard let user = session.user,
-              let sports = user.sports else {
-            return [""]
-        }
-        return sports
-    }
-    
-    var convertedSports: [SPORT] {
-        var res = [SPORT]()
-        for sport in sports {
-            res.append(SportFromString(s: sport))
-        }
-        return res
-    }
-    
-    var associatedFields: [Field] {
-        return fields.filter({$0.sports.contains(where:{ $0 == eventSport.rawValue })})
-    }
+    var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
     
     var selectedClub: String {
-        if eventClubID != "" {
-            return eventClubID
-        } else {
-            return session.clubs[0].id!
+        guard let id = session.clubs[clubIndex].id else {
+            return ""
         }
+        return id
     }
     
     var selectedField: String {
-        if eventFieldID != "" {
-            return eventFieldID
-        } else {
-            return associatedFields[0].id
-        }
+        return fields[fieldIndex].id
     }
     
     var selectedImage: String {
-        if eventImageURL != "" {
+        guard eventImageURL != "" else {
             return eventImageURL
-        } else {
-            return eventSport.Images()[Int.random(in: 0...eventSport.Images().count)]
         }
+        return eventSport.Images()[Int.random(in: 0...eventSport.Images().count)]
+    }
+    
+    var setStartTime: Int64 {
+        return Int64(eventStartTime.timeIntervalSince1970)
     }
     
     func Validate() -> NEW_EVENT_ERROR? {
@@ -117,18 +98,20 @@ struct NewEventView: View {
               let uuid = user.uuid else {
             return
         }
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
-        let _ = await session.eventObserver.createEvent(event: event)
-//        if var r = resp {
-//            if let usr = session.user {
-////                r.poster = UserPeek(firstName: usr.firstName, lastName: usr.lastName, username: usr.username, imageURL: usr.imageURL ?? "", bio: usr.bio ?? "", sports: usr.sports ?? [String]())
-//            }
-//            status = .success
-//            await MainActor.run {
-//                session.events.append(r)
-//            }
-//            self.presentationMode.wrappedValue.dismiss()
-//        }
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
+        
+        let resp = await session.eventObserver.createEvent(event: event)
+        if resp {
+            log.error("failed to create event")
+        }
+        
+        // fetch new events
+        guard let location = session.locationManager.location else {
+            self.presentationMode.wrappedValue.dismiss()
+            return
+        }
+        await session.getNearbyData(location: location)
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     var body: some View {
@@ -167,8 +150,8 @@ struct NewEventView: View {
                         .foregroundColor(.gray)
                         .font(.subheadline)
                     
-                    Picker(selection: $eventSport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                        ForEach(convertedSports, id: \.rawValue) { sport in
+                    Picker(selection: $eventSport, label: Text("")) {
+                        ForEach(SPORT.allCases, id: \.rawValue) { sport in
                             Text(sport.Icon() + " " + sport.rawValue).tag(sport)
                         }
                     }.modifier(MenuButton())
@@ -208,14 +191,12 @@ struct NewEventView: View {
                             .foregroundColor(.gray)
                             .font(.subheadline)
                         
-                        Picker(selection: $eventClubID, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                            ForEach(session.clubs, id: \.id) { club in
-                                Text(club.name!).tag(club.id)
+                        Picker(selection: $clubIndex, label: Text("")) {
+                            ForEach(Array(session.clubs.enumerated()), id: \.1.id) { index, club in
+                                Text(club.name ?? "error").tag(index)
                             }
                         }.modifier(MenuButton())
                             .tint(Color("primary-color"))
-                            
-                        
                     }.padding(.top)
 
                         .padding(.bottom)
@@ -226,9 +207,9 @@ struct NewEventView: View {
                         .foregroundColor(.gray)
                         .font(.subheadline)
                     
-                    Picker(selection: $eventFieldID, label: Text("")) {
-                        ForEach(associatedFields, id: \.id) { field in
-                            Text(field.name).tag(field.id)
+                    Picker(selection: $fieldIndex, label: Text("")) {
+                        ForEach(Array(fields.enumerated()), id: \.1.id) { index, field in
+                            Text(field.name).tag(index)
                         }
                     }.modifier(MenuButton())
                         .tint(Color("primary-color"))
@@ -256,7 +237,7 @@ struct NewEventView: View {
                     Text("Participants expected experience")
                         .foregroundColor(.gray)
                         .font(.subheadline)
-                    Picker(selection: $eventLevel, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                    Picker(selection: $eventLevel, label: Text("")) {
                         ForEach(SkillLevel.allCases, id: \.rawValue) { skill in
                             Text(skill.rawValue).tag(getSkillRaw(for: skill))
                         }
@@ -333,12 +314,9 @@ struct NewEventView: View {
                         LoadingButton(text: "Create", width: 150, status: $status)
                     }
                 }.padding(.top, 50)
-                    
             }.frame(width: SCREEN_WIDTH)
-        }.task {
-            eventClubID = session.clubs[0].id ?? ""
-            eventFieldID = fields[0].id
-            eventSport = SportFromString(s: sports[0])
+        }.task{
+            
         }
     }
 }

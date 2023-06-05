@@ -37,10 +37,10 @@ class EventService {
         return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
-    func createEvent(event: Event) async throws -> (Data,URLResponse) {
+    func createEvent(event: Event) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/events")
-        
-        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(event), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(event), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return resp
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
@@ -57,10 +57,10 @@ class EventService {
         return resp
     }
     
-    func addParticipant(id: String, dao: ParticipantDao) async throws -> URLResponse {
+    func addParticipant(id: String, _ participant: Participant) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        let (_,resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_,resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(participant), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
     

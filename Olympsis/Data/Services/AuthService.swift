@@ -7,7 +7,6 @@
 
 import os
 import Hermes
-import SwiftUI
 import Foundation
 
 class AuthService {
@@ -21,17 +20,17 @@ class AuthService {
     }
     
     func SignUp(request: AuthRequest) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/auth/signup", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/auth/signup")
         return try await http.Request(endpoint: endpoint , method: .POST, body: EncodeToData(request))
     }
     
     func LogIn(request: AuthRequest) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/auth/login", queryItems: [URLQueryItem]())
-        return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(request))
+        let endpoint = Endpoint(path: "/auth/login")
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(request))
     }
     
     func DeleteAccount() async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/auth/delete", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint(path: "/auth/delete")
         return try await http.Request(endpoint: endpoint, method: .DELETE)
     }
 }

@@ -25,68 +25,68 @@ struct FieldView: View {
     }
     
     var body: some View {
-        Button(action: { self.showDetail.toggle() }) {
+        VStack {
+            //MARK: - ASYNC Image
             VStack {
-                //MARK: - ASYNC Image
-                VStack {
-                    AsyncImage(url: URL(string: GenerateImageURL(field.images[0]))){ phase in
-                        if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
+                AsyncImage(url: URL(string: GenerateImageURL(field.images[0]))){ phase in
+                    if let image = phase.image {
+                        image // Displays the loaded image.
+                            .resizable()
+                            .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                            .aspectRatio(contentMode: .fill)
+                            .clipped()
+                            .cornerRadius(10)
+                    } else if phase.error != nil {
+                        ZStack {
+                            Color.gray // Indicates an error.
                                 .cornerRadius(10)
-                        } else if phase.error != nil {
-                            ZStack {
-                                Color.gray // Indicates an error.
-                                    .cornerRadius(10)
-                                    .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                                Image(systemName: "exclamationmark.circle")
-                            }
-                        } else {
-                            ZStack {
-                                Color.gray // Acts as a placeholder.
-                                    .cornerRadius(10)
-                                    .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                                ProgressView()
-                            }
+                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                            Image(systemName: "exclamationmark.circle")
+                        }
+                    } else {
+                        ZStack {
+                            Color.gray // Acts as a placeholder.
+                                .cornerRadius(10)
+                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                            ProgressView()
                         }
                     }
-                }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                
-                //MARK: - Buttom view
-                HStack{
-                    VStack(alignment: .leading){
-                        Text(fieldCityString)
-                            .foregroundColor(.gray)
-                            .font(.body)
-                        
-                        Text(field.name)
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.primary)
-                        
-                    }.padding(.leading)
-                        .frame(height: 45)
-                    Spacer()
-                    HStack {
-                        Button(action:{leadToMaps()}){
-                            ZStack{
-                                Image(systemName: "car")
-                                    .resizable()
-                                    .frame(width: 25, height: 20)
-                                    .foregroundColor(.primary)
-                                    .imageScale(.large)
-                            }.padding(.trailing)
-                        }
-                    }.frame(height: 40)
-                    
-                    
-                }.fullScreenCover(isPresented: $showDetail) {
-                    FieldDetailView(field: field)
                 }
+            }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+            
+            //MARK: - Buttom view
+            HStack{
+                VStack(alignment: .leading){
+                    Text(fieldCityString)
+                        .foregroundColor(.gray)
+                        .font(.body)
+                    
+                    Text(field.name)
+                        .font(.title2)
+                        .bold()
+                        .foregroundColor(.primary)
+                    
+                }.padding(.leading)
+                    .frame(height: 45)
+                Spacer()
+                HStack {
+                    Button(action:{leadToMaps()}){
+                        ZStack{
+                            Image(systemName: "car")
+                                .resizable()
+                                .frame(width: 25, height: 20)
+                                .foregroundColor(.primary)
+                                .imageScale(.large)
+                        }.padding(.trailing)
+                    }
+                }.frame(height: 40)
+                
+                
+            }.fullScreenCover(isPresented: $showDetail) {
+                FieldDetailView(field: field)
             }
+        }.onTapGesture {
+            self.showDetail.toggle()
         }
     }
 }

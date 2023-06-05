@@ -13,8 +13,7 @@ struct EventDetailActionButton: View {
     @Binding var showMenu: Bool
     @State private var state: LOADING_STATE = .pending
     @Environment(\.isPresented) var isPresented
-    
-    @State var eventObserver: EventObserver
+    @EnvironmentObject var session:SessionStore
     
     func startEvent() async {
         let status = "in-progress"
@@ -24,7 +23,7 @@ struct EventDetailActionButton: View {
         guard let id = event.id else {
             return
         }
-        let res = await eventObserver.updateEvent(id: id, dao: dao)
+        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
@@ -44,7 +43,7 @@ struct EventDetailActionButton: View {
         guard let id = event.id else {
             return
         }
-        let res = await eventObserver.updateEvent(id: id, dao: dao)
+        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
@@ -89,6 +88,6 @@ struct EventDetailActionButton: View {
 
 struct EventDetailActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailActionButton(event: .constant(EVENTS[0]), showMenu: .constant(false), eventObserver: EventObserver())
+        EventDetailActionButton(event: .constant(EVENTS[0]), showMenu: .constant(false))
     }
 }

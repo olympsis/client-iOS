@@ -9,6 +9,13 @@ import SwiftUI
 
 struct EventDetailHostClubView: View {
     @State var club: Club
+    
+    var imageURL: String {
+        guard let image = club.imageURL else {
+            return ""
+        }
+        return GenerateImageURL(image)
+    }
     var body: some View {
         VStack(alignment: .leading){
             Text("Host")
@@ -21,7 +28,7 @@ struct EventDetailHostClubView: View {
                 .foregroundColor(.primary)
                 .bold()
             
-            AsyncImage(url: URL(string: "https://storage.googleapis.com/diesel-nova-366902.appspot.com/" + (club.imageURL ?? ""))){ phase in
+            AsyncImage(url: URL(string: imageURL)){ phase in
                 if let image = phase.image {
                     image // Displays the loaded image.
                         .fixedSize()

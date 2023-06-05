@@ -48,7 +48,7 @@ struct UsernameAvailabilityResponse: Codable {
     }
 }
 
-struct UserData: Codable {
+struct UserData: Codable, Hashable {
     var uuid: String?
     var username: String?
     let firstName: String?
@@ -59,6 +59,14 @@ struct UserData: Codable {
     var clubs: [String]?
     var sports: [String]?
     var deviceToken: String?
+    
+    static func == (lhs: UserData, rhs: UserData) -> Bool {
+        guard let lhsID = lhs.uuid,
+              let rhsID = rhs.uuid else {
+            return false
+        }
+        return lhsID == rhsID
+    }
     
     enum CodingKeys: String, CodingKey {
         case uuid

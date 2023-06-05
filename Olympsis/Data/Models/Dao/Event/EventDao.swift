@@ -69,11 +69,11 @@ class EventDao: Dao {
         case fieldId
         case imageURL
         case sport
-        case startTime
-        case maxParticipants
+        case startTime = "start_time"
+        case maxParticipants = "max_participants"
         case level
-        case actualStartTime
-        case stopTime
+        case actualStartTime = "actual_start_time"
+        case stopTime = "stop_time"
         case status
     }
 }

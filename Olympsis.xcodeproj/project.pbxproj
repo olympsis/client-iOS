@@ -16,6 +16,7 @@
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
 		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
+		5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */; };
 		5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */; };
 		5FE987602A2A3FAD00B7936E /* ClubToolbarLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875F2A2A3FAD00B7936E /* ClubToolbarLoading.swift */; };
 		5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
@@ -89,7 +90,6 @@
 		9A81B6422925E50C009CA6ED /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6412925E50C009CA6ED /* EventView.swift */; };
 		9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6432925E518009CA6ED /* EventDetailView.swift */; };
 		9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6452925EAE6009CA6ED /* EventObserver.swift */; };
-		9A81B6492925EB8F009CA6ED /* EventsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6482925EB8F009CA6ED /* EventsResponse.swift */; };
 		9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64A2925EC79009CA6ED /* EventService.swift */; };
 		9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64C2925EED1009CA6ED /* EventsModalView.swift */; };
 		9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */; };
@@ -198,6 +198,7 @@
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* FieldModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldModels.swift; sourceTree = "<group>"; };
 		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
+		5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbar.swift; sourceTree = "<group>"; };
 		5FE9875F2A2A3FAD00B7936E /* ClubToolbarLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbarLoading.swift; sourceTree = "<group>"; };
 		5FF49CB92A2BE92100FAA4DA /* PostModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModels.swift; sourceTree = "<group>"; };
@@ -268,7 +269,6 @@
 		9A81B6412925E50C009CA6ED /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		9A81B6432925E518009CA6ED /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		9A81B6452925EAE6009CA6ED /* EventObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventObserver.swift; sourceTree = "<group>"; };
-		9A81B6482925EB8F009CA6ED /* EventsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsResponse.swift; sourceTree = "<group>"; };
 		9A81B64A2925EC79009CA6ED /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		9A81B64C2925EED1009CA6ED /* EventsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModalView.swift; sourceTree = "<group>"; };
 		9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -508,7 +508,6 @@
 		9A81B6472925EB6F009CA6ED /* Event */ = {
 			isa = PBXGroup;
 			children = (
-				9A81B6482925EB8F009CA6ED /* EventsResponse.swift */,
 				9AD208EE293279AA007A62C4 /* EventDao.swift */,
 				9AD209102935791D007A62C4 /* ParticipantDao.swift */,
 				9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */,
@@ -772,6 +771,7 @@
 				9A55084A293FC80100B924B1 /* ProfileModel.swift */,
 				9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */,
 				9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */,
+				5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -973,7 +973,6 @@
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
-				9A81B6492925EB8F009CA6ED /* EventsResponse.swift in Sources */,
 				9A69FE4F2972211300EBC5F9 /* EventDetailRSVPButton.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
@@ -1118,6 +1117,7 @@
 				9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */,
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
 				9AB02F63290265F8008C07F1 /* Tab.swift in Sources */,
+				5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

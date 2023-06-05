@@ -54,7 +54,7 @@ struct Event: Codable, Identifiable {
 struct Participant: Codable, Identifiable {
     let id: String?
     let uuid: String
-    let data: UserData?
+    var data: UserData?
     let status: String
     let createdAt: Int64?
     
@@ -83,4 +83,15 @@ struct EventData: Codable {
     let poster: UserData?
     let club: Club?
     let field: Field?
+}
+
+/// The Fields Response is a struct conforms to the response of the api to get a list of fields, and decodes it.
+struct EventsResponse: Decodable {
+    let totalEvents: Int
+    let events: [Event]
+    
+    enum CodingKeys: String, CodingKey {
+        case totalEvents = "total_events"
+        case events
+    }
 }

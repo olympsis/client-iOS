@@ -8,18 +8,16 @@
 import SwiftUI
 
 struct EventParticipantsView: View {
+    
     @Binding var event: Event
+    
     var body: some View {
-        if let part = event.participants {
-            if part.count > 0 {
-                ScrollView(.horizontal ,showsIndicators: false){
-                    HStack {
-                        ForEach(part, id:\.id) { p in
-                            ParticipantView(participant: p)
-                        }
-                    } .padding(.leading)
+        ScrollView(.horizontal ,showsIndicators: false){
+            HStack {
+                ForEach(event.participants ?? [Participant](), id:\.id) { p in
+                    ParticipantView(participant: p)
                 }
-            }
+            } .padding(.leading)
         }
     }
 }

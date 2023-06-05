@@ -45,18 +45,17 @@ class EventObserver: ObservableObject{
         return nil
     }
     
-    func createEvent(event: Event) async -> Event? {
+    func createEvent(event: Event) async -> Bool {
         do {
-            let (data,resp) = try await eventService.createEvent(event: event)
+            let (resp) = try await eventService.createEvent(event: event)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
-                return nil
+                return false
             }
-            let obj = try decoder.decode(Event.self, from: data)
-            return obj
+            return true
         } catch {
             log.error("\(error)")
         }
-        return nil
+        return false
     }
     
     func updateEvent(id: String, dao: EventDao) async -> Bool {
@@ -85,9 +84,9 @@ class EventObserver: ObservableObject{
         return false
     }
     
-    func addParticipant(id: String, dao: ParticipantDao) async -> Bool {
+    func addParticipant(id: String, _ participant: Participant) async -> Bool {
         do {
-            let res = try await eventService.addParticipant(id: id, dao: dao)
+            let res = try await eventService.addParticipant(id: id, participant)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }
