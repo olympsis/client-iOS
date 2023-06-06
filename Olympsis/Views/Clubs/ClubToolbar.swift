@@ -51,6 +51,9 @@ struct ClubToolbar: ToolbarContent {
                     Text(myClubs[index].name!)
                         .font(.title)
                         .bold()
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                        .frame(width: SCREEN_WIDTH/2)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { self.showNewPost.toggle() }) {

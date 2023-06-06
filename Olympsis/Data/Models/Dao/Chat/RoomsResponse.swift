@@ -10,4 +10,9 @@ import Foundation
 struct RoomsResponse: Decodable {
     let totalRooms: Int
     let rooms: [Room]
+    
+    enum CodingKeys: String, CodingKey {
+        case totalRooms = "total_rooms"
+        case rooms
+    }
 }

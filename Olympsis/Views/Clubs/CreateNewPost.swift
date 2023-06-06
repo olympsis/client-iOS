@@ -37,16 +37,30 @@ struct CreateNewPost: View {
             await UploadImage()
         }
         guard let user = session.user, let uuid = user.uuid, let id = club.id else {
+            state = .failure
+            self.presentationMode.wrappedValue.dismiss()
             return
         }
         // create post
-        let post = await session.postObserver.createPost(owner: uuid, clubId: id, body: text, images: images)
+        let resp = await session.postObserver.createPost(owner: uuid, clubId: id, body: text, images: images)
         
         // add to club view
-        guard post != nil else {
+        guard let r = resp,
+                let pID = r.id else {
             state = .failure
+            self.presentationMode.wrappedValue.dismiss()
             return
         }
+        
+        // get post with data
+        let post = await session.postObserver.getPost(id: pID)
+        
+        guard let p = post else {
+            state = .failure
+            self.presentationMode.wrappedValue.dismiss()
+            return
+        }
+        session.posts[id]?.append(p)
         state = .success
         self.presentationMode.wrappedValue.dismiss()
     }

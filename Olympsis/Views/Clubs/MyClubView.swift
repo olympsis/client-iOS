@@ -27,15 +27,22 @@ struct MyClubView: View {
         return session.posts[club.id ?? ""] ?? [Post]()
     }
     
+    var clubID: String {
+        guard let id = club.id else {
+            return ""
+        }
+        return id
+    }
+    
     var body: some View {
         VStack {
-            if !posts.isEmpty {
+            if !(session.posts[clubID]?.isEmpty ?? true) {
                 ZStack(alignment: .bottomTrailing){
                     ScrollView(showsIndicators: false) {
                         if status == .loading {
                             ProgressView()
                         } else {
-                            ForEach(posts.sorted{$0.createdAt! > $1.createdAt!}){ post in
+                            ForEach(session.posts[clubID]?.sorted{$0.createdAt! > $1.createdAt!} ?? [Post]()){ post in
                                 PostView(club: club, post: post, data: post.data)
                             }.padding(.top)
                         }

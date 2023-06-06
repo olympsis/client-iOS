@@ -30,7 +30,7 @@ class ChatObserver: ObservableObject {
         decoder = JSONDecoder()
         service = ChatService()
         session = URLSession(configuration: .default)
-        host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+        host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
     }
     
     func CreateRoom(club: String, name: String, uuid: String) async -> Room? {
@@ -133,14 +133,14 @@ class ChatObserver: ObservableObject {
     
     func InitiateSocketConnection(id: String) async {
         let token = ""
-        self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
+        self.request = URLRequest(url: URL(string: "wss://\(host)/chats/\(id)/ws")!)
         guard var request = request else {
             return
         }
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("\(token)", forHTTPHeaderField: "Authorization")
         request.setValue("Upgrade", forHTTPHeaderField: "Connection")
         request.setValue("websocket", forHTTPHeaderField: "Upgrade")
-        request.setValue("chat.olympsis.com", forHTTPHeaderField: "Host")
+        request.setValue("api.olympsis.com", forHTTPHeaderField: "Host")
         request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
         request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
         self.webSocketTask = session.webSocketTask(with: request)

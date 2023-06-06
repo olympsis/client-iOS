@@ -49,7 +49,7 @@ struct CreateNewClub: View {
     }
     
     func Validate() -> CREATE_ERROR? {
-        if clubName == "" || clubName.count < 3 {
+        if clubName == "" || clubName.count < 3  || clubName.count > 25 {
             return .noName
         }
         return nil

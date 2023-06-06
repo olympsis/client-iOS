@@ -12,6 +12,7 @@ import Foundation
 class AuthService {
     
     private var http: Courrier
+    private let tokenStore = TokenStore()
     
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
@@ -31,7 +32,7 @@ class AuthService {
     
     func DeleteAccount() async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/auth/delete")
-        return try await http.Request(endpoint: endpoint, method: .DELETE)
+        return try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
 }
 

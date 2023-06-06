@@ -103,7 +103,7 @@ struct ProfileMenu: View {
                 }
                 .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .fullScreenCover(isPresented: $showDeleteView) {
+            .fullScreenCover(isPresented: $showDeleteView, onDismiss: { self.presentationMode.wrappedValue.dismiss() }) {
                 DeleteAccountView()
             }
             }

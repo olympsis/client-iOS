@@ -184,8 +184,8 @@ class SessionStore: ObservableObject {
             }
             // clear cached app data
             let cacheResp = cacheService.clearCache()
-            let storeResp = tokenStore.clearKeyChain()
-            guard cacheResp == true, storeResp == true else {
+//            let storeResp = tokenStore.clearKeyChain()
+            guard cacheResp == true /*storeResp == true*/ else {
                 log.error("failed to clear device data")
                 return false
             }
