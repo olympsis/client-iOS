@@ -9,6 +9,30 @@ import SwiftUI
 
 
 struct SmallClubView: View {
+
+    @State private var status: LOADING_STATE = .pending
+    @State var club: Club
+    @Binding var showToast: Bool
+    @ObservedObject var observer: ClubObserver
+    
+    var imageURL: String {
+        guard let img = club.imageURL else {
+            return ""
+        }
+        return GenerateImageURL(img)
+    }
+    
+    func Apply() async {
+        status = .loading
+        guard let id = club.id else {
+            return
+        }
+        let res = await observer.createClubApplication(clubId: id)
+        if res {
+            self.showToast = true
+            status = .success
+        }
+    }
     
     func getSportIcon(sport: String) -> String {
         if sport == "soccer" {
@@ -25,33 +49,18 @@ struct SmallClubView: View {
             return ""
         }
     }
-    @State private var status: LOADING_STATE = .pending
-    @State var club: Club
-    @Binding var showToast: Bool
-    @ObservedObject var observer: ClubObserver
-    
-    func Apply() async {
-        status = .loading
-        guard let id = club.id else {
-            return
-        }
-        let res = await observer.createClubApplication(clubId: id)
-        if res {
-            self.showToast = true
-            status = .success
-        }
-    }
     
     var body: some View {
         VStack {
             ZStack (alignment: .bottom){
-                AsyncImage(url: URL(string: GenerateImageURL((club.imageURL ?? "")))){ phase in
+                AsyncImage(url: URL(string: imageURL)){ phase in
                     if let image = phase.image {
                         image // Displays the loaded image.
-                            .fixedSize()
+                            .resizable()
+                            .scaledToFill()
                             .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                            .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
                             .clipped()
+                            .cornerRadius(10)
                         
                     } else if phase.error != nil {
                         ZStack {
@@ -59,13 +68,14 @@ struct SmallClubView: View {
                                 .opacity(0.3)
                                 .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
                             Image(systemName: "exclamationmark.circle")
-                        }
+                        }.frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                     } else {
                         ZStack {
                             Color.gray // Acts as a placeholder.
+                                .opacity(0.3)
                                 .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
                             ProgressView()
-                        }
+                        }.frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                     }
                 }.frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                 
