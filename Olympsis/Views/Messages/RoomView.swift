@@ -138,7 +138,7 @@ struct RoomView: View {
                 if let r = resp {
                     await MainActor.run {
                         guard let history = r.history else {
-                            state = .failure
+                            state = .success
                             return
                         }
                         messages = history
@@ -152,7 +152,7 @@ struct RoomView: View {
                     if let m = msg {
                         messages.append(m)
                     } else {
-                        print("Failed to get message")
+                        log.error("Failed to get message")
                         await observer.InitiateSocketConnection(id: id)
                         observer.Ping()
                     }
