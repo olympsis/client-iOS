@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 1/4/23.
 //
 
+import os
 import SwiftUI
 
 struct RoomView: View {
@@ -25,21 +26,25 @@ struct RoomView: View {
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
+    var log = Logger(subsystem: "com.coronislabs.olympsis", category: "room_view")
+    
     func SendMessage() {
         guard text.count > 0 else {
             return
         }
-//        if let usr = session.user {
-//            let message = Message(id: "", type: "text", from: usr.uuid, body: text, timestamp: 0)
-//            Task {
-//                let res = await observer.SendMessage(msg: message)
-//                if !res {
-//                    print("failed to send message")
-//                }
-//                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-//                text = ""
-//            }
-//        }
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return
+        }
+        let message = Message(type: "text", sender: uuid, body: text)
+        Task {
+            let res = await observer.SendMessage(msg: message)
+            if !res {
+                log.error("failed to send message")
+            }
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+            text = ""
+        }
     }
     
     func DidDismiss(){
@@ -49,12 +54,11 @@ struct RoomView: View {
         }
     }
     
-    func GetData(uuid: String) -> UserPeek? {
-        let usr = club.members!.first(where: {$0.uuid == uuid})
-        if let _ = usr {
-            return nil // FIX NEEDS TO USE USER DATA
+    func GetData(uuid: String) -> UserData? {
+        guard let user = club.members!.first(where: {$0.uuid == uuid}) else {
+            return nil
         }
-        return nil
+        return user.data
     }
     
     var body: some View {
@@ -64,8 +68,8 @@ struct RoomView: View {
                     if state == .loading {
                         ProgressView()
                     } else if state == .success {
-                        ForEach(messages){ message in
-                            MessageView(room: room, data: GetData(uuid: message.from), message: message)
+                        ForEach(messages, id: \.timestamp){ message in
+                            MessageView(room: room, data: GetData(uuid: message.sender), message: message)
                                 .padding(.top)
                         }
                     } else if state == .failure {
@@ -127,15 +131,21 @@ struct RoomView: View {
             }
             .task {
                 state = .loading
-                messages = room.history
-                let resp = await observer.GetRoom(id: room.id)
+                guard let id = room.id else {
+                    return
+                }
+                let resp = await observer.GetRoom(id: id)
                 if let r = resp {
                     await MainActor.run {
-                        messages = r.history
+                        guard let history = r.history else {
+                            state = .failure
+                            return
+                        }
+                        messages = history
                         state = .success
                     }
                 }
-                await observer.InitiateSocketConnection(id: room.id)
+                await observer.InitiateSocketConnection(id: id)
                 observer.Ping()
                 while true {
                     let msg = await observer.ReceiveMessage()
@@ -143,7 +153,7 @@ struct RoomView: View {
                         messages.append(m)
                     } else {
                         print("Failed to get message")
-                        await observer.InitiateSocketConnection(id: room.id)
+                        await observer.InitiateSocketConnection(id: id)
                         observer.Ping()
                     }
                 }

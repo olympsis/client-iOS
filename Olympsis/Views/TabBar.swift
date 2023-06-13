@@ -108,7 +108,7 @@ struct TabBar_Previews: PreviewProvider {
     static var previews: some View {
         TabBar(currentTab: .constant(.home)).environmentObject(SessionStore())
             .background{
-                Color.blue
+                Color("dark-color")
             }
     }
 }

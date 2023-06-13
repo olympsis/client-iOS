@@ -18,6 +18,7 @@
 		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
 		5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */; };
 		5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */; };
+		5FF2A0272A380534009234AD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
 		5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
 		5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */; };
 		9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A204755295FD28200CDF3A3 /* ChatObserver.swift */; };
@@ -55,10 +56,6 @@
 		9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5629725A1300EBC5F9 /* FieldsList.swift */; };
 		9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */; };
 		9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5A2973261900EBC5F9 /* PostTemplateView.swift */; };
-		9A8162982966518B0042F0A6 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162972966518B0042F0A6 /* Room.swift */; };
-		9A81629A296651BC0042F0A6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A816299296651BC0042F0A6 /* Message.swift */; };
-		9A81629C2966525D0042F0A6 /* ChatMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81629B2966525D0042F0A6 /* ChatMember.swift */; };
-		9A81629F29665F740042F0A6 /* RoomsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81629E29665F740042F0A6 /* RoomsResponse.swift */; };
 		9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A0296678890042F0A6 /* RoomTemplateView.swift */; };
 		9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A2296685D40042F0A6 /* RoomListView.swift */; };
 		9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A429668CC90042F0A6 /* RoomView.swift */; };
@@ -199,6 +196,7 @@
 		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbar.swift; sourceTree = "<group>"; };
+		5FF2A0262A380534009234AD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		5FF49CB92A2BE92100FAA4DA /* PostModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModels.swift; sourceTree = "<group>"; };
 		5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFunctions.swift; sourceTree = "<group>"; };
 		9A204755295FD28200CDF3A3 /* ChatObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatObserver.swift; sourceTree = "<group>"; };
@@ -235,10 +233,6 @@
 		9A69FE5629725A1300EBC5F9 /* FieldsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsList.swift; sourceTree = "<group>"; };
 		9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingTemplateView.swift; sourceTree = "<group>"; };
 		9A69FE5A2973261900EBC5F9 /* PostTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTemplateView.swift; sourceTree = "<group>"; };
-		9A8162972966518B0042F0A6 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
-		9A816299296651BC0042F0A6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		9A81629B2966525D0042F0A6 /* ChatMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMember.swift; sourceTree = "<group>"; };
-		9A81629E29665F740042F0A6 /* RoomsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsResponse.swift; sourceTree = "<group>"; };
 		9A8162A0296678890042F0A6 /* RoomTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTemplateView.swift; sourceTree = "<group>"; };
 		9A8162A2296685D40042F0A6 /* RoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListView.swift; sourceTree = "<group>"; };
 		9A8162A429668CC90042F0A6 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
@@ -462,24 +456,6 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
-		9A8162962966516D0042F0A6 /* Message */ = {
-			isa = PBXGroup;
-			children = (
-				9A8162972966518B0042F0A6 /* Room.swift */,
-				9A816299296651BC0042F0A6 /* Message.swift */,
-				9A81629B2966525D0042F0A6 /* ChatMember.swift */,
-			);
-			path = Message;
-			sourceTree = "<group>";
-		};
-		9A81629D29665F5B0042F0A6 /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				9A81629E29665F740042F0A6 /* RoomsResponse.swift */,
-			);
-			path = Chat;
-			sourceTree = "<group>";
-		};
 		9A81B61A2924730F009CA6ED /* Club */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,7 +586,6 @@
 		9A8FF0D128BB336600DE4CF8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9A8162962966516D0042F0A6 /* Message */,
 				9AAAA6A92903A57E0003D501 /* User */,
 				9A8FF0D928BB33E800DE4CF8 /* Dao */,
 				9AB02F62290265F8008C07F1 /* Tab.swift */,
@@ -621,6 +596,7 @@
 				5F1329B72A26F02200B31170 /* ClubModels.swift */,
 				5F1329B92A282BE200B31170 /* EventModels.swift */,
 				5FF49CB92A2BE92100FAA4DA /* PostModels.swift */,
+				5FF2A0262A380534009234AD /* ChatModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -662,7 +638,6 @@
 			isa = PBXGroup;
 			children = (
 				9ADDD94E296A806C00245CCE /* Message */,
-				9A81629D29665F5B0042F0A6 /* Chat */,
 				9AB6DDC92961560A00C7E427 /* ChatToken */,
 				9A81B6472925EB6F009CA6ED /* Event */,
 				9A81B61A2924730F009CA6ED /* Club */,
@@ -966,7 +941,6 @@
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */,
 				9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */,
-				9A81629F29665F740042F0A6 /* RoomsResponse.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
@@ -993,6 +967,7 @@
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
+				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
 				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
@@ -1038,7 +1013,6 @@
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
-				9A81629C2966525D0042F0A6 /* ChatMember.swift in Sources */,
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
@@ -1070,7 +1044,6 @@
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
-				9A81629A296651BC0042F0A6 /* Message.swift in Sources */,
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
 				9AD208EF293279AA007A62C4 /* EventDao.swift in Sources */,
 				9AD2090829348DA6007A62C4 /* ClubDao.swift in Sources */,
@@ -1082,7 +1055,6 @@
 				9A81B63C2925DD07009CA6ED /* BetaPage.swift in Sources */,
 				9AA5F619294DCBF700219B95 /* MapOptions.swift in Sources */,
 				9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */,
-				9A8162982966518B0042F0A6 /* Room.swift in Sources */,
 				9A5CA4D7296F53D100C63A32 /* FieldListView.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
 				9AECDA4829545242007956FB /* LookUp.swift in Sources */,
@@ -1264,7 +1236,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1305,7 +1277,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

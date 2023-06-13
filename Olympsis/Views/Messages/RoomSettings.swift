@@ -16,7 +16,10 @@ struct RoomSettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     
     func DeleteRoom() async {
-        let res = await observer.DeleteRoom(id: room.id)
+        guard let id = room.id else {
+            return
+        }
+        let res = await observer.DeleteRoom(id: id)
         if res {
             hasDeleted = true
             self.presentationMode.wrappedValue.dismiss()

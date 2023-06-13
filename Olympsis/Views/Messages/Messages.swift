@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Messages: View {
     
-
     @Binding var club: Club
     @State var user: UserData
     @State var rooms = [Room]()

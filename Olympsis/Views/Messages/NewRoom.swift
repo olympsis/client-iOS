@@ -23,12 +23,14 @@ struct NewRoom: View {
             withAnimation(.easeInOut){
                 state = .loading
             }
-            if let usr = session.user {
-                let res = await chatObserver.CreateRoom(club: club.id!, name: text, uuid: usr.uuid!)
-                if let r = res {
-                    print(r.id)
-                    rooms.append(r)
-                }
+            guard let user = session.user,
+                  let uuid = user.uuid,
+                  let clubID = club.id else {
+                return
+            }
+            let res = await chatObserver.CreateRoom(club: clubID, name: text, type: "group", uuid: uuid)
+            if let r = res {
+                rooms.append(r)
             }
             withAnimation(.easeOut){
                 state = .success

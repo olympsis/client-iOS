@@ -16,6 +16,14 @@ struct RoomListView: View {
     @State private var state: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
+    var isJoined: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return false
+        }
+        return room.members.contains(where: {$0.uuid == uuid})
+    }
+    
     var body: some View {
         HStack {
             Circle()
@@ -27,13 +35,20 @@ struct RoomListView: View {
                 .padding(.leading, 10)
                 .foregroundColor(.primary)
             Spacer()
-            if !joined {
+            if !isJoined {
                 Button(action:{
                     Task{
                         withAnimation(.easeInOut) {
                             state = .loading
                         }
-                        let res = await observer.JoinRoom(id:room.id)
+                        guard let id = room.id,
+                                let user = session.user,
+                              let uuid = user.uuid else {
+                            state = .failure
+                            return
+                        }
+                        let member = ChatMember(id: nil, uuid: uuid, status: "live")
+                        let res = await observer.JoinRoom(id: id, member: member)
                         if let r = res {
                             let index = self.$rooms.firstIndex(where: {$0.id == r.id})
                             if let i = index {
@@ -51,14 +66,6 @@ struct RoomListView: View {
                 }
                 .padding(.trailing)
             }
-        }.task {
-//            if let usr = session.user {
-//                if !room.members.contains(where: {$0.uuid == usr.uuid}){
-//                    joined = false
-//                } else {
-//                    joined = true
-//                }
-//            }
         }
     }
 }

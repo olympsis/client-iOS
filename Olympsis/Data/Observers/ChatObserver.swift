@@ -11,32 +11,26 @@ import Foundation
 
 class ChatObserver: ObservableObject {
     
-    private let log: Logger
     private let host: String
-    private var timer: Timer
-    private var intervals: Double
-    private let cache: CacheService
-    private let decoder: JSONDecoder
-    private let service: ChatService
-    private let session: URLSession
+    private var timer = Timer()
+    private var intervals: Double = 15
+    private let cache = CacheService()
+    private let decoder = JSONDecoder()
+    private let service = ChatService()
+    private let session = URLSession(configuration: .default)
+    private let tokenStore = TokenStore()
     private var request: URLRequest? = nil
     private var webSocketTask: URLSessionWebSocketTask? = nil
+    private let log = Logger(subsystem: "com.coronislabs.olympsis", category: "chat_observer")
     
     init() {
-        log = Logger()
-        timer = Timer()
-        intervals = 15
-        cache = CacheService()
-        decoder = JSONDecoder()
-        service = ChatService()
-        session = URLSession(configuration: .default)
         host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
     }
     
-    func CreateRoom(club: String, name: String, uuid: String) async -> Room? {
-        let dao = RoomDao(owner: club, name: name, type: "group", members: [ChatMember(id: "", uuid: uuid, status: "live")])
+    func CreateRoom(club: String, name: String, type: String, uuid: String) async -> Room? {
+        let room = Room(name: name, type: type, clubID: club, members: [ChatMember(id: "", uuid: uuid, status: "live")], history: nil)
         do {
-            let (data,resp) = try await service.createRoom(dao: dao)
+            let (data,resp) = try await service.createRoom(room: room)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
                 return nil
             }
@@ -104,9 +98,9 @@ class ChatObserver: ObservableObject {
         return false
     }
     
-    func JoinRoom(id: String) async -> Room? {
+    func JoinRoom(id: String, member: ChatMember) async -> Room? {
         do {
-            let (data,resp) = try await service.joinRoom(id: id)
+            let (data,resp) = try await service.joinRoom(id: id, member: member)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
                 return nil
             }
@@ -132,7 +126,7 @@ class ChatObserver: ObservableObject {
     }
     
     func InitiateSocketConnection(id: String) async {
-        let token = ""
+        let token = tokenStore.fetchTokenFromKeyChain()
         self.request = URLRequest(url: URL(string: "wss://\(host)/chats/\(id)/ws")!)
         guard var request = request else {
             return
@@ -140,7 +134,7 @@ class ChatObserver: ObservableObject {
         request.setValue("\(token)", forHTTPHeaderField: "Authorization")
         request.setValue("Upgrade", forHTTPHeaderField: "Connection")
         request.setValue("websocket", forHTTPHeaderField: "Upgrade")
-        request.setValue("api.olympsis.com", forHTTPHeaderField: "Host")
+        request.setValue(host, forHTTPHeaderField: "Host")
         request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
         request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
         self.webSocketTask = session.webSocketTask(with: request)
@@ -175,7 +169,7 @@ class ChatObserver: ObservableObject {
                 try await webSocketTask?.send(message)
                 return true
             } catch {
-                print("failed to send message: " + error.localizedDescription)
+                log.error("failed to send message: \(error.localizedDescription)")
                 return false
             }
         }
@@ -203,7 +197,7 @@ class ChatObserver: ObservableObject {
             }
         } catch {
             timer.invalidate()
-            print("RecieveError: " + error.localizedDescription)
+            log.error("RecieveError: \(error.localizedDescription)")
         }
         return nil
     }

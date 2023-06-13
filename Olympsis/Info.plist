@@ -26,12 +26,12 @@
 			<string>None</string>
 		</dict>
 	</array>
+	<key>CHAT</key>
+	<string>chat.olympsis.com</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>CHAT</key>
-	<string>chat.olympsis.com</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeCar</string>
