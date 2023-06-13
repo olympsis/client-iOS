@@ -9,19 +9,13 @@ import SwiftUI
 
 struct MapOptions: View {
     
-    @AppStorage("storedRadius") private var storedRadius: Double?
-    
     @State var availableSports:[String]
-    @State private var radius: Double = 5.0
     @State private var selectedSports: [String] = [String]()
-    
     @State private var status: LOADING_STATE = .pending
-    
-    @StateObject private var eventObserver = EventObserver()
-    @StateObject private var fieldObserver = FieldObserver()
-    
+    @State private var sliderValue = 5.0
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
+    @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
     
     func updateSports(sport:String){
         selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
@@ -39,17 +33,18 @@ struct MapOptions: View {
     }
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        VStack {
             VStack(alignment: .leading) {
                 Text("Search Radius:")
                     .bold()
+                    .padding(.top, 20)
                 HStack {
-                    Slider(value: $radius, in: 5...500, step: 5)
+                    Slider(value: $sliderValue, in: 5...100, step: 5)
                         .tint(Color("primary-color"))
-                    Text("\(Int(radius)) miles")
+                    Text("\(Int(sliderValue)) miles")
                         .padding(.trailing)
-                        .onChange(of: radius) { newValue in
-                            storedRadius = newValue
+                        .onChange(of: sliderValue) { newValue in
+                            radius = milesToMeters(radius: sliderValue)
                         }
                 }
                 Text("Sports:")
@@ -78,14 +73,17 @@ struct MapOptions: View {
                     
                     Button(action:{
                         Task {
-                            self.status = .loading
+                            await MainActor.run {
+                                self.status = .loading
+                            }
                             await NewSearch()
-                            self.status = .success
+                            await MainActor.run {
+                                self.status = .success
+                            }
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                                 self.presentationMode.wrappedValue.dismiss()
                             }
                         }
-                        
                     }){
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -96,13 +94,15 @@ struct MapOptions: View {
                     }.padding(.trailing)
                 }.padding(.top)
             }.padding(.leading)
-            .padding(.top, 20)
-            .task {
-                if let r = storedRadius {
-                    self.radius = r
+                .padding(.bottom, 20)
+                .task {
+                    guard let radiusValue = radius else {
+                        return
+                    }
+                    await MainActor.run {
+                        sliderValue = metersToMiles(radius: radiusValue)
+                    }
                 }
-                selectedSports = availableSports
-            }
         }
     }
 }

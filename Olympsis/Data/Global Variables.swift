@@ -110,12 +110,17 @@ enum MEMBER_ROLES: String, CaseIterable {
     case Member = "member"
 }
 
-func milesToMeters(radius: Double) -> Int {
-    return Int((radius*1609))
+func milesToMeters(radius: Double) -> Double {
+    return (radius*DISTANCE_CONVERTIONS.MILES_TO_METERS.rawValue)
 }
 
-func metersToMiles(radius: Int) -> Double {
-    return Double((radius/1609))
+func metersToMiles(radius: Double) -> Double {
+    return (radius/DISTANCE_CONVERTIONS.MILES_TO_METERS.rawValue)
+}
+
+enum DISTANCE_CONVERTIONS: Double {
+    case MILES_TO_METERS = 1609.34
+    case MILES_TO_KILOMETERS = 1.60934
 }
 
 struct CornerRadiusShape: Shape {

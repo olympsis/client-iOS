@@ -22,6 +22,14 @@ struct MapView: View {
     @State var region : MKCoordinateRegion = .init()
     @EnvironmentObject var session:SessionStore
     
+    var sports: [String] {
+        guard let user = session.user,
+              let sports = user.sports else {
+            return [String]()
+        }
+        return sports
+    }
+    
     var body: some View {
         NavigationView {
             VStack{
@@ -81,10 +89,8 @@ struct MapView: View {
                     }
                     
                 }.sheet(isPresented: $showOptions) {
-                    if let usr = session.user {
-                        MapOptions(availableSports: usr.sports ?? [String]())
-                            .presentationDetents([.height(300)])
-                    }
+                    MapOptions(availableSports: sports)
+                        .presentationDetents([.height(350)])
                 }
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {

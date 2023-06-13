@@ -114,11 +114,18 @@ class SessionStore: ObservableObject {
         }
         let sportsJoined = sports.joined(separator: ",")
         
+        // convert radius to Int
+        var radius: Int {
+            guard let radius = self.radius else {
+                return 17000
+            }
+            return Int(radius)
+        }
         // fetch nearby fields
         let fieldsResp = await self.fieldObserver.fetchFields(
             longitude: location.longitude,
             latitude: location.latitude,
-            radius: Int(self.radius ?? 17000), // meters
+            radius: radius,
             sports: sportsJoined);
         
         // if there are no fields in the area then there are no events
@@ -130,7 +137,7 @@ class SessionStore: ObservableObject {
         let eventsResp = await self.eventObserver.fetchEvents(
             longitude: location.longitude,
             latitude: location.latitude,
-            radius: Int(self.radius ?? 17000),
+            radius: radius,
             sports: sportsJoined);
         
         await MainActor.run {
@@ -146,6 +153,14 @@ class SessionStore: ObservableObject {
         }
         let sportsJoined = sports.joined(separator: ",")
         
+        // convert radius to Int
+        var radius: Int {
+            guard let radius = self.radius else {
+                return 17000
+            }
+            return Int(radius)
+        }
+        
         // location
         guard let location = self.locationManager.location else {
             return
@@ -155,7 +170,7 @@ class SessionStore: ObservableObject {
         let eventsResp = await self.eventObserver.fetchEvents(
             longitude: location.longitude,
             latitude: location.latitude,
-            radius: Int(self.radius ?? 17000),
+            radius: radius,
             sports: sportsJoined);
         
         await MainActor.run {
