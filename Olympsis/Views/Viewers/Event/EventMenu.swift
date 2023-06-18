@@ -9,10 +9,7 @@ import SwiftUI
 
 struct EventMenu: View {
     
-    @State var event: Event
-    @Binding var events: [Event]
-    @StateObject private var observer = EventObserver()
-    
+    @Binding var event: Event
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
     
@@ -20,12 +17,30 @@ struct EventMenu: View {
         guard let id = event.id else {
             return
         }
-        let res = await observer.deleteEvent(id: id)
+        let res = await session.eventObserver.deleteEvent(id: id)
         if res {
-            session.events.removeAll(where: {$0.id == event.id})
-            events.removeAll(where: {$0.id == event.id})
-            self.presentationMode.wrappedValue.dismiss()
+            await MainActor.run {
+                session.events.removeAll(where: {$0.id == event.id})
+                self.presentationMode.wrappedValue.dismiss()
+            }
         }
+    }
+    
+    var isPosterOrAdmin: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid,
+              let eventPoster = event.poster,
+              let club = session.clubs.first(where: { $0.id == event.clubID }),
+              let members = club.members else {
+            return false
+        }
+        
+        guard let member = members.first(where: { $0.uuid == uuid }),
+              member.role != "member" else {
+            return false
+        }
+        
+        return (eventPoster == uuid)
     }
     
     var body: some View {
@@ -47,30 +62,30 @@ struct EventMenu: View {
                     Spacer()
                 }.modifier(MenuButton())
             }
-//            if let user = session.user {
-//                if user.uuid == event.poster {
-//                    Button(action:{
-//                        Task {
-//                            await deleteEvent()
-//                        }
-//                    }) {
-//                        ZStack {
-//                            RoundedRectangle(cornerRadius: 10)
-//                                .foregroundColor(.gray)
-//                                .opacity(0.3)
-//                            HStack {
-//                                Image(systemName: "trash")
-//                                    .imageScale(.large)
-//                                    .padding(.leading)
-//                                    .foregroundColor(.red)
-//                                Text("Delete Event")
-//                                    .foregroundColor(.red)
-//                                Spacer()
-//                            }
-//                        }.frame(width: SCREEN_WIDTH-25, height: 50)
-//                    }
-//                }
-//            }
+            
+            if isPosterOrAdmin {
+                Button(action:{
+                    Task {
+                        await deleteEvent()
+                    }
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(.gray)
+                            .opacity(0.3)
+                        HStack {
+                            Image(systemName: "trash")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.red)
+                            Text("Delete Event")
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
+                    }.frame(width: SCREEN_WIDTH-25, height: 50)
+                }
+            }
+            
             Spacer()
         }
     }
@@ -78,6 +93,6 @@ struct EventMenu: View {
 
 struct EventMenu_Previews: PreviewProvider {
     static var previews: some View {
-        EventMenu(event: EVENTS[0], events: .constant([Event]())).environmentObject(SessionStore())
+        EventMenu(event: .constant(EVENTS[0])).environmentObject(SessionStore())
     }
 }

@@ -9,20 +9,10 @@ import SwiftUI
 
 struct FieldDetailView: View {
     
-    // status of loading events
-    enum Status {
-        case loading
-        case failed
-        case done
-    }
-    
     @State var field: Field
-    @State var events = [Event]()
 
     @State private var showNewEvent = false
-    @State private var status: Status = .loading
-    
-    @StateObject var eventObserver = EventObserver()
+    @State private var status: LOADING_STATE = .loading
     
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
@@ -53,6 +43,10 @@ struct FieldDetailView: View {
     
     var fieldLocationString: String {
         return field.city + ", " + field.state
+    }
+    
+    var fieldEvents: [Event] {
+        return session.events.filter({ $0.fieldID == field.id })
     }
     var body: some View {
         NavigationView {
@@ -146,7 +140,7 @@ struct FieldDetailView: View {
                             Rectangle()
                                 .frame(height: 1)
                         }.frame(width: SCREEN_WIDTH-25)
-                        if events.isEmpty {
+                        if session.events.isEmpty {
                             VStack(alignment: .center){
                                 Text("There are no events at this field. 🥹")
                                     .padding(.all)
@@ -157,26 +151,21 @@ struct FieldDetailView: View {
                                     EventTemplateView()
                                     EventTemplateView()
                                     EventTemplateView()
-                                } else if status == .failed {
+                                } else if status == .failure {
                                     Text("Failed to load events")
                                         .foregroundColor(.red)
                                         .padding(.top)
                                 }else {
-                                    ForEach(events) { event in
-                                        EventView(event: event, events: $events)
+                                    ForEach(fieldEvents) { event in
+                                        EventView(event: event)
                                     }
                                 }
                             }.frame(width: SCREEN_WIDTH-25)
                         }
                     }.padding(.top, 50)
-                }.task {
-                    await MainActor.run {
-                        self.events = session.events.filter{ $0.fieldID == self.field.id }
-                        self.status = .done
-                    }
                 }
                 .sheet(isPresented: $showNewEvent) {
-                    NewEventView(fields: [field])
+                    NewEventView()
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading){
@@ -214,6 +203,6 @@ struct FieldDetailView: View {
 
 struct FieldDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        FieldDetailView(field: FIELDS[0], events: EVENTS).environmentObject(SessionStore())
+        FieldDetailView(field: FIELDS[0]).environmentObject(SessionStore())
     }
 }

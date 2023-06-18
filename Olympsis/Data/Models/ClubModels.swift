@@ -20,6 +20,7 @@ struct Club: Codable, Identifiable, Hashable {
     let visibility: String?
     let members: [Member]?
     let rules: [String]?
+    var posts: [Post]?
     let createdAt: Int64?
     
     static func == (lhs: Club, rhs: Club) -> Bool {
@@ -42,6 +43,7 @@ struct Club: Codable, Identifiable, Hashable {
         case visibility
         case members
         case rules
+        case posts
         case createdAt = "created_at"
     }
 }

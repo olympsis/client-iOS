@@ -11,20 +11,13 @@ struct MyClubView: View {
     
     @Binding var club: Club
     @State var status: LOADING_STATE = .loading
+    @State var showPostMenu = false
     @State private var showCreatePost = false
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func GetData(uuid: String) -> UserData? {
-        let usr = club.members!.first(where: {$0.uuid == uuid})
-        if let u = usr {
-            return u.data
-        }
-        return nil
-    }
-    
     var posts: [Post] {
-        return session.posts[club.id ?? ""] ?? [Post]()
+        return club.posts?.sorted{$0.createdAt! > $1.createdAt!} ?? [Post]()
     }
     
     var clubID: String {
@@ -36,36 +29,20 @@ struct MyClubView: View {
     
     var body: some View {
         VStack {
-            if !(session.posts[clubID]?.isEmpty ?? true) {
-                ZStack(alignment: .bottomTrailing){
-                    ScrollView(showsIndicators: false) {
-                        if status == .loading {
-                            ProgressView()
-                        } else {
-                            ForEach(session.posts[clubID]?.sorted{$0.createdAt! > $1.createdAt!} ?? [Post]()){ post in
-                                PostView(club: club, post: post, data: post.data)
-                            }.padding(.top)
-                        }
-                    }
-                    .refreshable {
-                        Task {
-                            guard let id = club.id else {
-                                return
-                            }
-                            await session.fetchClubPosts(id: id)
-                        }
-                    }
-                }.frame(width: SCREEN_WIDTH)
+            if (club.posts != nil) {
+                PostsView(club: $club)
             } else {
-                NoPostsView(club: club)
+                NoPostsView(club: $club)
             }
         }
         .task {
-            guard posts.isEmpty, let id = club.id else {
+            guard club.posts == nil,
+                    let id = club.id else {
                 return
             }
             status = .loading
-            await session.fetchClubPosts(id: id)
+            let posts = await session.postObserver.getPosts(clubId: id)
+            self.club.posts = posts
             status = .success
         }
     }

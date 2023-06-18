@@ -37,10 +37,9 @@ class EventService {
         return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
-    func createEvent(event: Event) async throws -> URLResponse {
+    func createEvent(event: Event) async throws -> (Data,URLResponse) {
         let endpoint = Endpoint(path: "/events")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(event), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
-        return resp
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(event), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {

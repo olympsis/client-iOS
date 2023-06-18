@@ -36,7 +36,7 @@ struct MapView: View {
                 ZStack(alignment: .bottomTrailing){
                     Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
                         MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
-                            PlaceAnnotationView(field: field, events: $session.events)
+                            PlaceAnnotationView(field: field)
                         }
                     })
                         .edgesIgnoringSafeArea(.all)
@@ -54,11 +54,11 @@ struct MapView: View {
                             }
                         }.padding(.bottom, 20)
                             .sheet(isPresented: $showNewEvent) {
-                                NewEventView(fields: session.fields)
+                                NewEventView()
                         }
                         .frame(width: 40)
                         
-                        Button(action:{self.showBottomSheet.toggle()}){
+                        Button(action:{ self.showBottomSheet.toggle() }){
                             ZStack {
                                 Circle()
                                     .tint(Color("secondary-color"))
@@ -68,7 +68,7 @@ struct MapView: View {
                                     .foregroundColor(.white)
                             }
                         }.sheet(isPresented: $showBottomSheet) {
-                            EventsModalView(events: $session.events, fields: session.fields)
+                            EventsModalView()
                                 .presentationDetents([.height(250)])
                         }
                         .frame(width: 40)

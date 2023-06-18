@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string></string>
 	<key>API-KEY</key>
 	<string>X0HyasjIZL6GLo7hBzwZneCQhmCIkZoW</string>
 	<key>CFBundleDocumentTypes</key>
@@ -9,7 +15,9 @@
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>MKDirectionsRequest</string>
-			<key>LSItemContentTypes</key>
+			<key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.maps.directionsrequest</string>
 			</array>

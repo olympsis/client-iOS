@@ -7,14 +7,18 @@
 
 import Foundation
 
-struct Post: Codable, Identifiable {
+struct Post: Codable, Identifiable, Hashable, RandomAccessCollection {
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String?
     let poster: String
     let clubID: String?
     let body: String
     var eventID: String?
     let images: [String]?
-    let data: PostData?
+    var data: PostData?
     var likes: [Like]?
     var comments: [Comment]?
     let createdAt: Int64?
@@ -31,9 +35,28 @@ struct Post: Codable, Identifiable {
         case comments
         case createdAt = "created_at"
     }
+    
+    // RandomAccessCollection requirements
+    typealias Index = Int
+    
+    var startIndex: Int {
+        return 0
+    }
+    
+    var endIndex: Int {
+        return 1
+    }
+    
+    subscript(index: Int) -> Post {
+        return self
+    }
 }
 
-struct Comment: Codable {
+struct Comment: Codable, Hashable {
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String?
     let uuid: String
     let text: String
@@ -49,7 +72,7 @@ struct Comment: Codable {
     }
 }
 
-struct PostData: Codable {
+struct PostData: Codable, Hashable {
     let poster: UserData?
     let user: UserData?
     let event: Event?

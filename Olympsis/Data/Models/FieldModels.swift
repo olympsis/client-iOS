@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Field: Codable, Identifiable {
+struct Field: Codable, Identifiable, Hashable {
+    static func == (lhs: Field, rhs: Field) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String
     let name: String
     let owner: Ownership
@@ -33,12 +37,18 @@ struct Field: Codable, Identifiable {
     }
 }
 
-struct GeoJSON: Codable {
+struct GeoJSON: Codable, Hashable {
+    static func == (lhs: GeoJSON, rhs: GeoJSON) -> Bool {
+        return (lhs.coordinates[0] == rhs.coordinates[0]) && (lhs.coordinates[1] == rhs.coordinates[1])
+    }
     let type: String
     let coordinates: [Double]
 }
 
-struct Ownership: Codable {
+struct Ownership: Codable, Hashable {
+    static func == (lhs: Ownership, rhs: Ownership) -> Bool {
+        return lhs.name == rhs.name
+    }
     let name: String
     let type: String
 }

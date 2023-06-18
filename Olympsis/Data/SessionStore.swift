@@ -23,7 +23,6 @@ class SessionStore: ObservableObject {
     @Published var clubs = [Club]()      // Clubs Cache
     @Published var events = [Event]()    // Events Cache
     @Published var fields = [Field]()    // Fields Cache
-    @Published var posts: [String: [Post]] = [:]    // Posts Cache
     
     var clubTokens = [String:String]()
     
@@ -54,7 +53,10 @@ class SessionStore: ObservableObject {
     }
     
     func fetchClubPosts(id: String) async {
-        self.posts[id] = await postObserver.getPosts(clubId: id)
+        guard var club = self.clubs.first(where: { $0.id == id }) else {
+            return
+        }
+        club.posts = await postObserver.getPosts(clubId: id)
     }
     
     func fetchUserClubs() async {
@@ -62,8 +64,10 @@ class SessionStore: ObservableObject {
         guard let u = user, let clubIDs = u.clubs else {
             return
         }
-
-        self.clubs = await clubObserver.generateUserClubs(clubIDs: clubIDs)
+        let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
+        DispatchQueue.main.async {
+            self.clubs = resp
+        }
     }
     
     func reInitObservers() {

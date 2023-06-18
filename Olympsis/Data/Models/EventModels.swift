@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Event: Codable, Identifiable {
+struct Event: Codable, Identifiable, Hashable {
+    static func == (lhs: Event, rhs: Event) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String?
     let poster: String?
     let clubID: String?
@@ -25,7 +29,7 @@ struct Event: Codable, Identifiable {
     var participants: [Participant]?
     let likes: [Like]?
     let visibility: String?
-    let data: EventData?
+    var data: EventData?
     let createdAt: Int64?
     
     enum CodingKeys: String, CodingKey {
@@ -51,7 +55,11 @@ struct Event: Codable, Identifiable {
     }
 }
 
-struct Participant: Codable, Identifiable {
+struct Participant: Codable, Identifiable, Hashable {
+    static func == (lhs: Participant, rhs: Participant) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String?
     let uuid: String
     var data: UserData?
@@ -67,7 +75,11 @@ struct Participant: Codable, Identifiable {
     }
 }
 
-struct Like: Codable, Identifiable {
+struct Like: Codable, Identifiable, Hashable {
+    static func == (lhs: Like, rhs: Like) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String?
     let uuid: String
     let createdAt: Int64?
@@ -79,7 +91,12 @@ struct Like: Codable, Identifiable {
     }
 }
 
-struct EventData: Codable {
+struct EventData: Codable, Hashable {
+    
+    static func == (lhs: EventData, rhs: EventData) -> Bool {
+        return false
+    }
+    
     let poster: UserData?
     let club: Club?
     let field: Field?

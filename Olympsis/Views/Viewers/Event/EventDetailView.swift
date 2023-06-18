@@ -11,7 +11,6 @@ import SwiftUI
 struct EventDetailView: View {
     
     @Binding var event:   Event
-    @Binding var events:  [Event]
     @State var club:      Club?
     @State private var showMenu = false
     @Environment(\.dismiss) private var dismiss
@@ -131,7 +130,7 @@ struct EventDetailView: View {
                             .padding(.top, 20)
                     }
                 }.sheet(isPresented: $showMenu) {
-                    EventMenu(event: event, events: $events)
+                    EventMenu(event: $event)
                         .presentationDetents([.height(200)])
                 }
                 .toolbar {
@@ -171,7 +170,7 @@ struct EventDetailView: View {
 
 struct EventDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailView(event: .constant(EVENTS[0]), events: .constant(EVENTS))
+        EventDetailView(event: .constant(EVENTS[0]))
             .environmentObject(SessionStore())
     }
 }

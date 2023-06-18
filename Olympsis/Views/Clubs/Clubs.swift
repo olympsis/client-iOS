@@ -49,7 +49,7 @@ struct Clubs: View {
                 status = .success
             }
             .fullScreenCover(isPresented: $showNewPost) {
-                CreateNewPost(club: session.clubs[index])
+                CreateNewPost(club: $session.clubs[index])
             }
         }
     }

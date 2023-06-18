@@ -9,19 +9,12 @@ import SwiftUI
 
 struct EventsModalView: View {
     
-    @Binding var events: [Event]
-    @State var fields: [Field]
     @State private var showMore = false
     @EnvironmentObject var session: SessionStore
     
-    // Later on we want to make it so if the field isnt in the cache we go fetch it.
-    func getField(fieldId: String) -> Field? {
-        return fields.first(where: {$0.id == fieldId })
-    }
-    
     var todayEvents: [Event] {
         let calendar = Calendar.current
-        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: Date())})
+        return session.events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: Date())})
     }
     
     var body: some View {
@@ -44,10 +37,10 @@ struct EventsModalView: View {
             }
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(todayEvents, id: \.title) { event in
-                    EventView(event: event, events: $events)
+                    EventView(event: event)
                 }
             }.fullScreenCover(isPresented: $showMore) {
-                EventsList(fields: fields, events: $events)
+                EventsList()
             }
         }
     }
@@ -55,6 +48,6 @@ struct EventsModalView: View {
 
 struct EventsModalView_Previews: PreviewProvider {
     static var previews: some View {
-        EventsModalView(events: .constant([Event]()), fields: [Field]())
+        EventsModalView().environmentObject(SessionStore())
     }
 }

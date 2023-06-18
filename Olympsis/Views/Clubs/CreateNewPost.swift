@@ -10,7 +10,7 @@ import PhotosUI
 
 struct CreateNewPost: View {
     
-    @State var club: Club
+    @Binding var club: Club
     @State private var state: LOADING_STATE = .pending
     @State private var text = ""
     @State private var images: [String]?
@@ -36,8 +36,16 @@ struct CreateNewPost: View {
         if selectedImageData != nil {
             await UploadImage()
         }
-        guard let user = session.user, let uuid = user.uuid, let id = club.id else {
+        
+        guard let user = session.user,
+                let uuid = user.uuid,
+                let id = club.id else {
             state = .failure
+            
+            // delete images if we fail to get any of this data
+            for img in images ?? [String]() {
+                let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(img))
+            }
             self.presentationMode.wrappedValue.dismiss()
             return
         }
@@ -45,24 +53,33 @@ struct CreateNewPost: View {
         let resp = await session.postObserver.createPost(owner: uuid, clubId: id, body: text, images: images)
         
         // add to club view
-        guard let r = resp,
-                let pID = r.id else {
+        guard var r = resp else {
             state = .failure
+            
+            // delete images if we fail to create post
+            for img in images ?? [String]() {
+                let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(img))
+            }
             self.presentationMode.wrappedValue.dismiss()
             return
         }
+
+        r.data = PostData(poster: nil, user: user, event: nil)
         
-        // get post with data
-        let post = await session.postObserver.getPost(id: pID)
-        
-        guard let p = post else {
-            state = .failure
-            self.presentationMode.wrappedValue.dismiss()
-            return
+        // add post to local data
+        DispatchQueue.main.async {
+            if club.posts != nil {
+                club.posts!.append(r)
+                state = .success
+                self.presentationMode.wrappedValue.dismiss()
+            } else {
+                club.posts = [r]
+                state = .success
+                self.presentationMode.wrappedValue.dismiss()
+            }
+            
+            
         }
-        session.posts[id]?.append(p)
-        state = .success
-        self.presentationMode.wrappedValue.dismiss()
     }
     
     func UploadImage() async {
@@ -170,6 +187,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
+        CreateNewPost(club: .constant(CLUBS[0])).environmentObject(SessionStore())
     }
 }

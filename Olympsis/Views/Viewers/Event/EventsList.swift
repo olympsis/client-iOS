@@ -9,22 +9,21 @@ import SwiftUI
 
 struct EventsList: View {
     
-    @State var fields: [Field]
-    @Binding var events: [Event]
     @State private var selectedDate = Date()
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var eventObserver = EventObserver()
+    @EnvironmentObject var session:SessionStore
     @Environment(\.dismiss) private var dismiss
+    
     
     // Later on we want to make it so if the field isnt in the cache we go fetch it.
     func getField(fieldId: String) -> Field? {
-        return fields.first(where: {$0.id == fieldId })
+        return session.fields.first(where: {$0.id == fieldId })
     }
     
     var currentEvents: [Event] {
         let calendar = Calendar.current
-        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: selectedDate)})
+        return session.events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: selectedDate)})
     }
     
     var body: some View {
@@ -32,7 +31,7 @@ struct EventsList: View {
             VStack {
                 ScrollView {
                     ForEach(currentEvents, id: \.title) { event in
-                        EventView(event: event, events: $events)
+                        EventView(event: event)
                     }
                 }
             }.toolbar {
@@ -54,6 +53,6 @@ struct EventsList: View {
 
 struct EventsList_Previews: PreviewProvider {
     static var previews: some View {
-        EventsList(fields: FIELDS, events: .constant([Event]()))
+        EventsList()
     }
 }

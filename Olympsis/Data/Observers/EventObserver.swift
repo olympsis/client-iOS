@@ -45,17 +45,18 @@ class EventObserver: ObservableObject{
         return nil
     }
     
-    func createEvent(event: Event) async -> Bool {
+    func createEvent(event: Event) async -> Event? {
         do {
-            let (resp) = try await eventService.createEvent(event: event)
+            let (data, resp) = try await eventService.createEvent(event: event)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
-                return false
+                return nil
             }
-            return true
+            let object = try decoder.decode(Event.self, from: data)
+            return object
         } catch {
             log.error("\(error)")
         }
-        return false
+        return nil
     }
     
     func updateEvent(id: String, dao: EventDao) async -> Bool {

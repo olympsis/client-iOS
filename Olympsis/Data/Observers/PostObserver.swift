@@ -14,18 +14,18 @@ class PostObserver: ObservableObject{
     private let postService = PostService()
     private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "post_observer")
     
-    func getPosts(clubId: String) async -> [Post] {
+    func getPosts(clubId: String) async -> [Post]? {
         do {
             let (data, res) = try await postService.getPosts(id: clubId)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return [Post]()
+                return nil
             }
             let object = try decoder.decode(PostsResponse.self, from: data)
             return object.posts
         } catch {
             log.error("\(error)")
         }
-        return [Post]()
+        return nil
     }
     
     func getPost(id: String) async -> Post? {

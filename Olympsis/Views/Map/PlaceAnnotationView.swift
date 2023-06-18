@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PlaceAnnotationView: View {
     @State var field: Field
-    @Binding var events: [Event]
     @State var showDetails = false
+    @EnvironmentObject var session: SessionStore
     var body: some View {
         VStack(spacing: 0) {
               Image(systemName: "mappin.circle.fill")
@@ -27,13 +27,13 @@ struct PlaceAnnotationView: View {
             }
           }
         .fullScreenCover(isPresented: $showDetails) {
-            FieldDetailView(field: field, events: events)
+            FieldDetailView(field: field)
         }
     }
 }
 
 struct PlaceAnnotationView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceAnnotationView(field: FIELDS[0], events: .constant([Event]()))
+        PlaceAnnotationView(field: FIELDS[0])
     }
 }

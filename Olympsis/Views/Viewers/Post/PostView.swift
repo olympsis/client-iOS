@@ -8,32 +8,21 @@
 import SwiftUI
 
 struct PostView: View {
-    @State var club: Club
+    @Binding var club: Club
     @State var post: Post
-    @State var data: PostData?
-    @State private var index = ""
+    @Binding var index: Int
+    @Binding var showMenu: Bool
     @State private var isLiked = false
     @State private var showComments = false
     @State private var status: LOADING_STATE = .pending
+    
     @StateObject private var postObserver = PostObserver()
+    @StateObject private var uploadObserver = UploadObserver()
     
     @EnvironmentObject var session: SessionStore
     
-    func deletePost() async {
-        guard let id = post.id else {
-            return
-        }
-        let res = await postObserver.deletePost(postID: id)
-        if res {
-            guard let id = club.id else {
-                return
-            }
-            session.posts[id]?.removeAll(where: {$0.id == id})
-        }
-    }
-    
     var userImageURL: String {
-        guard let user = data?.user,
+        guard let user = post.data?.user,
                 let image = user.imageURL else {
             return ""
         }
@@ -41,7 +30,7 @@ struct PostView: View {
     }
     
     var username: String {
-        guard let user = data?.user,
+        guard let user = post.data?.user,
               let username = user.username else {
             return "olympsis-user"
         }
@@ -109,6 +98,9 @@ struct PostView: View {
     
     var body: some View {
         VStack {
+            Rectangle()
+                .frame(height: 0.2)
+                .opacity(0.3)
             HStack {
                 AsyncImage(url: URL(string: userImageURL)){ phase in
                     if let image = phase.image {
@@ -137,26 +129,11 @@ struct PostView: View {
                 
                 Spacer()
                 
-                Menu{
-                    Button(action:{}){
-                        Label("Report an Issue", systemImage: "exclamationmark.shield")
-                    }
-                    if isPoster || isAdmin {
-                        Button(role:.destructive, action:{
-                            Task{
-                                await deletePost()
-                            }
-                        }){
-                            Label("Remove Post", systemImage: "delete.left")
-                        }
-                    }
-                    
-                    
-                }label: {
+                Button(action:{ self.showMenu.toggle() }) {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
                         .padding(.trailing)
-                        .foregroundColor(Color(uiColor: .label))
+                    .foregroundColor(Color(uiColor: .label))
                 }
             }.frame(height: 35)
             
@@ -205,7 +182,6 @@ struct PostView: View {
                         .foregroundColor(.primary)
                 }.padding(.trailing)
             }.padding(.leading)
-            
         }
         .fullScreenCover(isPresented: $showComments) {
             PostComments(club: club, post: $post)
@@ -216,12 +192,17 @@ struct PostView: View {
                 return
             }
             self.isLiked = likes.first(where: { $0.uuid == user.uuid }) != nil
+            
+            guard let i = club.posts?.firstIndex(where: {$0.id! == post.id!}) else {
+                return
+            }
+            index = i
         }
     }
 }
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(club: CLUBS[0], post: POSTS[0], data: POSTS[0].data).environmentObject(SessionStore())
+        PostView(club: .constant(CLUBS[0]), post: POSTS[0],index: .constant(0), showMenu: .constant(false)).environmentObject(SessionStore())
     }
 }

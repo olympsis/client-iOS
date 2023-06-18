@@ -48,13 +48,13 @@ struct ClubToolbar: ToolbarContent {
                 }
             } else {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    VStack(alignment: .leading){
+                    VStack {
                         Text(myClubs[index].name!)
                             .font(.title)
                             .bold()
                             .minimumScaleFactor(0.5)
                             .lineLimit(1)
-                        .frame(width: SCREEN_WIDTH/2)
+                            .frame(width: SCREEN_WIDTH/2, alignment: .leading)
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

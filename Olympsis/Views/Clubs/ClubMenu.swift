@@ -106,7 +106,7 @@ struct ClubMenu: View {
                         
                     }
                     
-                    if role == "owner" || role == "admin" || role == "moderator" {
+                    if role != "member" {
                         Button(action:{ self.showApplications.toggle() }) {
                             HStack {
                                 Image(systemName: "note")
@@ -123,7 +123,14 @@ struct ClubMenu: View {
                     Menu {
                         ForEach(session.clubs) { club in
                             Button(action:{
-                                if let i = session.clubs.firstIndex(where: { $0.id == club.id }) {
+                                Task {
+                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }),
+                                          let id = session.clubs[i].id else {
+                                        return
+                                    }
+                                    let posts = await session.postObserver.getPosts(clubId: id)
+                                    session.clubs[i].posts = posts
+                                        
                                     index = i
                                 }
                             }

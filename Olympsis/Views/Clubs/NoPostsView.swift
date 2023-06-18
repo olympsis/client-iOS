@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoPostsView: View {
     
-    @State var club: Club
+    @Binding var club: Club
     @State private var isLoading        = true
     @State private var showCreatePost   = false
     
@@ -29,25 +29,13 @@ struct NoPostsView: View {
                     guard let id = club.id else {
                         return
                     }
-                    let posts = await postObserver.getPosts(clubId: id)
-                    for post in posts {
-                        session.posts[id]?.append(post)
-                    }
+                    let posts = await session.postObserver.getPosts(clubId: id)
+                    self.club.posts = posts?.sorted{$0.createdAt! > $1.createdAt!}
                 }
             }
-            .fullScreenCover(isPresented: $showCreatePost, onDismiss: {
-                isLoading = true
-                Task {
-                    guard let id = club.id else {
-                        return
-                    }
-                    let posts = await postObserver.getPosts(clubId: id)
-                    for post in posts {
-                        session.posts[id]?.append(post)
-                    }
-                }
-                isLoading = false
-            }) { CreateNewPost(club: club) }
+            .fullScreenCover(isPresented: $showCreatePost) {
+                CreateNewPost(club: $club)
+            }
         }
     }
 }
@@ -55,6 +43,6 @@ struct NoPostsView: View {
 
 struct NoPostsView_Previews: PreviewProvider {
     static var previews: some View {
-        NoPostsView(club: CLUBS[0])
+        NoPostsView(club: .constant(CLUBS[0]))
     }
 }

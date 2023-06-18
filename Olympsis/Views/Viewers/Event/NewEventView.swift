@@ -34,7 +34,6 @@ struct NewEventView: View {
         }
     }
     
-    @State var fields: [Field]
     @State private var isEditing:               Bool = false
     @State private var showCompletedToast:      Bool = false
     @State private var eventTitle:              String = ""
@@ -62,14 +61,14 @@ struct NewEventView: View {
     }
     
     var selectedField: String {
-        return fields[fieldIndex].id
+        return session.fields[fieldIndex].id
     }
     
     var selectedImage: String {
         guard eventImageURL != "" else {
-            return eventImageURL
+            return eventSport.Images()[Int.random(in: 0...eventSport.Images().count-1)]
         }
-        return eventSport.Images()[Int.random(in: 0...eventSport.Images().count)]
+        return eventImageURL 
     }
     
     var setStartTime: Int64 {
@@ -101,17 +100,17 @@ struct NewEventView: View {
         let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
-        if resp {
+        guard var newEvent = resp,
+                let userData = session.user else {
             log.error("failed to create event")
-        }
-        
-        // fetch new events
-        guard let location = session.locationManager.location else {
-            self.presentationMode.wrappedValue.dismiss()
             return
         }
-        await session.getNearbyData(location: location)
-        self.presentationMode.wrappedValue.dismiss()
+        
+        await MainActor.run {
+            newEvent.data = EventData(poster: userData, club: session.clubs[clubIndex], field: session.fields[fieldIndex])
+            session.events.append(newEvent)
+            self.presentationMode.wrappedValue.dismiss()
+        }
     }
     
     var body: some View {
@@ -158,7 +157,6 @@ struct NewEventView: View {
                         .tint(Color("primary-color"))
                     
                 }.padding(.top)
-                    .frame(width: SCREEN_WIDTH-50)
                 
                 // MARK: - Description
                 VStack(alignment: .leading){
@@ -178,7 +176,8 @@ struct NewEventView: View {
                             .tint(Color("primary-color"))
                             .padding(.leading, 5)
                     }
-                }.frame(width: SCREEN_WIDTH-25)
+                }.padding(.leading)
+                    .padding(.trailing)
                 
                 // MARK: - Club/Field picker
                 VStack(alignment: .leading){
@@ -208,26 +207,29 @@ struct NewEventView: View {
                         .font(.subheadline)
                     
                     Picker(selection: $fieldIndex, label: Text("")) {
-                        ForEach(Array(fields.enumerated()), id: \.1.id) { index, field in
+                        ForEach(Array(session.fields.enumerated()), id: \.1.id) { index, field in
                             Text(field.name).tag(index)
                         }
                     }.modifier(MenuButton())
                         .tint(Color("primary-color"))
                     
                 }.padding(.top)
-                    .frame(width: SCREEN_WIDTH-25)
+                    .padding(.leading)
+                    .padding(.trailing)
+                    
                 
                 // MARK: - Date/Time picker
                 VStack(alignment: .leading){
                     Text("Start Date/Time")
                         .font(.title3)
                         .bold()
-                    DatePicker("", selection: $eventStartTime, in: Date()...)
+                    DatePicker("Date", selection: $eventStartTime, in: Date()...)
                         .datePickerStyle(.graphical)
                         .tint(Color("primary-color"))
 
                 }.padding(.top, 30)
-                    .frame(width: SCREEN_WIDTH-50)
+                    .padding(.leading)
+                    .padding(.trailing)
                 
                 // MARK: - Skill Level picker
                 VStack(alignment: .leading){
@@ -244,7 +246,8 @@ struct NewEventView: View {
                     }.modifier(MenuButton())
                         .tint(Color("primary-color"))
                 }.padding(.top)
-                    .frame(width: SCREEN_WIDTH-50)
+                    .padding(.leading)
+                    .padding(.trailing)
                 
                 // MARK: - Max Participants slider
                 VStack(alignment: .leading){
@@ -272,7 +275,8 @@ struct NewEventView: View {
                         }.modifier(MenuButton())
                     
                 }.padding(.top)
-                    .frame(width: SCREEN_WIDTH-50)
+                    .padding(.leading)
+                    .padding(.trailing)
                 
                 // MARK: - Background Image picker
                 VStack(alignment: .leading){
@@ -282,7 +286,7 @@ struct NewEventView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(eventSport.Images(), id: \.self) { image in
-                                Button(action:{self.eventImageURL = image}) {
+                                Button(action:{ self.eventImageURL = image }) {
                                     ZStack(alignment: .bottomTrailing){
                                         Image(image)
                                             .resizable()
@@ -306,24 +310,23 @@ struct NewEventView: View {
                             }
                         }
                     }
-                }.frame(width: SCREEN_WIDTH-50)
-                    .padding(.top)
+                }.padding(.top)
+                    .padding(.leading)
+                    .padding(.trailing)
                 // MARK: - Action Button
                 VStack(alignment: .center){
                     Button(action: { Task { await CreateEvent() } }) {
                         LoadingButton(text: "Create", width: 150, status: $status)
                     }
                 }.padding(.top, 50)
-            }.frame(width: SCREEN_WIDTH)
-        }.task{
-            
+            }
         }
     }
 }
 
 struct NewEventView_Previews: PreviewProvider {
     static var previews: some View {
-        NewEventView(fields: FIELDS)
+        NewEventView()
             .environmentObject(SessionStore())
     }
 }
