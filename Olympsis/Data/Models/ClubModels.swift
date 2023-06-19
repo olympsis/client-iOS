@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Club: Codable, Identifiable, Hashable {
+struct Club: Codable, Identifiable {
 
     let id: String?
     let name: String?

@@ -186,6 +186,8 @@ struct FieldDetailView: View {
                             .foregroundColor(Color(uiColor: .label))
                     }
                 }
+            }.task {
+                status = .success
             }
             /*
             .refreshable {

@@ -7,10 +7,7 @@
 
 import Foundation
 
-struct Post: Codable, Identifiable, Hashable, RandomAccessCollection {
-    static func == (lhs: Post, rhs: Post) -> Bool {
-        return lhs.id == rhs.id
-    }
+struct Post: Codable, Identifiable, RandomAccessCollection {
     
     let id: String?
     let poster: String
@@ -52,7 +49,7 @@ struct Post: Codable, Identifiable, Hashable, RandomAccessCollection {
     }
 }
 
-struct Comment: Codable, Hashable {
+struct Comment: Codable {
     static func == (lhs: Comment, rhs: Comment) -> Bool {
         return lhs.id == rhs.id
     }
@@ -72,7 +69,7 @@ struct Comment: Codable, Hashable {
     }
 }
 
-struct PostData: Codable, Hashable {
+struct PostData: Codable {
     let poster: UserData?
     let user: UserData?
     let event: Event?

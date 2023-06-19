@@ -61,7 +61,7 @@ struct EventDetailActionButton: View {
                 Button(action:{ Task { await startEvent() } }){
                     ZStack {
                         Image(systemName: "play.fill")
-                            .resizable()
+                            .imageScale(.large)
                             .foregroundColor(.green)
                         .frame(width: 40, height: 40)
                         if state == .loading {
@@ -73,7 +73,7 @@ struct EventDetailActionButton: View {
                 Button(action:{ Task { await stopEvent() } }){
                     ZStack {
                         Image(systemName: "stop.fill")
-                            .resizable()
+                            .imageScale(.large)
                             .foregroundColor(.red)
                         .frame(width: 40, height: 40)
                         if state == .loading {

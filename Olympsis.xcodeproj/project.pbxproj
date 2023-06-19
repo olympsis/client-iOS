@@ -38,7 +38,6 @@
 		9A550849293E335500B924B1 /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A550848293E335500B924B1 /* ImageHandler.swift */; };
 		9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084A293FC80100B924B1 /* ProfileModel.swift */; };
 		9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */; };
-		9A55084F29402B3C00B924B1 /* BlinkingCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084E29402B3C00B924B1 /* BlinkingCircle.swift */; };
 		9A5CA4D7296F53D100C63A32 /* FieldListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CA4D6296F53D100C63A32 /* FieldListView.swift */; };
 		9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */; };
 		9A5CA4DB296F725C00C63A32 /* MembersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CA4DA296F725C00C63A32 /* MembersListView.swift */; };
@@ -49,11 +48,8 @@
 		9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* CreateNewPost.swift */; };
 		9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 9A69CDDE2A1727BB00C37C1C /* Hermes */; };
 		9A69FE492971FCE600EBC5F9 /* EventDetailFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */; };
-		9A69FE4B297202A000EBC5F9 /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */; };
 		9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */; };
-		9A69FE4F2972211300EBC5F9 /* EventDetailRSVPButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4E2972211300EBC5F9 /* EventDetailRSVPButton.swift */; };
 		9A69FE512972241400EBC5F9 /* EventDetailHostClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE502972241400EBC5F9 /* EventDetailHostClubView.swift */; };
-		9A69FE532972390900EBC5F9 /* EventDetailActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE522972390900EBC5F9 /* EventDetailActions.swift */; };
 		9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5429724C9200EBC5F9 /* EventsList.swift */; };
 		9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5629725A1300EBC5F9 /* FieldsList.swift */; };
 		9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */; };
@@ -218,7 +214,6 @@
 		9A550848293E335500B924B1 /* ImageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
 		9A55084A293FC80100B924B1 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMenu.swift; sourceTree = "<group>"; };
-		9A55084E29402B3C00B924B1 /* BlinkingCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkingCircle.swift; sourceTree = "<group>"; };
 		9A5CA4D6296F53D100C63A32 /* FieldListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldListView.swift; sourceTree = "<group>"; };
 		9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		9A5CA4DA296F725C00C63A32 /* MembersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersListView.swift; sourceTree = "<group>"; };
@@ -228,11 +223,8 @@
 		9A5D336B292AE5DE008CF61D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		9A5D336D292AF813008CF61D /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
 		9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailFieldView.swift; sourceTree = "<group>"; };
-		9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantsView.swift; sourceTree = "<group>"; };
 		9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActionButton.swift; sourceTree = "<group>"; };
-		9A69FE4E2972211300EBC5F9 /* EventDetailRSVPButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailRSVPButton.swift; sourceTree = "<group>"; };
 		9A69FE502972241400EBC5F9 /* EventDetailHostClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailHostClubView.swift; sourceTree = "<group>"; };
-		9A69FE522972390900EBC5F9 /* EventDetailActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActions.swift; sourceTree = "<group>"; };
 		9A69FE5429724C9200EBC5F9 /* EventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsList.swift; sourceTree = "<group>"; };
 		9A69FE5629725A1300EBC5F9 /* FieldsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsList.swift; sourceTree = "<group>"; };
 		9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingTemplateView.swift; sourceTree = "<group>"; };
@@ -401,7 +393,6 @@
 				9A81B6412925E50C009CA6ED /* EventView.swift */,
 				9A3536FD29282CDA005EC806 /* EventTemplateView.swift */,
 				9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */,
-				9A69FE4E2972211300EBC5F9 /* EventDetailRSVPButton.swift */,
 				9A69FE502972241400EBC5F9 /* EventDetailHostClubView.swift */,
 				9A81B6432925E518009CA6ED /* EventDetailView.swift */,
 				9A69FE482971FCE600EBC5F9 /* EventDetailFieldView.swift */,
@@ -409,9 +400,6 @@
 				9A35370329289396005EC806 /* ParticipantView.swift */,
 				9A353707292A04B0005EC806 /* NewEventView.swift */,
 				9AD208F32933FE41007A62C4 /* EventMenu.swift */,
-				9A55084E29402B3C00B924B1 /* BlinkingCircle.swift */,
-				9A69FE4A297202A000EBC5F9 /* EventParticipantsView.swift */,
-				9A69FE522972390900EBC5F9 /* EventDetailActions.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -950,7 +938,6 @@
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
-				9A69FE4F2972211300EBC5F9 /* EventDetailRSVPButton.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */,
@@ -991,9 +978,7 @@
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
-				9A69FE4B297202A000EBC5F9 /* EventParticipantsView.swift in Sources */,
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
-				9A55084F29402B3C00B924B1 /* BlinkingCircle.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
@@ -1032,7 +1017,6 @@
 				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
 				9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */,
 				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
-				9A69FE532972390900EBC5F9 /* EventDetailActions.swift in Sources */,
 				5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */,
 				9A5D3369292AC610008CF61D /* PostComments.swift in Sources */,
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,

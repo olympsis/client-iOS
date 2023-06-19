@@ -5,12 +5,10 @@
 //  Created by Joel Joseph on 5/31/23.
 //
 
+import SwiftUI
 import Foundation
 
-struct Event: Codable, Identifiable, Hashable {
-    static func == (lhs: Event, rhs: Event) -> Bool {
-        return lhs.id == rhs.id
-    }
+class Event: Codable, Identifiable, ObservableObject {
     
     let id: String?
     let poster: String?
@@ -53,6 +51,51 @@ struct Event: Codable, Identifiable, Hashable {
         case data
         case createdAt = "created_at"
     }
+    
+    init(id: String? = nil, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, level: Int? = nil, status: String? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, likes: [Like]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil) {
+            self.id = id
+            self.poster = poster
+            self.clubID = clubID
+            self.fieldID = fieldID
+            self.imageURL = imageURL
+            self.title = title
+            self.body = body
+            self.sport = sport
+            self.level = level
+            self.status = status
+            self.startTime = startTime
+            self.actualStartTime = actualStartTime
+            self.stopTime = stopTime
+            self.maxParticipants = maxParticipants
+            self.participants = participants
+            self.likes = likes
+            self.visibility = visibility
+            self.data = data
+            self.createdAt = createdAt
+    }
+    
+    required init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            id = try container.decodeIfPresent(String.self, forKey: .id)
+            poster = try container.decodeIfPresent(String.self, forKey: .poster)
+            clubID = try container.decodeIfPresent(String.self, forKey: .clubID)
+            fieldID = try container.decodeIfPresent(String.self, forKey: .fieldID)
+            imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+            title = try container.decodeIfPresent(String.self, forKey: .title)
+            body = try container.decodeIfPresent(String.self, forKey: .body)
+            sport = try container.decodeIfPresent(String.self, forKey: .sport)
+            level = try container.decodeIfPresent(Int.self, forKey: .level)
+            status = try container.decodeIfPresent(String.self, forKey: .status)
+            startTime = try container.decodeIfPresent(Int64.self, forKey: .startTime)
+            actualStartTime = try container.decodeIfPresent(Int64.self, forKey: .actualStartTime)
+            stopTime = try container.decodeIfPresent(Int64.self, forKey: .stopTime)
+            maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
+            participants = try container.decodeIfPresent([Participant].self, forKey: .participants)
+            likes = try container.decodeIfPresent([Like].self, forKey: .likes)
+            visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
+            data = try container.decodeIfPresent(EventData.self, forKey: .data)
+            createdAt = try container.decodeIfPresent(Int64.self, forKey: .createdAt)
+        }
 }
 
 struct Participant: Codable, Identifiable, Hashable {
@@ -60,7 +103,7 @@ struct Participant: Codable, Identifiable, Hashable {
         return lhs.id == rhs.id
     }
     
-    let id: String?
+    var id: String?
     let uuid: String
     var data: UserData?
     let status: String
@@ -91,12 +134,7 @@ struct Like: Codable, Identifiable, Hashable {
     }
 }
 
-struct EventData: Codable, Hashable {
-    
-    static func == (lhs: EventData, rhs: EventData) -> Bool {
-        return false
-    }
-    
+struct EventData: Codable {
     let poster: UserData?
     let club: Club?
     let field: Field?

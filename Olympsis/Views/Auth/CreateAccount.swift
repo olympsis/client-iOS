@@ -34,6 +34,7 @@ struct CreateAccount: View {
     }
     
     @State private var username = ""
+    @State private var timer: Timer?
     @State private var keyboardIsShown = false
     @State private var status: CREATE_ERROR?
     @State private var uStatus = UNAME_STATUS.none
@@ -119,23 +120,6 @@ struct CreateAccount: View {
                                         .textInputAutocapitalization(.never)
                                         .autocorrectionDisabled(true)
                                         .keyboardType(.alphabet)
-                                        .onSubmit {
-                                            Task {
-                                                if validateInput(username) {
-                                                    self.keyboardIsShown = false
-                                                    uStatus = .searching
-                                                    let res = try await userObserver.CheckUserName(name: username)
-                                                    if res {
-                                                        uStatus = .valid
-                                                    } else {
-                                                        uStatus = .found
-                                                    }
-                                                } else {
-                                                    uStatus = .invalid
-                                                    status = .noUsername
-                                                }
-                                            }
-                                        }
                                         .disabled(uStatus == .searching ? true : false)
                                         .submitLabel(.search)
                                         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)) { _ in
@@ -149,11 +133,28 @@ struct CreateAccount: View {
                                             }
                                         }
                                         .onChange(of: username) { newValue in
-                                            let isValid = validateInput(newValue)
-                                            if !isValid {
-                                                status = .noUsername
-                                            } else {
-                                                status = nil
+                                            // Invalidate the previous timer
+                                            timer?.invalidate()
+                                            // Start a new timer
+                                            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+                                                // Call your function here
+                                                Task {
+                                                    if validateInput(newValue) {
+                                                        self.keyboardIsShown = false
+                                                        uStatus = .searching
+                                                        let res = try await userObserver.CheckUserName(name: newValue)
+                                                        if res {
+                                                            uStatus = .valid
+                                                            status = .none
+                                                        } else {
+                                                            uStatus = .found
+                                                        }
+                                                    } else {
+                                                        uStatus = .invalid
+                                                        status = .noUsername
+                                                        self.keyboardIsShown = true
+                                                    }
+                                                }
                                             }
                                         }
                                     HStack {

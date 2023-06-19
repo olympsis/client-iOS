@@ -6,7 +6,9 @@
 //
 
 import MapKit
+import Charts
 import SwiftUI
+import CoreLocation
 
 struct EventDetailView: View {
     
@@ -70,10 +72,86 @@ struct EventDetailView: View {
         return event.status == "ended" ? true : false
     }
     
+    var canManipulateEvent: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid,
+              let status = event.status, // status of event
+              let members = club?.members, // members list
+              let member = members.first(where: { $0.uuid == uuid }) else { // get members
+            return false
+        }
+        if status == "ended" {
+            return false
+        }
+        if member.role != "member" {
+            return true
+        }
+        if event.poster == uuid {
+            return true
+        }
+        return false
+    }
+    
+    var estimatedTimeToField: Int {
+        guard let location = session.locationManager.location else {
+            return 10
+        }
+        
+        let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let targetLocation = CLLocation(latitude: fieldLocation.coordinates[1], longitude: fieldLocation.coordinates[0])
+        let distance = currentLocation.distance(from: targetLocation)
+        let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
+        let timeDifference = distance / speed
+        
+        if timeDifference < 0 {
+            return 1
+        }
+        
+        return Int(timeDifference) // Convert to minutes
+    }
+    
+    var estimatedTimeString: String {
+        if estimatedTimeToField == 1 {
+            return "1 minute from you"
+        } else {
+            return "\(estimatedTimeToField) minutes from you"
+        }
+    }
+    
+    var yesCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        let yesNum = participants.filter { p in
+            return p.status == "yes"
+        }
+        return yesNum.count
+    }
+    
+    var maybeCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        let maybeNum = participants.filter { p in
+            return p.status == "maybe"
+        }
+        return maybeNum.count
+    }
+    
+    var noCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        let noNum = participants.filter { p in
+            return p.status == "no"
+        }
+        return noNum.count
+    }
+    
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottomTrailing){
-                ScrollView(showsIndicators: false) {
+            ScrollView(showsIndicators: false) {
+                VStack {
                     // MARK: - Event Info
                     VStack(alignment: .leading){
                         Text(title)
@@ -93,76 +171,115 @@ struct EventDetailView: View {
                             .font(.title3)
                         HStack {
                             Button(action:{ self.leadToMaps() }) {
-                                Image(systemName: "location")
-                                    .foregroundColor(.primary)
+                                HStack {
+                                    Image(systemName: "car")
+                                        .foregroundColor(.primary)
                                     .imageScale(.large)
+                                    Text(estimatedTimeString)
+                                        .foregroundColor(.primary)
+                                }
                             }
-                            Text("Directions")
-                                .foregroundColor(.primary)
                         }.padding(.top)
                     }.padding(.top)
                         .padding(.leading)
                         .frame(width: SCREEN_WIDTH, alignment: .leading)
                     
                     // MARK: - Middle View
-                    EventDetailMiddleView(event: $event)
+                    VStack {
+                        EventDetailMiddleView(event: $event, showMenu: showMenu)
+                    }
                     
                     // MARK: - Event Body
                     VStack(alignment: .leading) {
                         Text(eventBody)
+                            .padding(.leading)
                         Text("To learn more about this event, join the hosting club.")
                             .font(.caption)
                             .foregroundColor(.gray)
+                            .padding(.leading)
                     }.frame(width: SCREEN_WIDTH, alignment: .leading)
-                        .padding(.leading)
                         .padding(.top)
                         .padding(.bottom)
                     
-                    EventParticipantsView(event: $event)
+                    if event.participants != nil {
+                        // MARK: - Participants Graph View
+                        Chart {
+                            BarMark(
+                                x: .value("Responses", "yes"),
+                                y: .value("Total Count", yesCount)
+                            ).foregroundStyle(Color("secondary-color"))
+                            BarMark(
+                                x: .value("Responses", "Maybe"),
+                                y: .value("Total Count", maybeCount)
+                            ).foregroundStyle(Color("secondary-color"))
+                            BarMark(
+                                x: .value("Responses", "No"),
+                                y: .value("Total Count", noCount)
+                            ).foregroundStyle(Color("secondary-color"))
+                        }
+                    }
                     
+                    // MARK: - Participants View
+                    VStack {
+                        ScrollView(.horizontal ,showsIndicators: false){
+                            HStack {
+                                ForEach(event.participants ?? [Participant](), id:\.id) { p in
+                                    ParticipantView(participant: p)
+                                }
+                            } .padding(.leading)
+                        }
+                    }
+                    
+                    // MARK: - Field Details View
                     if let field = event.data?.field {
-                        EventDetailFieldView(field: field)
-                            .padding(.top)
+                        VStack {
+                            EventDetailFieldView(field: field)
+                                .padding(.top)
+                        }
                     }
                     
+                    // MARK: - Club Details View
                     if let club = event.data?.club {
-                        EventDetailHostClubView(club: club)
-                            .padding(.top, 20)
-                    }
-                }.sheet(isPresented: $showMenu) {
-                    EventMenu(event: $event)
-                        .presentationDetents([.height(200)])
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{ dismiss() }){
-                            Image(systemName: "xmark")
-                                .foregroundColor(.primary)
-                                .imageScale(.large)
+                        VStack {
+                            EventDetailHostClubView(club: club)
+                                .padding(.top, 20)
                         }
                     }
+                }
+            }.sheet(isPresented: $showMenu) {
+                EventMenu(event: $event)
+                    .presentationDetents([.height(200)])
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action:{ dismiss() }){
+                        Image(systemName: "xmark")
+                            .foregroundColor(.primary)
+                            .imageScale(.large)
+                    }
+                }
+                if canManipulateEvent {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action:{self.showMenu.toggle()}){
-                            Image(systemName: "ellipsis")
-                                .foregroundColor(.primary)
-                            
-                        }
+                        EventDetailActionButton(event: $event, showMenu: $showMenu)
                     }
                 }
-                .refreshable {
-                    guard let id = event.id else {
-                        return
-                    }
-                    let resp = await session.eventObserver.fetchEvent(id: id)
-                    if let e = resp {
-                        await MainActor.run {
-                            event = e
-                        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action:{self.showMenu.toggle()}){
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
                     }
                 }
-                EventDetailActions(event: $event, showMenu: $showMenu)
-                    .opacity(event.status == "ended" ? 0 : 1)
-                    .disabled(eventEnded)
+            }
+            .refreshable {
+                guard let id = event.id else {
+                    return
+                }
+                let resp = await session.eventObserver.fetchEvent(id: id)
+                if let e = resp {
+                    await MainActor.run {
+                        self.event = e
+                    }
+                }
             }
         }
     }

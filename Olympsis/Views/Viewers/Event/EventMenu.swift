@@ -10,6 +10,7 @@ import SwiftUI
 struct EventMenu: View {
     
     @Binding var event: Event
+    @State var loadingState: LOADING_STATE = .pending
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
     
@@ -43,13 +44,52 @@ struct EventMenu: View {
         return (eventPoster == uuid)
     }
     
+    func startEvent() async {
+        let status = "in-progress"
+        let now = Int(Date.now.timeIntervalSince1970)
+        let dao = EventDao(actualSTime: now, status: status)
+        loadingState = .loading
+        guard let id = event.id else {
+            return
+        }
+        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
+        if res {
+            await MainActor.run {
+                withAnimation(.easeInOut){
+                    event.actualStartTime = Int64(now)
+                    event.status = status
+                    loadingState = .success
+                }
+            }
+        }
+    }
+    
+    func stopEvent() async {
+        let status = "ended"
+        let now = Int(Date.now.timeIntervalSince1970)
+        let dao = EventDao(stopTime: now, status: status)
+        loadingState = .loading
+        guard let id = event.id else {
+            return
+        }
+        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
+        if res {
+            await MainActor.run {
+                withAnimation(.easeInOut){
+                    event.stopTime = Int64(now)
+                    event.status = status
+                    loadingState = .success
+                }
+            }
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .center){
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 35, height: 5)
                 .foregroundColor(.gray)
                 .opacity(0.3)
-                .padding(.bottom)
                 .padding(.top, 5)
             Button(action:{}) {
                 HStack {
@@ -63,7 +103,48 @@ struct EventMenu: View {
                 }.modifier(MenuButton())
             }
             
-            if isPosterOrAdmin {
+            if /*isPosterOrAdmin*/ true {
+                
+                if event.status != "ended" {
+                    Button(action:{
+                        Task {
+                            if event.status == "pending" {
+                                await startEvent()
+                            } else if event.status == "in-progress" {
+                                await stopEvent()
+                            }
+                        }
+                    }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(.gray)
+                                .opacity(0.3)
+                            HStack {
+                                if event.status == "pending" {
+                                    Image(systemName: "play.fill")
+                                        .imageScale(.large)
+                                        .padding(.leading)
+                                        .foregroundColor(.green)
+                                    Text("Start Event")
+                                        .foregroundColor(.green)
+                                } else if event.status == "in-progress" {
+                                    Image(systemName: "stop.fill")
+                                        .padding(.leading)
+                                        .imageScale(.large)
+                                        .foregroundColor(.red)
+                                    Text("Stop Event")
+                                        .foregroundColor(.red)
+                                    if loadingState == .loading {
+                                        ProgressView()
+                                    }
+                                }
+                                
+                                Spacer()
+                            }
+                        }.frame(width: SCREEN_WIDTH-25, height: 50)
+                    }.disabled(loadingState == .loading ? true : false)
+                }
+                
                 Button(action:{
                     Task {
                         await deleteEvent()
@@ -85,6 +166,8 @@ struct EventMenu: View {
                     }.frame(width: SCREEN_WIDTH-25, height: 50)
                 }
             }
+            
+            
             
             Spacer()
         }
