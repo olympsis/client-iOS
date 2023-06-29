@@ -155,7 +155,6 @@
 		9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F32933FE41007A62C4 /* EventMenu.swift */; };
 		9AD208F6293425C6007A62C4 /* MyClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F5293425C6007A62C4 /* MyClubView.swift */; };
 		9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F7293429E3007A62C4 /* ClubsList.swift */; };
-		9AD208FA29342E6B007A62C4 /* NoPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F929342E6B007A62C4 /* NoPostsView.swift */; };
 		9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FB293432A4007A62C4 /* ClubMenu.swift */; };
 		9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FD2934448D007A62C4 /* ClubApplications.swift */; };
 		9AD2090029344498007A62C4 /* ClubApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FF29344498007A62C4 /* ClubApplicationView.swift */; };
@@ -333,7 +332,6 @@
 		9AD208F32933FE41007A62C4 /* EventMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMenu.swift; sourceTree = "<group>"; };
 		9AD208F5293425C6007A62C4 /* MyClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyClubView.swift; sourceTree = "<group>"; };
 		9AD208F7293429E3007A62C4 /* ClubsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsList.swift; sourceTree = "<group>"; };
-		9AD208F929342E6B007A62C4 /* NoPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPostsView.swift; sourceTree = "<group>"; };
 		9AD208FB293432A4007A62C4 /* ClubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMenu.swift; sourceTree = "<group>"; };
 		9AD208FD2934448D007A62C4 /* ClubApplications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplications.swift; sourceTree = "<group>"; };
 		9AD208FF29344498007A62C4 /* ClubApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationView.swift; sourceTree = "<group>"; };
@@ -758,7 +756,6 @@
 				9A5D336D292AF813008CF61D /* CreateNewPost.swift */,
 				9AD208F5293425C6007A62C4 /* MyClubView.swift */,
 				9AD208F7293429E3007A62C4 /* ClubsList.swift */,
-				9AD208F929342E6B007A62C4 /* NoPostsView.swift */,
 				9AD4DC432974A095009B6120 /* ClubsList2.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
 				9AD208FD2934448D007A62C4 /* ClubApplications.swift */,
@@ -1035,7 +1032,6 @@
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
 				9A5D3365292AAA71008CF61D /* PostView.swift in Sources */,
-				9AD208FA29342E6B007A62C4 /* NoPostsView.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
 				5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,

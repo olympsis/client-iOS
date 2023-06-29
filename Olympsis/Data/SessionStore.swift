@@ -52,13 +52,6 @@ class SessionStore: ObservableObject {
         user = cacheService.fetchUser()
     }
     
-    func fetchClubPosts(id: String) async {
-        guard let club = self.clubs.first(where: { $0.id == id }) else {
-            return
-        }
-        club.posts = await postObserver.getPosts(clubId: id)
-    }
-    
     func fetchUserClubs() async {
         // check to see if user has clubs
         guard let u = user, let clubIDs = u.clubs else {

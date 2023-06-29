@@ -124,13 +124,9 @@ struct ClubMenu: View {
                         ForEach(session.clubs) { club in
                             Button(action:{
                                 Task {
-                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }),
-                                          let id = session.clubs[i].id else {
+                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }) else {
                                         return
                                     }
-                                    let posts = await session.postObserver.getPosts(clubId: id)
-                                    session.clubs[i].posts = posts
-                                        
                                     index = i
                                 }
                             }
