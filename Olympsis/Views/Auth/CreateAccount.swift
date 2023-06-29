@@ -25,19 +25,10 @@ struct CreateAccount: View {
         case validationInProgress
     }
     
-    enum UNAME_STATUS: Int {
-        case none
-        case found
-        case valid
-        case invalid
-        case searching
-    }
-    
     @State private var username = ""
     @State private var timer: Timer?
     @State private var keyboardIsShown = false
     @State private var status: CREATE_ERROR?
-    @State private var uStatus = UNAME_STATUS.none
     @State private var selectedSports:[String] = []
     
     @Binding var currentView: AuthTab
@@ -49,6 +40,7 @@ struct CreateAccount: View {
     
     func updateSports(sport:String){
         selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
+        status = validateView()
     }
     
     func isSelected(sport:String) -> Bool {
@@ -62,20 +54,26 @@ struct CreateAccount: View {
     }
     
     func validateView() -> CREATE_ERROR? {
-        if username == "" {
+        guard username != "" else {
             return CREATE_ERROR.noUsername
-        } else if uStatus == .searching {
-            return CREATE_ERROR.validationInProgress
-        } else if uStatus == .invalid {
-            return CREATE_ERROR.invalidUsername
-        } else if selectedSports.count == 0 {
+        }
+        guard selectedSports.count != 0 else {
             return CREATE_ERROR.noSport
+        }
+        if status == .validationInProgress {
+            return CREATE_ERROR.validationInProgress
+        } else if status == .invalidUsername {
+            return CREATE_ERROR.invalidUsername
         }
         return nil
     }
     
     func createUserData() async {
         do {
+            if selectedSports.count == 0 {
+                return
+            }
+            
             let data = try await userObserver.createUserData(username: username, sports: selectedSports)
 
             if let user = data {
@@ -84,6 +82,10 @@ struct CreateAccount: View {
                     cache.username = user.username
                     cache.sports = user.sports
                     cacheService.cacheUser(user: cache)
+                    
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        currentView = .permissions
+                    }
                 }
             }
         } catch {
@@ -104,7 +106,7 @@ struct CreateAccount: View {
                     VStack(alignment: .leading){
                         Text("username:")
                             .font(.title2)
-                            .foregroundColor(status == .noUsername ? .red : .primary)
+                            .foregroundColor(status == .noUsername || status == .invalidUsername ? .red : .primary)
                         Text("keep between 5 and 15 characters")
                             .font(.caption2)
                             .foregroundColor(.gray)
@@ -120,8 +122,7 @@ struct CreateAccount: View {
                                         .textInputAutocapitalization(.never)
                                         .autocorrectionDisabled(true)
                                         .keyboardType(.alphabet)
-                                        .disabled(uStatus == .searching ? true : false)
-                                        .submitLabel(.search)
+                                        .disabled(status == .validationInProgress ? true : false)
                                         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)) { _ in
                                             withAnimation(.easeInOut){
                                                 self.keyboardIsShown = true
@@ -141,16 +142,16 @@ struct CreateAccount: View {
                                                 Task {
                                                     if validateInput(newValue) {
                                                         self.keyboardIsShown = false
-                                                        uStatus = .searching
+                                                        status = .validationInProgress
                                                         let res = try await userObserver.CheckUserName(name: newValue)
                                                         if res {
-                                                            uStatus = .valid
-                                                            status = .none
+                                                            status = nil
+                                                            return
                                                         } else {
-                                                            uStatus = .found
+                                                            status = .invalidUsername
+                                                            return
                                                         }
                                                     } else {
-                                                        uStatus = .invalid
                                                         status = .noUsername
                                                         self.keyboardIsShown = true
                                                     }
@@ -158,13 +159,13 @@ struct CreateAccount: View {
                                             }
                                         }
                                     HStack {
-                                        if uStatus == .searching {
+                                        if status == .validationInProgress {
                                             ProgressView()
                                                 .padding(.leading, 4)
                                                 .padding(.trailing, 10)
                                         } else {
-                                            if uStatus != .none {
-                                                uStatus == .valid ?
+                                            if username != "" && status != .validationInProgress {
+                                                status == nil || status != .invalidUsername ?
                                                 Image(systemName: "checkmark")
                                                     .imageScale(.large)
                                                     .padding(.trailing, 10)
@@ -224,13 +225,11 @@ struct CreateAccount: View {
                     
                     Button(action:{
                         status = validateView()
-                        if status == nil {
-                            Task {
-                                await self.createUserData()
-                            }
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                currentView = .permissions
-                            }
+                        guard status == nil else {
+                            return
+                        }
+                        Task {
+                            await self.createUserData()
                         }
                     }) {
                         ZStack {
@@ -242,7 +241,7 @@ struct CreateAccount: View {
                                 .font(.title3)
                         }
                     }.padding(.top, 50)
-                    
+                        .disabled(status != .none ? true : false)
                 }
             }.task {
                 // re initializing because the service needs to retrieve new token from the keychain

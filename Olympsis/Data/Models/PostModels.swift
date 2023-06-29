@@ -5,9 +5,10 @@
 //  Created by Joel Joseph on 6/3/23.
 //
 
+import SwiftUI
 import Foundation
 
-struct Post: Codable, Identifiable, RandomAccessCollection {
+class Post: Codable, Identifiable, RandomAccessCollection {
     
     let id: String?
     let poster: String
@@ -19,6 +20,29 @@ struct Post: Codable, Identifiable, RandomAccessCollection {
     var likes: [Like]?
     var comments: [Comment]?
     let createdAt: Int64?
+    
+    init(id: String?,
+         poster: String,
+         clubID: String?,
+         body: String,
+         eventID: String?,
+         images: [String]?,
+         data: PostData?,
+         likes: [Like]?,
+         comments: [Comment]?,
+         createdAt: Int64?) {
+        
+        self.id = id
+        self.poster = poster
+        self.clubID = clubID
+        self.body = body
+        self.eventID = eventID
+        self.images = images
+        self.data = data
+        self.likes = likes
+        self.comments = comments
+        self.createdAt = createdAt
+    }
     
     enum CodingKeys: String, CodingKey {
         case id

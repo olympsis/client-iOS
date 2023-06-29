@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA12A4123EF0019E9F7 /* Notifications.swift */; };
+		5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA32A4123FB0019E9F7 /* Location.swift */; };
 		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
 		5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
 		5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F12A28E91800257350 /* WelcomeView.swift */; };
@@ -183,6 +185,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F00FEA12A4123EF0019E9F7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		5F00FEA32A4123FB0019E9F7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
 		5F1329B92A282BE200B31170 /* EventModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModels.swift; sourceTree = "<group>"; };
 		5F4E53F12A28E91800257350 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -573,6 +577,8 @@
 				9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */,
 				9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */,
 				9ABB1EBA290505440050C0F0 /* AuthContainer.swift */,
+				5F00FEA12A4123EF0019E9F7 /* Notifications.swift */,
+				5F00FEA32A4123FB0019E9F7 /* Location.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -990,6 +996,7 @@
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
 				9A69FE512972241400EBC5F9 /* EventDetailHostClubView.swift in Sources */,
 				9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */,
+				5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
 				9A35370429289396005EC806 /* ParticipantView.swift in Sources */,
@@ -1048,6 +1055,7 @@
 				9A5CA4D7296F53D100C63A32 /* FieldListView.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
 				9AECDA4829545242007956FB /* LookUp.swift in Sources */,
+				5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */,
 				9A5CA4DB296F725C00C63A32 /* MembersListView.swift in Sources */,
 				9AD208F6293425C6007A62C4 /* MyClubView.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
@@ -1228,7 +1236,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.3;
+				MARKETING_VERSION = 0.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1269,7 +1277,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.3;
+				MARKETING_VERSION = 0.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

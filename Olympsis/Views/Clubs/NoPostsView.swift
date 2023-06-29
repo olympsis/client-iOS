@@ -34,7 +34,7 @@ struct NoPostsView: View {
                 }
             }
             .fullScreenCover(isPresented: $showCreatePost) {
-                CreateNewPost(club: $club)
+                CreateNewPost(club: club)
             }
         }
     }

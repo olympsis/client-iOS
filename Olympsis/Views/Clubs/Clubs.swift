@@ -30,7 +30,7 @@ struct Clubs: View {
                                     .presentationDetents([.height(250)])
                             }
                     } else {
-                        MyClubView(club: $session.clubs[index])
+                        MyClubView(club: $session.clubs[index], showNewPost: $showNewPost)
                             .fullScreenCover(isPresented: $showMenu) {
                                 ClubMenu(club: $session.clubs[index], index: $index)
                             }
@@ -47,9 +47,6 @@ struct Clubs: View {
             }
             .task {
                 status = .success
-            }
-            .fullScreenCover(isPresented: $showNewPost) {
-                CreateNewPost(club: $session.clubs[index])
             }
         }
     }

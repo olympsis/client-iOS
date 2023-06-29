@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Club: Codable, Identifiable {
+class Club: Codable, Identifiable {
 
     let id: String?
     let name: String?
@@ -22,6 +22,35 @@ struct Club: Codable, Identifiable {
     let rules: [String]?
     var posts: [Post]?
     let createdAt: Int64?
+    
+    init(id: String?,
+         name: String?,
+         description: String?,
+         sport: String?,
+         city: String?,
+         state: String?,
+         country: String?,
+         imageURL: String?,
+         visibility: String?,
+         members: [Member]?,
+         rules: [String]?,
+         posts: [Post]?,
+         createdAt: Int64?) {
+        
+        self.id = id
+        self.name = name
+        self.description = description
+        self.sport = sport
+        self.city = city
+        self.state = state
+        self.country = country
+        self.imageURL = imageURL
+        self.visibility = visibility
+        self.members = members
+        self.rules = rules
+        self.posts = posts
+        self.createdAt = createdAt
+    }
     
     static func == (lhs: Club, rhs: Club) -> Bool {
         guard let lhsID = lhs.id,
@@ -48,7 +77,7 @@ struct Club: Codable, Identifiable {
     }
 }
 
-struct Member: Codable, Identifiable, Hashable {
+class Member: Codable, Identifiable {
     
     let id: String?
     let uuid: String
@@ -56,12 +85,17 @@ struct Member: Codable, Identifiable, Hashable {
     let data: UserData?
     let joinedAt: Int64?
     
-    static func == (lhs: Member, rhs: Member) -> Bool {
-        guard let lhsID = lhs.id,
-              let rhsID = rhs.id else {
-            return false
-        }
-        return lhsID == rhsID
+    init(id: String?,
+         uuid: String,
+         role: String,
+         data: UserData?,
+         joinedAt: Int64?) {
+        
+        self.id = id
+        self.uuid = uuid
+        self.role = role
+        self.data = data
+        self.joinedAt = joinedAt
     }
     
     enum CodingKeys: String, CodingKey {
