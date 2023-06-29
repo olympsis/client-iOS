@@ -10,7 +10,7 @@ import PhotosUI
 
 struct CreateNewPost: View {
     
-    @Binding var club: Club
+    @State var club: Club
     @State private var state: LOADING_STATE = .pending
     @State private var text = ""
     @State private var images: [String]?
@@ -53,7 +53,7 @@ struct CreateNewPost: View {
         let resp = await session.postObserver.createPost(owner: uuid, clubId: id, body: text, images: images)
         
         // add to club view
-        guard var r = resp else {
+        guard resp != nil else {
             state = .failure
             
             // delete images if we fail to create post
@@ -63,23 +63,9 @@ struct CreateNewPost: View {
             self.presentationMode.wrappedValue.dismiss()
             return
         }
-
-        r.data = PostData(poster: nil, user: user, event: nil)
         
-        // add post to local data
-        DispatchQueue.main.async {
-            if club.posts != nil {
-                club.posts!.append(r)
-                state = .success
-                self.presentationMode.wrappedValue.dismiss()
-            } else {
-                club.posts = [r]
-                state = .success
-                self.presentationMode.wrappedValue.dismiss()
-            }
-            
-            
-        }
+        state = .success
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     func UploadImage() async {
@@ -187,6 +173,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewPost(club: .constant(CLUBS[0])).environmentObject(SessionStore())
+        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
     }
 }

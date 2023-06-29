@@ -53,7 +53,7 @@ class SessionStore: ObservableObject {
     }
     
     func fetchClubPosts(id: String) async {
-        guard var club = self.clubs.first(where: { $0.id == id }) else {
+        guard let club = self.clubs.first(where: { $0.id == id }) else {
             return
         }
         club.posts = await postObserver.getPosts(clubId: id)

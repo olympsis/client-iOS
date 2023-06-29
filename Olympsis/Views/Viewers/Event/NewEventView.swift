@@ -100,7 +100,7 @@ struct NewEventView: View {
         let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
-        guard var newEvent = resp,
+        guard let newEvent = resp,
                 let userData = session.user else {
             log.error("failed to create event")
             return

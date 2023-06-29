@@ -9,8 +9,9 @@ import SwiftUI
 
 struct PostMenu: View {
     
+    @State var post: Post
     @Binding var club: Club
-    @State var post: Post?
+    @Binding var posts: [Post]
     
     @StateObject private var uploadObserver = UploadObserver()
     
@@ -18,42 +19,41 @@ struct PostMenu: View {
     @Environment(\.presentationMode) var presentationMode
     
     var isPosterOrAdmin: Bool {
-        guard let _post = post,
-            let user = session.user,
+        guard let user = session.user,
               let uuid = user.uuid,
               let members = club.members else {
             return false
         }
         
         guard let member = members.first(where: { $0.uuid == uuid }),
-              member.role != "member" else {
-            return false
+              member.role == "member" else {
+            return true
         }
         
-        return (_post.poster == uuid)
+        return (post.poster == uuid)
     }
     
     func deletePost() async {
-        guard let _post = post,
-            let id = _post.id else {
+        guard let id = post.id else {
             return
         }
+        
         let res = await session.postObserver.deletePost(postID: id)
-        if res {
-            guard let id = club.id else {
-                return
-            }
-            
-            // delete images
-            if let images = _post.images {
-                for image in images {
-                    let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(image))
-                }
-            }
-            
-            club.posts = await session.postObserver.getPosts(clubId: id)
+        guard res == true,
+            let images = post.images else {
+            posts.removeAll(where: { $0.id == post.id })
             self.presentationMode.wrappedValue.dismiss()
+            return
         }
+        
+        // delete images
+        for image in images {
+            let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(image))
+        }
+        
+        // remove post
+        posts.removeAll(where: { $0.id == post.id })
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     var body: some View {
@@ -97,6 +97,6 @@ struct PostMenu: View {
 
 struct PostMenu_Previews: PreviewProvider {
     static var previews: some View {
-        PostMenu(club: .constant(CLUBS[0]), post: POSTS[0]).environmentObject(SessionStore())
+        PostMenu(post: POSTS[0], club: .constant(CLUBS[0]), posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }

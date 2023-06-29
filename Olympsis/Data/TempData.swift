@@ -31,13 +31,13 @@ let EVENTS = [
 
 
 let POSTS = [
-    Post(id: "0", poster: "", clubID: "", body: "It was a great day today", images: nil, data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
+    Post(id: "0", poster: "", clubID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364779),
-    Post(id: "1", poster: "", clubID: "", body: "Was it just me that saw this?", images: [""], data: PostData(poster: nil, user: USERS_DATA[1], event: nil), likes: nil, comments: [
+    Post(id: "1", poster: "", clubID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[1], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
     ], createdAt: 1639364780),
-    Post(id: "2", poster: "", clubID: "", body: "Yooo it was litt today", images: [""], data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
+    Post(id: "2", poster: "", clubID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364781)
 ]

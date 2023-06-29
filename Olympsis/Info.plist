@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>INSendMessageIntent</string>
-	</array>
-	<key>CFBundleIdentifier</key>
-	<string></string>
 	<key>API-KEY</key>
 	<string>X0HyasjIZL6GLo7hBzwZneCQhmCIkZoW</string>
 	<key>CFBundleDocumentTypes</key>
@@ -16,8 +10,8 @@
 			<key>CFBundleTypeName</key>
 			<string>MKDirectionsRequest</string>
 			<key>LSHandlerRank</key>
-            <string>Alternate</string>
-            <key>LSItemContentTypes</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.maps.directionsrequest</string>
 			</array>
@@ -43,6 +37,10 @@
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeCar</string>
+	</array>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>In order to notify you of local events, and club activities our app needs to be able send you notifications.</string>

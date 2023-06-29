@@ -9,40 +9,46 @@ import SwiftUI
 
 struct PostsView: View {
     
-    @Binding var club: Club
-    @State var showPostMenu = false
+    @State var club: Club
+    @Binding var posts: [Post]
+    @State private var showPostMenu = false
     @State private var selectedPostIndex = 0
     @EnvironmentObject var session:SessionStore
     
-    var posts: [Post] {
-        return club.posts?.sorted{$0.createdAt! > $1.createdAt!} ?? [Post]()
+    func getPosts() async {
+        guard let id = club.id,
+              let resp = await session.postObserver.getPosts(clubId: id) else {
+            return
+        }
+        
+        posts = resp.sorted{$0.createdAt! > $1.createdAt!}
     }
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            ForEach(club.posts?.sorted{$0.createdAt! > $1.createdAt!} ?? [Post]()){ post in
-                PostView(club: $club, post: post, index: $selectedPostIndex, showMenu: $showPostMenu)
-                    .sheet(isPresented: $showPostMenu) {
-                        PostMenu(club: $club, post: club.posts?[selectedPostIndex])
-                            .presentationDetents([.height(250)])
-                    }
-                    .padding(.bottom, 1)
-                    .padding(.bottom, (post.id! == posts.last?.id!) ? 20 : 0)
-            }.padding(.top)
-        }.refreshable {
-            Task {
-                guard let id = club.id else {
-                    return
-                }
-                let resp = await session.postObserver.getPosts(clubId: id)
-                club.posts = resp ?? [Post]()
+            if posts.count == 0 {
+                Text("There are no posts")
+                    .padding(.top)
+                .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/1.2)
+            } else {
+                ForEach(posts.sorted{$0.createdAt! > $1.createdAt!}){ post in
+                    PostView(club: $club, post: post, index: $selectedPostIndex, showMenu: $showPostMenu)
+                        .sheet(isPresented: $showPostMenu) {
+                            PostMenu(post: posts[selectedPostIndex], club: $club, posts: $posts)
+                                .presentationDetents([.height(250)])
+                        }
+                        .padding(.bottom, 1)
+                        .padding(.bottom, (post.id! == posts.last?.id!) ? 20 : 0)
+                }.padding(.top)
             }
+        }.refreshable {
+            await getPosts()
         }
     }
 }
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView(club: .constant(CLUBS[0])).environmentObject(SessionStore())
+        PostsView(club: CLUBS[0], posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }
