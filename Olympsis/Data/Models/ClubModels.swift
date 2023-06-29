@@ -20,7 +20,6 @@ class Club: Codable, Identifiable {
     let visibility: String?
     let members: [Member]?
     let rules: [String]?
-    var posts: [Post]?
     let createdAt: Int64?
     
     init(id: String?,
@@ -34,7 +33,6 @@ class Club: Codable, Identifiable {
          visibility: String?,
          members: [Member]?,
          rules: [String]?,
-         posts: [Post]?,
          createdAt: Int64?) {
         
         self.id = id
@@ -48,7 +46,6 @@ class Club: Codable, Identifiable {
         self.visibility = visibility
         self.members = members
         self.rules = rules
-        self.posts = posts
         self.createdAt = createdAt
     }
     
@@ -72,7 +69,6 @@ class Club: Codable, Identifiable {
         case visibility
         case members
         case rules
-        case posts
         case createdAt = "created_at"
     }
 }

@@ -12,7 +12,6 @@ struct PostView: View {
     @State var post: Post
     @Binding var index: Int
     @Binding var showMenu: Bool
-    @State private var isLiked = false
     @State private var showComments = false
     @State private var status: LOADING_STATE = .pending
     
@@ -44,6 +43,13 @@ struct PostView: View {
         return imgs.map { i in
             return GenerateImageURL(i)
         }
+    }
+    
+    var isLiked: Bool {
+        guard let user = session.user else {
+            return false
+        }
+        return  post.likes?.first(where: { $0.uuid == user.uuid }) != nil
     }
     
     var isPoster: Bool {
@@ -79,7 +85,6 @@ struct PostView: View {
             post.likes = [lk]
             return
         }
-        self.isLiked = true
         likes.append(lk)
     }
     
@@ -91,7 +96,6 @@ struct PostView: View {
         }
         let resp = await session.postObserver.deleteLike(id: id, likeID: like.id ?? "")
         if resp {
-            self.isLiked = false
             post.likes?.removeAll(where: {$0.id == like.id})
         }
     }
@@ -185,18 +189,6 @@ struct PostView: View {
         }
         .fullScreenCover(isPresented: $showComments) {
             PostComments(club: club, post: $post)
-        }
-        .task {
-            guard let user = session.user,
-                    let likes = post.likes else {
-                return
-            }
-            self.isLiked = likes.first(where: { $0.uuid == user.uuid }) != nil
-            
-            guard let i = club.posts?.firstIndex(where: {$0.id! == post.id!}) else {
-                return
-            }
-            index = i
         }
     }
 }
