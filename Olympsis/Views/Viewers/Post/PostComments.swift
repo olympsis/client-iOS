@@ -56,7 +56,7 @@ struct PostComments: View {
             }
             let res = await session.postObserver.deleteComment(id: id, cid: commentID)
             if res {
-                post.comments?.removeAll(where: { $0.id == comment.id })
+                post.comments?.removeAll(where: { $0.id == commentID })
             }
         }
     }
@@ -77,19 +77,12 @@ struct PostComments: View {
         return post.poster == uuid
     }
     
-    var comments: [Comment] {
-        guard let _comments = post.comments else {
-            return [Comment]()
-        }
-        return _comments
-    }
-    
     var body: some View {
         NavigationView {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    if comments.count > 0 {
-                        ForEach(comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
+                    if post.comments != nil {
+                        ForEach(post.comments?.sorted{$0.createdAt! > $1.createdAt!} ?? [Comment](), id: \.id){ comment in
                             Menu {
                                 Group {
                                     Button(action:{}){
@@ -113,14 +106,11 @@ struct PostComments: View {
                     }
                 }.listStyle(.plain)
                     .refreshable {
-                        guard let id = post.id else {
+                        guard let id = post.id,
+                                let resp = await session.postObserver.getPost(id: id) else {
                             return
                         }
-                        let _post = await session.postObserver.getPost(id: id)
-                        guard let p = _post else {
-                            return
-                        }
-                        post = p
+                        post = resp
                     }
 
                 VStack {

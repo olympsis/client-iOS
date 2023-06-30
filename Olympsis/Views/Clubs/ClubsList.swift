@@ -24,6 +24,27 @@ struct ClubsList: View {
     private var geoCoder = CLGeocoder()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "clubs_list_view")
     
+    private var filteredClubs: [Club] {
+        if text == "" {
+            guard let user = session.user,
+                  let userClubs = user.clubs else {
+                    return clubs
+            }
+            return clubs.filter { club in
+                !userClubs.contains(where: { club.id == $0 })
+            }
+        } else {
+            guard let user = session.user,
+                  let userClubs = user.clubs else {
+                return clubs
+            }
+            let newClubs = clubs.filter { club in
+                !userClubs.contains(where: { club.id == $0 })
+            }
+            return newClubs.filter{ $0.name!.lowercased().contains(text.lowercased()) }
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -56,26 +77,18 @@ struct ClubsList: View {
                         .padding(.top)
                 } else {
                     VStack{
-                        if clubs.isEmpty {
-                            Text("There are no clubs in your area. Broaden your search or...")
+                        if filteredClubs.isEmpty {
+                            Text("No clubs found. Broaden your search or...")
                                 .font(.caption)
                                 .padding(.top, 50)
                             Button(action:{ showNewClubCover.toggle() }){
                                 Text("Create One?")
                                     .font(.caption)
                             }
-                                
                         } else {
-                            if text != ""{
-                                ForEach(clubs.filter{$0.name!.lowercased().contains(text.lowercased())}, id: \.id){ c in
-                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
-                                        .padding(.bottom)
-                                }
-                            } else {
-                                ForEach(clubs, id: \.id){ c in
-                                    SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
-                                        .padding(.bottom)
-                                }
+                            ForEach(filteredClubs, id: \.id){ c in
+                                SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
+                                    .padding(.bottom)
                             }
                         }
                     }
@@ -87,19 +100,19 @@ struct ClubsList: View {
                 guard let location = session.locationManager.location else {
                     return
                 }
+                
                 let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                
                 do {
-                    let pk = try await geoCoder.reverseGeocodeLocation(l)
+                    let locale = Locale(identifier: "en_US")
+                    let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
                     guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea else {
-                        return
-                    }
-                    let resp = await session.clubObserver.getClubs(country: country, state: state)
-                    guard let clubs = resp else {
+                          let state = pk.first?.administrativeArea,
+                          let resp = await session.clubObserver.getClubs(country: country, state: state) else {
                         return
                     }
                     await MainActor.run {
-                        self.clubs = clubs
+                        self.clubs = resp
                     }
                 } catch {
                     log.error("\(error)")
@@ -113,19 +126,18 @@ struct ClubsList: View {
                 }
                 
                 let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                
                 do {
-                    let pk = try await geoCoder.reverseGeocodeLocation(l)
+                    let locale = Locale(identifier: "en_US")
+                    let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
                     guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea else {
-                        return
-                    }
-                    let resp = await session.clubObserver.getClubs(country: country, state: state)
-                    guard let clubs = resp else {
+                          let state = pk.first?.administrativeArea,
+                          let resp = await session.clubObserver.getClubs(country: country, state: state) else {
                         status = .failure
                         return
                     }
                     await MainActor.run {
-                        self.clubs = clubs
+                        self.clubs = resp
                         status = .success
                     }
                 } catch {
