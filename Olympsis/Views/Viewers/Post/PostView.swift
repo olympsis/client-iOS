@@ -12,6 +12,7 @@ struct PostView: View {
     @State var post: Post
     @Binding var index: Int
     @Binding var showMenu: Bool
+    @State private var isLiked = false
     @State private var showComments = false
     @State private var status: LOADING_STATE = .pending
     
@@ -45,13 +46,6 @@ struct PostView: View {
         }
     }
     
-    var isLiked: Bool {
-        guard let user = session.user else {
-            return false
-        }
-        return  post.likes?.first(where: { $0.uuid == user.uuid }) != nil
-    }
-    
     var isPoster: Bool {
         guard let user = session.user,
               let uuid = user.uuid else {
@@ -81,22 +75,26 @@ struct PostView: View {
         guard let lk = resp else {
             return
         }
-        guard var likes = post.likes else {
+        
+        isLiked = true
+        guard post.likes != nil else {
             post.likes = [lk]
             return
         }
-        likes.append(lk)
+        post.likes?.append(lk)
     }
     
     func removeLike() async {
         guard let id = post.id, let likes = post.likes,
                 let user = session.user, let uuid = user.uuid,
-              let like = likes.first(where: {$0.uuid == uuid }) else {
+              let like = likes.first(where: {$0.uuid == uuid }),
+              let lID = like.id else {
             return
         }
-        let resp = await session.postObserver.deleteLike(id: id, likeID: like.id ?? "")
+        let resp = await session.postObserver.deleteLike(id: id, likeID: lID)
         if resp {
             post.likes?.removeAll(where: {$0.id == like.id})
+            isLiked = false
         }
     }
     
@@ -189,6 +187,15 @@ struct PostView: View {
         }
         .fullScreenCover(isPresented: $showComments) {
             PostComments(club: club, post: $post)
+        }
+        .task {
+            guard let user = session.user,
+                  let uuid = user.uuid,
+                  ((post.likes?.first(where: { $0.uuid == uuid })) != nil) else {
+                self.isLiked = false
+                return
+            }
+            self.isLiked = true
         }
     }
 }
