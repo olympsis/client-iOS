@@ -12,12 +12,29 @@ import SwiftUI
 let SCREEN_WIDTH = UIScreen.main.bounds.width
 let SCREEN_HEIGHT = UIScreen.main.bounds.height
 
+
 enum USER_STATUS {
     case New
     case Banned
     case Ubanned
     case Returning
     case Unknown
+}
+
+enum Tab: String, CaseIterable {
+    case home = "Home"
+    case club = "Club"
+    case map = "Map"
+    case activity = "Activity"
+    case profile = "Setting"
+}
+
+enum AuthTab: String, CaseIterable {
+    case auth = "AUTH"
+    case username = "USERNAME"
+    case sports = "SPORTS"
+    case location = "LOCATION"
+    case notifications = "NOTIFICATIONS"
 }
 
 
@@ -37,6 +54,8 @@ enum AuthNavigation: String, Hashable {
     
 }
 
+/// Enum to denote loading state of an event/view
+///
 enum LOADING_STATE {
     case pending
     case loading

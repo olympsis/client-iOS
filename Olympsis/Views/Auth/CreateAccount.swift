@@ -84,7 +84,7 @@ struct CreateAccount: View {
                     cacheService.cacheUser(user: cache)
                     
                     withAnimation(.easeOut(duration: 0.2)) {
-                        currentView = .permissions
+                        currentView = .sports
                     }
                 }
             }
@@ -143,7 +143,7 @@ struct CreateAccount: View {
                                                     if validateInput(newValue) {
                                                         self.keyboardIsShown = false
                                                         status = .validationInProgress
-                                                        let res = try await userObserver.CheckUserName(name: newValue)
+                                                        let res = try await userObserver.UsernameAvailability(name: newValue)
                                                         if res {
                                                             status = nil
                                                             return
@@ -253,7 +253,7 @@ struct CreateAccount: View {
 
 struct CreateAccount_Previews: PreviewProvider {
     static var previews: some View {
-        CreateAccount(currentView: .constant(.create)).environmentObject(SessionStore())
+        CreateAccount(currentView: .constant(.sports)).environmentObject(SessionStore())
     }
 }
 
