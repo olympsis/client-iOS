@@ -13,6 +13,8 @@
 		5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
 		5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */; };
 		5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */; };
+		5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA62A547D6C00EAF5A4 /* PickSports.swift */; };
+		5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */; };
 		5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F12A28E91800257350 /* WelcomeView.swift */; };
 		5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */; };
 		5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F52A2918B900257350 /* FieldsView.swift */; };
@@ -95,7 +97,6 @@
 		9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */; };
 		9A8FF0B828BB14C100DE4CF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B728BB14C100DE4CF8 /* Preview Assets.xcassets */; };
 		9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */; };
-		9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */; };
 		9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */; };
 		9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */; };
 		9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */; };
@@ -191,6 +192,8 @@
 		5F1329B92A282BE200B31170 /* EventModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModels.swift; sourceTree = "<group>"; };
 		5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickUsername.swift; sourceTree = "<group>"; };
 		5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonLabel.swift; sourceTree = "<group>"; };
+		5F493FA62A547D6C00EAF5A4 /* PickSports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSports.swift; sourceTree = "<group>"; };
+		5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsPicker.swift; sourceTree = "<group>"; };
 		5F4E53F12A28E91800257350 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsView.swift; sourceTree = "<group>"; };
 		5F4E53F52A2918B900257350 /* FieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsView.swift; sourceTree = "<group>"; };
@@ -271,7 +274,6 @@
 		9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A8FF0B728BB14C100DE4CF8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
-		9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccount.swift; sourceTree = "<group>"; };
 		9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Olympsis.entitlements; sourceTree = "<group>"; };
 		9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
@@ -382,6 +384,14 @@
 				5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		5F493FA82A5480B700EAF5A4 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */,
+			);
+			path = Pickers;
 			sourceTree = "<group>";
 		};
 		9A3536FF2928930D005EC806 /* Viewers */ = {
@@ -547,6 +557,7 @@
 		9A8FF0BE28BB18B800DE4CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5F493FA82A5480B700EAF5A4 /* Pickers */,
 				5F493FA32A54024900EAF5A4 /* Buttons */,
 				9AC5BAC0295E6D17003E851B /* Activity */,
 				9A3536FF2928930D005EC806 /* Viewers */,
@@ -583,12 +594,12 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */,
-				9A8FF0C928BB1A2400DE4CF8 /* Permissions.swift */,
 				9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */,
 				9ABB1EBA290505440050C0F0 /* AuthContainer.swift */,
 				5F00FEA12A4123EF0019E9F7 /* Notifications.swift */,
 				5F00FEA32A4123FB0019E9F7 /* Location.swift */,
 				5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */,
+				5F493FA62A547D6C00EAF5A4 /* PickSports.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -955,7 +966,6 @@
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */,
-				9A8FF0CA28BB1A2400DE4CF8 /* Permissions.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
 				9A81B6422925E50C009CA6ED /* EventView.swift in Sources */,
 				5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */,
@@ -988,6 +998,7 @@
 				9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */,
+				5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */,
 				9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */,
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
@@ -1093,6 +1104,7 @@
 				9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */,
 				9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */,
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
+				5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */,
 				5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);

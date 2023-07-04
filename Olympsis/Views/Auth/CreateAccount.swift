@@ -143,7 +143,7 @@ struct CreateAccount: View {
                                                     if validateInput(newValue) {
                                                         self.keyboardIsShown = false
                                                         status = .validationInProgress
-                                                        let res = try await userObserver.CheckUserName(name: newValue)
+                                                        let res = try await userObserver.UsernameAvailability(name: newValue)
                                                         if res {
                                                             status = nil
                                                             return

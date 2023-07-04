@@ -59,13 +59,13 @@ struct Auth: View {
                                     await MainActor.run {
                                         userStatus = res
                                         if userStatus == USER_STATUS.New {
-                                            currentView = .sports
+                                            currentView = .username
                                         } else if userStatus == USER_STATUS.Returning {
-                                            currentView = .sports
+                                            currentView = .location
                                         }
                                     }
                                 } catch {
-                                    log.error("\(error)")
+                                    log.error("failed to sign user in: \(error)")
                                 }
                             }
                         }

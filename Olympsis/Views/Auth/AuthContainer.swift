@@ -19,8 +19,9 @@ struct AuthContainer: View {
             TabView(selection: $currentView){
                 Auth(currentView: $currentView).tag(AuthTab.auth)
                 PickUsername(currentView: $currentView).tag(AuthTab.username)
-                CreateAccount(currentView: $currentView).tag(AuthTab.sports)
-                Permissions(currentView: $currentView).tag(AuthTab.location)
+                PickSports(currentView: $currentView).tag(AuthTab.sports)
+                Location(currentView: $currentView).tag(AuthTab.location)
+                Notifications(currentView: $currentView).tag(AuthTab.notifications)
             }
         }
     }

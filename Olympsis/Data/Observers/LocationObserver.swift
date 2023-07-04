@@ -17,12 +17,19 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate{
     override init() {
         super.init()
         manager.delegate = self
+        manager.allowsBackgroundLocationUpdates = true
+        manager.showsBackgroundLocationIndicator = true
+        manager.pausesLocationUpdatesAutomatically = true
     }
     
     // request authorization from user and starts updating location
     func requestAuthorization() async throws {
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
+    }
+    
+    func isLocationServicesEnabled() -> Bool {
+        return CLLocationManager.locationServicesEnabled()
     }
     
     // error if user declines
@@ -38,5 +45,9 @@ class LocationObserver: NSObject, ObservableObject, CLLocationManagerDelegate{
         region = MKCoordinateRegion(center: location, latitudinalMeters: 1000, longitudinalMeters: 1000)
     }
     
-    
+    // did enter region event
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if let _ = region as? CLCircularRegion {
+        }
+    }
 }

@@ -12,7 +12,7 @@ class UserObserver: ObservableObject {
     private let decoder = JSONDecoder()
     private let userService = UserService()
     
-    func CheckUserName(name: String) async throws -> Bool {
+    func UsernameAvailability(name: String) async throws -> Bool {
         let response = try await userService.UserNameAvailability(name: name)
         let object = try decoder.decode(UsernameAvailabilityResponse.self, from: response)
         return object.isAvailable
