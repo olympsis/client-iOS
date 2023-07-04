@@ -59,9 +59,9 @@ struct Auth: View {
                                     await MainActor.run {
                                         userStatus = res
                                         if userStatus == USER_STATUS.New {
-                                            currentView = .create
+                                            currentView = .sports
                                         } else if userStatus == USER_STATUS.Returning {
-                                            currentView = .permissions
+                                            currentView = .sports
                                         }
                                     }
                                 } catch {

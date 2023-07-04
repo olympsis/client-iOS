@@ -112,7 +112,7 @@ struct Permissions: View {
 
 struct Permissions_Previews: PreviewProvider {
     static var previews: some View {
-        Permissions(currentView: .constant(.permissions))
+        Permissions(currentView: .constant(.sports))
             .environmentObject(SessionStore())
     }
 }
