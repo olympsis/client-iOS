@@ -9,21 +9,16 @@ import SwiftUI
 
 struct EventsList: View {
     
+    @State var events = [Event]()
     @State private var selectedDate = Date()
     @State private var state: LOADING_STATE = .pending
     
     @EnvironmentObject var session:SessionStore
     @Environment(\.dismiss) private var dismiss
     
-    
-    // Later on we want to make it so if the field isnt in the cache we go fetch it.
-    func getField(fieldId: String) -> Field? {
-        return session.fields.first(where: {$0.id == fieldId })
-    }
-    
     var currentEvents: [Event] {
         let calendar = Calendar.current
-        return session.events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: selectedDate)})
+        return events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: selectedDate)})
     }
     
     var body: some View {

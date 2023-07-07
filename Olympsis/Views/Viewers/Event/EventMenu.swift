@@ -36,9 +36,12 @@ struct EventMenu: View {
             return false
         }
         
-        guard let member = members.first(where: { $0.uuid == uuid }),
-              member.role != "member" else {
+        guard let member = members.first(where: { $0.uuid == uuid }) else {
             return false
+        }
+        
+        if member.role != "member" {
+            return true
         }
         
         return (eventPoster == uuid)
@@ -103,7 +106,7 @@ struct EventMenu: View {
                 }.modifier(MenuButton())
             }
             
-            if /*isPosterOrAdmin*/ true {
+            if isPosterOrAdmin {
                 
                 if event.status != "ended" {
                     Button(action:{

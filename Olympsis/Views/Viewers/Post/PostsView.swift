@@ -9,10 +9,11 @@ import SwiftUI
 
 struct PostsView: View {
     
-    @State var club: Club
+    @Binding var club: Club
     @Binding var posts: [Post]
     @State private var showPostMenu = false
     @State private var selectedPostIndex = 0
+    @State private var showMoreEvents = false
     @EnvironmentObject var session:SessionStore
     
     func getPosts() async {
@@ -24,8 +25,32 @@ struct PostsView: View {
         posts = resp.sorted{$0.createdAt! > $1.createdAt!}
     }
     
+    var events: [Event]? {
+        guard let id = club.id else {
+            return nil
+        }
+        return session.events.filterByClubID(id: id)
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
+            if events != nil {
+                VStack {
+                    HStack {
+                        Text("Events")
+                            .font(.system(.headline))
+                        .padding()
+                        Spacer()
+                        Button(action:{self.showMoreEvents.toggle()}){
+                            Text("More")
+                               .bold()
+                            Image(systemName: "chevron.down")
+                        }.padding()
+                            .foregroundColor(Color.primary)
+                    }
+                    EventView(event: events![0])
+                }
+            }
             if posts.count == 0 {
                 Text("There are no posts")
                     .padding(.top)
@@ -44,11 +69,14 @@ struct PostsView: View {
         }.refreshable {
             await getPosts()
         }
+        .fullScreenCover(isPresented: $showMoreEvents) {
+            EventsList(events: events ?? [Event]())
+        }
     }
 }
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView(club: CLUBS[0], posts: .constant(POSTS)).environmentObject(SessionStore())
+        PostsView(club: .constant(CLUBS[0]), posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }

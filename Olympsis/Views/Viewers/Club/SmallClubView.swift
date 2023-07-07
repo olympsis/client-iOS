@@ -126,7 +126,7 @@ struct SmallClubView: View {
                             Button(action:{ Task{ await Apply() } }) {
                                 LoadingButton(text: "Apply", width: 100, status: $status)
                                     .padding(.trailing)
-                            }
+                            }.contentShape(Rectangle())
                         }
                     }.padding(.bottom)
                         .padding(.top)

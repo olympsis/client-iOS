@@ -31,7 +31,7 @@ struct MyClubView: View {
     
     var body: some View {
         VStack {
-            PostsView(club: club, posts: $posts)
+            PostsView(club: $club, posts: $posts)
         }
         .fullScreenCover(isPresented: $showNewPost, onDismiss: {
             Task {
