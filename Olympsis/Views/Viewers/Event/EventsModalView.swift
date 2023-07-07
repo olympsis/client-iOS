@@ -40,7 +40,7 @@ struct EventsModalView: View {
                     EventView(event: event)
                 }
             }.fullScreenCover(isPresented: $showMore) {
-                EventsList(events: todayEvents)
+                EventsList(events: session.events)
             }
         }
     }
