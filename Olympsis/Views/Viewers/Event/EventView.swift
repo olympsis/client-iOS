@@ -80,52 +80,67 @@ struct EventView: View {
         return participants.count
     }
     
-    var eventDate: String {
+    var eventDay: String {
         guard let eventStatus = event.status,
-              var eventStartTime = event.startTime else {
-            return "0:00 PM"
+              let eventStartTime = event.startTime else {
+            return "0/0/0"
         }
         
         if eventStatus == "in-progress" {
-            guard let actualStartTime = event.actualStartTime else {
-                return "0:00 PM"
+            guard event.actualStartTime == nil else {
+                return "Live"
             }
-            eventStartTime = actualStartTime
         }
         
         let currentDate = Date()
-        let formatter = DateFormatter()
         let calendar = Calendar.current
+        let timestamp = TimeInterval(eventStartTime)
         
-        let currentDay = calendar.component(.day, from: currentDate)
-        let currentMonth = calendar.component(.month, from: currentDate)
-        let currentYear = calendar.component(.year, from: currentDate)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d/y"
+        
+        if calendar.isDateInToday(Date(timeIntervalSince1970: timestamp)) {
+            return "Today"
+        } else if calendar.isDateInTomorrow(Date(timeIntervalSince1970: timestamp)) {
+            return "Tomorrow"
+        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .weekOfYear) {
+            formatter.dateFormat = "EEEE"
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .year) {
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        } else {
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        }
+    }
+    
+    var eventTime: String {
+        guard let eventStatus = event.status,
+              let eventStartTime = event.startTime else {
+            return "00:00am"
+        }
+        
+        if eventStatus == "in-progress" {
+            guard event.actualStartTime != nil else {
+                return "00 secs"
+            }
+            let currentDate = Date()
+            let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(event.actualStartTime!))
+            
+            if timeDifference < 60 {
+                return "\(timeDifference) secs"
+            } else if timeDifference < 3600 {
+                let minutes = timeDifference / 60
+                return "\(minutes) mins"
+            } else {
+                let hours = timeDifference / 3600
+                return "\(hours) hrs"
+            }
+        }
         
         let date = Date(timeIntervalSince1970: TimeInterval(eventStartTime))
-        let day = calendar.component(.day, from: date)
-        let month = calendar.component(.month, from: date)
-        let year = calendar.component(.year, from: date)
-//        let hour = calendar.component(.hour, from: date)
-//        let minute = calendar.component(.minute, from: date)
-        
-        if currentYear == year {
-            if currentDay == day && currentMonth == month {
-                formatter.dateFormat = "h:mm a"
-                return formatter.string(from: date)
-            } else if currentDay - 1 == day && currentMonth == month {
-                return "Yesterday"
-            } else if currentDay + 1 == day && currentMonth == month {
-                return "Tomorrow"
-            } else {
-                formatter.dateFormat = "MMM d"
-                let monthString = formatter.string(from: date)
-                return "\(monthString), \(year)"
-            }
-        } else {
-            formatter.dateFormat = "MMM d"
-            let monthString = formatter.string(from: date)
-            return "\(monthString), \(year)"
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        return dateFormatter.string(from: date)
     }
     
     var body: some View {
@@ -194,10 +209,15 @@ struct EventView: View {
                         }
                         Spacer()
                         VStack (alignment: .trailing){
-                            Text("\(eventDate)")
-                                .bold()
-                                .padding(.bottom)
-                                .foregroundColor(.primary)
+                            VStack (alignment: .trailing){
+                                Text(eventDay)
+                                    .bold()
+                                    .font(.callout)
+                                    .foregroundColor(.primary)
+                                Text(eventTime)
+                                    .foregroundColor(.primary)
+                            }.padding(.bottom, 5)
+                            
                             HStack {
                                 Image(systemName: "person.3.sequence.fill")
                                     .foregroundColor(Color("primary-color"))
@@ -209,7 +229,8 @@ struct EventView: View {
                     }
                 }.frame(height: 100)
             }
-        }.fullScreenCover(isPresented: $showDetails) {
+        }.clipShape(Rectangle())
+        .fullScreenCover(isPresented: $showDetails) {
             EventDetailView(event: $event)
         }
     }

@@ -150,3 +150,27 @@ struct EventsResponse: Decodable {
         case events
     }
 }
+
+extension [Event] {
+    func mostRecentForUser(uuid: String) -> Event? {
+        guard self.count > 0 else {
+            return nil
+        }
+        var filtered = self.filter{ $0.participants?.first(where: { $0.uuid == uuid }) != nil }
+        filtered = filtered.sorted { $0.startTime! > $1.startTime! }
+        return filtered[0]
+    }
+    
+    func filterByClubID(id: String) -> [Event]? {
+        guard self.count > 0 else {
+            return nil
+        }
+        
+        let filtered = self.filter { $0.clubID! == id }
+        guard filtered.count > 0 else {
+            return nil
+        }
+        
+        return filtered.sorted { $0.startTime! > $1.startTime! }
+    }
+}

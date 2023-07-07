@@ -36,6 +36,15 @@ struct Home: View {
         return name
     }
     
+    private var event: Event? {
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return nil
+        }
+        
+        return session.events.mostRecentForUser(uuid: uuid)
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
@@ -47,6 +56,14 @@ struct Home: View {
                             WelcomeView(name: name, status: $status)
                         }.padding(.top, 25)
                         Spacer()
+                    }
+                    
+                    if let e = event {
+                        if status == .success {
+                            VStack (alignment: .center){
+                                EventView(event: e)
+                            }
+                        }
                     }
                     
                     //MARK: - Announcements
