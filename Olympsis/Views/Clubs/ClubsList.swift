@@ -13,10 +13,10 @@ import CoreLocation
 struct ClubsList: View {
     
     @State private var text: String = ""
-    @State private var clubs = [Club]()
+    @State var clubs = CLUBS
     @State private var showCancel: Bool = false
     @State private var showNewClubCover: Bool = false
-    @State private var status: LOADING_STATE = .pending
+    @State private var status: LOADING_STATE = .success
     @State private var showCompletedApplicationToast:Bool = false
     
     @EnvironmentObject var session: SessionStore
@@ -89,6 +89,7 @@ struct ClubsList: View {
                             ForEach(filteredClubs, id: \.id){ c in
                                 SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
                                     .padding(.bottom)
+                                    .clipShape(Rectangle())
                             }
                         }
                     }
