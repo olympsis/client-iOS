@@ -119,6 +119,7 @@ struct Home: View {
                         Task {
                             // fetch home view data such as fields/events
                             await session.getNearbyData(location: location)
+                            await session.generateUserData()
                             
                             // fetch club data
                             await session.fetchUserClubs()
@@ -129,7 +130,6 @@ struct Home: View {
                     .padding(.bottom, 100)
                 }.navigationTitle("Home")
                     .task {
-                        await session.generateUserData()
                         session.locationManager.requestLocation()
                     }
                     

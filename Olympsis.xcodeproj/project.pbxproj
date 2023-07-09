@@ -97,7 +97,6 @@
 		9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */; };
 		9A8FF0B828BB14C100DE4CF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B728BB14C100DE4CF8 /* Preview Assets.xcassets */; };
 		9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */; };
-		9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */; };
 		9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */; };
 		9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */; };
 		9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */; };
@@ -274,7 +273,6 @@
 		9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A8FF0B728BB14C100DE4CF8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
-		9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccount.swift; sourceTree = "<group>"; };
 		9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Olympsis.entitlements; sourceTree = "<group>"; };
 		9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
 		9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dao.swift; sourceTree = "<group>"; };
@@ -594,7 +592,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0C728BB1A1D00DE4CF8 /* Auth.swift */,
-				9A8FF0CB28BB1A3800DE4CF8 /* CreateAccount.swift */,
 				9ABB1EBA290505440050C0F0 /* AuthContainer.swift */,
 				5F00FEA12A4123EF0019E9F7 /* Notifications.swift */,
 				5F00FEA32A4123FB0019E9F7 /* Location.swift */,
@@ -995,7 +992,6 @@
 				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
-				9A8FF0CC28BB1A3800DE4CF8 /* CreateAccount.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */,
 				5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */,

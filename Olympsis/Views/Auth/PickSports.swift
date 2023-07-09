@@ -36,6 +36,8 @@ struct PickSports: View {
             handleSuccess()
         } catch {
             log.error("failed to create user: \(error.localizedDescription)")
+            handleFailure()
+            return
         }
     }
     
