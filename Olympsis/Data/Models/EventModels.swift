@@ -158,6 +158,11 @@ extension [Event] {
         }
         var filtered = self.filter{ $0.participants?.first(where: { $0.uuid == uuid }) != nil }
         filtered = filtered.sorted { $0.startTime! > $1.startTime! }
+        
+        guard filtered.count > 0 else {
+            return nil
+        }
+        
         return filtered[0]
     }
     

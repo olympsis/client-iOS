@@ -88,6 +88,9 @@ struct Notifications: View {
                 }.padding(.top)
             }
             .padding(.bottom)
+        }.task {
+            // token initialization issue fix
+            userObserver = UserObserver()
         }
     }
 }
