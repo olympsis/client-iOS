@@ -73,6 +73,9 @@ struct PickSports: View {
             }.padding(.bottom)
                 .disabled(!(selectedSports.count > 0))
                 
+        }.task {
+            // token initialization issue fix
+            userObserver = UserObserver()
         }
     }
 }
