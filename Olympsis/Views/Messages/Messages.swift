@@ -10,9 +10,9 @@ import SwiftUI
 struct Messages: View {
     
     @Binding var club: Club
-    @State var user: UserData
     @State var rooms = [Room]()
     @State private var text = ""
+    @State private var selectedView = 0
     @State private var showRooms = false
     @State private var showCancel = false
     @State private var showDetail = false
@@ -25,66 +25,61 @@ struct Messages: View {
     @Environment(\.presentationMode) var presentationMode
     
     private var joinedRooms: [Room] {
-        return rooms.filter({$0.members.contains(where: {$0.uuid == user.uuid})})
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return rooms //[Room]()
+        }
+        return rooms.filter({$0.members.contains(where: {$0.uuid == uuid })})
+    }
+    
+    private var notJoinedRooms: [Room] {
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return [Room]()
+        }
+        return rooms.filter({ !($0.members.contains(where: { $0.uuid == uuid })) })
     }
     
     var body: some View {
         NavigationView {
             VStack {
                 if state == .loading {
-                    ScrollView(showsIndicators: false) {
-                        HStack {
-                            SearchBar(text: $text, onCommit: {
-                                showCancel = false
-                            }).onTapGesture {
-                                    if !showCancel {
-                                        showCancel = true
-                                    }
-                                }
-                            .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                            .padding(.leading, 5)
-                            .padding(.trailing, 5)
-                            if showCancel {
-                                Button(action:{
-                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                                    showCancel = false
-                                }){
-                                    Text("Cancel")
-                                        .foregroundColor(.gray)
-                                        .frame(maxHeight: 40)
-                                }.padding(.trailing)
-                            }
-                        }.padding(.bottom, 5)
-                        ForEach(1..<20, id: \.self) { number in
-                            RoomTemplateView()
-                                .padding(.bottom, 5)
+                    ProgressView()
+                } else if state == .failure {
+                    Text("Failed to load messages")
+                } else {
+                    HStack {
+                        Spacer()
+                        Button(action: { selectedView = 0 }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(selectedView == 0 ? Color("primary-color") : Color("secondary-color"))
+                                
+                                Text("Joined")
+                                    .foregroundColor(.white)
+                            }.padding(.horizontal)
+                                .frame(height: 35)
                         }
-                    }
-                } else if state == .success{
-                    if rooms.count > 0 {
-                        ScrollView(showsIndicators: false) {
-                            HStack {
-                                SearchBar(text: $text, onCommit: {
-                                    showCancel = false
-                                }).onTapGesture {
-                                        if !showCancel {
-                                            showCancel = true
-                                        }
-                                    }
-                                .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                                .padding(.leading, 5)
-                                .padding(.trailing, 5)
-                                if showCancel {
-                                    Button(action:{
-                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                                        showCancel = false
-                                    }){
-                                        Text("Cancel")
-                                            .foregroundColor(.gray)
-                                            .frame(maxHeight: 40)
-                                    }.padding(.trailing)
-                                }
-                            }.padding(.bottom, 5)
+                        Spacer()
+                        Rectangle()
+                            .frame(width: 1, height: 35)
+                        Spacer()
+                        Button(action: { selectedView = 1 }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(selectedView == 1 ? Color("primary-color") : Color("secondary-color"))
+                                
+                                
+                                Text("Not Joined")
+                                    .foregroundColor(.white)
+                            }.padding(.horizontal)
+                                .frame(height: 35)
+                        }
+                        Spacer()
+                    }.padding(.top)
+                    
+                    TabView(selection: $selectedView) {
+                        ScrollView() {
                             ForEach(joinedRooms) { room in
                                 Button(action:{ self.showDetail.toggle() }){
                                     RoomListView(room: room, rooms: $rooms, observer: chatObserver)
@@ -93,33 +88,26 @@ struct Messages: View {
                                     RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
-                        }.refreshable {
-                            let resp = await chatObserver.GetRooms(id: club.id!)
-                            await MainActor.run {
-                                if let r = resp {
-                                    self.rooms = r.rooms
+                        }.tabItem {
+                            Text("Joined")
+                        }
+                        .tag(0)
+                        
+                        ScrollView() {
+                            ForEach(notJoinedRooms) { room in
+                                Button(action:{ self.showDetail.toggle() }){
+                                    RoomListView(room: room, rooms: $rooms, observer: chatObserver)
+                                        .padding(.bottom)
+                                }.fullScreenCover(isPresented: $showDetail) {
+                                    RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
+                        }.tabItem {
+                            Text("Not Joined")
                         }
-                    } else {
-                        VStack {
-                            Spacer()
-                            Text("There are no chat rooms 😞")
-                                .font(.caption)
-                            Text("Create one by pressing the + button")
-                                .font(.caption)
-                            Spacer()
-                        }
-                    }
-                } else if state == .failure {
-                    VStack {
-                        Spacer()
-                        Text("Failed to get chat rooms 😞")
-                            .font(.caption)
-                        Text("Please wait and try again")
-                            .font(.caption)
-                        Spacer()
-                    }
+                        .tag(1)
+                    }.tabViewStyle(.page)
+                        .padding(.top)
                 }
                 
             }.toolbar {
@@ -134,13 +122,7 @@ struct Messages: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{self.showNewRoom.toggle()}){
-                        Image(systemName: "plus")
-                            .imageScale(.large)
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{self.showRooms.toggle()}){
-                        Image(systemName: "line.3.horizontal")
+                        Image(systemName: "plus.square.dashed")
                             .imageScale(.large)
                     }
                 }
@@ -157,13 +139,10 @@ struct Messages: View {
                     state = .success
                 }
             }
-            .fullScreenCover(isPresented: $showRooms) {
-                RoomsSearch(club: $club, rooms: $rooms, observer: chatObserver)
-                    .transition(.scale)
-            }
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)
             }
+            .tint(Color("primary-color"))
         }
     }
 }
@@ -171,6 +150,6 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: .constant(CLUBS[0]), user: USERS_DATA[0], rooms: [room]).environmentObject(SessionStore())
+        Messages(club: .constant(CLUBS[0]), rooms: [room]).environmentObject(SessionStore())
     }
 }

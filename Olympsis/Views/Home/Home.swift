@@ -128,11 +128,22 @@ struct Home: View {
                     }
                     
                     .padding(.bottom, 100)
-                }.navigationTitle("Home")
-                    .task {
-                        session.locationManager.requestLocation()
-                    }
+                }
+                .task {
+                    session.locationManager.requestLocation()
+                }
                     
+            }.toolbar{
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("Olympsis")
+                        .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action:{}) {
+                        Image(systemName: "bell")
+                            .foregroundColor(.primary)
+                    }
+                }
             }
         }
     }
