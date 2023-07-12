@@ -30,15 +30,7 @@ struct Clubs: View {
                                     .presentationDetents([.height(250)])
                             }
                     } else {
-                        MyClubView(club: $session.clubs[index], showNewPost: $showNewPost)
-                            .fullScreenCover(isPresented: $showMenu) {
-                                ClubMenu(club: $session.clubs[index], index: $index)
-                            }
-                            .fullScreenCover(isPresented: $showMessages) {
-                                if let user = session.user {
-                                    Messages(club: $session.clubs[index], user: user)
-                                }
-                            }
+                        MyClubView(club: $session.clubs[index], index: $index, showMenu: $showMenu, showNewPost: $showNewPost, showMessages: $showMessages)
                     }
                 }
             }

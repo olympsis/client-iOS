@@ -10,18 +10,22 @@ import SwiftUI
 struct PostsView: View {
     
     @Binding var club: Club
-    @Binding var posts: [Post]
+    @Binding var index: Int
+    @Binding var showNewPost: Bool
+    
+    @State private var posts = [Post]()
     @State private var showPostMenu = false
     @State private var selectedPostIndex = 0
     @State private var showMoreEvents = false
     @EnvironmentObject var session:SessionStore
     
     func getPosts() async {
-        guard let id = club.id,
+        guard let id = session.clubs[index].id,
               let resp = await session.postObserver.getPosts(clubId: id) else {
+            posts = [Post]()
             return
         }
-        
+
         posts = resp.sorted{$0.createdAt! > $1.createdAt!}
     }
     
@@ -69,6 +73,14 @@ struct PostsView: View {
         }.refreshable {
             await getPosts()
         }
+        .fullScreenCover(isPresented: $showNewPost) {
+            CreateNewPost(club: club, posts: $posts)
+        }
+        .onChange(of: index, perform: { newValue in
+            Task {
+                await getPosts()
+            }
+        })
         .fullScreenCover(isPresented: $showMoreEvents) {
             EventsList(events: events ?? [Event]())
         }
@@ -77,6 +89,6 @@ struct PostsView: View {
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView(club: .constant(CLUBS[0]), posts: .constant(POSTS)).environmentObject(SessionStore())
+        PostsView(club: .constant(CLUBS[0]), index: .constant(0), showNewPost: .constant(false)).environmentObject(SessionStore())
     }
 }

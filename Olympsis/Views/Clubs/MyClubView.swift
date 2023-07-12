@@ -10,8 +10,11 @@ import SwiftUI
 struct MyClubView: View {
     
     @Binding var club: Club
+    @Binding var index: Int
+    @Binding var showMenu: Bool
     @Binding var showNewPost: Bool
-    @State private var posts = [Post]()
+    @Binding var showMessages: Bool
+
     @State private var showPostMenu = false
     @State private var showCreatePost = false
     @State private var status: LOADING_STATE = .loading
@@ -19,29 +22,15 @@ struct MyClubView: View {
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
     
-    func getPosts() async {
-        status = .loading
-        guard let id = club.id,
-              let response = await session.postObserver.getPosts(clubId: id) else {
-            return
-        }
-        posts = response.sorted{$0.createdAt! > $1.createdAt!}
-        status = .success
-    }
-    
     var body: some View {
         VStack {
-            PostsView(club: $club, posts: $posts)
+            PostsView(club: $club, index: $index, showNewPost: $showNewPost)
         }
-        .fullScreenCover(isPresented: $showNewPost, onDismiss: {
-            Task {
-                await getPosts()
-            }
-        }) {
-            CreateNewPost(club: club)
+        .fullScreenCover(isPresented: $showMenu) {
+            ClubMenu(club: $club, index: $index)
         }
-        .task {
-            await getPosts()
+        .fullScreenCover(isPresented: $showMessages) {
+            Messages(club: $club)
         }
     }
     
@@ -49,6 +38,6 @@ struct MyClubView: View {
 
 struct MyClubView_Previews: PreviewProvider {
     static var previews: some View {
-        MyClubView(club: .constant(CLUBS[0]), showNewPost: .constant(false)).environmentObject(SessionStore())
+        MyClubView(club: .constant(CLUBS[0]), index: .constant(0), showMenu: .constant(false), showNewPost: .constant(false), showMessages: .constant(false)).environmentObject(SessionStore())
     }
 }
