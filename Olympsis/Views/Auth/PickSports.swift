@@ -19,6 +19,10 @@ struct PickSports: View {
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_sports_view")
     
     func createUserData() async {
+        
+        // re initializing user observer hoping that auth issue will be fixed
+        userObserver = UserObserver()
+        
         guard var user = cacheService.fetchUser(),
               let username = user.username else {
             handleFailure()
@@ -73,9 +77,6 @@ struct PickSports: View {
             }.padding(.bottom)
                 .disabled(!(selectedSports.count > 0))
                 
-        }.task {
-            // token initialization issue fix
-            userObserver = UserObserver()
         }
     }
 }
