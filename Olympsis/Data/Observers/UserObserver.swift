@@ -9,8 +9,13 @@ import Foundation
 
 class UserObserver: ObservableObject {
     
-    private let decoder = JSONDecoder()
-    private let userService = UserService()
+    private let decoder: JSONDecoder
+    private let userService: UserService
+    
+    init() {
+        decoder = JSONDecoder()
+        userService = UserService()
+    }
     
     func UsernameAvailability(name: String) async throws -> Bool {
         let response = try await userService.UserNameAvailability(name: name)

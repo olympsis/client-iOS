@@ -17,6 +17,7 @@ class AuthObserver: ObservableObject {
     let tokenStore = TokenStore()
     let authService = AuthService()
     let cacheService = CacheService()
+    
     @AppStorage("loggedIn") var loggedIn: Bool?
     
     func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
