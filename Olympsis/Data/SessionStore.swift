@@ -6,6 +6,7 @@
 //
 
 import os
+import OSLog
 import SwiftUI
 import Foundation
 import CoreLocation
@@ -207,5 +208,17 @@ class SessionStore: ObservableObject {
             log.error("\(error)")
         }
         return false
+    }
+    
+    func fetchLogs() async {
+        do {
+            let log = try OSLogStore(scope: .currentProcessIdentifier)
+            let entries = try log.getEntries()
+            entries.forEach { l in
+                print(l.composedMessage)
+            }
+        } catch {
+            log.error("failed to fetch logs: \(error.localizedDescription)")
+        }        
     }
 }

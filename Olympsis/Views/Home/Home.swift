@@ -139,7 +139,7 @@ struct Home: View {
                         .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{}) {
+                    Button(action:{ Task {  } }) {
                         Image(systemName: "bell")
                             .foregroundColor(.primary)
                     }
