@@ -48,7 +48,7 @@ class AuthObserver: ObservableObject {
         // clear server data
         let (_, resp) = try await authService.DeleteAccount()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-            log.error("Failed to delete user data remotely")
+            log.error("failed to delete remote user data")
             return false
         }
         return true
@@ -63,6 +63,7 @@ class AuthObserver: ObservableObject {
                         New User
                      */
                     
+                    log.trace("new user signing in")
                     guard let code = appleIdCredential.authorizationCode,
                           let email = appleIdCredential.email,
                           let fullName = appleIdCredential.fullName,
@@ -76,7 +77,8 @@ class AuthObserver: ObservableObject {
                     /*
                         Existing User
                      */
-        
+                    
+                    log.trace("existing user logging in")
                     guard let code = appleIdCredential.authorizationCode else {
                         return USER_STATUS.Unknown
                     }
