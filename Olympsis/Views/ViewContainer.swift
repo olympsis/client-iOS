@@ -19,8 +19,10 @@ struct ViewContainer: View {
     }
     
     @State var currentTab: Tab = .home
+    @State private var showToast = false
     @State private var showBeta: Bool = false
     @State private var accountState: ACCOUNT_STATE = .Unknown
+    @State private var toast = Toast(style: .info, actor: "davidhamash", title: "[SLC FC]", message: "No internet connection")
     @EnvironmentObject var session: SessionStore
     
     init() {
@@ -35,12 +37,16 @@ struct ViewContainer: View {
                 MapView().tag(Tab.map)
                 Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)
-            }
+            }.toast(isPresented: $showToast, toast: $toast)
+            
             TabBar(currentTab: $currentTab)
                 .ignoresSafeArea(.keyboard)
         }.background(Color("dark-color"))
             .fullScreenCover(isPresented: $showBeta) {
                 BetaPage()
+            }
+            .task {
+                session.locationManager.requestLocation()
             }
     }
 }
