@@ -9,13 +9,39 @@ import SwiftUI
 
 struct ProfileModel: View {
     
-    @Binding var imageURL     : String
-    @State var firstName    : String
-    @State var lastName     : String
-    @State var friendsCount : Int
-    @State var bio          : String
-    
     @EnvironmentObject private var session: SessionStore
+    
+    var imageURL: String {
+        guard let user = session.user,
+              let image = user.imageURL else {
+            return ""
+        }
+        return image
+    }
+    
+    var firstName: String {
+        guard let user = session.user,
+              let name = user.firstName else {
+            return ""
+        }
+        return name
+    }
+    
+    var lastName: String {
+        guard let user = session.user,
+              let name = user.lastName else {
+            return ""
+        }
+        return name
+    }
+    
+    var bio: String {
+        guard let user = session.user,
+              let bio = user.bio else {
+            return ""
+        }
+        return bio
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -71,6 +97,6 @@ struct ProfileModel: View {
 
 struct ProfileModel_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileModel(imageURL: .constant("profile-images/09702E5F-FBDD-460B-9B48-16EF19A468DC"), firstName: "John", lastName: "Doe", friendsCount: 0, bio: "I love to play Sports.")
+        ProfileModel()
     }
 }

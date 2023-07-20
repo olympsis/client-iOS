@@ -10,8 +10,6 @@ import SwiftUI
 struct EditProfileButton: View {
    
     @State var showEditProfile = false
-    @ObservedObject var userObserver: UserObserver
-    @Binding var imageURL: String
     
     var body: some View {
         VStack(alignment: .center){
@@ -28,7 +26,7 @@ struct EditProfileButton: View {
                         .font(.callout)
                 }
             }.fullScreenCover(isPresented: $showEditProfile) {
-                EditProfile(imageURL: $imageURL, userObserver: userObserver)
+                EditProfile()
             }
         }.frame(width: SCREEN_WIDTH)
     }
@@ -36,6 +34,6 @@ struct EditProfileButton: View {
 
 struct EditProfileButton_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileButton(userObserver: UserObserver(), imageURL: .constant(""))
+        EditProfileButton()
     }
 }

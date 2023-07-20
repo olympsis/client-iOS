@@ -10,8 +10,6 @@ import SwiftUI
 struct Profile: View {
 
     @State private var showMenu = false
-    @State private var userObserver = UserObserver()
-    
     @EnvironmentObject private var session: SessionStore
     
     var username: String {
@@ -23,32 +21,15 @@ struct Profile: View {
     }
     
     var body: some View {
-        
-        var imageURL = Binding(
-            get: {
-                guard let user = session.user,
-                      let url = user.imageURL else {
-                    return ""
-                }
-                return url
-            }) { val in }
-        
-        return NavigationView {
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    if let u = session.user {
-                        ProfileModel(imageURL: imageURL, firstName: u.firstName!, lastName: u.lastName!, friendsCount:  0, bio: u.bio ?? "")
-                            .padding(.top, 20)
-                            .padding(.leading)
-                    } else {
-                        ProfileModelTemplate()
-                            .padding(.top, 20)
-                            .padding(.leading)
-                            .padding(.bottom)
-                    }
+                    ProfileModel()
+                        .padding(.top, 20)
+                        .padding(.leading)
                     
                     // Edit profile button
-                    EditProfileButton(userObserver: userObserver, imageURL: imageURL)
+                    EditProfileButton()
                         .padding(.bottom, 30)
                     
                     // Badges View
