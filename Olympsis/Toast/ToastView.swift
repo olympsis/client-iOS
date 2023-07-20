@@ -139,6 +139,8 @@ struct ToastView: View {
     }
 }
 
-#Preview {
-    ToastView(toast: Toast(style: .message, actor: "davidhamash", title: "[SLC FC] Goonies Squad", message: "No internet connection"))
+struct ToastView_Previews: PreviewProvider {
+    static var previews: some View {
+        ToastView(toast: Toast(style: .message, actor: "davidhamash", title: "[SLC FC] Goonies Squad", message: "No internet connection")).environmentObject(SessionStore())
+    }
 }
