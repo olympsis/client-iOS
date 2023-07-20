@@ -18,7 +18,7 @@ class ChatObserver: ObservableObject {
     private let decoder = JSONDecoder()
     private let service = ChatService()
     private let session = URLSession(configuration: .default)
-    private let tokenStore = TokenStore()
+    private let tokenStore = SecureStore()
     private var request: URLRequest? = nil
     private var webSocketTask: URLSessionWebSocketTask? = nil
     private let log = Logger(subsystem: "com.coronislabs.olympsis", category: "chat_observer")

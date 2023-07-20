@@ -12,7 +12,7 @@ import Foundation
 class FieldService {
     
     private var http: Courrier
-    private let tokenStore = TokenStore()
+    private let tokenStore = SecureStore()
     
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""

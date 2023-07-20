@@ -7,7 +7,9 @@
 
 import os
 import SwiftUI
+import Foundation
 import UserNotifications
+import AuthenticationServices
 
 @main
 struct OlympsisApp: App {

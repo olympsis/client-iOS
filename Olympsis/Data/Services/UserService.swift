@@ -13,10 +13,10 @@ import Foundation
 class UserService {
     
     private var http: Courrier
-    private let tokenStore: TokenStore
+    private let tokenStore: SecureStore
     
     init() {
-        tokenStore = TokenStore()
+        tokenStore = SecureStore()
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
         self.http = Courrier(scheme: "https", host: host, apiKey: key)

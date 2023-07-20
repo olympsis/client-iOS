@@ -36,26 +36,45 @@ struct PickUsername: View {
         return predicate.evaluate(with: input)
     }
     
+    func handleAvailable() {
+        status = .success
+        uStatus = .available
+    }
+    
+    func handleInvalidError() {
+        status = .failure
+        uStatus = .invalid
+    }
+    
+    func handleUnavailableError () {
+        status = .failure
+        uStatus = .unavailable
+    }
+    
+    func handleUnknownFaillureError() {
+        status = .failure
+        uStatus = .unknown
+    }
+    
     /// Checks the backend to see if the username is available
     func isUsernameAvailable() async {
         do {
             guard validateInput(username) else {
-                status = .failure
-                uStatus = .invalid
+                handleInvalidError()
                 return
             }
+            
             status = .loading
+            
             let available = try await self.userObserver.UsernameAvailability(name: username)
-            if available {
-                status = .success
-                uStatus = .available
-            } else {
-                status = .failure
-                uStatus = .unavailable
+            guard available == true else {
+                handleUnavailableError()
+                return
             }
+            
+            handleAvailable()
         } catch {
-            status = .failure
-            uStatus = .unknown
+            handleUnknownFaillureError()
             self.log.error("failed to check username's availability: \(error.localizedDescription)")
         }
     }
@@ -64,7 +83,7 @@ struct PickUsername: View {
     func storeUsername() {
         guard var user = cacheService.fetchUser() else {
             log.error("failed to fetch user data from cache")
-            uStatus = .unknown
+            handleUnknownFaillureError()
             return
         }
         user.username = username
@@ -146,7 +165,7 @@ struct PickUsername: View {
                 
                 if uStatus == .pending || uStatus == .invalid {
                     // cautionary text
-                    Text("Must be between 5 and 15 characters to be valid")
+                    Text("Must be between 5 and 15 characters and contain no special characters to be valid")
                         .font(.caption)
                         .foregroundColor(uStatus == .invalid ? .red : .gray)
                         .padding(.leading)

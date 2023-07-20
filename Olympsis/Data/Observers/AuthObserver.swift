@@ -14,7 +14,7 @@ class AuthObserver: ObservableObject {
 
     let log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_observer")
     let decoder =  JSONDecoder()
-    let tokenStore = TokenStore()
+    let tokenStore = SecureStore()
     let authService = AuthService()
     let cacheService = CacheService()
     

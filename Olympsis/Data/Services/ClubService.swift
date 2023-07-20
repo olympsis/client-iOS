@@ -13,7 +13,7 @@ import Foundation
 class ClubService {
     
     private var http: Courrier
-    private let tokenStore = TokenStore()
+    private let tokenStore = SecureStore()
     private let cacheService = CacheService()
     
     init() {
