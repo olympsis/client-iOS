@@ -10,11 +10,8 @@ import PhotosUI
 
 struct EditProfile: View {
     
-    @Binding var imageURL: String
-    
     @State private var bio: String = ""
     @State private var username: String = ""
-    @State private var imageUrl: String?
     @State private var isPublic: Bool = true
     @State private var visibility: String = "public"
 
@@ -31,52 +28,58 @@ struct EditProfile: View {
     @Environment(\.presentationMode) var presentationMode
     
     func UpdateProfile() async {
+        var imageURL: String = ""
         uploadingStatus = .loading
         // new image
         let imageId = UUID().uuidString
         
-        if let data = selectedImageData {
-            // upload image
-            let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
-            if res {
-                self.imageURL = "profile-images/\(imageId).jpeg"
-                if let user = session.user {
-                    if let img = user.imageURL {
-                        // delete old picture
-                        _ = await uploadObserver.DeleteObject(path: "/profile-images", name: GrabImageIdFromURL(img))
-                    }
-                    
-                    // update user data
-                    let update = User(username: user.username, bio: bio, imageURL: imageURL, sports: selectedSports)
-                    let res = await userObserver.UpdateUserData(update: update)
-                    
-                    if res {
-                        session.user?.imageURL = self.imageURL
-                        uploadingStatus = .success
-                        return
-                    } else {
-                        uploadingStatus = .failure
-                        return
-                    }
-                }
-            } else {
+        // check for updated image
+        guard let data = selectedImageData else {
+            guard let user = session.user else {
                 uploadingStatus = .failure
                 return
             }
-        } else {
-            // if there is no new image data just update user data then
-            if let user = session.user {
-                let update = User(username: user.username, bio: bio, sports: selectedSports)
-                let res = await userObserver.UpdateUserData(update: update)
-                if res {
-                    uploadingStatus = .success
-                    return
-                } else {
-                    uploadingStatus = .failure
-                    return
-                }
+            let update = User(username: user.username, bio: bio, sports: selectedSports)
+            let res = await userObserver.UpdateUserData(update: update)
+            
+            guard res == true else {
+                uploadingStatus = .failure
+                return
             }
+            uploadingStatus = .success
+            return
         }
+        
+        let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+        
+        guard res == true else {
+            uploadingStatus = .failure
+            return
+        }
+        
+        imageURL = "profile-images/\(imageId).jpeg"
+        
+        guard var user = session.user else {
+            return
+        }
+        
+        if let img = user.imageURL {
+            // delete old picture
+            _ = await uploadObserver.DeleteObject(path: "/profile-images", name: GrabImageIdFromURL(img))
+        }
+        
+        // update user data
+        let update = User(username: user.username, bio: bio, imageURL: imageURL, sports: selectedSports)
+        let resp = await userObserver.UpdateUserData(update: update)
+        
+        guard resp == true else {
+            uploadingStatus = .failure
+            return
+        }
+        
+        user.imageURL = imageURL
+        session.user = user
+        uploadingStatus = .success
     }
     
     func updateSports(sport:String){
@@ -270,6 +273,6 @@ struct EditProfile: View {
 
 struct EditProfile_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfile(imageURL: .constant("")).environmentObject(SessionStore())
+        EditProfile().environmentObject(SessionStore())
     }
 }
