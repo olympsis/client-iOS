@@ -17,7 +17,7 @@ class SessionStore: ObservableObject {
      App session data, fetched every session
      Stored in memory until app is closed
      */
-    let tokenStore = TokenStore()
+    let tokenStore = SecureStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
     @Published var user: UserData?       // User data
@@ -50,6 +50,10 @@ class SessionStore: ObservableObject {
         login == true else {
             return
         }
+        user = cacheService.fetchUser()
+    }
+    
+    func fetchUser() async {
         user = cacheService.fetchUser()
     }
     
@@ -208,17 +212,5 @@ class SessionStore: ObservableObject {
             log.error("\(error)")
         }
         return false
-    }
-    
-    func fetchLogs() async {
-        do {
-            let log = try OSLogStore(scope: .currentProcessIdentifier)
-            let entries = try log.getEntries()
-            entries.forEach { l in
-                print(l.composedMessage)
-            }
-        } catch {
-            log.error("failed to fetch logs: \(error.localizedDescription)")
-        }        
     }
 }

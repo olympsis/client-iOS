@@ -8,18 +8,22 @@
 import os
 import Foundation
 
-class TokenStore {
+class SecureStore {
     
     private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "token_store")
     static let account = "olmypsis"
     static let server = "api.olympsis.com"
     
+    func saveCurrentUserID(uuid: String) {}
+    
+    func fetchCurrentUserID() {}
+    
     func saveTokenToKeyChain(token: String) {
         let tokenData = token.data(using: .utf8)!
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
-            kSecAttrAccount as String: TokenStore.account,
-            kSecAttrServer as String: TokenStore.server,
+            kSecAttrAccount as String: SecureStore.account,
+            kSecAttrServer as String: SecureStore.server,
             kSecValueData as String: tokenData
         ]
         let update: [String: Any] = [
@@ -46,7 +50,7 @@ class TokenStore {
         var result: CFTypeRef?
         let fetchQuery: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
-            kSecAttrServer as String: TokenStore.server,
+            kSecAttrServer as String: SecureStore.server,
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecReturnData as String: true
         ]
@@ -79,8 +83,8 @@ class TokenStore {
     func clearKeyChain() -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
-            kSecAttrAccount as String: TokenStore.account,
-            kSecAttrServer as String: TokenStore.server,
+            kSecAttrAccount as String: SecureStore.account,
+            kSecAttrServer as String: SecureStore.server,
         ]
         
         let status = SecItemDelete(query as CFDictionary)
