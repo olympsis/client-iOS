@@ -15,6 +15,8 @@ struct ProfileModel: View {
     @State var friendsCount : Int
     @State var bio          : String
     
+    @EnvironmentObject private var session: SessionStore
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {

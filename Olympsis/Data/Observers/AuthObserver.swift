@@ -32,6 +32,22 @@ class AuthObserver: ObservableObject {
         tokenStore.saveTokenToKeyChain(token: object.token)
     }
     
+    func Token() async {
+        struct TokenResponse: Decodable {
+            var authToken: String
+        }
+        
+        do {
+            let (data, _) = try await authService.Token()
+            let object = try decoder.decode(TokenResponse.self, from: data)
+            
+            // cache token
+            tokenStore.saveTokenToKeyChain(token: object.authToken)
+        } catch {
+            log.error("failed to update token: \(error.localizedDescription)")
+        }
+    }
+    
     func LogIn(code: String) async throws {
         let req = AuthRequest(code: code, provider: "https://appleid.apple.com")
         let (data, _) = try await authService.LogIn(request: req)

@@ -8,20 +8,36 @@
 import SwiftUI
 
 struct Profile: View {
-    
-    @State private var imageURL = ""
-    @State private var user: UserData?
+
     @State private var showMenu = false
     @State private var userObserver = UserObserver()
     
     @EnvironmentObject private var session: SessionStore
     
+    var username: String {
+        guard let user = session.user,
+              let name = user.username else {
+            return "olympsis-user"
+        }
+        return name
+    }
+    
     var body: some View {
-        NavigationView {
+        
+        var imageURL = Binding(
+            get: {
+                guard let user = session.user,
+                      let url = user.imageURL else {
+                    return ""
+                }
+                return url
+            }) { val in }
+        
+        return NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    if let u = user {
-                        ProfileModel(imageURL: $imageURL, firstName: u.firstName!, lastName: u.lastName!, friendsCount:  0, bio: u.bio ?? "")
+                    if let u = session.user {
+                        ProfileModel(imageURL: imageURL, firstName: u.firstName!, lastName: u.lastName!, friendsCount:  0, bio: u.bio ?? "")
                             .padding(.top, 20)
                             .padding(.leading)
                     } else {
@@ -32,7 +48,7 @@ struct Profile: View {
                     }
                     
                     // Edit profile button
-                    EditProfileButton(userObserver: userObserver, imageURL: $imageURL)
+                    EditProfileButton(userObserver: userObserver, imageURL: imageURL)
                         .padding(.bottom, 30)
                     
                     // Badges View
@@ -46,18 +62,10 @@ struct Profile: View {
                 })
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        if let usr = session.user {
-                            Text("@ \(usr.username ?? "")")
-                                .foregroundColor(.primary)
-                                .font(.title2)
-                                .fontWeight(.regular)
-                        } else {
-                            Text("@ unnamed_user")
-                                .foregroundColor(.primary)
-                                .font(.title)
-                                .fontWeight(.light)
-                        }
-                        
+                        Text(username)
+                            .foregroundColor(.primary)
+                            .font(.title2)
+                            .fontWeight(.regular)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
@@ -65,10 +73,6 @@ struct Profile: View {
                                 .foregroundColor(.primary)
                         }
                     }
-                }
-                .onAppear {
-                    user = session.user                    
-                    imageURL = user?.imageURL ?? ""
                 }
             }
         }

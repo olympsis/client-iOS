@@ -10,17 +10,12 @@ import Security
 import AuthenticationServices
 
 struct ViewContainer: View {
-    enum ACCOUNT_STATE {
-        case Authorized
-        case Revoked
-        case NotFound
-        case Transferred
-        case Unknown
-    }
     
     @State var currentTab: Tab = .home
+    @State private var showToast = false
     @State private var showBeta: Bool = false
     @State private var accountState: ACCOUNT_STATE = .Unknown
+    @State private var authObserver = AuthObserver()
     @EnvironmentObject var session: SessionStore
     
     init() {
@@ -36,11 +31,16 @@ struct ViewContainer: View {
                 Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)
             }
+            
             TabBar(currentTab: $currentTab)
                 .ignoresSafeArea(.keyboard)
         }.background(Color("dark-color"))
             .fullScreenCover(isPresented: $showBeta) {
                 BetaPage()
+            }
+            .task {
+                await authObserver.Token()
+                session.locationManager.requestLocation()
             }
     }
 }
