@@ -24,6 +24,7 @@ struct Home: View {
     @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
     @State private var showMoreFields = false
+    @State private var showNotifications = false
     @State private var status: LOADING_STATE = .loading
     
     @EnvironmentObject var session: SessionStore
@@ -126,18 +127,19 @@ struct Home: View {
                             self.status = .success
                         }
                     }
-                    
                     .padding(.bottom, 100)
-                }
+                }.fullScreenCover(isPresented: $showNotifications, content: {
+                    NotificationsView()
+                })
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
                         .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{ }) {
+                    Button(action:{ self.showNotifications.toggle() }) {
                         Image(systemName: "bell")
-                            .foregroundColor(.primary)
+                            
                     }
                 }
             }

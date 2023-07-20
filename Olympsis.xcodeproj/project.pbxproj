@@ -25,6 +25,8 @@
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
 		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
+		5FA350562A67352500669B2C /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350552A67352500669B2C /* NotificationsView.swift */; };
+		5FA350582A6737AF00669B2C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350572A6737AF00669B2C /* Enums.swift */; };
 		5FB334C42A63681E00811F2E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB334C32A63681E00811F2E /* Models.swift */; };
 		5FB334C62A6368B900811F2E /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB334C52A6368B900811F2E /* ToastView.swift */; };
 		5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */; };
@@ -206,6 +208,8 @@
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* FieldModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldModels.swift; sourceTree = "<group>"; };
 		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
+		5FA350552A67352500669B2C /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		5FA350572A6737AF00669B2C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		5FB334C32A63681E00811F2E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		5FB334C52A6368B900811F2E /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
@@ -596,6 +600,7 @@
 			children = (
 				9ABB1EBC29053D020050C0F0 /* SessionStore.swift */,
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
+				5FA350572A6737AF00669B2C /* Enums.swift */,
 				9AB02F4A29024300008C07F1 /* Managers */,
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
@@ -755,6 +760,7 @@
 				5F4E53F12A28E91800257350 /* WelcomeView.swift */,
 				9ABB1EBE2905F9B90050C0F0 /* AnnouncementView.swift */,
 				5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */,
+				5FA350552A67352500669B2C /* NotificationsView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -988,6 +994,7 @@
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
 				9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */,
+				5FA350562A67352500669B2C /* NotificationsView.swift in Sources */,
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
@@ -1010,6 +1017,7 @@
 				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
+				5FA350582A6737AF00669B2C /* Enums.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */,
 				5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */,

@@ -10,19 +10,12 @@ import Security
 import AuthenticationServices
 
 struct ViewContainer: View {
-    enum ACCOUNT_STATE {
-        case Authorized
-        case Revoked
-        case NotFound
-        case Transferred
-        case Unknown
-    }
     
     @State var currentTab: Tab = .home
     @State private var showToast = false
     @State private var showBeta: Bool = false
     @State private var accountState: ACCOUNT_STATE = .Unknown
-    @State private var toast = Toast(style: .info, actor: "davidhamash", title: "[SLC FC]", message: "No internet connection")
+    @State private var authObserver = AuthObserver()
     @EnvironmentObject var session: SessionStore
     
     init() {
@@ -37,7 +30,7 @@ struct ViewContainer: View {
                 MapView().tag(Tab.map)
                 Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)
-            }.toast(isPresented: $showToast, toast: $toast)
+            }
             
             TabBar(currentTab: $currentTab)
                 .ignoresSafeArea(.keyboard)
@@ -46,6 +39,7 @@ struct ViewContainer: View {
                 BetaPage()
             }
             .task {
+                await authObserver.Token()
                 session.locationManager.requestLocation()
             }
     }
