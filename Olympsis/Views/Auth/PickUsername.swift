@@ -102,6 +102,10 @@ struct PickUsername: View {
                                     await isUsernameAvailable()
                                 }
                             }
+                            .onChange(of: username, perform: { _ in
+                                status = .pending
+                                uStatus = .pending
+                            })
                             
                     }.frame(height: 45)
                         .padding(.horizontal)
