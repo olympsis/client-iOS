@@ -159,56 +159,48 @@ struct ToastViewModifier: ViewModifier {
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: -20)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: 1000))
                 }
             case .warning:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: -20)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: 1000))
                 }
             case .success:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: -20)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: 1000))
                 }
             case .info:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: -20)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: 1000))
                 }
             case .newPost:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: 0)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: -1000))
                 }
             case .message:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: 0)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: -1000))
                 }
             case .newEvent:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: 0)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: -1000))
                 }
             case .eventStatus:
                 withAnimation {
                     ToastView(toast: toast)
                         .offset(y: 0)
-                        .animation(.spring, value: 1)
                         .transition(.offset(y: -1000))
                 }
             }
