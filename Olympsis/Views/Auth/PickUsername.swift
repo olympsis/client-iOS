@@ -31,7 +31,7 @@ struct PickUsername: View {
     
     /// Validates the username input to make sure it's safe
     func validateInput(_ input: String) -> Bool {
-        let regex = "^[a-z0-9]{5,15}$"
+        let regex = "^[a-zA-Z0-9]{5,15}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluate(with: input)
     }
@@ -99,7 +99,6 @@ struct PickUsername: View {
                 .fontWeight(.medium)
                 .padding(.top)
                 
-            
             // textfield
             VStack(alignment: .leading) {
                 Text("username")
