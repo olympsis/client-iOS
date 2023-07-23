@@ -23,11 +23,14 @@ struct Home: View {
     @State private var fieldIndex = "0"
     @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
+    @State private var showOnboarding = false
     @State private var showMoreFields = false
     @State private var showNotifications = false
     @State private var status: LOADING_STATE = .loading
     
     @EnvironmentObject var session: SessionStore
+    
+    @AppStorage("eventDetailOnboarding") var onboarding:Bool?
     
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
@@ -128,8 +131,18 @@ struct Home: View {
                         }
                     }
                     .padding(.bottom, 100)
+                    .task {
+                        guard onboarding != nil else {
+                            showOnboarding = true
+                            onboarding = true
+                            return
+                        }
+                    }
                 }.fullScreenCover(isPresented: $showNotifications, content: {
                     NotificationsView()
+                })
+                .fullScreenCover(isPresented: $showOnboarding, content: {
+                    FindingEvents()
                 })
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
