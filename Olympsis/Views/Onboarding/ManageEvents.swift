@@ -46,6 +46,8 @@ struct ManageEvents: View {
     }
 }
 
-#Preview {
-    ManageEvents()
+struct ManageEvents_Previews: PreviewProvider {
+    static var previews: some View {
+        ManageEvents()
+    }
 }
