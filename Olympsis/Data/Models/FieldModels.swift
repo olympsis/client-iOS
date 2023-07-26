@@ -7,11 +7,7 @@
 
 import Foundation
 
-struct Field: Codable, Identifiable, Hashable {
-    static func == (lhs: Field, rhs: Field) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
+class Field: Codable, Identifiable {
     let id: String
     let name: String
     let owner: Ownership
@@ -22,7 +18,7 @@ struct Field: Codable, Identifiable, Hashable {
     let city: String
     let state: String
     let country: String
-
+    
     private enum CodingKeys: String, CodingKey {
        case id = "id"
        case name
@@ -34,6 +30,19 @@ struct Field: Codable, Identifiable, Hashable {
        case city
        case state
        case country
+    }
+    
+    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String) {
+        self.id = id
+        self.name = name
+        self.owner = owner
+        self.description = description
+        self.sports = sports
+        self.images = images
+        self.location = location
+        self.city = city
+        self.state = state
+        self.country = country
     }
 }
 

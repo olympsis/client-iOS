@@ -97,7 +97,8 @@ struct NewEventView: View {
               let uuid = user.uuid else {
             return
         }
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime, maxParticipants: Int(eventMaxParticipants), likes: nil, visibility: "public", data: nil, createdAt: nil)
+        let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], likes: nil, visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,
@@ -105,7 +106,7 @@ struct NewEventView: View {
             log.error("failed to create event")
             return
         }
-        
+        newEvent.participants?[0].data = user
         await MainActor.run {
             newEvent.data = EventData(poster: userData, club: session.clubs[clubIndex], field: session.fields[fieldIndex])
             session.events.append(newEvent)

@@ -8,12 +8,9 @@
 import Foundation
 import NotificationCenter
 
-class NotificationsManager: ObservableObject{
+class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+
     let center = UNUserNotificationCenter.current()
-    
-    init(){
-        
-    }
     
     // Request alert sound and badge notifications
     func requestAuthorization() async throws {
@@ -43,5 +40,30 @@ class NotificationsManager: ObservableObject{
         }
     }
     
-
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    willPresent notification: UNNotification,
+                                    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Handle the notification when the app is in the foreground.
+        // You can customize the behavior here, like showing an alert or playing a sound.
+        
+        // By default, no visual or audible alert is shown to the user for the notification.
+        // You can change this behavior by specifying appropriate options in the completionHandler.
+        
+        if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
+            completionHandler([[.banner, .badge, .sound]])
+        } else {
+            completionHandler([[.banner, .badge]])
+        }
+    }
+        
+    // This method is called when the user interacts with a notification (taps on it).
+    // You can use this method to handle actions associated with the notification.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Handle the user's response to the notification.
+        // For example, you might want to open a specific screen in the app based on the notification's data.
+        // Call the completion handler when you're done processing the notification.
+        completionHandler()
+    }
 }

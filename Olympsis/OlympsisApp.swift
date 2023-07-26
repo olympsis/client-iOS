@@ -66,5 +66,4 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         log.debug("Failed to register for remote notifications")
     }
-
 }
