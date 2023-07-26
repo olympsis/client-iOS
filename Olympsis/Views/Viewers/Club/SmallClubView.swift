@@ -25,12 +25,20 @@ struct SmallClubView: View {
     func Apply() async {
         status = .loading
         guard let id = club.id else {
+            status = .failure
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                status = .pending
+            }
             return
         }
         let res = await observer.createClubApplication(clubId: id)
         if res {
-            self.showToast = true
             status = .success
+        } else {
+            status = .failure
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                status = .pending
+            }
         }
     }
     
