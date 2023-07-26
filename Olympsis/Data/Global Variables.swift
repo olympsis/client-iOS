@@ -12,23 +12,6 @@ import SwiftUI
 let SCREEN_WIDTH = UIScreen.main.bounds.width
 let SCREEN_HEIGHT = UIScreen.main.bounds.height
 
-func SportFromString(s: String) -> SPORT {
-    switch s {
-    case "soccer":
-        return .soccer
-    case "basketball":
-        return .basketball
-    case "pickleball":
-        return .pickleball
-    case "tennis":
-        return .tennis
-    case "golf":
-        return .golf
-    default:
-        return .allCases[0]
-    }
-}
-
 func milesToMeters(radius: Double) -> Double {
     return (radius*DISTANCE_CONVERTIONS.MILES_TO_METERS.rawValue)
 }

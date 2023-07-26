@@ -73,6 +73,8 @@ enum SPORT: String, CaseIterable {
     case pickleball = "pickleball"
     case tennis = "tennis"
     case golf = "golf"
+    case hiking = "hiking"
+    case climbing = "climbing"
     
     func Icon() -> String {
         switch self {
@@ -88,6 +90,10 @@ enum SPORT: String, CaseIterable {
             return "🎾"
         case .golf:
             return "⛳️"
+        case .hiking:
+            return "⛰️"
+        case .climbing:
+            return "🧗‍♂️"
         }
     }
     
@@ -105,11 +111,16 @@ enum SPORT: String, CaseIterable {
             return ["pickleball-0","pickleball-1","pickleball-2"]
         case .golf:
             return ["golf-0","golf-1","golf-2"]
+        case .hiking:
+            return ["hiking-0", "hiking-1"]
+        case .climbing:
+            return ["climbing-0","climbing-1","climbing-2"]
         }
     }
 }
 
 enum MEMBER_ROLES: String, CaseIterable {
+    case Owner = "owner"
     case Admin = "admin"
     case Moderator = "moderator"
     case Member = "member"
