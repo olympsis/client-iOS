@@ -82,8 +82,10 @@ struct FieldView: View {
                 }.frame(height: 40)
                 
                 
-            }.fullScreenCover(isPresented: $showDetail) {
-                FieldDetailView(field: field)
+            }
+            .sheet(isPresented: $showDetail) {
+                FieldViewExt(field: field)
+                    .presentationDetents([.large])
             }
         }.onTapGesture {
             self.showDetail.toggle()
