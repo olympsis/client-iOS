@@ -18,7 +18,7 @@ let CLUBS = [
 
 
 let EVENTS = [
-    Event(id: "", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 1, status: "pending", startTime: 1688792743, actualStartTime: 1688686344, stopTime: 0, maxParticipants: 0, participants: [
+    Event(id: "", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 1, status: "pending", startTime: 1688792743, actualStartTime: 1688686344, stopTime: 0, maxParticipants: 10, participants: [
         Participant(id: "0", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: "1", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: "2", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),

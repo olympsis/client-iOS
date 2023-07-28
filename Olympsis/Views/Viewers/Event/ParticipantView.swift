@@ -18,12 +18,22 @@ struct ParticipantView: View {
         return GenerateImageURL(img)
     }
     
+    var ringColor: String {
+        if participant.status == "yes" {
+            return "primary-color"
+        } else if participant.status == "maybe" {
+            return "secondary-color"
+        } else {
+            return "tertiary-color"
+        }
+    }
+    
     var body: some View {
         AsyncImage(url: URL(string: imageURL)){ phase in
             if let image = phase.image {
                 ZStack {
                     Circle()
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color(ringColor))
                     image // Displays the loaded image.
                         .resizable()
                         .clipShape(Circle())
@@ -35,7 +45,7 @@ struct ParticipantView: View {
                 ZStack {
                     Circle()
                         .frame(width: 65, height: 65)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color(ringColor))
                     Color.gray // Indicates an error.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
@@ -45,7 +55,7 @@ struct ParticipantView: View {
                 ZStack {
                     Circle()
                         .frame(width: 65, height: 65)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color(ringColor))
                     Color.gray // Acts as a placeholder.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)

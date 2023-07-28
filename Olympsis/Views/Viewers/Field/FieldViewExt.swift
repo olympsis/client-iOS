@@ -19,10 +19,6 @@ struct FieldViewExt: View {
         return field.city + ", " + field.state
     }
     
-    var fieldEvents: [Event] {
-        return session.events.filter({ $0.fieldID == field.id })
-    }
-    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -33,7 +29,7 @@ struct FieldViewExt: View {
                             .font(.title)
                             .minimumScaleFactor(0.5)
                             .lineLimit(1)
-                        .bold()
+                            .bold()
                         
                         Spacer()
                         
@@ -67,46 +63,18 @@ struct FieldViewExt: View {
                 FieldActionButtons(field: field)
                 
                 //MARK: - Events View
-                VStack(alignment: .leading){
-                    HStack {
-                        Text("Events")
-                            .font(.title3)
-                            .bold()
-                        .frame(height: 20)
-                        Rectangle()
-                            .frame(height: 1)
-                    }
-                    if session.events.isEmpty {
-                        VStack(alignment: .center){
-                            Text("There are no events at this field. 🥹")
-                                .padding(.all)
-                        }
-                    } else {
-                        ScrollView(showsIndicators: false) {
-                            if status == .loading {
-                                EventTemplateView()
-                                EventTemplateView()
-                                EventTemplateView()
-                            } else if status == .failure {
-                                Text("Failed to load events")
-                                    .foregroundColor(.red)
-                                    .padding(.top)
-                            }else {
-                                ForEach(fieldEvents) { event in
-                                    EventView(event: event)
-                                }
-                            }
-                        }
-                    }
-                }.padding(.all)
-            }.padding(.top)
-        }
+                FieldEventsView(field: $field)
+                
+            }       
+        }.padding(.top)
     }
 }
 
 
 struct FieldImages: View {
+    
     @State var field: Field
+    
     var body: some View {
         ScrollView(.horizontal) {
             AsyncImage(url: URL(string:  GenerateImageURL(field.images[0]))){ phase in
@@ -119,13 +87,21 @@ struct FieldImages: View {
                             .cornerRadius(10)
                     
                     } else if phase.error != nil {
-                        Color.red // Indicates an error.
-                            .cornerRadius(10)
+                        ZStack {
+                            Color(.gray) // Indicates an error.
+                                .cornerRadius(10)
                             .frame(width: 220, height: 300, alignment: .center)
+                            Image(systemName: "exclamationmark.circle")
+                                .foregroundColor(.white)
+                        }
                     } else {
-                        Color.gray // Acts as a placeholder.
-                            .cornerRadius(10)
+                        ZStack {
+                            Color(.gray) // Indicates an error.
+                                .opacity(0.8)
+                                .cornerRadius(10)
                             .frame(width: 220, height: 300, alignment: .center)
+                            ProgressView()
+                        }
                     }
             }.padding(.leading)
         }
@@ -133,6 +109,7 @@ struct FieldImages: View {
 }
 
 struct FieldActionButtons: View {
+    
     @State var field: Field
     @State private var showNewEvent = false
     @EnvironmentObject private var session: SessionStore
@@ -260,6 +237,108 @@ struct FieldActionButtons: View {
             }
             
         }.padding(.horizontal)
+    }
+}
+
+struct FieldEventsView: View {
+    
+    @Binding var field: Field
+    @State private var status: LOADING_STATE = .pending
+    @EnvironmentObject private var session: SessionStore
+    
+    var fieldEvents: [Event] {
+        return session.events.filter({ $0.fieldID == field.id })
+    }
+    
+    func reloadEvents() async {
+        status = .loading
+        let resp = await session.eventObserver.fetchEventsByFieldID(field.id)
+        guard let events = resp else {
+            handleReloadFailure()
+            return
+        }
+        
+        // remove existing events and we will append the newly requested events
+        session.events.removeAll(where: { $0.fieldID == field.id })
+        session.events.append(contentsOf: events)
+        handleReloadSuccess()
+    }
+    
+    func handleReloadSuccess() {
+        status = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
+        }
+    }
+    
+    func handleReloadFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
+        }
+    }
+    
+    var body: some View {
+        
+        //MARK: - Events View
+        VStack(alignment: .leading){
+            HStack {
+                Text("Events")
+                    .font(.title3)
+                    .bold()
+                    .frame(height: 20)
+                HStack {
+                    Rectangle()
+                        .frame(height: 1)
+                    
+                    Button(action: { Task { await reloadEvents() }}) {
+                        switch status {
+                        case .pending:
+                            withAnimation {
+                                Image(systemName: "arrow.clockwise")
+                                    .foregroundColor(.primary)
+                            }
+                        case .loading:
+                            withAnimation {
+                                ProgressView()
+                            }
+                        case .success:
+                            withAnimation {
+                                Image(systemName: "arrow.clockwise")
+                                    .foregroundColor(.primary)
+                            }
+                        case .failure:
+                            withAnimation {
+                                Image(systemName: "exclamationmark.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                }
+            }
+            if fieldEvents.isEmpty {
+                VStack(alignment: .center){
+                    Text("There are no events at this field. 🥹")
+                        .padding(.all)
+                }.frame(maxWidth: .infinity)
+            } else {
+                ScrollView(showsIndicators: false) {
+                    if status == .loading {
+                        EventTemplateView()
+                        EventTemplateView()
+                        EventTemplateView()
+                    } else if status == .failure {
+                        Text("Failed to load events")
+                            .foregroundColor(.red)
+                            .padding(.top)
+                    }else {
+                        ForEach(fieldEvents) { event in
+                            EventView(event: event)
+                        }
+                    }
+                }
+            }
+        }.padding(.all)
     }
 }
 

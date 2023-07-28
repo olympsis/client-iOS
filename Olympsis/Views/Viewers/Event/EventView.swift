@@ -230,8 +230,9 @@ struct EventView: View {
                 }.frame(height: 100)
             }
         }.clipShape(Rectangle())
-        .fullScreenCover(isPresented: $showDetails) {
-            EventDetailView(event: $event)
+        .sheet(isPresented: $showDetails) {
+            EventViewExt(event: $event)
+                .presentationDetents([.large])
         }
     }
 }
