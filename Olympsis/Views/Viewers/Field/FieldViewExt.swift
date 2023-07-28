@@ -20,7 +20,7 @@ struct FieldViewExt: View {
     }
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 // MARK: - Name
                 VStack(alignment: .leading) {
@@ -76,34 +76,38 @@ struct FieldImages: View {
     @State var field: Field
     
     var body: some View {
-        ScrollView(.horizontal) {
-            AsyncImage(url: URL(string:  GenerateImageURL(field.images[0]))){ phase in
-                if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .frame(width: 220, height: 300, alignment: .center)
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                            .cornerRadius(10)
-                    
-                    } else if phase.error != nil {
-                        ZStack {
-                            Color(.gray) // Indicates an error.
-                                .cornerRadius(10)
-                            .frame(width: 220, height: 300, alignment: .center)
-                            Image(systemName: "exclamationmark.circle")
-                                .foregroundColor(.white)
-                        }
-                    } else {
-                        ZStack {
-                            Color(.gray) // Indicates an error.
-                                .opacity(0.8)
-                                .cornerRadius(10)
-                            .frame(width: 220, height: 300, alignment: .center)
-                            ProgressView()
-                        }
-                    }
-            }.padding(.leading)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(field.images, id: \.self) { i in
+                    AsyncImage(url: URL(string:  GenerateImageURL(i))){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .frame(width: 220, height: 300, alignment: .center)
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipped()
+                                    .cornerRadius(10)
+                            
+                            } else if phase.error != nil {
+                                ZStack {
+                                    Color(.gray) // Indicates an error.
+                                        .cornerRadius(10)
+                                    .frame(width: 220, height: 300, alignment: .center)
+                                    Image(systemName: "exclamationmark.circle")
+                                        .foregroundColor(.white)
+                                }
+                            } else {
+                                ZStack {
+                                    Color(.gray) // Indicates an error.
+                                        .opacity(0.8)
+                                        .cornerRadius(10)
+                                    .frame(width: 220, height: 300, alignment: .center)
+                                    ProgressView()
+                                }
+                            }
+                    }.padding(.leading)
+                }
+            }
         }
     }
 }
