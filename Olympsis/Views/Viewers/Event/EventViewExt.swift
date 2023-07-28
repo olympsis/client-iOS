@@ -143,8 +143,10 @@ struct EventViewExt: View {
                 
                 Image(eventImage)
                     .resizable()
-                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fill)
                     .frame(height: 300)
+                    .clipped()
+                    .cornerRadius(10)
                     .padding(.horizontal)
                     
                 Text("Details")
