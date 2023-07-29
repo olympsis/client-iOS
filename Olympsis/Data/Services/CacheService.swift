@@ -56,12 +56,12 @@ class CacheService: ObservableObject {
         return self.defaults.object(forKey: id) as? String ?? ""
     }
     
-    func clearCache() -> Bool {
+    func clearCache() {
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
-            return false
+            return
         }
         UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
         UserDefaults.standard.synchronize()
-        return true
+        return
     }
 }

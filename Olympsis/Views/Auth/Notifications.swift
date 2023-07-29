@@ -17,9 +17,8 @@ struct Notifications: View {
     @State private var notifications = NotificationsManager()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "notification_permission_view")
     
-    @AppStorage("loggedIn") private var loggedIn: Bool?
     @AppStorage("deviceToken") private var deviceToken: String?
-
+    @EnvironmentObject private var sessionStore: SessionStore
     func handleAllow() async {
         do {
             try await notifications.requestAuthorization()
@@ -30,7 +29,7 @@ struct Notifications: View {
             _ = await userObserver.UpdateUserData(update: User(deviceToken: tk))
             status = .success
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                loggedIn = true
+                sessionStore.authStatus = .authenticated
             }
         } catch {
             status = .failure

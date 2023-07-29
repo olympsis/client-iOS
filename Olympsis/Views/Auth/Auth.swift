@@ -12,13 +12,14 @@ import AuthenticationServices
 struct Auth: View {
     
     @Binding var currentView: AuthTab
-    @State private var userStatus: USER_STATUS?
+    @State private var state: LOADING_STATE = .pending
     @StateObject private var observer = AuthObserver()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
+    @EnvironmentObject var sessionStore: SessionStore
     
     var body: some View {
         VStack(){
-            ZStack {
+            ZStack(alignment: .center) {
                 Image("basketball-bw")
                     .resizable()
                     .scaledToFill()
@@ -55,16 +56,22 @@ struct Auth: View {
                         onCompletion: { result in
                             Task {
                                 do {
-                                    let res = try await observer.HandleSignInWithApple(result: result)
-                                    await MainActor.run {
-                                        userStatus = res
-                                        if userStatus == USER_STATUS.New {
+                                    state = .loading
+                                    let resp = try await observer.handleSignInWithApple(result: result)
+                                    if resp == USER_STATUS.new {
+                                        currentView = .username
+                                    } else if resp == USER_STATUS.returning {
+                                        await sessionStore.generateUserData()
+                                        guard let user = sessionStore.user,
+                                              user.uuid != nil,
+                                              user.username != nil else {
                                             currentView = .username
-                                        } else if userStatus == USER_STATUS.Returning {
-                                            currentView = .location
+                                            return
                                         }
+                                        currentView = .location
                                     }
                                 } catch {
+                                    state = .pending
                                     log.error("failed to sign user in: \(error)")
                                 }
                             }
@@ -73,6 +80,16 @@ struct Auth: View {
                         .cornerRadius(10)
                         .frame(width: SCREEN_WIDTH-100, height: 50)
                         .padding(.bottom, 50)
+                }
+                if state == .loading {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.gray)
+                            .opacity(0.8)
+                            .blur(radius: 5)
+                        ProgressView()
+                    }
                 }
             }
         }

@@ -10,16 +10,56 @@ import Foundation
 
 class SecureStore {
     
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "token_store")
     static let account = "olmypsis"
     static let server = "api.olympsis.com"
+    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "secure_store")
     
-    func saveCurrentUserID(uuid: String) {}
+    func saveCurrentUserID(uuid: String) {
+        guard let uuidData = uuid.data(using: .utf8) else {
+            return
+        }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "apple",
+            kSecValueData as String: uuidData
+        ]
+        
+        // just in case
+        SecItemDelete(query as CFDictionary)
+        let addStatus = SecItemAdd(query as CFDictionary, nil)
+        if addStatus == errSecSuccess {
+            log.info("userID saved to keychain successfully.")
+        } else {
+            log.error("failed to save UserID to keychain. Error: \(addStatus)")
+        }
+    }
     
-    func fetchCurrentUserID() {}
+    func fetchCurrentUserID() -> String? {
+        var result: CFTypeRef?
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "apple",
+            kSecMatchLimit as String: kSecMatchLimitOne,
+            kSecReturnData as String: true
+        ]
+        let fetchStatus = SecItemCopyMatching(query as CFDictionary, &result)
+        guard fetchStatus == errSecSuccess, let data = result as? Data else {
+            log.error("failed to get userID")
+            return nil
+        }
+        guard let userID = String(data: data, encoding: .utf8) else {
+            log.error("failed to decode userID")
+            return nil
+        }
+        return userID
+    }
     
     func saveTokenToKeyChain(token: String) {
-        let tokenData = token.data(using: .utf8)!
+        guard let tokenData = token.data(using: .utf8) else {
+            return
+        }
+        
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: SecureStore.account,
@@ -33,16 +73,16 @@ class SecureStore {
         let status = SecItemUpdate(query as CFDictionary, update as CFDictionary)
         
         if status == errSecSuccess {
-            log.info("Token updated in Keychain successfully.")
+            log.info("token updated in keychain successfully.")
         } else if status == errSecItemNotFound {
             let addStatus = SecItemAdd(query as CFDictionary, nil)
             if addStatus == errSecSuccess {
-                log.info("Token saved to Keychain successfully.")
+                log.info("token saved to keychain successfully.")
             } else {
-                log.error("Failed to save token to Keychain. Error: \(addStatus)")
+                log.error("failed to save token to keychain. Error: \(addStatus)")
             }
         } else {
-            log.info("Failed to update token in Keychain. Error: \(status)")
+            log.info("failed to update token in keychain. Error: \(status)")
         }
     }
     
@@ -80,19 +120,38 @@ class SecureStore {
                 return fetchedToken
     }
     
-    func clearKeyChain() -> Bool {
-        let query: [String: Any] = [
+    func clearKeyChain() {
+        // auth token
+        var query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: SecureStore.account,
             kSecAttrServer as String: SecureStore.server,
         ]
         
-        let status = SecItemDelete(query as CFDictionary)
+        var status = SecItemDelete(query as CFDictionary)
         if status != errSecSuccess {
-            log.error("Error deleting Keychain data: \(status)")
-            return false
+            log.error("error deleting keychain data: \(status)")
         }
         
-        return true
+        
+        // user id
+        query = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "apple",
+        ]
+        status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess {
+            log.error("error deleting keychain data: \(status)")
+        }
+        
+        // legacy token
+        query = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: "authToken",
+        ]
+        status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess {
+            log.error("error deleting keychain data: \(status)")
+        }
     }
 }

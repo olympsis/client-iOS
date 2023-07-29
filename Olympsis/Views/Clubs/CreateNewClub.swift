@@ -94,7 +94,7 @@ struct CreateNewClub: View {
             let _ = try await session.clubObserver.createClub(club: club)
             
             // update user data
-            await session.generateUserData()
+            let _ = await session.generateUserData()
             await session.fetchUserClubs()
             
             
