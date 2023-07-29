@@ -119,33 +119,6 @@ struct ClubMenu: View {
                             }.modifier(MenuButton())
                         }.padding(.top)
                     }
-
-                    Menu {
-                        ForEach(session.clubs) { club in
-                            Button(action:{
-                                Task {
-                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }) else {
-                                        return
-                                    }
-                                    index = i
-                                }
-                            }
-                            ){
-                                Text(club.name ?? "Club")
-                            }
-                        }
-                    }label: {
-                        HStack {
-                            Image(systemName: "arrow.3.trianglepath")
-                                .imageScale(.large)
-                                .padding(.leading)
-                            .foregroundColor(.primary)
-                            Text("Switch Club")
-                            Spacer()
-                        }
-                    }.foregroundColor(.primary)
-                    .frame(width: SCREEN_WIDTH-25, height: 50)
-                    .modifier(MenuButton())
                             
                     Button(action:{ self.showNewClub.toggle() }) {
                         HStack {
