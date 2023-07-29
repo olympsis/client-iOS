@@ -6,7 +6,6 @@
 //
 
 import os
-import SocketIO
 import Foundation
 
 class ChatObserver: ObservableObject {

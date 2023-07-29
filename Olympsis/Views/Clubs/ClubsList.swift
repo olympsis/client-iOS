@@ -7,7 +7,6 @@
 
 import os
 import SwiftUI
-import AlertToast
 import CoreLocation
 
 struct ClubsList: View {
@@ -94,8 +93,6 @@ struct ClubsList: View {
                         }
                     }
                 }
-            }.toast(isPresenting: $showCompletedApplicationToast){
-                AlertToast(displayMode: .banner(.pop), type: .regular, title: "Application Sent!", style: .style(titleColor: .green, titleFont: .body))
             }
             .refreshable {
                 guard let location = session.locationManager.location else {
