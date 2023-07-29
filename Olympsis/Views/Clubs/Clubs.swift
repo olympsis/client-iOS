@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AlertToast
 
 struct Clubs: View {
     

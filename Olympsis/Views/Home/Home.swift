@@ -136,12 +136,13 @@ struct Home: View {
                     Text("Olympsis")
                         .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{ self.showNotifications.toggle() }) {
-                        Image(systemName: "bell")
-                            
-                    }
-                }
+//                Hiding this until i can have it working
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button(action:{ self.showNotifications.toggle() }) {
+//                        Image(systemName: "bell")
+//
+//                    }
+//                }
             }
         }
     }

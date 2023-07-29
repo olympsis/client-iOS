@@ -27,6 +27,7 @@ struct OlympsisApp: App {
                 if !showAuth! {
                     ViewContainer() // home view
                         .environmentObject(sessionStore)
+                        .environmentObject(sessionStore.notificationsManager)
                 } else {
                     AuthContainer() // auth view
                         .environmentObject(sessionStore)

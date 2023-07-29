@@ -25,6 +25,7 @@ struct RoomView: View {
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var notificationManager: NotificationsManager
     
     var log = Logger(subsystem: "com.coronislabs.olympsis", category: "room_view")
     
@@ -84,6 +85,35 @@ struct RoomView: View {
                     RoomSettingsView(room: room, hasDeleted: $hasDeleted, observer: observer)
                         .presentationDetents([.height(250)])
                 }
+                .refreshable {
+                    state = .loading
+                    guard let id = room.id else {
+                        return
+                    }
+                    let resp = await observer.GetRoom(id: id)
+                    if let r = resp {
+                        await MainActor.run {
+                            guard let history = r.history else {
+                                state = .success
+                                return
+                            }
+                            messages = history
+                            state = .success
+                        }
+                    }
+                    await observer.InitiateSocketConnection(id: id)
+                    observer.Ping()
+                    while true {
+                        let msg = await observer.ReceiveMessage()
+                        if let m = msg {
+                            messages.append(m)
+                        } else {
+                            log.error("Failed to get message")
+                            await observer.InitiateSocketConnection(id: id)
+                            observer.Ping()
+                        }
+                    }
+                }
                
                 HStack {
                     TextField("Message", text: $text, axis: .vertical)
@@ -130,6 +160,7 @@ struct RoomView: View {
                 }
             }
             .task {
+                notificationManager.inMessageView = true
                 state = .loading
                 guard let id = room.id else {
                     return
@@ -159,6 +190,7 @@ struct RoomView: View {
                 }
             }
             .onDisappear() {
+                notificationManager.inMessageView = false
                 Task {
                     await observer.CloseSocketConnection()
                 }
@@ -173,5 +205,6 @@ struct RoomView_Previews: PreviewProvider {
 
         RoomView(club: CLUBS[0], room: room, rooms: .constant([room]), observer: ChatObserver())
             .environmentObject(SessionStore())
+            .environmentObject(NotificationsManager())
     }
 }

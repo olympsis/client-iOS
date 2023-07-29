@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
+		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
@@ -15,7 +16,6 @@
 		5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA32A4123FB0019E9F7 /* Location.swift */; };
 		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
 		5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
-		5F1AD4CA2A64C82C001DFE1B /* ToastViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1AD4C92A64C82C001DFE1B /* ToastViewModifier.swift */; };
 		5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */; };
 		5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */; };
 		5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA62A547D6C00EAF5A4 /* PickSports.swift */; };
@@ -31,8 +31,6 @@
 		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
 		5FA350562A67352500669B2C /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350552A67352500669B2C /* NotificationsView.swift */; };
 		5FA350582A6737AF00669B2C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350572A6737AF00669B2C /* Enums.swift */; };
-		5FB334C42A63681E00811F2E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB334C32A63681E00811F2E /* Models.swift */; };
-		5FB334C62A6368B900811F2E /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB334C52A6368B900811F2E /* ToastView.swift */; };
 		5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */; };
 		5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */; };
 		5FF2A0272A380534009234AD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
@@ -73,7 +71,6 @@
 		9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A2296685D40042F0A6 /* RoomListView.swift */; };
 		9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A429668CC90042F0A6 /* RoomView.swift */; };
 		9A8162A729669A370042F0A6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A629669A370042F0A6 /* MessageView.swift */; };
-		9A8162AA2966BD380042F0A6 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 9A8162A92966BD380042F0A6 /* SocketIO */; };
 		9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* FieldObserver.swift */; };
 		9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* FieldService.swift */; };
 		9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* FieldView.swift */; };
@@ -85,7 +82,6 @@
 		9A81B627292485A3009CA6ED /* ClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B626292485A3009CA6ED /* ClubView.swift */; };
 		9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62829249B11009CA6ED /* ClubApplicationRequestDao.swift */; };
 		9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62A2924A701009CA6ED /* NewClubApplication.swift */; };
-		9A81B62E292559F7009CA6ED /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 9A81B62D292559F7009CA6ED /* AlertToast */; };
 		9A81B63029256A57009CA6ED /* CreateNewClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62F29256A56009CA6ED /* CreateNewClub.swift */; };
 		9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6312925C038009CA6ED /* BadgesView.swift */; };
 		9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6332925C0E7009CA6ED /* TrophiesView.swift */; };
@@ -201,7 +197,6 @@
 		5F00FEA32A4123FB0019E9F7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
 		5F1329B92A282BE200B31170 /* EventModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModels.swift; sourceTree = "<group>"; };
-		5F1AD4C92A64C82C001DFE1B /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickUsername.swift; sourceTree = "<group>"; };
 		5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonLabel.swift; sourceTree = "<group>"; };
 		5F493FA62A547D6C00EAF5A4 /* PickSports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSports.swift; sourceTree = "<group>"; };
@@ -217,8 +212,6 @@
 		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		5FA350552A67352500669B2C /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		5FA350572A6737AF00669B2C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		5FB334C32A63681E00811F2E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		5FB334C52A6368B900811F2E /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5FC90F072A2E24B200BA3BA1 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbar.swift; sourceTree = "<group>"; };
 		5FF2A0262A380534009234AD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
@@ -383,9 +376,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A8162AA2966BD380042F0A6 /* SocketIO in Frameworks */,
 				9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */,
-				9A81B62E292559F7009CA6ED /* AlertToast in Frameworks */,
+				5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,16 +408,6 @@
 				5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */,
 			);
 			path = Pickers;
-			sourceTree = "<group>";
-		};
-		5FB334C22A6367F600811F2E /* Toast */ = {
-			isa = PBXGroup;
-			children = (
-				5FB334C32A63681E00811F2E /* Models.swift */,
-				5FB334C52A6368B900811F2E /* ToastView.swift */,
-				5F1AD4C92A64C82C001DFE1B /* ToastViewModifier.swift */,
-			);
-			path = Toast;
 			sourceTree = "<group>";
 		};
 		9A3536FF2928930D005EC806 /* Viewers */ = {
@@ -570,7 +552,6 @@
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
 				9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */,
 				9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */,
-				5FB334C22A6367F600811F2E /* Toast */,
 				BE9C45FB29E279B0008EA591 /* Utils */,
 				9A8FF0E528BBD7CA00DE4CF8 /* Fonts */,
 				9A8FF0BF28BB18C300DE4CF8 /* Data */,
@@ -910,9 +891,8 @@
 			);
 			name = Olympsis;
 			packageProductDependencies = (
-				9A81B62D292559F7009CA6ED /* AlertToast */,
-				9A8162A92966BD380042F0A6 /* SocketIO */,
 				9A69CDDE2A1727BB00C37C1C /* Hermes */,
+				5D67495D2A74BF1600AEC868 /* SwiftToast */,
 			);
 			productName = Olympsis;
 			productReference = 9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */;
@@ -943,9 +923,8 @@
 			);
 			mainGroup = 9A8FF0A428BB14BF00DE4CF8;
 			packageReferences = (
-				9A81B62C292559F7009CA6ED /* XCRemoteSwiftPackageReference "AlertToast" */,
-				9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */,
 				9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */,
+				5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */,
 			);
 			productRefGroup = 9A8FF0AE28BB14BF00DE4CF8 /* Products */;
 			projectDirPath = "";
@@ -1019,7 +998,6 @@
 				9AB02F5D29024D35008C07F1 /* Clubs.swift in Sources */,
 				9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */,
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
-				5FB334C62A6368B900811F2E /* ToastView.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
@@ -1051,7 +1029,6 @@
 				9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
 				9A69FE492971FCE600EBC5F9 /* EventDetailFieldView.swift in Sources */,
-				5F1AD4CA2A64C82C001DFE1B /* ToastViewModifier.swift in Sources */,
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
@@ -1097,7 +1074,6 @@
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
 				9A5D3365292AAA71008CF61D /* PostView.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
-				5FB334C42A63681E00811F2E /* Models.swift in Sources */,
 				5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
@@ -1377,6 +1353,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NokoAnubis/Swift-Toast.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/NokoAnubis/Hermes.git";
@@ -1385,39 +1369,18 @@
 				kind = branch;
 			};
 		};
-		9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		9A81B62C292559F7009CA6ED /* XCRemoteSwiftPackageReference "AlertToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elai950/AlertToast";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5D67495D2A74BF1600AEC868 /* SwiftToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */;
+			productName = SwiftToast;
+		};
 		9A69CDDE2A1727BB00C37C1C /* Hermes */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */;
 			productName = Hermes;
-		};
-		9A8162A92966BD380042F0A6 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9A8162A82966BD370042F0A6 /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-		9A81B62D292559F7009CA6ED /* AlertToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9A81B62C292559F7009CA6ED /* XCRemoteSwiftPackageReference "AlertToast" */;
-			productName = AlertToast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

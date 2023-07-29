@@ -7,7 +7,6 @@
 
 import os
 import SwiftUI
-import AlertToast
 
 struct NewEventView: View {
     
