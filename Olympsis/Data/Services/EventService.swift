@@ -31,6 +31,12 @@ class EventService {
         return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
+    func getEventsByField(id: String) async throws -> (Data, URLResponse) {
+        let endpoint = Hermes.Endpoint(path: "/events/field/\(id)")
+        
+        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
     func getEvent(id: String) async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/events/\(id)", queryItems: [URLQueryItem]())
         

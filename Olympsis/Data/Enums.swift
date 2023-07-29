@@ -72,6 +72,13 @@ enum LOADING_STATE {
     case failure
 }
 
+enum EVENT_STATUS: String {
+    case pending = "pending"
+    case in_progress = "in-progress"
+    case completed = "ended"
+}
+
+
 enum SPORT: String, CaseIterable {
     case soccer = "soccer"
     case volleyball = "volleyball"

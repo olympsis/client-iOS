@@ -231,22 +231,6 @@ struct EventDetailView: View {
                             } .padding(.leading)
                         }
                     }
-                    
-                    // MARK: - Field Details View
-                    if let field = event.data?.field {
-                        VStack {
-                            EventDetailFieldView(field: field)
-                                .padding(.top)
-                        }
-                    }
-                    
-                    // MARK: - Club Details View
-                    if let club = event.data?.club {
-                        VStack {
-                            EventDetailHostClubView(club: club)
-                                .padding(.top, 20)
-                        }
-                    }
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(event: $event)
