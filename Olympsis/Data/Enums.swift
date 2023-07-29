@@ -16,12 +16,18 @@ enum ACCOUNT_STATE {
     case Incomplete
 }
 
+enum AUTH_STATUS {
+    case unknown
+    case not_finished
+    case authenticated
+    case unauthenticated
+}
+
 enum USER_STATUS {
-    case New
-    case Banned
-    case Ubanned
-    case Returning
-    case Unknown
+    case new
+    case unknown
+    case returning
+    case not_finished
 }
 
 enum Tab: String, CaseIterable {

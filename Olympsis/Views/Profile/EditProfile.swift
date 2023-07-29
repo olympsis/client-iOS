@@ -238,7 +238,7 @@ struct EditProfile: View {
                 
                         Task {
                             await UpdateProfile()
-                            await session.generateUserData()
+                            let _ = await session.generateUserData()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 self.presentationMode.wrappedValue.dismiss()
                             }

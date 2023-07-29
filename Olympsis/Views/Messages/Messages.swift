@@ -23,6 +23,7 @@ struct Messages: View {
     @StateObject private var chatObserver = ChatObserver()
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var notificationManager: NotificationsManager
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -128,6 +129,7 @@ struct Messages: View {
                 }
             }
             .task {
+                notificationManager.inMessageView = true
                 state = .loading
                 let resp = await chatObserver.GetRooms(id: club.id!)
                 if let r = resp {
@@ -138,6 +140,9 @@ struct Messages: View {
                 } else {
                     state = .success
                 }
+            }
+            .onDisappear {
+                notificationManager.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)
@@ -150,6 +155,6 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: .constant(CLUBS[0]), rooms: [room]).environmentObject(SessionStore())
+        Messages(club: .constant(CLUBS[0]), rooms: [room]).environmentObject(SessionStore()).environmentObject(NotificationsManager())
     }
 }

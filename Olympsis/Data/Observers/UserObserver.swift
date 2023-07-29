@@ -12,6 +12,11 @@ class UserObserver: ObservableObject {
     private let decoder: JSONDecoder
     private let userService: UserService
     
+    enum UserObserverError: Error {
+        case NotFound
+        case Unknown
+    }
+    
     init() {
         decoder = JSONDecoder()
         userService = UserService()
@@ -42,8 +47,11 @@ class UserObserver: ObservableObject {
     }
     
     func GetUserData() async throws -> User {
-        let response = try await userService.GetUserData()
-        let object = try decoder.decode(User.self, from: response)
+        let (data, resp) = try await userService.GetUserData()
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            throw UserObserverError.NotFound
+        }
+        let object = try decoder.decode(User.self, from: data)
         return object
     }
     

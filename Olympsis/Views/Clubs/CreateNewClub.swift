@@ -8,7 +8,6 @@
 import os
 import SwiftUI
 import PhotosUI
-import AlertToast
 
 struct Rule: Identifiable {
     let id = UUID()
@@ -94,7 +93,7 @@ struct CreateNewClub: View {
             let _ = try await session.clubObserver.createClub(club: club)
             
             // update user data
-            await session.generateUserData()
+            let _ = await session.generateUserData()
             await session.fetchUserClubs()
             
             
@@ -246,11 +245,6 @@ struct CreateNewClub: View {
                 }
                 .padding(.top)
             }.frame(width: SCREEN_WIDTH-25)
-                .toast(isPresenting: $showToast, alert: {
-                    AlertToast(displayMode: .banner(.pop), type: .regular, title: "Club Created!", style: .style(titleColor: .green, titleFont: .body))
-                }, completion: {
-                    self.presentationMode.wrappedValue.dismiss()
-                })
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{self.presentationMode.wrappedValue.dismiss()}) {

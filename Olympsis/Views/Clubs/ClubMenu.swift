@@ -262,7 +262,7 @@ struct ClubMenu: View {
                                         }
                                         let res = await session.clubObserver.leaveClub(id: id)
                                         if res {
-                                            await session.generateUserData()
+                                            let _ = await session.generateUserData()
                                             session.clubs.removeAll(where: { $0.id == id })
                                             self.presentationMode.wrappedValue.dismiss()
                                         }
@@ -282,7 +282,7 @@ struct ClubMenu: View {
                                     }
                                     let res = await session.clubObserver.leaveClub(id: id)
                                     if res {
-                                        await session.generateUserData()
+                                        let _ = await session.generateUserData()
                                         session.clubs.removeAll(where: { $0.id == id })
                                         self.presentationMode.wrappedValue.dismiss()
                                     }
@@ -302,7 +302,7 @@ struct ClubMenu: View {
                                 }
                                 let res = await session.clubObserver.deleteClub(id: id)
                                 if res {
-                                    await session.generateUserData()
+                                    let _ = await session.generateUserData()
                                     session.clubs.removeAll(where: { $0.id == id })
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
