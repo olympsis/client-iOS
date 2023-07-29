@@ -31,6 +31,20 @@ class EventObserver: ObservableObject{
         return nil
     }
     
+    func fetchEventsByFieldID(_ id: String) async -> [Event]? {
+        do {
+            let (data, resp) = try await eventService.getEventsByField(id: id)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(EventsResponse.self, from: data)
+            return object.events
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
+    }
+    
     func fetchEvent(id: String) async -> Event? {
         do {
             let (data, resp) = try await eventService.getEvent(id: id)

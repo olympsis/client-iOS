@@ -15,10 +15,8 @@ struct EventDetailView: View {
     @Binding var event:   Event
     @State var club:      Club?
     @State private var showMenu = false
-    @State private var showOnboarding = false
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var session: SessionStore
-    @AppStorage("eventManagementOnboarding") var onboarding:Bool?
     
     func leadToMaps(){
         UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(fieldLocation.coordinates[1]),\(fieldLocation.coordinates[0])")! as URL)
@@ -231,30 +229,11 @@ struct EventDetailView: View {
                             } .padding(.leading)
                         }
                     }
-                    
-                    // MARK: - Field Details View
-                    if let field = event.data?.field {
-                        VStack {
-                            EventDetailFieldView(field: field)
-                                .padding(.top)
-                        }
-                    }
-                    
-                    // MARK: - Club Details View
-                    if let club = event.data?.club {
-                        VStack {
-                            EventDetailHostClubView(club: club)
-                                .padding(.top, 20)
-                        }
-                    }
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(event: $event)
                     .presentationDetents([.height(200)])
             }
-            .fullScreenCover(isPresented: $showOnboarding, content: {
-                RSVP()
-            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
@@ -284,12 +263,6 @@ struct EventDetailView: View {
                     await MainActor.run {
                         self.event = e
                     }
-                }
-            }.task {
-                guard onboarding != nil else {
-                    showOnboarding = true
-                    onboarding = true
-                    return
                 }
             }
         }

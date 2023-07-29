@@ -17,8 +17,10 @@ class SessionStore: ObservableObject {
      App session data, fetched every session
      Stored in memory until app is closed
      */
-    let tokenStore = SecureStore()
+    let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
+    
+    @Published var authStatus: AUTH_STATUS = .unknown
     
     @Published var user: UserData?       // User data
     @Published var clubs = [Club]()      // Clubs Cache
@@ -42,15 +44,17 @@ class SessionStore: ObservableObject {
      App lifetime data
      Whenever set, this is cached in app until changed or app is removed
      */
-    @AppStorage("loggedIn") var loggedIn: Bool? // makes sure the user is completely logged in. eventually will be replaced with apple auth call
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
     
     init() {
-        guard let login = loggedIn,
-        login == true else {
-            return
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = notificationsManager
+        self.user = cacheService.fetchUser()
+        authObserver.checkAuthStatus { (auth) in
+            DispatchQueue.main.async {
+                self.authStatus = auth
+            }
         }
-        user = cacheService.fetchUser()
     }
     
     func fetchUser() async {
@@ -104,8 +108,10 @@ class SessionStore: ObservableObject {
             await MainActor.run {
                 self.user = cache
             }
+            return
         } catch {
             log.error("generateUpdatedUserData error: \(error.localizedDescription)")
+            return
         }
     }
     
@@ -182,31 +188,28 @@ class SessionStore: ObservableObject {
     
     func logout() async {
         // clear cached app data
-        let cacheResp = cacheService.clearCache()
-        // let storeResp = tokenStore.clearKeyChain() // bug on delete
-        guard cacheResp == true/*, storeResp == true*/ else {
-            log.error("failed to clear device data")
-            return
-        }
-        loggedIn = false
+        cacheService.clearCache()
+        
+        // clear secure store
+        secureStore.clearKeyChain()
+        
+        // go back to login page
+        authStatus = .unauthenticated
         return
     }
     
     func deleteAccount() async -> Bool {
         do {
-            let resp = try await authObserver.DeleteAccount()
+            let resp = try await authObserver.deleteAccount()
             
             guard resp == true else {
                 return false
             }
             // clear cached app data
-            let cacheResp = cacheService.clearCache()
-//            let storeResp = tokenStore.clearKeyChain()
-            guard cacheResp == true /*storeResp == true*/ else {
-                log.error("failed to clear device data")
-                return false
-            }
-            loggedIn = false // replace this to apple's option later
+            cacheService.clearCache()
+            
+            // clear secure store
+            secureStore.clearKeyChain()
             return true
         } catch {
             log.error("\(error)")

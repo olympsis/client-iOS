@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import MapKit
+import CoreLocation
 
 struct PlaceAnnotationView: View {
     @State var field: Field
@@ -24,16 +26,18 @@ struct PlaceAnnotationView: View {
         }.onTapGesture {
             withAnimation(.easeInOut) {
                 self.showDetails.toggle()
+                session.locationManager.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 0.005, longitudinalMeters: 0.005)
             }
           }
-        .fullScreenCover(isPresented: $showDetails) {
-            FieldDetailView(field: field)
+        .sheet(isPresented: $showDetails) {
+                    FieldViewExt(field: field)
+                        .presentationDetents([.height(250), .large])
         }
     }
 }
 
 struct PlaceAnnotationView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceAnnotationView(field: FIELDS[0])
+        PlaceAnnotationView(field: FIELDS[0]).environmentObject(SessionStore())
     }
 }

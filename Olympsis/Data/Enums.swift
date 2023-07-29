@@ -16,12 +16,18 @@ enum ACCOUNT_STATE {
     case Incomplete
 }
 
+enum AUTH_STATUS {
+    case unknown
+    case not_finished
+    case authenticated
+    case unauthenticated
+}
+
 enum USER_STATUS {
-    case New
-    case Banned
-    case Ubanned
-    case Returning
-    case Unknown
+    case new
+    case unknown
+    case returning
+    case not_finished
 }
 
 enum Tab: String, CaseIterable {
@@ -65,6 +71,13 @@ enum LOADING_STATE {
     case success
     case failure
 }
+
+enum EVENT_STATUS: String {
+    case pending = "pending"
+    case in_progress = "in-progress"
+    case completed = "ended"
+}
+
 
 enum SPORT: String, CaseIterable {
     case soccer = "soccer"
