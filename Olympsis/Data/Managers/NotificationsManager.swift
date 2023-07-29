@@ -40,6 +40,17 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         }
     }
     
+    // This method is called when the user interacts with a notification (taps on it).
+    // You can use this method to handle actions associated with the notification.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Handle the user's response to the notification.
+        // For example, you might want to open a specific screen in the app based on the notification's data.
+        // Call the completion handler when you're done processing the notification.
+        completionHandler()
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -56,14 +67,5 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         }
     }
         
-    // This method is called when the user interacts with a notification (taps on it).
-    // You can use this method to handle actions associated with the notification.
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Handle the user's response to the notification.
-        // For example, you might want to open a specific screen in the app based on the notification's data.
-        // Call the completion handler when you're done processing the notification.
-        completionHandler()
-    }
+
 }

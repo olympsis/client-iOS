@@ -40,7 +40,7 @@ struct ViewContainer: View {
             }
             .task {
                 await session.fetchUser()
-                await authObserver.Token()
+                await authObserver.refreshAuthToken()
                 session.locationManager.requestLocation()
             }
     }

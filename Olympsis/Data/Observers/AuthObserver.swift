@@ -14,13 +14,13 @@ class AuthObserver: ObservableObject {
 
     let log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_observer")
     let decoder =  JSONDecoder()
-    let tokenStore = SecureStore()
+    let secureStore = SecureStore()
     let authService = AuthService()
     let cacheService = CacheService()
     
-    @AppStorage("loggedIn") var loggedIn: Bool?
+    @AppStorage("userID") var userID: String?
     
-    func SignUp(firstName:String, lastName:String, email:String, code: String) async throws {
+    func signUp(firstName:String, lastName:String, email:String, code: String) async throws {
         let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
         let (data, _) = try await authService.SignUp(request: req)
         let object = try decoder.decode(AuthResponse.self, from: data)
@@ -29,10 +29,10 @@ class AuthObserver: ObservableObject {
         
         // cache user data & token
         cacheService.cacheUser(user: usr)
-        tokenStore.saveTokenToKeyChain(token: object.token)
+        secureStore.saveTokenToKeyChain(token: object.token)
     }
     
-    func Token() async {
+    func refreshAuthToken() async {
         struct TokenResponse: Decodable {
             var authToken: String
         }
@@ -42,13 +42,13 @@ class AuthObserver: ObservableObject {
             let object = try decoder.decode(TokenResponse.self, from: data)
             
             // cache token
-            tokenStore.saveTokenToKeyChain(token: object.authToken)
+            secureStore.saveTokenToKeyChain(token: object.authToken)
         } catch {
             log.error("failed to update token: \(error.localizedDescription)")
         }
     }
     
-    func LogIn(code: String) async throws {
+    func logIn(code: String) async throws {
         let req = AuthRequest(code: code, provider: "https://appleid.apple.com")
         let (data, _) = try await authService.LogIn(request: req)
         let object = try decoder.decode(AuthResponse.self, from: data)
@@ -57,10 +57,10 @@ class AuthObserver: ObservableObject {
         
         // cache user data & token
         cacheService.cacheUser(user: usr)
-        tokenStore.saveTokenToKeyChain(token: object.token)
+        secureStore.saveTokenToKeyChain(token: object.token)
     }
     
-    func DeleteAccount() async throws -> Bool {
+    func deleteAccount() async throws -> Bool {
         // clear server data
         let (_, resp) = try await authService.DeleteAccount()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
@@ -70,7 +70,7 @@ class AuthObserver: ObservableObject {
         return true
     }
     
-    func HandleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS {
+    func handleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS {
         switch result {
         case .success(let authorization):
             if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -85,10 +85,11 @@ class AuthObserver: ObservableObject {
                           let fullName = appleIdCredential.fullName,
                           let firstName = fullName.givenName,
                           let lastName = fullName.familyName else {
-                        return USER_STATUS.Unknown
+                        return USER_STATUS.unknown
                     }
-                    try await SignUp(firstName: firstName, lastName: lastName, email: email, code: String(data: code, encoding: .utf8)!)
-                    return USER_STATUS.New
+                    secureStore.saveCurrentUserID(uuid: appleIdCredential.user)
+                    try await signUp(firstName: firstName, lastName: lastName, email: email, code: String(data: code, encoding: .utf8)!)
+                    return USER_STATUS.new
                 } else {
                     /*
                         Existing User
@@ -96,17 +97,46 @@ class AuthObserver: ObservableObject {
                     
                     log.trace("existing user logging in")
                     guard let code = appleIdCredential.authorizationCode else {
-                        return USER_STATUS.Unknown
+                        return USER_STATUS.unknown
                     }
-                    try await LogIn(code: String(data: code, encoding: .utf8)!)
-                    return USER_STATUS.Returning
+                    secureStore.saveCurrentUserID(uuid: appleIdCredential.user)
+                    try await logIn(code: String(data: code, encoding: .utf8)!)
+                    return USER_STATUS.returning
                 }
             }
         case .failure(let error):
-            log.error("Apple Sign In cancelled or an error occured: \(error)")
+            log.error("apple signIn cancelled or an error occured: \(error)")
             throw error
         }
-        return USER_STATUS.Unknown
+        return USER_STATUS.unknown
+    }
+    
+    // check the status of the current user
+    func checkAuthStatus(completion: @escaping (AUTH_STATUS) -> Void) {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        
+        // fetch stored user id
+        guard let userID = secureStore.fetchCurrentUserID() else {
+            completion(AUTH_STATUS.unauthenticated)
+            return
+        }
+        
+        appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
+            switch credentialState {
+            case .authorized:
+                let token = self.secureStore.fetchTokenFromKeyChain()
+                if token != "" {
+                    completion(AUTH_STATUS.authenticated)
+                } else {
+                    completion(AUTH_STATUS.unauthenticated)
+                }
+            case .revoked, .notFound:
+                completion(AUTH_STATUS.unauthenticated)
+            default:
+                break
+            }
+        }
+        completion(AUTH_STATUS.unknown)
     }
 }
 
