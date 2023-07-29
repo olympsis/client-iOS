@@ -71,6 +71,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             return
         }
         switch type {
+            // NEW EVENT
         case ToastStyle.newEvent.rawValue:
             guard let title = userInfo["title"] as? String,
                   let actor = userInfo["actor"] as? String,
@@ -80,6 +81,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             self.toastContent = Toast(style: ToastStyle.newEvent, actor: actor, title: title, message: message)
             self.showToast = true
             
+            // NEW POST
         case ToastStyle.newPost.rawValue:
             guard let title = userInfo["title"] as? String,
                   let actor = userInfo["actor"] as? String,
@@ -89,6 +91,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             self.toastContent = Toast(style: ToastStyle.newPost, actor: actor, title: title, message: message)
             self.showToast = true
             
+            // MESSAGE
         case ToastStyle.message.rawValue:
             guard !inMessageView else { // dont want to show toasts if you are in a message view
                 break
@@ -101,6 +104,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             self.toastContent = Toast(style: ToastStyle.message, actor: actor, title: title, message: message)
             self.showToast = true
             
+            // EVENT STATUS
         case ToastStyle.eventStatus.rawValue:
             guard let title = userInfo["title"] as? String,
                   let message = userInfo["message"] as? String else {
