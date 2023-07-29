@@ -354,6 +354,7 @@ struct EventMiddleView: View {
 struct EventActionButtons: View {
     
     @Binding var event: Event
+    @State private var showMenu: Bool = false
     @State private var state: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
@@ -569,11 +570,7 @@ struct EventActionButtons: View {
                 }
             }
             
-            Menu{
-                Button(action:{}){
-                    Label("Report an Issue", systemImage: "exclamationmark.shield")
-                }
-            }label: {
+            Button(action:{ self.showMenu.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
@@ -587,6 +584,9 @@ struct EventActionButtons: View {
                         Text("More")
                     }.foregroundColor(.white)
                 }
+            }.sheet(isPresented: $showMenu) {
+                EventMenu(event: $event)
+                    .presentationDetents([.height(200)])
             }
             
         }.padding(.horizontal)

@@ -23,7 +23,7 @@ struct LaunchScreen: View {
                     Text("Olympsis")
                         .foregroundColor(.white)
                         .bold()
-                    Text("0.4.5")
+                    Text("0.5.0")
                         .foregroundColor(.white)
                         .font(.caption)
                 }.padding(.bottom)

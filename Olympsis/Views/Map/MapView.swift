@@ -17,11 +17,9 @@ struct MapView: View {
     @State private var showFieldDetail  = false
     @State private var showNewEvent     = false
     @State private var showOptions      = false
-    @State private var showOnboarding = false
     @State var trackingMode: MapUserTrackingMode = .follow
     @State var region : MKCoordinateRegion = .init()
     @EnvironmentObject var session:SessionStore
-    @AppStorage("eventsViewOnboarding") var onboarding:Bool?
     
     var sports: [String] {
         guard let user = session.user,
@@ -115,19 +113,9 @@ struct MapView: View {
                 }
             }
             .alert(isPresented: $showError){
-                Alert(title: Text("Permission Denied"), message: Text("To use PlayFest's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
+                Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 }))
-            }
-            .fullScreenCover(isPresented: $showOnboarding, content: {
-                ManageEvents()
-            })
-            .task {
-                guard onboarding != nil else {
-                    showOnboarding = true
-                    onboarding = true
-                    return
-                }
             }
         }
     }
