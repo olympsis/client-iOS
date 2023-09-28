@@ -10,7 +10,7 @@ import CoreLocation
 import SwiftUI
 import MapKit
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate{
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var manager = CLLocationManager()
     @Published var location: CLLocationCoordinate2D?

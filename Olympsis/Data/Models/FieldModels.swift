@@ -7,7 +7,8 @@
 
 import Foundation
 
-class Field: Codable, Identifiable {
+class Field: Codable, Identifiable, Equatable {
+    
     let id: String
     let name: String
     let owner: Ownership
@@ -43,6 +44,10 @@ class Field: Codable, Identifiable {
         self.city = city
         self.state = state
         self.country = country
+    }
+    
+    static func == (lhs: Field, rhs: Field) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

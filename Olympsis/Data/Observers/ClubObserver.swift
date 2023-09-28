@@ -20,7 +20,6 @@ class ClubObserver: ObservableObject{
     
     func generateUserClubs(clubIDs: [String]) async -> [Club] {
         var clubs = [Club]()
-        print(clubIDs)
         for id in clubIDs {
             let resp = await getClub(id: id)
             guard let r = resp else {

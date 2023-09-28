@@ -62,7 +62,7 @@ struct PickSports: View {
     var body: some View {
         VStack {
             // title
-            Text("Pick Your Sports")
+            Text("Pick your sports")
                 .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
                 .fontWeight(.medium)
                 .padding(.top)

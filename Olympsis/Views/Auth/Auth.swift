@@ -78,7 +78,8 @@ struct Auth: View {
                         }
                     ).signInWithAppleButtonStyle(.white)
                         .cornerRadius(10)
-                        .frame(width: SCREEN_WIDTH-100, height: 50)
+                        .frame(height: 50)
+                        .padding(.horizontal, 50)
                         .padding(.bottom, 50)
                 }
                 if state == .loading {
