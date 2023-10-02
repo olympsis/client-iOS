@@ -17,7 +17,7 @@ struct EditProfileButton: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 35)
-                        .foregroundColor(Color("secondary-color"))
+                        .foregroundColor(Color("color-secnd"))
                         .frame(width: 250)
                         .opacity(0.5)
                     Text("Edit Profile")

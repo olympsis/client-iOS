@@ -126,7 +126,7 @@ struct RoomView: View {
                     if text != "" {
                         Button(action:{SendMessage()}){
                             Text("Send")
-                                .foregroundColor(Color("primary-color"))
+                                .foregroundColor(Color("color-prime"))
                                 .padding(.trailing)
                         }
                     }

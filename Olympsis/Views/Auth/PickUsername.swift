@@ -107,7 +107,7 @@ struct PickUsername: View {
                 HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
-                            .foregroundColor(Color("secondary-color"))
+                            .foregroundColor(Color("color-secnd"))
                             .opacity(0.3)
                         TextField("", text: $username)
                             .focused($isFocused)
@@ -131,7 +131,7 @@ struct PickUsername: View {
                     ZStack {
                         Circle()
                             .frame(width: 45)
-                            .foregroundColor(Color("secondary-color"))
+                            .foregroundColor(Color("color-secnd"))
                             .opacity(0.3)
                             .overlay {
                                 switch status {

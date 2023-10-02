@@ -26,7 +26,7 @@ struct EventsModalView: View {
                 Spacer()
                 Text("Today")
                     .padding()
-                    .foregroundColor(Color("primary-color"))
+                    .foregroundColor(Color("color-prime"))
                 Button(action:{ self.showMore.toggle() }){
                     HStack {
                         Text("More")

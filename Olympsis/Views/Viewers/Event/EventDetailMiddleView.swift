@@ -115,7 +115,7 @@ struct EventDetailMiddleView: View {
                 } else if event.status == "pending"{
                     VStack {
                         Text("Pending")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                         Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
                             .foregroundColor(.green)
                             .bold()
@@ -155,7 +155,7 @@ struct EventDetailMiddleView: View {
                                     Image(systemName: "envelope")
                                         .imageScale(.large)
                                         .contrast(state == .loading ? 0 : 1)
-                                        .foregroundColor(Color("primary-color"))
+                                        .foregroundColor(Color("color-prime"))
                                     if state == .loading {
                                         ProgressView()
                                     }

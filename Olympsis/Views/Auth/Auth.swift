@@ -30,7 +30,7 @@ struct Auth: View {
                     VStack {
                         Image("white-logo")
                             .resizable()
-                            .frame(width: 200, height: 200)
+                            .frame(width: 250, height: 250)
                     }.frame(height: SCREEN_HEIGHT/3)
                         
                     Spacer()

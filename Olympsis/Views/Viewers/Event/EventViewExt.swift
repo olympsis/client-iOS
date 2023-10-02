@@ -88,7 +88,7 @@ struct EventViewExt: View {
     }
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 HStack {
                     Text(eventTitle)
@@ -105,7 +105,6 @@ struct EventViewExt: View {
                             withAnimation {
                                 Image(systemName: "arrow.clockwise")
                                     .fontWeight(.bold)
-                                    .foregroundColor(Color("primary-color"))
                             }
                         case .loading:
                             withAnimation {
@@ -115,7 +114,6 @@ struct EventViewExt: View {
                             withAnimation {
                                 Image(systemName: "arrow.clockwise")
                                     .fontWeight(.bold)
-                                    .foregroundColor(Color("primary-color"))
                             }
                         case .failure:
                             withAnimation {
@@ -124,13 +122,13 @@ struct EventViewExt: View {
                                     .imageScale(.medium)
                             }
                         }
-                    }
+                    }.clipShape(Circle())
                     
                     Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
                         Image(systemName: "xmark.circle.fill")
                             .imageScale(.large)
-                            .foregroundColor(Color("primary-color"))
-                    }
+                    }.clipShape(Circle())
+                    
                 }.padding(.horizontal)
                     .frame(maxWidth: .infinity)
                 
@@ -258,7 +256,7 @@ struct EventMiddleView: View {
                     } else if event.status == EVENT_STATUS.pending.rawValue{
                         VStack {
                             Text("Pending")
-                                .foregroundColor(Color("primary-color"))
+                                .foregroundColor(Color("color-prime"))
                             Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.green)
                                 .bold()
@@ -480,7 +478,7 @@ struct EventActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color("color-prime"))
                     
                     VStack {
                         VStack {
@@ -497,7 +495,7 @@ struct EventActionButtons: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("primary-color"))
+                    .foregroundColor(Color("color-prime"))
                 VStack {
                     if event.visibility == "private" {
                         VStack {
@@ -531,7 +529,7 @@ struct EventActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                         VStack {
                             if state == .loading {
                                 ProgressView()
@@ -552,7 +550,7 @@ struct EventActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                         VStack {
                             if state == .loading {
                                 ProgressView()
@@ -574,7 +572,7 @@ struct EventActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color("color-prime"))
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")
@@ -634,15 +632,15 @@ struct EventRSVPChart: View {
                 BarMark(
                     x: .value("Responses", "yes"),
                     y: .value("Total Count", yesCount)
-                ).foregroundStyle(Color("primary-color"))
+                ).foregroundStyle(Color("color-prime"))
                 BarMark(
                     x: .value("Responses", "Maybe"),
                     y: .value("Total Count", maybeCount)
-                ).foregroundStyle(Color("secondary-color"))
+                ).foregroundStyle(Color("color-secnd"))
                 BarMark(
                     x: .value("Responses", "No"),
                     y: .value("Total Count", noCount)
-                ).foregroundStyle(Color("tertiary-color"))
+                ).foregroundStyle(Color("color-tert"))
             }.padding(.horizontal)
                 .padding(.top)
         }
@@ -677,7 +675,7 @@ struct EventExtDetail: View {
                     }
                     VStack {
                         Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: f.location.coordinates[1], longitude: f.location.coordinates[0]), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))), interactionModes: .zoom, showsUserLocation: false, annotationItems: [f], annotationContent: { field in
-                            MapMarker(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), tint: Color("primary-color"))
+                            MapMarker(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), tint: Color("color-prime"))
                         }).frame(height: 270)
                             .cornerRadius(10)
                     }
@@ -716,7 +714,7 @@ struct EventExtDetail: View {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 10)
                                                 .frame(maxWidth: .infinity, idealHeight: 80)
-                                                .foregroundColor(Color("primary-color"))
+                                                .foregroundColor(Color("color-prime"))
                                             VStack {
                                                 VStack {
                                                     Image(systemName: "ellipsis")

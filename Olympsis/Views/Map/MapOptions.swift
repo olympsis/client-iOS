@@ -33,14 +33,14 @@ struct MapOptions: View {
     }
     
     var body: some View {
-        VStack {
+        ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 Text("Search Radius:")
                     .bold()
                     .padding(.top, 20)
                 HStack {
                     Slider(value: $sliderValue, in: 5...100, step: 5)
-                        .tint(Color("primary-color"))
+                        .tint(Color("color-prime"))
                     Text("\(Int(sliderValue)) miles")
                         .padding(.trailing)
                         .onChange(of: sliderValue) { newValue in
@@ -53,7 +53,7 @@ struct MapOptions: View {
                     HStack {
                         Button(action: {updateSports(sport: _sport.wrappedValue)}){
                             isSelected(sport: _sport.wrappedValue) ? Image(systemName: "circle.fill")
-                                .foregroundColor(Color("primary-color")).imageScale(.medium) : Image(systemName:"circle")
+                                .foregroundColor(Color("color-prime")).imageScale(.medium) : Image(systemName:"circle")
                                 .foregroundColor(.primary).imageScale(.medium)
                         }
                         Text(_sport.wrappedValue)
@@ -88,13 +88,13 @@ struct MapOptions: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 100, height: 40)
-                                .foregroundColor(Color("primary-color"))
+                                .foregroundColor(Color("color-prime"))
                             LoadingButton(text: "Search", width: 100, status: $status)
                         }
                     }.padding(.trailing)
                 }.padding(.top)
             }.padding(.leading)
-                .padding(.bottom, 20)
+                .padding(.vertical, 20)
                 .task {
                     guard let radiusValue = radius else {
                         return

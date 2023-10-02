@@ -47,11 +47,11 @@ struct SportPickerItem: View {
             switch style {
             case.normal:
                 RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(Color("secondary-color"))
+                    .foregroundColor(Color("color-secnd"))
                     .opacity(0.3)
             case .outline:
                 RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color("secondary-color"), lineWidth: 1)
+                    .stroke(Color("color-secnd"), lineWidth: 1)
             }
             Text(sport.rawValue)
         }.frame(height: 45)

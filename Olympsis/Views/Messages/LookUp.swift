@@ -103,7 +103,7 @@ struct LookUp: View {
                                                     Image(systemName: "person")
                                                         .resizable()
                                                         .frame(width: 30, height: 30)
-                                                        .foregroundColor(Color("primary-color"))
+                                                        .foregroundColor(Color("color-prime"))
                                                     Color.gray // Acts as a placeholder.
                                                         .clipShape(Circle())
                                                         .opacity(0.3)

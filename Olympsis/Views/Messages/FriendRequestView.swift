@@ -70,7 +70,7 @@ struct FriendRequestView: View {
                                 Image(systemName: "person")
                                     .resizable()
                                     .frame(width: 40, height: 40)
-                                    .foregroundColor(Color("primary-color"))
+                                    .foregroundColor(Color("color-prime"))
                                 Color.gray // Acts as a placeholder.
                                     .clipShape(Circle())
                                     .opacity(0.3)
@@ -96,7 +96,7 @@ struct FriendRequestView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 100, height: 40)
-                                    .foregroundColor(Color("primary-color"))
+                                    .foregroundColor(Color("color-prime"))
                                 Text("Accept")
                                     .foregroundColor(.white)
                             }

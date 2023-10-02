@@ -36,8 +36,8 @@ struct FieldViewExt: View {
                         Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
                             Image(systemName: "xmark.circle.fill")
                                 .imageScale(.large)
-                                .foregroundColor(Color("primary-color"))
-                        }
+                                .foregroundColor(Color("color-prime"))
+                        }.clipShape(Circle())
                     }.padding(.horizontal)
                     
                     Text(fieldLocation)
@@ -166,7 +166,7 @@ struct FieldActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color("color-prime"))
                     
                     VStack {
                         VStack {
@@ -183,7 +183,7 @@ struct FieldActionButtons: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("primary-color"))
+                    .foregroundColor(Color("color-prime"))
                 VStack {
                     if field.owner.type == "private" {
                         VStack {
@@ -207,7 +207,7 @@ struct FieldActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color("color-prime"))
                     VStack {
                         Image(systemName: "plus")
                             .resizable()
@@ -228,7 +228,7 @@ struct FieldActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("primary-color"))
+                        .foregroundColor(Color("color-prime"))
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")

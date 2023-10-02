@@ -113,7 +113,7 @@ struct ClubApplicationView: View {
                         }){
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(Color("primary-color"))
+                                    .foregroundColor(Color("color-prime"))
                                 Text("accept")
                                     .foregroundColor(.white)
                             }

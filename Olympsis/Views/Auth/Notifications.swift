@@ -70,7 +70,7 @@ struct Notifications: View {
                 Image(systemName: "bell.fill")
                     .resizable()
                     .frame(width: 100, height: 100)
-                    .foregroundColor(Color("primary-color"))
+                    .foregroundColor(Color("color-prime"))
             }
             
             Spacer()

@@ -121,7 +121,7 @@ struct FieldDetailView: View {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 120, height: 30)
-                                        .foregroundColor(Color("primary-color"))
+                                        .foregroundColor(Color("color-prime"))
                                     Text("Create Event")
                                         .foregroundColor(.white)
                                 }

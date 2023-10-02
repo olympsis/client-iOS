@@ -62,7 +62,7 @@ struct BetaPage: View {
                 Text("Accept All")
                     .foregroundColor(.white)
             }.frame(width: SCREEN_WIDTH/1.5, height: 50, alignment: .center)
-            .background(Color("primary-color"))
+            .background(Color("color-prime"))
             .cornerRadius(5)
             .padding(.top)
             

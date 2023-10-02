@@ -54,7 +54,7 @@ struct MessageView: View {
                     .padding(.trailing, 8)
                     .background{
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                     .frame(maxWidth: SCREEN_WIDTH/1.4, alignment: .trailing)
             }.padding(.trailing, 10)
@@ -96,7 +96,7 @@ struct MessageView: View {
                         .padding(.trailing, 8)
                         .background{
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color("primary-color"))
+                                .foregroundColor(Color("color-prime"))
                         }
                         .frame(maxWidth: SCREEN_WIDTH/1.4, alignment: .leading)
                 }

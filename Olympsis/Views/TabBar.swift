@@ -22,7 +22,7 @@ struct TabBar: View {
                         .imageScale(.large)
                         .frame(width: 28, height: 28)
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .home ? Color("secondary-color") : .white )
+                        .foregroundColor(currentTab == .home ? Color("color-secnd") : .white )
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
@@ -33,7 +33,7 @@ struct TabBar: View {
                         .imageScale(.large)
                         .frame(width: 28, height: 28)
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .club ? Color("secondary-color") : .white )
+                        .foregroundColor(currentTab == .club ? Color("color-secnd") : .white )
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
@@ -44,7 +44,7 @@ struct TabBar: View {
                         .imageScale(.large)
                         .frame(width: 28, height: 28)
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .map ? Color("secondary-color") : .white )
+                        .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
@@ -55,7 +55,7 @@ struct TabBar: View {
                         .imageScale(.large)
                         .frame(width: 28, height: 28)
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .activity ? Color("secondary-color") : .white )
+                        .foregroundColor(currentTab == .activity ? Color("color-secnd") : .white )
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
@@ -68,7 +68,7 @@ struct TabBar: View {
                                 .resizable()
                                 .frame(width: 28, height: 28)
                                 .frame(maxWidth: .infinity)
-                                .foregroundColor(currentTab == .profile ? Color("secondary-color") : .white )
+                                .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
                             if let img = user.imageURL {
                                 AsyncImage(url: URL(string: GenerateImageURL(img))){ phase in
                                     if let image = phase.image {
@@ -94,7 +94,7 @@ struct TabBar: View {
                             .resizable()
                             .frame(width: 28, height: 28)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == .profile ? Color("secondary-color") : .white )
+                            .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
                     }
                 }
             }.frame(maxWidth: .infinity)

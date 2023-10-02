@@ -68,7 +68,7 @@ struct ProfileModel: View {
                                 Image(systemName: "person")
                                     .resizable()
                                     .frame(width: 50, height: 50)
-                                    .foregroundColor(Color("primary-color"))
+                                    .foregroundColor(Color("color-prime"))
                                 Color.gray // Acts as a placeholder.
                                     .clipShape(Circle())
                                     .opacity(0.3)

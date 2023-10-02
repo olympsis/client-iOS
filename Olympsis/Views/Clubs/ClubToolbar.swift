@@ -82,13 +82,13 @@ struct ClubToolbar: ToolbarContent {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { self.showNewPost.toggle() }) {
                         Image(systemName: "plus.square.dashed")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                 }
                 ToolbarItemGroup (placement: .navigationBarTrailing) {
                     Button(action:{ self.showMessages.toggle() }){
                         Image(systemName: "bubble.right")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                     
                     Button(action:{ self.showMenu.toggle() }) {

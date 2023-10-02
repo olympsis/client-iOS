@@ -220,7 +220,7 @@ struct EventView: View {
                             
                             HStack {
                                 Image(systemName: "person.3.sequence.fill")
-                                    .foregroundColor(Color("primary-color"))
+                                    .foregroundColor(Color("color-prime"))
                                 Text("\(participantsCount)")
                                     .foregroundColor(.primary)
                             }

@@ -40,7 +40,7 @@ struct MapView: View {
                         MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
                             PlaceAnnotationView(field: field)
                                 .onTapGesture {
-                                    withAnimation(.easeIn(duration: 1000)) {
+                                    withAnimation(.easeInOut) {
                                         selectedField = field
                                         session.locationManager.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500)
                                     }
@@ -52,7 +52,7 @@ struct MapView: View {
                         Button(action:{ self.showNewEvent.toggle() }){
                             ZStack {
                                 Circle()
-                                    .tint(Color("secondary-color"))
+                                    .tint(Color("color-secnd"))
                                 Image(systemName: "plus")
                                     .imageScale(.large)
                                     .symbolRenderingMode(.palette)
@@ -64,7 +64,7 @@ struct MapView: View {
                         Button(action:{ self.showBottomSheet.toggle() }){
                             ZStack {
                                 Circle()
-                                    .tint(Color("secondary-color"))
+                                    .tint(Color("color-secnd"))
                                 Image(systemName: "line.3.horizontal.decrease")
                                     .imageScale(.large)
                                     .symbolRenderingMode(.palette)
@@ -82,7 +82,7 @@ struct MapView: View {
                         .labelStyle(.iconOnly)
                         .symbolVariant(.fill)
                         .foregroundColor(.white)
-                        .tint(Color("secondary-color"))
+                        .tint(Color("color-secnd"))
                         .padding(.all, 20)
                         .padding(.bottom)
                     }
@@ -100,7 +100,7 @@ struct MapView: View {
                         ZStack {
                             Circle()
                                 .frame(width: 40)
-                                .tint(Color("secondary-color"))
+                                .tint(Color("color-secnd"))
                             Image(systemName: "slider.vertical.3")
                                 .imageScale(.large)
                                 .symbolRenderingMode(.palette)
