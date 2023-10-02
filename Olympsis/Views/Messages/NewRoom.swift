@@ -80,7 +80,7 @@ struct NewRoom: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                         Text("cancel")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                 }
             }

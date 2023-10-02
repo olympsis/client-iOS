@@ -136,7 +136,7 @@ struct NewEventView: View {
                     
                         TextField("title", text: $eventTitle)
                             .padding(.leading)
-                            .tint(Color("primary-color"))
+                            .tint(Color("color-prime"))
                             .modifier(MenuButton())
                 }
                 
@@ -154,7 +154,7 @@ struct NewEventView: View {
                             Text(sport.Icon() + " " + sport.rawValue).tag(sport)
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("primary-color"))
+                        .tint(Color("color-prime"))
                     
                 }.padding(.top)
                 
@@ -173,7 +173,7 @@ struct NewEventView: View {
                         TextEditor(text: $eventBody)
                             .frame(height: 95)
                             .scrollContentBackground(.hidden)
-                            .tint(Color("primary-color"))
+                            .tint(Color("color-prime"))
                             .padding(.leading, 5)
                     }
                 }.padding(.leading)
@@ -195,7 +195,7 @@ struct NewEventView: View {
                                 Text(club.name ?? "error").tag(index)
                             }
                         }.modifier(MenuButton())
-                            .tint(Color("primary-color"))
+                            .tint(Color("color-prime"))
                     }.padding(.top)
 
                         .padding(.bottom)
@@ -211,7 +211,7 @@ struct NewEventView: View {
                             Text(field.name).tag(index)
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("primary-color"))
+                        .tint(Color("color-prime"))
                     
                 }.padding(.top)
                     .padding(.leading)
@@ -225,7 +225,7 @@ struct NewEventView: View {
                         .bold()
                     DatePicker("Date", selection: $eventStartTime, in: Date()...)
                         .datePickerStyle(.graphical)
-                        .tint(Color("primary-color"))
+                        .tint(Color("color-prime"))
 
                 }.padding(.top, 30)
                     .padding(.leading)
@@ -244,7 +244,7 @@ struct NewEventView: View {
                             Text(skill.rawValue).tag(getSkillRaw(for: skill))
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("primary-color"))
+                        .tint(Color("color-prime"))
                 }.padding(.top)
                     .padding(.leading)
                     .padding(.trailing)
@@ -269,7 +269,7 @@ struct NewEventView: View {
                                 .padding(.trailing)
                             Spacer()
                             Text("\(Int(eventMaxParticipants))")
-                                .foregroundColor(isEditing ? .red : Color("primary-color"))
+                                .foregroundColor(isEditing ? .red : Color("color-prime"))
                             Stepper("", value: $eventMaxParticipants, in: 1...100)
                                 .padding(.trailing)
                         }.modifier(MenuButton())
@@ -294,13 +294,13 @@ struct NewEventView: View {
                                         .cornerRadius(10)
                                         if eventImageURL == image {
                                             Image(systemName: "circle.fill")
-                                                .foregroundColor(Color("secondary-color"))
+                                                .foregroundColor(Color("color-secnd"))
                                                 .padding(.bottom, 5)
                                                 .padding(.trailing, 5)
                                                 
                                         } else {
                                             Image(systemName: "circle")
-                                                .foregroundColor(Color("secondary-color"))
+                                                .foregroundColor(Color("color-secnd"))
                                                 .padding(.bottom, 5)
                                                 .padding(.trailing, 5)
                                                 .fontWeight(.bold)

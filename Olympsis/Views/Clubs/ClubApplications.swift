@@ -37,7 +37,7 @@ struct ClubApplications: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                 }
             }

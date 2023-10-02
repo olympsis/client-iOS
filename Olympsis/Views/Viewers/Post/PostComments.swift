@@ -118,7 +118,7 @@ struct PostComments: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 40)
-                            .foregroundColor(Color("secondary-color"))
+                            .foregroundColor(Color("color-secnd"))
                             .opacity(0.2)
                         TextField("Add a Comment", text: $text)
                             .padding(.leading)

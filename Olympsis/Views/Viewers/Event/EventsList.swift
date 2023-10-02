@@ -33,7 +33,7 @@ struct EventsList: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{dismiss()}){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

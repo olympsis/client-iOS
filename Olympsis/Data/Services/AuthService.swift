@@ -25,11 +25,6 @@ class AuthService {
         return try await http.Request(endpoint: endpoint , method: .POST, body: EncodeToData(request))
     }
     
-    func Token() async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/auth/token")
-        return try await http.Request(endpoint: endpoint , method: .POST, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
-    }
-    
     func LogIn(request: AuthRequest) async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/auth/login")
         return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(request))
@@ -38,6 +33,11 @@ class AuthService {
     func DeleteAccount() async throws -> (Data, URLResponse){
         let endpoint = Endpoint(path: "/auth/delete")
         return try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
+    func Token() async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/auth/token")
+        return try await http.Request(endpoint: endpoint , method: .POST, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
 }
 

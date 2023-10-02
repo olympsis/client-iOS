@@ -20,11 +20,11 @@ struct ParticipantView: View {
     
     var ringColor: String {
         if participant.status == "yes" {
-            return "primary-color"
+            return "color-prime"
         } else if participant.status == "maybe" {
-            return "secondary-color"
+            return "color-secnd"
         } else {
-            return "tertiary-color"
+            return "color-tert"
         }
     }
     

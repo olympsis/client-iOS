@@ -165,7 +165,7 @@ struct CreateNewClub: View {
                                     Text(sport.Icon() + " " + sport.rawValue).tag(sport.rawValue)
                                 }
                             }.frame(width: SCREEN_WIDTH/2)
-                                .tint(Color("primary-color"))
+                                .tint(Color("color-prime"))
                         }
                     }.padding(.top)
                         .frame(width: SCREEN_WIDTH-25)
@@ -189,7 +189,7 @@ struct CreateNewClub: View {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 10)
                                                 .frame(width: 100, height: 30)
-                                                .foregroundColor(Color("primary-color"))
+                                                .foregroundColor(Color("color-prime"))
                                             Text("upload")
                                                 .foregroundColor(.white)
                                                 .frame(height: 30)
@@ -213,7 +213,7 @@ struct CreateNewClub: View {
                                 }){
                                     Image(systemName: "x.circle.fill")
                                         .imageScale(.large)
-                                        .foregroundColor(Color("primary-color"))
+                                        .foregroundColor(Color("color-prime"))
                                 }
                             }
                         }.frame(height: 40)

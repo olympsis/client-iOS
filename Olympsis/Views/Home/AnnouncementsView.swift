@@ -26,7 +26,7 @@ struct AnnouncementsView: View {
                 HStack(spacing: 2) {
                     ForEach(announcements, id: \.id) { index in
                         Rectangle()
-                            .fill(index.id == self.index ? Color("primary-color") : Color("primary-color").opacity(0.5))
+                            .fill(index.id == self.index ? Color("color-prime") : Color("color-prime").opacity(0.5))
                             .frame(width: 30, height: 5)
                     }
                 }.padding()

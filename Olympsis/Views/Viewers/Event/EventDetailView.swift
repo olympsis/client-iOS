@@ -207,15 +207,15 @@ struct EventDetailView: View {
                             BarMark(
                                 x: .value("Responses", "yes"),
                                 y: .value("Total Count", yesCount)
-                            ).foregroundStyle(Color("secondary-color"))
+                            ).foregroundStyle(Color("color-secnd"))
                             BarMark(
                                 x: .value("Responses", "Maybe"),
                                 y: .value("Total Count", maybeCount)
-                            ).foregroundStyle(Color("secondary-color"))
+                            ).foregroundStyle(Color("color-secnd"))
                             BarMark(
                                 x: .value("Responses", "No"),
                                 y: .value("Total Count", noCount)
-                            ).foregroundStyle(Color("secondary-color"))
+                            ).foregroundStyle(Color("color-secnd"))
                         }
                     }
                     

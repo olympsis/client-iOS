@@ -121,7 +121,7 @@ struct EditProfile: View {
                                                 Image(systemName: "person")
                                                     .resizable()
                                                     .frame(width: 50, height: 50)
-                                                    .foregroundColor(Color("primary-color"))
+                                                    .foregroundColor(Color("color-prime"))
                                                 Color.gray // Acts as a placeholder.
                                                     .clipShape(Circle())
                                                     .opacity(0.3)
@@ -133,7 +133,7 @@ struct EditProfile: View {
                                         Image(systemName: "person")
                                             .resizable()
                                             .frame(width: 50, height: 50)
-                                            .foregroundColor(Color("primary-color"))
+                                            .foregroundColor(Color("color-prime"))
                                         Color.gray // Acts as a placeholder.
                                             .clipShape(Circle())
                                             .opacity(0.3)
@@ -145,7 +145,7 @@ struct EditProfile: View {
                                 matching: .images,
                                 photoLibrary: .shared()) {
                                     Text("Edit picture")
-                                        .foregroundColor(Color("primary-color"))
+                                        .foregroundColor(Color("color-prime"))
                             }.onChange(of: selectedItem) { newItem in
                                 Task {
                                     // Retrive selected asset in the form of Data
@@ -200,7 +200,7 @@ struct EditProfile: View {
                             Toggle(isOn: $isPublic) {
                                 Text("Profile Visivility")
                             }.frame(width: SCREEN_WIDTH-30, height: 40)
-                                .tint(Color("secondary-color"))
+                                .tint(Color("color-secnd"))
                                 .onChange(of: isPublic) { newValue in
                                     if newValue {
                                         visibility = "public"
@@ -220,7 +220,7 @@ struct EditProfile: View {
                                 HStack {
                                     Button(action: {updateSports(sport: _sport.rawValue)}){
                                         isSelected(sport: _sport.rawValue) ? Image(systemName: "circle.fill")
-                                            .foregroundColor(Color("primary-color")).imageScale(.medium) : Image(systemName:"circle")
+                                            .foregroundColor(Color("color-prime")).imageScale(.medium) : Image(systemName:"circle")
                                             .foregroundColor(.primary).imageScale(.medium)
                                     }
                                     Text(_sport.rawValue)

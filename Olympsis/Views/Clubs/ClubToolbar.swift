@@ -48,25 +48,47 @@ struct ClubToolbar: ToolbarContent {
                 }
             } else {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    VStack {
-                        Text(myClubs[index].name!)
-                            .font(.title)
-                            .bold()
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                    Menu {
+                        ForEach(session.clubs) { club in
+                            Button(action:{
+                                Task {
+                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }) else {
+                                        return
+                                    }
+                                    index = i
+                                }
+                            }
+                            ){
+                                Text(club.name ?? "Club")
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            VStack {
+                                Text(myClubs[index].name!)
+                                    .font(.title)
+                                    .bold()
+                                    .minimumScaleFactor(0.5)
+                                    .lineLimit(1)
+                            }
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.bold)
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                            .imageScale(.small)
+                            .foregroundColor(.primary)
                     }
+                    
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { self.showNewPost.toggle() }) {
                         Image(systemName: "plus.square.dashed")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                 }
                 ToolbarItemGroup (placement: .navigationBarTrailing) {
                     Button(action:{ self.showMessages.toggle() }){
                         Image(systemName: "bubble.right")
-                            .foregroundColor(Color("primary-color"))
+                            .foregroundColor(Color("color-prime"))
                     }
                     
                     Button(action:{ self.showMenu.toggle() }) {

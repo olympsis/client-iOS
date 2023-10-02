@@ -54,7 +54,7 @@ struct Messages: View {
                         Button(action: { selectedView = 0 }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(selectedView == 0 ? Color("primary-color") : Color("secondary-color"))
+                                    .foregroundColor(selectedView == 0 ? Color("color-prime") : Color("color-secnd"))
                                 
                                 Text("Joined")
                                     .foregroundColor(.white)
@@ -68,7 +68,7 @@ struct Messages: View {
                         Button(action: { selectedView = 1 }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(selectedView == 1 ? Color("primary-color") : Color("secondary-color"))
+                                    .foregroundColor(selectedView == 1 ? Color("color-prime") : Color("color-secnd"))
                                 
                                 
                                 Text("Not Joined")
@@ -147,7 +147,7 @@ struct Messages: View {
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)
             }
-            .tint(Color("primary-color"))
+            .tint(Color("color-prime"))
         }
     }
 }
