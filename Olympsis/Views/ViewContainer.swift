@@ -43,6 +43,8 @@ struct ViewContainer: View {
                 await session.fetchUser()
                 await authObserver.refreshAuthToken()
                 session.locationManager.requestLocation()
+                await session.workoutManager.loadWeekyRunHistory()
+                await session.workoutManager.loadWeekyWalkHistory()
             }
             
     }

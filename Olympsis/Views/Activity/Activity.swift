@@ -11,6 +11,7 @@ import SwiftUI
 struct Activity: View {
     
     @State private var selectedFilter: Int = 0
+    @EnvironmentObject private var session: SessionStore
     
     var body: some View {
         NavigationView {
@@ -139,8 +140,14 @@ struct Activity: View {
                         
                     }.padding(.vertical)
                     
-                    Text("We couldn't find any activities 😤")
-                    Text("Go out there and join some!")
+                    if (session.workoutManager.workouts.count > 0) {
+                        ForEach(session.workoutManager.workouts.sorted(by: { $0.startDate > $1.startDate})) { workout in
+                            SmallWorkoutView(workout: workout)
+                        }
+                    } else {
+                        Text("We couldn't find any activities 😤")
+                        Text("Go out there and join some!")
+                    }
                 }
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -156,6 +163,6 @@ struct Activity: View {
 
 struct Activity_Previews: PreviewProvider {
     static var previews: some View {
-        Activity()
+        Activity().environmentObject(SessionStore())
     }
 }
