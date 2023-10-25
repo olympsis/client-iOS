@@ -15,11 +15,25 @@ struct SmallClubView: View {
     @Binding var showToast: Bool
     @ObservedObject var observer: ClubObserver
     
+    var clubName: String {
+        guard let name = club.name else {
+            return ""
+        }
+        return name
+    }
+    
     var imageURL: String {
         guard let img = club.imageURL else {
             return ""
         }
         return GenerateImageURL(img)
+    }
+    
+    var description: String {
+        guard let str = club.description else {
+            return ""
+        }
+        return str
     }
     
     func Apply() async {
@@ -58,13 +72,6 @@ struct SmallClubView: View {
         }
     }
     
-    var description: String {
-        guard let str = club.description else {
-            return ""
-        }
-        return str
-    }
-    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
@@ -72,10 +79,38 @@ struct SmallClubView: View {
             
             VStack (alignment: .leading){
                 HStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .frame(width: 100, height: 100)
+                    // IMAGE
+                    AsyncImage(url: URL(string: imageURL)){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(5)
+                                    .frame(width: 100, height: 100, alignment: .center)
+                                    .clipped()
+                                    .cornerRadius(20)
+                            } else if phase.error != nil {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color("label"), lineWidth: 1.0)
+                                        .frame(width: 100, height: 100)
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.red)
+                                        .imageScale(.large)
+                                }
+                            } else {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .opacity(0.1)
+                                        .frame(width: 100, height: 100)
+                                        .accentColor(Color("label"))
+                                    ProgressView()
+                                }
+                            }
+                    }.frame(width: 100, height: 100, alignment: .center)
+                    
                     VStack(alignment:.leading){
-                        Text(club.name!)
+                        Text(clubName)
                             .font(.title2)
                             .bold()
                             .foregroundColor(Color("label"))
@@ -110,14 +145,13 @@ struct SmallClubView: View {
                     
                 VStack {
                     Button(action:{ Task{ await Apply() } }) {
-                        LoadingButton(text: "Apply", width: .infinity, status: $status)
+                        LoadingButton(text: "Apply", width: SCREEN_WIDTH-100, status: $status)
                             .padding(.all)
+                            .frame(maxWidth: .infinity)
                     }.contentShape(Rectangle())
-                }.frame(maxWidth: .infinity)
-                    .padding(.all)
+                }.padding(.all)
             }
-        }.frame(height: 200)
-            .padding(.horizontal)
+        }.padding(.horizontal, 5)
     }
 }
 

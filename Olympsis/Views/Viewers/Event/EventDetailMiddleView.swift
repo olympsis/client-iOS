@@ -186,38 +186,38 @@ struct EventDetailMiddleView: View {
                     Circle()
                         .frame(width: 10)
                         .imageScale(.small)
-                    .foregroundColor(Color("tertiary-color"))
+                    .foregroundColor(Color("color-tert"))
                 case 2:
                     HStack {
                         Circle()
                             .frame(width: 10)
                             .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                         Circle()
                             .frame(width: 10)
                             .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                     }
                 case 3:
                     HStack {
                         Circle()
                             .frame(width: 10)
                             .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                         Circle()
                             .frame(width: 10)
                             .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                         Circle()
                             .frame(width: 10)
                             .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                     }
                 default:
                     Circle()
                         .frame(width: 10)
                         .imageScale(.small)
-                        .foregroundColor(Color("tertiary-color"))
+                        .foregroundColor(Color("color-tert"))
                 }
                 
                 Text("level")

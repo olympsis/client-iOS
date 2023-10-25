@@ -57,5 +57,5 @@ let ANNOUCEMENTS = [
 ]
 
 let CLUB_APPLICATIONS = [
-    ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), createdAt: 1685813111)
+    ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "", visibility: "", bio: nil, clubs: nil, sports: nil, deviceToken: nil), createdAt: 1685813111)
 ]
