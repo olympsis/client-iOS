@@ -39,7 +39,6 @@ class SessionStore: ObservableObject {
     @ObservedObject var eventObserver = EventObserver()
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var notificationsManager = NotificationsManager()
-    @ObservedObject var workoutManager = WorkoutManager()
     
     /**
      App lifetime data

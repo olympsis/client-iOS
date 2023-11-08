@@ -33,9 +33,9 @@ struct SmallWorkoutView: View {
             dateFormatter.dateFormat = "EEEE" // EEEE will give you the full weekday name
             let dayOfWeek = dateFormatter.string(from: workout.startDate)
 
-            return Text("\(dayOfWeek) \(timeOfDay) \(sportInString())").foregroundStyle(.gray)
+            return Text("\(dayOfWeek) \(timeOfDay) \(sportInString())").foregroundColor(.gray)
         }
-        return Text("\(title)").foregroundStyle(.gray)
+        return Text("\(title)").foregroundColor(.gray)
     }
     
     var sportIcon: some View {

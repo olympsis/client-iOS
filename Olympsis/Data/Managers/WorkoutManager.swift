@@ -17,7 +17,6 @@ enum WorkoutError: Error {
 }
 
 @MainActor
-@Observable
 class WorkoutManager: ObservableObject {
     
     var workouts = [Workout]()

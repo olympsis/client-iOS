@@ -92,7 +92,7 @@ struct SmallClubView: View {
                             } else if phase.error != nil {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color("label"), lineWidth: 1.0)
+                                        .stroke(Color("foreground"), lineWidth: 1.0)
                                         .frame(width: 100, height: 100)
                                     Image(systemName: "exclamationmark.triangle.fill")
                                         .foregroundColor(.red)
@@ -103,7 +103,7 @@ struct SmallClubView: View {
                                     RoundedRectangle(cornerRadius: 20)
                                         .opacity(0.1)
                                         .frame(width: 100, height: 100)
-                                        .accentColor(Color("label"))
+                                        .accentColor(Color("foreground"))
                                     ProgressView()
                                 }
                             }
@@ -113,7 +113,7 @@ struct SmallClubView: View {
                         Text(clubName)
                             .font(.title2)
                             .bold()
-                            .foregroundColor(Color("label"))
+                            .foregroundColor(Color("foreground"))
                             .minimumScaleFactor(0.8)
                             .lineLimit(1)
                         Text("\(club.city!), ").foregroundColor(.gray)
@@ -123,11 +123,11 @@ struct SmallClubView: View {
                         HStack {
                             if club.members!.count > 1 {
                                 Text("\(club.members!.count) members")
-                                    .foregroundColor(Color("label"))
+                                    .foregroundColor(Color("foreground"))
                                     .font(.caption)
                             } else {
                                 Text("\(club.members!.count) member")
-                                    .foregroundColor(Color("label"))
+                                    .foregroundColor(Color("foreground"))
                                     .font(.caption)
                             }
                             Spacer()

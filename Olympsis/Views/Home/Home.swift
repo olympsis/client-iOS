@@ -125,8 +125,6 @@ struct Home: View {
                             // fetch club data
                             await session.fetchUserClubs()
                             self.status = .success
-                            
-                            await session.workoutManager.requestHealthStoreAuthorization()
                         }
                     }
                     .padding(.bottom, 100)

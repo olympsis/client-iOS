@@ -140,14 +140,14 @@ struct Activity: View {
                         
                     }.padding(.vertical)
                     
-                    if (session.workoutManager.workouts.count > 0) {
-                        ForEach(session.workoutManager.workouts.sorted(by: { $0.startDate > $1.startDate})) { workout in
-                            SmallWorkoutView(workout: workout)
-                        }
-                    } else {
-                        Text("We couldn't find any activities 😤")
-                        Text("Go out there and join some!")
-                    }
+//                    if (session.workoutManager.workouts.count > 0) {
+//                        ForEach(session.workoutManager.workouts.sorted(by: { $0.startDate > $1.startDate})) { workout in
+//                            SmallWorkoutView(workout: workout)
+//                        }
+//                    } else {
+//                        Text("We couldn't find any activities 😤")
+//                        Text("Go out there and join some!")
+//                    }
                 }
             }.toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -98,7 +98,7 @@ struct ClubApplicationView: View {
                                             .clipShape(Circle())
                                         .opacity(0.3)
                                         Image(systemName: "exclamationmark.circle")
-                                            .foregroundColor(Color("label"))
+                                            .foregroundColor(Color("foreground"))
                                     }
                                 } else {
                                     ZStack {
