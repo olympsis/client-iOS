@@ -117,7 +117,18 @@ struct _TrailingView: View {
     
     var body: some View {
         VStack (alignment: .trailing){
-            if event.actualStartTime != nil {
+            if event.stopTime != nil {
+                VStack (alignment: .trailing){
+                    HStack {
+                        Text("Ended")
+                            .bold()
+                            .font(.callout)
+                    }.foregroundStyle(.gray)
+                    
+                    Text(event.timeDifferenceToString())
+                        .foregroundColor(.primary)
+                }.padding(.bottom, 5)
+            } else if event.actualStartTime != nil {
                 VStack (alignment: .trailing){
                     HStack {
                         Circle()
@@ -144,7 +155,7 @@ struct _TrailingView: View {
             }
             
             HStack {
-                Image(systemName: "person.3.sequence")
+                Image(systemName: "person.3.sequence.fill")
                     .foregroundColor(Color("color-prime"))
                 Text("\(participantsCount)")
                     .foregroundColor(.primary)

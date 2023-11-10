@@ -39,11 +39,11 @@ struct EventViewExt: View {
     }
     
     var eventStatus: String {
-        guard let startTime = event.actualStartTime else {
+        guard event.actualStartTime != nil else {
             return "pending"
         }
         
-        guard let stopTime = event.stopTime else {
+        guard event.stopTime != nil else {
             return "in-progress"
         }
         return "ended"
@@ -92,99 +92,102 @@ struct EventViewExt: View {
     }
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(eventTitle)
-                        .font(.largeTitle)
-                        .bold()
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-
-                    Spacer()
-                    
-                    Button(action: { Task { await reloadEvent() }}) {
-                        switch status {
-                        case .pending:
-                            withAnimation {
-                                Image(systemName: "arrow.clockwise")
-                                    .fontWeight(.bold)
-                            }
-                        case .loading:
-                            withAnimation {
-                                ProgressView()
-                            }
-                        case .success:
-                            withAnimation {
-                                Image(systemName: "arrow.clockwise")
-                                    .fontWeight(.bold)
-                            }
-                        case .failure:
-                            withAnimation {
-                                Image(systemName: "exclamationmark.circle.fill")
-                                    .foregroundColor(.red)
-                                    .imageScale(.medium)
-                            }
-                        }
-                    }.clipShape(Circle())
-                    
-                    Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .imageScale(.large)
-                    }.clipShape(Circle())
-                    
-                }.padding(.horizontal)
-                    .frame(maxWidth: .infinity)
-                
-                VStack(alignment: .leading) {
-                    Text(fieldName)
-                        .font(.title2)
-                    Text(fieldLocality)
-                }.padding(.horizontal)
-                    .padding(.top, 3)
-                
-                Image(eventImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 300)
-                    .clipped()
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    
-                Text("Details")
-                    .font(.title2)
+        VStack(alignment: .leading) {
+            HStack {
+                Text(eventTitle)
+                    .font(.largeTitle)
                     .bold()
-                    .padding(.leading)
-                Text(eventBody)
-                    .padding(.horizontal)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+
+                Spacer()
                 
-                
-                // middle view
-                EventMiddleView(event: $event)
-                
-                // action buttons
-                EventActionButtons(event: $event)
-                    .padding(.top)
-                
-                // rsvp chart
-                EventRSVPChart(event: $event)
-                
-                // participants view
-                VStack {
-                    ScrollView(.horizontal ,showsIndicators: false){
-                        HStack {
-                            ForEach(event.participants ?? [Participant](), id:\.id) { p in
-                                ParticipantView(participant: p)
-                            }
-                        }.padding(.horizontal)
+                Button(action: { Task { await reloadEvent() }}) {
+                    switch status {
+                    case .pending:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .loading:
+                        withAnimation {
+                            ProgressView()
+                        }
+                    case .success:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .failure:
+                        withAnimation {
+                            Image(systemName: "exclamationmark.circle.fill")
+                                .foregroundColor(.red)
+                                .imageScale(.medium)
+                        }
                     }
+                }.clipShape(Circle())
+                    .frame(width: 25, height: 20)
+                
+                Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .imageScale(.large)
+                }.clipShape(Circle())
+                    .frame(width: 25, height: 20)
+
+            }.padding(.horizontal)
+                .padding(.top)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text(fieldName)
+                            .font(.title2)
+                        Text(fieldLocality)
+                    }.padding(.horizontal)
+                        .padding(.top, 3)
+                    
+                    Image(eventImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 300)
+                        .clipped()
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                        
+                    Text("Details")
+                        .font(.title2)
+                        .bold()
+                        .padding(.leading)
+                    Text(eventBody)
+                        .padding(.horizontal)
+                    
+                    
+                    // middle view
+                    EventMiddleView(event: $event)
+                    
+                    // action buttons
+                    EventActionButtons(event: $event)
+                        .padding(.top)
+                    
+                    // rsvp chart
+    //                EventRSVPChart(event: $event)
+                    
+                    // participants view
+                    VStack {
+                        ScrollView(.horizontal ,showsIndicators: false){
+                            HStack {
+                                ForEach(event.participants ?? [Participant](), id:\.id) { p in
+                                    ParticipantView(participant: p)
+                                }
+                            }.padding(.horizontal)
+                        }
+                    }.padding(.vertical)
+                    
+                    // field/club view
+                    EventExtDetail(data: event.data)
+                        .padding(.top)
                 }
-                
-                // field/club view
-                EventExtDetail(data: event.data)
-                    .padding(.top)
-                
-            }.padding(.top)
+            }
         }
     }
 }
@@ -194,7 +197,7 @@ struct EventViewExt: View {
 struct EventMiddleView: View {
     
     @Binding var event: Event
-    @State private var timeDifference = 0
+    @State private var timeDifference: String = ""
     
     var startTime: Int64 {
         guard let time = event.startTime else {
@@ -233,39 +236,12 @@ struct EventMiddleView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.primary, lineWidth: 1)
                 .padding(.horizontal)
                 .frame(height: 70)
+                .foregroundStyle(Color("background"))
             HStack (alignment: .center){
                 VStack(alignment: .center){
-                    if event.actualStartTime != nil {
-                        HStack {
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundColor(.red)
-                            Text("Live")
-                                .bold()
-                            .foregroundColor(.red)
-                            
-                        }
-                        Text("\(timeDifference) mins")
-                            .foregroundColor(.primary)
-                            .bold()
-                            .onAppear {
-                                timeDifference = getTimeDifference()
-                                Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { t in
-                                    timeDifference = getTimeDifference()
-                                }
-                            }
-                    } else if event.actualStartTime != nil {
-                        VStack {
-                            Text("Pending")
-                                .foregroundColor(Color("color-prime"))
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.green)
-                                .bold()
-                        }
-                    } else if event.stopTime != nil {
+                    if event.stopTime != nil {
                         VStack {
                             Text("Ended")
                                 .foregroundColor(.gray)
@@ -275,6 +251,32 @@ struct EventMiddleView: View {
                                     .foregroundColor(.primary)
                                     .bold()
                             }
+                        }
+                    } else if event.actualStartTime != nil {
+                        HStack {
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundColor(.red)
+                            Text("Live")
+                                .bold()
+                            .foregroundColor(.red)
+                        }
+                        Text("\(timeDifference)")
+                            .foregroundColor(.primary)
+                            .bold()
+                            .onAppear {
+                                timeDifference = event.timeDifferenceToString()
+                                Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { t in
+                                    timeDifference = event.timeDifferenceToString()
+                                }
+                            }
+                    } else if event.actualStartTime != nil {
+                        VStack {
+                            Text("Pending")
+                                .foregroundColor(Color("color-prime"))
+                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.green)
+                                .bold()
                         }
                     }
                 }.padding(.leading)
@@ -287,8 +289,8 @@ struct EventMiddleView: View {
                         Image(systemName: "person.2.fill")
                         Text("\(potentialParticipants)/\(maxParticipants)")
                     }
-                        .opacity(event.stopTime != nil ? 0 : 1)
-                        .disabled(event.stopTime != nil)
+                    .opacity(event.stopTime != nil ? 0 : 1)
+                    .disabled(event.stopTime != nil)
                 }
                 
                 Spacer()
