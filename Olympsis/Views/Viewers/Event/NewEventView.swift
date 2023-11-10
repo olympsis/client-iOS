@@ -97,7 +97,7 @@ struct NewEventView: View {
             return
         }
         let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], likes: nil, visibility: "public", data: nil, createdAt: nil)
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, levels: [],startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,

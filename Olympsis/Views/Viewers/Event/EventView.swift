@@ -2,6 +2,8 @@
 //  EventView.swift
 //  Olympsis
 //
+//  This is the small event view. Shows event data at a glance
+//
 //  Created by Joel Joseph on 11/16/22.
 //
 
@@ -22,17 +24,10 @@ struct EventView: View {
     }
     
     var eventBody: String {
-        guard let b = event.body else {
+        guard let body = event.body else {
             return "Event Body"
         }
-        return b
-    }
-    
-    var eventLevel: Int {
-        guard let level = event.level else {
-            return 1
-        }
-        return level
+        return body
     }
     
     var imageURL: String {
@@ -40,22 +35,6 @@ struct EventView: View {
             return ""
         }
         return img
-    }
-    
-    var city: String {
-        guard let data = event.data,
-              let field = data.field else {
-            return "City"
-        }
-        return field.city
-    }
-    
-    var state: String {
-        guard let data = event.data,
-              let field = data.field else {
-            return "City"
-        }
-        return field.state
     }
     
     var fieldName: String {
@@ -71,76 +50,6 @@ struct EventView: View {
             return 0
         }
         return time
-    }
-    
-    var participantsCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        return participants.count
-    }
-    
-    var eventDay: String {
-        guard let eventStatus = event.status,
-              let eventStartTime = event.startTime else {
-            return "0/0/0"
-        }
-        
-        if eventStatus == "in-progress" {
-            guard event.actualStartTime == nil else {
-                return "Live"
-            }
-        }
-        
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let timestamp = TimeInterval(eventStartTime)
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "M/d/y"
-        
-        if calendar.isDateInToday(Date(timeIntervalSince1970: timestamp)) {
-            return "Today"
-        } else if calendar.isDateInTomorrow(Date(timeIntervalSince1970: timestamp)) {
-            return "Tomorrow"
-        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .weekOfYear) {
-            formatter.dateFormat = "EEEE"
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .year) {
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        } else {
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        }
-    }
-    
-    var eventTime: String {
-        guard let eventStatus = event.status,
-              let eventStartTime = event.startTime else {
-            return "00:00am"
-        }
-        
-        if eventStatus == "in-progress" {
-            guard event.actualStartTime != nil else {
-                return "00 secs"
-            }
-            let currentDate = Date()
-            let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(event.actualStartTime!))
-            
-            if timeDifference < 60 {
-                return "\(timeDifference) secs"
-            } else if timeDifference < 3600 {
-                let minutes = timeDifference / 60
-                return "\(minutes) mins"
-            } else {
-                let hours = timeDifference / 3600
-                return "\(hours) hrs"
-            }
-        }
-        
-        let date = Date(timeIntervalSince1970: TimeInterval(eventStartTime))
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        return dateFormatter.string(from: date)
     }
     
     var body: some View {
@@ -165,71 +74,21 @@ struct EventView: View {
                             
                             Text(fieldName)
                                 .foregroundColor(.gray)
-                            
-                            switch(eventLevel){
-                            case 1:
-                                Circle()
-                                    .frame(width: 10)
-                                    .imageScale(.small)
-                                .foregroundColor(Color("color-tert"))
-                            case 2:
-                                HStack {
-                                    Circle()
-                                        .frame(width: 10)
-                                        .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                                    Circle()
-                                        .frame(width: 10)
-                                        .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                                }
-                            case 3:
-                                HStack {
-                                    Circle()
-                                        .frame(width: 10)
-                                        .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                                    Circle()
-                                        .frame(width: 10)
-                                        .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                                    Circle()
-                                        .frame(width: 10)
-                                        .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                                }
-                            default:
-                                Circle()
-                                    .frame(width: 10)
-                                    .imageScale(.small)
-                                    .foregroundColor(Color("color-tert"))
-                            }
-                            
                             Spacer()
                         }
                         Spacer()
-                        VStack (alignment: .trailing){
-                            VStack (alignment: .trailing){
-                                Text(eventDay)
-                                    .bold()
-                                    .font(.callout)
-                                    .foregroundColor(.primary)
-                                Text(eventTime)
-                                    .foregroundColor(.primary)
-                            }.padding(.bottom, 5)
-                            
-                            HStack {
-                                Image(systemName: "person.3.sequence.fill")
-                                    .foregroundColor(Color("color-prime"))
-                                Text("\(participantsCount)")
-                                    .foregroundColor(.primary)
-                            }
-                        }
-                        .padding(.trailing)
+                        _TrailingView(event: $event)
+                            .padding(.trailing)
                     }
-                }.frame(height: 100)
+                }
+            }.frame(height: 100)
+        }
+        .clipShape(Rectangle())
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(Color("background"))
+                    .padding(.horizontal, 5)
             }
-        }.clipShape(Rectangle())
         .sheet(isPresented: $showDetails) {
             EventViewExt(event: $event)
                 .presentationDetents([.large])
@@ -240,5 +99,56 @@ struct EventView: View {
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {
         EventView(event: EVENTS[0]).environmentObject(SessionStore())
+    }
+}
+
+/// Trailing view for Event view.
+/// Contains the start date and time and participants view.
+struct _TrailingView: View {
+    
+    @Binding var event: Event
+    
+    var participantsCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        return participants.count
+    }
+    
+    var body: some View {
+        VStack (alignment: .trailing){
+            if event.actualStartTime != nil {
+                VStack (alignment: .trailing){
+                    HStack {
+                        Circle()
+                            .frame(width: 10, height: 10)
+                        
+                        Text("Live")
+                            .bold()
+                            .font(.callout)
+                    }.foregroundStyle(.red)
+                    
+                    Text(event.timeDifferenceToString())
+                        .foregroundColor(.primary)
+                }.padding(.bottom, 5)
+            } else {
+                VStack (alignment: .trailing){
+                    Text(event.dayToString())
+                        .bold()
+                        .font(.callout)
+                        .foregroundColor(.primary)
+                    
+                    Text(event.timeDifferenceToString())
+                        .foregroundColor(.primary)
+                }.padding(.bottom, 5)
+            }
+            
+            HStack {
+                Image(systemName: "person.3.sequence")
+                    .foregroundColor(Color("color-prime"))
+                Text("\(participantsCount)")
+                    .foregroundColor(.primary)
+            }
+        }
     }
 }

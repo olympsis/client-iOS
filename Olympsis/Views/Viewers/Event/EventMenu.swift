@@ -60,7 +60,6 @@ struct EventMenu: View {
             await MainActor.run {
                 withAnimation(.easeInOut){
                     event.actualStartTime = Int64(now)
-                    event.status = status
                     loadingState = .success
                 }
             }
@@ -80,7 +79,6 @@ struct EventMenu: View {
             await MainActor.run {
                 withAnimation(.easeInOut){
                     event.stopTime = Int64(now)
-                    event.status = status
                     loadingState = .success
                 }
             }
@@ -108,12 +106,12 @@ struct EventMenu: View {
             
             if isPosterOrAdmin {
                 
-                if event.status != "ended" {
+                if event.stopTime == nil {
                     Button(action:{
                         Task {
-                            if event.status == "pending" {
+                            if event.actualStartTime == nil {
                                 await startEvent()
-                            } else if event.status == "in-progress" {
+                            } else if event.actualStartTime != nil {
                                 await stopEvent()
                             }
                         }
@@ -123,14 +121,14 @@ struct EventMenu: View {
                                 .foregroundColor(.gray)
                                 .opacity(0.3)
                             HStack {
-                                if event.status == "pending" {
+                                if event.actualStartTime == nil {
                                     Image(systemName: "play.fill")
                                         .imageScale(.large)
                                         .padding(.leading)
                                         .foregroundColor(.green)
                                     Text("Start Event")
                                         .foregroundColor(.green)
-                                } else if event.status == "in-progress" {
+                                } else if event.actualStartTime != nil {
                                     Image(systemName: "stop.fill")
                                         .padding(.leading)
                                         .imageScale(.large)

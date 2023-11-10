@@ -39,10 +39,14 @@ struct EventViewExt: View {
     }
     
     var eventStatus: String {
-        guard let stat = event.status else {
-            return "unknown"
+        guard let startTime = event.actualStartTime else {
+            return "pending"
         }
-        return stat
+        
+        guard let stopTime = event.stopTime else {
+            return "in-progress"
+        }
+        return "ended"
     }
     
     var fieldName: String {
@@ -234,7 +238,7 @@ struct EventMiddleView: View {
                 .frame(height: 70)
             HStack (alignment: .center){
                 VStack(alignment: .center){
-                    if event.status == EVENT_STATUS.in_progress.rawValue {
+                    if event.actualStartTime != nil {
                         HStack {
                             Circle()
                                 .frame(width: 10, height: 10)
@@ -253,7 +257,7 @@ struct EventMiddleView: View {
                                     timeDifference = getTimeDifference()
                                 }
                             }
-                    } else if event.status == EVENT_STATUS.pending.rawValue{
+                    } else if event.actualStartTime != nil {
                         VStack {
                             Text("Pending")
                                 .foregroundColor(Color("color-prime"))
@@ -261,7 +265,7 @@ struct EventMiddleView: View {
                                 .foregroundColor(.green)
                                 .bold()
                         }
-                    } else if event.status == EVENT_STATUS.completed.rawValue {
+                    } else if event.stopTime != nil {
                         VStack {
                             Text("Ended")
                                 .foregroundColor(.gray)
@@ -283,62 +287,19 @@ struct EventMiddleView: View {
                         Image(systemName: "person.2.fill")
                         Text("\(potentialParticipants)/\(maxParticipants)")
                     }
-                        .opacity(event.status == EVENT_STATUS.completed.rawValue ? 0 : 1)
-                        .disabled(event.status == EVENT_STATUS.completed.rawValue)
+                        .opacity(event.stopTime != nil ? 0 : 1)
+                        .disabled(event.stopTime != nil)
                 }
                 
                 Spacer()
                 
                 VStack(alignment: .center){
-                    switch(event.level){
-                    case 1:
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                    case 2:
-                        HStack {
-                            Circle()
-                                .frame(width: 10)
-                                .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                            Circle()
-                                .frame(width: 10)
-                                .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                        }
-                    case 3:
-                        HStack {
-                            Circle()
-                                .frame(width: 10)
-                                .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                            Circle()
-                                .frame(width: 10)
-                                .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                            Circle()
-                                .frame(width: 10)
-                                .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                        }
-                    default:
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                            .foregroundColor(Color("color-tert"))
-                    }
+                    Circle()
+                        .frame(width: 10)
+                        .imageScale(.small)
+                    .foregroundColor(Color("color-tert"))
                     
-                    switch event.level {
-                    case 1:
-                        Text("Amateur")
-                    case 2:
-                        Text("Intermediate")
-                    case 3:
-                        Text("Expert")
-                    default:
-                        Text("Amateur")
-                    }
+                    Text("Amateur")
                 }.padding(.trailing)
                     .padding(.all, 7)
                     

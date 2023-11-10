@@ -77,10 +77,6 @@ struct EventDetailMiddleView: View {
         return time
     }
     
-    var eventEnded: Bool {
-        return event.status == "ended"
-    }
-    
     var hasResponded: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
@@ -93,7 +89,7 @@ struct EventDetailMiddleView: View {
     var body: some View {
         HStack (alignment: .center){
             VStack(alignment: .center){
-                if event.status == "in-progress" {
+                if event.actualStartTime != nil {
                     HStack {
                         Circle()
                             .frame(width: 10, height: 10)
@@ -112,7 +108,7 @@ struct EventDetailMiddleView: View {
                                 timeDifference = getTimeDifference()
                             }
                         }
-                } else if event.status == "pending"{
+                } else if event.actualStartTime == nil {
                     VStack {
                         Text("Pending")
                             .foregroundColor(Color("color-prime"))
@@ -120,7 +116,7 @@ struct EventDetailMiddleView: View {
                             .foregroundColor(.green)
                             .bold()
                     }
-                } else if event.status == "ended" {
+                } else if event.stopTime != nil {
                     VStack {
                         Text("Ended")
                             .foregroundColor(.gray)
@@ -138,7 +134,7 @@ struct EventDetailMiddleView: View {
 
             VStack {
                 VStack {
-                    if event.status == "pending" {
+                    if event.actualStartTime == nil {
                         if !hasResponded {
                             Menu {
                                 Button(action: { Task{  await rsvp(status: "no") } }) {
@@ -176,49 +172,15 @@ struct EventDetailMiddleView: View {
                         }
                     }
                 }
-                    .opacity(event.status == "ended" ? 0 : 1)
-                .disabled(eventEnded)
+                    .opacity(event.stopTime == nil ? 0 : 1)
+                    .disabled(event.stopTime == nil)
             }.frame(width: 100)
             
             VStack(alignment: .center){
-                switch(event.level){
-                case 1:
-                    Circle()
-                        .frame(width: 10)
-                        .imageScale(.small)
-                    .foregroundColor(Color("color-tert"))
-                case 2:
-                    HStack {
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                    }
-                case 3:
-                    HStack {
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                        Circle()
-                            .frame(width: 10)
-                            .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                    }
-                default:
-                    Circle()
-                        .frame(width: 10)
-                        .imageScale(.small)
-                        .foregroundColor(Color("color-tert"))
-                }
+                Circle()
+                    .frame(width: 10)
+                    .imageScale(.small)
+                .foregroundColor(Color("color-tert"))
                 
                 Text("level")
                     .foregroundColor(.primary)

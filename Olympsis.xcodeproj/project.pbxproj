@@ -120,7 +120,6 @@
 		9A81B63E2925DE1A009CA6ED /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B63D2925DE1A009CA6ED /* LocationManager.swift */; };
 		9A81B6402925E191009CA6ED /* FieldDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B63F2925E191009CA6ED /* FieldDetailView.swift */; };
 		9A81B6422925E50C009CA6ED /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6412925E50C009CA6ED /* EventView.swift */; };
-		9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6432925E518009CA6ED /* EventDetailView.swift */; };
 		9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6452925EAE6009CA6ED /* EventObserver.swift */; };
 		9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64A2925EC79009CA6ED /* EventService.swift */; };
 		9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64C2925EED1009CA6ED /* EventsModalView.swift */; };
@@ -387,7 +386,6 @@
 		9A81B63D2925DE1A009CA6ED /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9A81B63F2925E191009CA6ED /* FieldDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldDetailView.swift; sourceTree = "<group>"; };
 		9A81B6412925E50C009CA6ED /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
-		9A81B6432925E518009CA6ED /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		9A81B6452925EAE6009CA6ED /* EventObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventObserver.swift; sourceTree = "<group>"; };
 		9A81B64A2925EC79009CA6ED /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		9A81B64C2925EED1009CA6ED /* EventsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModalView.swift; sourceTree = "<group>"; };
@@ -643,7 +641,6 @@
 				9A3536FD29282CDA005EC806 /* EventTemplateView.swift */,
 				9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */,
 				9A69FE502972241400EBC5F9 /* EventHostClubView.swift */,
-				9A81B6432925E518009CA6ED /* EventDetailView.swift */,
 				9A69FE482971FCE600EBC5F9 /* EventFieldView.swift */,
 				9A3537052928991D005EC806 /* EventDetailMiddleView.swift */,
 				9A35370329289396005EC806 /* ParticipantView.swift */,
@@ -1365,7 +1362,6 @@
 			files = (
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */,
-				9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,

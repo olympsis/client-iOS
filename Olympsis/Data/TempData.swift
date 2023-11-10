@@ -18,15 +18,24 @@ let CLUBS = [
 
 
 let EVENTS = [
-    Event(id: "", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 1, status: "pending", startTime: 1688792743, actualStartTime: 1688686344, stopTime: 0, maxParticipants: 10, participants: [
-        Participant(id: "0", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: "1", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: "2", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
-        Participant(id: "3", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: "4", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: "4", uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780)
+    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", levels: [1], startTime: 1688792743, actualStartTime: 1688686344, stopTime: 0, maxParticipants: 10, participants: [
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780)
         
-    ], likes: [Like](), visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780)
+    ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780),
+    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", levels: [1], startTime: 1688792743, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
+        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780)
+        
+    ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780)
 ]
 
 

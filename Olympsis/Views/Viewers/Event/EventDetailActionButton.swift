@@ -28,7 +28,6 @@ struct EventDetailActionButton: View {
             await MainActor.run {
                 withAnimation(.easeInOut){
                     event.actualStartTime = Int64(now)
-                    event.status = status
                     state = .success
                 }
             }
@@ -48,7 +47,6 @@ struct EventDetailActionButton: View {
             await MainActor.run {
                 withAnimation(.easeInOut){
                     event.stopTime = Int64(now)
-                    event.status = status
                     state = .success
                 }
             }
@@ -57,7 +55,7 @@ struct EventDetailActionButton: View {
     
     var body: some View {
         HStack {
-            if event.status == "pending" {
+            if event.actualStartTime == nil {
                 Button(action:{ Task { await startEvent() } }){
                     ZStack {
                         Image(systemName: "play.fill")
@@ -69,7 +67,7 @@ struct EventDetailActionButton: View {
                         }
                     }
                 }.disabled(state == .loading ? true : false)
-            } else if event.status == "in-progress" {
+            } else if event.actualStartTime != nil {
                 Button(action:{ Task { await stopEvent() } }){
                     ZStack {
                         Image(systemName: "stop.fill")
