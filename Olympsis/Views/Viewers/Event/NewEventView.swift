@@ -17,6 +17,7 @@ struct NewEventView: View {
     }
     
     enum SkillLevel: String, CaseIterable {
+        case any = "Any"
         case beginner   = "Beginner"
         case amateur    = "Amateur"
         case expert     = "Expert"
@@ -24,6 +25,8 @@ struct NewEventView: View {
     
     func getSkillRaw(for skill: SkillLevel) -> Int {
         switch skill {
+        case .any:
+            return 0
         case .beginner:
             return 1
         case .amateur:
@@ -42,7 +45,7 @@ struct NewEventView: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              SPORT = .soccer
-    @State private var eventLevel:              Int    = 1
+    @State private var eventLevel:              Int    = 0
     @State private var eventMaxParticipants:    Double = 1
     @State private var status:                  LOADING_STATE = .pending
     @State private var validationStatus:        NEW_EVENT_ERROR = .unexpected
@@ -97,7 +100,7 @@ struct NewEventView: View {
             return
         }
         let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, levels: [],startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,

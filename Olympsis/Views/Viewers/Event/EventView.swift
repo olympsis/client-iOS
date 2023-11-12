@@ -63,7 +63,6 @@ struct EventView: View {
                             .frame(width: 80, height: 80)
                             .clipped()
                             .cornerRadius(10)
-                            .padding(.leading)
                         VStack(alignment: .leading){
                             Text(title)
                                 .font(.custom("Helvetica-Nue", size: 20))
@@ -78,9 +77,8 @@ struct EventView: View {
                         }
                         Spacer()
                         _TrailingView(event: $event)
-                            .padding(.trailing)
                     }
-                }
+                }.padding(.horizontal)
             }.frame(height: 100)
         }
         .clipShape(Rectangle())

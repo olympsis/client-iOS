@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import CoreLocation
 
 class Event: Codable, Identifiable, ObservableObject {
     
@@ -18,7 +19,7 @@ class Event: Codable, Identifiable, ObservableObject {
     let title: String?
     let body: String?
     let sport: String?
-    let levels: [Int]?
+    let level: Int?
     var startTime: Int64?
     var actualStartTime: Int64?
     var stopTime: Int64?
@@ -38,7 +39,7 @@ class Event: Codable, Identifiable, ObservableObject {
         case title
         case body
         case sport
-        case levels
+        case level
         case startTime = "start_time"
         case actualStartTime = "actual_start_time"
         case stopTime = "stop_time"
@@ -50,7 +51,7 @@ class Event: Codable, Identifiable, ObservableObject {
         case createdAt = "created_at"
     }
     
-    init(id: String? = nil, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, levels: [Int]? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, minParticipants: Int? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil) {
+    init(id: String? = nil, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, level: Int? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, minParticipants: Int? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil) {
         self.id = id
         self.poster = poster
         self.clubID = clubID
@@ -59,7 +60,7 @@ class Event: Codable, Identifiable, ObservableObject {
         self.title = title
         self.body = body
         self.sport = sport
-        self.levels = levels
+        self.level = level
         self.startTime = startTime
         self.actualStartTime = actualStartTime
         self.stopTime = stopTime
@@ -140,7 +141,8 @@ extension Event {
         let timestamp = TimeInterval(eventStartTime)
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "M/d/y"
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "en_US")
         
         if calendar.isDateInToday(Date(timeIntervalSince1970: timestamp)) {
             return "Today"
@@ -187,6 +189,42 @@ extension Event {
         } else {
             dateFormatter.dateFormat = "d"
             return dateFormatter.string(from: date) + " days";
+        }
+    }
+    
+    /// Returns in string the estimated time to an event's field
+    func estimatedTimeToField(_ loc: CLLocationCoordinate2D?) -> String {
+        var fieldLocation: [Double] {
+            guard let data = self.data,
+                  let field = data.field else {
+                return [0, 0]
+            }
+            return field.location.coordinates
+        }
+        
+        guard let location = loc else {
+            return "10 min"
+        }
+        
+        let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let targetLocation = CLLocation(latitude: fieldLocation[1], longitude: fieldLocation[0])
+        let distance = currentLocation.distance(from: targetLocation)
+        let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
+        let timeDifference = distance / speed
+        
+        if timeDifference < 0 {
+            return "1 min"
+        }
+        
+        let timeInMinutes = Int(timeDifference)
+        
+        if timeInMinutes < 60 {
+            return "\(timeInMinutes) min"
+        } else {
+            let hours = timeInMinutes / 60
+            let minutes = timeInMinutes % 60
+            let formattedTime = String(format: "%d:%02d min", hours, minutes)
+            return formattedTime
         }
     }
 }

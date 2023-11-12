@@ -13,6 +13,7 @@ import _MapKit_SwiftUI
 struct EventViewExt: View {
     
     @Binding var event: Event
+    @State private var showParticipants: Bool = false
     @State private var status: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
@@ -154,10 +155,16 @@ struct EventViewExt: View {
                         .cornerRadius(10)
                         .padding(.horizontal)
                         
-                    Text("Details")
-                        .font(.title2)
-                        .bold()
-                        .padding(.leading)
+                    HStack {
+                        Text("Details")
+                            .font(.title2)
+                            .bold()
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                        Text(event.dayToString())
+                            .font(.callout)
+                    }.padding(.horizontal)
                     Text(eventBody)
                         .padding(.horizontal)
                     
@@ -169,26 +176,17 @@ struct EventViewExt: View {
                     EventActionButtons(event: $event)
                         .padding(.top)
                     
-                    // rsvp chart
-    //                EventRSVPChart(event: $event)
-                    
                     // participants view
-                    VStack {
-                        ScrollView(.horizontal ,showsIndicators: false){
-                            HStack {
-                                ForEach(event.participants ?? [Participant](), id:\.id) { p in
-                                    ParticipantView(participant: p)
-                                }
-                            }.padding(.horizontal)
-                        }
-                    }.padding(.vertical)
+                    EventParticipantsView(event: $event, showParticipants: $showParticipants)
                     
                     // field/club view
                     EventExtDetail(data: event.data)
                         .padding(.top)
                 }
             }
-        }
+        }.sheet(isPresented: $showParticipants, content: {
+            EventParticipantsViewExt(event: $event)
+        })
     }
 }
 
@@ -233,13 +231,20 @@ struct EventMiddleView: View {
         return 1
     }
     
+    var eventLevel: Int {
+        guard let level = event.level else {
+            return 0
+        }
+        return level
+    }
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .padding(.horizontal)
                 .frame(height: 70)
                 .foregroundStyle(Color("background"))
-            HStack (alignment: .center){
+            HStack (alignment: .center) {
                 VStack(alignment: .center){
                     if event.stopTime != nil {
                         VStack {
@@ -259,7 +264,7 @@ struct EventMiddleView: View {
                                 .foregroundColor(.red)
                             Text("Live")
                                 .bold()
-                            .foregroundColor(.red)
+                                .foregroundColor(.red)
                         }
                         Text("\(timeDifference)")
                             .foregroundColor(.primary)
@@ -270,7 +275,7 @@ struct EventMiddleView: View {
                                     timeDifference = event.timeDifferenceToString()
                                 }
                             }
-                    } else if event.actualStartTime != nil {
+                    } else {
                         VStack {
                             Text("Pending")
                                 .foregroundColor(Color("color-prime"))
@@ -283,31 +288,22 @@ struct EventMiddleView: View {
                     .padding(.all, 7)
                 
                 Spacer()
-
+                
                 VStack {
                     VStack {
                         Image(systemName: "person.2.fill")
                         Text("\(potentialParticipants)/\(maxParticipants)")
                     }
-                    .opacity(event.stopTime != nil ? 0 : 1)
                     .disabled(event.stopTime != nil)
                 }
                 
                 Spacer()
                 
-                VStack(alignment: .center){
-                    Circle()
-                        .frame(width: 10)
-                        .imageScale(.small)
-                    .foregroundColor(Color("color-tert"))
-                    
-                    Text("Amateur")
-                }.padding(.trailing)
-                    .padding(.all, 7)
-                    
-            }.frame(maxWidth: .infinity)
-                .padding(.horizontal)
-        }
+                EventLevelView(level: eventLevel)
+                
+            }.padding(.horizontal)
+        }.frame(maxWidth: .infinity)
+            .padding(.vertical, 5)
     }
 }
 
@@ -345,33 +341,6 @@ struct EventActionButtons: View {
             return false
         }
         return participants.first(where: { $0.uuid == uuid }) != nil
-    }
-    
-    private var estimatedTimeToField: String {
-        guard let location = session.locationManager.location else {
-            return "10 min"
-        }
-        
-        let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let targetLocation = CLLocation(latitude: fieldLocation[1], longitude: fieldLocation[0])
-        let distance = currentLocation.distance(from: targetLocation)
-        let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
-        let timeDifference = distance / speed
-        
-        if timeDifference < 0 {
-            return "1 min"
-        }
-        
-        let timeInMinutes = Int(timeDifference)
-        
-        if timeInMinutes < 60 {
-            return "\(timeInMinutes) min"
-        } else {
-            let hours = timeInMinutes / 60
-            let minutes = timeInMinutes % 60
-            let formattedTime = String(format: "%d:%02d min", hours, minutes)
-            return formattedTime
-        }
     }
     
     func rsvp(status: String) async {
@@ -450,7 +419,7 @@ struct EventActionButtons: View {
                                 .frame(width: 25, height: 20)
                             .imageScale(.large)
                         }.frame(height: 25)
-                        Text(estimatedTimeToField)
+                        Text(event.estimatedTimeToField(session.locationManager.location))
                     }.foregroundColor(.white)
                 }
             }
@@ -479,9 +448,6 @@ struct EventActionButtons: View {
             }
             if !hasRSVP {
                 Menu {
-                    Button(action: { Task{  await rsvp(status: "no") } }) {
-                        Text("No")
-                    }
                     Button(action: { Task{  await rsvp(status: "maybe") } }) {
                         Text("Maybe")
                     }
@@ -508,6 +474,7 @@ struct EventActionButtons: View {
                         }
                     }.foregroundColor(.white)
                 }.disabled(state == .loading ? true : false)
+                    .disabled(event.stopTime != nil ? true : false)
             } else {
                 Button(action: { Task { await cancel() }}) {
                     ZStack {
@@ -719,6 +686,86 @@ struct EventExtDetail: View {
             .frame(maxWidth: .infinity)
     }
 }
+
+struct EventLevelView: View {
+    @State var level: Int
+    var body: some View {
+        VStack {
+            if level == 1 {
+                VStack(alignment: .center){
+                    HStack {
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                    }
+                    
+                    Text("Beginner")
+                }
+            } else if level == 2 {
+                VStack(alignment: .center){
+                    HStack {
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                    }
+                    
+                    Text("Amateur")
+                }
+            } else if level == 3 {
+                VStack(alignment: .center){
+                    HStack {
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                    }
+                    
+                    Text("Expert")
+                }
+            } else {
+                VStack(alignment: .center){
+                    HStack {
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                        Circle()
+                            .frame(width: 10)
+                            .imageScale(.small)
+                        .foregroundColor(Color("color-tert"))
+                    }
+                    
+                    Text("Any")
+                }
+            }
+        }.padding(.trailing)
+            .padding(.all, 7)
+    }
+}
+
+
 
 struct EventViewExt_Previews: PreviewProvider {
     static var previews: some View {

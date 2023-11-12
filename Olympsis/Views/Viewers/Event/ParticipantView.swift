@@ -13,18 +13,21 @@ struct ParticipantView: View {
     var imageURL: String {
         guard let data = participant.data,
               let img = data.imageURL else {
-            return ""
+            return "https://api.olympsis.com"
         }
         return GenerateImageURL(img)
     }
     
-    var ringColor: String {
+    var ringColor: Color {
+        guard participant.data != nil else {
+            return Color("color-prime")
+        }
         if participant.status == "yes" {
-            return "color-prime"
+            return Color("color-prime")
         } else if participant.status == "maybe" {
-            return "color-secnd"
+            return Color("color-secnd")
         } else {
-            return "color-tert"
+            return Color("color-tert")
         }
     }
     
@@ -33,7 +36,7 @@ struct ParticipantView: View {
             if let image = phase.image {
                 ZStack {
                     Circle()
-                        .foregroundColor(Color(ringColor))
+                        .foregroundColor(ringColor)
                     image // Displays the loaded image.
                         .resizable()
                         .clipShape(Circle())
@@ -45,7 +48,7 @@ struct ParticipantView: View {
                 ZStack {
                     Circle()
                         .frame(width: 65, height: 65)
-                        .foregroundColor(Color(ringColor))
+                        .foregroundColor(ringColor)
                     Color.gray // Indicates an error.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
@@ -55,7 +58,7 @@ struct ParticipantView: View {
                 ZStack {
                     Circle()
                         .frame(width: 65, height: 65)
-                        .foregroundColor(Color(ringColor))
+                        .foregroundColor(ringColor)
                     Color.gray // Acts as a placeholder.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
