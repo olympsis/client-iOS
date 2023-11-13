@@ -5,10 +5,10 @@
 //  Created by Joel on 7/27/23.
 //
 
+import MapKit
 import SwiftUI
 import CoreLocation
-import Charts
-import _MapKit_SwiftUI
+
 
 struct EventViewExt: View {
     
@@ -154,34 +154,33 @@ struct EventViewExt: View {
                         .clipped()
                         .cornerRadius(10)
                         .padding(.horizontal)
-                        
-                    HStack {
-                        Text("Details")
-                            .font(.title2)
-                            .bold()
-                        
-                        Rectangle()
-                            .frame(height: 1)
-                        Text(event.dayToString())
-                            .font(.callout)
-                    }.padding(.horizontal)
-                    Text(eventBody)
-                        .padding(.horizontal)
                     
+                    // details/body
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Details")
+                                .font(.title2)
+                                .bold()
+                            
+                            Rectangle()
+                                .frame(height: 1)
+                            Text(event.dayToString())
+                                .font(.callout)
+                        }
+                        Text(eventBody)
+                    }.padding(.all)
                     
-                    // middle view
+                    // MARK: - Middle View
                     EventMiddleView(event: $event)
                     
-                    // action buttons
+                    // MARK: - Action Buttons
                     EventActionButtons(event: $event)
-                        .padding(.top)
                     
-                    // participants view
+                    // MARK: - Participants View
                     EventParticipantsView(event: $event, showParticipants: $showParticipants)
                     
-                    // field/club view
+                    // MARK: - Field/Club Detail
                     EventExtDetail(data: event.data)
-                        .padding(.top)
                 }
             }
         }.sheet(isPresented: $showParticipants, content: {
@@ -518,62 +517,7 @@ struct EventActionButtons: View {
             }
             
         }.padding(.horizontal)
-    }
-}
-
-// MARK: - RSVP CHART
-struct EventRSVPChart: View {
-    @Binding var event: Event
-    @EnvironmentObject private var session: SessionStore
-    
-    var yesCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        let yesNum = participants.filter { p in
-            return p.status == "yes"
-        }
-        return yesNum.count
-    }
-    
-    var maybeCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        let maybeNum = participants.filter { p in
-            return p.status == "maybe"
-        }
-        return maybeNum.count
-    }
-    
-    var noCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        let noNum = participants.filter { p in
-            return p.status == "no"
-        }
-        return noNum.count
-    }
-    
-    var body: some View {
-        if event.participants != nil {
-            Chart {
-                BarMark(
-                    x: .value("Responses", "yes"),
-                    y: .value("Total Count", yesCount)
-                ).foregroundStyle(Color("color-prime"))
-                BarMark(
-                    x: .value("Responses", "Maybe"),
-                    y: .value("Total Count", maybeCount)
-                ).foregroundStyle(Color("color-secnd"))
-                BarMark(
-                    x: .value("Responses", "No"),
-                    y: .value("Total Count", noCount)
-                ).foregroundStyle(Color("color-tert"))
-            }.padding(.horizontal)
-                .padding(.top)
-        }
+            .padding(.top)
     }
 }
 

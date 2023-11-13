@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct LaunchScreen: View {
+    
+    var appVersion: String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return "Version not available"
+        }
+    }
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -23,7 +32,7 @@ struct LaunchScreen: View {
                     Text("Olympsis")
                         .foregroundColor(.white)
                         .bold()
-                    Text("0.5.0")
+                    Text(appVersion)
                         .foregroundColor(.white)
                         .font(.caption)
                 }.padding(.bottom)

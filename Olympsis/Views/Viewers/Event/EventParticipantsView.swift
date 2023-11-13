@@ -2,10 +2,14 @@
 //  EventParticipantsView.swift
 //  Olympsis
 //
+//  This collection of views are in charge of showing the participants of an event
+//  There is only one action. You can click on "See who's going..." to get more details about the participants
+//
 //  Created by Joel on 11/12/23.
 //
 
 import SwiftUI
+import Charts
 
 struct EventParticipantsView: View {
     
@@ -46,6 +50,49 @@ struct EventParticipantsView: View {
     }
 }
 
+// MARK: - RSVP CHART
+struct EventRSVPChart: View {
+    
+    @Binding var event: Event
+    
+    var yesCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        let yesNum = participants.filter { p in
+            return p.status == "yes"
+        }
+        return yesNum.count
+    }
+    
+    var maybeCount: Int {
+        guard let participants = event.participants else {
+            return 0
+        }
+        let maybeNum = participants.filter { p in
+            return p.status == "maybe"
+        }
+        return maybeNum.count
+    }
+    
+    var body: some View {
+        if event.participants != nil {
+            Chart {
+                BarMark(
+                    x: .value("Responses", "yes"),
+                    y: .value("Total Count", yesCount)
+                ).foregroundStyle(Color("color-prime"))
+                BarMark(
+                    x: .value("Responses", "Maybe"),
+                    y: .value("Total Count", maybeCount)
+                ).foregroundStyle(Color("color-secnd"))
+            }.padding(.horizontal)
+                .padding(.top)
+        }
+    }
+}
+
+// MARK: - Participant View Extended
 struct EventParticipantsViewExt: View {
     
     @Binding var event: Event
@@ -58,6 +105,7 @@ struct EventParticipantsViewExt: View {
         return ptps
     }
     
+    
     var body: some View {
         VStack {
             HStack {
@@ -67,6 +115,10 @@ struct EventParticipantsViewExt: View {
                 Text("Participants")
                 Spacer()
             }.padding(.vertical)
+            
+            EventRSVPChart(event: $event)
+                .frame(height: 250)
+            
             ScrollView {
                 ForEach(participants) { p in
                     HStack {
