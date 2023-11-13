@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view that shows a picture of a participant
 struct ParticipantView: View {
     @State var participant: Participant
     
@@ -69,8 +70,6 @@ struct ParticipantView: View {
     }
 }
 
-struct ParticipantView_Previews: PreviewProvider {
-    static var previews: some View {
-        ParticipantView(participant: EVENTS[0].participants![0])
-    }
+#Preview {
+    ParticipantView(participant: EVENTS[0].participants![0])
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view that shows a list of events
 struct EventsList: View {
     
     @State var events = [Event]()

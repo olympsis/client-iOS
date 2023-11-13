@@ -84,8 +84,6 @@ struct EventDetailActionButton: View {
     }
 }
 
-struct EventDetailActionButton_Previews: PreviewProvider {
-    static var previews: some View {
-        EventDetailActionButton(event: .constant(EVENTS[0]), showMenu: .constant(false))
-    }
+#Preview {
+    EventDetailActionButton(event: .constant(EVENTS[0]), showMenu: .constant(false))
 }

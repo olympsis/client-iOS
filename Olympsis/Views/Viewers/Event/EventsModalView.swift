@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view that shows the most recent and nearby events
 struct EventsModalView: View {
     
     @State private var showMore = false

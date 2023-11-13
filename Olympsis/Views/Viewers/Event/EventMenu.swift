@@ -175,8 +175,7 @@ struct EventMenu: View {
     }
 }
 
-struct EventMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        EventMenu(event: .constant(EVENTS[0])).environmentObject(SessionStore())
-    }
+#Preview {
+    EventMenu(event: .constant(EVENTS[0]))
+        .environmentObject(SessionStore())
 }

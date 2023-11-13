@@ -66,35 +66,35 @@ class WorkoutManager: ObservableObject {
     func startWorkoutSession() {}
     
     func loadWeeklyHistory() async {
-        var _anchor: HKQueryAnchor? = nil
-        let stepType = HKQuantityType(.stepCount)
-        
-        if let a = anchor {
-            _anchor = a
-        }
-        var results: HKAnchoredObjectQueryDescriptor<HKQuantitySample>.Result
-        
-        do {
-            repeat {
-                // Create a query descriptor that reads a batch
-                // of 100 matching samples.
-                let anchorDescriptor =
-                HKAnchoredObjectQueryDescriptor(
-                    predicates: [.quantitySample(type: stepType)],
-                    anchor: anchor,
-                    limit: 100
-                )
-
-
-                results = try await anchorDescriptor.result(for: healthStore)
-                anchor = results.newAnchor
-                
-                // Process the batch of results here.
-                
-            } while (results.addedSamples != []) && (results.deletedObjects != [])
-        } catch {
-            print ("failed to load weekly history \(error)")
-        }
+//        var _anchor: HKQueryAnchor? = nil
+//        let stepType = HKQuantityType(.stepCount)
+//        
+//        if let a = anchor {
+//            _anchor = a
+//        }
+//        var results: HKAnchoredObjectQueryDescriptor<HKQuantitySample>.Result
+//        
+//        do {
+//            repeat {
+//                // Create a query descriptor that reads a batch
+//                // of 100 matching samples.
+//                let anchorDescriptor =
+//                HKAnchoredObjectQueryDescriptor(
+//                    predicates: [.quantitySample(type: stepType)],
+//                    anchor: anchor,
+//                    limit: 100
+//                )
+//
+//
+//                results = try await anchorDescriptor.result(for: healthStore)
+//                anchor = results.newAnchor
+//                
+//                // Process the batch of results here.
+//                
+//            } while (results.addedSamples != []) && (results.deletedObjects != [])
+//        } catch {
+//            print ("failed to load weekly history \(error)")
+//        }
     }
     
     func loadWeekyRunHistory() async {

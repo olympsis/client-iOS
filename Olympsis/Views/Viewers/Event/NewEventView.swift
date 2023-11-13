@@ -327,9 +327,7 @@ struct NewEventView: View {
     }
 }
 
-struct NewEventView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewEventView()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    NewEventView()
+        .environmentObject(SessionStore())
 }

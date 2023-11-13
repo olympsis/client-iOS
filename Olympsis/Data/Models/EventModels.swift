@@ -131,7 +131,7 @@ extension Event {
     /// Converts the start time of the event to a human comprehensible string value.
     /// Can either return today, tomorrow, a day of the week, if futher than a week away M/d/y.
     /// - Returns: a formated `String` value of the event's start date
-    func dayToString() -> String {
+    func timeToString() -> String {
         guard let eventStartTime = self.startTime else {
             return "0/0/0"
         }

@@ -2,13 +2,12 @@
 //  EventView.swift
 //  Olympsis
 //
-//  This is the small event view. Shows event data at a glance
-//
 //  Created by Joel Joseph on 11/16/22.
 //
 
 import SwiftUI
 
+/// A view that shows an event's data at a glance. A list item.
 struct EventView: View {
     
     @State var event: Event
@@ -94,12 +93,6 @@ struct EventView: View {
     }
 }
 
-struct EventView_Previews: PreviewProvider {
-    static var previews: some View {
-        EventView(event: EVENTS[0]).environmentObject(SessionStore())
-    }
-}
-
 /// Trailing view for Event view.
 /// Contains the start date and time and participants view.
 struct _TrailingView: View {
@@ -142,7 +135,7 @@ struct _TrailingView: View {
                 }.padding(.bottom, 5)
             } else {
                 VStack (alignment: .trailing){
-                    Text(event.dayToString())
+                    Text(event.timeToString())
                         .bold()
                         .font(.callout)
                         .foregroundColor(.primary)
@@ -160,4 +153,9 @@ struct _TrailingView: View {
             }
         }
     }
+}
+
+#Preview {
+    EventView(event: EVENTS[0])
+        .environmentObject(SessionStore())
 }

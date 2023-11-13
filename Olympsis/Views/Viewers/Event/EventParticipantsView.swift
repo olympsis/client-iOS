@@ -11,6 +11,7 @@
 import SwiftUI
 import Charts
 
+/// A view that shows a quick glance of the top participants in an event
 struct EventParticipantsView: View {
     
     @Binding var event: Event
@@ -51,6 +52,7 @@ struct EventParticipantsView: View {
 }
 
 // MARK: - RSVP CHART
+/// A view that has simple chart about an event and the ratio of yes to maybe
 struct EventRSVPChart: View {
     
     @Binding var event: Event
@@ -93,6 +95,7 @@ struct EventRSVPChart: View {
 }
 
 // MARK: - Participant View Extended
+/// A view shows more information about the participants in an event
 struct EventParticipantsViewExt: View {
     
     @Binding var event: Event
