@@ -75,4 +75,18 @@ class EventService {
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE,  headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
+    
+    func notifyParticipants(id: String, notif: Notification) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/events/\(id)/notify/participants", queryItems: [URLQueryItem]())
+        
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(notif), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return resp
+    }
+    
+    func notifyClubMembers(id: String, notif: Notification) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/events/\(id)/notify/club", queryItems: [URLQueryItem]())
+        
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(notif), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return resp
+    }
 }

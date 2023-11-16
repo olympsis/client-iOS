@@ -15,11 +15,25 @@ struct SmallClubView: View {
     @Binding var showToast: Bool
     @ObservedObject var observer: ClubObserver
     
+    var clubName: String {
+        guard let name = club.name else {
+            return ""
+        }
+        return name
+    }
+    
     var imageURL: String {
         guard let img = club.imageURL else {
             return ""
         }
         return GenerateImageURL(img)
+    }
+    
+    var description: String {
+        guard let str = club.description else {
+            return ""
+        }
+        return str
     }
     
     func Apply() async {
@@ -58,67 +72,86 @@ struct SmallClubView: View {
         }
     }
     
-    var description: String {
-        guard let str = club.description else {
-            return ""
-        }
-        return str
-    }
-    
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(Color("background"))
+            
             VStack (alignment: .leading){
                 HStack {
+                    // IMAGE
+                    AsyncImage(url: URL(string: imageURL)){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(5)
+                                    .frame(width: 100, height: 100, alignment: .center)
+                                    .clipped()
+                                    .cornerRadius(20)
+                            } else if phase.error != nil {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color("foreground"), lineWidth: 1.0)
+                                        .frame(width: 100, height: 100)
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.red)
+                                        .imageScale(.large)
+                                }
+                            } else {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .opacity(0.1)
+                                        .frame(width: 100, height: 100)
+                                        .accentColor(Color("foreground"))
+                                    ProgressView()
+                                }
+                            }
+                    }.frame(width: 100, height: 100, alignment: .center)
+                    
                     VStack(alignment:.leading){
-                        Text(club.name!)
+                        Text(clubName)
                             .font(.title2)
                             .bold()
-                            .foregroundColor(.primary)
-                            .opacity(0.7)
-                        Text("\(club.city!), ") + Text(club.state!)
-                        Spacer()
-                    }
-                    Spacer()
-                    Text(getSportIcon(sport: club.sport!))
-                        .padding(.trailing)
-                }.padding(.horizontal)
-                    .padding(.vertical)
-                Text(description)
-                    .padding(.horizontal)
-                HStack {
-                    VStack(alignment: .leading){
-                        if club.visibility == "private" {
-                            VStack {
-                                Text("Private")
-                                    .foregroundColor(.red)
+                            .foregroundColor(Color("foreground"))
+                            .minimumScaleFactor(0.8)
+                            .lineLimit(1)
+                        Text("\(club.city!), ").foregroundColor(.gray)
+                        +
+                        Text(club.state!)
+                            .foregroundColor(.gray)
+                        HStack {
+                            if club.members!.count > 1 {
+                                Text("\(club.members!.count) members")
+                                    .foregroundColor(Color("foreground"))
+                                    .font(.caption)
+                            } else {
+                                Text("\(club.members!.count) member")
+                                    .foregroundColor(Color("foreground"))
                                     .font(.caption)
                             }
-                        } else {
-                            VStack {
-                                Text("Public")
-                                    .foregroundColor(.green)
-                            }
+                            Spacer()
+                            Text(getSportIcon(sport: club.sport!))
                         }
-                        if club.members!.count > 1 {
-                            Text("\(club.members!.count) members")
-                                .opacity(0.5)
-                                .foregroundColor(.primary)
-                        } else {
-                            Text("\(club.members!.count) member")
-                                .opacity(0.7)
-                                .foregroundColor(.primary)
-                        }
-                    }
-                    Spacer()
+                    }.padding(.leading, 5)
+                }.padding(.all)
+                
+                HStack {
+                    Text(description)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal)
+                        .lineLimit(nil)
+                }
+                    
+                VStack {
                     Button(action:{ Task{ await Apply() } }) {
-                        LoadingButton(text: "Apply", width: 100, status: $status)
+                        LoadingButton(text: "Apply", width: SCREEN_WIDTH-100, status: $status)
+                            .padding(.all)
+                            .frame(maxWidth: .infinity)
                     }.contentShape(Rectangle())
-                }.padding(.horizontal)
-                    .padding(.vertical)
+                }.padding(.all)
             }
-        }.frame(height: 200)
+        }.padding(.horizontal, 5)
     }
 }
 

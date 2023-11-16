@@ -87,7 +87,6 @@ struct ClubsList: View {
                         } else {
                             ForEach(filteredClubs, id: \.id){ c in
                                 SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
-                                    .padding(.bottom)
                                     .clipShape(Rectangle())
                             }
                         }

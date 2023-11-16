@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D0705022AE35A7E006A0301 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0705012AE35A7E006A0301 /* WorkoutView.swift */; };
+		5D17F9A12ADB920300E8B15C /* OlympsisCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9A02ADB920300E8B15C /* OlympsisCompanionApp.swift */; };
+		5D17F9A32ADB920300E8B15C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9A22ADB920300E8B15C /* ContentView.swift */; };
+		5D17F9A52ADB920400E8B15C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D17F9A42ADB920400E8B15C /* Assets.xcassets */; };
+		5D17F9A82ADB920400E8B15C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D17F9A72ADB920400E8B15C /* Preview Assets.xcassets */; };
+		5D17F9B22ADB920400E8B15C /* OlympsisCompanion_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9B12ADB920400E8B15C /* OlympsisCompanion_Watch_AppTests.swift */; };
+		5D17F9BC2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9BB2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITests.swift */; };
+		5D17F9BE2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9BD2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITestsLaunchTests.swift */; };
+		5D17F9C12ADB920400E8B15C /* OlympsisCompanion Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5D17F99E2ADB920300E8B15C /* OlympsisCompanion Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5D17F9CD2ADC50CE00E8B15C /* GlobalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9CC2ADC50CE00E8B15C /* GlobalData.swift */; };
+		5D17F9CF2ADC51DD00E8B15C /* Workouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9CE2ADC51DD00E8B15C /* Workouts.swift */; };
+		5D17F9D12ADC5BFB00E8B15C /* InSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D02ADC5BFB00E8B15C /* InSession.swift */; };
+		5D17F9D32ADC5E8A00E8B15C /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D22ADC5E8A00E8B15C /* SessionStore.swift */; };
+		5D17F9D52ADC615600E8B15C /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D42ADC615600E8B15C /* WorkoutSession.swift */; };
+		5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */; };
 		5D67494A2A73339E00AEC868 /* EventViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventViewExt.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
@@ -14,6 +29,21 @@
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
+		5DBB94C52B0320650031876D /* NewTournamentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C42B0320650031876D /* NewTournamentEvent.swift */; };
+		5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C62B0321560031876D /* NewPickUpEvent.swift */; };
+		5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C82B03252B0031876D /* NewOrganization.swift */; };
+		5DBB94CB2B03254C0031876D /* NewClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94CA2B03254C0031876D /* NewClub.swift */; };
+		5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94CC2B0326300031876D /* NewGroup.swift */; };
+		5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94CF2B05B1830031876D /* NotificationModels.swift */; };
+		5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D12B05BEB10031876D /* EventNotification.swift */; };
+		5DCAEA2D2B01958F00B9C22A /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */; };
+		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
+		5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */; };
+		5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */; };
+		5DCAEA352B01A8AD00B9C22A /* EventExtDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */; };
+		5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
+		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
+		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
 		5DD0E3F52AC889FA00C85B94 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */; };
 		5DD0E3F72AC889FA00C85B94 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */; };
 		5DD0E3FA2AC889FA00C85B94 /* LiveEventBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */; };
@@ -50,8 +80,7 @@
 		9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A204755295FD28200CDF3A3 /* ChatObserver.swift */; };
 		9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3536FD29282CDA005EC806 /* EventTemplateView.swift */; };
 		9A35370429289396005EC806 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A35370329289396005EC806 /* ParticipantView.swift */; };
-		9A3537062928991D005EC806 /* EventDetailMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3537052928991D005EC806 /* EventDetailMiddleView.swift */; };
-		9A353708292A04B0005EC806 /* NewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A353707292A04B0005EC806 /* NewEventView.swift */; };
+		9A353708292A04B0005EC806 /* NewEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A353707292A04B0005EC806 /* NewEvent.swift */; };
 		9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3928BDD4BA00ACB20A /* UserService.swift */; };
 		9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */; };
 		9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */; };
@@ -70,9 +99,7 @@
 		9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336B292AE5DE008CF61D /* CommentView.swift */; };
 		9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* CreateNewPost.swift */; };
 		9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 9A69CDDE2A1727BB00C37C1C /* Hermes */; };
-		9A69FE492971FCE600EBC5F9 /* EventFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE482971FCE600EBC5F9 /* EventFieldView.swift */; };
 		9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */; };
-		9A69FE512972241400EBC5F9 /* EventHostClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE502972241400EBC5F9 /* EventHostClubView.swift */; };
 		9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5429724C9200EBC5F9 /* EventsList.swift */; };
 		9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5629725A1300EBC5F9 /* FieldsList.swift */; };
 		9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */; };
@@ -102,7 +129,6 @@
 		9A81B63E2925DE1A009CA6ED /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B63D2925DE1A009CA6ED /* LocationManager.swift */; };
 		9A81B6402925E191009CA6ED /* FieldDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B63F2925E191009CA6ED /* FieldDetailView.swift */; };
 		9A81B6422925E50C009CA6ED /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6412925E50C009CA6ED /* EventView.swift */; };
-		9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6432925E518009CA6ED /* EventDetailView.swift */; };
 		9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6452925EAE6009CA6ED /* EventObserver.swift */; };
 		9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64A2925EC79009CA6ED /* EventService.swift */; };
 		9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64C2925EED1009CA6ED /* EventsModalView.swift */; };
@@ -199,6 +225,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5D17F9AE2ADB920400E8B15C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D17F99D2ADB920300E8B15C;
+			remoteInfo = "OlympsisCompanion Watch App";
+		};
+		5D17F9B82ADB920400E8B15C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D17F99D2ADB920300E8B15C;
+			remoteInfo = "OlympsisCompanion Watch App";
+		};
+		5D17F9BF2ADB920400E8B15C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D17F99D2ADB920300E8B15C;
+			remoteInfo = "OlympsisCompanion Watch App";
+		};
 		5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
@@ -209,6 +256,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5D17F9C22ADB920400E8B15C /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				5D17F9C12ADB920400E8B15C /* OlympsisCompanion Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E4072AC889FA00C85B94 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -223,11 +281,44 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D0705012AE35A7E006A0301 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		5D17F99E2ADB920300E8B15C /* OlympsisCompanion Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OlympsisCompanion Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D17F9A02ADB920300E8B15C /* OlympsisCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisCompanionApp.swift; sourceTree = "<group>"; };
+		5D17F9A22ADB920300E8B15C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5D17F9A42ADB920400E8B15C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5D17F9A72ADB920400E8B15C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5D17F9AD2ADB920400E8B15C /* OlympsisCompanion Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OlympsisCompanion Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D17F9B12ADB920400E8B15C /* OlympsisCompanion_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisCompanion_Watch_AppTests.swift; sourceTree = "<group>"; };
+		5D17F9B72ADB920400E8B15C /* OlympsisCompanion Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "OlympsisCompanion Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D17F9BB2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisCompanion_Watch_AppUITests.swift; sourceTree = "<group>"; };
+		5D17F9BD2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisCompanion_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5D17F9CC2ADC50CE00E8B15C /* GlobalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalData.swift; sourceTree = "<group>"; };
+		5D17F9CE2ADC51DD00E8B15C /* Workouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workouts.swift; sourceTree = "<group>"; };
+		5D17F9D02ADC5BFB00E8B15C /* InSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InSession.swift; sourceTree = "<group>"; };
+		5D17F9D22ADC5E8A00E8B15C /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		5D17F9D42ADC615600E8B15C /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
+		5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewExt.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
+		5DBA507F2AE458DD0081DE4D /* OlympsisCompanion-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "OlympsisCompanion-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5DBB94C42B0320650031876D /* NewTournamentEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTournamentEvent.swift; sourceTree = "<group>"; };
+		5DBB94C62B0321560031876D /* NewPickUpEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPickUpEvent.swift; sourceTree = "<group>"; };
+		5DBB94C82B03252B0031876D /* NewOrganization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrganization.swift; sourceTree = "<group>"; };
+		5DBB94CA2B03254C0031876D /* NewClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClub.swift; sourceTree = "<group>"; };
+		5DBB94CC2B0326300031876D /* NewGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroup.swift; sourceTree = "<group>"; };
+		5DBB94CF2B05B1830031876D /* NotificationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModels.swift; sourceTree = "<group>"; };
+		5DBB94D12B05BEB10031876D /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
+		5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantsView.swift; sourceTree = "<group>"; };
+		5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMiddleView.swift; sourceTree = "<group>"; };
+		5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventActionButtons.swift; sourceTree = "<group>"; };
+		5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLevelView.swift; sourceTree = "<group>"; };
+		5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventExtDetail.swift; sourceTree = "<group>"; };
+		5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
+		5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWorkoutView.swift; sourceTree = "<group>"; };
+		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveEventExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -265,8 +356,7 @@
 		9A204755295FD28200CDF3A3 /* ChatObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatObserver.swift; sourceTree = "<group>"; };
 		9A3536FD29282CDA005EC806 /* EventTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTemplateView.swift; sourceTree = "<group>"; };
 		9A35370329289396005EC806 /* ParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
-		9A3537052928991D005EC806 /* EventDetailMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailMiddleView.swift; sourceTree = "<group>"; };
-		9A353707292A04B0005EC806 /* NewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventView.swift; sourceTree = "<group>"; };
+		9A353707292A04B0005EC806 /* NewEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEvent.swift; sourceTree = "<group>"; };
 		9A39ED3928BDD4BA00ACB20A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameRequest.swift; sourceTree = "<group>"; };
 		9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObserver.swift; sourceTree = "<group>"; };
@@ -284,9 +374,7 @@
 		9A5D3368292AC610008CF61D /* PostComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComments.swift; sourceTree = "<group>"; };
 		9A5D336B292AE5DE008CF61D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		9A5D336D292AF813008CF61D /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
-		9A69FE482971FCE600EBC5F9 /* EventFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldView.swift; sourceTree = "<group>"; };
 		9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActionButton.swift; sourceTree = "<group>"; };
-		9A69FE502972241400EBC5F9 /* EventHostClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHostClubView.swift; sourceTree = "<group>"; };
 		9A69FE5429724C9200EBC5F9 /* EventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsList.swift; sourceTree = "<group>"; };
 		9A69FE5629725A1300EBC5F9 /* FieldsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsList.swift; sourceTree = "<group>"; };
 		9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingTemplateView.swift; sourceTree = "<group>"; };
@@ -316,7 +404,6 @@
 		9A81B63D2925DE1A009CA6ED /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9A81B63F2925E191009CA6ED /* FieldDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldDetailView.swift; sourceTree = "<group>"; };
 		9A81B6412925E50C009CA6ED /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
-		9A81B6432925E518009CA6ED /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		9A81B6452925EAE6009CA6ED /* EventObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventObserver.swift; sourceTree = "<group>"; };
 		9A81B64A2925EC79009CA6ED /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		9A81B64C2925EED1009CA6ED /* EventsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModalView.swift; sourceTree = "<group>"; };
@@ -416,6 +503,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5D17F99B2ADB920300E8B15C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9AA2ADB920400E8B15C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9B42ADB920400E8B15C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3F02AC889F900C85B94 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -437,6 +545,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D17F99F2ADB920300E8B15C /* OlympsisCompanion Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				5DBA507F2AE458DD0081DE4D /* OlympsisCompanion-Watch-App-Info.plist */,
+				5D17F9A02ADB920300E8B15C /* OlympsisCompanionApp.swift */,
+				5D17F9A22ADB920300E8B15C /* ContentView.swift */,
+				5D17F9CC2ADC50CE00E8B15C /* GlobalData.swift */,
+				5D17F9CE2ADC51DD00E8B15C /* Workouts.swift */,
+				5D17F9D02ADC5BFB00E8B15C /* InSession.swift */,
+				5D17F9D22ADC5E8A00E8B15C /* SessionStore.swift */,
+				5D17F9D42ADC615600E8B15C /* WorkoutSession.swift */,
+				5D0705012AE35A7E006A0301 /* WorkoutView.swift */,
+				5D17F9A42ADB920400E8B15C /* Assets.xcassets */,
+				5D17F9A62ADB920400E8B15C /* Preview Content */,
+			);
+			path = "OlympsisCompanion Watch App";
+			sourceTree = "<group>";
+		};
+		5D17F9A62ADB920400E8B15C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5D17F9A72ADB920400E8B15C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5D17F9B02ADB920400E8B15C /* OlympsisCompanion Watch AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				5D17F9B12ADB920400E8B15C /* OlympsisCompanion_Watch_AppTests.swift */,
+			);
+			path = "OlympsisCompanion Watch AppTests";
+			sourceTree = "<group>";
+		};
+		5D17F9BA2ADB920400E8B15C /* OlympsisCompanion Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				5D17F9BB2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITests.swift */,
+				5D17F9BD2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITestsLaunchTests.swift */,
+			);
+			path = "OlympsisCompanion Watch AppUITests";
+			sourceTree = "<group>";
+		};
 		5D9557A22A6C5E19006A1EF8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,6 +596,25 @@
 				5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		5DBB94C32B028D310031876D /* New Event */ = {
+			isa = PBXGroup;
+			children = (
+				9A353707292A04B0005EC806 /* NewEvent.swift */,
+				5DBB94C42B0320650031876D /* NewTournamentEvent.swift */,
+				5DBB94C62B0321560031876D /* NewPickUpEvent.swift */,
+			);
+			path = "New Event";
+			sourceTree = "<group>";
+		};
+		5DCB01BA2ADF759500450F69 /* Activities */ = {
+			isa = PBXGroup;
+			children = (
+				5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */,
+				5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */,
+			);
+			path = Activities;
 			sourceTree = "<group>";
 		};
 		5DD0E3F82AC889FA00C85B94 /* LiveEvent */ = {
@@ -479,6 +649,7 @@
 		9A3536FF2928930D005EC806 /* Viewers */ = {
 			isa = PBXGroup;
 			children = (
+				5DCB01BA2ADF759500450F69 /* Activities */,
 				9A5D3363292AAA66008CF61D /* Post */,
 				9A35370229289369005EC806 /* Club */,
 				9A35370129289357005EC806 /* Field */,
@@ -492,19 +663,21 @@
 		9A35370029289344005EC806 /* Event */ = {
 			isa = PBXGroup;
 			children = (
+				5DBB94C32B028D310031876D /* New Event */,
 				9A81B64C2925EED1009CA6ED /* EventsModalView.swift */,
 				9A69FE5429724C9200EBC5F9 /* EventsList.swift */,
 				9A81B6412925E50C009CA6ED /* EventView.swift */,
 				9A3536FD29282CDA005EC806 /* EventTemplateView.swift */,
 				9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */,
-				9A69FE502972241400EBC5F9 /* EventHostClubView.swift */,
-				9A81B6432925E518009CA6ED /* EventDetailView.swift */,
-				9A69FE482971FCE600EBC5F9 /* EventFieldView.swift */,
-				9A3537052928991D005EC806 /* EventDetailMiddleView.swift */,
 				9A35370329289396005EC806 /* ParticipantView.swift */,
-				9A353707292A04B0005EC806 /* NewEventView.swift */,
 				9AD208F32933FE41007A62C4 /* EventMenu.swift */,
 				5D6749492A73339E00AEC868 /* EventViewExt.swift */,
+				5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */,
+				5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */,
+				5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */,
+				5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */,
+				5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */,
+				5DBB94D12B05BEB10031876D /* EventNotification.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -527,6 +700,9 @@
 			children = (
 				9A81B62429247F87009CA6ED /* SmallClubView.swift */,
 				9A81B626292485A3009CA6ED /* ClubView.swift */,
+				5DBB94C82B03252B0031876D /* NewOrganization.swift */,
+				5DBB94CA2B03254C0031876D /* NewClub.swift */,
+				5DBB94CC2B0326300031876D /* NewGroup.swift */,
 			);
 			path = Club;
 			sourceTree = "<group>";
@@ -602,6 +778,9 @@
 			children = (
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DD0E3F82AC889FA00C85B94 /* LiveEvent */,
+				5D17F99F2ADB920300E8B15C /* OlympsisCompanion Watch App */,
+				5D17F9B02ADB920400E8B15C /* OlympsisCompanion Watch AppTests */,
+				5D17F9BA2ADB920400E8B15C /* OlympsisCompanion Watch AppUITests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
 			);
@@ -612,6 +791,9 @@
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
 				5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */,
+				5D17F99E2ADB920300E8B15C /* OlympsisCompanion Watch App.app */,
+				5D17F9AD2ADB920400E8B15C /* OlympsisCompanion Watch AppTests.xctest */,
+				5D17F9B72ADB920400E8B15C /* OlympsisCompanion Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -705,6 +887,8 @@
 				5F1329B92A282BE200B31170 /* EventModels.swift */,
 				5FF49CB92A2BE92100FAA4DA /* PostModels.swift */,
 				5FF2A0262A380534009234AD /* ChatModels.swift */,
+				5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */,
+				5DBB94CF2B05B1830031876D /* NotificationModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -818,6 +1002,7 @@
 				9AB02F4D290246BD008C07F1 /* NotificationsManager.swift */,
 				9A81B63D2925DE1A009CA6ED /* LocationManager.swift */,
 				9A550848293E335500B924B1 /* ImageHandler.swift */,
+				5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -948,6 +1133,59 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5D17F99D2ADB920300E8B15C /* OlympsisCompanion Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D17F9C92ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch App" */;
+			buildPhases = (
+				5D17F99A2ADB920300E8B15C /* Sources */,
+				5D17F99B2ADB920300E8B15C /* Frameworks */,
+				5D17F99C2ADB920300E8B15C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OlympsisCompanion Watch App";
+			productName = "OlympsisCompanion Watch App";
+			productReference = 5D17F99E2ADB920300E8B15C /* OlympsisCompanion Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5D17F9AC2ADB920400E8B15C /* OlympsisCompanion Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D17F9CA2ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch AppTests" */;
+			buildPhases = (
+				5D17F9A92ADB920400E8B15C /* Sources */,
+				5D17F9AA2ADB920400E8B15C /* Frameworks */,
+				5D17F9AB2ADB920400E8B15C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D17F9AF2ADB920400E8B15C /* PBXTargetDependency */,
+			);
+			name = "OlympsisCompanion Watch AppTests";
+			productName = "OlympsisCompanion Watch AppTests";
+			productReference = 5D17F9AD2ADB920400E8B15C /* OlympsisCompanion Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5D17F9B62ADB920400E8B15C /* OlympsisCompanion Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D17F9CB2ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch AppUITests" */;
+			buildPhases = (
+				5D17F9B32ADB920400E8B15C /* Sources */,
+				5D17F9B42ADB920400E8B15C /* Frameworks */,
+				5D17F9B52ADB920400E8B15C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D17F9B92ADB920400E8B15C /* PBXTargetDependency */,
+			);
+			name = "OlympsisCompanion Watch AppUITests";
+			productName = "OlympsisCompanion Watch AppUITests";
+			productReference = 5D17F9B72ADB920400E8B15C /* OlympsisCompanion Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		5DD0E3F22AC889F900C85B94 /* LiveEventExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */;
@@ -973,11 +1211,13 @@
 				9A8FF0AA28BB14BF00DE4CF8 /* Frameworks */,
 				9A8FF0AB28BB14BF00DE4CF8 /* Resources */,
 				5DD0E4072AC889FA00C85B94 /* Embed Foundation Extensions */,
+				5D17F9C22ADB920400E8B15C /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */,
+				5D17F9C02ADB920400E8B15C /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -998,6 +1238,17 @@
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					5D17F99D2ADB920300E8B15C = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					5D17F9AC2ADB920400E8B15C = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 5D17F99D2ADB920300E8B15C;
+					};
+					5D17F9B62ADB920400E8B15C = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 5D17F99D2ADB920300E8B15C;
+					};
 					5DD0E3F22AC889F900C85B94 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -1025,11 +1276,37 @@
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
 				5DD0E3F22AC889F900C85B94 /* LiveEventExtension */,
+				5D17F99D2ADB920300E8B15C /* OlympsisCompanion Watch App */,
+				5D17F9AC2ADB920400E8B15C /* OlympsisCompanion Watch AppTests */,
+				5D17F9B62ADB920400E8B15C /* OlympsisCompanion Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5D17F99C2ADB920300E8B15C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D17F9A82ADB920400E8B15C /* Preview Assets.xcassets in Resources */,
+				5D17F9A52ADB920400E8B15C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9AB2ADB920400E8B15C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9B52ADB920400E8B15C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3F12AC889F900C85B94 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1071,6 +1348,38 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5D17F99A2ADB920300E8B15C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D17F9CD2ADC50CE00E8B15C /* GlobalData.swift in Sources */,
+				5D17F9A32ADB920300E8B15C /* ContentView.swift in Sources */,
+				5D0705022AE35A7E006A0301 /* WorkoutView.swift in Sources */,
+				5D17F9D32ADC5E8A00E8B15C /* SessionStore.swift in Sources */,
+				5D17F9D12ADC5BFB00E8B15C /* InSession.swift in Sources */,
+				5D17F9A12ADB920300E8B15C /* OlympsisCompanionApp.swift in Sources */,
+				5D17F9D52ADC615600E8B15C /* WorkoutSession.swift in Sources */,
+				5D17F9CF2ADC51DD00E8B15C /* Workouts.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9A92ADB920400E8B15C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D17F9B22ADB920400E8B15C /* OlympsisCompanion_Watch_AppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D17F9B32ADB920400E8B15C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D17F9BC2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITests.swift in Sources */,
+				5D17F9BE2ADB920400E8B15C /* OlympsisCompanion_Watch_AppUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3EF2AC889F900C85B94 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1087,8 +1396,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
+				5DCAEA352B01A8AD00B9C22A /* EventExtDetail.swift in Sources */,
 				9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */,
-				9A81B6442925E518009CA6ED /* EventDetailView.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
@@ -1096,13 +1405,19 @@
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* FieldView.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
+				5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */,
 				9A81B6422925E50C009CA6ED /* EventView.swift in Sources */,
 				5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */,
 				5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */,
 				9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */,
+				5DBB94C52B0320650031876D /* NewTournamentEvent.swift in Sources */,
+				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
+				5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */,
+				5DBB94CB2B03254C0031876D /* NewClub.swift in Sources */,
+				5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */,
 				9A81B62529247F87009CA6ED /* SmallClubView.swift in Sources */,
 				5FA350562A67352500669B2C /* NotificationsView.swift in Sources */,
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
@@ -1114,13 +1429,16 @@
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
+				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
+				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
+				5DCAEA2D2B01958F00B9C22A /* EventParticipantsView.swift in Sources */,
 				9A69FE5729725A1300EBC5F9 /* FieldsList.swift in Sources */,
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
@@ -1135,18 +1453,18 @@
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
+				5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
+				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
-				9A69FE492971FCE600EBC5F9 /* EventFieldView.swift in Sources */,
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
-				9A69FE512972241400EBC5F9 /* EventHostClubView.swift in Sources */,
 				9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */,
 				5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,
@@ -1166,10 +1484,11 @@
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
+				5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
 				9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */,
 				5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */,
-				9A353708292A04B0005EC806 /* NewEventView.swift in Sources */,
+				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
@@ -1190,6 +1509,7 @@
 				9A5D3365292AAA71008CF61D /* PostView.swift in Sources */,
 				5D67494A2A73339E00AEC868 /* EventViewExt.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
+				5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */,
 				5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
@@ -1208,6 +1528,7 @@
 				5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */,
 				5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
+				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
 				9AECDA4829545242007956FB /* LookUp.swift in Sources */,
 				5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */,
@@ -1235,9 +1556,9 @@
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationsManager.swift in Sources */,
 				9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */,
-				9A3537062928991D005EC806 /* EventDetailMiddleView.swift in Sources */,
 				9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */,
 				9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */,
+				5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */,
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
 				5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */,
 				5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */,
@@ -1248,6 +1569,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5D17F9AF2ADB920400E8B15C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D17F99D2ADB920300E8B15C /* OlympsisCompanion Watch App */;
+			targetProxy = 5D17F9AE2ADB920400E8B15C /* PBXContainerItemProxy */;
+		};
+		5D17F9B92ADB920400E8B15C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D17F99D2ADB920300E8B15C /* OlympsisCompanion Watch App */;
+			targetProxy = 5D17F9B82ADB920400E8B15C /* PBXContainerItemProxy */;
+		};
+		5D17F9C02ADB920400E8B15C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D17F99D2ADB920300E8B15C /* OlympsisCompanion Watch App */;
+			targetProxy = 5D17F9BF2ADB920400E8B15C /* PBXContainerItemProxy */;
+		};
 		5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5DD0E3F22AC889F900C85B94 /* LiveEventExtension */;
@@ -1256,6 +1592,173 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5D17F9C32ADB920400E8B15C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OlympsisCompanion Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlympsisCompanion-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = OlympsisCompanion;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.coronislabs.Olympsis;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		5D17F9C42ADB920400E8B15C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OlympsisCompanion Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlympsisCompanion-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = OlympsisCompanion;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.coronislabs.Olympsis;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		5D17F9C52ADB920400E8B15C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.josephlabs.OlympsisCompanion-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OlympsisCompanion Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OlympsisCompanion Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		5D17F9C62ADB920400E8B15C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.josephlabs.OlympsisCompanion-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OlympsisCompanion Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OlympsisCompanion Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		5D17F9C72ADB920400E8B15C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.josephlabs.OlympsisCompanion-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "OlympsisCompanion Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		5D17F9C82ADB920400E8B15C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.josephlabs.OlympsisCompanion-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "OlympsisCompanion Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 		5DD0E4082AC889FA00C85B94 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1278,7 +1781,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1314,7 +1817,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1469,11 +1972,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1511,11 +2015,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.5.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1530,6 +2035,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5D17F9C92ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D17F9C32ADB920400E8B15C /* Debug */,
+				5D17F9C42ADB920400E8B15C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5D17F9CA2ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D17F9C52ADB920400E8B15C /* Debug */,
+				5D17F9C62ADB920400E8B15C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5D17F9CB2ADB920400E8B15C /* Build configuration list for PBXNativeTarget "OlympsisCompanion Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D17F9C72ADB920400E8B15C /* Debug */,
+				5D17F9C82ADB920400E8B15C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

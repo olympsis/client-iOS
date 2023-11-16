@@ -68,8 +68,6 @@ struct EventTemplateView: View {
     }
 }
 
-struct EventTemplateView_Previews: PreviewProvider {
-    static var previews: some View {
-        EventTemplateView()
-    }
+#Preview {
+    EventTemplateView()
 }

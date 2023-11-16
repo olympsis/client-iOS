@@ -34,6 +34,11 @@ struct MapOptions: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 35, height: 5)
+                .foregroundColor(.gray)
+                .opacity(0.3)
+                .padding(.top, 5)
             VStack(alignment: .leading) {
                 Text("Search Radius:")
                     .bold()
@@ -94,7 +99,6 @@ struct MapOptions: View {
                     }.padding(.trailing)
                 }.padding(.top)
             }.padding(.leading)
-                .padding(.vertical, 20)
                 .task {
                     guard let radiusValue = radius else {
                         return

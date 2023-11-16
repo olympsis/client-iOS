@@ -46,17 +46,17 @@ struct TabBar: View {
                         .frame(maxWidth: .infinity)
                         .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
                 }
-                Button() {
-                    withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .activity
-                    }
-                } label: {
-                    Image(systemName: currentTab == .activity ? "chart.bar.fill" : "chart.bar")
-                        .imageScale(.large)
-                        .frame(width: 28, height: 28)
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(currentTab == .activity ? Color("color-secnd") : .white )
-                }
+//                Button() {
+//                    withAnimation(.easeInOut(duration: 0.2)){
+//                        currentTab = .activity
+//                    }
+//                } label: {
+//                    Image(systemName: currentTab == .activity ? "chart.bar.fill" : "chart.bar")
+//                        .imageScale(.large)
+//                        .frame(width: 28, height: 28)
+//                        .frame(maxWidth: .infinity)
+//                        .foregroundColor(currentTab == .activity ? Color("color-secnd") : .white )
+//                }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .profile

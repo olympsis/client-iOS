@@ -14,6 +14,43 @@ struct ClubApplicationView: View {
     @Binding var applications: [ClubApplication]
     @EnvironmentObject var session: SessionStore
     
+    var fullName: String {
+        guard let data = application.data,
+              let firstName = data.firstName,
+              let lastName = data.lastName else {
+            return "Olympsis User"
+        }
+        return firstName + " " + lastName;
+    }
+    
+    var username: String {
+        guard let data = application.data,
+              let username = data.username else {
+            return "@olympsis-user"
+        }
+        return "@\(username)";
+    }
+    
+    var userBio: String {
+        guard let data = application.data,
+              let bio = data.bio else {
+                  return "..."
+              }
+        return bio;
+    }
+    
+    var userImageURL: String {
+        guard let data = application.data,
+              let imageURL = data.imageURL else {
+            return ""
+        }
+        return GenerateImageURL(imageURL)
+    }
+    
+    var dateTimeInString: String {
+        return "Created at: " + Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year());
+    }
+    
     func accept() async {
         guard let id = club.id else {
             return
@@ -40,40 +77,20 @@ struct ClubApplicationView: View {
         }
     }
     
-    var fullName: String {
-        guard let data = application.data,
-              let firstName = data.firstName,
-              let lastName = data.lastName else {
-            return "Olympsis User"
-        }
-        return firstName + " " + lastName;
-    }
-    
-    var username: String {
-        guard let data = application.data,
-              let username = data.username else {
-            return "@olympsis-user"
-        }
-        return "@\(username)";
-    }
-    
-    var dateTimeInString: String {
-        return "Created at: " + Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year());
-    }
-    
     var body: some View {
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundColor(Color("background"))
                 VStack (alignment: .leading){
                     HStack {
-                        AsyncImage(url: URL(string: GenerateImageURL((application.data?.imageURL ?? "")))){ phase in
+                        AsyncImage(url: URL(string: userImageURL)){ phase in
                             if let image = phase.image {
                                     image // Displays the loaded image.
                                         .resizable()
                                         .clipShape(Circle())
                                         .scaledToFill()
+                                        .frame(width: 100, height: 100)
                                         .clipped()
                                 } else if phase.error != nil {
                                     ZStack {
@@ -81,6 +98,7 @@ struct ClubApplicationView: View {
                                             .clipShape(Circle())
                                         .opacity(0.3)
                                         Image(systemName: "exclamationmark.circle")
+                                            .foregroundColor(Color("foreground"))
                                     }
                                 } else {
                                     ZStack {
@@ -90,8 +108,8 @@ struct ClubApplicationView: View {
                                         ProgressView()
                                     }
                                 }
-                        }.frame(width: 60, height: 60)
-                            .padding(.leading, 5)
+                        }.frame(width: 100, height: 100)
+                            .padding(.all)
                         VStack (alignment: .leading){
                             Text(fullName)
                                 .font(.headline)
@@ -100,41 +118,49 @@ struct ClubApplicationView: View {
                                 .foregroundColor(.gray)
                             Text(dateTimeInString)
                                 .font(.callout)
-                        }.padding(.leading, 5)
-                    }.padding(.top, 5)
-
+                                .italic()
+                        }
+                    }
                     
                     HStack {
-                        Spacer()
+                        Text(userBio)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal)
+                            .lineLimit(nil)
+                    }.padding(.bottom)
+                    
+                    HStack {
                         Button(action:{
                             Task {
                                 await accept()
                             }
                         }){
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                RoundedRectangle(cornerRadius: 20)
                                     .foregroundColor(Color("color-prime"))
                                 Text("accept")
                                     .foregroundColor(.white)
                             }
-                        }.frame(width: 100, height: 40)
+                        }.frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)
+                            .padding(.trailing)
                         Button(action:{
                             Task {
                                 await deny()
                             }
                         }){
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                RoundedRectangle(cornerRadius: 20)
                                     .foregroundColor(.red)
                                 Text("deny")
                                     .foregroundColor(.white)
                             }
-                        }.frame(width: 100, height: 40)
-                            .padding(.trailing, 5)
-                    }.padding(.bottom, 5)
-                }.frame(width: SCREEN_WIDTH-25)
+                        }.frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)
+                            .padding(.leading)
+                    }.padding(.horizontal)
+                        .padding(.bottom, 20)
+                }
             }
-        }.frame(width: SCREEN_WIDTH-20, height: 130)
+        }.padding(.horizontal, 5)
     }
 }
 

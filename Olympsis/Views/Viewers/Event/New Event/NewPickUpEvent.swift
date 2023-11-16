@@ -1,15 +1,14 @@
 //
-//  NewEventView.swift
+//  NewPickUpEvent.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/19/22.
+//  Created by Joel on 11/13/23.
 //
 
 import os
 import SwiftUI
 
-struct NewEventView: View {
-    
+struct NewPickUpEvent: View {
     enum NEW_EVENT_ERROR: Error {
         case unexpected
         case noTitle
@@ -17,6 +16,7 @@ struct NewEventView: View {
     }
     
     enum SkillLevel: String, CaseIterable {
+        case any = "Any Level"
         case beginner   = "Beginner"
         case amateur    = "Amateur"
         case expert     = "Expert"
@@ -24,6 +24,8 @@ struct NewEventView: View {
     
     func getSkillRaw(for skill: SkillLevel) -> Int {
         switch skill {
+        case .any:
+            return 0
         case .beginner:
             return 1
         case .amateur:
@@ -42,8 +44,9 @@ struct NewEventView: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              SPORT = .soccer
-    @State private var eventLevel:              Int    = 1
-    @State private var eventMaxParticipants:    Double = 1
+    @State private var eventLevel:              Int    = 0
+    @State private var eventMaxParticipants:    Double = 0
+    @State private var eventMinParticipants:    Double = 0
     @State private var status:                  LOADING_STATE = .pending
     @State private var validationStatus:        NEW_EVENT_ERROR = .unexpected
     
@@ -67,7 +70,7 @@ struct NewEventView: View {
         guard eventImageURL != "" else {
             return eventSport.Images()[Int.random(in: 0...eventSport.Images().count-1)]
         }
-        return eventImageURL 
+        return eventImageURL
     }
     
     var setStartTime: Int64 {
@@ -97,11 +100,11 @@ struct NewEventView: View {
             return
         }
         let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,maxParticipants: Int(eventMaxParticipants), participants: [participant], likes: nil, visibility: "public", data: nil, createdAt: nil)
+        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,minParticipants: Int(eventMinParticipants), maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,
-                let userData = session.user else {
+              let userData = session.user else {
             log.error("failed to create event")
             return
         }
@@ -122,8 +125,7 @@ struct NewEventView: View {
                         .bold()
                         .padding(.leading)
                     Spacer()
-                }.padding(.bottom, 30)
-                    .padding(.top, 30)
+                }.padding(.vertical, 30)
                 
                 // MARK: - Title
                 VStack(alignment: .leading){
@@ -134,10 +136,9 @@ struct NewEventView: View {
                         .font(.subheadline)
                         .foregroundColor(validationStatus == .noTitle ? .red : .gray)
                     
-                        TextField("title", text: $eventTitle)
-                            .padding(.leading)
-                            .tint(Color("color-prime"))
-                            .modifier(MenuButton())
+                    TextField("title", text: $eventTitle)
+                        .padding(.leading)
+                        .modifier(MenuButton())
                 }
                 
                 // MARK: - Sports picker
@@ -154,8 +155,6 @@ struct NewEventView: View {
                             Text(sport.Icon() + " " + sport.rawValue).tag(sport)
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("color-prime"))
-                    
                 }.padding(.top)
                 
                 // MARK: - Description
@@ -173,20 +172,17 @@ struct NewEventView: View {
                         TextEditor(text: $eventBody)
                             .frame(height: 95)
                             .scrollContentBackground(.hidden)
-                            .tint(Color("color-prime"))
-                            .padding(.leading, 5)
+                            .padding(.horizontal, 5)
                     }
-                }.padding(.leading)
-                    .padding(.trailing)
+                }.padding(.horizontal)
                 
                 // MARK: - Club/Field picker
                 VStack(alignment: .leading){
-                    // MARK: - Field picker
                     VStack(alignment: .leading){
-                        Text("Club")
+                        Text("Organizer")
                             .font(.title3)
                             .bold()
-                        Text("The club affiliated with the event")
+                        Text("The club/organization affiliated with the event")
                             .foregroundColor(.gray)
                             .font(.subheadline)
                         
@@ -195,10 +191,8 @@ struct NewEventView: View {
                                 Text(club.name ?? "error").tag(index)
                             }
                         }.modifier(MenuButton())
-                            .tint(Color("color-prime"))
-                    }.padding(.top)
-
-                        .padding(.bottom)
+                    }.padding(.vertical)
+                    
                     Text("Field")
                         .font(.title3)
                         .bold()
@@ -211,12 +205,9 @@ struct NewEventView: View {
                             Text(field.name).tag(index)
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("color-prime"))
-                    
-                }.padding(.top)
-                    .padding(.leading)
-                    .padding(.trailing)
-                    
+                }
+                .padding(.horizontal)
+                
                 
                 // MARK: - Date/Time picker
                 VStack(alignment: .leading){
@@ -225,18 +216,17 @@ struct NewEventView: View {
                         .bold()
                     DatePicker("Date", selection: $eventStartTime, in: Date()...)
                         .datePickerStyle(.graphical)
-                        .tint(Color("color-prime"))
-
-                }.padding(.top, 30)
-                    .padding(.leading)
-                    .padding(.trailing)
+                }
+                .padding(.vertical)
+                .padding(.horizontal)
+                
                 
                 // MARK: - Skill Level picker
                 VStack(alignment: .leading){
                     Text("Skill Level")
                         .font(.title3)
                         .bold()
-                    Text("Participants expected experience")
+                    Text("Participants expected skill level")
                         .foregroundColor(.gray)
                         .font(.subheadline)
                     Picker(selection: $eventLevel, label: Text("")) {
@@ -244,10 +234,36 @@ struct NewEventView: View {
                             Text(skill.rawValue).tag(getSkillRaw(for: skill))
                         }
                     }.modifier(MenuButton())
-                        .tint(Color("color-prime"))
+                }
+                .padding(.horizontal)
+                
+                // MARK: - Min Participants slider
+                VStack(alignment: .leading){
+                    Text("Min Participants")
+                        .font(.title3)
+                        .bold()
+                    Text("The minimum number of participants")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                    
+                    HStack {
+                        Slider(
+                            value: $eventMinParticipants,
+                            in: 0...100,
+                            step: 1.0,
+                            onEditingChanged: { editing in
+                                isEditing = editing
+                            }).padding(.leading)
+                            .padding(.trailing)
+                        Spacer()
+                        Text("\(Int(eventMinParticipants))")
+                            .foregroundColor(isEditing ? .red : Color("color-prime"))
+                        Stepper("", value: $eventMinParticipants, in: 0...100)
+                            .padding(.trailing)
+                    }.modifier(MenuButton())
+                    
                 }.padding(.top)
-                    .padding(.leading)
-                    .padding(.trailing)
+                    .padding(.horizontal)
                 
                 // MARK: - Max Participants slider
                 VStack(alignment: .leading){
@@ -257,26 +273,25 @@ struct NewEventView: View {
                     Text("Limit the headcount")
                         .foregroundColor(.gray)
                         .font(.subheadline)
-
-                        HStack {
-                            Slider(
-                                value: $eventMaxParticipants,
-                                in: 1...100,
-                                step: 1.0,
-                                onEditingChanged: { editing in
+                    
+                    HStack {
+                        Slider(
+                            value: $eventMaxParticipants,
+                            in: 0...1000,
+                            step: 5.0,
+                            onEditingChanged: { editing in
                                 isEditing = editing
-                                }).padding(.leading)
-                                .padding(.trailing)
-                            Spacer()
-                            Text("\(Int(eventMaxParticipants))")
-                                .foregroundColor(isEditing ? .red : Color("color-prime"))
-                            Stepper("", value: $eventMaxParticipants, in: 1...100)
-                                .padding(.trailing)
-                        }.modifier(MenuButton())
+                            }).padding(.leading)
+                            .padding(.trailing)
+                        Spacer()
+                        Text("\(Int(eventMaxParticipants))")
+                            .foregroundColor(isEditing ? .red : Color("color-prime"))
+                        Stepper("", value: $eventMaxParticipants, in: 0...1000)
+                            .padding(.trailing)
+                    }.modifier(MenuButton())
                     
                 }.padding(.top)
-                    .padding(.leading)
-                    .padding(.trailing)
+                    .padding(.horizontal)
                 
                 // MARK: - Background Image picker
                 VStack(alignment: .leading){
@@ -291,13 +306,13 @@ struct NewEventView: View {
                                         Image(image)
                                             .resizable()
                                             .frame(width: 100, height: 150)
-                                        .cornerRadius(10)
+                                            .cornerRadius(10)
                                         if eventImageURL == image {
                                             Image(systemName: "circle.fill")
                                                 .foregroundColor(Color("color-secnd"))
                                                 .padding(.bottom, 5)
                                                 .padding(.trailing, 5)
-                                                
+                                            
                                         } else {
                                             Image(systemName: "circle")
                                                 .foregroundColor(Color("color-secnd"))
@@ -311,8 +326,8 @@ struct NewEventView: View {
                         }
                     }
                 }.padding(.top)
-                    .padding(.leading)
-                    .padding(.trailing)
+                    .padding(.horizontal)
+                
                 // MARK: - Action Button
                 VStack(alignment: .center){
                     Button(action: { Task { await CreateEvent() } }) {
@@ -324,9 +339,7 @@ struct NewEventView: View {
     }
 }
 
-struct NewEventView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewEventView()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    NewPickUpEvent()
+        .environmentObject(SessionStore())
 }

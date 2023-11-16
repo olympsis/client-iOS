@@ -53,6 +53,7 @@ struct PostsView: View {
                             .foregroundColor(Color.primary)
                     }
                     EventView(event: events![0])
+                        .padding(.horizontal)
                 }
             }
             if posts.count == 0 {

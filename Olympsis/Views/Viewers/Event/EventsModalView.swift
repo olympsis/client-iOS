@@ -7,14 +7,49 @@
 
 import SwiftUI
 
+/// A view that shows the most recent and nearby events
 struct EventsModalView: View {
     
+    @Binding var events: [Event]
     @State private var showMore = false
-    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject private var session: SessionStore
     
-    var todayEvents: [Event] {
+    /// Struct for filtering events by the day they are to start
+    struct DayGroup: Identifiable {
+        let id = UUID()
+        let day: Int
+        var events: [Event]
+        
+        var dayInString: String {
+            return events[0].timeToString()
+        }
+    }
+    
+    /// Groups the events by date
+    var eventsGrouped: [DayGroup] {
+        
         let calendar = Calendar.current
-        return session.events.filter({ calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval($0.startTime!))) == calendar.component(.day, from: Date())})
+        var groups: [DayGroup] = [DayGroup]();
+        
+        events.forEach { e in
+            guard let startTime = e.startTime else {
+                return
+            }
+            
+            let day = calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval(startTime)))
+            let index = groups.firstIndex(where: { $0.day == day })
+            
+            if index != nil {
+                groups[index!].events.append(e)
+                return
+            } else {
+                let newGroup = DayGroup(day: day, events: [e])
+                groups.append(newGroup)
+                return
+            }
+        }
+        
+        return groups
     }
     
     var body: some View {
@@ -22,24 +57,27 @@ struct EventsModalView: View {
             HStack {
                 Text("Nearby Events")
                     .font(.system(.headline))
-                    .padding()
+                
                 Spacer()
-                Text("Today")
-                    .padding()
-                    .foregroundColor(Color("color-prime"))
-                Button(action:{ self.showMore.toggle() }){
-                    HStack {
-                        Text("More")
-                            .bold()
-                        Image(systemName: "chevron.down")
-                    }.padding(.trailing)
-                }.foregroundColor(.primary)
-            }
-            ScrollView(.vertical, showsIndicators: false) {
-                ForEach(todayEvents, id: \.title) { event in
-                    EventView(event: event)
+//  Turned off tempoarily for better UX
+//                Button(action:{ self.showMore.toggle() }){
+//                    HStack {
+//                        Text("More")
+//                            .bold()
+//                        Image(systemName: "chevron.down")
+//                    }.padding(.trailing)
+//                }.foregroundColor(.primary)
+            }.padding()
+            List {
+                ForEach(eventsGrouped, id: \.day) { group in
+                    Section(header: Text(group.dayInString)) {
+                        ForEach(group.events, id: \.id) { event in
+                            EventView(event: event)
+                        }
+                    }
                 }
-            }.fullScreenCover(isPresented: $showMore) {
+            }.listStyle(.plain)
+            .fullScreenCover(isPresented: $showMore) {
                 EventsList(events: session.events)
             }
         }
@@ -48,6 +86,6 @@ struct EventsModalView: View {
 
 struct EventsModalView_Previews: PreviewProvider {
     static var previews: some View {
-        EventsModalView().environmentObject(SessionStore())
+        EventsModalView(events: .constant(EVENTS)).environmentObject(SessionStore())
     }
 }
