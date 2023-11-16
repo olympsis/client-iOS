@@ -72,6 +72,7 @@ struct EventView: View {
                             
                             Text(fieldName)
                                 .foregroundColor(.gray)
+                                .lineLimit(1)
                             Spacer()
                         }
                         Spacer()
@@ -84,7 +85,6 @@ struct EventView: View {
             .background {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(Color("background"))
-                    .padding(.horizontal, 5)
             }
         .sheet(isPresented: $showDetails) {
             EventViewExt(event: $event)
@@ -104,6 +104,21 @@ struct _TrailingView: View {
             return 0
         }
         return participants.count
+    }
+    
+    var minParticipantsCount: Int {
+        guard let minParticipants = event.minParticipants else {
+            return 0
+        }
+        return minParticipants
+    }
+    
+    var iconColor: Color {
+        if (minParticipantsCount != 0) && (participantsCount != 0) && (participantsCount < minParticipantsCount) {
+            return .yellow
+        } else {
+            return Color("color-prime")
+        }
     }
     
     var body: some View {
@@ -147,7 +162,7 @@ struct _TrailingView: View {
             
             HStack {
                 Image(systemName: "person.3.sequence.fill")
-                    .foregroundColor(Color("color-prime"))
+                    .foregroundColor(iconColor)
                 Text("\(participantsCount)")
                     .foregroundColor(.primary)
             }
@@ -156,6 +171,6 @@ struct _TrailingView: View {
 }
 
 #Preview {
-    EventView(event: EVENTS[0])
+    EventView(event: EVENTS[1])
         .environmentObject(SessionStore())
 }

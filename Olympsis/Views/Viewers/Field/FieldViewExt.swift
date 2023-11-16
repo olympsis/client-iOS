@@ -217,7 +217,7 @@ struct FieldActionButtons: View {
                 }
             }.disabled(canCreateEvent == false ? true : false)
             .sheet(isPresented: $showNewEvent) {
-                NewEventView()
+                NewEvent()
             }
             
             Menu{

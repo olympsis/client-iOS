@@ -41,6 +41,14 @@ struct EventMiddleView: View {
         return max
     }
     
+    var participantsCountString: String {
+        if maxParticipantsCount == 0 {
+            return "\(participantsCount)/∞"
+        } else {
+            return "\(participantsCount)/\(maxParticipantsCount)"
+        }
+    }
+    
     func getTimeDifference() -> Int {
         guard let startTime = event.actualStartTime else {
             return 2
@@ -122,7 +130,7 @@ struct EventMiddleView: View {
                 VStack {
                     VStack {
                         Image(systemName: "person.2.fill")
-                        Text("\(participantsCount)/\(maxParticipantsCount)")
+                        Text(participantsCountString)
                     }
                     .disabled(event.stopTime != nil)
                 }

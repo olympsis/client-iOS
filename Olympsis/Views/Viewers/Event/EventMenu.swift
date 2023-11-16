@@ -10,8 +10,9 @@ import SwiftUI
 struct EventMenu: View {
     
     @Binding var event: Event
-    @State var loadingState: LOADING_STATE = .pending
-    @EnvironmentObject var session: SessionStore
+    @State private var loadingState: LOADING_STATE = .pending
+    @State private var showNotification: Bool = false
+    @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
     
     func deleteEvent() async {
@@ -86,12 +87,94 @@ struct EventMenu: View {
     }
     
     var body: some View {
-        VStack(alignment: .center){
+        VStack(spacing: 15){
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 35, height: 5)
                 .foregroundColor(.gray)
                 .opacity(0.3)
                 .padding(.top, 5)
+            
+//                if isPosterOrAdmin {
+//                    Menu {
+//                        Button(action: { showNotification.toggle() }) {
+//                            Text("Notify Participants")
+//                        }
+//                        Button(action: {}) {
+//                            Text("Notify Club Members")
+//                        }
+//                    } label: {
+//                        HStack {
+//                            Image(systemName: "bell")
+//                                .imageScale(.large)
+//                                .padding(.leading)
+//                                .foregroundColor(.black)
+//                            Text("Send a Notification")
+//                                .foregroundColor(.black)
+//                            Spacer()
+//                        }.modifier(MenuButton())
+//                    }
+//                }
+            
+            if isPosterOrAdmin {
+                HStack(spacing: 15) {
+                    if event.stopTime == nil {
+                        Button(action:{
+                            Task {
+                                if event.actualStartTime == nil {
+                                    await startEvent()
+                                } else if event.actualStartTime != nil {
+                                    await stopEvent()
+                                }
+                            }
+                        }) {
+                            VStack {
+                                if event.actualStartTime == nil {
+                                    if loadingState == .loading {
+                                        ProgressView()
+                                    } else {
+                                        Image(systemName: "play.fill")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(.green)
+                                        Text("Start Event")
+                                            .foregroundColor(.green)
+                                    }
+                                } else if event.actualStartTime != nil {
+                                    if loadingState == .loading {
+                                        ProgressView()
+                                    } else {
+                                        Image(systemName: "stop.fill")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(.red)
+                                        Text("Stop Event")
+                                            .foregroundColor(.red)
+                                    }
+                                }
+                            }.modifier(SettingButton())
+                        }.disabled(loadingState == .loading ? true : false)
+                            .frame(height: 100)
+                            .padding(.leading)
+                    }
+                    
+                    Button(action:{
+                        Task {
+                            await deleteEvent()
+                        }
+                    }) {
+                        VStack {
+                            Image(systemName: "trash")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.red)
+                            Text("Delete Event")
+                                .foregroundColor(.red)
+                        }.modifier(SettingButton())
+                    }.frame(height: 100)
+                        .padding(.trailing)
+                }
+            }
+            
             Button(action:{}) {
                 HStack {
                     Image(systemName: "exclamationmark.shield")
@@ -103,75 +186,10 @@ struct EventMenu: View {
                     Spacer()
                 }.modifier(MenuButton())
             }
-            
-            if isPosterOrAdmin {
-                
-                if event.stopTime == nil {
-                    Button(action:{
-                        Task {
-                            if event.actualStartTime == nil {
-                                await startEvent()
-                            } else if event.actualStartTime != nil {
-                                await stopEvent()
-                            }
-                        }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(.gray)
-                                .opacity(0.3)
-                            HStack {
-                                if event.actualStartTime == nil {
-                                    Image(systemName: "play.fill")
-                                        .imageScale(.large)
-                                        .padding(.leading)
-                                        .foregroundColor(.green)
-                                    Text("Start Event")
-                                        .foregroundColor(.green)
-                                } else if event.actualStartTime != nil {
-                                    Image(systemName: "stop.fill")
-                                        .padding(.leading)
-                                        .imageScale(.large)
-                                        .foregroundColor(.red)
-                                    Text("Stop Event")
-                                        .foregroundColor(.red)
-                                    if loadingState == .loading {
-                                        ProgressView()
-                                    }
-                                }
-                                
-                                Spacer()
-                            }
-                        }.frame(width: SCREEN_WIDTH-25, height: 50)
-                    }.disabled(loadingState == .loading ? true : false)
-                }
-                
-                Button(action:{
-                    Task {
-                        await deleteEvent()
-                    }
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.gray)
-                            .opacity(0.3)
-                        HStack {
-                            Image(systemName: "trash")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Delete Event")
-                                .foregroundColor(.red)
-                            Spacer()
-                        }
-                    }.frame(width: SCREEN_WIDTH-25, height: 50)
-                }
-            }
-            
-            
-            
             Spacer()
-        }
+        }.sheet(isPresented: $showNotification, content: {
+            EventNotification(event: event)
+        })
     }
 }
 

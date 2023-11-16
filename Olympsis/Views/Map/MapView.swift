@@ -13,7 +13,7 @@ import CoreLocationUI
 struct MapView: View {
     
     @State private var showError        = false
-    @State private var showBottomSheet  = false
+    @State private var showBottomSheet  = true
     @State private var showFieldDetail  = false
     @State private var showNewEvent     = false
     @State private var showOptions      = false
@@ -114,15 +114,15 @@ struct MapView: View {
                     .presentationDetents([.height(250), .large])
             }
             .sheet(isPresented: $showNewEvent) {
-                NewEventView()
+                NewEvent()
             }
             .sheet(isPresented: $showBottomSheet) {
-                EventsModalView()
-                    .presentationDetents([.height(250)])
+                EventsModalView(events: $session.events)
+                    .presentationDetents([.height(250), .large])
             }
             .sheet(isPresented: $showOptions) {
                 MapOptions(availableSports: sports)
-                    .presentationDetents([.height(350)])
+                    .presentationDetents([.medium])
             }
             .alert(isPresented: $showError){
                 Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {

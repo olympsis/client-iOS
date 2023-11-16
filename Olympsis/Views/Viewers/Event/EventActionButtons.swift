@@ -220,7 +220,7 @@ struct EventActionButtons: View {
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(event: $event)
-                    .presentationDetents([.height(200)])
+                    .presentationDetents([.medium])
             }
             
         }.padding(.horizontal)

@@ -18,3 +18,13 @@ struct MenuButton: ViewModifier {
     }
 }
 
+
+struct SettingButton: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+            content
+        }
+    }
+}

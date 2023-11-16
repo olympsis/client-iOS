@@ -165,7 +165,7 @@ struct FieldDetailView: View {
                     }.padding(.top, 50)
                 }
                 .sheet(isPresented: $showNewEvent) {
-                    NewEventView()
+                    NewEvent()
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading){

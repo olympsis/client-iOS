@@ -78,7 +78,7 @@ struct EventLevelView: View {
                         .foregroundColor(Color("color-tert"))
                     }
                     
-                    Text("Any")
+                    Text("Any Level")
                 }
             }
         }.padding(.trailing)

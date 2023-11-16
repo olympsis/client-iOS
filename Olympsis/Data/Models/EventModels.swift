@@ -183,7 +183,7 @@ extension Event {
         } else if timeDifference < 3600 {
             let minutes = timeDifference / 60
             return "\(minutes) mins"
-        } else if timeDifference < 86400 {
+        } else if timeDifference < 86400 * 12 {
             dateFormatter.dateFormat = "h:mm"
             return dateFormatter.string(from: date) + " mins";
         } else {
