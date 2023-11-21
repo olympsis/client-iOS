@@ -34,6 +34,7 @@ struct PostView: View {
               let username = user.username else {
             return "olympsis-user"
         }
+        
         return username
     }
     
@@ -100,9 +101,6 @@ struct PostView: View {
     
     var body: some View {
         VStack {
-            Rectangle()
-                .frame(height: 0.2)
-                .opacity(0.3)
             HStack {
                 AsyncImage(url: URL(string: userImageURL)){ phase in
                     if let image = phase.image {
@@ -125,9 +123,15 @@ struct PostView: View {
                     }
                 } .frame(width: 35)
                     .padding(.leading, 5)
-                Text(username)
-                    .padding(.leading, 5)
+                VStack(alignment: .leading) {
+                    Text(username)
+                        
                     .bold()
+                    if (post.type != "regular") {
+                        Text(post.type)
+                            .font(.caption)
+                    }
+                }.padding(.leading, 5)
                 
                 Spacer()
                 
@@ -202,6 +206,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(club: .constant(CLUBS[0]), post: POSTS[0],index: .constant(0), showMenu: .constant(false)).environmentObject(SessionStore())
+        PostView(club: .constant(CLUBS[0]), post: POSTS[1],index: .constant(0), showMenu: .constant(false)).environmentObject(SessionStore())
     }
 }

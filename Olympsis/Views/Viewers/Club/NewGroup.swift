@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct NewGroup: View {
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
-                Text("What would you like to create?")
+                Text("What type of group would you like to create?")
                     .font(.title)
                     .multilineTextAlignment(.center)
                 
@@ -30,7 +33,7 @@ struct NewGroup: View {
                                 .bold()
                             Text("A club is a social circle uniting individuals who share a common interest in a sport or fitness goal, providing a platform to create group chats and organize events related to those shared interests.")
                                 .padding(.horizontal)
-                                .font(.callout)
+                                .font(.caption)
                         }
                     }
                 }.frame(height: 250)
@@ -44,15 +47,15 @@ struct NewGroup: View {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color("background"))
                         VStack {
-                            Image(systemName: "trophy.fill")
+                            Image(systemName: "globe.americas.fill")
                                 .imageScale(.large)
                                 .padding(.all, 5)
                             Text("Organization")
                                 .font(.title3)
                                 .bold()
-                            Text("An official group that hosts events, and is often a “parent” to multiple smaller clubs within. Provides the ability to broadcast messages and announcements.")
+                            Text("An organization is typically limited in terms of its feature set, offering a standardized structure for various clubs or groups within it. It often provides the ability to broadcast messages or information to its affiliated clubs.")
                                 .padding(.horizontal)
-                                .font(.callout)
+                                .font(.caption)
                         }
                     }
                 }.frame(height: 250)
@@ -61,12 +64,20 @@ struct NewGroup: View {
                 
                 Spacer()
             }.padding(.horizontal)
-                .navigationTitle("New Club")
+                .navigationTitle("New Group")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                            Image(systemName: "chevron.left")
+                        }
+                    }
+                }
         }
     }
 }
 
 #Preview {
     NewGroup()
+        .environmentObject(SessionStore())
 }

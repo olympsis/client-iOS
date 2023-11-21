@@ -204,7 +204,7 @@ struct ClubMenu: View {
             .navigationTitle(club.name ?? "Clubs")
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
-                CreateNewClub()
+                NewGroup()
             }
             .fullScreenCover(isPresented: $showApplications) {
                 ClubApplications(club: club)

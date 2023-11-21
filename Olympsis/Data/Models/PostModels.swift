@@ -11,6 +11,7 @@ import Foundation
 class Post: Codable, Identifiable, RandomAccessCollection {
     
     let id: String?
+    let type: String
     let poster: String
     let clubID: String?
     let body: String
@@ -22,6 +23,7 @@ class Post: Codable, Identifiable, RandomAccessCollection {
     let createdAt: Int64?
     
     init(id: String?,
+         type: String,
          poster: String,
          clubID: String?,
          body: String,
@@ -33,6 +35,7 @@ class Post: Codable, Identifiable, RandomAccessCollection {
          createdAt: Int64?) {
         
         self.id = id
+        self.type = type
         self.poster = poster
         self.clubID = clubID
         self.body = body
@@ -46,6 +49,7 @@ class Post: Codable, Identifiable, RandomAccessCollection {
     
     enum CodingKeys: String, CodingKey {
         case id
+        case type
         case poster
         case clubID = "club_id"
         case body

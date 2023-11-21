@@ -17,12 +17,18 @@ let FIELDS = [
 
 
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", visibility: "public", members: [Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)], rules: nil, createdAt: nil)
+    Club(id: "609f6db90c34d41863a0e721", parentId: "", type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
+        Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
+        Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
+        Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
+        Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
+    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)), createdAt: nil),
+    Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)], rules: nil, data: nil, createdAt: nil)
 ]
 
 
 let EVENTS = [
-    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: nil, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "tournament", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: nil, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
@@ -31,18 +37,18 @@ let EVENTS = [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "EchoEnigma", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780)
         
     ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780),
-    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Sunday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, minParticipants: 10, maxParticipants: 0, participants: [
+    Event(id: UUID().uuidString, type: "pickup", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Sunday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, minParticipants: 10, maxParticipants: 0, participants: [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CrimsonWanderer", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780)
         
     ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780),
-    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Tuesday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "pickup", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Tuesday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         
     ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780),
-    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Friday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "tournament", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Friday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
@@ -50,7 +56,7 @@ let EVENTS = [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "MysticHarmony", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780)
         
     ], visibility: "", data: EventData(poster: USERS_DATA[0], club: CLUBS[0], field: FIELDS[0]), createdAt: 1639364780),
-    Event(id: UUID().uuidString, poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Monday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "pickup", poster: "", clubID: "", fieldID: "", imageURL: "soccer-0", title: "Monday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
         Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
@@ -62,13 +68,13 @@ let EVENTS = [
 
 
 let POSTS = [
-    Post(id: "0", poster: "", clubID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
+    Post(id: "0", type: "regular", poster: "", clubID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364779),
-    Post(id: "1", poster: "", clubID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[1], event: nil), likes: nil, comments: [
+    Post(id: "1", type: "Announcement", poster: "", clubID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[1], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
     ], createdAt: 1639364780),
-    Post(id: "2", poster: "", clubID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
+    Post(id: "2", type: "Advertisement", poster: "", clubID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: nil, user: USERS_DATA[0], event: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364781)
 ]

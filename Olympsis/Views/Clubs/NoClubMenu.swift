@@ -37,7 +37,7 @@ struct NoClubMenu: View {
                         Spacer()
                     }.modifier(MenuButton())
                 }.fullScreenCover(isPresented: $showNewClub) {
-                    CreateNewClub()
+                    NewGroup()
                 }
             }
         }

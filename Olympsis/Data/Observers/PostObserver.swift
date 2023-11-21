@@ -65,7 +65,7 @@ class PostObserver: ObservableObject{
     
     func createPost(owner: String, clubId: String, body: String, images:[String]?=nil) async -> Post? {
         do {
-            let post = Post(id: nil, poster: owner, clubID: clubId, body: body, eventID: nil, images: images, data: nil, likes: nil, comments: nil, createdAt: nil)
+            let post = Post(id: nil, type: "regular", poster: owner, clubID: clubId, body: body, eventID: nil, images: images, data: nil, likes: nil, comments: nil, createdAt: nil)
             let res = try await postService.createPost(post: post)
             let object = try decoder.decode(Post.self, from: res)
             return object

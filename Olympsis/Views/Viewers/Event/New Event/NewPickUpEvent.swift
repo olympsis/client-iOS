@@ -100,7 +100,7 @@ struct NewPickUpEvent: View {
             return
         }
         let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
-        let event = Event(id: nil, poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,minParticipants: Int(eventMinParticipants), maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
+        let event = Event(id: nil, type: "pickup", poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,minParticipants: Int(eventMinParticipants), maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
         
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,
@@ -205,8 +205,7 @@ struct NewPickUpEvent: View {
                             Text(field.name).tag(index)
                         }
                     }.modifier(MenuButton())
-                }
-                .padding(.horizontal)
+                }.padding(.horizontal)
                 
                 
                 // MARK: - Date/Time picker

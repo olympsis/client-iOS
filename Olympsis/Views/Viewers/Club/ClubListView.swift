@@ -8,9 +8,10 @@
 import SwiftUI
 
 
-struct SmallClubView: View {
+struct ClubListView: View {
 
     @State private var status: LOADING_STATE = .pending
+    @State private var showDetails: Bool = false
     @State var club: Club
     @Binding var showToast: Bool
     @ObservedObject var observer: ClubObserver
@@ -36,6 +37,13 @@ struct SmallClubView: View {
         return str
     }
     
+    var sport: String {
+        guard let s = club.sport else {
+            return "unknown"
+        }
+        return s
+    }
+    
     func Apply() async {
         status = .loading
         guard let id = club.id else {
@@ -53,22 +61,6 @@ struct SmallClubView: View {
             DispatchQueue.main.asyncAfter(deadline: .now()+1) {
                 status = .pending
             }
-        }
-    }
-    
-    func getSportIcon(sport: String) -> String {
-        if sport == "soccer" {
-            return "⚽️"
-        } else if sport == "basketball"{
-            return "🏀"
-        } else if sport == "cricket"{
-            return "🏏"
-        } else if sport == "volleyball"{
-            return "🏐"
-        } else if sport == "tennis" {
-            return "🎾"
-        } else {
-            return ""
         }
     }
     
@@ -126,8 +118,6 @@ struct SmallClubView: View {
                                 .foregroundColor(Color("foreground"))
                                 .font(.caption)
                         }
-                        Spacer()
-                        Text(getSportIcon(sport: club.sport!))
                     }
                 }.padding(.leading, 5)
             }.padding(.all)
@@ -139,14 +129,18 @@ struct SmallClubView: View {
                     .lineLimit(nil)
                     .font(.callout)
             }
-                
+            
             HStack {
+                ClubTagView(isSport: true, tagName: sport)
+            }.padding(.horizontal)
+                .padding(.top)
+            
+            HStack(spacing: 15) {
                 Button(action:{ Task{ await Apply() } }) {
                     LoadingButton(text: "Apply", width: SCREEN_WIDTH-100, status: $status)
-                        .padding(.all)
                 }.contentShape(Rectangle())
                     .frame(maxWidth: .infinity)
-                Button(action: {}) {
+                Button(action: { self.showDetails.toggle() }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(lineWidth: 1)
@@ -161,11 +155,12 @@ struct SmallClubView: View {
                 .foregroundColor(Color("background"))
                 .padding(.horizontal, 5)
         }
+        .fullScreenCover(isPresented: $showDetails, content: {
+            ClubView(club: club)
+        })
     }
 }
 
-struct SmallClubView_Previews: PreviewProvider {
-    static var previews: some View {
-        SmallClubView(club: CLUBS[0], showToast: .constant(false), observer: ClubObserver())
-    }
+#Preview {
+    ClubListView(club: CLUBS[0], showToast: .constant(false), observer: ClubObserver())
 }

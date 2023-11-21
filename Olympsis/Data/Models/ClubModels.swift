@@ -10,6 +10,8 @@ import Foundation
 class Club: Codable, Identifiable {
 
     let id: String?
+    let parentId: String?
+    let type: String?
     let name: String?
     let description: String?
     let sport: String?
@@ -17,12 +19,16 @@ class Club: Codable, Identifiable {
     let state: String?
     let country: String?
     let imageURL: String?
+    let imageGallery: [String]?
     let visibility: String?
     let members: [Member]?
     let rules: [String]?
+    let data: ClubData?
     let createdAt: Int64?
     
     init(id: String?,
+         parentId: String?,
+         type: String?,
          name: String?,
          description: String?,
          sport: String?,
@@ -30,12 +36,16 @@ class Club: Codable, Identifiable {
          state: String?,
          country: String?,
          imageURL: String?,
+         imageGallery: [String]?,
          visibility: String?,
          members: [Member]?,
          rules: [String]?,
+         data: ClubData?,
          createdAt: Int64?) {
         
         self.id = id
+        self.parentId = parentId
+        self.type = type
         self.name = name
         self.description = description
         self.sport = sport
@@ -43,9 +53,11 @@ class Club: Codable, Identifiable {
         self.state = state
         self.country = country
         self.imageURL = imageURL
+        self.imageGallery = imageGallery
         self.visibility = visibility
         self.members = members
         self.rules = rules
+        self.data = data
         self.createdAt = createdAt
     }
     
@@ -59,6 +71,8 @@ class Club: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
+        case parentId
+        case type
         case name
         case description
         case sport
@@ -66,9 +80,11 @@ class Club: Codable, Identifiable {
         case state
         case country
         case imageURL = "image_url"
+        case imageGallery = "image_gallery"
         case visibility
         case members
         case rules
+        case data
         case createdAt = "created_at"
     }
 }
@@ -205,5 +221,14 @@ struct ClubInvitation: Codable, Identifiable {
         case status
         case data
         case createdAt = "created_at"
+    }
+}
+
+/// Holds extra club data such as the parent organization data. Eventually i will add club metrics in this struct
+struct ClubData: Codable {
+    let parent: Organization?
+    
+    enum CodingKeys: String, CodingKey {
+        case parent
     }
 }
