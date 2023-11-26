@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */; };
+		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
+		5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BD2B129AC800D19188 /* GroupSelector.swift */; };
 		5D67494A2A73339E00AEC868 /* EventViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventViewExt.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
@@ -24,6 +26,9 @@
 		5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D12B05BEB10031876D /* EventNotification.swift */; };
 		5DBB94D42B0A7F230031876D /* ClubTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D32B0A7F230031876D /* ClubTagView.swift */; };
 		5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D52B0D27920031876D /* OrganizationModels.swift */; };
+		5DBB94DB2B125BF20031876D /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DA2B125BF20031876D /* GroupView.swift */; };
+		5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DC2B125C230031876D /* GroupSelection.swift */; };
+		5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DE2B128D920031876D /* GroupToolbar.swift */; };
 		5DCAEA2D2B01958F00B9C22A /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */; };
 		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
 		5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */; };
@@ -53,7 +58,7 @@
 		5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */; };
 		5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F52A2918B900257350 /* FieldsView.swift */; };
 		5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8615732A3E9D8D0068865F /* PostMenu.swift */; };
-		5F8615762A3ECADB0068865F /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8615752A3ECADB0068865F /* PostsView.swift */; };
+		5F8615762A3ECADB0068865F /* ClubFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8615752A3ECADB0068865F /* ClubFeed.swift */; };
 		5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13A82A1EDD260054F631 /* AuthModels.swift */; };
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
@@ -247,6 +252,8 @@
 
 /* Begin PBXFileReference section */
 		5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		5D4942BD2B129AC800D19188 /* GroupSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelector.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewExt.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
@@ -261,6 +268,9 @@
 		5DBB94D12B05BEB10031876D /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
 		5DBB94D32B0A7F230031876D /* ClubTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubTagView.swift; sourceTree = "<group>"; };
 		5DBB94D52B0D27920031876D /* OrganizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationModels.swift; sourceTree = "<group>"; };
+		5DBB94DA2B125BF20031876D /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		5DBB94DC2B125C230031876D /* GroupSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelection.swift; sourceTree = "<group>"; };
+		5DBB94DE2B128D920031876D /* GroupToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupToolbar.swift; sourceTree = "<group>"; };
 		5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantsView.swift; sourceTree = "<group>"; };
 		5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMiddleView.swift; sourceTree = "<group>"; };
 		5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventActionButtons.swift; sourceTree = "<group>"; };
@@ -291,7 +301,7 @@
 		5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsView.swift; sourceTree = "<group>"; };
 		5F4E53F52A2918B900257350 /* FieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsView.swift; sourceTree = "<group>"; };
 		5F8615732A3E9D8D0068865F /* PostMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMenu.swift; sourceTree = "<group>"; };
-		5F8615752A3ECADB0068865F /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
+		5F8615752A3ECADB0068865F /* ClubFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubFeed.swift; sourceTree = "<group>"; };
 		5F8D13A82A1EDD260054F631 /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* FieldModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldModels.swift; sourceTree = "<group>"; };
@@ -473,6 +483,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D4942BA2B1299D800D19188 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				5D4942BB2B1299F000D19188 /* GroupViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		5D9557A22A6C5E19006A1EF8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,6 +509,31 @@
 				5DBB94C62B0321560031876D /* NewPickUpEvent.swift */,
 			);
 			path = "New Event";
+			sourceTree = "<group>";
+		};
+		5DBB94D72B1259BD0031876D /* Organization */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Organization;
+			sourceTree = "<group>";
+		};
+		5DBB94D82B1259E90031876D /* Organizations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Organizations;
+			sourceTree = "<group>";
+		};
+		5DBB94D92B125BCB0031876D /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				5DBB94DA2B125BF20031876D /* GroupView.swift */,
+				5DBB94DC2B125C230031876D /* GroupSelection.swift */,
+				5DBB94DE2B128D920031876D /* GroupToolbar.swift */,
+				5D4942BD2B129AC800D19188 /* GroupSelector.swift */,
+			);
+			path = Groups;
 			sourceTree = "<group>";
 		};
 		5DCB01BA2ADF759500450F69 /* Activities */ = {
@@ -534,6 +577,7 @@
 		9A3536FF2928930D005EC806 /* Viewers */ = {
 			isa = PBXGroup;
 			children = (
+				5DBB94D72B1259BD0031876D /* Organization */,
 				5DCB01BA2ADF759500450F69 /* Activities */,
 				9A5D3363292AAA66008CF61D /* Post */,
 				9A35370229289369005EC806 /* Club */,
@@ -612,7 +656,7 @@
 				9A5D336B292AE5DE008CF61D /* CommentView.swift */,
 				9A69FE5A2973261900EBC5F9 /* PostTemplateView.swift */,
 				5F8615732A3E9D8D0068865F /* PostMenu.swift */,
-				5F8615752A3ECADB0068865F /* PostsView.swift */,
+				5F8615752A3ECADB0068865F /* ClubFeed.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -689,6 +733,7 @@
 				9A8FF0E528BBD7CA00DE4CF8 /* Fonts */,
 				9A8FF0BF28BB18C300DE4CF8 /* Data */,
 				9A8FF0BE28BB18B800DE4CF8 /* Views */,
+				9A3536FF2928930D005EC806 /* Viewers */,
 				9A8FF0B628BB14C100DE4CF8 /* Preview Content */,
 			);
 			path = Olympsis;
@@ -705,11 +750,12 @@
 		9A8FF0BE28BB18B800DE4CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5DBB94D92B125BCB0031876D /* Groups */,
+				5DBB94D82B1259E90031876D /* Organizations */,
 				5D9557A22A6C5E19006A1EF8 /* Onboarding */,
 				5F493FA82A5480B700EAF5A4 /* Pickers */,
 				5F493FA32A54024900EAF5A4 /* Buttons */,
 				9AC5BAC0295E6D17003E851B /* Activity */,
-				9A3536FF2928930D005EC806 /* Viewers */,
 				9A81B62129247707009CA6ED /* CustomViews */,
 				9AD208F02933F4DA007A62C4 /* Messages */,
 				9AB02F5529024C9C008C07F1 /* Tournaments */,
@@ -731,12 +777,13 @@
 			children = (
 				9ABB1EBC29053D020050C0F0 /* SessionStore.swift */,
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
+				5F8D13AE2A213CC30054F631 /* TempData.swift */,
 				5FA350572A6737AF00669B2C /* Enums.swift */,
 				9AB02F4A29024300008C07F1 /* Managers */,
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
 				9A8FF0D128BB336600DE4CF8 /* Models */,
-				5F8D13AE2A213CC30054F631 /* TempData.swift */,
+				5D4942BA2B1299D800D19188 /* ViewModels */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1203,7 +1250,9 @@
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
 				5FA350582A6737AF00669B2C /* Enums.swift in Sources */,
+				5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
+				5DBB94DB2B125BF20031876D /* GroupView.swift in Sources */,
 				BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */,
 				5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */,
 				9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */,
@@ -1232,6 +1281,7 @@
 				5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationView.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
+				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* ClubMemberView.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
@@ -1276,6 +1326,7 @@
 				9AD2090829348DA6007A62C4 /* ClubDao.swift in Sources */,
 				9A81B6402925E191009CA6ED /* FieldDetailView.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
+				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
 				9A9AD8942955FB900096D65B /* FriendRequestView.swift in Sources */,
 				9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */,
@@ -1293,7 +1344,7 @@
 				9AD208F6293425C6007A62C4 /* MyClubView.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
 				5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */,
-				5F8615762A3ECADB0068865F /* PostsView.swift in Sources */,
+				5F8615762A3ECADB0068865F /* ClubFeed.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
 				9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
@@ -1302,6 +1353,7 @@
 				9AF0A1BB29313E350055D1F6 /* PostObserver.swift in Sources */,
 				5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
+				5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */,
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,
 				9AECDA4229542108007956FB /* LookUpMenu.swift in Sources */,
 				BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */,
@@ -1553,7 +1605,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1596,7 +1648,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

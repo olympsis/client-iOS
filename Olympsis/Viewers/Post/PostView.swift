@@ -10,10 +10,10 @@ import SwiftUI
 struct PostView: View {
     @Binding var club: Club
     @State var post: Post
-    @Binding var index: Int
-    @Binding var showMenu: Bool
-    @State private var isLiked = false
-    @State private var showComments = false
+    @State private var index: Int = 0
+    @State private var isLiked: Bool = false
+    @State private var showMenu: Bool = false
+    @State private var showComments: Bool = false
     @State private var status: LOADING_STATE = .pending
     
     @StateObject private var postObserver = PostObserver()
@@ -101,7 +101,7 @@ struct PostView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(alignment: .center) {
                 AsyncImage(url: URL(string: userImageURL)){ phase in
                     if let image = phase.image {
                         image // Displays the loaded image.
@@ -121,15 +121,15 @@ struct PostView: View {
                             ProgressView()
                         }
                     }
-                } .frame(width: 35)
-                    .padding(.leading, 5)
+                } .frame(width: 35, height: 35)
                 VStack(alignment: .leading) {
                     Text(username)
-                        
-                    .bold()
-                    if (post.type != "regular") {
-                        Text(post.type)
-                            .font(.caption)
+                        .bold()
+                    if (post.type != nil) {
+                        if (post.type != "regular") {
+                            Text(post.type ?? "")
+                                .font(.caption)
+                        }
                     }
                 }.padding(.leading, 5)
                 
@@ -138,10 +138,10 @@ struct PostView: View {
                 Button(action:{ self.showMenu.toggle() }) {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
-                        .padding(.trailing)
                     .foregroundColor(Color(uiColor: .label))
                 }
             }.frame(height: 35)
+                .padding(.horizontal, 5)
             
             if images.count > 0 {
                 TabView(selection: $index){
@@ -165,32 +165,41 @@ struct PostView: View {
                     .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
             }
             
-            HStack (alignment: .bottom){
+            VStack(alignment: .leading) {
                 Text(post.body)
                     .font(.callout)
-                Spacer()
-                Button(action:{
-                    Task {
-                        self.isLiked == true ? await removeLike() : await like()
+                HStack (alignment: .center){
+                    Text("Posted \(post.timeSincePosted())")
+                        .font(.caption2)
+                        .foregroundStyle(.gray)
+                    Spacer()
+                    Button(action:{
+                        Task {
+                            self.isLiked == true ? await removeLike() : await like()
+                        }
+                    }){
+                        self.isLiked == true ?
+                        Image(systemName: "heart.fill")
+                            .imageScale(.large)
+                            .foregroundColor(.red)
+                        : Image(systemName: "heart")
+                            .imageScale(.large)
+                            .foregroundColor(.primary)
+                    }.padding(.leading)
+                    Button(action:{ self.showComments.toggle() }){
+                        Image(systemName: "bubble.right")
+                            .imageScale(.large)
+                            .foregroundColor(.primary)
                     }
-                }){
-                    self.isLiked == true ?
-                    Image(systemName: "heart.fill")
-                        .imageScale(.large)
-                        .foregroundColor(.red)
-                    : Image(systemName: "heart")
-                        .imageScale(.large)
-                        .foregroundColor(.primary)
-                }.padding(.leading)
-                Button(action:{ self.showComments.toggle() }){
-                    Image(systemName: "bubble.right")
-                        .imageScale(.large)
-                        .foregroundColor(.primary)
-                }.padding(.trailing)
-            }.padding(.leading)
+                }.padding(.vertical, 5)
+            }.padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showComments) {
             PostComments(club: club, post: $post)
+        }
+        .sheet(isPresented: $showMenu) {
+            PostMenu(post: post)
+                .presentationDetents([.height(250)])
         }
         .task {
             guard let user = session.user,
@@ -206,6 +215,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(club: .constant(CLUBS[0]), post: POSTS[1],index: .constant(0), showMenu: .constant(false)).environmentObject(SessionStore())
+        PostView(club: .constant(CLUBS[0]), post: POSTS[0]).environmentObject(SessionStore())
     }
 }

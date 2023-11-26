@@ -7,33 +7,40 @@
 
 import SwiftUI
 
-struct PostsView: View {
+struct ClubFeed: View {
     
-    @Binding var club: Club
-    @Binding var index: Int
-    @Binding var showNewPost: Bool
-    
-    @State private var posts = [Post]()
+    @State var club: Club
+    @State private var posts: [Post] = [Post]()
     @State private var showPostMenu = false
     @State private var selectedPostIndex = 0
     @State private var showMoreEvents = false
     @EnvironmentObject var session:SessionStore
     
-    func getPosts() async {
-        guard let id = session.clubs[index].id,
-              let resp = await session.postObserver.getPosts(clubId: id) else {
-            posts = [Post]()
-            return
-        }
-
-        posts = resp.sorted{$0.createdAt! > $1.createdAt!}
-    }
-    
+    // array of the club's events
     var events: [Event]? {
         guard let id = club.id else {
             return nil
         }
         return session.events.filterByClubID(id: id)
+    }
+    
+    // gets all of the posts for a club
+    func getPosts() async {
+        guard let selection = session.selectedGroup,
+              let club = selection.club,
+              let id = club.id,
+              let resp = await session.postObserver.getPosts(clubId: id) else {
+            return
+        }
+        self.updatePosts(posts: resp)
+    }
+    
+    func updatePosts(posts: [Post]) {
+        session.posts = posts.sorted{$0.createdAt! > $1.createdAt!}
+        guard let id = session.selectedGroup?.id else {
+            return
+        }
+        session.cachedPosts[id] = posts.sorted{$0.createdAt! > $1.createdAt!}
     }
     
     var body: some View {
@@ -56,40 +63,47 @@ struct PostsView: View {
                         .padding(.horizontal)
                 }
             }
-            if posts.count == 0 {
+            if session.posts.count == 0 {
                 Text("There are no posts")
-                    .padding(.top)
-                .frame(width: SCREEN_WIDTH, height: SCREEN_HEIGHT/1.2)
+                    .padding(.vertical)
+                    .padding(.horizontal)
+                .frame(height: SCREEN_HEIGHT/1.2)
             } else {
-                ForEach(posts.sorted{$0.createdAt! > $1.createdAt!}){ post in
-                    PostView(club: $club, post: post, index: $selectedPostIndex, showMenu: $showPostMenu)
+                ForEach(session.posts){ post in
+                    PostView(club: $club, post: post)
                         .sheet(isPresented: $showPostMenu) {
-                            PostMenu(post: posts[selectedPostIndex], club: $club, posts: $posts)
+                            PostMenu(post: session.posts[selectedPostIndex])
                                 .presentationDetents([.height(250)])
                         }
                         .padding(.bottom, 1)
-                        .padding(.bottom, (post.id! == posts.last?.id!) ? 20 : 0)
+                        .padding(.bottom, (post.id! == session.posts.last?.id!) ? 20 : 0)
                 }.padding(.top)
             }
         }.refreshable {
             await getPosts()
         }
-        .fullScreenCover(isPresented: $showNewPost) {
-            CreateNewPost(club: club, posts: $posts)
+        .fullScreenCover(isPresented: $showMoreEvents) {
+            EventsList(events: events ?? [Event]())
         }
-        .onChange(of: index, perform: { newValue in
+        .onChange(of: session.selectedGroup, perform: { value in
+            guard let id = value?.id,
+                let cachedPosts = session.cachedPosts[id] else {
+                Task {
+                    await getPosts()
+                }
+                return
+            }
+            session.posts = cachedPosts
             Task {
                 await getPosts()
             }
         })
-        .fullScreenCover(isPresented: $showMoreEvents) {
-            EventsList(events: events ?? [Event]())
-        }
     }
 }
 
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
-        PostsView(club: .constant(CLUBS[0]), index: .constant(0), showNewPost: .constant(false)).environmentObject(SessionStore())
+        ClubFeed(club: CLUBS[0])
+            .environmentObject(SessionStore())
     }
 }

@@ -11,9 +11,8 @@ import PhotosUI
 struct CreateNewPost: View {
     
     @State var club: Club
-    @Binding var posts: [Post]
     @State private var state: LOADING_STATE = .pending
-    @State private var text = ""
+    @State private var text: String = ""
     @State private var images: [String]?
     @State private var showCompletedToast = false
     
@@ -67,8 +66,7 @@ struct CreateNewPost: View {
         
         // add data
         p.data = PostData(poster: user, user: user, event: nil)
-        
-        posts.append(p)
+        session.posts.append(p)
         state = .success
         self.presentationMode.wrappedValue.dismiss()
     }
@@ -178,6 +176,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewPost(club: CLUBS[0], posts: .constant([Post]())).environmentObject(SessionStore())
+        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
     }
 }

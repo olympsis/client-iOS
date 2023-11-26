@@ -24,13 +24,13 @@ struct MyClubView: View {
     
     var body: some View {
         VStack {
-            PostsView(club: $club, index: $index, showNewPost: $showNewPost)
+//            PostsView(club: club)
         }
         .fullScreenCover(isPresented: $showMenu) {
-            ClubMenu(club: $club, index: $index)
+//            ClubMenu(club: $club)
         }
         .fullScreenCover(isPresented: $showMessages) {
-            Messages(club: $club)
+//            Messages(club: $club)
         }
     }
     

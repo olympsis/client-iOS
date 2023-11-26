@@ -11,7 +11,7 @@ struct PostComments: View {
     @State var club: Club
     @Binding var post: Post
     @State private var text = ""
-    
+    @State private var comments: [Comment] = [Comment]()
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
@@ -41,11 +41,7 @@ struct PostComments: View {
         }
         text = ""
         data.data = UserData(username: username, firstName: firstName, lastName: lastName, imageURL: imageURL)
-        guard post.comments != nil else {
-            post.comments = [data]
-            return
-        }
-        post.comments?.append(data)
+        comments.append(data)
     }
     
     func deleteComment(_ comment: Comment) {
@@ -56,7 +52,7 @@ struct PostComments: View {
             }
             let res = await session.postObserver.deleteComment(id: id, cid: commentID)
             if res {
-                post.comments?.removeAll(where: { $0.id == commentID })
+                comments.removeAll(where: { $0.id == commentID })
             }
         }
     }
@@ -81,8 +77,8 @@ struct PostComments: View {
         NavigationView {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    if post.comments != nil {
-                        ForEach(post.comments?.sorted{$0.createdAt! > $1.createdAt!} ?? [Comment](), id: \.id){ comment in
+                    if comments.count != 0 {
+                        ForEach(comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
                             Menu {
                                 Group {
                                     Button(action:{}){
@@ -95,7 +91,10 @@ struct PostComments: View {
                                     }
                                 }
                             } label: {
-                                CommentView(comment: comment)
+                                HStack {
+                                    CommentView(comment: comment)
+                                    Spacer()
+                                }
                             } primaryAction: {
                                 
                             }
@@ -111,6 +110,16 @@ struct PostComments: View {
                             return
                         }
                         post = resp
+                        guard let c = resp.comments else {
+                            return
+                        }
+                        comments = c
+                    }
+                    .task {
+                        guard let c = post.comments else {
+                            return
+                        }
+                        comments = c
                     }
 
                 VStack {
@@ -128,11 +137,11 @@ struct PostComments: View {
                                     await addComment()
                                 }
                             }
-                    }.frame(width: SCREEN_WIDTH-30)
-                        .padding(.bottom)
+                    }.padding(.bottom)
+                    .padding(.horizontal)
                 }
             }.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.primary)

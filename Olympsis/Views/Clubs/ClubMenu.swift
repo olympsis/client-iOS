@@ -14,8 +14,7 @@ struct ClubMenu: View {
         case DeleteClub
     }
     
-    @Binding var club: Club
-    @Binding var index: Int
+    @State var club: Club
     
     @State private var showAlert = false
     @State private var showClubs = false
@@ -60,7 +59,7 @@ struct ClubMenu: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                                .frame(height: 300, alignment: .center)
                                 .clipped()
                                 .cornerRadius(10)
                         } else if phase.error != nil {
@@ -77,8 +76,9 @@ struct ClubMenu: View {
                                 ProgressView()
                             }
                         }
-                    }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                    }.frame(height: 300, alignment: .center)
                         .padding(.top)
+                        .padding(.horizontal, 5)
                     VStack {
                         if club.visibility == "private" {
                             HStack {
@@ -290,6 +290,6 @@ struct ClubMenu: View {
 
 struct ClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        ClubMenu(club: .constant(CLUBS[0]), index: .constant(0)).environmentObject(SessionStore())
+        ClubMenu(club: CLUBS[0]).environmentObject(SessionStore())
     }
 }

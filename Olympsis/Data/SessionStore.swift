@@ -11,13 +11,10 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
+/// App session data, fetched every session, stored in memory until app is closed
 class SessionStore: ObservableObject {
     
-    /**
-     App session data, fetched every session
-     Stored in memory until app is closed
-     */
-    let secureStore = SecureStore()
+    private let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
     @Published var authStatus: AUTH_STATUS = .unknown
@@ -27,8 +24,16 @@ class SessionStore: ObservableObject {
     @Published var events = [Event]()    // Events Cache
     @Published var fields = [Field]()    // Fields Cache
     
+    @Published var clubsState: LOADING_STATE = .loading
     var clubTokens = [String:String]()
     
+    // groups & posts
+    @Published var selectedGroup: GroupSelection?
+    @Published var posts: [Post] = [Post]()
+    @Published var cachedPosts: [UUID: [Post]] = [:]
+    @Published var groups: [GroupSelection] = [GroupSelection]()
+    
+    // Observers
     @ObservedObject var authObserver = AuthObserver()
     @ObservedObject var feedObserver = FeedObserver()
     @ObservedObject var cacheService = CacheService()
@@ -39,6 +44,8 @@ class SessionStore: ObservableObject {
     @ObservedObject var eventObserver = EventObserver()
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var notificationsManager = NotificationsManager()
+    
+    @ObservedObject var groupViewModel = GroupViewModel()
     
     /**
      App lifetime data
@@ -67,8 +74,18 @@ class SessionStore: ObservableObject {
             return
         }
         let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
+        
         DispatchQueue.main.async {
+            resp.forEach { c in
+                let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)
+                self.groups.append(group)
+            }
             self.clubs = resp
+            self.clubsState = .success
+            guard let g = self.groups.first else {
+                return
+            }
+            self.selectedGroup = g
         }
     }
     

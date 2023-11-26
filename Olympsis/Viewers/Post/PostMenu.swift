@@ -10,17 +10,15 @@ import SwiftUI
 struct PostMenu: View {
     
     @State var post: Post
-    @Binding var club: Club
-    @Binding var posts: [Post]
-    
     @StateObject private var uploadObserver = UploadObserver()
-    
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
     var isPosterOrAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
+              let group = session.selectedGroup,
+              let club = group.club,
               let members = club.members else {
             return false
         }
@@ -41,7 +39,7 @@ struct PostMenu: View {
         let res = await session.postObserver.deletePost(postID: id)
         guard res == true,
             let images = post.images else {
-            posts.removeAll(where: { $0.id == post.id })
+            session.posts.removeAll(where: { $0.id == post.id })
             self.presentationMode.wrappedValue.dismiss()
             return
         }
@@ -52,7 +50,7 @@ struct PostMenu: View {
         }
         
         // remove post
-        posts.removeAll(where: { $0.id == post.id })
+        session.posts.removeAll(where: { $0.id == post.id })
         self.presentationMode.wrappedValue.dismiss()
     }
     
@@ -97,6 +95,6 @@ struct PostMenu: View {
 
 struct PostMenu_Previews: PreviewProvider {
     static var previews: some View {
-        PostMenu(post: POSTS[0], club: .constant(CLUBS[0]), posts: .constant(POSTS)).environmentObject(SessionStore())
+        PostMenu(post: POSTS[0]).environmentObject(SessionStore())
     }
 }
