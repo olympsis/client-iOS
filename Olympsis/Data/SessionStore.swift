@@ -45,8 +45,6 @@ class SessionStore: ObservableObject {
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var notificationsManager = NotificationsManager()
     
-    @ObservedObject var groupViewModel = GroupViewModel()
-    
     /**
      App lifetime data
      Whenever set, this is cached in app until changed or app is removed
@@ -71,6 +69,7 @@ class SessionStore: ObservableObject {
     func fetchUserClubs() async {
         // check to see if user has clubs
         guard let u = user, let clubIDs = u.clubs else {
+            self.clubsState = .pending
             return
         }
         let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)

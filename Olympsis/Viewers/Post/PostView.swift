@@ -47,6 +47,13 @@ struct PostView: View {
         }
     }
     
+    var timestamp: String {
+        guard let time = post.createdAt else {
+            return "0 seconds ago"
+        }
+        return calculateTimeAgo(from: time)
+    }
+    
     var isPoster: Bool {
         guard let user = session.user,
               let uuid = user.uuid else {
@@ -169,7 +176,7 @@ struct PostView: View {
                 Text(post.body)
                     .font(.callout)
                 HStack (alignment: .center){
-                    Text("Posted \(post.timeSincePosted())")
+                    Text("Posted \(timestamp)")
                         .font(.caption2)
                         .foregroundStyle(.gray)
                     Spacer()

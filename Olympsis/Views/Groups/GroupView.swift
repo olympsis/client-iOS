@@ -17,10 +17,6 @@ struct GroupView: View {
     @State private var groupState: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
-    var groupViewModel: GroupViewModel {
-        return session.groupViewModel
-    }
-    
     func retryFetchingClubData() {
         groupState = .loading
     }
@@ -37,6 +33,8 @@ struct GroupView: View {
                             if let club = group.club {
                                 ClubFeed(club: club)
                             }
+                        } else {
+                            ClubsList()
                         }
                     }
                 case .failure:

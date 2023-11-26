@@ -79,37 +79,6 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
     }
-    
-    func timeSincePosted() -> String {
-        guard let timestamp = self.createdAt else {
-            return "1 minute ago"
-        }
-        let currentTime = Int64(Date().timeIntervalSince1970)
-        let timeDifference = currentTime - timestamp
-
-        switch timeDifference {
-        case let diff where diff < 60:
-            return "\(diff) seconds ago"
-        case let diff where diff < 3600:
-            let minutes = diff / 60
-            return "\(minutes) minute\(minutes == 1 ? "" : "s") ago"
-        case let diff where diff < 86400:
-            let hours = diff / 3600
-            return "\(hours) hour\(hours == 1 ? "" : "s") ago"
-        case let diff where diff < 604800:
-            let days = diff / 86400
-            return "\(days) day\(days == 1 ? "" : "s") ago"
-        case let diff where diff < 2592000:
-            let weeks = diff / 604800
-            return "\(weeks) week\(weeks == 1 ? "" : "s") ago"
-        case let diff where diff < 31536000:
-            let months = diff / 2592000
-            return "\(months) month\(months == 1 ? "" : "s") ago"
-        default:
-            let years = timeDifference / 31536000
-            return "\(years) year\(years == 1 ? "" : "s") ago"
-        }
-    }
 }
 
 struct Comment: Codable {

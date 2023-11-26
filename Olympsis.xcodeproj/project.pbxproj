@@ -168,7 +168,6 @@
 		9AB02F5729024D04008C07F1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5629024D04008C07F1 /* Home.swift */; };
 		9AB02F5929024D24008C07F1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5829024D24008C07F1 /* MapView.swift */; };
 		9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5A29024D2E008C07F1 /* Profile.swift */; };
-		9AB02F5D29024D35008C07F1 /* Clubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5C29024D35008C07F1 /* Clubs.swift */; };
 		9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5E29024D44008C07F1 /* Tournaments.swift */; };
 		9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F60290265B4008C07F1 /* TabBar.swift */; };
 		9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */; };
@@ -412,7 +411,6 @@
 		9AB02F5629024D04008C07F1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		9AB02F5829024D24008C07F1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9AB02F5A29024D2E008C07F1 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		9AB02F5C29024D35008C07F1 /* Clubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clubs.swift; sourceTree = "<group>"; };
 		9AB02F5E29024D44008C07F1 /* Tournaments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tournaments.swift; sourceTree = "<group>"; };
 		9AB02F60290265B4008C07F1 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateApplicationDao.swift; sourceTree = "<group>"; };
@@ -974,7 +972,6 @@
 		9AB02F5429024C69008C07F1 /* Clubs */ = {
 			isa = PBXGroup;
 			children = (
-				9AB02F5C29024D35008C07F1 /* Clubs.swift */,
 				9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */,
 				9A5D336D292AF813008CF61D /* CreateNewPost.swift */,
 				9AD208F5293425C6007A62C4 /* MyClubView.swift */,
@@ -1229,7 +1226,6 @@
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
-				9AB02F5D29024D35008C07F1 /* Clubs.swift in Sources */,
 				9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */,
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,

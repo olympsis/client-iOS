@@ -31,7 +31,7 @@ struct CommentView: View {
     
     var timeStamp: String {
         guard let time = comment.createdAt else {
-            return "0 minutes ago"
+            return "0 seconds ago"
         }
         return calculateTimeAgo(from: time)
     }
@@ -66,8 +66,9 @@ struct CommentView: View {
                     .multilineTextAlignment(.leading)
                     .font(.callout)
                 Text(timeStamp)
-                    .font(.caption)
+                    .font(.caption2)
                     .foregroundColor(.gray)
+                    .padding(.vertical, 1)
             }
         }.foregroundColor(.primary)
             .padding(.bottom)

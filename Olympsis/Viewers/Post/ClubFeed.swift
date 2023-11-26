@@ -88,6 +88,7 @@ struct ClubFeed: View {
         .onChange(of: session.selectedGroup, perform: { value in
             guard let id = value?.id,
                 let cachedPosts = session.cachedPosts[id] else {
+                session.posts = [Post]()
                 Task {
                     await getPosts()
                 }
