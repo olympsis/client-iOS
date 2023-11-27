@@ -60,7 +60,11 @@ struct GroupView: View {
                 if let group = session.selectedGroup {
                     if let club = group.club {
                         ClubMenu(club: club)
+                    } else if let org = group.organization {
+                        OrgMenu(organization: org)
                     }
+                } else {
+                    NoClubMenu(status: $groupState)
                 }
             }
             .fullScreenCover(isPresented: $showNewPost) {

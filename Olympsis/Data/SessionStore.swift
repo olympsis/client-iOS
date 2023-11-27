@@ -39,6 +39,7 @@ class SessionStore: ObservableObject {
     @ObservedObject var cacheService = CacheService()
     @ObservedObject var userObserver = UserObserver()
     @ObservedObject var clubObserver = ClubObserver()
+    @ObservedObject var orgObserver = OrgObserver()
     @ObservedObject var postObserver = PostObserver()
     @ObservedObject var fieldObserver = FieldObserver()
     @ObservedObject var eventObserver = EventObserver()
@@ -85,6 +86,18 @@ class SessionStore: ObservableObject {
                 return
             }
             self.selectedGroup = g
+            
+        }
+        
+        guard let orgIDs = u.organizations else {
+            return
+        }
+        let re = await orgObserver.generateUserOrgs(orgIDs: orgIDs)
+        DispatchQueue.main.async {
+            re.forEach { o in
+                let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
+                self.groups.append(group)
+            }
         }
     }
     
@@ -114,6 +127,7 @@ class SessionStore: ObservableObject {
             cache.imageURL = updatedData.imageURL
             cache.visibility = updatedData.visibility
             cache.clubs = updatedData.clubs
+            cache.organizations = updatedData.organizations
             cache.sports = updatedData.sports
             cache.deviceToken = updatedData.deviceToken
 

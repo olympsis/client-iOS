@@ -1,15 +1,14 @@
 //
-//  ClubMemberView.swift
+//  ManagerView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/27/22.
+//  Created by Joel on 11/26/23.
 //
 
 import SwiftUI
 
-struct ClubMemberView: View {
+struct ManagerView: View {
     
-    @State var club: Club
     @State var member: Member
     @State private var showMenu = false
     @EnvironmentObject var session:SessionStore
@@ -28,15 +27,6 @@ struct ClubMemberView: View {
             return "olympsis-user"
         }
         return username
-    }
-    
-    var userRole: String {
-        guard let user = session.user,
-              let members = club.members,
-              let member = members.first(where: {$0.uuid == user.uuid}) else {
-            return "member"
-        }
-        return member.role
     }
     
     var memberIsUser: Bool {
@@ -101,26 +91,11 @@ struct ClubMemberView: View {
             default:
                 EmptyView()
             }
-            
-            if !memberIsUser {
-                Button(action:{self.showMenu.toggle()}){
-                    Image(systemName: "ellipsis")
-                        .imageScale(.large)
-                        .foregroundColor(.primary)
-                }.padding(.trailing)
-                    .sheet(isPresented: $showMenu) {
-                        ClubMemberMenu(club: club, role: userRole, member: member)
-                            .presentationDetents([.height(250)])
-                    }
-            }
         }.padding(.leading)
             .frame(height: 60)
     }
 }
 
-struct ClubMemberView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubMemberView(club: CLUBS[0], member: (CLUBS[0].members?.first)!)
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    ManagerView(member: CLUBS[0].members!.first!)
 }

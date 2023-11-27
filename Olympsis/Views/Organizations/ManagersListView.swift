@@ -1,19 +1,18 @@
 //
-//  MembersListView.swift
+//  ManagersListView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 1/11/23.
+//  Created by Joel on 11/26/23.
 //
 
 import SwiftUI
 
-struct MembersListView: View {
-    
-    @State var club: Club
+struct ManagersListView: View {
+    @State var organization: Organization
     @Environment(\.dismiss) private var dismiss
     
     var members: [Member] {
-        guard var members = club.members else {
+        guard var members = organization.members else {
             return [Member]()
         }
         
@@ -34,11 +33,11 @@ struct MembersListView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     ForEach(members) { member in
-                        MemberView(club: club, member: member)
+                        ManagerView(member: member)
                     }.padding(.top)
                 }
             }.toolbar {
@@ -48,16 +47,13 @@ struct MembersListView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Members")
+                    Text("Managers")
                 }
             }
         }
     }
 }
 
-struct MembersListView_Previews: PreviewProvider {
-    static var previews: some View {
-        MembersListView(club: CLUBS[0])
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    ManagersListView(organization: ORGANIZATIONS[0])
 }

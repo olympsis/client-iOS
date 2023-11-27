@@ -100,8 +100,8 @@ struct ClubView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading){
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
                     
                     // MARK: - Image
                     AsyncImage(url: URL(string: imageURL)){ phase in
@@ -110,15 +110,19 @@ struct ClubView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .cornerRadius(5)
-                                    .frame(height: 250, alignment: .center)
+                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
                                     .clipped()
                                     .cornerRadius(10)
                             } else if phase.error != nil {
-                                Color.red // Indicates an error.
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
                                     .cornerRadius(10)
+                                    .foregroundColor(.red)
                             } else {
-                                Color.gray // Acts as a placeholder.
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
                                     .cornerRadius(10)
+                                    .foregroundColor(.gray)
                             }
                     }.frame(height: 250, alignment: .center)
                         .padding(.horizontal, 5)
@@ -131,10 +135,12 @@ struct ClubView: View {
                                 Image(systemName: "globe.americas.fill")
                                     .foregroundStyle(Color("color-prime"))
                                 Text("Public club")
+                                    .font(.callout)
                             } else {
                                 Image(systemName: "lock.fill")
                                     .foregroundStyle(Color("color-prime"))
                                 Text("Private club")
+                                    .font(.callout)
                             }
                         }
                         HStack {
@@ -162,11 +168,21 @@ struct ClubView: View {
                                                 .clipped()
                                                 .clipShape(Circle())
                                         } else if phase.error != nil {
-                                            Circle()
-                                                .foregroundStyle(.gray)
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundStyle(.gray)
+                                                Image(systemName: "person.fill")
+                                                    .imageScale(.large)
+                                                    .foregroundStyle(.white)
+                                            }
                                         } else {
-                                            Circle()
-                                                .foregroundStyle(.gray)
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundStyle(.gray)
+                                                Image(systemName: "person.fill")
+                                                    .imageScale(.large)
+                                                    .foregroundStyle(.primary)
+                                            }
                                         }
                                 }.frame(height: 50, alignment: .center)
                             }
@@ -203,6 +219,7 @@ struct ClubView: View {
                                 }.frame(height: 50, alignment: .center)
                                 
                                 Text(org.name ?? "Organization")
+                                    .font(.callout)
                             }
                         }.padding(.horizontal)
                             .padding(.bottom)
@@ -222,7 +239,9 @@ struct ClubView: View {
                     VStack {
                         HStack {
                             Text("Located in")
+                                .font(.caption)
                             Text(location)
+                                .font(.caption)
                                 .bold()
                         }
                     }.padding(.horizontal)
@@ -232,6 +251,7 @@ struct ClubView: View {
                         MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
                     }.padding(.horizontal)
                         .frame(height: 200)
+                        .padding(.bottom, 40)
 
                 }.navigationTitle(name)
                     .navigationBarTitleDisplayMode(.inline)

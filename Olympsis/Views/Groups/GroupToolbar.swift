@@ -44,7 +44,7 @@ struct GroupToolbar: ToolbarContent {
                         .bold()
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action:{}) {
+                    Button(action:{ self.showMenu.toggle() }) {
                         Image(systemName: "slider.horizontal.3")
                     }
                 }

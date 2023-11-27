@@ -24,11 +24,13 @@ struct NewOrganization: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     @State private var showToast = false
+    @State private var country: String = ""
+    @State private var states: [String] = [String]()
     
     @StateObject var uploadObserver = UploadObserver()
     
-    @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_new_club_view")
     
@@ -36,8 +38,8 @@ struct NewOrganization: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let _ = await uploadObserver.UploadImage(location: "/club-images", fileName: imageId, data: data)
-            self.imageURL = "club-images/\(imageId).jpeg"
+            let _ = await uploadObserver.UploadImage(location: "/org-images", fileName: imageId, data: data)
+            self.imageURL = "org-images/\(imageId).jpeg"
         }
     }
     
@@ -77,23 +79,20 @@ struct NewOrganization: View {
         do {
             let pk = try await geoCoder.reverseGeocodeLocation(l)
             guard let country = pk.first?.country,
-                  let state = pk.first?.administrativeArea,
-                  let city = pk.first?.locality else {
+                  let state = pk.first?.administrativeArea else {
                 return
             }
-            let club = Club(id: nil, parentId: nil, type: "organization", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: nil, rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
+            let org = Organization(id: nil, name: clubName, description: description, sport: sport, city: nil, state: state, country: country, imageURL: imageURL, imageGallery: nil, members: nil, createdAt: Int64(Date().timeIntervalSinceNow))
             
             // create new club
-            let _ = try await session.clubObserver.createClub(club: club)
+            let resp = try await session.orgObserver.createOrganization(organization: org)
             
-            // update user data
-            let _ = await session.generateUserData()
-            await session.fetchUserClubs()
-            
+            let group = GroupSelection(type: "organization", club: nil, organization: resp, posts: nil)
+            session.groups.append(group)
             
             showToast = true
             self.state = .success
-            self.presentationMode.wrappedValue.dismiss()
+            dismiss()
         } catch {
             self.state = .failure
             log.error("\(error)")
@@ -228,6 +227,7 @@ struct NewOrganization: View {
                         }.frame(width: SCREEN_WIDTH-25)
                             .padding(.top, 50)
                     }
+                    
                 }.onTapGesture {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 }
@@ -235,7 +235,7 @@ struct NewOrganization: View {
             }.frame(width: SCREEN_WIDTH-25)
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action:{self.presentationMode.wrappedValue.dismiss()}) {
+                        Button(action:{ dismiss() }) {
                             Image(systemName: "xmark")
                                 .imageScale(.large)
                                 .fontWeight(.bold)

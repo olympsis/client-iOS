@@ -83,3 +83,35 @@ struct OrganizationData: Codable {
         case children
     }
 }
+
+struct OrganizationsResponse: Codable {
+    let totalOrganizations: Int
+    let organizations: [Organization]
+    
+    enum CodingKeys: String, CodingKey {
+        case totalOrganizations = "total_organizations"
+        case organizations
+    }
+}
+
+struct OrganizationApplication: Codable, Identifiable {
+    let id: String
+    let organizationID: String
+    let clubID: String
+    var status: String
+    let data: OrganizationApplicationData?
+    let createdAt: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case organizationID = "organization_id"
+        case clubID = "club_id"
+        case status
+        case data
+        case createdAt = "created_at"
+    }
+}
+
+struct OrganizationApplicationData: Codable {
+    let club: Club?
+}

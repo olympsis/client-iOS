@@ -17,17 +17,21 @@ let FIELDS = [
 
 
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", parentId: "", type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
+    Club(id: "609f6db90c34d41863a0e721", parentId: "", type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", imageGallery: [""], visibility: "public", members: [
         Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
     ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)), pinnedPostId: nil, createdAt: nil),
-    Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)], rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
+    Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [Member(id: "000", uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)], rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States of America", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)
+]
+
+let ORGANIZATION_APPLICATIONS = [
+    OrganizationApplication(id: "", organizationID: "", clubID: "", status: "pending", data: OrganizationApplicationData(club: CLUBS[0]), createdAt: 1639364780)
 ]
 
 let GROUP_SELECTIONS = [

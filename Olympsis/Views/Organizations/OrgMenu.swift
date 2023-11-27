@@ -1,23 +1,22 @@
 //
-//  ClubMenu.swift
+//  OrgMenu.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/27/22.
+//  Created by Joel on 11/26/23.
 //
 
 import SwiftUI
 
-struct ClubMenu: View {
+struct OrgMenu: View {
     
     enum Alerts {
         case LeaveClub
         case DeleteClub
     }
     
-    @State var club: Club
+    @State var organization: Organization
     
     @State private var showAlert = false
-    @State private var showOrganizations = false
     @State private var showClubs = false
     @State private var showNewClub = false
     @State private var showMembers = false
@@ -35,7 +34,7 @@ struct ClubMenu: View {
     
     var role: String {
         guard let user = session.user,
-              let members = club.members,
+              let members = organization.members,
             let member = members.first(where: {$0.uuid == user.uuid}) else {
             return "member"
         }
@@ -44,18 +43,39 @@ struct ClubMenu: View {
     
     // this will be handled in the backend as well
     var isOnlyOwner: Bool {
-        guard let members = club.members else {
+        guard let members = organization.members else {
             return false
         }
         let owners = members.filter({ $0.role == "owner" })
         return owners.count < 2
     }
     
+    var name: String {
+        guard let orgName = organization.name else {
+            return "Organization"
+        }
+        return orgName
+    }
+    
+    var imageURL: String {
+        guard let url = organization.imageURL else {
+            return GenerateImageURL("")
+        }
+        return GenerateImageURL(url)
+    }
+    
+    var members: [Member] {
+        guard let members = organization.members else {
+            return [Member]()
+        }
+        return members
+    }
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    AsyncImage(url: URL(string: GenerateImageURL(club.imageURL ?? ""))){ phase in
+                    AsyncImage(url: URL(string: imageURL)){ phase in
                         if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
@@ -85,64 +105,41 @@ struct ClubMenu: View {
                         .padding(.horizontal, 5)
                         
                     VStack {
-                        if club.visibility == "private" {
-                            HStack {
-                                Image(systemName: "lock.fill")
-                                    .foregroundStyle(Color("color-prime"))
-                                Text("Private group")
-                                    .font(.callout)
-                                Spacer()
-                            }.frame(height: 20)
-                                .padding(.leading)
-                                .padding(.top)
-                        } else {
-                            HStack {
-                                Image(systemName: "globe.americas.fill")
-                                    .foregroundStyle(Color("color-prime"))
-                                Text("Public group")
-                                    .font(.callout)
-                                Spacer()
-                            }.frame(height: 20)
-                                .padding(.leading)
-                                .padding(.top)
-                        }
+                        HStack {
+                            Image(systemName: "building.fill")
+                                .foregroundStyle(Color("color-prime"))
+                            Text("Organization")
+                                .font(.callout)
+                            Spacer()
+                        }.frame(height: 20)
+                            .padding(.horizontal)
+                            .padding(.top)
                         
                         HStack {
-                            Text("\(club.members!.count)").foregroundColor(Color("color-prime")) +
-                            Text(" members")
-                                .font(.callout)
+                            Text("\(members.count)").foregroundColor(Color("color-prime"))
+                            if (members.count > 1) {
+                                Text("managers")
+                                    .font(.callout)
+                            } else {
+                                Text("manager")
+                                    .font(.callout)
+                            }
                             Spacer()
                         }.padding(.leading)
                         
                     }
                     
-                    if role != "member" {
-                        Button(action:{ self.showApplications.toggle() }) {
-                            HStack {
-                                Image(systemName: "note")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.primary)
-                                Text("Club Applications")
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }.modifier(MenuButton())
-                        }.padding(.top)
-                    }
-                    
-                    if role != "member" {
-                        Button(action:{ self.showOrganizations.toggle() }) {
-                            HStack {
-                                Image(systemName: "building")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.primary)
-                                Text("Change Organization")
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }.modifier(MenuButton())
-                        }
-                    }
+                    Button(action:{ self.showApplications.toggle() }) {
+                        HStack {
+                            Image(systemName: "note")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.primary)
+                            Text("Applications")
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }.modifier(MenuButton())
+                    }.padding(.top)
                             
                     Button(action:{ self.showNewClub.toggle() }) {
                         HStack {
@@ -156,30 +153,16 @@ struct ClubMenu: View {
                         }.modifier(MenuButton())
                     }
                     
-                    Button(action:{ self.showClubs.toggle() }) {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Search Clubs")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
                     Button(action:{ self.showMembers.toggle() }) {
                         HStack {
                             Image(systemName: "person.3")
                                 .imageScale(.large)
                                 .padding(.leading)
                                 .foregroundColor(.primary)
-                            Text("Members")
+                            Text("Managers")
                                 .foregroundColor(.primary)
                             Spacer()
                         }.modifier(MenuButton())
-                    }.fullScreenCover(isPresented: $showMembers) {
-                        MembersListView(club: club)
                     }
                     
                     Button(action:{
@@ -192,28 +175,26 @@ struct ClubMenu: View {
                                 .imageScale(.large)
                                 .padding(.leading)
                                 .foregroundColor(.red)
-                            Text("Leave Club")
+                            Text("Leave Organization")
                                 .foregroundColor(.red)
                             Spacer()
                         }.modifier(MenuButton())
                     }
                     
-                    if role == "owner" {
-                        Button(action:{
-                            showAlert = false
-                            alertType = .DeleteClub
-                            showAlert.toggle()
-                        }) {
-                            HStack {
-                                Image(systemName: "trash.fill")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.red)
-                                Text("Delete Club")
-                                    .foregroundColor(.red)
-                                Spacer()
-                            }.modifier(MenuButton())
-                        }
+                    Button(action:{
+                        showAlert = false
+                        alertType = .DeleteClub
+                        showAlert.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "trash.fill")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.red)
+                            Text("Delete Organization")
+                                .foregroundColor(.red)
+                            Spacer()
+                        }.modifier(MenuButton())
                     }
                     
                 }
@@ -225,16 +206,16 @@ struct ClubMenu: View {
                     }
                 }
             }
-            .navigationTitle(club.name ?? "Clubs")
+            .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
                 NewGroup()
             }
             .fullScreenCover(isPresented: $showApplications) {
-                ClubApplications(club: club)
+                    OrgApplications()
             }
-            .fullScreenCover(isPresented: $showOrganizations) {
-                OrganizationsView()
+            .fullScreenCover(isPresented: $showMembers) {
+                ManagersListView(organization: organization)
             }
             .alert(isPresented: $showAlert) {
                 switch alertType {
@@ -243,18 +224,18 @@ struct ClubMenu: View {
                     case "owner":
                         if isOnlyOwner {
                             return Alert(
-                                title: Text("About Leaving Club"),
-                                message: Text("You cannot leave this club. You are the only owner. Please delete the club or appoint new owners."),
+                                title: Text("About Leaving Organization"),
+                                message: Text("You cannot leave this club. You are the only owner. Please delete the organization or appoint new owners."),
                                 dismissButton: .default(Text("Ok"))
                             )
                         } else {
                             return Alert(
-                                title: Text("Leaving Club"),
-                                message: Text("Are you sure you want to leave this club?"),
+                                title: Text("Leaving Organization"),
+                                message: Text("Are you sure you want to leave this organization?"),
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        guard let id = club.id else {
+                                        guard let id = organization.id else {
                                             return
                                         }
                                         let res = await session.clubObserver.leaveClub(id: id)
@@ -269,12 +250,12 @@ struct ClubMenu: View {
                         }
                     default:
                         return Alert(
-                            title: Text("Leaving Club"),
-                            message: Text("Are you sure you want to leave this club?"),
+                            title: Text("Leaving Organization"),
+                            message: Text("Are you sure you want to leave this organization?"),
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    guard let id = club.id else {
+                                    guard let id = organization.id else {
                                         return
                                     }
                                     let res = await session.clubObserver.leaveClub(id: id)
@@ -289,31 +270,33 @@ struct ClubMenu: View {
                     }
                 case .DeleteClub:
                     return Alert(
-                        title: Text("Delete Club"),
-                        message: Text("Are you sure you want to delete this club?"),
+                        title: Text("Delete Organization"),
+                        message: Text("Are you sure you want to delete this organization? This action cannot be undone."),
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                guard let id = club.id else {
+                                guard let id = organization.id else {
                                     return
                                 }
-                                let res = await session.clubObserver.deleteClub(id: id)
+                                let res = await session.orgObserver.deleteOrganization(id: id)
                                 if res {
-                                    let _ = await session.generateUserData()
-                                    session.clubs.removeAll(where: { $0.id == id })
-                                    self.presentationMode.wrappedValue.dismiss()
+                                    session.selectedGroup = session.groups.first
+                                    session.groups.removeAll(where: { $0.organization?.id == id })
                                 }
+                                self.presentationMode.wrappedValue.dismiss()
                             }
                         })
                     );
                 }
-            }
+        }
         }
     }
 }
 
-struct ClubMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubMenu(club: CLUBS[0]).environmentObject(SessionStore())
+
+#Preview {
+    NavigationStack {
+        OrgMenu(organization: ORGANIZATIONS[0])
+            .environmentObject(SessionStore())
     }
 }
