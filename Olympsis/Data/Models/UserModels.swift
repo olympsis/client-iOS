@@ -14,16 +14,18 @@ struct User: Codable {
     let imageURL: String?
     let visibility: String?
     let clubs: [String]?
+    var organizations: [String]?
     let sports: [String]?
     let deviceToken: String?
 
-    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, clubs: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
+    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, clubs: [String]?=nil, organizations: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
         self.uuid = uuid
         self.username = username
         self.bio = bio
         self.imageURL = imageURL
         self.visibility = visibility
         self.clubs = clubs
+        self.organizations = organizations
         self.sports = sports
         self.deviceToken = deviceToken
     }
@@ -35,6 +37,7 @@ struct User: Codable {
         case imageURL = "image_url"
         case visibility
         case clubs
+        case organizations
         case sports
         case deviceToken = "device_token"
     }
@@ -57,6 +60,7 @@ struct UserData: Codable, Hashable {
     var visibility: String?
     var bio: String?
     var clubs: [String]?
+    var organizations: [String]?
     var sports: [String]?
     var deviceToken: String?
     
@@ -77,6 +81,7 @@ struct UserData: Codable, Hashable {
         case visibility
         case bio
         case clubs
+        case organizations
         case sports
         case deviceToken = "device_token"
     }

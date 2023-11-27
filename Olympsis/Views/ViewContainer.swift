@@ -27,7 +27,7 @@ struct ViewContainer: View {
         VStack {
             TabView(selection: $currentTab) {
                 Home().tag(Tab.home)
-                Clubs().tag(Tab.club)
+                GroupView().tag(Tab.club)
                 MapView().tag(Tab.map)
                 Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)

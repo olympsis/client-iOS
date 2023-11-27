@@ -86,7 +86,7 @@ struct ClubsList: View {
                             }
                         } else {
                             ForEach(filteredClubs, id: \.id){ c in
-                                SmallClubView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
+                                ClubListView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
                                     .clipShape(Rectangle())
                             }
                         }
@@ -143,7 +143,7 @@ struct ClubsList: View {
             }
         }
         .fullScreenCover(isPresented: $showNewClubCover) {
-            CreateNewClub()
+            NewGroup()
         }
     }
 }

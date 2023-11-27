@@ -25,7 +25,7 @@ struct LoadingButton: View {
             ZStack{
                 RoundedRectangle(cornerRadius: 20)
                     .foregroundColor(Color("color-prime"))
-                    .frame(width: width, height: 40)
+                    .frame(height: 40)
                 Text(text)
                     .foregroundColor(.white)
             }

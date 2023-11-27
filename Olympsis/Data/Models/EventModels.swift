@@ -12,6 +12,7 @@ import CoreLocation
 class Event: Codable, Identifiable, ObservableObject {
     
     let id: String?
+    let type: String
     let poster: String?
     let clubID: String?
     let fieldID: String?
@@ -29,9 +30,11 @@ class Event: Codable, Identifiable, ObservableObject {
     let visibility: String?
     var data: EventData?
     let createdAt: Int64?
+    let externalLink: String?
     
     enum CodingKeys: String, CodingKey {
         case id
+        case type
         case poster
         case clubID = "club_id"
         case fieldID = "field_id"
@@ -49,10 +52,12 @@ class Event: Codable, Identifiable, ObservableObject {
         case visibility
         case data
         case createdAt = "created_at"
+        case externalLink = "external_link"
     }
     
-    init(id: String? = nil, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, level: Int? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, minParticipants: Int? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil) {
+    init(id: String? = nil, type: String, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, level: Int? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, minParticipants: Int? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil, externalLink: String? = nil) {
         self.id = id
+        self.type = type
         self.poster = poster
         self.clubID = clubID
         self.fieldID = fieldID
@@ -70,6 +75,7 @@ class Event: Codable, Identifiable, ObservableObject {
         self.visibility = visibility
         self.data = data
         self.createdAt = createdAt
+        self.externalLink = externalLink
     }
 }
 

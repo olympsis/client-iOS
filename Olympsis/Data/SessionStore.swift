@@ -11,13 +11,10 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
+/// App session data, fetched every session, stored in memory until app is closed
 class SessionStore: ObservableObject {
     
-    /**
-     App session data, fetched every session
-     Stored in memory until app is closed
-     */
-    let secureStore = SecureStore()
+    private let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
     @Published var authStatus: AUTH_STATUS = .unknown
@@ -27,13 +24,22 @@ class SessionStore: ObservableObject {
     @Published var events = [Event]()    // Events Cache
     @Published var fields = [Field]()    // Fields Cache
     
+    @Published var clubsState: LOADING_STATE = .loading
     var clubTokens = [String:String]()
     
+    // groups & posts
+    @Published var selectedGroup: GroupSelection?
+    @Published var posts: [Post] = [Post]()
+    @Published var cachedPosts: [UUID: [Post]] = [:]
+    @Published var groups: [GroupSelection] = [GroupSelection]()
+    
+    // Observers
     @ObservedObject var authObserver = AuthObserver()
     @ObservedObject var feedObserver = FeedObserver()
     @ObservedObject var cacheService = CacheService()
     @ObservedObject var userObserver = UserObserver()
     @ObservedObject var clubObserver = ClubObserver()
+    @ObservedObject var orgObserver = OrgObserver()
     @ObservedObject var postObserver = PostObserver()
     @ObservedObject var fieldObserver = FieldObserver()
     @ObservedObject var eventObserver = EventObserver()
@@ -64,11 +70,34 @@ class SessionStore: ObservableObject {
     func fetchUserClubs() async {
         // check to see if user has clubs
         guard let u = user, let clubIDs = u.clubs else {
+            self.clubsState = .pending
             return
         }
         let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
+        
         DispatchQueue.main.async {
+            resp.forEach { c in
+                let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)
+                self.groups.append(group)
+            }
             self.clubs = resp
+            self.clubsState = .success
+            guard let g = self.groups.first else {
+                return
+            }
+            self.selectedGroup = g
+            
+        }
+        
+        guard let orgIDs = u.organizations else {
+            return
+        }
+        let re = await orgObserver.generateUserOrgs(orgIDs: orgIDs)
+        DispatchQueue.main.async {
+            re.forEach { o in
+                let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
+                self.groups.append(group)
+            }
         }
     }
     
@@ -98,6 +127,7 @@ class SessionStore: ObservableObject {
             cache.imageURL = updatedData.imageURL
             cache.visibility = updatedData.visibility
             cache.clubs = updatedData.clubs
+            cache.organizations = updatedData.organizations
             cache.sports = updatedData.sports
             cache.deviceToken = updatedData.deviceToken
 
