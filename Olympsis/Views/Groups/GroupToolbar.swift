@@ -108,6 +108,7 @@ struct GroupToolbar: ToolbarContent {
                                         .foregroundColor(.primary)
                                     Image(systemName: "chevron.down")
                                         .fontWeight(.bold)
+                                        .imageScale(.small)
                                 }
                             }
                         }
