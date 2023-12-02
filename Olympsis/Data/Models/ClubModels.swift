@@ -74,7 +74,7 @@ class Club: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case parentId
+        case parentId = "parent_id"
         case type
         case name
         case description

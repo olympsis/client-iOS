@@ -32,6 +32,8 @@ struct GroupView: View {
                         if let group = session.selectedGroup {
                             if let club = group.club {
                                 ClubFeed(club: club)
+                            } else if let org = group.organization {
+                                OrgFeed(organization: org)
                             }
                         } else {
                             ClubsList()
@@ -71,6 +73,8 @@ struct GroupView: View {
                 if let group = session.selectedGroup {
                     if let club = group.club {
                         CreateNewPost(club: club)
+                    } else if let org = group.organization {
+                        CreateNewAnnouncement(organization: org)
                     }
                 }
             }

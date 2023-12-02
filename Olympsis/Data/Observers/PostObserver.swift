@@ -14,9 +14,9 @@ class PostObserver: ObservableObject{
     private let postService = PostService()
     private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "post_observer")
     
-    func getPosts(clubId: String) async -> [Post]? {
+    func getPosts(clubId: String, parentId: String?) async -> [Post]? {
         do {
-            let (data, res) = try await postService.getPosts(id: clubId)
+            let (data, res) = try await postService.getPosts(id: clubId, parentId: parentId)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }
@@ -63,9 +63,9 @@ class PostObserver: ObservableObject{
         return false
     }
     
-    func createPost(owner: String, clubId: String, body: String, images:[String]?=nil) async -> Post? {
+    func createPost(type: String, owner: String, groupId: String, body: String, images:[String]?=nil) async -> Post? {
         do {
-            let post = Post(id: nil, type: "regular", poster: owner, clubID: clubId, body: body, eventID: nil, images: images, data: nil, likes: nil, comments: nil, createdAt: nil)
+            let post = Post(id: nil, type: type, poster: owner, groupID: groupId, body: body, eventID: nil, images: images, data: nil, likes: nil, comments: nil, createdAt: nil, externalLink: nil)
             let res = try await postService.createPost(post: post)
             let object = try decoder.decode(Post.self, from: res)
             return object

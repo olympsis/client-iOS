@@ -18,6 +18,7 @@ struct PostMenu: View {
         guard let user = session.user,
               let uuid = user.uuid,
               let group = session.selectedGroup,
+              group.organization == nil,
               let club = group.club,
               let members = club.members else {
             return false
@@ -29,6 +30,14 @@ struct PostMenu: View {
         }
         
         return (post.poster == uuid)
+    }
+    
+    var isManager: Bool {
+        guard let group = session.selectedGroup,
+              group.organization != nil else {
+            return false
+        }
+        return true
     }
     
     func deletePost() async {
@@ -75,7 +84,7 @@ struct PostMenu: View {
                 }.modifier(MenuButton())
             }
             
-            if isPosterOrAdmin {
+            if isPosterOrAdmin || isManager {
                 Button(action:{ Task { await deletePost() }}) {
                     HStack {
                         Image(systemName: "trash")

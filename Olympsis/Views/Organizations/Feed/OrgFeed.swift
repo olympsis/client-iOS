@@ -1,15 +1,14 @@
 //
-//  PostsView.swift
+//  OrgFeed.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 6/17/23.
+//  Created by Joel on 12/1/23.
 //
 
 import SwiftUI
 
-struct ClubFeed: View {
-    
-    @State var club: Club
+struct OrgFeed: View {
+    @State var organization: Organization
     @State private var posts: [Post] = [Post]()
     @State private var showPostMenu = false
     @State private var selectedPostIndex = 0
@@ -18,7 +17,7 @@ struct ClubFeed: View {
     
     // array of the club's events
     var events: [Event]? {
-        guard let id = club.id else {
+        guard let id = organization.id else {
             return nil
         }
         return session.events.filterByClubID(id: id)
@@ -27,9 +26,9 @@ struct ClubFeed: View {
     // gets all of the posts for a club
     func getPosts() async {
         guard let selection = session.selectedGroup,
-              let club = selection.club,
-              let id = club.id,
-              let resp = await session.postObserver.getPosts(clubId: id, parentId: club.parentId) else {
+              let org = selection.organization,
+              let id = org.id,
+              let resp = await session.postObserver.getPosts(clubId: id, parentId: nil) else {
             return
         }
         self.updatePosts(posts: resp)
@@ -81,7 +80,8 @@ struct ClubFeed: View {
             }
         }.task{
             await getPosts()
-        }.refreshable {
+        }
+        .refreshable {
             await getPosts()
         }
         .fullScreenCover(isPresented: $showMoreEvents) {
@@ -104,9 +104,6 @@ struct ClubFeed: View {
     }
 }
 
-struct PostsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubFeed(club: CLUBS[0])
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    OrgFeed(organization: ORGANIZATIONS[0])
 }
