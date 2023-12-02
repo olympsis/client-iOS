@@ -1,16 +1,16 @@
 //
-//  CreateNewPost.swift
+//  CreateNewAnnouncement.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/20/22.
+//  Created by Joel on 12/1/23.
 //
 
 import SwiftUI
 import PhotosUI
 
-struct CreateNewPost: View {
+struct CreateNewAnnouncement: View {
     
-    @State var club: Club
+    @State var organization: Organization
     @State private var state: LOADING_STATE = .pending
     @State private var text: String = ""
     @State private var images: [String]?
@@ -39,7 +39,7 @@ struct CreateNewPost: View {
         
         guard let user = session.user,
                 let uuid = user.uuid,
-                let id = club.id else {
+                let id = organization.id else {
             state = .failure
             
             // delete images if we fail to get any of this data
@@ -50,7 +50,7 @@ struct CreateNewPost: View {
             return
         }
         // create post
-        let resp = await session.postObserver.createPost(type: "post", owner: uuid, groupId: id, body: text, images: images)
+        let resp = await session.postObserver.createPost(type: "announcement", owner: uuid, groupId: id, body: text, images: images)
         
         // add to club view
         guard let p = resp else {
@@ -164,18 +164,16 @@ struct CreateNewPost: View {
                         Task{
                             await CreateNewPost()
                         }
-                    }){ LoadingButton(text: "Create", width: 70, status: $state) }
+                    }){ LoadingButton(text: "Create", width: 100, status: $state) }
                         .disabled(state == .loading ? true : false)
                 }
             }
-            .navigationTitle("New Post")
+            .navigationTitle("New Announcement")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
-struct CreateNewPost_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
-    }
+#Preview {
+    CreateNewAnnouncement(organization: ORGANIZATIONS[0])
 }

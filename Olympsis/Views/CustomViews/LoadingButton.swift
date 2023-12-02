@@ -28,6 +28,7 @@ struct LoadingButton: View {
                     .frame(height: 40)
                 Text(text)
                     .foregroundColor(.white)
+                    .padding(.horizontal)
             }
         } else if self.status == .success {
             ZStack {

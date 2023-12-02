@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PostView: View {
-    @Binding var club: Club
     @State var post: Post
     @State private var index: Int = 0
     @State private var isLiked: Bool = false
@@ -22,20 +21,36 @@ struct PostView: View {
     @EnvironmentObject var session: SessionStore
     
     var userImageURL: String {
-        guard let user = post.data?.user,
+        guard let user = post.data?.poster,
                 let image = user.imageURL else {
-            return ""
+            return "https://api.olympsis.com"
+        }
+        return GenerateImageURL(image)
+    }
+    
+    var orgImageURL: String {
+        guard let org = post.data?.organization,
+              let image = org.imageURL else {
+            return GenerateImageURL("https://api.olympsis.com")
         }
         return GenerateImageURL(image)
     }
     
     var username: String {
-        guard let user = post.data?.user,
+        guard let user = post.data?.poster,
               let username = user.username else {
             return "olympsis-user"
         }
         
         return username
+    }
+    
+    var orgName: String {
+        guard let org = post.data?.organization,
+              let name = org.name else {
+            return "Olympsis Organization"
+        }
+        return name
     }
     
     var images: [String] {
@@ -65,6 +80,8 @@ struct PostView: View {
     var isAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
+              let selectedGroup = session.selectedGroup,
+              let club = selectedGroup.club,
               let members = club.members,
               let member = members.first(where: { $0.uuid == uuid }) else {
             return false
@@ -109,36 +126,62 @@ struct PostView: View {
     var body: some View {
         VStack {
             HStack(alignment: .center) {
-                AsyncImage(url: URL(string: userImageURL)){ phase in
-                    if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .clipShape(Circle())
-                            .scaledToFill()
-                            .clipped()
-                    } else if phase.error != nil {
-                        Color.gray // Indicates an error.
-                            .clipShape(Circle())
-                            .opacity(0.3)
-                    } else {
-                        ZStack {
-                            Color.gray // Acts as a placeholder.
+                if post.type == "post" {
+                    AsyncImage(url: URL(string: userImageURL)){ phase in
+                        if let image = phase.image {
+                            image // Displays the loaded image.
+                                .resizable()
                                 .clipShape(Circle())
-                            .opacity(0.3)
-                            ProgressView()
+                                .scaledToFill()
+                                .clipped()
+                        } else if phase.error != nil {
+                            Color.gray // Indicates an error.
+                                .clipShape(Circle())
+                                .opacity(0.3)
+                        } else {
+                            ZStack {
+                                Color.gray // Acts as a placeholder.
+                                    .clipShape(Circle())
+                                .opacity(0.3)
+                                ProgressView()
+                            }
                         }
-                    }
-                } .frame(width: 35, height: 35)
-                VStack(alignment: .leading) {
-                    Text(username)
-                        .bold()
-                    if (post.type != nil) {
-                        if (post.type != "regular") {
-                            Text(post.type ?? "")
+                    } .frame(width: 35, height: 35)
+                    VStack(alignment: .leading) {
+                        Text(username)
+                            .bold()
+                    }.padding(.leading, 5)
+                } else if post.type == "announcement" {
+                    AsyncImage(url: URL(string: orgImageURL)){ phase in
+                        if let image = phase.image {
+                            image // Displays the loaded image.
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFill()
+                                .clipped()
+                        } else if phase.error != nil {
+                            Color.gray // Indicates an error.
+                                .clipShape(Circle())
+                                .opacity(0.3)
+                        } else {
+                            ZStack {
+                                Color.gray // Acts as a placeholder.
+                                    .clipShape(Circle())
+                                .opacity(0.3)
+                                ProgressView()
+                            }
+                        }
+                    } .frame(width: 35, height: 35)
+                    VStack(alignment: .leading) {
+                        Text(orgName)
+                            .bold()
+                        if let type = post.type {
+                            Text(type.capitalized)
                                 .font(.caption)
                         }
-                    }
-                }.padding(.leading, 5)
+                            
+                    }.padding(.leading, 5)
+                }
                 
                 Spacer()
                 
@@ -202,7 +245,9 @@ struct PostView: View {
             }.padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showComments) {
-            PostComments(club: club, post: $post)
+            if let club = session.selectedGroup?.club {
+                PostComments(club: club, post: $post)
+            }
         }
         .sheet(isPresented: $showMenu) {
             PostMenu(post: post)
@@ -222,6 +267,6 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(club: .constant(CLUBS[0]), post: POSTS[0]).environmentObject(SessionStore())
+        PostView(post: POSTS[1]).environmentObject(SessionStore())
     }
 }

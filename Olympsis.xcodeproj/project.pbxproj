@@ -18,6 +18,8 @@
 		5D20625E2B1435F300A9D408 /* OrgApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */; };
 		5D2062602B14463400A9D408 /* OrgListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListView.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
+		5D2DEFBE2B1AB1770082FE73 /* CreateNewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */; };
+		5D2DEFC32B1AB2CE0082FE73 /* OrgFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC22B1AB2CE0082FE73 /* OrgFeed.swift */; };
 		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
 		5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BD2B129AC800D19188 /* GroupSelector.swift */; };
 		5D67494A2A73339E00AEC868 /* EventViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventViewExt.swift */; };
@@ -271,6 +273,8 @@
 		5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplicationView.swift; sourceTree = "<group>"; };
 		5D20625F2B14463400A9D408 /* OrgListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListView.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
+		5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAnnouncement.swift; sourceTree = "<group>"; };
+		5D2DEFC22B1AB2CE0082FE73 /* OrgFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgFeed.swift; sourceTree = "<group>"; };
 		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		5D4942BD2B129AC800D19188 /* GroupSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelector.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewExt.swift; sourceTree = "<group>"; };
@@ -501,6 +505,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D2DEFBF2B1AB2B60082FE73 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				5D2DEFC22B1AB2CE0082FE73 /* OrgFeed.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
 		5D4942BA2B1299D800D19188 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,11 +554,13 @@
 		5DBB94D82B1259E90031876D /* Organizations */ = {
 			isa = PBXGroup;
 			children = (
+				5D2DEFBF2B1AB2B60082FE73 /* Feed */,
 				5D2062532B14297000A9D408 /* OrgMenu.swift */,
 				5D2062552B142CB600A9D408 /* OrgApplications.swift */,
 				5D2062572B142CCF00A9D408 /* OrgManagersView.swift */,
 				5D2062592B142D4700A9D408 /* ManagersListView.swift */,
 				5D20625B2B142D6900A9D408 /* ManagerView.swift */,
+				5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */,
 			);
 			path = Organizations;
 			sourceTree = "<group>";
@@ -1329,6 +1343,7 @@
 				9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */,
 				5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
+				5D2DEFBE2B1AB1770082FE73 /* CreateNewAnnouncement.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
@@ -1398,6 +1413,7 @@
 				9A81B61729246AF9009CA6ED /* FieldViewTemplate.swift in Sources */,
 				9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */,
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
+				5D2DEFC32B1AB2CE0082FE73 /* OrgFeed.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationsManager.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */,

@@ -12,8 +12,8 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     
     let id: String?
     let type: String?
-    let poster: String
-    let clubID: String?
+    let poster: String?
+    let groupID: String?
     let body: String
     var eventID: String?
     let images: [String]?
@@ -21,23 +21,26 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     var likes: [Like]?
     var comments: [Comment]?
     let createdAt: Int64?
+    let externalLink: String?
     
+    /// Complete initializer for the post class
     init(id: String?,
          type: String?,
-         poster: String,
-         clubID: String?,
+         poster: String?,
+         groupID: String?,
          body: String,
          eventID: String?,
          images: [String]?,
          data: PostData?,
          likes: [Like]?,
          comments: [Comment]?,
-         createdAt: Int64?) {
+         createdAt: Int64?,
+         externalLink: String?) {
         
         self.id = id
         self.type = type
         self.poster = poster
-        self.clubID = clubID
+        self.groupID = groupID
         self.body = body
         self.eventID = eventID
         self.images = images
@@ -45,13 +48,19 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         self.likes = likes
         self.comments = comments
         self.createdAt = createdAt
+        self.externalLink = externalLink
+    }
+    
+    /// Initalizer for creating posts client-side
+    convenience init (type: String, groupID: String, body: String, eventID: String?, images: [String], externalLink: String?) {
+        self.init(id: nil, type: type, poster: nil, groupID: groupID, body: body, eventID: eventID, images: images, data: nil, likes: nil, comments: nil, createdAt: nil, externalLink: externalLink)
     }
     
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case poster
-        case clubID = "club_id"
+        case groupID = "group_id"
         case body
         case eventID = "event_id"
         case images
@@ -59,6 +68,7 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         case likes
         case comments
         case createdAt = "created_at"
+        case externalLink = "external_link"
     }
     
     // RandomAccessCollection requirements
@@ -103,8 +113,8 @@ struct Comment: Codable {
 
 struct PostData: Codable {
     let poster: UserData?
-    let user: UserData?
     let event: Event?
+    let organization: Organization?
 }
 
 struct PostsResponse: Decodable {

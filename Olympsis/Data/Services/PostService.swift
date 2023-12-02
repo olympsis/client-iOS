@@ -21,10 +21,16 @@ class PostService {
         self.http = Courrier(host: host, apiKey: key)
     }
     
-    func getPosts(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/posts", queryItems: [
-            URLQueryItem(name: "clubID", value: id),
+    func getPosts(id: String, parentId: String?) async throws -> (Data, URLResponse) {
+        var endpoint = Endpoint(path: "/posts", queryItems: [
+            URLQueryItem(name: "groupID", value: id),
         ])
+        if (parentId != nil) {
+            endpoint = Endpoint(path: "/posts", queryItems: [
+                URLQueryItem(name: "groupID", value: id),
+                URLQueryItem(name: "parentID", value: parentId)
+            ])
+        }
         
         return try await http.Request(endpoint: endpoint, method: Hermes.Method.GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
