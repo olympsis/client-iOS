@@ -198,7 +198,7 @@ struct EditProfile: View {
                         
                         VStack(alignment: .leading){
                             Toggle(isOn: $isPublic) {
-                                Text("Profile Visivility")
+                                Text("Profile Visibility")
                             }.frame(width: SCREEN_WIDTH-30, height: 40)
                                 .tint(Color("color-secnd"))
                                 .onChange(of: isPublic) { newValue in
