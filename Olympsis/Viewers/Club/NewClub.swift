@@ -28,7 +28,7 @@ struct NewClub: View {
     @StateObject var uploadObserver = UploadObserver()
     
     @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_new_club_view")
     
@@ -84,16 +84,13 @@ struct NewClub: View {
             let club = Club(id: nil, parentId: nil, type: "club", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: nil, rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
             
             // create new club
-            let _ = try await session.clubObserver.createClub(club: club)
-            
-            // update user data
-            let _ = await session.generateUserData()
-            await session.fetchUserClubs()
-            
-            
+            let resp = try await session.clubObserver.createClub(club: club)
+            let group = GroupSelection(type: "club", club: resp, organization: nil, posts: nil)
+            session.groups.append(group)
+
             showToast = true
             self.state = .success
-            self.presentationMode.wrappedValue.dismiss()
+            dismiss()
         } catch {
             self.state = .failure
             log.error("\(error)")
@@ -241,7 +238,7 @@ struct NewClub: View {
             }.frame(width: SCREEN_WIDTH-25)
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action:{self.presentationMode.wrappedValue.dismiss()}) {
+                        Button(action:{ dismiss() }) {
                             Image(systemName: "xmark")
                                 .imageScale(.large)
                                 .fontWeight(.bold)

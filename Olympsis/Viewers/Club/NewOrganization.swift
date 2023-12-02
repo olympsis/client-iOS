@@ -70,7 +70,7 @@ struct NewOrganization: View {
             await UploadImage()
         }
         
-        // grab current location and create club
+        // grab current location and create organization
         let geoCoder = CLGeocoder()
         guard let location = session.locationManager.location else {
             return
@@ -84,7 +84,7 @@ struct NewOrganization: View {
             }
             let org = Organization(id: nil, name: clubName, description: description, sport: sport, city: nil, state: state, country: country, imageURL: imageURL, imageGallery: nil, members: nil, createdAt: Int64(Date().timeIntervalSinceNow))
             
-            // create new club
+            // create new organization
             let resp = try await session.orgObserver.createOrganization(organization: org)
             
             let group = GroupSelection(type: "organization", club: nil, organization: resp, posts: nil)
