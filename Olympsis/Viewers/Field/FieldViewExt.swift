@@ -161,7 +161,7 @@ struct FieldActionButtons: View {
         HStack {
             Button(action:{ leadToMaps() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     
@@ -178,7 +178,7 @@ struct FieldActionButtons: View {
             }
             
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .frame(maxWidth: .infinity, idealHeight: 80)
                     .foregroundColor(Color("color-prime"))
                 VStack {
@@ -202,7 +202,7 @@ struct FieldActionButtons: View {
             
             Button(action: { self.showNewEvent.toggle() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     VStack {
@@ -223,7 +223,7 @@ struct FieldActionButtons: View {
                 }
             }label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     VStack {
