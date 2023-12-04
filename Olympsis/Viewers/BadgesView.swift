@@ -18,6 +18,8 @@ struct BadgesView: View {
                 Rectangle()
                     .frame(height: 1)
                     .padding(.trailing, 25)
+                Image("soccer")
+                    .padding(.trailing)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .center){

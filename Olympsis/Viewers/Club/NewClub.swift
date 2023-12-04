@@ -153,7 +153,7 @@ struct NewClub: View {
                                 .frame(height: 40)
                             Picker(selection: $sport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
                                 ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                                    Text(sport.Icon() + " " + sport.rawValue).tag(sport.rawValue)
+                                    Text(sport.rawValue).tag(sport.rawValue)
                                 }
                             }.frame(width: SCREEN_WIDTH/2)
                                 .tint(Color("color-prime"))

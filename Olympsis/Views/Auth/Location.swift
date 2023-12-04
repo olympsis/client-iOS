@@ -37,14 +37,20 @@ struct Location: View {
     var body: some View {
         VStack {
             VStack {
-                Text("So where's home? 😅")
+                Text("So, where are you? 👀")
                     .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
                     .fontWeight(.medium)
                 Text("To help you find fields in the area and trigger events in the app, we need to have your location even when the app is in the background.")
                     .multilineTextAlignment(.center)
                     .padding(.top)
+                    .font(.callout)
             }.padding(.horizontal)
-                .padding(.top)
+                .padding(.vertical)
+                .background {
+                    Rectangle()
+                        .foregroundStyle(Color("background"))
+                        .ignoresSafeArea(.all)
+                }
             
             Spacer()
             
@@ -77,7 +83,7 @@ struct Location: View {
                 Button(action:{}) {
                     Text("How is my location used?")
                         .foregroundColor(.primary)
-                        .bold()
+                        .font(.callout)
                 }.padding(.top)
             }
             .padding(.bottom)

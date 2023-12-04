@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 7/18/23.
 //
 
+import SwiftUI
 import Foundation
 
 enum ACCOUNT_STATE {
@@ -88,28 +89,28 @@ enum SPORT: String, CaseIterable {
     case golf = "golf"
     case hiking = "hiking"
     case climbing = "climbing"
-    case spikeball = "spikeball"
+    case spikeball = "spike"
     
-    func Icon() -> String {
+    func Icon() -> Image {
         switch self {
         case .soccer:
-            return "⚽️"
+            return Image(systemName: "figure.soccer")
         case .volleyball:
-            return "🏐"
+            return Image(systemName: "figure.volleyball")
         case .basketball:
-            return "🏀"
+            return Image(systemName: "figure.basketball")
         case .pickleball:
-            return "🏏"
+            return Image(systemName: "figure.pickleball")
         case .tennis:
-            return "🎾"
+            return Image(systemName: "figure.tennis")
         case .golf:
-            return "⛳️"
+            return Image(systemName: "figure.golf")
         case .hiking:
-            return "⛰️"
+            return Image(systemName: "figure.hiking")
         case .climbing:
-            return "🧗‍♂️"
+            return Image(systemName: "figure.climbing")
         case .spikeball:
-            return "🧶"
+            return Image("logo-spikeball")
         }
     }
     

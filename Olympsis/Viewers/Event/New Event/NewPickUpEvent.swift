@@ -152,7 +152,7 @@ struct NewPickUpEvent: View {
                     
                     Picker(selection: $eventSport, label: Text("")) {
                         ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                            Text(sport.Icon() + " " + sport.rawValue).tag(sport)
+                            Text(sport.rawValue).tag(sport)
                         }
                     }.modifier(MenuButton())
                 }.padding(.top)
