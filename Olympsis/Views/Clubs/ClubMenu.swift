@@ -162,7 +162,7 @@ struct ClubMenu: View {
                                 .imageScale(.large)
                                 .padding(.leading)
                                 .foregroundColor(.primary)
-                            Text("Search Clubs")
+                            Text("Search for clubs")
                                 .foregroundColor(.primary)
                             Spacer()
                         }.modifier(MenuButton())
@@ -235,6 +235,9 @@ struct ClubMenu: View {
             }
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
+            }
+            .fullScreenCover(isPresented: $showClubs) {
+                ClubsList2()
             }
             .alert(isPresented: $showAlert) {
                 switch alertType {
