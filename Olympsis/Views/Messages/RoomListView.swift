@@ -63,6 +63,7 @@ struct RoomListView: View {
                     }
                 }){
                     LoadingButton(text: "Join", width: 100, status: $state)
+                        .frame(width: 100)
                 }
                 .padding(.trailing)
             }

@@ -109,19 +109,16 @@ struct ClubView: View {
                                 image // Displays the loaded image.
                                     .resizable()
                                     .scaledToFill()
-                                    .cornerRadius(5)
-                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
+                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
                                     .clipped()
-                                    .cornerRadius(10)
+                                    
                             } else if phase.error != nil {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
-                                    .cornerRadius(10)
+                                Rectangle()
+                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
                                     .foregroundColor(.red)
                             } else {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: SCREEN_WIDTH-10, height: 250, alignment: .center)
-                                    .cornerRadius(10)
+                                Rectangle()
+                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
                                     .foregroundColor(.gray)
                             }
                     }.frame(height: 250, alignment: .center)
@@ -249,8 +246,7 @@ struct ClubView: View {
 
                     Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode: $trackingMode, annotationItems: markers) { p in
                         MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
-                    }.padding(.horizontal)
-                        .frame(height: 200)
+                    }.frame(height: 200)
                         .padding(.bottom, 40)
 
                 }.navigationTitle(name)

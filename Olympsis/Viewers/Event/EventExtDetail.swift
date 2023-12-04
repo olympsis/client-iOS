@@ -33,26 +33,27 @@ struct EventExtDetail: View {
                             .font(.title)
                             .bold()
                         Text(f.description)
-                    }
+                    }.padding(.horizontal)
                     VStack {
                         Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: f.location.coordinates[1], longitude: f.location.coordinates[0]), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))), interactionModes: .zoom, showsUserLocation: false, annotationItems: [f], annotationContent: { field in
                             MapMarker(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), tint: Color("color-prime"))
                         }).frame(height: 270)
-                            .cornerRadius(10)
                     }
                 }
             }
             
             if let c = data?.club {
                 VStack(alignment: .leading){
-                    Text("Host")
-                        .font(.title)
-                        .foregroundColor(.primary)
+                    VStack(alignment: .leading) {
+                        Text("Host")
+                            .font(.title)
+                            .foregroundColor(.primary)
                         .bold()
-                    
-                    Text(c.name ?? "")
-                        .font(.title2)
-                        .foregroundColor(.primary)
+                        
+                        Text(c.name ?? "")
+                            .font(.title2)
+                            .foregroundColor(.primary)
+                    }.padding(.horizontal)
                     
                     AsyncImage(url: URL(string:  GenerateImageURL(c.imageURL ?? ""))){ phase in
                         if let image = phase.image {
@@ -62,7 +63,6 @@ struct EventExtDetail: View {
                                     .frame(height: 300, alignment: .center)
                                     .aspectRatio(contentMode: .fit)
                                     .clipped()
-                                    .cornerRadius(10)
                                 if !isMember {
                                     Menu{
                                         Button(action:{}){
@@ -73,7 +73,7 @@ struct EventExtDetail: View {
                                         }
                                     }label: {
                                         ZStack {
-                                            RoundedRectangle(cornerRadius: 10)
+                                            Rectangle()
                                                 .frame(maxWidth: .infinity, idealHeight: 80)
                                                 .foregroundColor(Color("color-prime"))
                                             VStack {
@@ -83,17 +83,18 @@ struct EventExtDetail: View {
                                                         .frame(width: 25, height: 5)
                                                 }.frame(height: 25)
                                                 Text("More")
+                                                    .font(.caption)
+                                                    .textCase(.uppercase)
                                             }.foregroundColor(.white)
                                         }
                                     }.frame(width: 100, height: 80)
-                                        .padding(.all, 10)
+                                        .padding(.all)
                                 }
                             }
                             
                         } else if phase.error != nil {
                             ZStack {
                                 Color(.gray) // Indicates an error.
-                                    .cornerRadius(10)
                                     .frame(height: 300, alignment: .center)
                                 Image(systemName: "exclamationmark.circle")
                                     .foregroundColor(.white)
@@ -102,7 +103,6 @@ struct EventExtDetail: View {
                             ZStack {
                                 Color(.gray) // Indicates an error.
                                     .opacity(0.8)
-                                    .cornerRadius(10)
                                     .frame(height: 300, alignment: .center)
                                 ProgressView()
                             }
@@ -111,9 +111,10 @@ struct EventExtDetail: View {
                     
                     Text(c.description ?? "")
                         .padding(.bottom)
+                        .padding(.horizontal)
                 }
             }
-        }.padding(.horizontal)
+        }
             .frame(maxWidth: .infinity)
     }
 }

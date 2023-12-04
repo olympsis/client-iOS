@@ -94,10 +94,22 @@ struct PickUsername: View {
     var body: some View {
         VStack {
             // title
-            Text("Pick a Username")
-                .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
-                .fontWeight(.medium)
-                .padding(.top)
+            VStack {
+                Text("Pick a Username")
+                    .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
+                    .fontWeight(.medium)
+                Text("What's your handle?")
+                    .multilineTextAlignment(.center)
+                    .padding(.top)
+                    .font(.callout)
+            }.padding(.horizontal)
+                .padding(.vertical)
+                .background {
+                    Rectangle()
+                        .foregroundStyle(Color("background"))
+                        .ignoresSafeArea(.all)
+                        .frame(width: SCREEN_WIDTH)
+                }
                 
             // textfield
             VStack(alignment: .leading) {
@@ -106,7 +118,7 @@ struct PickUsername: View {
                     .font(.title3)
                 HStack {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 15)
+                        Rectangle()
                             .foregroundColor(Color("color-secnd"))
                             .opacity(0.3)
                         TextField("", text: $username)
@@ -129,8 +141,8 @@ struct PickUsername: View {
                         .padding(.horizontal)
                     
                     ZStack {
-                        Circle()
-                            .frame(width: 45)
+                        Rectangle()
+                            .frame(width: 45, height: 45)
                             .foregroundColor(Color("color-secnd"))
                             .opacity(0.3)
                             .overlay {
@@ -165,21 +177,21 @@ struct PickUsername: View {
                 if uStatus == .pending || uStatus == .invalid {
                     // cautionary text
                     Text("Must be between 5 and 15 characters and contain no special characters to be valid")
-                        .font(.caption)
+                        .font(.caption2)
                         .foregroundColor(uStatus == .invalid ? .red : .gray)
-                        .padding(.leading)
+                        .padding(.horizontal)
                         .animation(.easeInOut, value: uStatus)
                 } else if uStatus == .unavailable {
                     // cautionary text
                     Text("Username is taken. Please try another...")
-                        .font(.caption)
+                        .font(.caption2)
                         .foregroundColor(.red)
                         .padding(.leading)
                         .animation(.easeInOut, value: uStatus)
                 } else if uStatus == .unknown {
                     // cautionary text
                     Text("Unknown error has occured")
-                        .font(.caption)
+                        .font(.caption2)
                         .foregroundColor(.red)
                         .padding(.leading)
                         .animation(.easeInOut, value: uStatus)

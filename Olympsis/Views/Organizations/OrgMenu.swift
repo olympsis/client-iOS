@@ -80,29 +80,26 @@ struct OrgMenu: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                                 .clipped()
-                                .cornerRadius(10)
                         } else if phase.error != nil {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
                                     .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                                    .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                                 Image(systemName: "exclamationmark.circle")
                             }
                         } else {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
                                     .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                                    .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                                 ProgressView()
                             }
                         }
-                    }.frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                        .padding(.top)
-                        .padding(.horizontal, 5)
+                    }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                         
                     VStack {
                         HStack {

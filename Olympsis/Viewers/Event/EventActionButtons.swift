@@ -110,7 +110,7 @@ struct EventActionButtons: View {
             // MARK: - Map Button
             Button(action:{ leadToMaps() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     
@@ -128,7 +128,7 @@ struct EventActionButtons: View {
             
             // MARK: - Event Visibility
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .frame(maxWidth: .infinity, idealHeight: 80)
                     .foregroundColor(Color("color-prime"))
                 VStack {
@@ -161,7 +161,7 @@ struct EventActionButtons: View {
                     }
                 } label: {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .frame(maxWidth: .infinity, idealHeight: 80)
                             .foregroundColor(Color("color-prime"))
                         VStack {
@@ -183,7 +183,7 @@ struct EventActionButtons: View {
             } else {
                 Button(action: { Task { await cancel() }}) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .frame(maxWidth: .infinity, idealHeight: 80)
                             .foregroundColor(Color("color-prime"))
                         VStack {
@@ -206,7 +206,7 @@ struct EventActionButtons: View {
             // MARK: - Menu Button
             Button(action:{ self.showMenu.toggle() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     VStack {

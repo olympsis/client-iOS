@@ -152,7 +152,7 @@ struct NewPickUpEvent: View {
                     
                     Picker(selection: $eventSport, label: Text("")) {
                         ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                            Text(sport.Icon() + " " + sport.rawValue).tag(sport)
+                            Text(sport.rawValue).tag(sport)
                         }
                     }.modifier(MenuButton())
                 }.padding(.top)
@@ -305,7 +305,6 @@ struct NewPickUpEvent: View {
                                         Image(image)
                                             .resizable()
                                             .frame(width: 100, height: 150)
-                                            .cornerRadius(10)
                                         if eventImageURL == image {
                                             Image(systemName: "circle.fill")
                                                 .foregroundColor(Color("color-secnd"))

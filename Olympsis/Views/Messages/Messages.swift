@@ -53,11 +53,12 @@ struct Messages: View {
                         Spacer()
                         Button(action: { selectedView = 0 }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(selectedView == 0 ? Color("color-prime") : Color("color-secnd"))
-                                
                                 Text("Joined")
                                     .foregroundColor(.white)
+                                    .font(.caption)
+                                    .textCase(.uppercase)
                             }.padding(.horizontal)
                                 .frame(height: 35)
                         }
@@ -67,12 +68,12 @@ struct Messages: View {
                         Spacer()
                         Button(action: { selectedView = 1 }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(selectedView == 1 ? Color("color-prime") : Color("color-secnd"))
-                                
-                                
-                                Text("Not Joined")
+                                Text("All Chats")
                                     .foregroundColor(.white)
+                                    .font(.caption)
+                                    .textCase(.uppercase)
                             }.padding(.horizontal)
                                 .frame(height: 35)
                         }

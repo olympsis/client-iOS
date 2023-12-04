@@ -80,7 +80,7 @@ struct ClubApplicationView: View {
     var body: some View {
         VStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 20)
+                Rectangle()
                     .foregroundColor(Color("background"))
                 VStack (alignment: .leading){
                     HStack {
@@ -136,10 +136,12 @@ struct ClubApplicationView: View {
                             }
                         }){
                             ZStack {
-                                RoundedRectangle(cornerRadius: 20)
+                                Rectangle()
                                     .foregroundColor(Color("color-prime"))
                                 Text("accept")
                                     .foregroundColor(.white)
+                                    .font(.caption)
+                                    .textCase(.uppercase)
                             }
                         }.frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)
                             .padding(.trailing)
@@ -149,10 +151,12 @@ struct ClubApplicationView: View {
                             }
                         }){
                             ZStack {
-                                RoundedRectangle(cornerRadius: 20)
+                                Rectangle()
                                     .foregroundColor(.red)
                                 Text("deny")
                                     .foregroundColor(.white)
+                                    .font(.caption)
+                                    .textCase(.uppercase)
                             }
                         }.frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)
                             .padding(.leading)

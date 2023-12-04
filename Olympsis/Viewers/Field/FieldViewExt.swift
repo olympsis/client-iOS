@@ -86,12 +86,10 @@ struct FieldImages: View {
                                     .frame(width: 220, height: 300, alignment: .center)
                                     .aspectRatio(contentMode: .fill)
                                     .clipped()
-                                    .cornerRadius(10)
                             
                             } else if phase.error != nil {
                                 ZStack {
                                     Color(.gray) // Indicates an error.
-                                        .cornerRadius(10)
                                     .frame(width: 220, height: 300, alignment: .center)
                                     Image(systemName: "exclamationmark.circle")
                                         .foregroundColor(.white)
@@ -100,7 +98,6 @@ struct FieldImages: View {
                                 ZStack {
                                     Color(.gray) // Indicates an error.
                                         .opacity(0.8)
-                                        .cornerRadius(10)
                                     .frame(width: 220, height: 300, alignment: .center)
                                     ProgressView()
                                 }
@@ -164,7 +161,7 @@ struct FieldActionButtons: View {
         HStack {
             Button(action:{ leadToMaps() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     
@@ -181,7 +178,7 @@ struct FieldActionButtons: View {
             }
             
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .frame(maxWidth: .infinity, idealHeight: 80)
                     .foregroundColor(Color("color-prime"))
                 VStack {
@@ -205,7 +202,7 @@ struct FieldActionButtons: View {
             
             Button(action: { self.showNewEvent.toggle() }) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     VStack {
@@ -226,7 +223,7 @@ struct FieldActionButtons: View {
                 }
             }label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10)
+                    Rectangle()
                         .frame(maxWidth: .infinity, idealHeight: 80)
                         .foregroundColor(Color("color-prime"))
                     VStack {

@@ -73,13 +73,11 @@ struct ClubListView: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .scaledToFill()
-                                .cornerRadius(5)
                                 .frame(width: 100, height: 100, alignment: .center)
                                 .clipped()
-                                .cornerRadius(20)
                         } else if phase.error != nil {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 20)
+                                Rectangle()
                                     .stroke(Color("foreground"), lineWidth: 1.0)
                                     .frame(width: 100, height: 100)
                                 Image(systemName: "exclamationmark.triangle.fill")
@@ -88,7 +86,7 @@ struct ClubListView: View {
                             }
                         } else {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 20)
+                                Rectangle()
                                     .opacity(0.1)
                                     .frame(width: 100, height: 100)
                                     .accentColor(Color("foreground"))
@@ -142,16 +140,18 @@ struct ClubListView: View {
                     .frame(maxWidth: .infinity)
                 Button(action: { self.showDetails.toggle() }) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 20)
+                        Rectangle()
                             .stroke(lineWidth: 1)
                             .frame(height: 40)
                         Text("Details")
+                            .textCase(.uppercase)
+                            .font(.caption)
                     }
                 }.contentShape(Rectangle())
                     .frame(maxWidth: .infinity)
             }.padding(.all)
         }.background {
-            RoundedRectangle(cornerRadius: 20)
+            Rectangle()
                 .foregroundColor(Color("background"))
                 .padding(.horizontal, 5)
         }

@@ -50,8 +50,14 @@ struct Notifications: View {
                 Text("In order to notify you of local events, and club activities we need to be able to send you notifications.")
                     .multilineTextAlignment(.center)
                     .padding(.top)
+                    .font(.callout)
             }.padding(.horizontal)
-                .padding(.top)
+                .padding(.vertical)
+                .background {
+                    Rectangle()
+                        .foregroundStyle(Color("background"))
+                        .ignoresSafeArea(.all)
+                }
             
             Spacer()
             
@@ -83,7 +89,7 @@ struct Notifications: View {
                 Button(action:{}) {
                     Text("No Thanks")
                         .foregroundColor(.primary)
-                        .bold()
+                        .font(.callout)
                 }.padding(.top)
             }
             .padding(.bottom)

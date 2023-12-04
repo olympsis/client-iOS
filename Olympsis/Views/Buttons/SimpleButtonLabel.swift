@@ -20,21 +20,23 @@ struct SimpleButtonLabel: View {
         switch style {
         case .normal:
             ZStack {
-                RoundedRectangle(cornerRadius: 15)
-                    .frame(width: 150, height: 45)
+                Rectangle()
+                    .frame(width: 150, height: 40)
                     .foregroundColor(Color("color-prime"))
                 Text(text)
                     .foregroundColor(.white)
-                    .font(.headline)
+                    .textCase(.uppercase)
+                    .font(.caption)
             }
         case .outline:
             ZStack {
-                RoundedRectangle(cornerRadius: 15)
+                Rectangle()
                     .stroke(Color("color-prime"), lineWidth: 1)
-                    .frame(width: 150, height: 45)
+                    .frame(width: 150, height: 40)
                 Text(text)
                     .foregroundColor(.primary)
-                    .font(.headline)
+                    .textCase(.uppercase)
+                    .font(.caption)
             }
         }
     }

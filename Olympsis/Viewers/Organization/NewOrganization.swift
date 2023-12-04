@@ -70,7 +70,7 @@ struct NewOrganization: View {
             await UploadImage()
         }
         
-        // grab current location and create club
+        // grab current location and create organization
         let geoCoder = CLGeocoder()
         guard let location = session.locationManager.location else {
             return
@@ -84,7 +84,7 @@ struct NewOrganization: View {
             }
             let org = Organization(id: nil, name: clubName, description: description, sport: sport, city: nil, state: state, country: country, imageURL: imageURL, imageGallery: nil, members: nil, createdAt: Int64(Date().timeIntervalSinceNow))
             
-            // create new club
+            // create new organization
             let resp = try await session.orgObserver.createOrganization(organization: org)
             
             let group = GroupSelection(type: "organization", club: nil, organization: resp, posts: nil)
@@ -109,7 +109,7 @@ struct NewOrganization: View {
                             .bold()
                     }
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextField("", text: $clubName)
@@ -126,7 +126,7 @@ struct NewOrganization: View {
                     }
                     
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextEditor(text: $description)
@@ -146,13 +146,13 @@ struct NewOrganization: View {
                         }
 
                         ZStack {
-                            RoundedRectangle(cornerRadius: 10)
+                            Rectangle()
                                 .foregroundColor(.primary)
                                 .opacity(0.1)
                                 .frame(height: 40)
                             Picker(selection: $sport, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
                                 ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                                    Text(sport.Icon() + " " + sport.rawValue).tag(sport.rawValue)
+                                    Text(sport.rawValue).tag(sport.rawValue)
                                 }
                             }.frame(width: SCREEN_WIDTH/2)
                                 .tint(Color("color-prime"))
@@ -180,6 +180,8 @@ struct NewOrganization: View {
                                             Text("upload")
                                                 .foregroundColor(.white)
                                                 .frame(height: 30)
+                                                .font(.caption)
+                                                .textCase(.uppercase)
                                         }
                                     }.onChange(of: selectedItem) { newItem in
                                         Task {
@@ -213,7 +215,6 @@ struct NewOrganization: View {
                                     .frame(width: SCREEN_WIDTH-25, height: 250)
                                     .scaledToFill()
                                     .clipped()
-                                    .cornerRadius(10)
                             }
                             
                         }

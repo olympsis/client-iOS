@@ -61,9 +61,10 @@ struct BetaPage: View {
             Button(action:{self.presentationMode.wrappedValue.dismiss(); self.betaTerms = false}){
                 Text("Accept All")
                     .foregroundColor(.white)
+                    .font(.caption)
+                    .textCase(.uppercase)
             }.frame(width: SCREEN_WIDTH/1.5, height: 50, alignment: .center)
             .background(Color("color-prime"))
-            .cornerRadius(5)
             .padding(.top)
             
             Spacer()

@@ -62,18 +62,26 @@ struct PickSports: View {
     var body: some View {
         VStack {
             // title
-            Text("Pick your sports")
-                .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
-                .fontWeight(.medium)
-                .padding(.top)
+            ZStack {
+                Rectangle()
+                    .foregroundStyle(Color("background"))
+                    .ignoresSafeArea(.all)
+                    .frame(height: 100)
+                Text("What’s your fav sports?")
+                    .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
+                    .fontWeight(.medium)
+                    .padding(.top)
+                    .foregroundStyle(Color("foreground"))
+            }
             SportsPicker(selectedSports: $selectedSports)
-                .padding(.top, 50)
+                .padding(.top, 25)
             Button(action: {
                 Task(priority: .high) {
                     await createUserData()
                 }
             }) {
                 LoadingButton(text: "create", width: 150, status: $status)
+                    .padding(.horizontal, 30)
             }.padding(.bottom)
                 .disabled(!(selectedSports.count > 0))
                 

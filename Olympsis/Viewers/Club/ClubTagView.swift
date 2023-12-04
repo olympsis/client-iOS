@@ -19,7 +19,7 @@ struct ClubTagView: View {
                 .padding(.horizontal)
                 .frame(height: 30)
                 .background {
-                    RoundedRectangle(cornerRadius: 20)
+                    Rectangle()
                         .foregroundStyle(Color("foreground"))
                 }
         } else {
@@ -28,7 +28,7 @@ struct ClubTagView: View {
                 .padding(.horizontal)
                 .frame(height: 30)
                 .background {
-                    RoundedRectangle(cornerRadius: 20)
+                    Rectangle()
                         .stroke(lineWidth: 1)
                         .foregroundStyle(Color("foreground"))
                 }

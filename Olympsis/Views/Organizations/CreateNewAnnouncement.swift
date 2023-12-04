@@ -89,7 +89,7 @@ struct CreateNewAnnouncement: View {
                     Text("What's up?")
                         .bold()
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                             .opacity(0.3)
                         TextEditor(text: $text)
@@ -108,11 +108,13 @@ struct CreateNewAnnouncement: View {
                             matching: .images,
                             photoLibrary: .shared()) {
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
+                                    Rectangle()
                                         .frame(width: 100, height: 30)
                                         .foregroundColor(Color("color-prime"))
                                     Text("upload")
                                         .foregroundColor(.white)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
                                         .frame(height: 30)
                                 }
                             }.onChange(of: selectedItem) { newItem in
@@ -146,7 +148,6 @@ struct CreateNewAnnouncement: View {
                             .scaledToFill()
                             .clipped()
                             .frame(width: SCREEN_WIDTH-25, height: 250)
-                            .cornerRadius(10)
                     }
                     
                 }
