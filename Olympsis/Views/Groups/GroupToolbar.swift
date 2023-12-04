@@ -74,7 +74,7 @@ struct GroupToolbar: ToolbarContent {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMessages.toggle() }){
-                                Image(systemName: "bubble.right")
+                                Image(systemName: "bubble.left.and.bubble.right")
                                     .foregroundColor(Color("color-prime"))
                             }
                         }
