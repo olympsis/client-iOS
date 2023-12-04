@@ -109,7 +109,7 @@ struct NewOrganization: View {
                             .bold()
                     }
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextField("", text: $clubName)
@@ -126,7 +126,7 @@ struct NewOrganization: View {
                     }
                     
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextEditor(text: $description)
@@ -146,7 +146,7 @@ struct NewOrganization: View {
                         }
 
                         ZStack {
-                            RoundedRectangle(cornerRadius: 10)
+                            Rectangle()
                                 .foregroundColor(.primary)
                                 .opacity(0.1)
                                 .frame(height: 40)
@@ -180,6 +180,8 @@ struct NewOrganization: View {
                                             Text("upload")
                                                 .foregroundColor(.white)
                                                 .frame(height: 30)
+                                                .font(.caption)
+                                                .textCase(.uppercase)
                                         }
                                     }.onChange(of: selectedItem) { newItem in
                                         Task {

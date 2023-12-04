@@ -110,7 +110,7 @@ struct NewClub: View {
                             .foregroundColor(.gray)
                     }
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextField("", text: $clubName)
@@ -127,7 +127,7 @@ struct NewClub: View {
                     }
                     
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(.primary)
                             .opacity(0.1)
                         TextEditor(text: $description)
@@ -147,7 +147,7 @@ struct NewClub: View {
                         }
 
                         ZStack {
-                            RoundedRectangle(cornerRadius: 10)
+                            Rectangle()
                                 .foregroundColor(.primary)
                                 .opacity(0.1)
                                 .frame(height: 40)
@@ -178,12 +178,14 @@ struct NewClub: View {
                                     matching: .images,
                                     photoLibrary: .shared()) {
                                         ZStack {
-                                            RoundedRectangle(cornerRadius: 10)
+                                            Rectangle()
                                                 .frame(width: 100, height: 30)
                                                 .foregroundColor(Color("color-prime"))
                                             Text("upload")
                                                 .foregroundColor(.white)
                                                 .frame(height: 30)
+                                                .font(.caption)
+                                                .textCase(.uppercase)
                                         }
                                     }.onChange(of: selectedItem) { newItem in
                                         Task {
