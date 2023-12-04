@@ -213,7 +213,6 @@ struct NewOrganization: View {
                                     .frame(width: SCREEN_WIDTH-25, height: 250)
                                     .scaledToFill()
                                     .clipped()
-                                    .cornerRadius(10)
                             }
                             
                         }

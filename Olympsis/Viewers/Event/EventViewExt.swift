@@ -144,8 +144,6 @@ struct EventViewExt: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 300)
                         .clipped()
-                        .cornerRadius(10)
-                        .padding(.horizontal)
                     
                     // MARK: - Detail/Body
                     VStack(alignment: .leading) {

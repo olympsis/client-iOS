@@ -35,18 +35,15 @@ struct FieldView: View {
                             .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                             .aspectRatio(contentMode: .fill)
                             .clipped()
-                            .cornerRadius(10)
                     } else if phase.error != nil {
                         ZStack {
                             Color.gray // Indicates an error.
-                                .cornerRadius(10)
                                 .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                             Image(systemName: "exclamationmark.circle")
                         }
                     } else {
                         ZStack {
                             Color.gray // Acts as a placeholder.
-                                .cornerRadius(10)
                                 .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                             ProgressView()
                         }

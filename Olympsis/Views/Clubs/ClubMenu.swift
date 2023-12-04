@@ -60,12 +60,11 @@ struct ClubMenu: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
                                 .clipped()
-                                .cornerRadius(10)
                         } else if phase.error != nil {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
                                     .opacity(0.3)
                                     .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
@@ -73,7 +72,7 @@ struct ClubMenu: View {
                             }
                         } else {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                                Rectangle()
                                     .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
                                     .opacity(0.3)
                                     .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
@@ -82,7 +81,6 @@ struct ClubMenu: View {
                         }
                     }.frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
                         .padding(.top)
-                        .padding(.horizontal, 5)
                         
                     VStack {
                         if club.visibility == "private" {
@@ -93,8 +91,7 @@ struct ClubMenu: View {
                                     .font(.callout)
                                 Spacer()
                             }.frame(height: 20)
-                                .padding(.leading)
-                                .padding(.top)
+                                
                         } else {
                             HStack {
                                 Image(systemName: "globe.americas.fill")
@@ -103,8 +100,6 @@ struct ClubMenu: View {
                                     .font(.callout)
                                 Spacer()
                             }.frame(height: 20)
-                                .padding(.leading)
-                                .padding(.top)
                         }
                         
                         HStack {
@@ -112,9 +107,10 @@ struct ClubMenu: View {
                             Text(" members")
                                 .font(.callout)
                             Spacer()
-                        }.padding(.leading)
+                        }
                         
-                    }
+                    }.padding(.vertical)
+                        .padding(.horizontal)
                     
                     if role != "member" {
                         Button(action:{ self.showApplications.toggle() }) {

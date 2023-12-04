@@ -305,7 +305,6 @@ struct NewPickUpEvent: View {
                                         Image(image)
                                             .resizable()
                                             .frame(width: 100, height: 150)
-                                            .cornerRadius(10)
                                         if eventImageURL == image {
                                             Image(systemName: "circle.fill")
                                                 .foregroundColor(Color("color-secnd"))

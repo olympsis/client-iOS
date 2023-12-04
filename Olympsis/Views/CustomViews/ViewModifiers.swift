@@ -11,7 +11,7 @@ import Foundation
 struct MenuButton: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
+            Rectangle()
                 .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
             content
         }.frame(width: SCREEN_WIDTH-25, height: 50)

@@ -677,6 +677,10 @@
 		9A35370229289369005EC806 /* Club */ = {
 			isa = PBXGroup;
 			children = (
+				9AD208F7293429E3007A62C4 /* ClubsList.swift */,
+				9AD4DC432974A095009B6120 /* ClubsList2.swift */,
+				9AD208FD2934448D007A62C4 /* ClubApplications.swift */,
+				9AD208FF29344498007A62C4 /* ClubApplicationView.swift */,
 				9A81B62429247F87009CA6ED /* ClubListView.swift */,
 				9A81B626292485A3009CA6ED /* ClubView.swift */,
 				5DBB94D32B0A7F230031876D /* ClubTagView.swift */,
@@ -1027,11 +1031,7 @@
 				9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */,
 				9A5D336D292AF813008CF61D /* CreateNewPost.swift */,
 				9AD208F5293425C6007A62C4 /* MyClubView.swift */,
-				9AD208F7293429E3007A62C4 /* ClubsList.swift */,
-				9AD4DC432974A095009B6120 /* ClubsList2.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
-				9AD208FD2934448D007A62C4 /* ClubApplications.swift */,
-				9AD208FF29344498007A62C4 /* ClubApplicationView.swift */,
 				9AD20901293444A4007A62C4 /* MemberView.swift */,
 				9A5CA4DC296F7DA300C63A32 /* ClubMemberMenu.swift */,
 				9AECDA4329544CAB007956FB /* NoClubMenu.swift */,
@@ -1469,7 +1469,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1505,7 +1505,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

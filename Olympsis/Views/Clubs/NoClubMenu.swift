@@ -27,9 +27,9 @@ struct NoClubMenu: View {
         let l = CLLocation(latitude: location.center.latitude, longitude: location.center.longitude)
         do {
             let pk = try await geoCoder.reverseGeocodeLocation(l)
-            guard let country = pk.first?.country,
+            guard let _ = pk.first?.country,
                   let state = pk.first?.administrativeArea,
-                  let city = pk.first?.locality else {
+                  let _ = pk.first?.locality else {
                 return
             }
             area = state

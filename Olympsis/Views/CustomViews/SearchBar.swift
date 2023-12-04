@@ -22,7 +22,6 @@ struct SearchBar: View {
         }
         .padding(8)
         .background(Color(.secondarySystemBackground))
-        .cornerRadius(10.0)
     }
 }
 

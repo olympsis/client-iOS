@@ -70,7 +70,7 @@ struct EventMiddleView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
+            Rectangle()
                 .padding(.horizontal)
                 .frame(height: 70)
                 .foregroundStyle(Color("background"))

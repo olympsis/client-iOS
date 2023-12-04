@@ -61,7 +61,6 @@ struct EventView: View {
                             .scaledToFill()
                             .frame(width: 80, height: 80)
                             .clipped()
-                            .cornerRadius(10)
                         VStack(alignment: .leading){
                             Text(title)
                                 .font(.custom("Helvetica-Nue", size: 20))
@@ -83,7 +82,7 @@ struct EventView: View {
         }
         .clipShape(Rectangle())
             .background {
-                RoundedRectangle(cornerRadius: 10)
+                Rectangle()
                     .foregroundStyle(Color("background"))
             }
         .sheet(isPresented: $showDetails) {

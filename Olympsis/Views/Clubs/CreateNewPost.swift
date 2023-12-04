@@ -89,7 +89,7 @@ struct CreateNewPost: View {
                     Text("What's up?")
                         .bold()
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                             .opacity(0.3)
                         TextEditor(text: $text)
@@ -108,12 +108,14 @@ struct CreateNewPost: View {
                             matching: .images,
                             photoLibrary: .shared()) {
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
+                                    Rectangle()
                                         .frame(width: 100, height: 30)
                                         .foregroundColor(Color("color-prime"))
                                     Text("upload")
                                         .foregroundColor(.white)
                                         .frame(height: 30)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
                                 }
                             }.onChange(of: selectedItem) { newItem in
                                 Task {
@@ -146,7 +148,6 @@ struct CreateNewPost: View {
                             .scaledToFill()
                             .clipped()
                             .frame(width: SCREEN_WIDTH-25, height: 250)
-                            .cornerRadius(10)
                     }
                     
                 }

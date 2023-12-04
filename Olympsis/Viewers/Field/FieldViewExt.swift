@@ -86,12 +86,10 @@ struct FieldImages: View {
                                     .frame(width: 220, height: 300, alignment: .center)
                                     .aspectRatio(contentMode: .fill)
                                     .clipped()
-                                    .cornerRadius(10)
                             
                             } else if phase.error != nil {
                                 ZStack {
                                     Color(.gray) // Indicates an error.
-                                        .cornerRadius(10)
                                     .frame(width: 220, height: 300, alignment: .center)
                                     Image(systemName: "exclamationmark.circle")
                                         .foregroundColor(.white)
@@ -100,7 +98,6 @@ struct FieldImages: View {
                                 ZStack {
                                     Color(.gray) // Indicates an error.
                                         .opacity(0.8)
-                                        .cornerRadius(10)
                                     .frame(width: 220, height: 300, alignment: .center)
                                     ProgressView()
                                 }
