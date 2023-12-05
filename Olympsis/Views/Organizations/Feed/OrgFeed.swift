@@ -29,7 +29,7 @@ struct OrgFeed: View {
               let org = selection.organization,
               let id = org.id,
               let resp = await session.postObserver.getPosts(clubId: id, parentId: nil) else {
-            return
+            return self.updatePosts(posts: [Post]())
         }
         self.updatePosts(posts: resp)
     }
