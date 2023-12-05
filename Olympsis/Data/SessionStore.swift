@@ -145,11 +145,17 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func getNearbyData(location: CLLocationCoordinate2D) async {
+    func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
         guard let user = self.user,
-              let sports = user.sports else {
+              var sports = user.sports else {
             return
         }
+        
+        // selected sports in map view
+        if let sSports = selectedSports {
+            sports = sSports
+        }
+        
         let sportsJoined = sports.joined(separator: ",")
         
         // convert radius to Int

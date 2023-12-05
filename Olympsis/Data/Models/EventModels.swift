@@ -12,7 +12,7 @@ import CoreLocation
 class Event: Codable, Identifiable, ObservableObject {
     
     let id: String?
-    let type: String
+    let type: String?
     let poster: String?
     let clubID: String?
     let fieldID: String?

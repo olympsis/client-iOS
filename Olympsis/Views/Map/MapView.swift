@@ -121,7 +121,7 @@ struct MapView: View {
                     .presentationDetents([.height(250), .large])
             }
             .sheet(isPresented: $showOptions) {
-                MapOptions(availableSports: sports)
+                MapOptions(availableSports: SPORT.allCases, selectedSports: sports)
                     .presentationDetents([.medium])
             }
             .alert(isPresented: $showError){

@@ -77,6 +77,7 @@ struct EventsModalView: View {
                     }
                 }
             }.listStyle(.plain)
+                .padding(.top, -20)
             .fullScreenCover(isPresented: $showMore) {
                 EventsList(events: session.events)
             }
