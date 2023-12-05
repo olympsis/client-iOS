@@ -47,7 +47,11 @@ func calculateTimeAgo(from timestamp: Int64) -> String {
         }
     } else if timeDifference < secondsInAYear {
         let months = Int(timeDifference / secondsInAMonth)
-        return "\(months) months ago"
+        if months == 1 {
+            return "\(months) month ago"
+        } else {
+            return "\(months) months ago"
+        }
     } else {
         let years = Int(timeDifference / secondsInAYear)
         if years == 1 {
