@@ -85,7 +85,9 @@ struct Auth: View {
                             .padding(.top)
                     }.background {
                         Rectangle()
-                            .background(.ultraThinMaterial)
+                            .foregroundStyle(.black)
+                            .background(.thinMaterial)
+                            .opacity(0.6)
                             .ignoresSafeArea(.all)
                     }
                 }
