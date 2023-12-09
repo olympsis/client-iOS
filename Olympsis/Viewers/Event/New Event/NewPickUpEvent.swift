@@ -166,7 +166,7 @@ struct NewPickUpEvent: View {
                         .foregroundColor(validationStatus == .noDescription ? .red : .gray)
                         .font(.subheadline)
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                             .frame(height: 100)
                         TextEditor(text: $eventBody)
@@ -330,6 +330,7 @@ struct NewPickUpEvent: View {
                 VStack(alignment: .center){
                     Button(action: { Task { await CreateEvent() } }) {
                         LoadingButton(text: "Create", width: 150, status: $status)
+                            .padding(.horizontal, 40)
                     }
                 }.padding(.top, 50)
             }
