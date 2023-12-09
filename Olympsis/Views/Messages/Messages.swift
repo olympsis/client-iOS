@@ -16,6 +16,7 @@ struct Messages: View {
     @State private var showRooms = false
     @State private var showCancel = false
     @State private var showDetail = false
+    @State private var selectedRoom: Room?
     @State private var showNewRoom = false
     
     @State private var state: LOADING_STATE = .pending
@@ -53,12 +54,21 @@ struct Messages: View {
                         Spacer()
                         Button(action: { selectedView = 0 }) {
                             ZStack {
-                                Rectangle()
-                                    .foregroundColor(selectedView == 0 ? Color("color-prime") : Color("color-secnd"))
-                                Text("Joined")
-                                    .foregroundColor(.white)
-                                    .font(.caption)
-                                    .textCase(.uppercase)
+                                if selectedView == 0 {
+                                    Rectangle()
+                                        .foregroundColor(Color("color-prime"))
+                                    Text("Joined")
+                                        .foregroundColor(.white)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                } else {
+                                    Rectangle()
+                                        .stroke(lineWidth: 1)
+                                    Text("Joined")
+                                        .foregroundColor(.primary)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                }
                             }.padding(.horizontal)
                                 .frame(height: 35)
                         }
@@ -68,12 +78,19 @@ struct Messages: View {
                         Spacer()
                         Button(action: { selectedView = 1 }) {
                             ZStack {
-                                Rectangle()
-                                    .foregroundColor(selectedView == 1 ? Color("color-prime") : Color("color-secnd"))
-                                Text("All Chats")
-                                    .foregroundColor(.white)
-                                    .font(.caption)
-                                    .textCase(.uppercase)
+                                if selectedView == 1 {
+                                    Rectangle().foregroundStyle(Color("color-prime"))
+                                    Text("All Chats")
+                                        .foregroundColor(.white)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                } else {
+                                    Rectangle().stroke(lineWidth: 1)
+                                    Text("All Chats")
+                                        .foregroundColor(.primary)
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                }
                             }.padding(.horizontal)
                                 .frame(height: 35)
                         }
@@ -86,8 +103,9 @@ struct Messages: View {
                                 Button(action:{ self.showDetail.toggle() }){
                                     RoomListView(room: room, rooms: $rooms, observer: chatObserver)
                                         .padding(.bottom)
-                                }.fullScreenCover(isPresented: $showDetail) {
-                                    RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
+                                        .onTapGesture {
+                                            selectedRoom = room
+                                        }
                                 }
                             }
                         }.tabItem {
@@ -148,6 +166,9 @@ struct Messages: View {
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)
             }
+            .fullScreenCover(item: $selectedRoom, content: { r in
+                RoomView(club: club, room: r, rooms: $rooms, observer: chatObserver)
+            })
             .tint(Color("color-prime"))
         }
     }
@@ -155,7 +176,8 @@ struct Messages: View {
 
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: CLUBS[0], rooms: [room]).environmentObject(SessionStore()).environmentObject(NotificationsManager())
+        let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
+        let room2 = Room(id: UUID().uuidString, name: "Region Chat", type: "Group", members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
+        Messages(club: CLUBS[0], rooms: [room, room2]).environmentObject(SessionStore()).environmentObject(NotificationsManager())
     }
 }
