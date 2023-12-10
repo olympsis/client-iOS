@@ -64,6 +64,7 @@ struct GroupToolbar: ToolbarContent {
                                     Image(systemName: "chevron.down")
                                         .fontWeight(.bold)
                                         .imageScale(.small)
+                                    Spacer()
                                 }
                             }
                         }
@@ -108,6 +109,7 @@ struct GroupToolbar: ToolbarContent {
                                         .lineLimit(1)
                                         .foregroundColor(.primary)
                                         .frame(width: SCREEN_WIDTH/2)
+                                    Spacer()
                                     Image(systemName: "chevron.down")
                                         .fontWeight(.bold)
                                         .imageScale(.small)
