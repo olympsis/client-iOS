@@ -102,7 +102,8 @@ struct PickUsername: View {
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .font(.callout)
-            }.padding(.horizontal)
+            }.frame(width: SCREEN_WIDTH)
+            .padding(.horizontal)
                 .padding(.vertical)
                 .background {
                     Rectangle()
@@ -119,8 +120,8 @@ struct PickUsername: View {
                 HStack {
                     ZStack {
                         Rectangle()
-                            .foregroundColor(Color("color-secnd"))
-                            .opacity(0.3)
+                            .stroke(lineWidth: 1)
+                            .foregroundColor(Color("color-prime"))
                         TextField("", text: $username)
                             .focused($isFocused)
                             .padding(.horizontal)
@@ -142,9 +143,9 @@ struct PickUsername: View {
                     
                     ZStack {
                         Rectangle()
+                            .stroke(lineWidth: 1)
                             .frame(width: 45, height: 45)
-                            .foregroundColor(Color("color-secnd"))
-                            .opacity(0.3)
+                            .foregroundColor(Color("color-prime"))
                             .overlay {
                                 switch status {
                                 case .pending:

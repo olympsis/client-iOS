@@ -72,7 +72,7 @@ struct PickSports: View {
                     .fontWeight(.medium)
                     .padding(.top)
                     .foregroundStyle(Color("foreground"))
-            }
+            }.frame(width: SCREEN_WIDTH)
             SportsPicker(selectedSports: $selectedSports)
                 .padding(.top, 25)
             Button(action: {

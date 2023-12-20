@@ -13,10 +13,10 @@ import CoreLocation
 struct EventViewExt: View {
     
     @Binding var event: Event
-    @State private var showParticipants: Bool = false
     @State private var status: LOADING_STATE = .pending
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) private var presentationMode
     
     var eventTitle: String {
         guard let title = event.title else {
@@ -37,23 +37,6 @@ struct EventViewExt: View {
             return ""
         }
         return body
-    }
-    
-    var fieldName: String {
-        guard let data = event.data,
-              let field = data.field else {
-            return "No Field"
-        }
-        return field.name
-    }
-    
-    var fieldLocality: String {
-        guard let data = event.data,
-              let field = data.field else {
-            return "No Field"
-        }
-        
-        return field.city + ", " + field.state
     }
     
     func reloadEvent() async {
@@ -82,7 +65,7 @@ struct EventViewExt: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
             HStack {
                 Text(eventTitle)
                     .font(.largeTitle)
@@ -118,7 +101,7 @@ struct EventViewExt: View {
                 }.clipShape(Circle())
                     .frame(width: 25, height: 20)
                 
-                Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
+                Button(action:{ dismiss() }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.large)
                 }.clipShape(Circle())
@@ -130,20 +113,33 @@ struct EventViewExt: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     
-                    // MARK: - Field Info
-                    VStack(alignment: .leading) {
-                        Text(fieldName)
-                            .font(.title2)
-                        Text(fieldLocality)
-                    }.padding(.horizontal)
-                        .padding(.top, 3)
+                    if event.type == "tournament" {
+                        Text("Tournament")
+                            .font(.caption)
+                            .padding(.leading)
+                            .bold()
+                            .foregroundStyle(Color("color-tert"))
+                    }
                     
+                    // MARK: - Organizers Names
+                    EventOrganizersView(event: event)
+                        .padding(.horizontal)
+                        .padding(.bottom, 3)
+                        .zIndex(1)
+                    
+                    // MARK: - Field Info
+                    if let field = event.data?.field {
+                        EventFieldInfo(field: field)
+                            .zIndex(1)
+                    }
+                        
                     // MARK: - Event Image
                     Image(eventImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 300)
                         .clipped()
+                        .zIndex(0)
                     
                     // MARK: - Detail/Body
                     VStack(alignment: .leading) {
@@ -151,7 +147,6 @@ struct EventViewExt: View {
                             Text("Details")
                                 .font(.title2)
                                 .bold()
-                            
                             Rectangle()
                                 .frame(height: 1)
                             Text(event.timeToString())
@@ -167,18 +162,15 @@ struct EventViewExt: View {
                     EventActionButtons(event: $event)
                     
                     // MARK: - Participants View
-                    EventParticipantsView(event: $event, showParticipants: $showParticipants)
+                    EventParticipantsView(event: $event)
                     
-                    // MARK: - Field/Club Detail
-                    EventExtDetail(data: event.data)
                 }
             }
-        }.sheet(isPresented: $showParticipants, content: {
-            EventParticipantsViewExt(event: $event)
-        })
+        }
     }
 }
 
 #Preview {
-    EventViewExt(event: .constant(EVENTS[0])).environmentObject(SessionStore())
+    EventViewExt(event: .constant(EVENTS[0]))
+        .environmentObject(SessionStore())
 }

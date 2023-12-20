@@ -144,3 +144,35 @@ enum MEMBER_ROLES: String, CaseIterable {
     case Moderator = "moderator"
     case Member = "member"
 }
+
+
+enum GROUP_TYPE: String, CaseIterable {
+    case Club = "club"
+    case Organization = "organization"
+}
+
+enum EVENT_VISIBILITY_TYPES: String, CaseIterable {
+    case Public = "public"
+    case Private = "private"
+    case Group = "group"
+}
+
+enum EVENT_SKILL_LEVELS: String, CaseIterable {
+    case All = "Any Level"
+    case Beginner = "Beginner"
+    case Amateur = "Amateur"
+    case Expert = "Expert"
+    
+    func toInt() -> Int {
+        switch self {
+        case .All:
+            0
+        case .Beginner:
+            1
+        case .Amateur:
+            2
+        case .Expert:
+            3
+        }
+    }
+}

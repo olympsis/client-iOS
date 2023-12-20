@@ -8,6 +8,7 @@
 import os
 import SwiftUI
 
+/// This view has all of the information needed to create an pick up event in Olympsis.
 struct NewPickUpEvent: View {
     enum NEW_EVENT_ERROR: Error {
         case unexpected
@@ -35,35 +36,39 @@ struct NewPickUpEvent: View {
         }
     }
     
+    @State var eventField: Field
+    
     @State private var isEditing:               Bool = false
-    @State private var showCompletedToast:      Bool = false
+    
     @State private var eventTitle:              String = ""
     @State private var eventBody:               String = ""
-    @State private var fieldIndex:              Int = 0
-    @State private var clubIndex:               Int = 0
     @State private var eventStartTime:          Date = Date()
+    @State private var eventStopTime:           Date = Date()
     @State private var eventImageURL:           String = ""
     @State private var eventSport:              SPORT = .soccer
     @State private var eventLevel:              Int    = 0
     @State private var eventMaxParticipants:    Double = 0
     @State private var eventMinParticipants:    Double = 0
+    @State private var eventVisibility:         EVENT_VISIBILITY_TYPES = .Public
+    @State private var eventSkilLevel:          EVENT_SKILL_LEVELS = .All
     @State private var status:                  LOADING_STATE = .pending
     @State private var validationStatus:        NEW_EVENT_ERROR = .unexpected
+    @State private var eventOrganizers: [GroupSelection] = [GroupSelection]()
     
-    @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @State private var showFieldPicker: Bool = false
+    @State private var showSportsPicker: Bool = false
+    @State private var showCompletedToast: Bool = false
+    @State private var showOrganizersPicker: Bool = false
+    @State private var showVisibilityPicker: Bool = false
+    @State private var showSkillLevelPicker: Bool = false
+    
+    @EnvironmentObject private var session: SessionStore
+    @Environment(\.dismiss) var dismiss
     
     var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
     
-    var selectedClub: String {
-        guard let id = session.clubs[clubIndex].id else {
-            return ""
-        }
-        return id
-    }
-    
     var selectedField: String {
-        return session.fields[fieldIndex].id
+        return eventField.id
     }
     
     var selectedImage: String {
@@ -73,8 +78,42 @@ struct NewPickUpEvent: View {
         return eventImageURL
     }
     
-    var setStartTime: Int64 {
-        return Int64(eventStartTime.timeIntervalSince1970)
+    // filters all of the clubs and the group selections that might not have a club
+    // force returns a club since it should exist from the filter operation
+    var selectedClubs: [Club] {
+        return eventOrganizers.filter { $0.type == GROUP_TYPE.Club.rawValue && $0.club != nil }.map {
+            return $0.club!
+        }
+    }
+    
+    // filters all of the organizations and the group selections that might not have a organization
+    // force returns a organization since it should exist from the filter operation
+    var selectedOrganizations: [Organization] {
+        return eventOrganizers.filter { $0.type == GROUP_TYPE.Organization.rawValue && $0.organization != nil }.map {
+            return $0.organization!
+        }
+    }
+    
+    var setStartTime: Int {
+        return Int(eventStartTime.timeIntervalSince1970)
+    }
+    
+    var setStopTime: Int {
+        return Int(eventStopTime.timeIntervalSince1970)
+    }
+    
+    func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
+        }
+    }
+    
+    func handleSuccess() {
+        status = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            dismiss()
+        }
     }
     
     func Validate() -> NEW_EVENT_ERROR? {
@@ -92,253 +131,337 @@ struct NewPickUpEvent: View {
     func CreateEvent() async {
         let res = Validate()
         if let _ = res {
+            handleFailure()
             return
         }
         status = .loading
         guard let user = session.user,
               let uuid = user.uuid else {
+            handleFailure()
             return
         }
-        let participant = Participant(uuid: uuid, status: "yes", createdAt: Int64(Date().timeIntervalSince1970))
-        let event = Event(id: nil, type: "pickup", poster: uuid, clubID: selectedClub, fieldID: selectedField, imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel,startTime: setStartTime,minParticipants: Int(eventMinParticipants), maxParticipants: Int(eventMaxParticipants), participants: [participant], visibility: "public", data: nil, createdAt: nil)
         
+        let organizers = eventOrganizers.map {
+            if $0.type == GROUP_TYPE.Club.rawValue {
+                return Organizer(type: $0.type, id: $0.club?.id ?? "")
+            } else {
+                return Organizer(type: $0.type, id: $0.organization?.id ?? "")
+            }
+        }
+        
+        let event = Event(id: nil, type: "pickup", poster: uuid, organizers: organizers, field: FieldDescriptor(type: "internal", id: eventField.id, location: nil), imageURL: selectedImage, title: eventTitle, body: eventBody, sport: eventSport.rawValue, level: eventLevel, startTime: setStartTime, stopTime: setStopTime, actualStopTime: nil, minParticipants: Int(eventMinParticipants), maxParticipants: Int(eventMaxParticipants), participants: nil, visibility: "public", data: nil, createdAt: nil)
+
         let resp = await session.eventObserver.createEvent(event: event)
         guard let newEvent = resp,
               let userData = session.user else {
-            log.error("failed to create event")
+            log.error("Failed to create event")
+            handleFailure()
             return
         }
+        
         newEvent.participants?[0].data = user
         await MainActor.run {
-            newEvent.data = EventData(poster: userData, club: session.clubs[clubIndex], field: session.fields[fieldIndex])
+            newEvent.data = EventData(poster: userData, field: eventField, clubs: selectedClubs, organizations: selectedOrganizations)
             session.events.append(newEvent)
-            self.presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
     }
     
     var body: some View {
-        VStack(alignment: .leading){
-            ScrollView(showsIndicators: false) {
-                HStack {
-                    Text("Create an Event")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding(.leading)
-                    Spacer()
-                }.padding(.vertical, 30)
-                
-                // MARK: - Title
-                VStack(alignment: .leading){
-                    Text("Title")
-                        .font(.title3)
-                        .bold()
-                    Text("What to call the event")
-                        .font(.subheadline)
-                        .foregroundColor(validationStatus == .noTitle ? .red : .gray)
+        NavigationStack {
+            VStack(alignment: .leading){
+                ScrollView(showsIndicators: false) {
                     
-                    TextField("title", text: $eventTitle)
-                        .padding(.leading)
-                        .modifier(MenuButton())
-                }
-                
-                // MARK: - Sports picker
-                VStack(alignment: .leading){
-                    Text("Sport")
-                        .font(.title3)
-                        .bold()
-                    Text("The sport you're going to play")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                    
-                    Picker(selection: $eventSport, label: Text("")) {
-                        ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                            Text(sport.rawValue).tag(sport)
+                    // MARK: - Top Options
+                    HStack {
+                        Button(action: { self.showVisibilityPicker.toggle() }){
+                            HStack {
+                                switch eventVisibility {
+                                case .Public:
+                                    Image(systemName: "globe.americas.fill")
+                                        .foregroundStyle(.white)
+                                case .Private:
+                                    Image(systemName: "lock.fill")
+                                        .foregroundStyle(.white)
+                                case .Group:
+                                    Image(systemName: "person.3.fill")
+                                        .foregroundStyle(.white)
+                                }
+                                Text(eventVisibility.rawValue.prefix(1).capitalized + eventVisibility.rawValue.dropFirst())
+                                    .foregroundStyle(.white)
+                                Image(systemName: "chevron.down")
+                                    .imageScale(.small)
+                                    .foregroundStyle(.white)
+                            }.padding(.horizontal)
+                                .padding(.vertical, 5)
+                                .background {
+                                    Rectangle()
+                                        .foregroundStyle(Color("color-prime"))
+                                }
                         }
-                    }.modifier(MenuButton())
-                }.padding(.top)
-                
-                // MARK: - Description
-                VStack(alignment: .leading){
-                    Text("Description")
-                        .font(.title3)
-                        .bold()
-                    Text("Give details about the event")
-                        .foregroundColor(validationStatus == .noDescription ? .red : .gray)
-                        .font(.subheadline)
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
-                            .frame(height: 100)
-                        TextEditor(text: $eventBody)
-                            .frame(height: 95)
-                            .scrollContentBackground(.hidden)
-                            .padding(.horizontal, 5)
-                    }
-                }.padding(.horizontal)
-                
-                // MARK: - Club/Field picker
-                VStack(alignment: .leading){
+                        
+                        Button(action: { self.showSkillLevelPicker.toggle() }){
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .foregroundStyle(.white)
+                                Text(eventSkilLevel.rawValue)
+                                    .foregroundStyle(.white)
+                                Image(systemName: "chevron.down")
+                                    .imageScale(.small)
+                                    .foregroundStyle(.white)
+                            }.padding(.horizontal)
+                                .padding(.vertical, 5)
+                                .background {
+                                    Rectangle()
+                                        .foregroundStyle(Color("color-prime"))
+                                }
+                        }
+                        
+                        Spacer()
+                    }.padding(.horizontal)
+                        .padding(.vertical)
+                    
+                    // MARK: - Title
                     VStack(alignment: .leading){
-                        Text("Organizer")
+                        Text("Title")
                             .font(.title3)
                             .bold()
-                        Text("The club/organization affiliated with the event")
+                        Text("What to call the event")
+                            .font(.subheadline)
+                            .foregroundColor(validationStatus == .noTitle ? .red : .gray)
+                        
+                        TextField("", text: $eventTitle)
+                            .padding(.leading)
+                            .modifier(InputField())
+                    }.padding(.horizontal)
+
+                    // MARK: - Description
+                    VStack(alignment: .leading){
+                        Text("Description")
+                            .font(.title3)
+                            .bold()
+                        Text("Give details about the event")
+                            .foregroundColor(validationStatus == .noDescription ? .red : .gray)
+                            .font(.subheadline)
+                        ZStack {
+                            Rectangle()
+                                .stroke(lineWidth: 1)
+                                .foregroundColor(Color("color-prime"))
+                                .frame(height: 100)
+                            TextEditor(text: $eventBody)
+                                .frame(height: 95)
+                                .scrollContentBackground(.hidden)
+                                .padding(.horizontal, 5)
+                        }
+                    }.padding(.top)
+                    .padding(.horizontal)
+                    
+                    // MARK: - Sports picker
+                    VStack(alignment: .leading){
+                        Text("Sport")
+                            .font(.title3)
+                            .bold()
+                        Text("The sport you're going to play")
                             .foregroundColor(.gray)
                             .font(.subheadline)
                         
-                        Picker(selection: $clubIndex, label: Text("")) {
-                            ForEach(Array(session.clubs.enumerated()), id: \.1.id) { index, club in
-                                Text(club.name ?? "error").tag(index)
+                        Picker(selection: $eventSport, label: Text("")) {
+                            ForEach(SPORT.allCases, id: \.rawValue) { sport in
+                                Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
                             }
-                        }.modifier(MenuButton())
+                        }.modifier(InputField())
+                            
+                    }.padding(.top)
+                        .padding(.horizontal)
+                    
+                    // MARK: - Organizers Picker
+                    VStack(alignment: .leading){
+                        Text("Organizer(s)")
+                            .font(.title3)
+                            .bold()
+                        Text("The clubs/organizations affiliated with this event")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        Button(action: { self.showOrganizersPicker.toggle() }) {
+                            ZStack {
+                                Rectangle()
+                                    .stroke(lineWidth: 1)
+                                    .modifier(InputField())
+                                EventOrganizerView(organizers: $eventOrganizers)
+                            }
+                        }
                     }.padding(.vertical)
+                        .padding(.horizontal)
                     
-                    Text("Field")
-                        .font(.title3)
-                        .bold()
-                    Text("Location of the event")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                    
-                    Picker(selection: $fieldIndex, label: Text("")) {
-                        ForEach(Array(session.fields.enumerated()), id: \.1.id) { index, field in
-                            Text(field.name).tag(index)
+                    // MARK: - Field Picker
+                    VStack(alignment: .leading){
+                        Text("Field")
+                            .font(.title3)
+                            .bold()
+                        Text("Location of the event")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        Button(action: { self.showFieldPicker.toggle() }) {
+                            ZStack {
+                                Rectangle()
+                                    .stroke(lineWidth: 1)
+                                    .modifier(InputField())
+                                Text(eventField.name)
+                            }
                         }
-                    }.modifier(MenuButton())
-                }.padding(.horizontal)
-                
-                
-                // MARK: - Date/Time picker
-                VStack(alignment: .leading){
-                    Text("Start Date/Time")
-                        .font(.title3)
-                        .bold()
-                    DatePicker("Date", selection: $eventStartTime, in: Date()...)
-                        .datePickerStyle(.graphical)
-                }
-                .padding(.vertical)
-                .padding(.horizontal)
-                
-                
-                // MARK: - Skill Level picker
-                VStack(alignment: .leading){
-                    Text("Skill Level")
-                        .font(.title3)
-                        .bold()
-                    Text("Participants expected skill level")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                    Picker(selection: $eventLevel, label: Text("")) {
-                        ForEach(SkillLevel.allCases, id: \.rawValue) { skill in
-                            Text(skill.rawValue).tag(getSkillRaw(for: skill))
-                        }
-                    }.modifier(MenuButton())
-                }
-                .padding(.horizontal)
-                
-                // MARK: - Min Participants slider
-                VStack(alignment: .leading){
-                    Text("Min Participants")
-                        .font(.title3)
-                        .bold()
-                    Text("The minimum number of participants")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
+                    }.padding(.horizontal)
                     
-                    HStack {
-                        Slider(
-                            value: $eventMinParticipants,
-                            in: 0...100,
-                            step: 1.0,
-                            onEditingChanged: { editing in
-                                isEditing = editing
-                            }).padding(.leading)
-                            .padding(.trailing)
-                        Spacer()
-                        Text("\(Int(eventMinParticipants))")
-                            .foregroundColor(isEditing ? .red : Color("color-prime"))
-                        Stepper("", value: $eventMinParticipants, in: 0...100)
-                            .padding(.trailing)
-                    }.modifier(MenuButton())
                     
-                }.padding(.top)
+                    // MARK: - Start Date/Time picker
+                    VStack(alignment: .leading){
+                        Text("Start Date/Time")
+                            .font(.title3)
+                            .bold()
+                        DatePicker("Date", selection: $eventStartTime, in: Date()...)
+                            .datePickerStyle(.graphical)
+                    }
+                    .padding(.vertical)
                     .padding(.horizontal)
-                
-                // MARK: - Max Participants slider
-                VStack(alignment: .leading){
-                    Text("Max Participants")
-                        .font(.title3)
-                        .bold()
-                    Text("Limit the headcount")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
                     
-                    HStack {
-                        Slider(
-                            value: $eventMaxParticipants,
-                            in: 0...1000,
-                            step: 5.0,
-                            onEditingChanged: { editing in
-                                isEditing = editing
-                            }).padding(.leading)
-                            .padding(.trailing)
-                        Spacer()
-                        Text("\(Int(eventMaxParticipants))")
-                            .foregroundColor(isEditing ? .red : Color("color-prime"))
-                        Stepper("", value: $eventMaxParticipants, in: 0...1000)
-                            .padding(.trailing)
-                    }.modifier(MenuButton())
-                    
-                }.padding(.top)
+                    // MARK: - End Date/Time picker
+                    VStack(alignment: .leading){
+                        Text("End Date/Time")
+                            .font(.title3)
+                            .bold()
+                        DatePicker("Date", selection: $eventStopTime, in: eventStartTime.addingTimeInterval(30 * 60)...)
+                            .datePickerStyle(.graphical)
+                    }
+                    .padding(.vertical)
                     .padding(.horizontal)
-                
-                // MARK: - Background Image picker
-                VStack(alignment: .leading){
-                    Text("Event Image")
-                        .font(.title3)
-                        .bold()
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    .frame(height: 400)
+                    
+                    // MARK: - Min Participants slider
+                    VStack(alignment: .leading){
+                        Text("Min Participants")
+                            .font(.title3)
+                            .bold()
+                        Text("The minimum number of participants")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
                         HStack {
-                            ForEach(eventSport.Images(), id: \.self) { image in
-                                Button(action:{ self.eventImageURL = image }) {
-                                    ZStack(alignment: .bottomTrailing){
-                                        Image(image)
-                                            .resizable()
-                                            .frame(width: 100, height: 150)
-                                        if eventImageURL == image {
-                                            Image(systemName: "circle.fill")
-                                                .foregroundColor(Color("color-secnd"))
-                                                .padding(.bottom, 5)
-                                                .padding(.trailing, 5)
-                                            
-                                        } else {
-                                            Image(systemName: "circle")
-                                                .foregroundColor(Color("color-secnd"))
-                                                .padding(.bottom, 5)
-                                                .padding(.trailing, 5)
-                                                .fontWeight(.bold)
+                            Slider(
+                                value: $eventMinParticipants,
+                                in: 0...100,
+                                step: 1.0,
+                                onEditingChanged: { editing in
+                                    isEditing = editing
+                                }).padding(.leading)
+                                .padding(.trailing)
+                            Spacer()
+                            Text("\(Int(eventMinParticipants))")
+                                .foregroundColor(isEditing ? .red : Color("color-prime"))
+                            Stepper("", value: $eventMinParticipants, in: 0...100)
+                                .padding(.trailing)
+                        }.modifier(InputField())
+                        
+                    }.padding(.top)
+                        .padding(.horizontal)
+                    
+                    // MARK: - Max Participants slider
+                    VStack(alignment: .leading){
+                        Text("Max Participants")
+                            .font(.title3)
+                            .bold()
+                        Text("Limit the headcount")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                        
+                        HStack {
+                            Slider(
+                                value: $eventMaxParticipants,
+                                in: 0...1000,
+                                step: 5.0,
+                                onEditingChanged: { editing in
+                                    isEditing = editing
+                                }).padding(.leading)
+                                .padding(.trailing)
+                            Spacer()
+                            Text("\(Int(eventMaxParticipants))")
+                                .foregroundColor(isEditing ? .red : Color("color-prime"))
+                            Stepper("", value: $eventMaxParticipants, in: 0...1000)
+                                .padding(.trailing)
+                        }.modifier(InputField())
+                        
+                    }.padding(.top)
+                        .padding(.horizontal)
+                    
+                    // MARK: - Background Image picker
+                    VStack(alignment: .leading){
+                        Text("Event Image")
+                            .font(.title3)
+                            .bold()
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(eventSport.Images(), id: \.self) { image in
+                                    Button(action:{ self.eventImageURL = image }) {
+                                        ZStack(alignment: .bottomTrailing){
+                                            Image(image)
+                                                .resizable()
+                                                .frame(width: 100, height: 150)
+                                            if eventImageURL == image {
+                                                Image(systemName: "circle.fill")
+                                                    .foregroundColor(Color("color-secnd"))
+                                                    .padding(.bottom, 5)
+                                                    .padding(.trailing, 5)
+                                                
+                                            } else {
+                                                Image(systemName: "circle")
+                                                    .foregroundColor(Color("color-secnd"))
+                                                    .padding(.bottom, 5)
+                                                    .padding(.trailing, 5)
+                                                    .fontWeight(.bold)
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                    }.padding(.top)
+                        .padding(.horizontal)
+                    
+                    // MARK: - Action Button
+                    VStack(alignment: .center){
+                        Button(action: { Task { await CreateEvent() } }) {
+                            LoadingButton(text: "Create", width: 150, status: $status)
+                                .padding(.horizontal, 40)
+                        }
+                    }.padding(.vertical, 50)
+                }.fullScreenCover(isPresented: $showVisibilityPicker) {
+                    EventVisibilityPickerView(visibility: $eventVisibility)
+                }
+                .fullScreenCover(isPresented: $showSkillLevelPicker) {
+                    EventSkillLevelPickerView(level: $eventSkilLevel)
+                }
+                .fullScreenCover(isPresented: $showOrganizersPicker) {
+                    EventOrganizersPickerView(selectedOrganizers: $eventOrganizers, organizers: session.groups, clubs: session.clubs, organizations: session.orgs)
+                }
+                .fullScreenCover(isPresented: $showFieldPicker) {
+                    EventFieldPickerView(selectedField: $eventField, fields: session.fields)
+                }
+                .onAppear {
+                    guard let select = session.selectedGroup else {
+                        return
                     }
-                }.padding(.top)
-                    .padding(.horizontal)
-                
-                // MARK: - Action Button
-                VStack(alignment: .center){
-                    Button(action: { Task { await CreateEvent() } }) {
-                        LoadingButton(text: "Create", width: 150, status: $status)
-                            .padding(.horizontal, 40)
-                    }
-                }.padding(.top, 50)
-            }
+                    eventOrganizers.append(select)
+                }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                }
+            }.navigationTitle("Pick Up")
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
 #Preview {
-    NewPickUpEvent()
+    NewPickUpEvent(eventField: FIELDS[0])
         .environmentObject(SessionStore())
 }

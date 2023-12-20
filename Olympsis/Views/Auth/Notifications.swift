@@ -51,7 +51,8 @@ struct Notifications: View {
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .font(.callout)
-            }.padding(.horizontal)
+                    .padding(.horizontal)
+            }.frame(width: SCREEN_WIDTH)
                 .padding(.vertical)
                 .background {
                     Rectangle()

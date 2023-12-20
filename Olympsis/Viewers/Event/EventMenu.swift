@@ -13,7 +13,7 @@ struct EventMenu: View {
     @State private var loadingState: LOADING_STATE = .pending
     @State private var showNotification: Bool = false
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     func deleteEvent() async {
         guard let id = event.id else {
@@ -23,29 +23,54 @@ struct EventMenu: View {
         if res {
             await MainActor.run {
                 session.events.removeAll(where: {$0.id == event.id})
-                self.presentationMode.wrappedValue.dismiss()
+                dismiss()
             }
         }
     }
     
     var isPosterOrAdmin: Bool {
-        guard let user = session.user,
-              let uuid = user.uuid,
-              let eventPoster = event.poster,
-              let club = session.clubs.first(where: { $0.id == event.clubID }),
-              let members = club.members else {
-            return false
+        
+        // check to see if you're the poster
+        if let user = session.user,
+           let uuid = user.uuid {
+            if event.poster == uuid {
+                return true
+            }
         }
         
-        guard let member = members.first(where: { $0.uuid == uuid }) else {
-            return false
+        if let data = event.data {
+            // check to see if you're an admin of an associated club
+            if let clubs = data.clubs {
+                if let userClubs = session.user?.clubs {
+                    let eventClubs = clubs.filter { c in
+                        userClubs.contains { $0 == c.id }
+                    }
+                    guard let userID = session.user?.uuid else {
+                        return false
+                    }
+                    return eventClubs.first { e in
+                        e.members?.contains { ($0.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
+                    } != nil
+                }
+            }
+            
+            // check to see if you're an manager of an associated org
+            if let organizations = data.organizations {
+                if let userOrgs = session.user?.organizations {
+                    let eventOrgs = organizations.filter { o in
+                        userOrgs.contains { $0 == o.id }
+                    }
+                    guard let userID = session.user?.uuid else {
+                        return false
+                    }
+                    return eventOrgs.first { e in
+                        e.members?.contains { $0.uuid == userID } ?? false
+                    } != nil
+                }
+            }
         }
         
-        if member.role != "member" {
-            return true
-        }
-        
-        return (eventPoster == uuid)
+        return true
     }
     
     func startEvent() async {
@@ -60,7 +85,7 @@ struct EventMenu: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.actualStartTime = Int64(now)
+                    event.actualStartTime = now
                     loadingState = .success
                 }
             }
@@ -70,7 +95,7 @@ struct EventMenu: View {
     func stopEvent() async {
         let status = "ended"
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(stopTime: now, status: status)
+        let dao = EventDao(actualStopTime: now, status: status)
         loadingState = .loading
         guard let id = event.id else {
             return
@@ -79,7 +104,7 @@ struct EventMenu: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.stopTime = Int64(now)
+                    event.actualStopTime = now
                     loadingState = .success
                 }
             }
@@ -117,7 +142,7 @@ struct EventMenu: View {
             
             if isPosterOrAdmin {
                 HStack(spacing: 15) {
-                    if event.stopTime == nil {
+                    if event.actualStopTime == nil {
                         Button(action:{
                             Task {
                                 if event.actualStartTime == nil {
@@ -154,7 +179,6 @@ struct EventMenu: View {
                             }.modifier(SettingButton())
                         }.disabled(loadingState == .loading ? true : false)
                             .frame(height: 100)
-                            .padding(.leading)
                     }
                     
                     Button(action:{
@@ -171,8 +195,7 @@ struct EventMenu: View {
                                 .foregroundColor(.red)
                         }.modifier(SettingButton())
                     }.frame(height: 100)
-                        .padding(.trailing)
-                }
+                }.padding(.horizontal)
             }
             
             Button(action:{}) {

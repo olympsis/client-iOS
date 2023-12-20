@@ -22,9 +22,21 @@ struct MenuButton: ViewModifier {
 struct SettingButton: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
+            Rectangle()
                 .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
             content
         }
+    }
+}
+
+
+struct InputField: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            Rectangle()
+                .stroke(lineWidth: 1)
+                .foregroundColor(Color("color-prime"))
+            content
+        }.frame(height: 50)
     }
 }

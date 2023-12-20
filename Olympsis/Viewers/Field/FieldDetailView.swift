@@ -46,7 +46,7 @@ struct FieldDetailView: View {
     }
     
     var fieldEvents: [Event] {
-        return session.events.filter({ $0.fieldID == field.id })
+        return session.events.filter({ $0.field?.id == field.id })
     }
     var body: some View {
         NavigationView {

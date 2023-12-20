@@ -57,15 +57,16 @@ struct GroupToolbar: ToolbarContent {
                                     Text(group.club?.name ?? "")
                                         .font(.title)
                                         .bold()
-                                        .minimumScaleFactor(0.7)
+                                        .minimumScaleFactor(0.5)
                                         .lineLimit(1)
                                         .foregroundColor(.primary)
-                                        .frame(width: SCREEN_WIDTH/2)
+                                        .multilineTextAlignment(.leading)
+                                        
                                     Image(systemName: "chevron.down")
                                         .fontWeight(.bold)
                                         .imageScale(.small)
                                     Spacer()
-                                }
+                                }.frame(width: SCREEN_WIDTH/2)
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
@@ -108,12 +109,11 @@ struct GroupToolbar: ToolbarContent {
                                         .minimumScaleFactor(0.5)
                                         .lineLimit(1)
                                         .foregroundColor(.primary)
-                                        .frame(width: SCREEN_WIDTH/2)
-                                    Spacer()
                                     Image(systemName: "chevron.down")
                                         .fontWeight(.bold)
                                         .imageScale(.small)
-                                }
+                                    Spacer()
+                                }.frame(width: SCREEN_WIDTH/2)
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {

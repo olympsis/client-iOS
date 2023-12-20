@@ -20,11 +20,24 @@
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D2DEFBE2B1AB1770082FE73 /* CreateNewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */; };
 		5D2DEFC32B1AB2CE0082FE73 /* OrgFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC22B1AB2CE0082FE73 /* OrgFeed.swift */; };
+		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
+		5D2DEFC82B280E850082FE73 /* EventFieldInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */; };
 		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
 		5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BD2B129AC800D19188 /* GroupSelector.swift */; };
 		5D67494A2A73339E00AEC868 /* EventViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventViewExt.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
+		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
+		5D8086062B2FF9C100EA01AC /* OlympsisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */; };
+		5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D80860D2B2FFA0F00EA01AC /* EventModel.swift */; };
+		5D8086102B30057000EA01AC /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
+		5D8086112B3005BD00EA01AC /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
+		5D8086122B3005C700EA01AC /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350572A6737AF00669B2C /* Enums.swift */; };
+		5D8086132B3005D600EA01AC /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
+		5D8086142B30161000EA01AC /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
+		5D8086152B30161500EA01AC /* FieldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* FieldModels.swift */; };
+		5D8086162B301EFC00EA01AC /* EncodeToData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FC29E279C9008EA591 /* EncodeToData.swift */; };
+		5D8086172B301F3600EA01AC /* OrganizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D52B0D27920031876D /* OrganizationModels.swift */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
@@ -41,11 +54,16 @@
 		5DBB94DB2B125BF20031876D /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DA2B125BF20031876D /* GroupView.swift */; };
 		5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DC2B125C230031876D /* GroupSelection.swift */; };
 		5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DE2B128D920031876D /* GroupToolbar.swift */; };
+		5DC733F72B2934660051BE21 /* OrgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733F62B2934660051BE21 /* OrgView.swift */; };
+		5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733F82B2937D60051BE21 /* GroupsView.swift */; };
+		5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */; };
+		5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733FE2B2A8B050051BE21 /* EventSkillLevelPickerView.swift */; };
+		5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */; };
+		5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC734042B2A98D60051BE21 /* EventFieldPickerView.swift */; };
 		5DCAEA2D2B01958F00B9C22A /* EventParticipantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */; };
 		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
 		5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */; };
 		5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */; };
-		5DCAEA352B01A8AD00B9C22A /* EventExtDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */; };
 		5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
@@ -228,6 +246,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5D8086072B2FF9C100EA01AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
+			remoteInfo = Olympsis;
+		};
 		5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
@@ -275,10 +300,16 @@
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAnnouncement.swift; sourceTree = "<group>"; };
 		5D2DEFC22B1AB2CE0082FE73 /* OrgFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgFeed.swift; sourceTree = "<group>"; };
+		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
+		5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldInfo.swift; sourceTree = "<group>"; };
 		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		5D4942BD2B129AC800D19188 /* GroupSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelector.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewExt.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
+		5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisTests.swift; sourceTree = "<group>"; };
+		5D80860D2B2FFA0F00EA01AC /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
@@ -294,11 +325,16 @@
 		5DBB94DA2B125BF20031876D /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		5DBB94DC2B125C230031876D /* GroupSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelection.swift; sourceTree = "<group>"; };
 		5DBB94DE2B128D920031876D /* GroupToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupToolbar.swift; sourceTree = "<group>"; };
+		5DC733F62B2934660051BE21 /* OrgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgView.swift; sourceTree = "<group>"; };
+		5DC733F82B2937D60051BE21 /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
+		5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVisibilityPickerView.swift; sourceTree = "<group>"; };
+		5DC733FE2B2A8B050051BE21 /* EventSkillLevelPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSkillLevelPickerView.swift; sourceTree = "<group>"; };
+		5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersPickerView.swift; sourceTree = "<group>"; };
+		5DC734042B2A98D60051BE21 /* EventFieldPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldPickerView.swift; sourceTree = "<group>"; };
 		5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipantsView.swift; sourceTree = "<group>"; };
 		5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMiddleView.swift; sourceTree = "<group>"; };
 		5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventActionButtons.swift; sourceTree = "<group>"; };
 		5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLevelView.swift; sourceTree = "<group>"; };
-		5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventExtDetail.swift; sourceTree = "<group>"; };
 		5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
 		5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWorkoutView.swift; sourceTree = "<group>"; };
 		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
@@ -484,6 +520,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5D8086002B2FF9C100EA01AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3F02AC889F900C85B94 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -517,6 +560,7 @@
 			isa = PBXGroup;
 			children = (
 				5DBB94CC2B0326300031876D /* NewGroup.swift */,
+				5DC733F82B2937D60051BE21 /* GroupsView.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -527,6 +571,23 @@
 				5D4942BB2B1299F000D19188 /* GroupViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5D8086042B2FF9C100EA01AC /* OlympsisTests */ = {
+			isa = PBXGroup;
+			children = (
+				5D80860C2B2FF9DE00EA01AC /* Models */,
+				5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */,
+			);
+			path = OlympsisTests;
+			sourceTree = "<group>";
+		};
+		5D80860C2B2FF9DE00EA01AC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5D80860D2B2FFA0F00EA01AC /* EventModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		5D9557A22A6C5E19006A1EF8 /* Onboarding */ = {
@@ -545,6 +606,11 @@
 				9A353707292A04B0005EC806 /* NewEvent.swift */,
 				5DBB94C42B0320650031876D /* NewTournamentEvent.swift */,
 				5DBB94C62B0321560031876D /* NewPickUpEvent.swift */,
+				5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */,
+				5DC733FE2B2A8B050051BE21 /* EventSkillLevelPickerView.swift */,
+				5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */,
+				5DC734042B2A98D60051BE21 /* EventFieldPickerView.swift */,
+				5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */,
 			);
 			path = "New Event";
 			sourceTree = "<group>";
@@ -556,6 +622,7 @@
 				5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */,
 				5D2062632B144A1F00A9D408 /* OrganizationsView.swift */,
 				5DBB94C82B03252B0031876D /* NewOrganization.swift */,
+				5DC733F62B2934660051BE21 /* OrgView.swift */,
 			);
 			path = Organization;
 			sourceTree = "<group>";
@@ -651,12 +718,13 @@
 				9A35370329289396005EC806 /* ParticipantView.swift */,
 				9AD208F32933FE41007A62C4 /* EventMenu.swift */,
 				5D6749492A73339E00AEC868 /* EventViewExt.swift */,
-				5DCAEA342B01A8AD00B9C22A /* EventExtDetail.swift */,
 				5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */,
 				5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */,
 				5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */,
 				5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */,
 				5DBB94D12B05BEB10031876D /* EventNotification.swift */,
+				5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */,
+				5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -760,6 +828,7 @@
 			children = (
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DD0E3F82AC889FA00C85B94 /* LiveEvent */,
+				5D8086042B2FF9C100EA01AC /* OlympsisTests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
 			);
@@ -770,6 +839,7 @@
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
 				5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */,
+				5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1109,6 +1179,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5D8086022B2FF9C100EA01AC /* OlympsisTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D8086092B2FF9C100EA01AC /* Build configuration list for PBXNativeTarget "OlympsisTests" */;
+			buildPhases = (
+				5D8085FF2B2FF9C100EA01AC /* Sources */,
+				5D8086002B2FF9C100EA01AC /* Frameworks */,
+				5D8086012B2FF9C100EA01AC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D8086082B2FF9C100EA01AC /* PBXTargetDependency */,
+			);
+			name = OlympsisTests;
+			productName = OlympsisTests;
+			productReference = 5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		5DD0E3F22AC889F900C85B94 /* LiveEventExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */;
@@ -1157,9 +1245,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					5D8086022B2FF9C100EA01AC = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 9A8FF0AC28BB14BF00DE4CF8;
+					};
 					5DD0E3F22AC889F900C85B94 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -1187,11 +1279,19 @@
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
 				5DD0E3F22AC889F900C85B94 /* LiveEventExtension */,
+				5D8086022B2FF9C100EA01AC /* OlympsisTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5D8086012B2FF9C100EA01AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3F12AC889F900C85B94 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1233,6 +1333,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5D8085FF2B2FF9C100EA01AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */,
+				5D8086112B3005BD00EA01AC /* TempData.swift in Sources */,
+				5D8086172B301F3600EA01AC /* OrganizationModels.swift in Sources */,
+				5D8086142B30161000EA01AC /* ClubModels.swift in Sources */,
+				5D8086122B3005C700EA01AC /* Enums.swift in Sources */,
+				5D8086152B30161500EA01AC /* FieldModels.swift in Sources */,
+				5D8086062B2FF9C100EA01AC /* OlympsisTests.swift in Sources */,
+				5D8086162B301EFC00EA01AC /* EncodeToData.swift in Sources */,
+				5D8086132B3005D600EA01AC /* UserModels.swift in Sources */,
+				5D8086102B30057000EA01AC /* EventModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DD0E3EF2AC889F900C85B94 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1249,7 +1366,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
-				5DCAEA352B01A8AD00B9C22A /* EventExtDetail.swift in Sources */,
 				9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
@@ -1275,6 +1391,7 @@
 				5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */,
 				9A81B62529247F87009CA6ED /* ClubListView.swift in Sources */,
 				5FA350562A67352500669B2C /* NotificationsView.swift in Sources */,
+				5DC733F72B2934660051BE21 /* OrgView.swift in Sources */,
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
@@ -1290,6 +1407,7 @@
 				5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
+				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
@@ -1319,6 +1437,7 @@
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				5D2062602B14463400A9D408 /* OrgListView.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
+				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
@@ -1339,13 +1458,16 @@
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberView.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
+				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				5DFB8A062A720B560002A560 /* FieldViewExt.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
+				5D2DEFC82B280E850082FE73 /* EventFieldInfo.swift in Sources */,
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
+				5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */,
 				5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
 				9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */,
@@ -1374,6 +1496,7 @@
 				5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */,
 				5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */,
 				5F4E53F62A2918B900257350 /* FieldsView.swift in Sources */,
+				5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
@@ -1424,6 +1547,7 @@
 				5D2DEFC32B1AB2CE0082FE73 /* OrgFeed.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationsManager.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
+				5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */,
 				5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */,
 				9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */,
 				9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */,
@@ -1432,6 +1556,7 @@
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
 				5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */,
 				5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */,
+				5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1439,6 +1564,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5D8086082B2FF9C100EA01AC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
+			targetProxy = 5D8086072B2FF9C100EA01AC /* PBXContainerItemProxy */;
+		};
 		5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5DD0E3F22AC889F900C85B94 /* LiveEventExtension */;
@@ -1447,6 +1577,57 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5D80860A2B2FF9C100EA01AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.josephlabs.OlympsisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
+			};
+			name = Debug;
+		};
+		5D80860B2B2FF9C100EA01AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.josephlabs.OlympsisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
+			};
+			name = Release;
+		};
 		5DD0E4082AC889FA00C85B94 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1723,6 +1904,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5D8086092B2FF9C100EA01AC /* Build configuration list for PBXNativeTarget "OlympsisTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D80860A2B2FF9C100EA01AC /* Debug */,
+				5D80860B2B2FF9C100EA01AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

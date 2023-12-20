@@ -15,7 +15,7 @@ import Charts
 struct EventParticipantsView: View {
     
     @Binding var event: Event
-    @Binding var showParticipants: Bool
+    @State private var showParticipants: Bool = false
     
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
@@ -48,6 +48,9 @@ struct EventParticipantsView: View {
                 Text("See who's going...")
             }.padding(.leading, 45)
         }.padding(.all)
+            .sheet(isPresented: $showParticipants, content: {
+                EventParticipantsViewExt(event: $event)
+            })
     }
 }
 
@@ -99,7 +102,7 @@ struct EventRSVPChart: View {
 struct EventParticipantsViewExt: View {
     
     @Binding var event: Event
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     var participants: [Participant] {
         guard let ptps = event.participants else {
@@ -112,7 +115,7 @@ struct EventParticipantsViewExt: View {
     var body: some View {
         VStack {
             HStack {
-                Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
                 }.padding(.leading)
                 Text("Participants")
@@ -136,7 +139,7 @@ struct EventParticipantsViewExt: View {
 }
 
 #Preview {
-    EventParticipantsView(event: .constant(EVENTS[0]), showParticipants: .constant(false))
+    EventParticipantsView(event: .constant(EVENTS[0]))
 }
 
 #Preview {

@@ -19,10 +19,11 @@ class SessionStore: ObservableObject {
     
     @Published var authStatus: AUTH_STATUS = .unknown
     
-    @Published var user: UserData?       // User data
-    @Published var clubs = [Club]()      // Clubs Cache
-    @Published var events = [Event]()    // Events Cache
-    @Published var fields = [Field]()    // Fields Cache
+    @Published var user: UserData?          // User data Cache
+    @Published var clubs = [Club]()         // Clubs Cache
+    @Published var orgs = [Organization]()  // Organizations Cache
+    @Published var events = [Event]()       // Events Cache
+    @Published var fields = [Field]()       // Fields Cache
     
     @Published var clubsState: LOADING_STATE = .loading
     var clubTokens = [String:String]()

@@ -14,30 +14,31 @@ class Event: Codable, Identifiable, ObservableObject {
     let id: String?
     let type: String?
     let poster: String?
-    let clubID: String?
-    let fieldID: String?
+    let organizers: [Organizer]?
+    let field: FieldDescriptor?
     let imageURL: String?
     let title: String?
     let body: String?
     let sport: String?
     let level: Int?
-    var startTime: Int64?
-    var actualStartTime: Int64?
-    var stopTime: Int64?
+    var startTime: Int?
+    var actualStartTime: Int?
+    var stopTime: Int?
+    var actualStopTime: Int?
     let minParticipants: Int?
     let maxParticipants: Int?
     var participants: [Participant]?
     let visibility: String?
     var data: EventData?
-    let createdAt: Int64?
+    let createdAt: Int?
     let externalLink: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case poster
-        case clubID = "club_id"
-        case fieldID = "field_id"
+        case organizers
+        case field
         case imageURL = "image_url"
         case title
         case body
@@ -46,6 +47,7 @@ class Event: Codable, Identifiable, ObservableObject {
         case startTime = "start_time"
         case actualStartTime = "actual_start_time"
         case stopTime = "stop_time"
+        case actualStopTime = "actual_stop_time"
         case minParticipants = "min_participants"
         case maxParticipants = "max_participants"
         case participants
@@ -55,12 +57,12 @@ class Event: Codable, Identifiable, ObservableObject {
         case externalLink = "external_link"
     }
     
-    init(id: String? = nil, type: String, poster: String? = nil, clubID: String? = nil, fieldID: String? = nil, imageURL: String? = nil, title: String? = nil, body: String? = nil, sport: String? = nil, level: Int? = nil, startTime: Int64? = nil, actualStartTime: Int64? = nil, stopTime: Int64? = nil, minParticipants: Int? = nil, maxParticipants: Int? = nil, participants: [Participant]? = nil, visibility: String? = nil, data: EventData? = nil, createdAt: Int64? = nil, externalLink: String? = nil) {
+    init(id: String?=nil, type: String, poster: String?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, data: EventData?=nil, createdAt: Int?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
-        self.clubID = clubID
-        self.fieldID = fieldID
+        self.organizers = organizers
+        self.field = field
         self.imageURL = imageURL
         self.title = title
         self.body = body
@@ -69,6 +71,7 @@ class Event: Codable, Identifiable, ObservableObject {
         self.startTime = startTime
         self.actualStartTime = actualStartTime
         self.stopTime = stopTime
+        self.actualStopTime = actualStopTime
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
         self.participants = participants
@@ -77,6 +80,17 @@ class Event: Codable, Identifiable, ObservableObject {
         self.createdAt = createdAt
         self.externalLink = externalLink
     }
+}
+
+struct Organizer: Codable, Identifiable {
+    let type: String
+    let id: String
+}
+
+struct FieldDescriptor: Codable {
+    let type: String
+    let id: String?
+    let location: GeoJSON?
 }
 
 struct Participant: Codable, Identifiable, Hashable {
@@ -88,7 +102,7 @@ struct Participant: Codable, Identifiable, Hashable {
     let uuid: String
     var data: UserData?
     let status: String
-    let createdAt: Int64?
+    let createdAt: Int?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -117,8 +131,9 @@ struct Like: Codable, Identifiable, Hashable {
 
 struct EventData: Codable {
     let poster: UserData?
-    let club: Club?
     let field: Field?
+    let clubs: [Club]?
+    let organizations: [Organization]?
 }
 
 /// The Fields Response is a struct conforms to the response of the api to get a list of fields, and decodes it.
@@ -243,7 +258,7 @@ extension [Event] {
             return nil
         }
         var filtered = self.filter{ $0.participants?.first(where: { $0.uuid == uuid }) != nil }
-        filtered = filtered.sorted { $0.startTime! < $1.startTime! }
+        filtered = filtered.sorted { ($0.startTime ?? 0) < ($1.startTime ?? 0) }
         
         guard filtered.count > 0 else {
             return nil
@@ -253,12 +268,12 @@ extension [Event] {
     }
     
     /// Returns a filtered array of the events by club ID
-    func filterByClubID(id: String) -> [Event]? {
+    func filterByGroupID(id: String) -> [Event]? {
         guard self.count > 0 else {
             return nil
         }
         
-        let filtered = self.filter { $0.clubID! == id }
+        let filtered = self.filter { $0.organizers?.contains(where: { $0.id == id }) ?? false }
         guard filtered.count > 0 else {
             return nil
         }
