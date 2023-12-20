@@ -9,69 +9,87 @@ import os
 import SwiftUI
 
 struct NewEvent: View {
+    
+    @State private var selection: Int = 0
+    @State private var showPickUp: Bool = false
+    @State private var showTournament: Bool = false
+    @EnvironmentObject private var session: SessionStore
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         NavigationStack {
-            VStack(alignment: .center) {
-                Text("What type of event would you like to create?")
-                    .font(.title)
-                    .multilineTextAlignment(.center)
-                
-                Spacer()
-                
-                NavigationLink(destination: NewPickUpEvent()) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
-                        VStack {
-                            Image(systemName: "figure.2")
-                                .imageScale(.large)
-                                .padding(.all, 5)
-                            Text("Pick Up")
-                                .font(.title3)
-                                .bold()
-                            Text("An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only.")
-                                .padding(.horizontal)
-                                .font(.callout)
-                        }
-                    }
-                }.frame(height: 250)
-                    .padding(.horizontal)
-                    .foregroundStyle(.primary)
-                
-                Spacer()
-                
-                NavigationLink(destination: NewTournamentEvent()) {
-                    ZStack (alignment: .topTrailing){
+            VStack {
+                TabView(selection: $selection) {
+                    VStack(alignment: .center) {
+                        Text("What type of event would you like to create?")
+                            .font(.title2)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        Spacer()
+                        
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundStyle(Color("background"))
                             VStack {
-                                Image(systemName: "trophy.fill")
-                                    .imageScale(.large)
-                                    .padding(.all, 5)
+                                Text("Pick Up")
+                                    .font(.title3)
+                                    .bold()
+                                Text("An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only.")
+                                    .padding(.horizontal)
+                                    .font(.callout)
+                                    .multilineTextAlignment(.center)
+                            }
+                        }.frame(height: 250)
+                            .padding(.horizontal)
+                            .foregroundStyle(.primary)
+                            .onTapGesture {
+                                selection = 1
+                            }
+                        
+                        Spacer()
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color("background"))
+                            VStack {
                                 Text("Tournament")
                                     .font(.title3)
                                     .bold()
                                 Text("A competitive event where individuals or teams compete in a structured format to determine a winner.  May or may not require prior registration. ")
                                     .padding(.horizontal)
                                     .font(.callout)
+                                    .multilineTextAlignment(.center)
                             }
-                        }
+                        }.frame(height: 250)
+                            .padding(.horizontal)
+                            .foregroundStyle(.primary)
+                            .disabled(true)
+                            .onTapGesture {
+                                selection = 2
+                            }
                         
-                        Image(systemName: "circle.slash")
-                            .padding()
-                            .imageScale(.large)
-                            .foregroundStyle(.gray)
+                        Spacer()
+                        
+                    }.padding(.horizontal)
+                        .navigationTitle("New Event")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .tag(0)
+                    if session.fields.count > 0 {
+                        NewPickUpEvent(eventField: session.fields[0]).tag(1)
+                        NewTournamentEvent(eventField: session.fields[0]).tag(2)
                     }
-                }.frame(height: 250)
-                    .padding(.horizontal)
-                    .foregroundStyle(.primary)
-                    .disabled(true)
-                
-                Spacer()
-            }.padding(.horizontal)
-                .navigationTitle("New Event")
+                }.tabViewStyle(.automatic)
+            }.navigationTitle("New Event")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: { dismiss() }) {
+                            Text("Cancel")
+                        }
+                    }
+                }
         }
     }
 }

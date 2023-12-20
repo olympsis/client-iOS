@@ -13,7 +13,7 @@ struct EventMiddleView: View {
     @Binding var event: Event
     @State private var timeDifference: String = ""
     
-    var startTime: Int64 {
+    var startTime: Int {
         guard let time = event.startTime else {
             return 0
         }
@@ -71,17 +71,18 @@ struct EventMiddleView: View {
     var body: some View {
         ZStack {
             Rectangle()
+                .stroke(lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
                 .padding(.horizontal)
                 .frame(height: 70)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color("color-prime"))
             HStack (alignment: .center) {
                 VStack(alignment: .center){
-                    if event.stopTime != nil {
+                    if event.actualStopTime != nil {
                         VStack {
                             Text("Ended")
                                 .foregroundColor(.gray)
                                 .bold()
-                            if let sT = event.stopTime {
+                            if let sT = event.actualStopTime {
                                 Text(Date(timeIntervalSince1970: TimeInterval(sT)).formatted(.dateTime.hour().minute()))
                                     .foregroundColor(.primary)
                                     .bold()
@@ -132,7 +133,7 @@ struct EventMiddleView: View {
                         Image(systemName: "person.2.fill")
                         Text(participantsCountString)
                     }
-                    .disabled(event.stopTime != nil)
+                    .disabled(event.actualStopTime != nil)
                 }
                 
                 Spacer()

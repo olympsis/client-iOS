@@ -39,16 +39,16 @@ struct Auth: View {
                         VStack {
                             Text("Olympsis")
                                 .bold()
-                                .font(.custom("ITCAvantGardeStd-Bold", size: 25, relativeTo: .largeTitle))
+                                .font(.title)
                                 .foregroundColor(.white)
                                 .padding(.top, 25)
+                                .padding(.bottom, 5)
                             Text("Join a community made by athletes for athletes.")
-                                .frame(width: SCREEN_WIDTH)
+                                .padding(.horizontal)
                                 .multilineTextAlignment(.center)
                                 .font(.title3)
                                 .foregroundColor(.white)
-                            
-                        }
+                        }.frame(width: SCREEN_WIDTH)
                         
                         
                         SignInWithAppleButton(
@@ -81,19 +81,19 @@ struct Auth: View {
                         ).signInWithAppleButtonStyle(.white)
                             .frame(height: 50)
                             .padding(.horizontal, 50)
-                            .padding(.bottom, 20)
+                            .padding(.bottom, 50)
                             .padding(.top)
                     }.background {
                         Rectangle()
                             .foregroundStyle(.black)
                             .background(.thinMaterial)
                             .opacity(0.6)
-                            .ignoresSafeArea(.all)
+                            .ignoresSafeArea(edges: .bottom)
                     }
                 }
                 if state == .loading {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        Rectangle()
                             .frame(width: 100, height: 100)
                             .foregroundColor(.gray)
                             .opacity(0.8)

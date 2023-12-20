@@ -44,7 +44,8 @@ struct Location: View {
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .font(.callout)
-            }.padding(.horizontal)
+            }.frame(width: SCREEN_WIDTH)
+            .padding(.horizontal)
                 .padding(.vertical)
                 .background {
                     Rectangle()

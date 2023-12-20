@@ -44,7 +44,7 @@ struct EventView: View {
         return field.name
     }
     
-    var startTime: Int64 {
+    var startTime: Int {
         guard let time = event.startTime else {
             return 0
         }
@@ -73,6 +73,12 @@ struct EventView: View {
                                 .foregroundColor(.gray)
                                 .lineLimit(1)
                             Spacer()
+                            if event.type == "tournament" {
+                                Text("Tournament")
+                                    .font(.caption)
+                                    .padding(.bottom)
+                                    .foregroundStyle(Color("color-tert"))
+                            }
                         }
                         Spacer()
                         _TrailingView(event: $event)
@@ -85,7 +91,7 @@ struct EventView: View {
                 Rectangle()
                     .foregroundStyle(Color("background"))
             }
-        .sheet(isPresented: $showDetails) {
+        .fullScreenCover(isPresented: $showDetails) {
             EventViewExt(event: $event)
                 .presentationDetents([.large])
         }
@@ -122,7 +128,7 @@ struct _TrailingView: View {
     
     var body: some View {
         VStack (alignment: .trailing){
-            if event.stopTime != nil {
+            if event.actualStopTime != nil {
                 VStack (alignment: .trailing){
                     HStack {
                         Text("Ended")
@@ -170,6 +176,6 @@ struct _TrailingView: View {
 }
 
 #Preview {
-    EventView(event: EVENTS[1])
+    EventView(event: EVENTS[0])
         .environmentObject(SessionStore())
 }

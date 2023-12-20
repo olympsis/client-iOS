@@ -21,7 +21,7 @@ struct ClubFeed: View {
         guard let id = club.id else {
             return nil
         }
-        return session.events.filterByClubID(id: id)
+        return session.events.filterByGroupID(id: id)
     }
     
     // gets all of the posts for a club

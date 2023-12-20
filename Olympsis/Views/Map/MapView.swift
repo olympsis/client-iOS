@@ -10,13 +10,14 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
+///
 struct MapView: View {
     
-    @State private var showError        = false
-    @State private var showBottomSheet  = true
-    @State private var showFieldDetail  = false
-    @State private var showNewEvent     = false
-    @State private var showOptions      = false
+    @State private var showError: Bool = false
+    @State private var showBottomSheet: Bool = false
+    @State private var showFieldDetail: Bool = false
+    @State private var showNewEvent: Bool = false
+    @State private var showOptions: Bool = false
     
     @State private var selectedField: Field?
     
@@ -35,7 +36,7 @@ struct MapView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ZStack(alignment: .bottomTrailing){
+                ZStack(alignment: .topTrailing){
                     Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
                         MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
                             PlaceAnnotationView(field: field)
@@ -58,8 +59,8 @@ struct MapView: View {
                                     .symbolRenderingMode(.palette)
                                     .foregroundColor(.white)
                             }
-                        }.padding(.bottom, 20)
-                        .frame(width: 40)
+                        }.padding(.vertical, 10)
+                        .frame(width: 41)
                         
                         Button(action:{ self.showBottomSheet.toggle() }){
                             ZStack {
@@ -70,22 +71,8 @@ struct MapView: View {
                                     .symbolRenderingMode(.palette)
                                     .foregroundColor(.white)
                             }
-                        }.frame(width: 40)
-                        
-                        LocationButton(.currentLocation){
-                            session.locationManager.manager.requestWhenInUseAuthorization()
-                            withAnimation{
-                                trackingMode = .follow;
-                            }
-                        }
-                        .clipShape(Circle())
-                        .labelStyle(.iconOnly)
-                        .symbolVariant(.fill)
-                        .foregroundColor(.white)
-                        .tint(Color("color-secnd"))
-                        .padding(.all, 20)
-                        .padding(.bottom)
-                    }
+                        }.frame(width: 41)
+                    }.padding(.horizontal)
                     
                 }
             }.toolbar{
@@ -95,25 +82,39 @@ struct MapView: View {
                         .bold()
                         .foregroundColor(.primary)
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    LocationButton(.currentLocation){
+                        session.locationManager.manager.requestWhenInUseAuthorization()
+                        withAnimation{
+                            trackingMode = .follow;
+                        }
+                    }
+                    .clipShape(Circle())
+                    .labelStyle(.iconOnly)
+                    .symbolVariant(.fill)
+                    .foregroundColor(.white)
+                    .tint(Color("color-secnd"))
+                    .frame(width: 40, height: 40)
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{ self.showOptions.toggle() }){
                         ZStack {
                             Circle()
-                                .frame(width: 40)
                                 .tint(Color("color-secnd"))
+                                .frame(width: 41, height: 41)
                             Image(systemName: "slider.vertical.3")
                                 .imageScale(.large)
                                 .symbolRenderingMode(.palette)
                                 .foregroundColor(.white)
                         }
-                    }
+                    }.frame(width: 41, height: 41)
                 }
             }
             .sheet(item: $selectedField) { field in
                 FieldViewExt(field: field)
                     .presentationDetents([.height(250), .large])
             }
-            .sheet(isPresented: $showNewEvent) {
+            .fullScreenCover(isPresented: $showNewEvent) {
                 NewEvent()
             }
             .sheet(isPresented: $showBottomSheet) {
@@ -128,6 +129,9 @@ struct MapView: View {
                 Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 }))
+            }
+            .task {
+                self.showBottomSheet.toggle()
             }
         }
     }

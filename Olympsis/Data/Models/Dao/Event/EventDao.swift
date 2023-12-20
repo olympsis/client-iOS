@@ -20,8 +20,9 @@ class EventDao: Dao {
     let status:             String?
     let actualStartTime:    Int?
     let stopTime:           Int?
+    let actualStopTime:    Int?
 
-    init(title: String?=nil, body: String?=nil, clubId: String?=nil, fieldId: String?=nil, imageURL: String?=nil, sport: String?=nil, startTime: Int?=nil, maxParticipants: Int?=nil, level: Int?=nil, actualSTime: Int? = nil, stopTime: Int? = nil, status: String?=nil){
+    init(title: String?=nil, body: String?=nil, clubId: String?=nil, fieldId: String?=nil, imageURL: String?=nil, sport: String?=nil, startTime: Int?=nil, maxParticipants: Int?=nil, level: Int?=nil, actualSTime: Int? = nil, stopTime: Int? = nil, actualStopTime: Int? = nil, status: String?=nil){
         self.title = title
         self.body = body
         self.clubId = clubId
@@ -34,6 +35,7 @@ class EventDao: Dao {
         self.actualStartTime = actualSTime
         self.stopTime = stopTime
         self.status = status
+        self.actualStopTime = actualStopTime
         super.init()
     }
     
@@ -59,6 +61,9 @@ class EventDao: Dao {
         if let st = stopTime {
             try container.encode(st, forKey: .stopTime)
         }
+        if let actualStopTime = actualStopTime {
+            try container.encode(actualStopTime, forKey: .actualStopTime)
+        }
         try container.encode(status, forKey: .status)
     }
     
@@ -74,6 +79,7 @@ class EventDao: Dao {
         case level
         case actualStartTime = "actual_start_time"
         case stopTime = "stop_time"
+        case actualStopTime = "actual_stop_time"
         case status
     }
 }

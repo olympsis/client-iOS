@@ -27,7 +27,7 @@ struct EventDetailActionButton: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.actualStartTime = Int64(now)
+                    event.actualStartTime = now
                     state = .success
                 }
             }
@@ -46,7 +46,7 @@ struct EventDetailActionButton: View {
         if res {
             await MainActor.run {
                 withAnimation(.easeInOut){
-                    event.stopTime = Int64(now)
+                    event.stopTime = now
                     state = .success
                 }
             }

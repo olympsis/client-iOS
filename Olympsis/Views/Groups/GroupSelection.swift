@@ -9,7 +9,6 @@ import SwiftUI
 import Foundation
 
 class GroupSelection: ObservableObject, Identifiable, Equatable {
-    
     let id = UUID()
     let type: String
     let club: Club?

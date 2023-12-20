@@ -13,6 +13,7 @@ struct EventActionButtons: View {
     @Binding var event: Event
     @State private var showMenu: Bool = false
     @State private var state: LOADING_STATE = .pending
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var session: SessionStore
     
     private var fieldLocation: [Double] {
@@ -62,6 +63,11 @@ struct EventActionButtons: View {
         }
         event = update
         handleSuccess()
+        guard let extLink = event.externalLink,
+              let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+        openURL(url)
     }
     
     func cancel() async {
@@ -122,7 +128,7 @@ struct EventActionButtons: View {
                             .imageScale(.large)
                         }.frame(height: 25)
                         Text(event.estimatedTimeToField(session.locationManager.location))
-                    }.foregroundColor(.white)
+                    }.foregroundStyle(.white)
                 }
             }
             
@@ -145,7 +151,7 @@ struct EventActionButtons: View {
                                 .resizable()
                                 .frame(width: 25, height: 25)
                             Text("Public")
-                        }.foregroundColor(.white)
+                        }.foregroundStyle(.white)
                     }
                 }
             }
@@ -177,9 +183,9 @@ struct EventActionButtons: View {
                                 Text("RSVP")
                             }
                         }
-                    }.foregroundColor(.white)
+                    }.foregroundStyle(.white)
                 }.disabled(state == .loading ? true : false)
-                    .disabled(event.stopTime != nil ? true : false)
+                    .disabled(event.actualStopTime != nil ? true : false)
             } else {
                 Button(action: { Task { await cancel() }}) {
                     ZStack {
@@ -199,7 +205,7 @@ struct EventActionButtons: View {
                                 Text("Cancel")
                             }
                         }
-                    }.foregroundColor(.white)
+                    }.foregroundStyle(.white)
                 }
             }
             
@@ -216,7 +222,7 @@ struct EventActionButtons: View {
                             .frame(width: 25, height: 5)
                         }.frame(height: 25)
                         Text("More")
-                    }.foregroundColor(.white)
+                    }.foregroundStyle(.white)
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(event: $event)
