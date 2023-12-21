@@ -11,15 +11,15 @@ struct Room: Codable, Identifiable {
     let id: String?
     let name: String
     let type: String
-    let clubID: String?
+    let group: GroupModel
     let members: [ChatMember]
     let history: [Message]?
     
-    init(id: String?=nil, name: String, type: String, clubID: String?=nil, members: [ChatMember], history: [Message]?) {
+    init(id: String?=nil, name: String, type: String, group: GroupModel, members: [ChatMember], history: [Message]?) {
         self.id = id
         self.name = name
         self.type = type
-        self.clubID = clubID
+        self.group = group
         self.members = members
         self.history = history
     }
@@ -28,10 +28,15 @@ struct Room: Codable, Identifiable {
         case id
         case name
         case type
-        case clubID = "club_id"
+        case group
         case members
         case history
     }
+}
+
+struct GroupModel: Codable {
+    let id: String
+    let type: String
 }
 
 struct ChatMember: Codable {

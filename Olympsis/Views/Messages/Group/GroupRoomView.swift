@@ -1,16 +1,16 @@
 //
-//  RoomDetailView.swift
+//  GroupRoomView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 1/4/23.
+//  Created by Joel on 12/20/23.
 //
 
 import os
 import SwiftUI
 
-struct RoomView: View {
+struct GroupRoomView: View {
     
-    @State var club: Club
+    @State var org: Organization
     @State var room: Room
     @Binding var rooms: [Room]
     @State var messages = [Message]()
@@ -56,7 +56,7 @@ struct RoomView: View {
     }
     
     func GetData(uuid: String) -> UserData? {
-        guard let user = club.members!.first(where: {$0.uuid == uuid}) else {
+        guard let user = org.members!.first(where: {$0.uuid == uuid}) else {
             return nil
         }
         return user.data
@@ -199,12 +199,8 @@ struct RoomView: View {
     }
 }
 
-struct RoomView_Previews: PreviewProvider {
-    static var previews: some View {
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
-
-        RoomView(club: CLUBS[0], room: room, rooms: .constant([room]), observer: ChatObserver())
-            .environmentObject(SessionStore())
-            .environmentObject(NotificationsManager())
-    }
+#Preview {
+    GroupRoomView(org: ORGANIZATIONS[0], room: ROOMS[0], rooms: .constant(ROOMS), observer: ChatObserver())
+        .environmentObject(SessionStore())
+        .environmentObject(NotificationsManager())
 }

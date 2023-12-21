@@ -28,7 +28,7 @@ class ChatService {
     }
     
     func getRooms(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/chats/club/\(id)")
+        let endpoint = Hermes.Endpoint(path: "/chats/group/\(id)")
         
         return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }

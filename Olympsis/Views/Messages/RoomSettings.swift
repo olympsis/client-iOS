@@ -80,7 +80,7 @@ struct RoomSettingsView: View {
 
 struct RoomSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember](), history: [Message]())
+        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
         RoomSettingsView(room: room, hasDeleted: .constant(false), observer: ChatObserver())
             .environmentObject(SessionStore())
     }
