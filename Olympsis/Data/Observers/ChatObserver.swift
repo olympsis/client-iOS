@@ -26,8 +26,8 @@ class ChatObserver: ObservableObject {
         host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
     }
     
-    func CreateRoom(club: String, name: String, type: String, uuid: String) async -> Room? {
-        let room = Room(name: name, type: type, clubID: club, members: [ChatMember(id: "", uuid: uuid, status: "live")], history: nil)
+    func CreateRoom(group: String, groupType: String, name: String, type: String, uuid: String) async -> Room? {
+        let room = Room(name: name, type: type, group: GroupModel(id: group, type: groupType), members: [ChatMember(id: nil, uuid: uuid, status: "live")], history: nil)
         do {
             let (data,resp) = try await service.createRoom(room: room)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {

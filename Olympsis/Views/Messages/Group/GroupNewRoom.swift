@@ -1,15 +1,15 @@
 //
-//  NewRoom.swift
+//  GroupNewRoom.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 1/7/23.
+//  Created by Joel on 12/20/23.
 //
 
 import SwiftUI
 
-struct NewRoom: View {
+struct GroupNewRoom: View {
     
-    @Binding var club: Club
+    @Binding var org: Organization
     @Binding var rooms: [Room]
     @State private var text = ""
     @State private var state: LOADING_STATE = .pending
@@ -25,10 +25,10 @@ struct NewRoom: View {
             }
             guard let user = session.user,
                   let uuid = user.uuid,
-                  let clubID = club.id else {
+                  let groupID = org.id else {
                 return
             }
-            let res = await chatObserver.CreateRoom(group: clubID, groupType: "club", name: text, type: "group", uuid: uuid)
+            let res = await chatObserver.CreateRoom(group: groupID, groupType: "organization", name: text, type: "group", uuid: uuid)
             if let r = res {
                 rooms.append(r)
             }
@@ -63,6 +63,7 @@ struct NewRoom: View {
                     TextField("Room name", text: $text)
                         .frame(height: 40)
                         .padding(.leading)
+                        
                 }
                 Spacer()
                 Button(action:{
@@ -89,10 +90,7 @@ struct NewRoom: View {
     }
 }
 
-struct NewRoom_Previews: PreviewProvider {
-    static var previews: some View {
-        let club = CLUBS[0]
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: club.id!, type: "club"), members: [ChatMember](), history: [Message]())
-        NewRoom(club: .constant(club), rooms: .constant([room]))
-    }
+
+#Preview {
+    GroupNewRoom(org: .constant(ORGANIZATIONS[0]), rooms: .constant(ROOMS))
 }

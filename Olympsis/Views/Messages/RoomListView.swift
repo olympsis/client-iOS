@@ -73,7 +73,7 @@ struct RoomListView: View {
 
 struct RoomListView_Previews: PreviewProvider {
     static var previews: some View {
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", members: [ChatMember](), history: [Message]())
+        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
         RoomListView(room: room, rooms: .constant([Room]()), observer: ChatObserver())
             .environmentObject(SessionStore())
     }

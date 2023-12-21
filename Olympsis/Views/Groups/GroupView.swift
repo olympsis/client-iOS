@@ -55,6 +55,8 @@ struct GroupView: View {
                 if let group = session.selectedGroup {
                     if let club = group.club {
                         Messages(club: club)
+                    } else if let org = group.organization {
+                        GroupMessages(org: org)
                     }
                 }
             }

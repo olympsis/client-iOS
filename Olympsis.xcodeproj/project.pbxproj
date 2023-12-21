@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */; };
+		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
+		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
+		5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */; };
 		5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20624F2B141C7E00A9D408 /* OrgService.swift */; };
 		5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062512B141E5000A9D408 /* OrgObserver.swift */; };
 		5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062532B14297000A9D408 /* OrgMenu.swift */; };
@@ -288,6 +291,9 @@
 
 /* Begin PBXFileReference section */
 		5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
+		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
+		5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRoomView.swift; sourceTree = "<group>"; };
 		5D20624F2B141C7E00A9D408 /* OrgService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgService.swift; sourceTree = "<group>"; };
 		5D2062512B141E5000A9D408 /* OrgObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgObserver.swift; sourceTree = "<group>"; };
 		5D2062532B14297000A9D408 /* OrgMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgMenu.swift; sourceTree = "<group>"; };
@@ -548,6 +554,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D18BD082B33E15B00F90777 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				5D18BD092B33E17700F90777 /* GroupMessages.swift */,
+				5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */,
+				5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		5D2DEFBF2B1AB2B60082FE73 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -1139,6 +1155,7 @@
 		9AD208F02933F4DA007A62C4 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
+				5D18BD082B33E15B00F90777 /* Group */,
 				9AD208F12933F4F8007A62C4 /* Messages.swift */,
 				9ADDD94B296A78CF00245CCE /* NewRoom.swift */,
 				9AECDA4B295452BB007956FB /* People.swift */,
@@ -1246,7 +1263,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					5D8086022B2FF9C100EA01AC = {
 						CreatedOnToolsVersion = 15.1;
@@ -1448,10 +1465,12 @@
 				5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
+				5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */,
 				9A35370429289396005EC806 /* ParticipantView.swift in Sources */,
 				5D2062582B142CCF00A9D408 /* OrgManagersView.swift in Sources */,
 				BE9C45FF29E36DB0008EA591 /* SecureStore.swift in Sources */,
 				5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */,
+				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationView.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
 				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
@@ -1532,6 +1551,7 @@
 				9AF0A1B7293091D80055D1F6 /* PlaceAnnotationView.swift in Sources */,
 				9AF0A1BB29313E350055D1F6 /* PostObserver.swift in Sources */,
 				5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */,
+				5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
 				5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */,
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,
@@ -1583,6 +1603,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 5A6H49Q85D;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1609,6 +1630,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 5A6H49Q85D;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
