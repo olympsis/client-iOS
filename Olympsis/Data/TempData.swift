@@ -119,3 +119,7 @@ let GROUPS = [
     GroupSelection(type: GROUP_TYPE.Club.rawValue, club: CLUBS[1], organization: nil),
     GroupSelection(type: GROUP_TYPE.Organization.rawValue, club: nil, organization: ORGANIZATIONS[0])
 ]
+
+let ROOMS = [
+    Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
+]

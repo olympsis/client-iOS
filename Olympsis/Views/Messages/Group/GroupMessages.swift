@@ -1,17 +1,16 @@
 //
-//  Messages.swift
+//  GroupMessages.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/27/22.
+//  Created by Joel on 12/20/23.
 //
 
 import SwiftUI
 
-struct Messages: View {
+struct GroupMessages: View {
     
-    @State var club: Club
+    @State var org: Organization
     @State var rooms = [Room]()
-    @State private var text = ""
     @State private var selectedView = 0
     @State private var showRooms = false
     @State private var showCancel = false
@@ -119,7 +118,7 @@ struct Messages: View {
                                     RoomListView(room: room, rooms: $rooms, observer: chatObserver)
                                         .padding(.bottom)
                                 }.fullScreenCover(isPresented: $showDetail) {
-                                    RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
+                                    GroupRoomView(org: org, room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
                         }.tabItem {
@@ -150,7 +149,7 @@ struct Messages: View {
             .task {
                 notificationManager.inMessageView = true
                 state = .loading
-                let resp = await chatObserver.GetRooms(id: club.id!)
+                let resp = await chatObserver.GetRooms(id: org.id!)
                 if let r = resp {
                     await MainActor.run {
                         rooms = r.rooms
@@ -164,20 +163,18 @@ struct Messages: View {
                 notificationManager.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
-                NewRoom(club: $club, rooms: $rooms)
+                GroupNewRoom(org: $org, rooms: $rooms)
             }
             .fullScreenCover(item: $selectedRoom, content: { r in
-                RoomView(club: club, room: r, rooms: $rooms, observer: chatObserver)
+                GroupRoomView(org: org, room: r, rooms: $rooms, observer: chatObserver)
             })
             .tint(Color("color-prime"))
         }
     }
 }
 
-struct Messages_Previews: PreviewProvider {
-    static var previews: some View {
-        let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        let room2 = Room(id: UUID().uuidString, name: "Region Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: CLUBS[0], rooms: [room, room2]).environmentObject(SessionStore()).environmentObject(NotificationsManager())
-    }
+#Preview {
+    GroupMessages(org: ORGANIZATIONS[0], rooms: ROOMS)
+        .environmentObject(SessionStore())
+        .environmentObject(NotificationsManager())
 }

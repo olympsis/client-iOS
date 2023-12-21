@@ -123,6 +123,12 @@ struct GroupToolbar: ToolbarContent {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
+                            Button(action:{ self.showMessages.toggle() }){
+                                Image(systemName: "bubble.left.and.bubble.right")
+                                    .foregroundColor(Color("color-prime"))
+                            }
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
                                 AsyncImage(url: URL(string: GenerateImageURL(group.organization?.imageURL ?? "https://api.olympsis.com"))){ image in
                                     image.resizable()
