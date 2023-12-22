@@ -56,9 +56,12 @@ struct NewTournamentEvent: View {
     @State private var validationStatus:        NEW_EVENT_ERROR = .unexpected
     @State private var eventOrganizers: [GroupSelection] = [GroupSelection]()
     
+    @State private var hasEndTime: Bool = false
     @State private var showFieldPicker: Bool = false
     @State private var showSportsPicker: Bool = false
     @State private var showCompletedToast: Bool = false
+    @State private var showStartTimePicker: Bool = false
+    @State private var showStopTimePicker: Bool = false
     @State private var showOrganizersPicker: Bool = false
     @State private var showVisibilityPicker: Bool = false
     @State private var showSkillLevelPicker: Bool = false
@@ -97,6 +100,18 @@ struct NewTournamentEvent: View {
     
     var setStartTime: Int {
         return Int(eventStartTime.timeIntervalSince1970)
+    }
+    
+    var startTimeString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: eventStartTime)
+    }
+    
+    var stopTimeString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: eventStopTime)
     }
     
     func handleFailure() {
@@ -172,53 +187,7 @@ struct NewTournamentEvent: View {
                 ScrollView(showsIndicators: false) {
                     
                     // MARK: - Top Options
-                    HStack {
-                        Button(action: { self.showVisibilityPicker.toggle() }){
-                            HStack {
-                                switch eventVisibility {
-                                case .Public:
-                                    Image(systemName: "globe.americas.fill")
-                                        .foregroundStyle(.white)
-                                case .Private:
-                                    Image(systemName: "lock.fill")
-                                        .foregroundStyle(.white)
-                                case .Group:
-                                    Image(systemName: "person.3.fill")
-                                        .foregroundStyle(.white)
-                                }
-                                Text(eventVisibility.rawValue.prefix(1).capitalized + eventVisibility.rawValue.dropFirst())
-                                    .foregroundStyle(.white)
-                                Image(systemName: "chevron.down")
-                                    .imageScale(.small)
-                                    .foregroundStyle(.white)
-                            }.padding(.horizontal)
-                                .padding(.vertical, 5)
-                                .background {
-                                    Rectangle()
-                                        .foregroundStyle(Color("color-prime"))
-                                }
-                        }
-                        
-                        Button(action: { self.showSkillLevelPicker.toggle() }){
-                            HStack {
-                                Image(systemName: "star.fill")
-                                    .foregroundStyle(.white)
-                                Text(eventSkilLevel.rawValue)
-                                    .foregroundStyle(.white)
-                                Image(systemName: "chevron.down")
-                                    .imageScale(.small)
-                                    .foregroundStyle(.white)
-                            }.padding(.horizontal)
-                                .padding(.vertical, 5)
-                                .background {
-                                    Rectangle()
-                                        .foregroundStyle(Color("color-prime"))
-                                }
-                        }
-                        
-                        Spacer()
-                    }.padding(.horizontal)
-                        .padding(.vertical)
+                    NewEventTopView(showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventSkilLevel: $eventSkilLevel, eventVisibility: $eventVisibility)
                     
                     // MARK: - Title
                     VStack(alignment: .leading){
@@ -342,23 +311,42 @@ struct NewTournamentEvent: View {
                         Text("Start Date/Time")
                             .font(.title3)
                             .bold()
-                        DatePicker("Date", selection: $eventStartTime, in: Date()...)
-                            .datePickerStyle(.graphical)
-                    }
-                    .padding(.vertical)
-                    .padding(.horizontal)
+                        
+                        Button(action: { self.showStartTimePicker.toggle() }) {
+                            ZStack {
+                                Rectangle()
+                                    .stroke(lineWidth: 1)
+                                    .modifier(InputField())
+                                Text(startTimeString)
+                            }
+                        }
+                    }.padding()
                     
-                    // MARK: - End Date/Time picker
+                    // MARK: - Start Date/Time picker
                     VStack(alignment: .leading){
-                        Text("End Date/Time")
-                            .font(.title3)
-                            .bold()
-                        DatePicker("Date", selection: $eventStopTime, in: eventStartTime.addingTimeInterval(30 * 60)...)
-                            .datePickerStyle(.graphical)
-                    }
-                    .padding(.vertical)
-                    .padding(.horizontal)
-                    .frame(height: 400)
+                        HStack {
+                            Text("End Date/Time")
+                                .font(.title3)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            withAnimation(.easeInOut(duration: 10)) {
+                                Toggle(isOn: $hasEndTime) {}
+                            }
+                        }
+                        
+                        if hasEndTime {
+                            Button(action: { self.showStopTimePicker.toggle() }) {
+                                ZStack {
+                                    Rectangle()
+                                        .stroke(lineWidth: 1)
+                                        .modifier(InputField())
+                                    Text(stopTimeString)
+                                }
+                            }
+                        }
+                    }.padding(.horizontal)
                     
                     // MARK: - Min Participants slider
                     VStack(alignment: .leading){
@@ -469,11 +457,36 @@ struct NewTournamentEvent: View {
                 .fullScreenCover(isPresented: $showFieldPicker) {
                     EventFieldPickerView(selectedField: $eventField, fields: session.fields)
                 }
+                .sheet(isPresented: $showStartTimePicker, content: {
+                    EventDatePickerView(eventTime: $eventStartTime)
+                        .presentationDetents([.medium])
+                })
+                .sheet(isPresented: $showStopTimePicker, content: {
+                    EventDatePickerView(eventTime: $eventStopTime, startingPoint: eventStartTime.addingTimeInterval(30 * 60))
+                        .presentationDetents([.medium])
+                })
                 .onAppear {
                     guard let select = session.selectedGroup else {
                         return
                     }
                     eventOrganizers.append(select)
+                }
+                .onChange(of: eventStartTime) { v in
+                    if hasEndTime {
+                        if v > eventStopTime {
+                            eventStopTime = eventStartTime.addingTimeInterval(30 * 60)
+                        }
+                    }
+                }
+                .onChange(of: eventStopTime) { v in
+                    if v < eventStartTime {
+                        eventStopTime = eventStartTime.addingTimeInterval(30 * 60)
+                    } else {
+                        eventStopTime = v
+                    }
+                }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 }
             }.navigationTitle("Tournament")
                 .navigationBarTitleDisplayMode(.inline)
