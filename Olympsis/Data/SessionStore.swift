@@ -94,6 +94,7 @@ class SessionStore: ObservableObject {
             return
         }
         let re = await orgObserver.generateUserOrgs(orgIDs: orgIDs)
+        self.orgs = re
         DispatchQueue.main.async {
             re.forEach { o in
                 let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
