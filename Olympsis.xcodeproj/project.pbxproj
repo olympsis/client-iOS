@@ -11,6 +11,8 @@
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
 		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
 		5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */; };
+		5D18BD102B35F85800F90777 /* EventDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0F2B35F85800F90777 /* EventDatePickerView.swift */; };
+		5D18BD122B35FF0F00F90777 /* NewEventTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD112B35FF0F00F90777 /* NewEventTopView.swift */; };
 		5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20624F2B141C7E00A9D408 /* OrgService.swift */; };
 		5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062512B141E5000A9D408 /* OrgObserver.swift */; };
 		5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062532B14297000A9D408 /* OrgMenu.swift */; };
@@ -294,6 +296,8 @@
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
 		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
 		5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRoomView.swift; sourceTree = "<group>"; };
+		5D18BD0F2B35F85800F90777 /* EventDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDatePickerView.swift; sourceTree = "<group>"; };
+		5D18BD112B35FF0F00F90777 /* NewEventTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventTopView.swift; sourceTree = "<group>"; };
 		5D20624F2B141C7E00A9D408 /* OrgService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgService.swift; sourceTree = "<group>"; };
 		5D2062512B141E5000A9D408 /* OrgObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgObserver.swift; sourceTree = "<group>"; };
 		5D2062532B14297000A9D408 /* OrgMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgMenu.swift; sourceTree = "<group>"; };
@@ -627,6 +631,8 @@
 				5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */,
 				5DC734042B2A98D60051BE21 /* EventFieldPickerView.swift */,
 				5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */,
+				5D18BD0F2B35F85800F90777 /* EventDatePickerView.swift */,
+				5D18BD112B35FF0F00F90777 /* NewEventTopView.swift */,
 			);
 			path = "New Event";
 			sourceTree = "<group>";
@@ -1477,6 +1483,7 @@
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberView.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
+				5D18BD102B35F85800F90777 /* EventDatePickerView.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
@@ -1535,6 +1542,7 @@
 				5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
 				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
+				5D18BD122B35FF0F00F90777 /* NewEventTopView.swift in Sources */,
 				9A8FF0C828BB1A1D00DE4CF8 /* Auth.swift in Sources */,
 				9AECDA4829545242007956FB /* LookUp.swift in Sources */,
 				5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */,
