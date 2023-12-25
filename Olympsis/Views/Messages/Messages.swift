@@ -24,7 +24,7 @@ struct Messages: View {
     @StateObject private var chatObserver = ChatObserver()
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationsManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -178,6 +178,6 @@ struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
         let room2 = Room(id: UUID().uuidString, name: "Region Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: CLUBS[0], rooms: [room, room2]).environmentObject(SessionStore()).environmentObject(NotificationsManager())
+        Messages(club: CLUBS[0], rooms: [room, room2]).environmentObject(SessionStore()).environmentObject(NotificationManager())
     }
 }

@@ -19,11 +19,12 @@ class SessionStore: ObservableObject {
     
     @Published var authStatus: AUTH_STATUS = .unknown
     
-    @Published var user: UserData?          // User data Cache
-    @Published var clubs = [Club]()         // Clubs Cache
-    @Published var orgs = [Organization]()  // Organizations Cache
-    @Published var events = [Event]()       // Events Cache
-    @Published var fields = [Field]()       // Fields Cache
+    @Published var user: UserData?              // User data Cache
+    @Published var clubs = [Club]()             // Clubs Cache
+    @Published var orgs = [Organization]()      // Organizations Cache
+    @Published var events = [Event]()           // Events Cache
+    @Published var fields = [Field]()           // Fields Cache
+    @Published var invitations = [Invitation]() // Invitations Cache
     
     @Published var clubsState: LOADING_STATE = .loading
     var clubTokens = [String:String]()
@@ -45,7 +46,7 @@ class SessionStore: ObservableObject {
     @ObservedObject var fieldObserver = FieldObserver()
     @ObservedObject var eventObserver = EventObserver()
     @ObservedObject var locationManager = LocationManager()
-    @ObservedObject var notificationsManager = NotificationsManager()
+    @ObservedObject var notificationsManager = NotificationManager()
     
     /**
      App lifetime data
@@ -69,6 +70,13 @@ class SessionStore: ObservableObject {
     }
     
     func fetchUserClubs() async {
+        
+        do {
+            self.invitations = try await userObserver.GetOrganizationInvitations()
+        } catch {
+            log.error("\(error.localizedDescription)")
+        }
+        
         // check to see if user has clubs
         guard let u = user, let clubIDs = u.clubs else {
             self.clubsState = .pending

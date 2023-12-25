@@ -56,4 +56,16 @@ class UserService {
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(update), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
+    
+    func SearchUsersByUsername(username: String) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/users/search/username", queryItems: [
+            URLQueryItem(name: "username", value: username)
+        ])
+        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
+    func GetOrganizationInvitations() async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/users/invitations/organizations")
+        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
 }

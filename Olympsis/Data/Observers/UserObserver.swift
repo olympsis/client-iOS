@@ -65,4 +65,22 @@ class UserObserver: ObservableObject {
         }
         return false
     }
+    
+    func SearchUsersByUsername(username: String) async throws -> [UserData] {
+        let (data, resp) = try await userService.SearchUsersByUsername(username: username)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return [UserData]()
+        }
+        let object = try decoder.decode(UsersDataResponse.self, from: data)
+        return object.users
+    }
+    
+    func GetOrganizationInvitations() async throws -> [Invitation] {
+        let (data, resp) = try await userService.GetOrganizationInvitations()
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return [Invitation]()
+        }
+        let object = try decoder.decode(InvitationsResponse.self, from: data)
+        return object.invitations
+    }
 }

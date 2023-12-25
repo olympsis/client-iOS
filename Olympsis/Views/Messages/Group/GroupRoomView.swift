@@ -25,7 +25,7 @@ struct GroupRoomView: View {
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationsManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     var log = Logger(subsystem: "com.coronislabs.olympsis", category: "room_view")
     
@@ -202,5 +202,5 @@ struct GroupRoomView: View {
 #Preview {
     GroupRoomView(org: ORGANIZATIONS[0], room: ROOMS[0], rooms: .constant(ROOMS), observer: ChatObserver())
         .environmentObject(SessionStore())
-        .environmentObject(NotificationsManager())
+        .environmentObject(NotificationManager())
 }

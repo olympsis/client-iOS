@@ -23,7 +23,7 @@ struct GroupMessages: View {
     @StateObject private var chatObserver = ChatObserver()
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationsManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -176,5 +176,5 @@ struct GroupMessages: View {
 #Preview {
     GroupMessages(org: ORGANIZATIONS[0], rooms: ROOMS)
         .environmentObject(SessionStore())
-        .environmentObject(NotificationsManager())
+        .environmentObject(NotificationManager())
 }
