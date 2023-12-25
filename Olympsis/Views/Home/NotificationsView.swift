@@ -8,12 +8,24 @@
 import SwiftUI
 
 struct NotificationsView: View {
+    
+    @State private var notifications: [NotificationModel] = [NotificationModel]()
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var session: SessionStore
+    
     var body: some View {
         NavigationView {
             VStack {
-                ScrollView(showsIndicators: false) {
-                    Text("Hello, World!")
+                if notifications.count > 0 {
+                    ScrollView(showsIndicators: false) {
+                        ForEach(notifications, id: \.id){ note in
+                            NotificationModelView(notification: note)
+                        }
+                    }
+                } else {
+                    Spacer()
+                    Text("No new notifications")
+                    Spacer()
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -25,13 +37,19 @@ struct NotificationsView: View {
             }
             .navigationTitle("Notifications")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                notifications = session.invitations.map({ i in
+                    NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
+                })
+            }
         }
     }
 }
 
 struct NotificationsView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationsView().environmentObject(SessionStore())
+        NotificationsView()
+            .environmentObject(SessionStore())
     }
 }
 

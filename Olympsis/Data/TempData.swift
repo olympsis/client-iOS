@@ -96,8 +96,8 @@ let POSTS = [
 ]
 
 let USERS_DATA = [
-    UserData(uuid: "", username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "", visibility: "", bio: nil, clubs: nil, sports: nil, deviceToken: nil),
-    UserData(uuid: "", username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", visibility: "", bio: nil, clubs: nil, sports: nil, deviceToken: nil)
+    UserData(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", visibility: "public", bio: "Love to play soccer", clubs: nil, sports: nil, deviceToken: nil),
+    UserData(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", visibility: "private", bio: "Born and raised Utah. Love to snowboard.", clubs: nil, sports: nil, deviceToken: nil)
 ]
 
 let USERS = [
@@ -122,4 +122,8 @@ let GROUPS = [
 
 let ROOMS = [
     Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
+]
+
+let INVITATIONS = [
+    Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id ?? UUID().uuidString, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Int(Date().timeIntervalSinceNow))
 ]

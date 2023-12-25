@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ManagersListView: View {
+    
     @State var organization: Organization
+    @State private var showInvitations = false
     @Environment(\.dismiss) private var dismiss
     
     var members: [Member] {
@@ -49,7 +51,14 @@ struct ManagersListView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Managers")
                 }
-            }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { self.showInvitations.toggle() }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }.fullScreenCover(isPresented: $showInvitations, content: {
+                OrgManagerInvite()
+            })
         }
     }
 }

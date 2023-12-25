@@ -86,3 +86,13 @@ struct UserData: Codable, Hashable {
         case deviceToken = "device_token"
     }
 }
+
+struct UsersDataResponse: Codable {
+    let totalUsers: Int
+    let users: [UserData]
+    
+    enum CodingKeys: String, CodingKey {
+        case totalUsers = "total_users"
+        case users
+    }
+}

@@ -16,12 +16,15 @@ struct SimpleButtonLabel: View {
     
     @State var text: String
     @State var style: STYLE = .normal
+    @State var width: CGFloat = 150
+    @State var height: CGFloat = 40
+    
     var body: some View {
         switch style {
         case .normal:
             ZStack {
                 Rectangle()
-                    .frame(width: 150, height: 40)
+                    .frame(width: width, height: height)
                     .foregroundColor(Color("color-prime"))
                 Text(text)
                     .foregroundColor(.white)
@@ -32,7 +35,7 @@ struct SimpleButtonLabel: View {
             ZStack {
                 Rectangle()
                     .stroke(Color("color-prime"), lineWidth: 1)
-                    .frame(width: 150, height: 40)
+                    .frame(width: width, height: height)
                 Text(text)
                     .foregroundColor(.primary)
                     .textCase(.uppercase)

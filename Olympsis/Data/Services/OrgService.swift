@@ -58,6 +58,8 @@ class OrgService {
         return resp
     }
     
+    // APPLICATIONS
+    
     func createApplication(app: OrganizationApplication) async throws -> Bool {
         let endpoint = Endpoint(path: "/organizations/applications")
         
@@ -72,7 +74,6 @@ class OrgService {
     
     func getApplications(id: String) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/organizations/\(id)/applications")
-        
         let (data, resp) = try await http.Request(endpoint: endpoint, method: .GET, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain()
         ])
@@ -81,7 +82,6 @@ class OrgService {
     
     func updateApplication(id: String, app: OrganizationApplication) async throws -> URLResponse {
         let endpoint = Endpoint(path: "/organizations/applications/\(id)")
-        
         let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(app), headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain()
         ])
@@ -90,11 +90,27 @@ class OrgService {
     
     func deleteApplication(id: String) async throws -> Data {
         let endpoint = Endpoint(path: "/organizations/applications/\(id)")
-        
         let (data, _) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain()
         ])
         return data
+    }
+    
+    // INVITATIONS
+    
+    func createInvitation(data: Invitation) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint(path: "/organizations/invitations")
+        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(data), headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain()
+        ])
+    }
+    
+    func updateInvitation(data: Invitation) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/organizations/invitations/\(data.id ?? "")")
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(data), headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain()
+        ])
+        return resp
     }
 }
 

@@ -9,14 +9,18 @@ import Foundation
 import SwiftToast
 import NotificationCenter
 
-class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
 
     let center = UNUserNotificationCenter.current()
     
     @Published var showToast: Bool = false
+    @Published var inMessageView: Bool = false
     @Published var toastContent: Toast = Toast(style: .newEvent, actor: "", title: "", message: "")
     
-    @Published var inMessageView: Bool = false
+    override init() {
+        super.init()
+        center.delegate = self
+    }
     
     // Request alert sound and badge notifications
     func requestAuthorization() async throws {
@@ -27,16 +31,13 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     // checks and makes sure all the notification authorizations are there
     func checkAuthorizationStatus() async throws -> Bool {
         let status =  await center.notificationSettings()
-        
         guard (status.authorizationStatus == .authorized) || (status.authorizationStatus == .provisional) else { return false }
-
         return true
     }
     
     // checks to see if we can show alert notifications
     func checkAlertSetting() async throws -> Bool {
         let status = await center.notificationSettings()
-        
         if status.alertSetting == .enabled{
             // alert-only notification even when device is unlocked
             return true
@@ -113,7 +114,12 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             self.toastContent = Toast(style: ToastStyle.newEvent, title: title, message: message)
             self.showToast = true
         default:
-            break
+            guard let title = userInfo["title"] as? String,
+                  let message = userInfo["message"] as? String else {
+                return
+            }
+            self.toastContent = Toast(style: ToastStyle.info, title: title, message: message)
+            self.showToast = true
         }
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])

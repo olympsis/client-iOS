@@ -17,7 +17,7 @@ struct ViewContainer: View {
     @State private var accountState: ACCOUNT_STATE = .Unknown
     @State private var authObserver = AuthObserver()
     @EnvironmentObject private var session: SessionStore
-    @EnvironmentObject private var notificationManager: NotificationsManager
+    @EnvironmentObject private var notificationManager: NotificationManager
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -50,6 +50,6 @@ struct ViewContainer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewContainer().environmentObject(SessionStore()).environmentObject(NotificationsManager())
+        ViewContainer().environmentObject(SessionStore()).environmentObject(NotificationManager())
     }
 }

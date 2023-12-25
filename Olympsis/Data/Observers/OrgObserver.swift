@@ -58,8 +58,8 @@ class OrgObserver: ObservableObject{
             return object
         } catch {
             log.error("\(error)")
+            return nil
         }
-        return nil
     }
     
     func deleteOrganization(id: String) async -> Bool {
@@ -71,8 +71,8 @@ class OrgObserver: ObservableObject{
             return true
         } catch {
             log.error("\(error)")
+            return false
         }
-        return false
     }
     
     func createOrganizationApplication(app: OrganizationApplication) async -> Bool {
@@ -90,12 +90,11 @@ class OrgObserver: ObservableObject{
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return [OrganizationApplication]()
             }
-            let object = try decoder.decode([OrganizationApplication].self, from: data)
-            return object
+            return try decoder.decode([OrganizationApplication].self, from: data)
         } catch {
             log.error("\(error)")
+            return [OrganizationApplication]()
         }
-        return [OrganizationApplication]()
     }
     
     func updateApplication(id: String, app: OrganizationApplication) async -> Bool {
@@ -107,7 +106,33 @@ class OrgObserver: ObservableObject{
             return true
         } catch {
             log.error("\(error)")
+            return false
         }
-        return false
+    }
+    
+    func createInvitation(data: Invitation) async -> Invitation? {
+        do {
+            let (data, res) = try await orgService.createInvitation(data: data)
+            guard (res as? HTTPURLResponse)?.statusCode == 201 || (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            return try decoder.decode(Invitation.self, from: data)
+        } catch {
+            log.error("Failed to create invitation: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func updateInvitation(data: Invitation) async -> Bool {
+        do {
+            let resp = try await orgService.updateInvitation(data: data)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("Failed to update invitation: \(error.localizedDescription)")
+            return false
+        }
     }
 }
