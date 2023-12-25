@@ -15,8 +15,8 @@ import AuthenticationServices
 struct OlympsisApp: App {
     
     @State var showAuth: Bool?
-    @StateObject var sessionStore = SessionStore()
-    @Environment(\.openWindow) private var openWindow
+    @StateObject private var sessionStore = SessionStore()
+    @StateObject private var notificationManager = NotificationManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
@@ -27,10 +27,11 @@ struct OlympsisApp: App {
                 if !showAuth! {
                     ViewContainer() // home view
                         .environmentObject(sessionStore)
-                        .environmentObject(sessionStore.notificationsManager)
+                        .environmentObject(notificationManager)
                 } else {
                     AuthContainer() // auth view
                         .environmentObject(sessionStore)
+                        .environmentObject(notificationManager)
                 }
             }
         }.onChange(of: sessionStore.authStatus) { newValue in
@@ -40,7 +41,9 @@ struct OlympsisApp: App {
                         showAuth = false
                     }
                 } else {
-                    showAuth = false
+                    DispatchQueue.main.async {
+                        showAuth = false
+                    }
                 }
             } else {
                 if showAuth == nil {
@@ -48,7 +51,9 @@ struct OlympsisApp: App {
                         showAuth = true
                     }
                 } else {
-                    showAuth = true
+                    DispatchQueue.main.async {
+                        showAuth = true
+                    }
                 }
             }
         }

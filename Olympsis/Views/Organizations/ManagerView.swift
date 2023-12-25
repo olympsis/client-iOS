@@ -51,6 +51,7 @@ struct ManagerView: View {
                                 Color.gray // Indicates an error.
                                     .clipShape(Circle())
                                 .opacity(0.3)
+                                .frame(width: 45, height: 45)
                                 Image(systemName: "exclamationmark.circle")
                             }
                         } else {
@@ -58,16 +59,17 @@ struct ManagerView: View {
                                 Color.gray // Acts as a placeholder.
                                     .clipShape(Circle())
                                     .opacity(0.3)
+                                    .frame(width: 45, height: 45)
                                 ProgressView()
                             }
                         }
-                }.frame(width: 50)
+                }.frame(width: 45, height: 45)
             }
             
             VStack(alignment: .leading) {
                 Text(fullName)
                 Text(username)
-                    .font(.subheadline)
+                    .font(.callout)
                     .foregroundColor(.gray)
             }
             Spacer()

@@ -14,7 +14,7 @@ struct Notifications: View {
     
     @State private var status: LOADING_STATE = .pending
     @State private var userObserver = UserObserver()
-    @State private var notifications = NotificationsManager()
+    @State private var notifications = NotificationManager()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "notification_permission_view")
     
     @AppStorage("deviceToken") private var deviceToken: String?

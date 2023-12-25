@@ -137,13 +137,17 @@ struct Home: View {
                     Text("Olympsis")
                         .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
                 }
-//                Hiding this until i can have it working
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button(action:{ self.showNotifications.toggle() }) {
-//                        Image(systemName: "bell")
-//
-//                    }
-//                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action:{ self.showNotifications.toggle() }) {
+                        Image(systemName: "bell")
+                            .foregroundStyle(Color("foreground"))
+                            .overlay {
+                                if session.invitations.count > 0 {
+                                    NotificationCountView(value: $session.invitations.count)
+                                }
+                            }
+                    }
+                }
             }
         }
     }
@@ -151,6 +155,7 @@ struct Home: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home().environmentObject(SessionStore())
+        Home()
+            .environmentObject(SessionStore())
     }
 }

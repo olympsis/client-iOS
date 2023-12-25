@@ -20,6 +20,7 @@ struct OrgMenu: View {
     @State private var showClubs = false
     @State private var showNewClub = false
     @State private var showMembers = false
+    
     @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false

@@ -10,22 +10,24 @@ import SwiftUI
 struct LoadingButton: View {
     
     @State var text: String
-    @State var width: Double
+    @State var width: CGFloat = 150
+    @State var height: CGFloat = 40
+    @State var color: Color = Color("color-prime")
     @Binding var status: LOADING_STATE
     
     var body: some View {
         if self.status == .loading {
             ZStack {
                 Rectangle()
-                    .foregroundColor(Color("color-prime"))
+                    .foregroundColor(color)
                     .frame(width: 50, height: 40)
                 ProgressView()
             }
         } else if self.status == .pending{
             ZStack{
                 Rectangle()
-                    .foregroundColor(Color("color-prime"))
-                    .frame(height: 40)
+                    .foregroundColor(color)
+                    .frame(width: width, height: height)
                 Text(text)
                     .font(.caption)
                     .textCase(.uppercase)
@@ -36,7 +38,7 @@ struct LoadingButton: View {
             ZStack {
                 Rectangle()
                     .frame(width: 50, height: 40)
-                    .foregroundColor(Color("color-prime"))
+                    .foregroundColor(color)
                 Image(systemName: "checkmark")
                     .imageScale(.large)
                     .fontWeight(.bold)
@@ -47,7 +49,7 @@ struct LoadingButton: View {
             ZStack {
                  Rectangle()
                     .frame(width: 50, height: 40)
-                    .foregroundColor(Color("color-prime"))
+                    .foregroundColor(color)
                 Image(systemName: "xmark")
                     .imageScale(.large)
                     .fontWeight(.bold)
