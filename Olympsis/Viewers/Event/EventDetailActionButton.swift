@@ -16,9 +16,8 @@ struct EventDetailActionButton: View {
     @EnvironmentObject var session:SessionStore
     
     func startEvent() async {
-        let status = "in-progress"
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualSTime: now, status: status)
+        let dao = EventDao(maxParticipants: event.maxParticipants ?? 0, minParticipants: event.minParticipants ?? 0, level: event.level ?? 0, actualSTime: now, externalLink: event.externalLink ?? "")
         state = .loading
         guard let id = event.id else {
             return
@@ -35,9 +34,8 @@ struct EventDetailActionButton: View {
     }
     
     func stopEvent() async {
-        let status = "ended"
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(stopTime: now, status: status)
+        let dao = EventDao(maxParticipants: event.maxParticipants ?? 0, minParticipants: event.minParticipants ?? 0, level: event.level ?? 0, actualStopTime: now, externalLink: event.externalLink ?? "")
         state = .loading
         guard let id = event.id else {
             return
