@@ -364,13 +364,13 @@ struct NewTournamentEvent: View {
                                 step: 1.0,
                                 onEditingChanged: { editing in
                                     isEditing = editing
-                                }).padding(.leading)
-                                .padding(.trailing)
-                            Spacer()
+                                }).padding(.horizontal)
+                            
                             Text("\(Int(eventMinParticipants))")
                                 .foregroundColor(isEditing ? .red : Color("color-prime"))
                             Stepper("", value: $eventMinParticipants, in: 0...100)
                                 .padding(.trailing)
+                                .frame(height: 50)
                         }.modifier(InputField())
                         
                     }.padding(.top)
@@ -392,9 +392,8 @@ struct NewTournamentEvent: View {
                                 step: 5.0,
                                 onEditingChanged: { editing in
                                     isEditing = editing
-                                }).padding(.leading)
-                                .padding(.trailing)
-                            Spacer()
+                                }).padding(.horizontal)
+                            
                             Text("\(Int(eventMaxParticipants))")
                                 .foregroundColor(isEditing ? .red : Color("color-prime"))
                             Stepper("", value: $eventMaxParticipants, in: 0...1000)
@@ -484,9 +483,6 @@ struct NewTournamentEvent: View {
                     } else {
                         eventStopTime = v
                     }
-                }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 }
             }.navigationTitle("Tournament")
                 .navigationBarTitleDisplayMode(.inline)

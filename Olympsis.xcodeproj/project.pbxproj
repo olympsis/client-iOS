@@ -19,6 +19,9 @@
 		5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD192B3944C900F90777 /* NotificationModelView.swift */; };
 		5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD1C2B3948A800F90777 /* InvitationView.swift */; };
 		5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD1E2B3954C300F90777 /* NotificationCountView.swift */; };
+		5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD212B3A1A6000F90777 /* EditPickUpEvent.swift */; };
+		5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD232B3A1A6A00F90777 /* EditTournamentEvent.swift */; };
+		5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD252B3BC1CF00F90777 /* Generic.swift */; };
 		5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20624F2B141C7E00A9D408 /* OrgService.swift */; };
 		5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062512B141E5000A9D408 /* OrgObserver.swift */; };
 		5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062532B14297000A9D408 /* OrgMenu.swift */; };
@@ -310,6 +313,9 @@
 		5D18BD192B3944C900F90777 /* NotificationModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModelView.swift; sourceTree = "<group>"; };
 		5D18BD1C2B3948A800F90777 /* InvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationView.swift; sourceTree = "<group>"; };
 		5D18BD1E2B3954C300F90777 /* NotificationCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCountView.swift; sourceTree = "<group>"; };
+		5D18BD212B3A1A6000F90777 /* EditPickUpEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPickUpEvent.swift; sourceTree = "<group>"; };
+		5D18BD232B3A1A6A00F90777 /* EditTournamentEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTournamentEvent.swift; sourceTree = "<group>"; };
+		5D18BD252B3BC1CF00F90777 /* Generic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		5D20624F2B141C7E00A9D408 /* OrgService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgService.swift; sourceTree = "<group>"; };
 		5D2062512B141E5000A9D408 /* OrgObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgObserver.swift; sourceTree = "<group>"; };
 		5D2062532B14297000A9D408 /* OrgMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgMenu.swift; sourceTree = "<group>"; };
@@ -590,6 +596,15 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		5D18BD202B3A190000F90777 /* Edit Event */ = {
+			isa = PBXGroup;
+			children = (
+				5D18BD212B3A1A6000F90777 /* EditPickUpEvent.swift */,
+				5D18BD232B3A1A6A00F90777 /* EditTournamentEvent.swift */,
+			);
+			path = "Edit Event";
+			sourceTree = "<group>";
+		};
 		5D2DEFBF2B1AB2B60082FE73 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -756,6 +771,7 @@
 		9A35370029289344005EC806 /* Event */ = {
 			isa = PBXGroup;
 			children = (
+				5D18BD202B3A190000F90777 /* Edit Event */,
 				5DBB94C32B028D310031876D /* New Event */,
 				9A81B64C2925EED1009CA6ED /* EventsModalView.swift */,
 				9A69FE5429724C9200EBC5F9 /* EventsList.swift */,
@@ -1221,6 +1237,7 @@
 				BE9C45FE29E36DB0008EA591 /* SecureStore.swift */,
 				BE9C460029E38936008EA591 /* GenerateImageURL.swift */,
 				5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */,
+				5D18BD252B3BC1CF00F90777 /* Generic.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1450,6 +1467,7 @@
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
+				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
@@ -1559,6 +1577,7 @@
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
 				9AD208EF293279AA007A62C4 /* EventDao.swift in Sources */,
 				9AD2090829348DA6007A62C4 /* ClubDao.swift in Sources */,
+				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
 				9A81B6402925E191009CA6ED /* FieldDetailView.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
@@ -1606,6 +1625,7 @@
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				5D2DEFC32B1AB2CE0082FE73 /* OrgFeed.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
+				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */,
 				5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */,

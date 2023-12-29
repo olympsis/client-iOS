@@ -1,5 +1,5 @@
 //
-//  NewEventDao.swift
+//  EventDao.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 11/26/22.
@@ -10,32 +10,39 @@ import Foundation
 class EventDao: Dao {
     let title:              String?
     let body:               String?
-    let clubId:             String?
-    let fieldId:            String?
     let imageURL:           String?
-    let sport:              String?
-    let startTime:          Int?
-    let maxParticipants:    Int?
+    
     let level:              Int?
-    let status:             String?
-    let actualStartTime:    Int?
+    let visibility:         String?
+    
+    let startTime:          Int?
     let stopTime:           Int?
+    let actualStartTime:    Int?
     let actualStopTime:    Int?
+    
+    let minParticipants:    Int?
+    let maxParticipants:    Int?
+    
+    let externalLink:   String?
 
-    init(title: String?=nil, body: String?=nil, clubId: String?=nil, fieldId: String?=nil, imageURL: String?=nil, sport: String?=nil, startTime: Int?=nil, maxParticipants: Int?=nil, level: Int?=nil, actualSTime: Int? = nil, stopTime: Int? = nil, actualStopTime: Int? = nil, status: String?=nil){
+    init(title: String?=nil, body: String?=nil, imageURL: String?=nil, sport: String?=nil, startTime: Int?=nil, maxParticipants: Int?=nil, minParticipants: Int?=nil, level: Int?=nil, actualSTime: Int? = nil, stopTime: Int? = nil, actualStopTime: Int? = nil, visibility: String?=nil, externalLink: String?=nil){
         self.title = title
         self.body = body
-        self.clubId = clubId
-        self.fieldId = fieldId
         self.imageURL = imageURL
-        self.sport = sport
-        self.startTime = startTime
-        self.maxParticipants = maxParticipants
+        
         self.level = level
-        self.actualStartTime = actualSTime
+        self.visibility = visibility
+        
+        self.startTime = startTime
         self.stopTime = stopTime
-        self.status = status
+        self.actualStartTime = actualSTime
         self.actualStopTime = actualStopTime
+        
+        self.minParticipants = minParticipants
+        self.maxParticipants = maxParticipants
+        
+        self.externalLink = externalLink
+        
         super.init()
     }
     
@@ -47,14 +54,10 @@ class EventDao: Dao {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
-        try container.encode(clubId, forKey: .clubId)
-        try container.encode(fieldId, forKey: .fieldId)
         try container.encode(imageURL, forKey: .imageURL)
-        try container.encode(sport, forKey: .sport)
-        try container.encode(startTime, forKey: .startTime)
-        try container.encode(maxParticipants, forKey: .maxParticipants)
-        try container.encode(status, forKey: .status)
+        try container.encode(visibility, forKey: .visibility)
         try container.encode(level, forKey: .level)
+        try container.encode(startTime, forKey: .startTime)
         if let ast = actualStartTime {
             try container.encode(ast, forKey: .actualStartTime)
         }
@@ -64,22 +67,28 @@ class EventDao: Dao {
         if let actualStopTime = actualStopTime {
             try container.encode(actualStopTime, forKey: .actualStopTime)
         }
-        try container.encode(status, forKey: .status)
+        try container.encode(minParticipants, forKey: .minParticipants)
+        try container.encode(maxParticipants, forKey: .maxParticipants)
+        try container.encode(externalLink, forKey: .externalLink)
     }
     
     enum CodingKeys: String, CodingKey {
         case title
         case body
-        case clubId
-        case fieldId
-        case imageURL
-        case sport
-        case startTime = "start_time"
-        case maxParticipants = "max_participants"
+        case imageURL = "image_url"
+        
         case level
-        case actualStartTime = "actual_start_time"
+        case visibility
+        
+        case startTime = "start_time"
         case stopTime = "stop_time"
+        
+        case actualStartTime = "actual_start_time"
         case actualStopTime = "actual_stop_time"
-        case status
+        
+        case minParticipants = "min_participants"
+        case maxParticipants = "max_participants"
+        
+        case externalLink = "external_link"
     }
 }

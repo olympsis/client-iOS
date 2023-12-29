@@ -298,7 +298,7 @@ struct NewPickUpEvent: View {
                         }
                     }.padding()
                     
-                    // MARK: - Start Date/Time picker
+                    // MARK: - End Date/Time picker
                     VStack(alignment: .leading){
                         HStack {
                             Text("End Date/Time")
@@ -342,7 +342,7 @@ struct NewPickUpEvent: View {
                                     isEditing = editing
                                 }).padding(.leading)
                                 .padding(.trailing)
-                            Spacer()
+                            
                             Text("\(Int(eventMinParticipants))")
                                 .foregroundColor(isEditing ? .red : Color("color-prime"))
                             Stepper("", value: $eventMinParticipants, in: 0...100)
@@ -370,7 +370,7 @@ struct NewPickUpEvent: View {
                                     isEditing = editing
                                 }).padding(.leading)
                                 .padding(.trailing)
-                            Spacer()
+                            
                             Text("\(Int(eventMaxParticipants))")
                                 .foregroundColor(isEditing ? .red : Color("color-prime"))
                             Stepper("", value: $eventMaxParticipants, in: 0...1000)
@@ -455,9 +455,6 @@ struct NewPickUpEvent: View {
                     } else {
                         eventStopTime = v
                     }
-                }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 }
             }.navigationTitle("Pick Up")
                 .navigationBarTitleDisplayMode(.inline)
