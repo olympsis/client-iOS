@@ -12,7 +12,10 @@ struct MenuButton: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             Rectangle()
-                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+                .foregroundColor(Color(uiColor: .secondarySystemBackground))
+            Rectangle()
+                .stroke(lineWidth: 1)
+                .foregroundStyle(Color("color-prime"))
             content
         }.frame(width: SCREEN_WIDTH-25, height: 50)
     }

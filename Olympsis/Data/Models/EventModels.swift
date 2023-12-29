@@ -14,24 +14,24 @@ class Event: Codable, Identifiable, ObservableObject {
     let id: String?
     let type: String?
     let poster: String?
-    let organizers: [Organizer]?
-    let field: FieldDescriptor?
-    let imageURL: String?
-    let title: String?
-    let body: String?
+    var organizers: [Organizer]?
+    var field: FieldDescriptor?
+    var imageURL: String?
+    var title: String?
+    var body: String?
     let sport: String?
-    let level: Int?
+    var level: Int?
     var startTime: Int?
     var actualStartTime: Int?
     var stopTime: Int?
     var actualStopTime: Int?
-    let minParticipants: Int?
-    let maxParticipants: Int?
+    var minParticipants: Int?
+    var maxParticipants: Int?
     var participants: [Participant]?
-    let visibility: String?
+    var visibility: String?
     var data: EventData?
     let createdAt: Int?
-    let externalLink: String?
+    var externalLink: String?
     
     enum CodingKeys: String, CodingKey {
         case id

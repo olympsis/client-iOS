@@ -176,7 +176,7 @@ struct EventOrganizersView: View {
                         self.showGroups.toggle()
                     }
                     .sheet(isPresented: $showGroups, content: {
-                        if let org = organizers.first {
+                        if organizers.first != nil {
                             GroupsView(organizers: organizers, clubs: event.data?.clubs ?? [Club](), organizations: event.data?.organizations ?? [Organization]())
                                 .presentationDetents([.medium, .large])
                         }

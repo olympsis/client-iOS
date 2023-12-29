@@ -12,6 +12,8 @@ struct EventMenu: View {
     @Binding var event: Event
     @State private var loadingState: LOADING_STATE = .pending
     @State private var showNotification: Bool = false
+    @State private var showEditEvent: Bool = false
+    
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
     
@@ -74,9 +76,8 @@ struct EventMenu: View {
     }
     
     func startEvent() async {
-        let status = "in-progress"
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualSTime: now, status: status)
+        let dao = EventDao(actualSTime: now)
         loadingState = .loading
         guard let id = event.id else {
             return
@@ -93,9 +94,8 @@ struct EventMenu: View {
     }
     
     func stopEvent() async {
-        let status = "ended"
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStopTime: now, status: status)
+        let dao = EventDao(actualStopTime: now)
         loadingState = .loading
         guard let id = event.id else {
             return
@@ -112,7 +112,7 @@ struct EventMenu: View {
     }
     
     var body: some View {
-        VStack(spacing: 15){
+        VStack {
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 35, height: 5)
                 .foregroundColor(.gray)
@@ -141,78 +141,108 @@ struct EventMenu: View {
 //                }
             
             if isPosterOrAdmin {
-                HStack(spacing: 15) {
-                    if event.actualStopTime == nil {
-                        Button(action:{
-                            Task {
-                                if event.actualStartTime == nil {
-                                    await startEvent()
-                                } else if event.actualStartTime != nil {
-                                    await stopEvent()
-                                }
-                            }
-                        }) {
-                            VStack {
-                                if event.actualStartTime == nil {
-                                    if loadingState == .loading {
-                                        ProgressView()
-                                    } else {
-                                        Image(systemName: "play.fill")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundColor(.green)
-                                        Text("Start Event")
-                                            .foregroundColor(.green)
-                                    }
-                                } else if event.actualStartTime != nil {
-                                    if loadingState == .loading {
-                                        ProgressView()
-                                    } else {
-                                        Image(systemName: "stop.fill")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundColor(.red)
-                                        Text("Stop Event")
-                                            .foregroundColor(.red)
-                                    }
-                                }
-                            }.modifier(SettingButton())
-                        }.disabled(loadingState == .loading ? true : false)
-                            .frame(height: 100)
-                    }
-                    
+                Button(action:{ self.showEditEvent.toggle() }) {
+                    HStack {
+                        
+                        Label {
+                            Text("Edit Event")
+                                .foregroundStyle(Color("foreground"))
+                                .font(.subheadline)
+                                .textCase(.uppercase)
+                        } icon: {
+                            Image(systemName: "pencil")
+                        }
+                    }.modifier(MenuButton())
+                }
+                if event.actualStopTime == nil {
                     Button(action:{
                         Task {
-                            await deleteEvent()
+                            if event.actualStartTime == nil {
+                                await startEvent()
+                            } else if event.actualStartTime != nil {
+                                await stopEvent()
+                            }
                         }
                     }) {
-                        VStack {
-                            Image(systemName: "trash")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(.red)
-                            Text("Delete Event")
-                                .foregroundColor(.red)
-                        }.modifier(SettingButton())
-                    }.frame(height: 100)
-                }.padding(.horizontal)
-            }
-            
-            Button(action:{}) {
-                HStack {
-                    Image(systemName: "exclamationmark.shield")
-                        .imageScale(.large)
-                        .padding(.leading)
-                        .foregroundColor(.black)
-                    Text("Report an Issue")
-                        .foregroundColor(.black)
-                    Spacer()
+                        HStack {
+                            if event.actualStartTime == nil {
+                                if loadingState == .loading {
+                                    ProgressView()
+                                } else {
+                                    Label {
+                                        Text("Start Event")
+                                            .foregroundColor(.green)
+                                            .font(.subheadline)
+                                            .textCase(.uppercase)
+                                    } icon: {
+                                        Image(systemName: "play.fill")
+                                            .foregroundStyle(.green)
+                                    }
+                                }
+                            } else if event.actualStartTime != nil {
+                                if loadingState == .loading {
+                                    ProgressView()
+                                } else {
+                                    Label {
+                                        Text("Stop Event")
+                                            .foregroundStyle(.red)
+                                            .font(.subheadline)
+                                            .textCase(.uppercase)
+                                    } icon: {
+                                        Image(systemName: "square.fill")
+                                            .foregroundStyle(.red)
+                                    }
+                                }
+                            }
+                        }
+                    }.disabled(loadingState == .loading ? true : false)
+                        .modifier(MenuButton())
+                        
+                }
+               
+                Button(action:{
+                    Task {
+                        await deleteEvent()
+                    }
+                }) {
+                    Label {
+                        Text("Delete Event")
+                            .foregroundStyle(.red)
+                            .font(.subheadline)
+                            .textCase(.uppercase)
+                    } icon: {
+                        Image(systemName: "trash")
+                            .foregroundStyle(.red)
+                    }
+
+                    
                 }.modifier(MenuButton())
             }
+            
+// disabled until implemented
+//            Button(action:{}) {
+//                HStack {
+//                    Image(systemName: "exclamationmark.shield")
+//                        .imageScale(.large)
+//                        .padding(.leading)
+//                        .foregroundColor(.black)
+//                    Text("Report an Issue")
+//                        .foregroundColor(.black)
+//                    Spacer()
+//                }.modifier(MenuButton())
+//            }
             Spacer()
         }.sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)
         })
+        .fullScreenCover(isPresented: $showEditEvent, content: {
+            if event.type == "pickup" {
+                EditPickUpEvent(event: $event)
+            } else {
+                EditTournamentEvent(event: $event)
+            }
+        })
+        
     }
 }
 
