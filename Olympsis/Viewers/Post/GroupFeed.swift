@@ -50,24 +50,6 @@ struct GroupFeed: View {
         // if the club has a pinned post then that takes priority #2
         // then the rest of the posts are sorted by when they were created
         let condition: (Post, Post) -> Bool = { p, p2 in
-            if selectedGroup.type == GROUP_TYPE.Club.rawValue {
-                if let club = selectedGroup.club {
-                    if let data = club.data,
-                        let parent = data.parent,
-                       let pinnedPostId = parent.pinnedPostId {
-                         return p.id == pinnedPostId
-                    }
-                    if let pinnedPostId = club.pinnedPostId {
-                        return p.id == pinnedPostId
-                    }
-                }
-                   
-            } else {
-                if let org = selectedGroup.organization,
-                   let pinnedPostId = org.pinnedPostId {
-                    return p.id == pinnedPostId
-                }
-            }
             return p.createdAt ?? 0 > p2.createdAt ?? 0
         }
         
@@ -80,7 +62,32 @@ struct GroupFeed: View {
             guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id ?? "", parentId: club.parentId) else {
                 return [Post]()
             }
-            return response.sorted(by: condition)
+            
+            var pinned = [Post]()
+            var sorted = response.sorted(by: condition)
+            
+            if let data = club.data,
+                let parent = data.parent,
+                let pinnedPostId = parent.pinnedPostId {
+                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+                    pinned.append(resp)
+                }
+            }
+            if let pinnedPostId = club.pinnedPostId {
+                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+                    pinned.append(resp)
+                }
+            }
+            
+            sorted.removeAll { p in
+                pinned.contains(where: { $0.id == p.id })
+            }
+            
+            for (index, element) in pinned.enumerated() {
+                sorted.insert(element, at: index)
+            }
+            
+            return sorted
         } else {
             status = .success
             guard let org = selectedGroup.organization else {
@@ -89,7 +96,26 @@ struct GroupFeed: View {
             guard let response: [Post] = await session.postObserver.getPosts(clubId: org.id ?? "", parentId: nil) else {
                 return [Post]()
             }
-            return response.sorted(by: condition)
+            
+            var pinned = [Post]()
+            var sorted = response.sorted(by: condition)
+            
+            if let org = selectedGroup.organization,
+                let pinnedPostId = org.pinnedPostId {
+                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+                    pinned.append(resp)
+                }
+            }
+            
+            sorted.removeAll { p in
+                pinned.contains(where: { $0.id == p.id })
+            }
+            
+            for (index, element) in pinned.enumerated() {
+                sorted.insert(element, at: index)
+            }
+            
+            return sorted
         }
     }
     
