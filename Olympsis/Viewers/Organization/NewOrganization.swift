@@ -82,7 +82,7 @@ struct NewOrganization: View {
                   let state = pk.first?.administrativeArea else {
                 return
             }
-            let org = Organization(id: nil, name: clubName, description: description, sport: sport, city: nil, state: state, country: country, imageURL: imageURL, imageGallery: nil, members: nil, createdAt: Int64(Date().timeIntervalSinceNow))
+            let org = Organization(id: nil, name: clubName, description: description, sport: sport, city: nil, state: state, country: country, imageURL: imageURL, imageGallery: nil, members: nil, pinnedPostId: nil, createdAt: Int64(Date().timeIntervalSinceNow))
             
             // create new organization
             let resp = try await session.orgObserver.createOrganization(organization: org)

@@ -82,8 +82,8 @@ class SessionStore: ObservableObject {
             self.clubsState = .pending
             return
         }
-        let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
-        
+//        let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
+        let resp = await clubObserver.getUserClubs(clubs: clubIDs)
         DispatchQueue.main.async {
             resp.forEach { c in
                 let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)

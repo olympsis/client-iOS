@@ -16,7 +16,7 @@ class PostObserver: ObservableObject{
     
     func getPosts(clubId: String, parentId: String?) async -> [Post]? {
         do {
-            let (data, res) = try await postService.getPosts(id: clubId, parentId: parentId)
+            let (data, res) = try await postService.getPosts(id: clubId, parentId: parentId ?? "")
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }
