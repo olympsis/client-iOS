@@ -10,6 +10,8 @@ import SwiftUI
 struct PostMenu: View {
     
     @State var post: Post
+    @Binding var posts: [Post]
+    @Binding var pinned: Bool
     @StateObject private var uploadObserver = UploadObserver()
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
@@ -40,6 +42,91 @@ struct PostMenu: View {
         return true
     }
     
+    var isPinned: Bool {
+        guard let selectedGroup = session.selectedGroup else {
+            return false
+        }
+        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+            guard let club = selectedGroup.club else {
+                return false
+            }
+            if post.type == "announcement" {
+                if let data = club.data,
+                   let parent = data.parent {
+                    return post.id == parent.pinnedPostId
+                }
+            }
+            return post.id == club.pinnedPostId
+        } else {
+            guard let org = selectedGroup.organization,
+                  let pinnedPostId = org.pinnedPostId else {
+                return false
+            }
+            return post.id == pinnedPostId
+        }
+    }
+    
+    func pinPost() async {
+        guard let selectedGroup = session.selectedGroup else {
+            return
+        }
+        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+            guard let club = selectedGroup.club,
+                  let id = club.id,
+                  let postId = post.id else {
+                return
+            }
+            let resp = await session.clubObserver.pinPost(id: id, postId: postId)
+            if resp {
+                club.pinnedPostId = postId
+                pinned = true
+            }
+            return
+        } else {
+            guard let org = selectedGroup.organization,
+                  let id = org.id,
+                  let postId = post.id else {
+                return
+            }
+            let resp = await session.orgObserver.pinPost(id: id, postId: postId)
+            if resp {
+                org.pinnedPostId = postId
+                pinned = true
+            }
+            return
+        }
+    }
+    
+    func unPinPost() async {
+        guard let selectedGroup = session.selectedGroup else {
+            return
+        }
+        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+            guard let club = selectedGroup.club,
+                  let id = club.id else {
+                return
+            }
+            let resp = await session.clubObserver.unPinPost(id: id)
+            if resp {
+                club.pinnedPostId = nil
+                pinned = false
+                posts = posts
+            }
+            return
+        } else {
+            guard let org = selectedGroup.organization,
+                  let id = org.id else {
+                return
+            }
+            let resp = await session.orgObserver.unPinPost(id: id)
+            if resp {
+                org.pinnedPostId = nil
+                pinned = false
+                posts = posts
+            }
+        }
+    }
+    
     func deletePost() async {
         guard let id = post.id else {
             return
@@ -59,7 +146,7 @@ struct PostMenu: View {
         }
         
         // remove post
-        session.posts.removeAll(where: { $0.id == post.id })
+        posts.removeAll(where: { $0.id == post.id })
         self.presentationMode.wrappedValue.dismiss()
     }
     
@@ -85,6 +172,31 @@ struct PostMenu: View {
             }
             
             if isPosterOrAdmin || isManager {
+                if pinned {
+                    Button(action:{ Task { await unPinPost() }}) {
+                        HStack {
+                            Image(systemName: "pin")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.primary)
+                            Text("Unpin Post")
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }.modifier(MenuButton())
+                    }
+                } else {
+                    Button(action:{ Task { await pinPost() }}) {
+                        HStack {
+                            Image(systemName: "pin.fill")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.primary)
+                            Text("Pin Post")
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }.modifier(MenuButton())
+                    }
+                }
                 Button(action:{ Task { await deletePost() }}) {
                     HStack {
                         Image(systemName: "trash")
@@ -98,12 +210,14 @@ struct PostMenu: View {
                 }
             }
             Spacer()
+        }.task {
+            pinned = isPinned
         }
     }
 }
 
 struct PostMenu_Previews: PreviewProvider {
     static var previews: some View {
-        PostMenu(post: POSTS[0]).environmentObject(SessionStore())
+        PostMenu(post: POSTS[0], posts: .constant(POSTS), pinned: .constant(false)).environmentObject(SessionStore())
     }
 }

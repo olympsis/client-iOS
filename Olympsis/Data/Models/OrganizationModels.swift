@@ -20,7 +20,7 @@ class Organization: Codable, Identifiable {
     let imageURL: String?
     let imageGallery: [String]?
     let members: [Member]?
-    let pinnedPostId: String?
+    var pinnedPostId: String?
     let data: ClubData?
     let createdAt: Int64?
     
@@ -34,6 +34,7 @@ class Organization: Codable, Identifiable {
          imageURL: String?,
          imageGallery: [String]?,
          members: [Member]?,
+         pinnedPostId: String?,
          createdAt: Int64?) {
         
         self.id = id
@@ -46,7 +47,7 @@ class Organization: Codable, Identifiable {
         self.imageURL = imageURL
         self.imageGallery = imageGallery
         self.members = members
-        self.pinnedPostId = nil
+        self.pinnedPostId = pinnedPostId
         self.data = nil
         self.createdAt = createdAt
     }

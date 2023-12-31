@@ -29,12 +29,8 @@ struct GroupView: View {
                     ProgressView()
                 case .success, .pending:
                     VStack {
-                        if let group = session.selectedGroup {
-                            if let club = group.club {
-                                ClubFeed(club: club)
-                            } else if let org = group.organization {
-                                OrgFeed(organization: org)
-                            }
+                        if session.selectedGroup != nil {
+                            GroupFeed()
                         } else {
                             ClubsList()
                         }

@@ -11,6 +11,21 @@ let _current_date = Date()
 let _one_hr = Calendar.current.date(byAdding: .hour, value: 1, to: _current_date)
 let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
+let POSTS = [
+    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
+        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
+    ], createdAt: 1639364779, externalLink: ""),
+    Post(id: UUID().uuidString, type: "announcement", poster: "", groupID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: ORGANIZATIONS[0]), likes: nil, comments: [
+        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
+    ], createdAt: 1639364780, externalLink: nil),
+    Post(id: UUID().uuidString, type: "advertisement", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
+        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
+    ], createdAt: 1639364781, externalLink: nil),
+    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
+        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
+    ], createdAt: 1639364781, externalLink: nil)
+]
+
 let FIELDS = [
     Field(id: UUID().uuidString, name: "Richard Building Fields", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The Richard Building fields is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
     Field(id: UUID().uuidString, name: "Indoor Practice Facility", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
@@ -24,14 +39,14 @@ let CLUBS = [
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
-    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)), pinnedPostId: nil, createdAt: nil),
+    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, pinnedPostId: nil, createdAt: nil)), pinnedPostId: POSTS[1].id, createdAt: nil),
     Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
-    ], rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
+    ], rules: nil, data: nil, pinnedPostId: POSTS[0].id, createdAt: nil)
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil)
 ]
 
 let ORGANIZATION_APPLICATIONS = [
@@ -82,18 +97,6 @@ let EVENTS = [
     ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780)
 ]
 
-
-let POSTS = [
-    Post(id: "0", type: "regular", poster: "", groupID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
-    ], createdAt: 1639364779, externalLink: ""),
-    Post(id: "1", type: "announcement", poster: "", groupID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: ORGANIZATIONS[0]), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
-    ], createdAt: 1639364780, externalLink: nil),
-    Post(id: "2", type: "Advertisement", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
-    ], createdAt: 1639364781, externalLink: nil)
-]
 
 let USERS_DATA = [
     UserData(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", visibility: "public", bio: "Love to play soccer", clubs: nil, sports: nil, deviceToken: nil),

@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct PostView: View {
+    
     @State var post: Post
+    @Binding var posts: [Post]
+    
     @State private var index: Int = 0
+    @State private var pinned: Bool = false
     @State private var isLiked: Bool = false
     @State private var showMenu: Bool = false
     @State private var showComments: Bool = false
@@ -17,7 +21,6 @@ struct PostView: View {
     
     @StateObject private var postObserver = PostObserver()
     @StateObject private var uploadObserver = UploadObserver()
-    
     @EnvironmentObject var session: SessionStore
     
     var userImageURL: String {
@@ -123,6 +126,30 @@ struct PostView: View {
         }
     }
     
+    func isPinned() -> Bool {
+        guard let selectedGroup = session.selectedGroup else {
+            return false
+        }
+        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+            guard let club = selectedGroup.club else {
+                return false
+            }
+            if post.type == "announcement" {
+                if let data = club.data,
+                   let parent = data.parent {
+                    return post.id == parent.pinnedPostId
+                }
+            }
+            return post.id == club.pinnedPostId
+        } else {
+            guard let org = selectedGroup.organization,
+                  let pinnedPostId = org.pinnedPostId else {
+                return false
+            }
+            return post.id == pinnedPostId
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack(alignment: .center) {
@@ -184,7 +211,12 @@ struct PostView: View {
                 }
                 
                 Spacer()
-                
+                if pinned {
+                    Image(systemName: "pin.fill")
+                        .foregroundStyle(Color("color-prime"))
+                        .imageScale(.small)
+                        .padding(.top, 5)
+                }
                 Button(action:{ self.showMenu.toggle() }) {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
@@ -250,23 +282,22 @@ struct PostView: View {
             }
         }
         .sheet(isPresented: $showMenu) {
-            PostMenu(post: post)
+            PostMenu(post: post, posts: $posts, pinned: $pinned)
                 .presentationDetents([.height(250)])
         }
         .task {
-            guard let user = session.user,
+            if let user = session.user,
                   let uuid = user.uuid,
-                  ((post.likes?.first(where: { $0.uuid == uuid })) != nil) else {
-                self.isLiked = false
-                return
+                  ((post.likes?.first(where: { $0.uuid == uuid })) != nil) {
+                self.isLiked = true
             }
-            self.isLiked = true
+            self.pinned = isPinned()
         }
     }
 }
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: POSTS[1]).environmentObject(SessionStore())
+        PostView(post: POSTS[1], posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }
