@@ -112,6 +112,24 @@ class OrgService {
         ])
         return resp
     }
+    
+    func pinPost(id: String, postId: String) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/organizations/\(id)/post/\(postId)")
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain(),
+            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+        ])
+        return resp
+    }
+    
+    func unPinPost(id: String) async throws -> URLResponse {
+        let endpoint = Endpoint(path: "/organizations/\(id)/post")
+        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: [
+            "Authorization": tokenStore.fetchTokenFromKeyChain(),
+            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+        ])
+        return resp
+    }
 }
 
 

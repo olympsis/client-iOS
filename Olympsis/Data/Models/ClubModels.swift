@@ -24,7 +24,7 @@ class Club: Codable, Identifiable {
     let members: [Member]?
     let rules: [String]?
     let data: ClubData?
-    let pinnedPostId: String?
+    var pinnedPostId: String?
     let createdAt: Int64?
     
     init(id: String?,
@@ -88,7 +88,7 @@ class Club: Codable, Identifiable {
         case members
         case rules
         case data
-        case pinnedPostId
+        case pinnedPostId = "pinned_post_id"
         case createdAt = "created_at"
     }
 }

@@ -18,22 +18,6 @@ class ClubObserver: ObservableObject{
     
     @Published var myClubs = [Club]()
     
-    func generateUserClubs(clubIDs: [String]) async -> [Club] {
-        var clubs = [Club]()
-        for id in clubIDs {
-            let resp = await getClub(id: id)
-            guard let r = resp else {
-                return [Club]()
-            }
-            clubs.append(r.club)
-            guard let tk = r.token else {
-                continue
-            }
-            cacheService.cacheClubAdminToken(id: r.club.id!, token: tk)
-        }
-        return clubs
-    }
-    
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
@@ -48,6 +32,20 @@ class ClubObserver: ObservableObject{
         } catch {
             log.error("\(error)")
             return nil
+        }
+    }
+    
+    func getUserClubs(clubs: [String]) async -> [Club] {
+        do {
+            let (data, res) = try await clubService.getUserClubs(clubs: clubs.joined(separator: ","))
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return [Club]()
+            }
+            let object = try decoder.decode(ClubsResponse.self, from: data)
+            return object.clubs
+        } catch {
+            log.error("\(error)")
+            return [Club]()
         }
     }
     
@@ -147,6 +145,32 @@ class ClubObserver: ObservableObject{
     func leaveClub(id: String) async -> Bool {
         do {
             let res = try await clubService.leaveClub(id: id)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
+    
+    func pinPost(id: String, postId: String) async -> Bool {
+        do {
+            let res = try await clubService.pinPost(id: id, postId: postId)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
+    
+    func unPinPost(id: String) async -> Bool {
+        do {
+            let res = try await clubService.unPinPost(id: id)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }

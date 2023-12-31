@@ -10,6 +10,7 @@ import SwiftUI
 struct PostComments: View {
     @State var club: Club
     @Binding var post: Post
+    
     @State private var text = ""
     @State private var comments: [Comment] = [Comment]()
     @EnvironmentObject var session: SessionStore

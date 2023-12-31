@@ -135,4 +135,30 @@ class OrgObserver: ObservableObject{
             return false
         }
     }
+    
+    func pinPost(id: String, postId: String) async -> Bool {
+        do {
+            let res = try await orgService.pinPost(id: id, postId: postId)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
+    
+    func unPinPost(id: String) async -> Bool {
+        do {
+            let res = try await orgService.unPinPost(id: id)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+        }
+        return false
+    }
 }
