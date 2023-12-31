@@ -19,27 +19,26 @@ struct PostMenu: View {
     var isPosterOrAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
-              let group = session.selectedGroup,
-              group.organization == nil,
-              let club = group.club,
-              let members = club.members else {
+              let group = session.selectedGroup else {
             return false
         }
-        
-        guard let member = members.first(where: { $0.uuid == uuid }),
-              member.role == "member" else {
+        if group.type == GROUP_TYPE.Club.rawValue {
+            guard let type = post.type,
+                  type == "post",
+                  let club = group.club,
+                  let members = club.members,
+                  let member = members.first(where: { $0.uuid == uuid }),
+                  member.role != "member" else {
+                if post.type == "post" {
+                    return (post.poster == uuid)
+                } else {
+                    return false
+                }
+            }
+        } else {
             return true
         }
-        
-        return (post.poster == uuid)
-    }
-    
-    var isManager: Bool {
-        guard let group = session.selectedGroup,
-              group.organization != nil else {
-            return false
-        }
-        return true
+        return false
     }
     
     var isPinned: Bool {
@@ -171,7 +170,7 @@ struct PostMenu: View {
                 }.modifier(MenuButton())
             }
             
-            if isPosterOrAdmin || isManager {
+            if isPosterOrAdmin {
                 if pinned {
                     Button(action:{ Task { await unPinPost() }}) {
                         HStack {
