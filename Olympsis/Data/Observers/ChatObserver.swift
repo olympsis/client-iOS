@@ -23,7 +23,7 @@ class ChatObserver: ObservableObject {
     private let log = Logger(subsystem: "com.coronislabs.olympsis", category: "chat_observer")
     
     init() {
-        host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
     }
     
     func CreateRoom(group: String, groupType: String, name: String, type: String, uuid: String) async -> Room? {
