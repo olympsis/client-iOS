@@ -15,7 +15,7 @@ class ChatService {
     private let tokenStore = SecureStore()
     
     init() {
-        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        let host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
         self.http = Courrier(host: host, apiKey: key, token: tokenStore.fetchTokenFromKeyChain())
     }

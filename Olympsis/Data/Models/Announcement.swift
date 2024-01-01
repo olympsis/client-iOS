@@ -13,11 +13,11 @@ class Announcement: Encodable, Identifiable, Equatable {
     }
     
     var id: String
-    var imageURL: URL
+    var imageURL: String
     
     init(id: String, image: String) {
         self.id = id
-        self.imageURL = URL(string: image)!
+        self.imageURL = image
     }
     
     enum CodingKeys: String, CodingKey{
