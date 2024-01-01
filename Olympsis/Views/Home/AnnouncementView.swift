@@ -12,7 +12,7 @@ struct AnnouncementView: View {
     
     var body: some View {
         VStack {
-            AsyncImage(url: announcement.imageURL){ phase in
+            AsyncImage(url: URL(string: GenerateImageURL(announcement.imageURL))){ phase in
                 if let image = phase.image {
                         image // Displays the loaded image.
                             .resizable()

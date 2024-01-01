@@ -21,14 +21,14 @@ class UploadService {
     }
     
     func UploadObject(url: String, fileType: String, fileName: String, body: Data) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/v1/storage" + url)
+        let endpoint = Endpoint(path: "/storage" + url)
         
         let (data, resp) = try await _uploadImage(endpoint: endpoint, name: fileName, data: body)
         return (data, resp)
     }
     
     func DeleteObject(url: String, fileName: String) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint(path: "/v1/storage" + url)
+        let endpoint = Endpoint(path: "/storage" + url)
         
         let (data, resp) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["X-Filename" : fileName, "Authorization":tokenStore.fetchTokenFromKeyChain()])
         return (data, resp)

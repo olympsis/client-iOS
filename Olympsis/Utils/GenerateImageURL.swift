@@ -8,7 +8,7 @@
 import Foundation
 
 func GenerateImageURL(_ link: String) -> String {
-    return "https://api.olympsis.com/" + link
+    return "https://storage.googleapis.com/olympsis-" + link
 }
 
 func GrabImageIdFromURL(_ url: String) -> String {
