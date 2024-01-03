@@ -158,55 +158,26 @@ struct PostMenu: View {
                 .padding(.bottom, 1)
                 .padding(.top, 7)
             
-            Button(action:{}) {
-                HStack {
-                    Image(systemName: "exclamationmark.bubble")
-                        .imageScale(.large)
-                        .padding(.leading)
-                        .foregroundColor(.primary)
-                    Text("Report Post")
-                        .foregroundColor(.primary)
-                    Spacer()
-                }.modifier(MenuButton())
-            }
-            
             if isPosterOrAdmin {
                 if pinned {
-                    Button(action:{ Task { await unPinPost() }}) {
-                        HStack {
-                            Image(systemName: "pin")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Unpin Post")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "pin.fill"), text: "Unpin Post", action: {
+                        Task {
+                            await unPinPost()
+                        }
+                    })
                 } else {
-                    Button(action:{ Task { await pinPost() }}) {
-                        HStack {
-                            Image(systemName: "pin.fill")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Pin Post")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "pin"), text: "Pin Post", action: {
+                        Task {
+                            await pinPost()
+                        }
+                    })
                 }
-                Button(action:{ Task { await deletePost() }}) {
-                    HStack {
-                        Image(systemName: "trash")
-                            .imageScale(.large)
-                            .padding(.leading)
-                            .foregroundColor(.red)
-                        Text(" Delete Post")
-                            .foregroundColor(.red)
-                        Spacer()
-                    }.modifier(MenuButton())
-                }
+            }
+            
+            MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post")
+            
+            if isPosterOrAdmin {
+                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post")
             }
             Spacer()
         }.task {

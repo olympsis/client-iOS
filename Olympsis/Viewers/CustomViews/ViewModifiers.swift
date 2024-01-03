@@ -8,19 +8,6 @@
 import SwiftUI
 import Foundation
 
-struct MenuButton: ViewModifier {
-    func body(content: Content) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(Color(uiColor: .secondarySystemBackground))
-            Rectangle()
-                .stroke(lineWidth: 1)
-                .foregroundStyle(Color("color-prime"))
-            content
-        }.frame(width: SCREEN_WIDTH-25, height: 50)
-    }
-}
-
 
 struct SettingButton: ViewModifier {
     func body(content: Content) -> some View {
