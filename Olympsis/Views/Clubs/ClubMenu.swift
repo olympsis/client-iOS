@@ -112,105 +112,47 @@ struct ClubMenu: View {
                     }.padding(.vertical)
                         .padding(.horizontal)
                     
-                    if role != "member" {
-                        Button(action:{ self.showApplications.toggle() }) {
-                            HStack {
-                                Image(systemName: "note")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.primary)
-                                Text("Club Applications")
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }.modifier(MenuButton())
-                        }.padding(.top)
-                    }
-                    
-                    if role != "member" {
-                        Button(action:{ self.showOrganizations.toggle() }) {
-                            HStack {
-                                Image(systemName: "building")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.primary)
-                                Text("Change Organization")
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }.modifier(MenuButton())
+                    VStack {
+                        if role != "member" {
+                            MenuButton(icon: Image(systemName: "note.fill"), text: "Applications", action: {
+                                self.showApplications.toggle()
+                            })
                         }
-                    }
-                            
-                    Button(action:{ self.showNewClub.toggle() }) {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Create a New Group")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
-                    Button(action:{ self.showClubs.toggle() }) {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Search for clubs")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
-                    Button(action:{ self.showMembers.toggle() }) {
-                        HStack {
-                            Image(systemName: "person.3")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Members")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }.fullScreenCover(isPresented: $showMembers) {
-                        MembersListView(club: club)
-                    }
-                    
-                    Button(action:{
-                        showAlert = false
-                        alertType = .LeaveClub
-                        showAlert.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: "door.left.hand.open")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Leave Club")
-                                .foregroundColor(.red)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
-                    if role == "owner" {
-                        Button(action:{
+                        
+                        if role != "member" {
+                            MenuButton(icon: Image(systemName: "building.fill"), text: "Change Organization", action: {
+                                self.showOrganizations.toggle()
+                            })
+                        }
+                                
+                        MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
+                            self.showNewClub.toggle()
+                        })
+                        
+                        MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
+                            self.showClubs.toggle()
+                        })
+                        
+                        MenuButton(icon: Image(systemName: "person.3"), text: "Members", action: {
+                            self.showMembers.toggle()
+                        })
+                        
+                        MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Club", action: {
                             showAlert = false
-                            alertType = .DeleteClub
+                            alertType = .LeaveClub
                             showAlert.toggle()
-                        }) {
-                            HStack {
-                                Image(systemName: "trash.fill")
-                                    .imageScale(.large)
-                                    .padding(.leading)
-                                    .foregroundColor(.red)
-                                Text("Delete Club")
-                                    .foregroundColor(.red)
-                                Spacer()
-                            }.modifier(MenuButton())
+                        }, type: .destructive)
+                        
+                        if role == "owner" {
+                            MenuButton(icon: Image(systemName: "trash.fill"), text: "Delete Club", action: {
+                                showAlert = false
+                                alertType = .DeleteClub
+                                showAlert.toggle()
+                            }, type: .destructive)
                         }
-                    }
+                    }.padding(.top)
+                    
+                    
                     
                 }
             }.toolbar {
@@ -231,6 +173,9 @@ struct ClubMenu: View {
             }
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
+            }
+            .fullScreenCover(isPresented: $showMembers) {
+                MembersListView(club: club)
             }
             .fullScreenCover(isPresented: $showClubs) {
                 ClubsList2()

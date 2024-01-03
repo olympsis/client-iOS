@@ -127,8 +127,12 @@ struct GroupFeed: View {
             ProgressView()
         case .pending, .success:
             ScrollView(showsIndicators: false) {
-                ForEach(posts) { post in
-                    PostView(post: post, posts: $posts)
+                if posts.count > 0 {
+                    ForEach(posts) { post in
+                        PostView(post: post, posts: $posts)
+                    }
+                } else {
+                    Text("No Posts")
                 }
             }.task{
                 self.posts = await getLatestPosts()

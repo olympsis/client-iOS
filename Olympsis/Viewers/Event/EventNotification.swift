@@ -49,7 +49,7 @@ struct EventNotification: View {
                 
                 TextField("Pick up reminder", text: $title)
                     .padding(.leading)
-                    .modifier(MenuButton())
+                    
             }
             
             // MARK: - Content
@@ -63,7 +63,7 @@ struct EventNotification: View {
                 
                 TextField("Don't forget your gear", text: $content)
                     .padding(.leading)
-                    .modifier(MenuButton())
+                    
             }
             
             Spacer()

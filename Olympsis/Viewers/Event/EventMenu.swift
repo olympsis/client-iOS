@@ -119,41 +119,11 @@ struct EventMenu: View {
                 .opacity(0.3)
                 .padding(.top, 5)
             
-//                if isPosterOrAdmin {
-//                    Menu {
-//                        Button(action: { showNotification.toggle() }) {
-//                            Text("Notify Participants")
-//                        }
-//                        Button(action: {}) {
-//                            Text("Notify Club Members")
-//                        }
-//                    } label: {
-//                        HStack {
-//                            Image(systemName: "bell")
-//                                .imageScale(.large)
-//                                .padding(.leading)
-//                                .foregroundColor(.black)
-//                            Text("Send a Notification")
-//                                .foregroundColor(.black)
-//                            Spacer()
-//                        }.modifier(MenuButton())
-//                    }
-//                }
-            
             if isPosterOrAdmin {
-                Button(action:{ self.showEditEvent.toggle() }) {
-                    HStack {
-                        
-                        Label {
-                            Text("Edit Event")
-                                .foregroundStyle(Color("foreground"))
-                                .font(.subheadline)
-                                .textCase(.uppercase)
-                        } icon: {
-                            Image(systemName: "pencil")
-                        }
-                    }.modifier(MenuButton())
-                }
+                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
+                    self.showEditEvent.toggle()
+                })
+                
                 if event.actualStopTime == nil {
                     Button(action:{
                         Task {
@@ -196,41 +166,19 @@ struct EventMenu: View {
                             }
                         }
                     }.disabled(loadingState == .loading ? true : false)
-                        .modifier(MenuButton())
-                        
                 }
-               
-                Button(action:{
+            }
+            
+            MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue")
+            
+            if isPosterOrAdmin {
+                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
                     Task {
                         await deleteEvent()
                     }
-                }) {
-                    Label {
-                        Text("Delete Event")
-                            .foregroundStyle(.red)
-                            .font(.subheadline)
-                            .textCase(.uppercase)
-                    } icon: {
-                        Image(systemName: "trash")
-                            .foregroundStyle(.red)
-                    }
-
-                    
-                }.modifier(MenuButton())
+                }, type: .destructive)
             }
             
-// disabled until implemented
-//            Button(action:{}) {
-//                HStack {
-//                    Image(systemName: "exclamationmark.shield")
-//                        .imageScale(.large)
-//                        .padding(.leading)
-//                        .foregroundColor(.black)
-//                    Text("Report an Issue")
-//                        .foregroundColor(.black)
-//                    Spacer()
-//                }.modifier(MenuButton())
-//            }
             Spacer()
         }.sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)

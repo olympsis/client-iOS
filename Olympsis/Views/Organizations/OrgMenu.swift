@@ -127,74 +127,29 @@ struct OrgMenu: View {
                         
                     }
                     
-                    Button(action:{ self.showApplications.toggle() }) {
-                        HStack {
-                            Image(systemName: "note")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Applications")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }.padding(.top)
+                    MenuButton(icon: Image(systemName: "note"), text: "Applications", action: {
+                        self.showApplications.toggle()
+                    }).padding(.top)
                             
-                    Button(action:{ self.showNewClub.toggle() }) {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Create a New Group")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create New Group", action: {
+                        self.showNewClub.toggle()
+                    })
                     
-                    Button(action:{ self.showMembers.toggle() }) {
-                        HStack {
-                            Image(systemName: "person.3")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Managers")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
-                    Button(action:{
+                    MenuButton(icon: Image(systemName: "person.3.fill"), text: "Managers", action: {
+                        self.showMembers.toggle()
+                    })
+
+                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Organization", action: {
                         showAlert = false
                         alertType = .LeaveClub
                         showAlert.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: "door.left.hand.open")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Leave Organization")
-                                .foregroundColor(.red)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    }, type: .destructive)
                     
-                    Button(action:{
+                    MenuButton(icon: Image(systemName: "trash.fill"), text: "Delete Organization", action: {
                         showAlert = false
                         alertType = .DeleteClub
                         showAlert.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: "trash.fill")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Delete Organization")
-                                .foregroundColor(.red)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
+                    }, type: .destructive)
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

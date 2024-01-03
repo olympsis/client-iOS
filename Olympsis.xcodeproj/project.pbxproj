@@ -89,6 +89,7 @@
 		5DD0E4002AC889FA00C85B94 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */; };
 		5DD0E4022AC889FA00C85B94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DD0E4012AC889FA00C85B94 /* Assets.xcassets */; };
 		5DD0E4062AC889FA00C85B94 /* LiveEventExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* FieldViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* FieldViewExt.swift */; };
 		5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA12A4123EF0019E9F7 /* Notifications.swift */; };
 		5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA32A4123FB0019E9F7 /* Location.swift */; };
@@ -374,6 +375,7 @@
 		5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		5DD0E4012AC889FA00C85B94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DD0E4032AC889FA00C85B94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* FieldViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldViewExt.swift; sourceTree = "<group>"; };
 		5F00FEA12A4123EF0019E9F7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		5F00FEA32A4123FB0019E9F7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -727,9 +729,11 @@
 		5F493FA32A54024900EAF5A4 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */,
 				5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */,
 			);
-			path = Buttons;
+			name = Buttons;
+			path = ../Views/Buttons;
 			sourceTree = "<group>";
 		};
 		5F493FA82A5480B700EAF5A4 /* Pickers */ = {
@@ -743,6 +747,10 @@
 		9A3536FF2928930D005EC806 /* Viewers */ = {
 			isa = PBXGroup;
 			children = (
+				9A81B62129247707009CA6ED /* CustomViews */,
+				5F493FA32A54024900EAF5A4 /* Buttons */,
+				5D9557A22A6C5E19006A1EF8 /* Onboarding */,
+				5F493FA82A5480B700EAF5A4 /* Pickers */,
 				5D18BD1B2B39489200F90777 /* Notification */,
 				5D2DEFC42B1B780D0082FE73 /* Groups */,
 				5DBB94D72B1259BD0031876D /* Organization */,
@@ -926,11 +934,7 @@
 			children = (
 				5DBB94D92B125BCB0031876D /* Groups */,
 				5DBB94D82B1259E90031876D /* Organizations */,
-				5D9557A22A6C5E19006A1EF8 /* Onboarding */,
-				5F493FA82A5480B700EAF5A4 /* Pickers */,
-				5F493FA32A54024900EAF5A4 /* Buttons */,
 				9AC5BAC0295E6D17003E851B /* Activity */,
-				9A81B62129247707009CA6ED /* CustomViews */,
 				9AD208F02933F4DA007A62C4 /* Messages */,
 				9AB02F5529024C9C008C07F1 /* Tournaments */,
 				9AB02F5429024C69008C07F1 /* Clubs */,
@@ -1445,6 +1449,7 @@
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
 				5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */,
 				5DBB94CB2B03254C0031876D /* NewClub.swift in Sources */,
+				5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */,
 				5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */,
 				9A81B62529247F87009CA6ED /* ClubListView.swift in Sources */,
 				5FA350562A67352500669B2C /* NotificationsView.swift in Sources */,
