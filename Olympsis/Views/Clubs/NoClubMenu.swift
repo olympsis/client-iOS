@@ -76,7 +76,7 @@ struct NoClubMenu: View {
                                     .foregroundColor(.gray)
                             }
                             Spacer()
-                        }.modifier(MenuButton())
+                        }
                     }.fullScreenCover(isPresented: $showNewClub) {
                         NewGroup()
                     }

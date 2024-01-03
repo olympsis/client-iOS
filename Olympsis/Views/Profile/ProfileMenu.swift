@@ -17,82 +17,25 @@ struct ProfileMenu: View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    Button(action:{ }) {
-                        HStack {
-                            Image(systemName: "bell")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Notification Settings")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
+                        .padding(.top)
                     
-                    Button(action:{ }) {
-                        HStack {
-                            Image(systemName: "lifepreserver")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Help")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
                     
-                    Button(action:{ }) {
-                        HStack {
-                            Image(systemName: "lock")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("Privacy Policy")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "lock.fill"), text: "Privacy Policy")
+                        
+                    MenuButton(icon: Image(systemName: "info.circle.fill"), text: "About")
                     
-                    Button(action:{ }) {
-                        HStack {
-                            Image(systemName: "info.circle")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.primary)
-                            Text("About")
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
+                        Task {
+                            await session.logout()
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
+                    }, type: .destructive)
                     
-                    Button(action:{ Task {
-                        await session.logout()
-                        self.presentationMode.wrappedValue.dismiss()
-                    }}) {
-                        HStack {
-                            Image(systemName: "door.left.hand.open")
-                                .imageScale(.large)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Log out")
-                                .foregroundColor(.red)
-                                .bold()
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
-                    
-                    Button(action:{ self.showDeleteView.toggle() }) {
-                        HStack {
-                            Image(systemName: "delete.forward")
-                                .imageScale(.medium)
-                                .padding(.leading)
-                                .foregroundColor(.red)
-                            Text("Delete Account")
-                                .foregroundColor(.red)
-                                .bold()
-                            Spacer()
-                        }.modifier(MenuButton())
-                    }
+                    MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
+                        self.showDeleteView.toggle()
+                    }, type: .destructive)
                 }.toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action:{self.presentationMode.wrappedValue.dismiss()}){
@@ -102,10 +45,10 @@ struct ProfileMenu: View {
                     }
                 }
                 .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .fullScreenCover(isPresented: $showDeleteView, onDismiss: { self.presentationMode.wrappedValue.dismiss() }) {
-                DeleteAccountView()
-            }
+                .navigationBarTitleDisplayMode(.inline)
+                .fullScreenCover(isPresented: $showDeleteView, onDismiss: { self.presentationMode.wrappedValue.dismiss() }) {
+                    DeleteAccountView()
+                }
             }
         }
     }

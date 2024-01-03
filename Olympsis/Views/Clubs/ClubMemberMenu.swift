@@ -56,43 +56,19 @@ struct ClubMemberMenu: View {
                     }
                     
                 } label: {
-                    HStack {
-                        Image(systemName: "chevron.up.chevron.down")
-                            .imageScale(.large)
-                            .padding(.leading)
-                            .foregroundColor(.primary)
-                        Text("Change Role")
-                            .foregroundColor(.primary)
-                        Spacer()
-                    }.modifier(MenuButton())
+                    MenuButton(icon: Image(systemName: "chevron.up.chevron.down"), text: "Change Role")
                 }
 
             }
             
-            Button(action:{}) {
-                HStack {
-                    Image(systemName: "exclamationmark.bubble")
-                        .imageScale(.large)
-                        .padding(.leading)
-                        .foregroundColor(.primary)
-                    Text("Report Member")
-                        .foregroundColor(.primary)
-                    Spacer()
-                }.modifier(MenuButton())
-            }
+            MenuButton(icon: Image(systemName: "exclamationmark.bubble"), text: "Report Member", action: {})
             
             if role != "member" {
-                Button(action:{ Task{ await Kick() } }) {
-                    HStack {
-                        Image(systemName: "door.right.hand.open")
-                            .imageScale(.large)
-                            .padding(.leading)
-                            .foregroundColor(.red)
-                        Text("Kick Member")
-                            .foregroundColor(.red)
-                        Spacer()
-                    }.modifier(MenuButton())
-                }
+                MenuButton(icon: Image(systemName: "door.right.hand.open"), text: "Remove Member from Club", action: {
+                    Task {
+                        await Kick()
+                    }
+                })
             }
             
             Spacer()
