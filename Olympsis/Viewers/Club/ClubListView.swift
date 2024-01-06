@@ -135,20 +135,19 @@ struct ClubListView: View {
             
             HStack(spacing: 15) {
                 Button(action:{ Task{ await Apply() } }) {
-                    LoadingButton(text: "Apply", width: SCREEN_WIDTH-100, status: $status)
+                    LoadingButton(text: "Apply", width: 250, status: $status)
                 }.contentShape(Rectangle())
-                    .frame(maxWidth: .infinity)
+                    
                 Button(action: { self.showDetails.toggle() }) {
                     ZStack {
                         Rectangle()
                             .stroke(lineWidth: 1)
-                            .frame(height: 40)
+                            .frame(width: 100,height: 40)
                         Text("Details")
                             .textCase(.uppercase)
                             .font(.caption)
                     }
                 }.contentShape(Rectangle())
-                    .frame(maxWidth: .infinity)
             }.padding(.all)
         }.background {
             Rectangle()

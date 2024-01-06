@@ -27,18 +27,21 @@ struct PostMenu: View {
                   type == "post",
                   let club = group.club,
                   let members = club.members,
-                  let member = members.first(where: { $0.uuid == uuid }),
-                  member.role != "member" else {
+                  let member = members.first(where: { $0.uuid == uuid }) else {
                 if post.type == "post" {
                     return (post.poster == uuid)
                 } else {
                     return false
                 }
             }
+            if member.role != "member" {
+                return true
+            } else {
+                return (post.poster == uuid)
+            }
         } else {
             return true
         }
-        return false
     }
     
     var isPinned: Bool {
@@ -177,7 +180,7 @@ struct PostMenu: View {
             MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post")
             
             if isPosterOrAdmin {
-                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post")
+                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", type: .destructive)
             }
             Spacer()
         }.task {

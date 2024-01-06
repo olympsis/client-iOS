@@ -28,14 +28,15 @@ struct MenuButton: View {
                         .foregroundStyle(Color("background"))
                     Rectangle()
                         .stroke(lineWidth: 1)
-                        .foregroundStyle(Color("menu-primary"))
+                        .foregroundStyle(.gray)
+                        .opacity(0.2)
                     
                     HStack(alignment: .center) {
                         
                         icon
-                            .foregroundStyle(Color("menu-primary"))
+                            .foregroundStyle(Color("foreground"))
                         Text(text)
-                            .foregroundStyle(Color("menu-primary"))
+                            .foregroundStyle(Color("foreground"))
                         Spacer()
                     }.padding(.horizontal)
                 }.padding(.horizontal)
