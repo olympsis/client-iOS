@@ -90,6 +90,7 @@ class SecureStore {
         var result: CFTypeRef?
         let fetchQuery: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
+            kSecAttrAccount as String: SecureStore.account,
             kSecAttrServer as String: SecureStore.server,
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecReturnData as String: true
@@ -97,27 +98,13 @@ class SecureStore {
         let fetchStatus = SecItemCopyMatching(fetchQuery as CFDictionary, &result)
         guard fetchStatus == errSecSuccess, let data = result as? Data else {
             log.error("Failed to fetch token")
-            return legacyFetchToken()
+            return ""
         }
         guard let token = String(data: data, encoding: .utf8) else {
             log.error("Failed to decode token")
             return ""
         }
         return token
-    }
-    
-    func legacyFetchToken() -> String {
-        var result: CFTypeRef?
-                let fetchQuery: [String: Any] = [
-                    kSecClass as String: kSecClassGenericPassword,
-                    kSecAttrAccount as String: "authToken",
-                    kSecReturnData as String: kCFBooleanTrue!,
-                    kSecMatchLimit as String: kSecMatchLimitOne
-                ]
-                let fetchStatus = SecItemCopyMatching(fetchQuery as CFDictionary, &result)
-                guard fetchStatus == errSecSuccess, let data = result as? Data else { return "" }
-                let fetchedToken = String(data: data, encoding: .utf8) ?? ""
-                return fetchedToken
     }
     
     func clearKeyChain() {

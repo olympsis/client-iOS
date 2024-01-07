@@ -68,4 +68,9 @@ class UserService {
         let endpoint = Endpoint(path: "/users/invitations/organizations")
         return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
+    
+    func CheckIn() async throws -> (Data, URLResponse){
+        let endpoint = Endpoint(path: "/users/check-in")
+        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
 }

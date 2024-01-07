@@ -20,6 +20,18 @@ class EventService {
         self.http = Courrier(host: host, apiKey: key)
     }
     
+    func location(long: Double, lat: Double, radius: Int, sports: String, status: String) async throws -> (Data, URLResponse) {
+        let endpoint = Hermes.Endpoint(path: "/events/location", queryItems: [
+            URLQueryItem(name: "longitude", value: String(long)),
+            URLQueryItem(name: "latitude", value: String(lat)),
+            URLQueryItem(name: "radius", value: String(radius)),
+            URLQueryItem(name: "sports", value: sports),
+            URLQueryItem(name: "status", value: status),
+        ])
+        
+        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
     func getEvents(long: Double, lat: Double, radius: Int, sports: String, status: String) async throws -> (Data, URLResponse) {
         let endpoint = Hermes.Endpoint(path: "/events", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),

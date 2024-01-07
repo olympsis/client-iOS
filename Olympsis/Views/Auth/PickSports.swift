@@ -25,7 +25,7 @@ struct PickSports: View {
         
         guard var user = cacheService.fetchUser(),
               let username = user.username else {
-            handleFailure()
+            currentView = .auth
             return
         }
         status = .loading
@@ -84,7 +84,6 @@ struct PickSports: View {
                     .padding(.horizontal, 30)
             }.padding(.bottom)
                 .disabled(!(selectedSports.count > 0))
-                
         }
     }
 }

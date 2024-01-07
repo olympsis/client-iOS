@@ -14,24 +14,16 @@ struct ClubMemberMenu: View {
     @EnvironmentObject var session:SessionStore
     
     func Promote(_ role: String) async {
-        let res = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
-        if res {
-            await session.fetchUserClubs()
-        }
+        let _ = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
     }
     
     func Demote(_ role: String) async {
-        let res = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
-        if res {
-            await session.fetchUserClubs()
-        }
+        let _ = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
     }
     
     func Kick() async {
-        let res = await session.clubObserver.kickMember(id: club.id!, memberId: member.id!)
-        if res {
-            await session.fetchUserClubs()
-        }
+        let _ = await session.clubObserver.kickMember(id: club.id!, memberId: member.id!)
+
     }
     
     var body: some View {

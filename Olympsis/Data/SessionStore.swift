@@ -69,45 +69,56 @@ class SessionStore: ObservableObject {
         user = cacheService.fetchUser()
     }
     
-    func fetchUserClubs() async {
-        
+    func CheckIn() async {
         do {
-            self.invitations = try await userObserver.GetOrganizationInvitations()
-        } catch {
-            log.error("\(error.localizedDescription)")
-        }
-        
-        // check to see if user has clubs
-        guard let u = user, let clubIDs = u.clubs else {
-            self.clubsState = .pending
-            return
-        }
-//        let resp = await clubObserver.generateUserClubs(clubIDs: clubIDs)
-        let resp = await clubObserver.getUserClubs(clubs: clubIDs)
-        DispatchQueue.main.async {
-            resp.forEach { c in
-                let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)
-                self.groups.append(group)
-            }
-            self.clubs = resp
-            self.clubsState = .success
-            guard let g = self.groups.first else {
+            guard let resp = try await userObserver.CheckIn() else {
+                authStatus = .unauthenticated
                 return
             }
-            self.selectedGroup = g
-            
-        }
-        
-        guard let orgIDs = u.organizations else {
-            return
-        }
-        let re = await orgObserver.generateUserOrgs(orgIDs: orgIDs)
-        self.orgs = re
-        DispatchQueue.main.async {
-            re.forEach { o in
-                let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
-                self.groups.append(group)
+            await MainActor.run {
+                if let usr = resp.user {
+                    user = usr
+                    cacheService.cacheUser(user: usr)
+                } else {
+                    user = cacheService.fetchUser()
+                }
+                if let c = resp.clubs {
+                    self.clubs = c
+                    c.forEach { c in
+                        let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)
+                        self.groups.append(group)
+                    }
+                    self.clubsState = .success
+                    guard let g = self.groups.first else {
+                        return
+                    }
+                    self.selectedGroup = g
+                } else {
+                    self.clubsState = .pending
+                }
+                if let o = resp.organizations {
+                    self.orgs = o
+                    o.forEach { o in
+                        let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
+                        self.groups.append(group)
+                    }
+                    if (self.selectedGroup == nil) {
+                        guard let g = self.groups.first else {
+                            return
+                        }
+                        self.selectedGroup = g
+                    }
+                }
+                if let i = resp.invitations {
+                    invitations = i
+                }
+                if let t = resp.token {
+                    secureStore.saveTokenToKeyChain(token: t)
+                }
+                authStatus = .authenticated
             }
+        } catch {
+            authStatus = .unauthenticated
         }
     }
     
@@ -117,42 +128,6 @@ class SessionStore: ObservableObject {
         clubObserver = ClubObserver()
         fieldObserver = FieldObserver()
         eventObserver = EventObserver()
-    }
-    
-    /// This function fetches user data from the backend. It combines the two and stores it in the session.
-    func generateUserData() async {
-        do {
-            reInitObservers()
-            
-            // fetch data from server
-            let updatedData = try await userObserver.GetUserData()
-            
-            // fetch data from cache
-            guard var cache = cacheService.fetchUser() else {
-                return
-            }
-            cache.uuid = updatedData.uuid
-            cache.username = updatedData.username
-            cache.bio = updatedData.bio
-            cache.imageURL = updatedData.imageURL
-            cache.visibility = updatedData.visibility
-            cache.clubs = updatedData.clubs
-            cache.organizations = updatedData.organizations
-            cache.sports = updatedData.sports
-            cache.deviceToken = updatedData.deviceToken
-
-            // cache this new updated data
-            cacheService.cacheUser(user: cache)
-            
-            // update session store
-            await MainActor.run {
-                self.user = cache
-            }
-            return
-        } catch {
-            log.error("generateUpdatedUserData error: \(error.localizedDescription)")
-            return
-        }
     }
     
     func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
@@ -175,60 +150,17 @@ class SessionStore: ObservableObject {
             }
             return Int(radius)
         }
-        // fetch nearby fields
-        let fieldsResp = await self.fieldObserver.fetchFields(
+        guard let resp = await self.eventObserver.location(
             longitude: location.longitude,
             latitude: location.latitude,
             radius: radius,
-            sports: sportsJoined);
-        
-        // if there are no fields in the area then there are no events
-        guard fieldsResp != nil else {
+            sports: sportsJoined) else {
             return
         }
-        
-        // fetch nearby events
-        let eventsResp = await self.eventObserver.fetchEvents(
-            longitude: location.longitude,
-            latitude: location.latitude,
-            radius: radius,
-            sports: sportsJoined);
         
         await MainActor.run {
-            self.fields = fieldsResp ?? [Field]()
-            self.events = eventsResp ?? [Event]()
-        }
-    }
-    
-    func getEvents() async {
-        guard let user = self.user,
-              let sports = user.sports else {
-            return
-        }
-        let sportsJoined = sports.joined(separator: ",")
-        
-        // convert radius to Int
-        var radius: Int {
-            guard let radius = self.radius else {
-                return 17000
-            }
-            return Int(radius)
-        }
-        
-        // location
-        guard let location = self.locationManager.location else {
-            return
-        }
-        
-        // fetch nearby events
-        let eventsResp = await self.eventObserver.fetchEvents(
-            longitude: location.longitude,
-            latitude: location.latitude,
-            radius: radius,
-            sports: sportsJoined);
-        
-        await MainActor.run {
-            self.events = eventsResp ?? [Event]()
+            self.fields = resp.fields ?? [Field]()
+            self.events = resp.events ?? [Event]()
         }
     }
     

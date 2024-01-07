@@ -96,3 +96,16 @@ struct UsersDataResponse: Codable {
         case users
     }
 }
+
+struct CheckIn: Codable {
+    let user: UserData?
+    let clubs: [Club]?
+    let organizations: [Organization]?
+    let invitations: [Invitation]?
+    let token: String?
+}
+
+struct LocationResponse: Codable {
+    let fields: [Field]?
+    let events: [Event]?
+}

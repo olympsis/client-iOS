@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct PostComments: View {
+    
     @State var club: Club
     @Binding var post: Post
     
     @State private var text = ""
+    @FocusState private var keyboardFocused: Bool
+    @State private var status: LOADING_STATE = .pending
     @State private var comments: [Comment] = [Comment]()
-    @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var session: SessionStore
+    @Environment(\.dismiss) private var dismiss
     
     func canDelete(_ comment: Comment) -> Bool {
         guard let user = session.user,
@@ -24,7 +27,16 @@ struct PostComments: View {
         return (uuid == post.poster) || (uuid == comment.uuid)
     }
     
+    func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
+        }
+    }
+    
     func addComment() async {
+        status = .loading
+        keyboardFocused = false
         guard let user = session.user,
               let id = post.id,
               let uuid = user.uuid,
@@ -33,16 +45,21 @@ struct PostComments: View {
               let lastName = user.lastName,
               let imageURL = user.imageURL,
               text.count >= 2 else {
+            handleFailure()
             return
         }
         let comment = Comment(id: nil, uuid: uuid, text: text, data: nil, createdAt: nil)
         let resp = await session.postObserver.addComment(id: id, comment: comment)
         guard var data = resp else {
+            handleFailure()
             return
         }
-        text = ""
+        status = .success
         data.data = UserData(username: username, firstName: firstName, lastName: lastName, imageURL: imageURL)
-        comments.append(data)
+        withAnimation {
+            comments.append(data)
+            text = ""
+        }
     }
     
     func deleteComment(_ comment: Comment) {
@@ -102,9 +119,17 @@ struct PostComments: View {
 
                         }
                     } else {
-                        Text("No Comments")
+                        VStack {
+                            HStack {
+                                Spacer()
+                            }
+                            Spacer()
+                            Text("No Comments")
+                            Spacer()
+                        }
                     }
-                }.listStyle(.plain)
+                }.padding(.bottom, 50)
+                .listStyle(.plain)
                     .refreshable {
                         guard let id = post.id,
                                 let resp = await session.postObserver.getPost(id: id) else {
@@ -122,28 +147,33 @@ struct PostComments: View {
                         }
                         comments = c
                     }
-
-                VStack {
-                    Spacer()
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 40)
-                            .foregroundColor(Color("color-secnd"))
-                            .opacity(0.2)
-                        TextField("Add a Comment", text: $text)
-                            .padding(.leading)
-                            .submitLabel(.send)
-                            .onSubmit {
-                                Task {
-                                    await addComment()
+                    .overlay {
+                        VStack {
+                            Spacer()
+                            HStack(alignment: .center) {
+                                ZStack {
+                                    TextField("Add a Comment", text: $text)
+                                        .padding(.leading)
+                                        .focused($keyboardFocused)
+                                }.frame(height: 40)
+                                if (text.count > 0) {
+                                    Button(action:{ Task { await addComment() } }) {
+                                        LoadingButton(text: "", image: Image(systemName: "paperplane.fill"), width: 40, status: $status)
+                                            .padding(.trailing, 5)
+                                    }
                                 }
-                            }
-                    }.padding(.bottom)
-                    .padding(.horizontal)
-                }
+                            }.ignoresSafeArea(.keyboard)
+                                .frame(height: 50)
+                                .background {
+                                    Rectangle()
+                                        .frame(height: 50)
+                                        .foregroundStyle(Color("background"))
+                                }
+                        }
+                    }
             }.toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
+                    Button(action:{ dismiss() }) {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.primary)
                     }

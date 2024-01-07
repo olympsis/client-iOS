@@ -46,35 +46,36 @@ struct ProfileModel: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                AsyncImage(url: URL(string: GenerateImageURL(imageURL))){ phase in
-                    if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .clipShape(Circle())
-                                .scaledToFill()
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Image(systemName: "person")
+                if imageURL != "" {
+                    AsyncImage(url: URL(string: GenerateImageURL(imageURL))){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
                                     .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(.red)
-                                Color.gray // Acts as a placeholder.
                                     .clipShape(Circle())
-                                    .opacity(0.3)
+                                    .scaledToFill()
+                                    .clipped()
+                            } else if phase.error != nil {
+                                ZStack {
+                                    Image(systemName: "person")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .foregroundColor(.red)
+                                    Color.gray // Acts as a placeholder.
+                                        .clipShape(Circle())
+                                        .opacity(0.3)
+                                }
                             }
-                        } else {
-                            ZStack {
-                                Image(systemName: "person")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(Color("color-prime"))
-                                Color.gray // Acts as a placeholder.
-                                    .clipShape(Circle())
-                                    .opacity(0.3)
-                            }
-                        }
-                }.frame(width: 100, height: 100)
+                    }.frame(width: 100, height: 100)
+                } else {
+                    ZStack {
+                        Circle() // Acts as a placeholder.
+                            .foregroundStyle(Color("color-secnd"))
+                        Image(systemName: "person")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundStyle(Color(.label))
+                    }.frame(width: 100, height: 100)
+                }
                 
                 VStack(alignment: .leading){
                     HStack(){

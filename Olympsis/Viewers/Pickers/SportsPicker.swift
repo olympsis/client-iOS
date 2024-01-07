@@ -77,13 +77,17 @@ struct SportPickerItem: View {
                 sport.Icon()
                     .resizable()
                     .frame(width: 50, height: 55)
+                    .foregroundStyle(.black)
                 Text(sport.rawValue)
                     .textCase(.uppercase)
+                    .foregroundStyle(Color("color-prime"))
                 .font(.caption)
             }
         }.frame(width: 100, height: 100)
+            .background(Color.white)
             .padding(.horizontal)
             .contentShape(Rectangle())
+        
     }
 }
 

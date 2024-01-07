@@ -57,11 +57,11 @@ struct PickUsername: View {
     }
     
     /// Checks the backend to see if the username is available
-    func isUsernameAvailable() async {
+    func isUsernameAvailable() async -> Bool {
         do {
             guard validateInput(username) else {
                 handleInvalidError()
-                return
+                return false
             }
             
             status = .loading
@@ -69,26 +69,33 @@ struct PickUsername: View {
             let available = try await self.userObserver.UsernameAvailability(name: username)
             guard available == true else {
                 handleUnavailableError()
-                return
+                return false
             }
             
             handleAvailable()
+            return true
         } catch {
             handleUnknownFaillureError()
             self.log.error("failed to check username's availability: \(error.localizedDescription)")
+            return false
         }
     }
     
     /// Stores username into cache
-    func storeUsername() {
-        guard var user = cacheService.fetchUser() else {
-            log.error("failed to fetch user data from cache")
-            handleUnknownFaillureError()
+    func storeUsername() async {
+        let available = await isUsernameAvailable()
+        if (available) {
+            guard var user = cacheService.fetchUser() else {
+                log.error("failed to fetch user data from cache")
+                handleUnknownFaillureError()
+                return
+            }
+            user.username = username
+            cacheService.cacheUser(user: user)
+            currentView = .sports
+        } else {
             return
         }
-        user.username = username
-        cacheService.cacheUser(user: user)
-        currentView = .sports
     }
     
     var body: some View {
@@ -197,13 +204,12 @@ struct PickUsername: View {
                         .padding(.leading)
                         .animation(.easeInOut, value: uStatus)
                 }
-                
             }.padding(.top, 50)
             
             Spacer()
             
             // action button
-            Button(action: { storeUsername() }){
+            Button(action: { Task { await storeUsername() } }){
                 SimpleButtonLabel(text: "continue")
             }
             .padding(.bottom)

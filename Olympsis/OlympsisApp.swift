@@ -35,24 +35,28 @@ struct OlympsisApp: App {
                 }
             }
         }.onChange(of: sessionStore.authStatus) { newValue in
-            if sessionStore.authStatus == .authenticated {
-                if showAuth == nil {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        showAuth = false
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        showAuth = false
-                    }
-                }
-            } else {
-                if showAuth == nil {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        showAuth = true
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        showAuth = true
+            Task {
+                await MainActor.run {
+                    if sessionStore.authStatus == .authenticated {
+                        if showAuth == nil {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                showAuth = false
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                showAuth = false
+                            }
+                        }
+                    } else {
+                        if showAuth == nil {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                showAuth = true
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                showAuth = true
+                            }
+                        }
                     }
                 }
             }

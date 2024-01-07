@@ -83,4 +83,16 @@ class UserObserver: ObservableObject {
         let object = try decoder.decode(InvitationsResponse.self, from: data)
         return object.invitations
     }
+    
+    func CheckIn() async throws -> CheckIn? {
+        let (data, resp) = try await userService.CheckIn()
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            if ((resp as? HTTPURLResponse)?.statusCode == 401) {
+                return nil // needs something smarter in the future
+            }
+            return nil
+        }
+        let object = try decoder.decode(Olympsis.CheckIn.self, from: data)
+        return object
+    }
 }

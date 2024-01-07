@@ -17,6 +17,23 @@ class EventObserver: ObservableObject{
     /// Calls the field service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
+    func location(longitude: Double, latitude: Double, radius: Int, sports: String, status: String="live") async -> LocationResponse? {
+        do {
+            let (data, resp) = try await eventService.location(long: longitude, lat: latitude, radius: radius, sports: sports, status: status)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(LocationResponse.self, from: data)
+            return object
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
+    }
+    
+    /// Calls the field service to get fields based on certain params
+    /// - Parameter location: `[String]` latitude, longitude
+    /// - Parameter descritiveLocation: `[String]` city, state, country
     func fetchEvents(longitude: Double, latitude: Double, radius: Int, sports: String, status: String="live") async -> [Event]? {
         do {
             let (data, resp) = try await eventService.getEvents(long: longitude, lat: latitude, radius: radius, sports: sports, status: status)
