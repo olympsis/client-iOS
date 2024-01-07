@@ -63,7 +63,6 @@ struct Auth: View {
                                         if resp == USER_STATUS.new {
                                             currentView = .username
                                         } else if resp == USER_STATUS.returning {
-                                            await sessionStore.generateUserData()
                                             guard let user = sessionStore.user,
                                                   user.uuid != nil,
                                                   user.username != nil else {
@@ -71,6 +70,8 @@ struct Auth: View {
                                                 return
                                             }
                                             currentView = .location
+                                        } else if resp == USER_STATUS.unknown {
+                                            currentView = .auth
                                         }
                                     } catch {
                                         state = .pending

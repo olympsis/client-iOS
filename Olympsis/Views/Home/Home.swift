@@ -105,28 +105,20 @@ struct Home: View {
                         guard let location = newLoc else {
                             return
                         }
-                        
                         // we have to wait an undetermined amount of time to hear back from the gps to get location
                         // so i used on recieve and after that info is delivered we can start fetching for fields by location
                         guard hasLoaded == false else {
                             return
                         }
-                        
+                        Task {
+                            await session.getNearbyData(location: location)
+                            status = .success
+                        }
                         // prevents us from doing this everytime we get new info from gps
                         // thus we only load data the first time
                         // later i might add a button for you to reload, however, i dont see the need to
                         // unless you are in map view.
                         hasLoaded = true
-                        
-                        Task {
-                            // fetch home view data such as fields/events
-                            await session.getNearbyData(location: location)
-                            let _ = await session.generateUserData()
-                            
-                            // fetch club data
-                            await session.fetchUserClubs()
-                            self.status = .success
-                        }
                     }
                     .padding(.bottom, 100)
                 }.fullScreenCover(isPresented: $showNotifications, content: {

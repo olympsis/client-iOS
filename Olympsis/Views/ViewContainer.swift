@@ -40,7 +40,7 @@ struct ViewContainer: View {
                 BetaPage()
             }
             .task {
-                await session.fetchUser()
+                await session.CheckIn()
                 session.locationManager.requestLocation()
             }
             

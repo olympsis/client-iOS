@@ -137,6 +137,7 @@ struct ClubListView: View {
                 Button(action:{ Task{ await Apply() } }) {
                     LoadingButton(text: "Apply", width: 250, status: $status)
                 }.contentShape(Rectangle())
+                    .frame(width: 250)
                     
                 Button(action: { self.showDetails.toggle() }) {
                     ZStack {

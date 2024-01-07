@@ -14,7 +14,7 @@ import CoreLocationUI
 struct MapView: View {
     
     @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = false
+    @State private var showBottomSheet: Bool = true
     @State private var showFieldDetail: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false
@@ -129,9 +129,6 @@ struct MapView: View {
                 Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 }))
-            }
-            .task {
-                self.showBottomSheet.toggle()
             }
         }
     }

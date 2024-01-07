@@ -69,7 +69,8 @@ struct TabBar: View {
                                 .frame(width: 28, height: 28)
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
-                            if let img = user.imageURL {
+                            if let img = user.imageURL,
+                             img != "" {
                                 AsyncImage(url: URL(string: GenerateImageURL(img))){ phase in
                                     if let image = phase.image {
                                             image // Displays the loaded image.
@@ -87,6 +88,16 @@ struct TabBar: View {
                                                 .opacity(0.3)
                                         }
                                 }.frame(width: 25, height: 25)
+                            } else {
+                                Image(systemName: "circle.fill")
+                                    .resizable()
+                                    .frame(width: 28, height: 28)
+                                    .frame(maxWidth: .infinity)
+                                    .overlay {
+                                        Image(systemName: "person")
+                                            .foregroundStyle(currentTab == .profile ? .white : Color("color-secnd") )
+                                    }
+                                    .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
                             }
                         }
                     } else {
@@ -94,6 +105,10 @@ struct TabBar: View {
                             .resizable()
                             .frame(width: 28, height: 28)
                             .frame(maxWidth: .infinity)
+                            .overlay {
+                                Image(systemName: "person")
+                                    .foregroundStyle(currentTab == .profile ? .white : Color("color-secnd") )
+                            }
                             .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
                     }
                 }
