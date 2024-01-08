@@ -41,7 +41,8 @@ struct PostView: View {
     
     var username: String {
         guard let user = post.data?.poster,
-              let username = user.username else {
+              let username = user.username,
+              username != "" else {
             return "olympsis-user"
         }
         
@@ -50,7 +51,8 @@ struct PostView: View {
     
     var orgName: String {
         guard let org = post.data?.organization,
-              let name = org.name else {
+              let name = org.name,
+              name != "" else {
             return "Olympsis Organization"
         }
         return name
@@ -90,6 +92,13 @@ struct PostView: View {
             return false
         }
         return member.role != "member"
+    }
+    
+    var likeCount: Int {
+        guard let likes = post.likes else {
+            return 0
+        }
+        return likes.count
     }
     
     func like() async {
@@ -268,6 +277,10 @@ struct PostView: View {
                             .imageScale(.large)
                             .foregroundColor(.primary)
                     }.padding(.leading)
+                    if likeCount > 0 {
+                        Text("\(likeCount)")
+                            .font(.callout)
+                    }
                     Button(action:{ self.showComments.toggle() }){
                         Image(systemName: "bubble.right")
                             .imageScale(.large)
@@ -275,7 +288,7 @@ struct PostView: View {
                     }
                 }.padding(.vertical, 5)
             }.padding(.horizontal, 5)
-        }
+        }.padding(.vertical, 5)
         .fullScreenCover(isPresented: $showComments) {
             if let club = session.selectedGroup?.club {
                 PostComments(club: club, post: $post)
@@ -298,6 +311,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: POSTS[1], posts: .constant(POSTS)).environmentObject(SessionStore())
+        PostView(post: POSTS[3], posts: .constant(POSTS))
+            .environmentObject(SessionStore())
     }
 }

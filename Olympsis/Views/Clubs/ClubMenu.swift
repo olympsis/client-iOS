@@ -114,7 +114,7 @@ struct ClubMenu: View {
                     
                     VStack {
                         if role != "member" {
-                            MenuButton(icon: Image(systemName: "note.fill"), text: "Applications", action: {
+                            MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
                                 self.showApplications.toggle()
                             })
                         }

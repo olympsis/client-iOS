@@ -99,5 +99,6 @@ struct ProfileModel: View {
 struct ProfileModel_Previews: PreviewProvider {
     static var previews: some View {
         ProfileModel()
+            .environmentObject(SessionStore())
     }
 }

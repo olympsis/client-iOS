@@ -15,13 +15,13 @@ let POSTS = [
     Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364779, externalLink: ""),
-    Post(id: UUID().uuidString, type: "announcement", poster: "", groupID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: ORGANIZATIONS[0]), likes: nil, comments: [
+    Post(id: UUID().uuidString, type: "announcement", poster: "", groupID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: ORGANIZATIONS[0]), likes: [Like(id: UUID().uuidString, uuid: "", createdAt: 0), Like(id: UUID().uuidString, uuid: "1", createdAt: 0)], comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
     ], createdAt: 1639364780, externalLink: nil),
     Post(id: UUID().uuidString, type: "advertisement", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364781, externalLink: nil),
-    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
+    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: nil), likes: nil, comments: [
         Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
     ], createdAt: 1639364781, externalLink: nil)
 ]
