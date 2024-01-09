@@ -132,7 +132,13 @@ struct GroupFeed: View {
                         PostView(post: post, posts: $posts)
                     }
                 } else {
-                    Text("No Posts")
+                    VStack {
+                        Text("No Posts Found 😞")
+                        Button(action: { Task { self.posts = await getLatestPosts() }}) {
+                            Text("Try again")
+                                .font(.callout)
+                        }
+                    }.padding(.top, 50)
                 }
             }.task{
                 self.posts = await getLatestPosts()
@@ -153,7 +159,11 @@ struct GroupFeed: View {
                     Text("😣")
                         .font(.title)
                     Text("Failed to load feed")
-                }.padding(.top)
+                    Button(action: { Task { self.posts = await getLatestPosts() }}) {
+                        Text("Try again")
+                            .font(.callout)
+                    }
+                }.padding(.top, 50)
             }.refreshable {
                 Task {
                     self.posts = await getLatestPosts()

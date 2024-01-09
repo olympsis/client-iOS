@@ -22,7 +22,7 @@ struct ProfileModel: View {
     var firstName: String {
         guard let user = session.user,
               let name = user.firstName else {
-            return ""
+            return "Olympsis"
         }
         return name
     }
@@ -30,7 +30,7 @@ struct ProfileModel: View {
     var lastName: String {
         guard let user = session.user,
               let name = user.lastName else {
-            return ""
+            return "User"
         }
         return name
     }
@@ -99,5 +99,6 @@ struct ProfileModel: View {
 struct ProfileModel_Previews: PreviewProvider {
     static var previews: some View {
         ProfileModel()
+            .environmentObject(SessionStore())
     }
 }

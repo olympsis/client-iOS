@@ -32,18 +32,18 @@ struct ViewContainer: View {
                 Activity().tag(Tab.activity)
                 Profile().tag(Tab.profile)
             }.toast(isPresented: $notificationManager.showToast, toast: $notificationManager.toastContent)
+                .padding(.bottom, -10)
             
             TabBar(currentTab: $currentTab)
+                .background(Color("dark-color"))
                 .ignoresSafeArea(.keyboard)
-        }.background(Color("dark-color"))
-            .fullScreenCover(isPresented: $showBeta) {
-                BetaPage()
-            }
-            .task {
-                await session.CheckIn()
-                session.locationManager.requestLocation()
-            }
-            
+        }.fullScreenCover(isPresented: $showBeta) {
+            BetaPage()
+        }
+        .task {
+            await session.CheckIn()
+            session.locationManager.requestLocation()
+        }  
     }
 }
 

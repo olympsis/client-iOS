@@ -114,7 +114,7 @@ struct ClubMenu: View {
                     
                     VStack {
                         if role != "member" {
-                            MenuButton(icon: Image(systemName: "note.fill"), text: "Applications", action: {
+                            MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
                                 self.showApplications.toggle()
                             })
                         }
@@ -201,7 +201,7 @@ struct ClubMenu: View {
                                         guard let id = club.id else {
                                             return
                                         }
-                                        let res = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: id)
                                     }
                                 })
                             );
@@ -216,7 +216,7 @@ struct ClubMenu: View {
                                     guard let id = club.id else {
                                         return
                                     }
-                                    let res = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: id)
                                 }
                             })
                         );
@@ -231,7 +231,7 @@ struct ClubMenu: View {
                                 guard let id = club.id else {
                                     return
                                 }
-                                let res = await session.clubObserver.deleteClub(id: id)
+                                _ = await session.clubObserver.deleteClub(id: id)
                             }
                         })
                     );

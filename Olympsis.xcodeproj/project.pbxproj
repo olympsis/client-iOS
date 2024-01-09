@@ -1331,8 +1331,6 @@
 			packageReferences = (
 				9A69CDDD2A1727BB00C37C1C /* XCRemoteSwiftPackageReference "Hermes" */,
 				5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */,
-				5D18BD292B42337B00F90777 /* XCRemoteSwiftPackageReference "Swift-JWT" */,
-				5D18BD302B42384300F90777 /* XCRemoteSwiftPackageReference "google-cloud-kit" */,
 			);
 			productRefGroup = 9A8FF0AE28BB14BF00DE4CF8 /* Products */;
 			projectDirPath = "";
@@ -2020,22 +2018,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5D18BD292B42337B00F90777 /* XCRemoteSwiftPackageReference "Swift-JWT" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Kitura/Swift-JWT";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
-			};
-		};
-		5D18BD302B42384300F90777 /* XCRemoteSwiftPackageReference "google-cloud-kit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vapor-community/google-cloud-kit.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/NokoAnubis/Swift-Toast.git";
@@ -2048,8 +2030,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/NokoAnubis/Hermes.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
