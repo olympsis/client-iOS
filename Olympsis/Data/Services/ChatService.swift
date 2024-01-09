@@ -17,7 +17,7 @@ class ChatService {
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
         let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key, token: tokenStore.fetchTokenFromKeyChain())
+        self.http = Courrier(host: host, apiKey: key)
     }
     
     func createRoom(room: Room) async throws -> (Data, URLResponse) {

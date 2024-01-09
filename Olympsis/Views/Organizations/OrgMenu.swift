@@ -191,7 +191,7 @@ struct OrgMenu: View {
                                         guard let id = organization.id else {
                                             return
                                         }
-                                        let res = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: id)
                                     }
                                 })
                             );
@@ -206,7 +206,7 @@ struct OrgMenu: View {
                                     guard let id = organization.id else {
                                         return
                                     }
-                                    let res = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: id)
                                 }
                             })
                         );

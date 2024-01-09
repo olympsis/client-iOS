@@ -37,7 +37,7 @@ class UploadService {
     func _uploadImage(endpoint: Endpoint, name: String, data: Data) async throws -> (Data, URLResponse) {
         let type = ".jpeg"
         let contentType = "image/jpeg"
-        let (data, response) = try await self.http.Upload(endpoint: endpoint, fileName: name, fileType: type, contentType: contentType, data: data)
+        let (data, response) = try await self.http.Upload(endpoint: endpoint, fileName: name, fileType: type, contentType: contentType, data: data, headers: ["X-Filename" : name+type, "Authorization":tokenStore.fetchTokenFromKeyChain()])
         return (data, response)
     }
 }

@@ -201,7 +201,7 @@ struct ClubMenu: View {
                                         guard let id = club.id else {
                                             return
                                         }
-                                        let res = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: id)
                                     }
                                 })
                             );
@@ -216,7 +216,7 @@ struct ClubMenu: View {
                                     guard let id = club.id else {
                                         return
                                     }
-                                    let res = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: id)
                                 }
                             })
                         );
@@ -231,7 +231,7 @@ struct ClubMenu: View {
                                 guard let id = club.id else {
                                     return
                                 }
-                                let res = await session.clubObserver.deleteClub(id: id)
+                                _ = await session.clubObserver.deleteClub(id: id)
                             }
                         })
                     );
