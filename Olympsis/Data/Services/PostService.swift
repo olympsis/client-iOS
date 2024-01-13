@@ -41,11 +41,10 @@ class PostService {
         return data
     }
     
-    func createPost(post: Post) async throws -> Data {
+    func createPost(post: PostDao) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/posts")
         
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
-        return data
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(post), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func deletePost(postID: String) async throws -> URLResponse {
@@ -70,7 +69,7 @@ class PostService {
         return resp
     }
     
-    func addComment(id: String, comment: Comment) async throws -> (Data, URLResponse) {
+    func addComment(id: String, comment: CommentDao) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/posts/\(id)/comments")
         
         return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(comment), headers: [

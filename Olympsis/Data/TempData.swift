@@ -11,19 +11,17 @@ let _current_date = Date()
 let _one_hr = Calendar.current.date(byAdding: .hour, value: 1, to: _current_date)
 let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
+let USER_SNIPPETS = [
+    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=3552&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+]
+
+let COMMENTS = [
+    Comment(id: UUID().uuidString, text: "Lets go!!!", user: USER_SNIPPETS[1], createdAt: 1639364779)
+]
+
 let POSTS = [
-    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "It was a great day today", eventID: nil, images: nil, data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
-    ], createdAt: 1639364779, externalLink: ""),
-    Post(id: UUID().uuidString, type: "announcement", poster: "", groupID: "", body: "Was it just me that saw this?", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: ORGANIZATIONS[0]), likes: [Like(id: UUID().uuidString, uuid: "", createdAt: 0), Like(id: UUID().uuidString, uuid: "1", createdAt: 0)], comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[0], createdAt: 1639364779)
-    ], createdAt: 1639364780, externalLink: nil),
-    Post(id: UUID().uuidString, type: "advertisement", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: USERS_DATA[0], event: nil, organization: nil), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
-    ], createdAt: 1639364781, externalLink: nil),
-    Post(id: UUID().uuidString, type: "post", poster: "", groupID: "", body: "Yooo it was litt today", eventID: nil, images: [""], data: PostData(poster: nil, event: nil, organization: nil), likes: nil, comments: [
-        Comment(id: "", uuid: "000", text: "Lets go!!!", data: USERS_DATA[1], createdAt: 1639364779)
-    ], createdAt: 1639364781, externalLink: nil)
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: nil, comments: [COMMENTS[0]], createdAt: 1639364779, externalLink: "")
 ]
 
 let FIELDS = [
@@ -39,7 +37,7 @@ let CLUBS = [
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
-    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, pinnedPostId: nil, createdAt: nil)), pinnedPostId: POSTS[1].id, createdAt: nil),
+    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, pinnedPostId: nil, createdAt: nil)), pinnedPostId: POSTS[0].id, createdAt: nil),
     Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
         Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
     ], rules: nil, data: nil, pinnedPostId: POSTS[0].id, createdAt: nil)

@@ -125,44 +125,26 @@ struct EventMenu: View {
                 })
                 
                 if event.actualStopTime == nil {
-                    Button(action:{
-                        Task {
-                            if event.actualStartTime == nil {
-                                await startEvent()
-                            } else if event.actualStartTime != nil {
-                                await stopEvent()
+                    HStack {
+                        if event.actualStartTime == nil {
+                            if loadingState == .loading {
+                                ProgressView()
+                            } else {
+                                MenuButton(icon: Image(systemName: "play.fill"), text: "Start Event", action:  {
+                                    Task {
+                                        await startEvent()
+                                    }
+                                }, type: .start)
                             }
-                        }
-                    }) {
-                        HStack {
-                            if event.actualStartTime == nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    Label {
-                                        Text("Start Event")
-                                            .foregroundColor(.green)
-                                            .font(.subheadline)
-                                            .textCase(.uppercase)
-                                    } icon: {
-                                        Image(systemName: "play.fill")
-                                            .foregroundStyle(.green)
+                        } else if event.actualStartTime != nil {
+                            if loadingState == .loading {
+                                ProgressView()
+                            } else {
+                                MenuButton(icon: Image(systemName: "square.fill"), text: "Stop Event", action:  {
+                                    Task {
+                                        await stopEvent()
                                     }
-                                }
-                            } else if event.actualStartTime != nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    Label {
-                                        Text("Stop Event")
-                                            .foregroundStyle(.red)
-                                            .font(.subheadline)
-                                            .textCase(.uppercase)
-                                    } icon: {
-                                        Image(systemName: "square.fill")
-                                            .foregroundStyle(.red)
-                                    }
-                                }
+                                }, type: .destructive)
                             }
                         }
                     }.disabled(loadingState == .loading ? true : false)

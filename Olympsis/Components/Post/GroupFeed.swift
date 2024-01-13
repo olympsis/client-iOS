@@ -11,6 +11,7 @@ struct GroupFeed: View {
     
     @State var posts: [Post] = [Post]()
     @State var selectedPost: Post?
+    @Binding var showNewPost: Bool
     @State private var status: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
@@ -122,51 +123,61 @@ struct GroupFeed: View {
 
     
     var body: some View {
-        switch status {
-        case .loading:
-            ProgressView()
-        case .pending, .success:
-            ScrollView(showsIndicators: false) {
-                if posts.count > 0 {
-                    ForEach(posts) { post in
-                        PostView(post: post, posts: $posts)
+        VStack {
+            switch status {
+            case .loading:
+                ProgressView()
+            case .pending, .success:
+                ScrollView(showsIndicators: false) {
+                    if posts.count > 0 {
+                        ForEach(posts) { post in
+                            PostView(post: post, posts: $posts)
+                        }
+                    } else {
+                        VStack {
+                            Text("No Posts Found 😞")
+                            Button(action: { Task { self.posts = await getLatestPosts() }}) {
+                                Text("Try again")
+                                    .font(.callout)
+                            }
+                        }.padding(.top, 50)
                     }
-                } else {
+                }.task{
+                    self.posts = await getLatestPosts()
+                }
+                .onChange(of: session.selectedGroup, perform: { value in
+                    Task {
+                        self.posts = await getLatestPosts()
+                    }
+                })
+                .refreshable {
+                    Task {
+                        self.posts = await getLatestPosts()
+                    }
+                }
+            case .failure:
+                ScrollView(showsIndicators: false) {
                     VStack {
-                        Text("No Posts Found 😞")
+                        Text("😣")
+                            .font(.title)
+                        Text("Failed to load feed")
                         Button(action: { Task { self.posts = await getLatestPosts() }}) {
                             Text("Try again")
                                 .font(.callout)
                         }
                     }.padding(.top, 50)
-                }
-            }.task{
-                self.posts = await getLatestPosts()
-            }
-            .onChange(of: session.selectedGroup, perform: { value in
-                Task {
-                    self.posts = await getLatestPosts()
-                }
-            })
-            .refreshable {
-                Task {
-                    self.posts = await getLatestPosts()
-                }
-            }
-        case .failure:
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    Text("😣")
-                        .font(.title)
-                    Text("Failed to load feed")
-                    Button(action: { Task { self.posts = await getLatestPosts() }}) {
-                        Text("Try again")
-                            .font(.callout)
+                }.refreshable {
+                    Task {
+                        self.posts = await getLatestPosts()
                     }
-                }.padding(.top, 50)
-            }.refreshable {
-                Task {
-                    self.posts = await getLatestPosts()
+                }
+            }
+        }.fullScreenCover(isPresented: $showNewPost) {
+            if let group = session.selectedGroup {
+                if let club = group.club {
+                    CreateNewPost(club: club, posts: $posts)
+                } else if let org = group.organization {
+                    CreateNewAnnouncement(organization: org)
                 }
             }
         }
@@ -174,6 +185,6 @@ struct GroupFeed: View {
 }
 
 #Preview {
-    GroupFeed()
+    GroupFeed(showNewPost: .constant(false))
         .environmentObject(SessionStore())
 }

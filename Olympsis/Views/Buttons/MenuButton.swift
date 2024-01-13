@@ -8,6 +8,7 @@
 import SwiftUI
 
 enum MENU_BUTTON_TYPE {
+    case start
     case normal
     case destructive
 }
@@ -57,7 +58,26 @@ struct MenuButton: View {
                         Spacer()
                     }.padding(.horizontal)
                 }.padding(.horizontal)
+                
+            case .start:
+                ZStack {
+                    Rectangle()
+                        .foregroundStyle(Color("background"))
+                    Rectangle()
+                        .stroke(lineWidth: 1)
+                        .foregroundStyle(.green)
+                    
+                    HStack(alignment: .center) {
+                        
+                        icon
+                            .foregroundStyle(.green)
+                        Text(text)
+                            .foregroundStyle(.green)
+                        Spacer()
+                    }.padding(.horizontal)
+                }.padding(.horizontal)
             }
+            
         }.frame(height: 50)
     }
 }

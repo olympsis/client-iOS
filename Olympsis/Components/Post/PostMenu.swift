@@ -29,7 +29,7 @@ struct PostMenu: View {
                   let members = club.members,
                   let member = members.first(where: { $0.uuid == uuid }) else {
                 if post.type == "post" {
-                    return (post.poster == uuid)
+                    return (post.poster?.uuid == uuid)
                 } else {
                     return false
                 }
@@ -37,7 +37,7 @@ struct PostMenu: View {
             if member.role != "member" {
                 return true
             } else {
-                return (post.poster == uuid)
+                return (post.poster?.uuid == uuid)
             }
         } else {
             return true
@@ -180,7 +180,11 @@ struct PostMenu: View {
             MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post")
             
             if isPosterOrAdmin {
-                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", type: .destructive)
+                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {
+                    Task {
+                        await deletePost()
+                    }
+                }, type: .destructive)
             }
             Spacer()
         }.task {

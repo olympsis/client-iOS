@@ -7,7 +7,7 @@
 
 import Foundation
 
-func calculateTimeAgo(from timestamp: Int64) -> String {
+func calculateTimeAgo(from timestamp: Int) -> String {
     let currentTime = Date().timeIntervalSince1970
     let timeDifference = currentTime - Double(timestamp)
     

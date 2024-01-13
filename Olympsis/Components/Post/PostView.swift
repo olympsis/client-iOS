@@ -24,7 +24,7 @@ struct PostView: View {
     @EnvironmentObject var session: SessionStore
     
     var userImageURL: String {
-        guard let user = post.data?.poster,
+        guard let user = post.poster,
                 let image = user.imageURL else {
             return "https://api.olympsis.com"
         }
@@ -32,7 +32,8 @@ struct PostView: View {
     }
     
     var orgImageURL: String {
-        guard let org = post.data?.organization,
+        guard let club = session.selectedGroup?.club,
+              let org = club.data?.parent,
               let image = org.imageURL else {
             return GenerateImageURL("https://api.olympsis.com")
         }
@@ -40,7 +41,7 @@ struct PostView: View {
     }
     
     var username: String {
-        guard let user = post.data?.poster,
+        guard let user = post.poster,
               let username = user.username,
               username != "" else {
             return "olympsis-user"
@@ -50,7 +51,8 @@ struct PostView: View {
     }
     
     var orgName: String {
-        guard let org = post.data?.organization,
+        guard let club = session.selectedGroup?.club,
+              let org = club.data?.parent,
               let name = org.name,
               name != "" else {
             return "Olympsis Organization"
@@ -79,7 +81,7 @@ struct PostView: View {
               let uuid = user.uuid else {
             return false
         }
-        return uuid == post.poster
+        return uuid == post.poster?.uuid
     }
     
     var isAdmin: Bool {
@@ -174,6 +176,10 @@ struct PostView: View {
                             Color.gray // Indicates an error.
                                 .clipShape(Circle())
                                 .opacity(0.3)
+                                .overlay {
+                                    Image(systemName: "person")
+                                        .foregroundStyle(.white)
+                                }
                         } else {
                             ZStack {
                                 Color.gray // Acts as a placeholder.
@@ -199,6 +205,10 @@ struct PostView: View {
                             Color.gray // Indicates an error.
                                 .clipShape(Circle())
                                 .opacity(0.3)
+                                .overlay {
+                                    Image(systemName: "building")
+                                        .foregroundStyle(.white)
+                                }
                         } else {
                             ZStack {
                                 Color.gray // Acts as a placeholder.
@@ -311,7 +321,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: POSTS[3], posts: .constant(POSTS))
+        PostView(post: POSTS[0], posts: .constant(POSTS))
             .environmentObject(SessionStore())
     }
 }

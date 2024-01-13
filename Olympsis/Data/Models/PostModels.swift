@@ -12,59 +12,46 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     
     let id: String?
     let type: String?
-    let poster: String?
-    let groupID: String?
+    let poster: UserSnippet?
     let body: String
-    var eventID: String?
+    var event: Event?
     let images: [String]?
-    var data: PostData?
     var likes: [Like]?
     var comments: [Comment]?
-    let createdAt: Int64?
+    let createdAt: Int?
     let externalLink: String?
     
     /// Complete initializer for the post class
     init(id: String?,
          type: String?,
-         poster: String?,
-         groupID: String?,
+         poster: UserSnippet?,
          body: String,
-         eventID: String?,
+         event: Event?=nil,
          images: [String]?,
-         data: PostData?,
          likes: [Like]?,
          comments: [Comment]?,
-         createdAt: Int64?,
+         createdAt: Int?,
          externalLink: String?) {
         
         self.id = id
         self.type = type
         self.poster = poster
-        self.groupID = groupID
         self.body = body
-        self.eventID = eventID
+        self.event = event
         self.images = images
-        self.data = data
         self.likes = likes
         self.comments = comments
         self.createdAt = createdAt
         self.externalLink = externalLink
     }
     
-    /// Initalizer for creating posts client-side
-    convenience init (type: String, groupID: String, body: String, eventID: String?, images: [String], externalLink: String?) {
-        self.init(id: nil, type: type, poster: nil, groupID: groupID, body: body, eventID: eventID, images: images, data: nil, likes: nil, comments: nil, createdAt: nil, externalLink: externalLink)
-    }
-    
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case poster
-        case groupID = "group_id"
         case body
-        case eventID = "event_id"
+        case event
         case images
-        case data
         case likes
         case comments
         case createdAt = "created_at"
@@ -91,32 +78,6 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     }
 }
 
-struct Comment: Codable {
-    static func == (lhs: Comment, rhs: Comment) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    let id: String?
-    let uuid: String
-    let text: String
-    var data: UserData?
-    let createdAt: Int64?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case uuid
-        case text
-        case data
-        case createdAt = "created_at"
-    }
-}
-
-struct PostData: Codable {
-    let poster: UserData?
-    let event: Event?
-    let organization: Organization?
-}
-
 struct PostsResponse: Decodable {
     let totalPosts: Int
     let posts: [Post]
@@ -124,5 +85,38 @@ struct PostsResponse: Decodable {
     enum CodingKeys: String, CodingKey {
         case totalPosts = "total_posts"
         case posts
+    }
+}
+
+struct PostDao: Codable {
+    var type: String?
+    var poster: String?
+    var groupID: String?
+    var body: String?
+    var eventID: String?
+    var images: [String]?
+    var createdAt: Int64?
+    var externalLink: String?
+    
+    init(type: String? = nil, poster: String? = nil, groupID: String? = nil, body: String? = nil, eventID: String? = nil, images: [String]? = nil, createdAt: Int64? = nil, externalLink: String? = nil) {
+        self.type = type
+        self.poster = poster
+        self.groupID = groupID
+        self.body = body
+        self.eventID = eventID
+        self.images = images
+        self.createdAt = createdAt
+        self.externalLink = externalLink
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case poster
+        case groupID = "group_id"
+        case body
+        case eventID = "event_id"
+        case images
+        case createdAt = "created_at"
+        case externalLink = "external_link"
     }
 }

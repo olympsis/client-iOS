@@ -30,7 +30,7 @@ struct GroupView: View {
                 case .success, .pending:
                     VStack {
                         if session.selectedGroup != nil {
-                            GroupFeed()
+                            GroupFeed(showNewPost: $showNewPost)
                         } else {
                             ClubsList()
                         }
@@ -65,15 +65,6 @@ struct GroupView: View {
                     }
                 } else {
                     NoClubMenu(status: $groupState)
-                }
-            }
-            .fullScreenCover(isPresented: $showNewPost) {
-                if let group = session.selectedGroup {
-                    if let club = group.club {
-                        CreateNewPost(club: club)
-                    } else if let org = group.organization {
-                        CreateNewAnnouncement(organization: org)
-                    }
                 }
             }
             .fullScreenCover(isPresented: $showNewGroup) {

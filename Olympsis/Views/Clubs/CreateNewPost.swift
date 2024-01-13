@@ -11,6 +11,7 @@ import PhotosUI
 struct CreateNewPost: View {
     
     @State var club: Club
+    @Binding var posts: [Post]
     @State private var state: LOADING_STATE = .pending
     @State private var text: String = ""
     @State private var images: [String]?
@@ -49,11 +50,9 @@ struct CreateNewPost: View {
             self.presentationMode.wrappedValue.dismiss()
             return
         }
-        // create post
-        let resp = await session.postObserver.createPost(type: "post", owner: uuid, groupId: id, body: text, images: images)
         
         // add to club view
-        guard let p = resp else {
+        guard let createdPost = await session.postObserver.createPost(type: "post", owner: uuid, groupId: id, body: text, images: images) else {
             state = .failure
             
             // delete images if we fail to create post
@@ -65,10 +64,14 @@ struct CreateNewPost: View {
         }
         
         // add data
-        p.data = PostData(poster: user, event: nil, organization: nil)
-        session.posts.append(p)
-        state = .success
-        self.presentationMode.wrappedValue.dismiss()
+        let timestamp = Int(Date.now.timeIntervalSince1970)
+        let post = Post(id: createdPost.id, type: "post", poster: UserSnippet(uuid: uuid, username: user.username, imageURL: user.imageURL), body: text, images: images, likes: nil, comments: nil, createdAt: timestamp, externalLink: "")
+        
+        await MainActor.run {
+            state = .success
+            self.posts.append(post)
+            self.presentationMode.wrappedValue.dismiss()
+        }
     }
     
     func UploadImage() async {
@@ -177,6 +180,6 @@ struct CreateNewPost: View {
 
 struct CreateNewPost_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewPost(club: CLUBS[0]).environmentObject(SessionStore())
+        CreateNewPost(club: CLUBS[0], posts: .constant(POSTS)).environmentObject(SessionStore())
     }
 }
