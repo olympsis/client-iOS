@@ -744,7 +744,7 @@
 			path = Pickers;
 			sourceTree = "<group>";
 		};
-		9A3536FF2928930D005EC806 /* Viewers */ = {
+		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				9A81B62129247707009CA6ED /* CustomViews */,
@@ -762,7 +762,7 @@
 				9A81B6312925C038009CA6ED /* BadgesView.swift */,
 				9A81B6332925C0E7009CA6ED /* TrophiesView.swift */,
 			);
-			path = Viewers;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		9A35370029289344005EC806 /* Event */ = {
@@ -915,7 +915,7 @@
 				9A8FF0E528BBD7CA00DE4CF8 /* Fonts */,
 				9A8FF0BF28BB18C300DE4CF8 /* Data */,
 				9A8FF0BE28BB18B800DE4CF8 /* Views */,
-				9A3536FF2928930D005EC806 /* Viewers */,
+				9A3536FF2928930D005EC806 /* Components */,
 				9A8FF0B628BB14C100DE4CF8 /* Preview Content */,
 			);
 			path = Olympsis;

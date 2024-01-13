@@ -24,7 +24,7 @@ struct PostComments: View {
               let uuid = user.uuid else {
             return false
         }
-        return (uuid == post.poster) || (uuid == comment.uuid)
+        return (uuid == post.poster?.uuid) || (uuid == comment.user?.uuid)
     }
     
     func handleFailure() {
@@ -48,17 +48,20 @@ struct PostComments: View {
             handleFailure()
             return
         }
-        let comment = Comment(id: nil, uuid: uuid, text: text, data: nil, createdAt: nil)
-        let resp = await session.postObserver.addComment(id: id, comment: comment)
+        let dao = CommentDao(id: nil, text: text, uuid: uuid, createdAt: nil)
+        let resp = await session.postObserver.addComment(id: id, comment: dao)
         guard var data = resp else {
             handleFailure()
             return
         }
         status = .success
-        data.data = UserData(username: username, firstName: firstName, lastName: lastName, imageURL: imageURL)
+        
+        let timestamp = Int(Date.now.timeIntervalSince1970)
+        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: timestamp)
+        
         withAnimation {
-            comments.append(data)
             text = ""
+            comments.append(comment)
         }
     }
     
@@ -80,7 +83,7 @@ struct PostComments: View {
               let uuid = user.uuid else {
             return false
         }
-        return comment.uuid == uuid
+        return comment.user?.uuid == uuid
     }
     
     var isPostOwner: Bool {
@@ -88,7 +91,7 @@ struct PostComments: View {
               let uuid = user.uuid else {
             return false
         }
-        return post.poster == uuid
+        return post.poster?.uuid == uuid
     }
     
     var body: some View {

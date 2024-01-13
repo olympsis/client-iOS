@@ -63,11 +63,14 @@ class PostObserver: ObservableObject{
         return false
     }
     
-    func createPost(type: String, owner: String, groupId: String, body: String, images:[String]?=nil) async -> Post? {
+    func createPost(type: String, owner: String, groupId: String, eventID: String?=nil, body: String, images:[String]?=nil, externalLink: String?=nil) async -> CreateResponse? {
         do {
-            let post = Post(id: nil, type: type, poster: owner, groupID: groupId, body: body, eventID: nil, images: images, data: nil, likes: nil, comments: nil, createdAt: nil, externalLink: nil)
-            let res = try await postService.createPost(post: post)
-            let object = try decoder.decode(Post.self, from: res)
+            let post = PostDao(type: type, poster: owner, groupID: groupId, body: body, eventID: eventID, images: images, createdAt: nil, externalLink: externalLink)
+            let (data, res) = try await postService.createPost(post: post)
+            guard (res as? HTTPURLResponse)?.statusCode == 201 else {
+                return nil
+            }
+            let object = try decoder.decode(CreateResponse.self, from: data)
             return object
         } catch {
             log.error("\(error)")
@@ -88,14 +91,13 @@ class PostObserver: ObservableObject{
         return false
     }
     
-    func addComment(id: String, comment: Comment) async -> Comment? {
+    func addComment(id: String, comment: CommentDao) async -> Bool? {
         do {
-            let (data, res) = try await postService.addComment(id: id, comment: comment)
+            let (_, res) = try await postService.addComment(id: id, comment: comment)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return nil
+                return false
             }
-            let object = try decoder.decode(Comment.self, from: data)
-            return object
+            return true
         } catch {
             log.error("\(error)")
         }

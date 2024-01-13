@@ -65,9 +65,12 @@ struct CreateNewAnnouncement: View {
         }
         
         // add data
-        p.data = PostData(poster: user, event: nil, organization: nil)
-        session.posts.append(p)
+        let timestamp = Int(Date.now.timeIntervalSince1970)
+        let post = Post(id: p.id, type: "announcement", poster: UserSnippet(uuid: uuid, username: user.username, imageURL: user.imageURL), body: text, images: images, likes: nil, comments: nil, createdAt: timestamp, externalLink: "")
+
         state = .success
+        session.posts.append(post)
+
         self.presentationMode.wrappedValue.dismiss()
     }
     

@@ -14,7 +14,7 @@ struct CommentView: View {
     @Environment(\.presentationMode) var presentationMode
 
     var imageURL: String {
-        guard let user = comment.data,
+        guard let user = comment.user,
               let image = user.imageURL else {
             return ""
         }
@@ -22,7 +22,7 @@ struct CommentView: View {
     }
     
     var username: String {
-        guard let data = comment.data,
+        guard let data = comment.user,
               let username = data.username else {
             return "olympsis-user"
         }
@@ -78,6 +78,6 @@ struct CommentView: View {
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        CommentView(comment: Comment(id: "", uuid: "000", text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", data: nil, createdAt: 1639364779)).environmentObject(SessionStore())
+        CommentView(comment: COMMENTS[0]).environmentObject(SessionStore())
     }
 }

@@ -34,6 +34,8 @@
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeCar</string>
@@ -83,7 +85,5 @@
 		<string>nearby-interaction</string>
 		<string>remote-notification</string>
 	</array>
-<key>ITSAppUsesNonExemptEncryption</key>
-<false/>
 </dict>
 </plist>

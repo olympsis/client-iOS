@@ -109,3 +109,16 @@ struct LocationResponse: Codable {
     let fields: [Field]?
     let events: [Event]?
 }
+
+
+struct UserSnippet: Codable {
+    var uuid: String?
+    var username: String?
+    var imageURL: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+        case username
+        case imageURL = "image_url"
+    }
+}
