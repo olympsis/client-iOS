@@ -22,8 +22,8 @@ struct CommentView: View {
     }
     
     var username: String {
-        guard let data = comment.user,
-              let username = data.username else {
+        guard let user = comment.user,
+              let username = user.username else {
             return "olympsis-user"
         }
         return username
@@ -45,10 +45,14 @@ struct CommentView: View {
                         .clipShape(Circle())
                         .scaledToFill()
                         .clipped()
-                } else if phase.error != nil {
+                } else if phase.error != nil || imageURL == "" {
                     Color.gray // Indicates an error.
                         .clipShape(Circle())
                         .opacity(0.3)
+                        .overlay {
+                            Image(systemName: "person")
+                                .foregroundStyle(.white)
+                        }
                 } else {
                     ZStack {
                         Color.gray // Acts as a placeholder.

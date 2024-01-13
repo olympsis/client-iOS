@@ -137,7 +137,7 @@ struct PostMenu: View {
         let res = await session.postObserver.deletePost(postID: id)
         guard res == true,
             let images = post.images else {
-            session.posts.removeAll(where: { $0.id == post.id })
+            posts.removeAll(where: { $0.id == post.id })
             self.presentationMode.wrappedValue.dismiss()
             return
         }
