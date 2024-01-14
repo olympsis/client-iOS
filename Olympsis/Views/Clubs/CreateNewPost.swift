@@ -45,7 +45,7 @@ struct CreateNewPost: View {
             
             // delete images if we fail to get any of this data
             for img in images ?? [String]() {
-                let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(img))
+                let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(img))
             }
             self.presentationMode.wrappedValue.dismiss()
             return
@@ -57,7 +57,7 @@ struct CreateNewPost: View {
             
             // delete images if we fail to create post
             for img in images ?? [String]() {
-                let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(img))
+                let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(img))
             }
             self.presentationMode.wrappedValue.dismiss()
             return
@@ -78,7 +78,7 @@ struct CreateNewPost: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let res = await uploadObserver.UploadImage(location: "/feed-images", fileName: imageId, data: data)
+            let res = await uploadObserver.UploadImage(location: "/olympsis-feed-images", fileName: imageId, data: data)
             if res {
                 images = ["feed-images/\(imageId).jpeg"]
             }

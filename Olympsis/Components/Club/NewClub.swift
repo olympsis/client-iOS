@@ -36,8 +36,8 @@ struct NewClub: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let _ = await uploadObserver.UploadImage(location: "/club-images", fileName: imageId, data: data)
-            self.imageURL = "club-images/\(imageId).jpeg"
+            let _ = await uploadObserver.UploadImage(location: "/olympsis-club-images", fileName: imageId, data: data)
+            self.imageURL = "olympsis-club-images/\(imageId).jpeg"
         }
     }
     

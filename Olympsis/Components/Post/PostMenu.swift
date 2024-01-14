@@ -144,7 +144,7 @@ struct PostMenu: View {
         
         // delete images
         for image in images {
-            let _ = await uploadObserver.DeleteObject(path: "/feed-images", name: GrabImageIdFromURL(image))
+            let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
         }
         
         // remove post
