@@ -38,8 +38,8 @@ struct NewOrganization: View {
         if let data = selectedImageData {
             // new image
             let imageId = UUID().uuidString
-            let _ = await uploadObserver.UploadImage(location: "/org-images", fileName: imageId, data: data)
-            self.imageURL = "org-images/\(imageId).jpeg"
+            let _ = await uploadObserver.UploadImage(location: "/olympsis-org-images", fileName: imageId, data: data)
+            self.imageURL = "olympsis-org-images/\(imageId).jpeg"
         }
     }
     

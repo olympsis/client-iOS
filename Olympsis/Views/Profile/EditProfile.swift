@@ -50,7 +50,7 @@ struct EditProfile: View {
             return
         }
         
-        let res = await uploadObserver.UploadImage(location: "/profile-images", fileName: imageId, data: data)
+        let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)
         
         guard res == true else {
             uploadingStatus = .failure
@@ -65,7 +65,7 @@ struct EditProfile: View {
         
         if let img = user.imageURL {
             // delete old picture
-            _ = await uploadObserver.DeleteObject(path: "/profile-images", name: GrabImageIdFromURL(img))
+            _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
         }
         
         // update user data
