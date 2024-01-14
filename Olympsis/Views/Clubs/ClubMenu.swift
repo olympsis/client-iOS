@@ -150,10 +150,7 @@ struct ClubMenu: View {
                                 showAlert.toggle()
                             }, type: .destructive)
                         }
-                    }.padding(.top)
-                    
-                    
-                    
+                    }.padding(.vertical)
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
