@@ -41,8 +41,6 @@ struct PostComments: View {
               let id = post.id,
               let uuid = user.uuid,
               let username = user.username,
-              let firstName = user.firstName,
-              let lastName = user.lastName,
               let imageURL = user.imageURL,
               text.count >= 2 else {
             handleFailure()
@@ -50,7 +48,7 @@ struct PostComments: View {
         }
         let dao = CommentDao(id: nil, text: text, uuid: uuid, createdAt: nil)
         let resp = await session.postObserver.addComment(id: id, comment: dao)
-        guard var data = resp else {
+        guard resp != nil else {
             handleFailure()
             return
         }
