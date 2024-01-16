@@ -54,12 +54,11 @@ class PostService {
         return resp
     }
     
-    func addLike(id: String, like: Like) async throws -> (Data) {
+    func addLike(id: String, like: LikeDao) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint(path: "/posts/\(id)/likes")
-        let (data, _) = try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(like), headers: [
+        return try await http.Request(endpoint: endpoint, method: Hermes.Method.POST, body: EncodeToData(like), headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain()
         ])
-        return data
     }
     
     func removeLike(id: String, likeID: String) async throws -> URLResponse {

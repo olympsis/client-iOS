@@ -53,7 +53,9 @@ struct ParticipantView: View {
                     Color.gray // Indicates an error.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
-                    Image(systemName: "exclamationmark.circle")
+                    Image(systemName: "person")
+                        .imageScale(.large)
+                        .foregroundStyle(.primary)
                 }.frame(width: 65, height: 65)
             } else {
                 ZStack {

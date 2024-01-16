@@ -39,15 +39,18 @@ class PostObserver: ObservableObject{
         return nil
     }
     
-    func addLike(id: String, like: Like) async -> Like? {
+    func addLike(id: String, like: LikeDao) async -> String? {
         do {
-            let res = try await postService.addLike(id: id, like: like)
-            let object = try decoder.decode(Like.self, from: res)
-            return object
+            let (data, res) = try await postService.addLike(id: id, like: like)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(CreateResponse.self, from: data)
+            return object.id
         } catch {
             log.error("\(error)")
+            return nil
         }
-        return nil
     }
     
     func deleteLike(id: String, likeID: String) async -> Bool {

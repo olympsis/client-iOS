@@ -113,22 +113,6 @@ struct Participant: Codable, Identifiable, Hashable {
     }
 }
 
-struct Like: Codable, Identifiable, Hashable {
-    static func == (lhs: Like, rhs: Like) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    let id: String?
-    let uuid: String
-    let createdAt: Int64?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case uuid
-        case createdAt = "created_at"
-    }
-}
-
 struct EventData: Codable {
     let poster: UserData?
     let field: Field?

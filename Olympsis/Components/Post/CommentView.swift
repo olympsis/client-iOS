@@ -51,7 +51,7 @@ struct CommentView: View {
                         .opacity(0.3)
                         .overlay {
                             Image(systemName: "person")
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.primary)
                         }
                 } else {
                     ZStack {

@@ -17,7 +17,7 @@ struct EventsModalView: View {
     /// Struct for filtering events by the day they are to start
     struct DayGroup: Identifiable {
         let id = UUID()
-        let day: Int
+        let timestamp: Int
         var events: [Event]
         
         var dayInString: String {
@@ -28,28 +28,37 @@ struct EventsModalView: View {
     /// Groups the events by date
     var eventsGrouped: [DayGroup] {
         
-        let calendar = Calendar.current
         var groups: [DayGroup] = [DayGroup]();
-        
         events.forEach { e in
             guard let startTime = e.startTime else {
                 return
             }
             
-            let day = calendar.component(.day, from: Date(timeIntervalSince1970: TimeInterval(startTime)))
-            let index = groups.firstIndex(where: { $0.day == day })
+            let index = groups.firstIndex(where: {
+                areDatesOnSameDay(
+                    date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
+                    date2: Date(timeIntervalSince1970: TimeInterval(startTime))
+                )}
+            )
             
             if index != nil {
                 groups[index!].events.append(e)
                 return
             } else {
-                let newGroup = DayGroup(day: day, events: [e])
+                let newGroup = DayGroup(timestamp: startTime, events: [e])
                 groups.append(newGroup)
                 return
             }
         }
-        
-        return groups
+        return groups.sorted { (group1: DayGroup, group2: DayGroup) in
+            if areDatesOnSameDay(date1: Date(timeIntervalSince1970: TimeInterval(group1.timestamp)), date2: Date(timeIntervalSince1970: TimeInterval(group2.timestamp))) {
+                // If dates are on the same day, prioritize item1
+                return true
+            } else {
+                // If dates are not on the same day, sort by timestamp
+                return group1.timestamp < group2.timestamp
+            }
+        }
     }
     
     var body: some View {
@@ -69,8 +78,8 @@ struct EventsModalView: View {
 //                }.foregroundColor(.primary)
             }.padding()
             List {
-                ForEach(eventsGrouped, id: \.day) { group in
-                    Section(header: Text(group.dayInString)) {
+                ForEach(eventsGrouped, id: \.id) { group in
+                    Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
                         ForEach(group.events, id: \.id) { event in
                             EventView(event: event)
                         }
