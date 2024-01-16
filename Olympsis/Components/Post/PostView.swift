@@ -109,18 +109,18 @@ struct PostView: View {
             let uuid = user.uuid else {
             return
         }
-        let like = Like(id: nil, uuid: uuid, createdAt: nil)
-        let resp = await session.postObserver.addLike(id: id, like: like)
-        guard let lk = resp else {
+        let dao = LikeDao(uuid: uuid)
+        guard let id = await session.postObserver.addLike(id: id, like: dao) else {
             return
         }
-        
+        let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
+        let like = Like(id: id, uuid: uuid, user: snippet, createdAt: Int(Date.now.timeIntervalSince1970))
         isLiked = true
         guard post.likes != nil else {
-            post.likes = [lk]
+            post.likes = [like]
             return
         }
-        post.likes?.append(lk)
+        post.likes?.append(like)
     }
     
     func removeLike() async {
@@ -132,7 +132,7 @@ struct PostView: View {
         }
         let resp = await session.postObserver.deleteLike(id: id, likeID: lID)
         if resp {
-            post.likes?.removeAll(where: {$0.id == like.id})
+            post.likes?.removeAll(where: {$0.uuid == like.uuid}) // i would use id instead but this is also more sure
             isLiked = false
         }
     }

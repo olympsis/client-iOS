@@ -77,6 +77,33 @@ struct CommentDao: Codable {
     }
 }
 
+struct Like: Codable, Identifiable {
+    static func == (lhs: Like, rhs: Like) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    let id: String?
+    let uuid: String
+    let user: UserSnippet?
+    let createdAt: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case uuid
+        case user
+        case createdAt = "created_at"
+    }
+}
+
+struct LikeDao: Codable {
+    
+    let uuid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+    }
+}
+
 struct CreateResponse: Codable {
     let id: String?
 }
