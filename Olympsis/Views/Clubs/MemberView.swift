@@ -54,6 +54,7 @@ struct MemberView: View {
                             image // Displays the loaded image.
                                 .resizable()
                                 .clipShape(Circle())
+                                .frame(width: 50)
                                 .scaledToFill()
                                 .clipped()
                         } else if phase.error != nil {
@@ -61,7 +62,9 @@ struct MemberView: View {
                                 Color.gray // Indicates an error.
                                     .clipShape(Circle())
                                 .opacity(0.3)
-                                Image(systemName: "exclamationmark.circle")
+                                Image(systemName: "person")
+                                    .foregroundStyle(.white)
+                                    .imageScale(.large)
                             }
                         } else {
                             ZStack {

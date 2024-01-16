@@ -77,7 +77,7 @@ struct UserDataListView: View {
                             Image(systemName: "person")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.red)
+                                .foregroundColor(.primary)
                             Color.gray // Acts as a placeholder.
                                 .clipShape(Circle())
                                 .opacity(0.3)
@@ -85,14 +85,11 @@ struct UserDataListView: View {
                         }
                     } else {
                         ZStack {
-                            Image(systemName: "person")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(Color("color-prime"))
                             Color.gray // Acts as a placeholder.
                                 .clipShape(Circle())
                                 .opacity(0.3)
-                                .frame(width: 45, height: 45)
+                                .frame(width: 20, height: 20)
+                            ProgressView()
                         }
                     }
             }.frame(width: 45, height: 45)

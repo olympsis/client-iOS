@@ -113,19 +113,22 @@ struct EditProfile: View {
                                                 .clipShape(Circle())
                                                 .scaledToFit()
                                         } else if phase.error != nil {
-                                            Color.red // Indicates an error.
-                                                .clipShape(Circle())
-                                                .opacity(0.15)
-                                        } else {
                                             ZStack {
                                                 Image(systemName: "person")
                                                     .resizable()
                                                     .frame(width: 50, height: 50)
-                                                    .foregroundColor(Color("color-prime"))
+                                                    .foregroundStyle(.primary)
                                                 Color.gray // Acts as a placeholder.
                                                     .clipShape(Circle())
                                                     .opacity(0.3)
-                                            }
+                                            }.frame(width: 100, height: 100)
+                                        } else {
+                                            ZStack {
+                                                Color.gray // Acts as a placeholder.
+                                                    .clipShape(Circle())
+                                                    .opacity(0.3)
+                                                ProgressView()
+                                            }.frame(width: 100, height: 100)
                                         }
                                     }.frame(width: 100, height: 100)
                                 } else {
@@ -133,7 +136,7 @@ struct EditProfile: View {
                                         Image(systemName: "person")
                                             .resizable()
                                             .frame(width: 50, height: 50)
-                                            .foregroundColor(Color("color-prime"))
+                                            .foregroundStyle(.primary)
                                         Color.gray // Acts as a placeholder.
                                             .clipShape(Circle())
                                             .opacity(0.3)
