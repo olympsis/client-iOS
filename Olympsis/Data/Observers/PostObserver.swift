@@ -81,6 +81,20 @@ class PostObserver: ObservableObject{
         return nil
     }
     
+    func createPost(dao: PostDao) async -> String? {
+        do {
+            let (data, res) = try await postService.createPost(post: dao)
+            guard (res as? HTTPURLResponse)?.statusCode == 201 else {
+                return nil
+            }
+            let object = try decoder.decode(CreateResponse.self, from: data)
+            return object.id
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
+    }
+    
     func deletePost(postID: String) async -> Bool {
         do {
             let res = try await postService.deletePost(postID: postID)

@@ -205,3 +205,9 @@ enum RSVP_STATUS: String {
     case Going = "going"
     case Maybe = "maybe"
 }
+
+enum POST_TYPE: String {
+    case Post = "post"
+    case Announcement = "announcement"
+    case Advertisement = "advertisement"
+}

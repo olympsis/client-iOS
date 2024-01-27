@@ -50,11 +50,11 @@ class NewEventManager: ObservableObject {
         self.visibility = visibility
     }
     
-    convenience init() {
-        self.init(type: .PickUp, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: nil, skillLevel: .All, visibility: .Public)
+    convenience init(type: EVENT_TYPES = .PickUp) {
+        self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: nil, skillLevel: .All, visibility: .Public)
     }
     
-    func generateOrganizers() -> [Organizer] {
+    func GenerateOrganizers() -> [Organizer] {
         return self.organizers.map { o in
             switch (o.type) {
             case .Club:
@@ -65,7 +65,7 @@ class NewEventManager: ObservableObject {
         }
     }
     
-    func generateFieldDescriptor() -> FieldDescriptor {
+    func GenerateFieldDescriptor() -> FieldDescriptor {
         if self.field?.description == "external" {
             return FieldDescriptor(type: FIELD_TYPES.External.rawValue, id: nil, name: field?.name, location: field?.location)
         } else {
@@ -76,7 +76,7 @@ class NewEventManager: ObservableObject {
     /**
         Return a data access object of an event to send through the API
      */
-    func generateNewEventData() -> EventDao? {
+    func GenerateNewEventData() -> EventDao? {
         guard self.title != "",
               self.body != "",
               self.field != nil,
@@ -88,8 +88,8 @@ class NewEventManager: ObservableObject {
         
         return EventDao(
             type: self.type.rawValue,
-            organizers: self.generateOrganizers(),
-            field: self.generateFieldDescriptor(),
+            organizers: self.GenerateOrganizers(),
+            field: self.GenerateFieldDescriptor(),
             imageURL: self.image,
             title: self.title,
             body: self.body,
@@ -104,7 +104,7 @@ class NewEventManager: ObservableObject {
         )
     }
     
-    func generateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
+    func GenerateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
         guard let type = dao.type,
               let organizers = dao.organizers,
               let field = dao.field,
@@ -122,12 +122,11 @@ class NewEventManager: ObservableObject {
         }
         
         guard let uuid = user.uuid,
-              let username = user.username,
-              let uImage = user.imageURL else {
+              let username = user.username else {
             return nil
         }
         
-        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: uImage)
+        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
         let participant = Participant(id: UUID().uuidString, user: snippet, status: RSVP_STATUS.Going.rawValue, createdAt: 0)
         
         var clubs = [Club]()

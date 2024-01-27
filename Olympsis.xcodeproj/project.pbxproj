@@ -33,7 +33,7 @@
 		5D20625E2B1435F300A9D408 /* OrgApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */; };
 		5D2062602B14463400A9D408 /* OrgListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListView.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
-		5D2DEFBE2B1AB1770082FE73 /* CreateNewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */; };
+		5D2DEFBE2B1AB1770082FE73 /* NewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
 		5D2DEFC82B280E850082FE73 /* EventFieldInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */; };
 		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
@@ -144,7 +144,7 @@
 		9A5D3365292AAA71008CF61D /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3364292AAA71008CF61D /* PostView.swift */; };
 		9A5D3369292AC610008CF61D /* PostComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3368292AC610008CF61D /* PostComments.swift */; };
 		9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336B292AE5DE008CF61D /* CommentView.swift */; };
-		9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* CreateNewPost.swift */; };
+		9A5D336E292AF813008CF61D /* NewPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336D292AF813008CF61D /* NewPost.swift */; };
 		9A69CDDF2A1727BB00C37C1C /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 9A69CDDE2A1727BB00C37C1C /* Hermes */; };
 		9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */; };
 		9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5429724C9200EBC5F9 /* EventsList.swift */; };
@@ -335,7 +335,7 @@
 		5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplicationView.swift; sourceTree = "<group>"; };
 		5D20625F2B14463400A9D408 /* OrgListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListView.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
-		5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAnnouncement.swift; sourceTree = "<group>"; };
+		5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAnnouncement.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldInfo.swift; sourceTree = "<group>"; };
 		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 		9A5D3364292AAA71008CF61D /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		9A5D3368292AC610008CF61D /* PostComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComments.swift; sourceTree = "<group>"; };
 		9A5D336B292AE5DE008CF61D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
-		9A5D336D292AF813008CF61D /* CreateNewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPost.swift; sourceTree = "<group>"; };
+		9A5D336D292AF813008CF61D /* NewPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPost.swift; sourceTree = "<group>"; };
 		9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActionButton.swift; sourceTree = "<group>"; };
 		9A69FE5429724C9200EBC5F9 /* EventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsList.swift; sourceTree = "<group>"; };
 		9A69FE5629725A1300EBC5F9 /* FieldsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsList.swift; sourceTree = "<group>"; };
@@ -698,7 +698,6 @@
 				5D2062572B142CCF00A9D408 /* OrgManagersView.swift */,
 				5D2062592B142D4700A9D408 /* ManagersListView.swift */,
 				5D20625B2B142D6900A9D408 /* ManagerView.swift */,
-				5D2DEFBD2B1AB1770082FE73 /* CreateNewAnnouncement.swift */,
 				5D18BD132B38E66A00F90777 /* OrgManagerInvite.swift */,
 				5D18BD152B38EE8D00F90777 /* UserDataListView.swift */,
 			);
@@ -722,6 +721,22 @@
 				5DBEFB562B641D1100FFCADA /* NewEventManagerTests.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		5DBEFB602B65A79000FFCADA /* New Post */ = {
+			isa = PBXGroup;
+			children = (
+				5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */,
+				9A5D336D292AF813008CF61D /* NewPost.swift */,
+			);
+			path = "New Post";
+			sourceTree = "<group>";
+		};
+		5DBEFB612B65A79D00FFCADA /* Edit Post */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Edit Post";
 			sourceTree = "<group>";
 		};
 		5DCB01BA2ADF759500450F69 /* Activities */ = {
@@ -850,6 +865,8 @@
 		9A5D3363292AAA66008CF61D /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				5DBEFB612B65A79D00FFCADA /* Edit Post */,
+				5DBEFB602B65A79000FFCADA /* New Post */,
 				9A5D3368292AC610008CF61D /* PostComments.swift */,
 				9A5D3364292AAA71008CF61D /* PostView.swift */,
 				9A5D336B292AE5DE008CF61D /* CommentView.swift */,
@@ -1176,7 +1193,6 @@
 			isa = PBXGroup;
 			children = (
 				9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */,
-				9A5D336D292AF813008CF61D /* CreateNewPost.swift */,
 				9AD208F5293425C6007A62C4 /* MyClubView.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
 				9AD20901293444A4007A62C4 /* MemberView.swift */,
@@ -1531,7 +1547,7 @@
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
-				9A5D336E292AF813008CF61D /* CreateNewPost.swift in Sources */,
+				9A5D336E292AF813008CF61D /* NewPost.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
@@ -1570,7 +1586,7 @@
 				9A69FE59297325E000EBC5F9 /* ClubLoadingTemplateView.swift in Sources */,
 				5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
-				5D2DEFBE2B1AB1770082FE73 /* CreateNewAnnouncement.swift in Sources */,
+				5D2DEFBE2B1AB1770082FE73 /* NewAnnouncement.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,

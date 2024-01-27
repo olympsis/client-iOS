@@ -21,7 +21,16 @@ struct PostView: View {
     
     @StateObject private var postObserver = PostObserver()
     @StateObject private var uploadObserver = UploadObserver()
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject var session: SessionStore
+    
+    var isOrg: Bool {
+        guard let selectedGroup = session.selectedGroup,
+              selectedGroup.organization != nil else {
+            return false
+        }
+        return true
+    }
     
     var userImageURL: String {
         guard let user = post.poster,
@@ -103,6 +112,14 @@ struct PostView: View {
         return likes.count
     }
     
+    private var hasExternalLink: Bool {
+        guard let ext = self.post.externalLink,
+              ext != "" else {
+            return false
+        }
+        return true
+    }
+    
     func like() async {
         guard let id = post.id,
             let user = session.user,
@@ -164,7 +181,7 @@ struct PostView: View {
     var body: some View {
         VStack {
             HStack(alignment: .center) {
-                if post.type == "post" {
+                if post.type == POST_TYPE.Post.rawValue || (post.type == POST_TYPE.Announcement.rawValue && isOrg){
                     AsyncImage(url: URL(string: userImageURL)){ phase in
                         if let image = phase.image {
                             image // Displays the loaded image.
@@ -193,7 +210,7 @@ struct PostView: View {
                         Text(username)
                             .bold()
                     }.padding(.leading, 5)
-                } else if post.type == "announcement" {
+                } else if post.type == POST_TYPE.Announcement.rawValue || !isOrg {
                     AsyncImage(url: URL(string: orgImageURL)){ phase in
                         if let image = phase.image {
                             image // Displays the loaded image.
@@ -245,30 +262,65 @@ struct PostView: View {
                 .padding(.horizontal, 5)
             
             if images.count > 0 {
-                TabView(selection: $index){
-                    ForEach(images, id: \.self){ image in
-                        AsyncImage(url: URL(string: image)){ image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                        } placeholder: {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.gray)
-                                .opacity(0.3)
-                                ProgressView()
+                ZStack(alignment: .bottomTrailing) {
+                    TabView(selection: $index){
+                        ForEach(images, id: \.self){ image in
+                            AsyncImage(url: URL(string: image)){ image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipped()
+                            } placeholder: {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.gray)
+                                    .opacity(0.3)
+                                    ProgressView()
+                                }
                             }
-                                
+                                .tag(image)
                         }
-                            .tag(image)
+                    }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
+                    
+                    if hasExternalLink {
+                        ZStack(alignment: .trailing) {
+                            Rectangle()
+                                .frame(height: 40)
+                                .foregroundStyle(.gray)
+                                .opacity(0.3)
+                                .background(.ultraThinMaterial)
+                                .blur(radius: 3.0)
+                            Button(action: {
+                                guard let extLink = post.externalLink,
+                                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+                                    return
+                                }
+                                openURL(url)
+                            }) {
+                                SimpleButtonLabel(text: "See More", width: 100, height: 30)
+                            }.padding(.trailing, 5)
+                        }
                     }
-                }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
+                }
             }
             
             VStack(alignment: .leading) {
                 Text(post.body)
                     .font(.callout)
+                if hasExternalLink && post.images == nil {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            guard let extLink = post.externalLink,
+                                  let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+                                return
+                            }
+                            openURL(url)
+                        }) {
+                            SimpleButtonLabel(text: "See More", width: 100, height: 30)
+                        }.padding(.trailing, 5)
+                    }
+                }
                 HStack (alignment: .center){
                     Text("Posted \(timestamp)")
                         .font(.caption2)
