@@ -77,6 +77,7 @@
 		5DBEFB5B2B643EB000FFCADA /* GenericModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD172B391D9000F90777 /* GenericModels.swift */; };
 		5DBEFB5C2B6442A800FFCADA /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABB1EC02905F9F90050C0F0 /* Announcement.swift */; };
 		5DBEFB5D2B6442AF00FFCADA /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
+		5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */; };
 		5DC733F72B2934660051BE21 /* OrgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733F62B2934660051BE21 /* OrgView.swift */; };
 		5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733F82B2937D60051BE21 /* GroupsView.swift */; };
 		5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */; };
@@ -363,6 +364,7 @@
 		5DBEFB512B5A1A2800FFCADA /* EventFieldCustomPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldCustomPicker.swift; sourceTree = "<group>"; };
 		5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventManager.swift; sourceTree = "<group>"; };
 		5DBEFB562B641D1100FFCADA /* NewEventManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventManagerTests.swift; sourceTree = "<group>"; };
+		5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostManager.swift; sourceTree = "<group>"; };
 		5DC733F62B2934660051BE21 /* OrgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgView.swift; sourceTree = "<group>"; };
 		5DC733F82B2937D60051BE21 /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
 		5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVisibilityPickerView.swift; sourceTree = "<group>"; };
@@ -1129,6 +1131,7 @@
 				9A550848293E335500B924B1 /* ImageHandler.swift */,
 				5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */,
 				5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */,
+				5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1554,6 +1557,7 @@
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
+				5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */,
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				5DFB8A062A720B560002A560 /* FieldViewExt.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
