@@ -111,7 +111,7 @@ struct LocationResponse: Codable {
 }
 
 
-struct UserSnippet: Codable {
+struct UserSnippet: Codable, Hashable {
     var uuid: String?
     var username: String?
     var imageURL: String?

@@ -19,7 +19,7 @@ struct GroupFeed: View {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club else {
                 return false
             }
@@ -55,7 +55,7 @@ struct GroupFeed: View {
         }
         
         // make query to backend for posts
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             status = .success
             guard let club = selectedGroup.club else {
                 return [Post]()

@@ -85,7 +85,7 @@ struct NewClub: View {
             
             // create new club
             let resp = try await session.clubObserver.createClub(club: club)
-            let group = GroupSelection(type: "club", club: resp, organization: nil, posts: nil)
+            let group = GroupSelection(type: GROUP_TYPE.Club, club: resp, organization: nil, posts: nil)
             session.groups.append(group)
 
             showToast = true

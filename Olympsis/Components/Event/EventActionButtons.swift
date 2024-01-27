@@ -17,9 +17,12 @@ struct EventActionButtons: View {
     @EnvironmentObject private var session: SessionStore
     
     private var fieldLocation: [Double] {
-        guard let data = event.data,
-              let field = data.field else {
-            return [0, 0]
+        guard let field = event.fieldData else {
+            guard let field = event.field,
+                  let coordinates = field.location?.coordinates else {
+                return [0,0]
+            }
+            return coordinates
         }
         return field.location.coordinates
     }
@@ -41,7 +44,7 @@ struct EventActionButtons: View {
               let participants = event.participants else {
             return false
         }
-        return participants.first(where: { $0.uuid == uuid }) != nil
+        return participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
     func rsvp(status: String) async {
@@ -52,7 +55,7 @@ struct EventActionButtons: View {
             return
         }
         
-        let participant = Participant(id: nil, uuid: uuid, data: nil, status: status, createdAt: nil)
+        let participant = Participant(id: nil, user: nil, status: status, createdAt: nil)
         let resp = await session.eventObserver.addParticipant(id: event.id!, participant)
         
         guard resp == true,
@@ -76,7 +79,7 @@ struct EventActionButtons: View {
             let user = session.user,
               let uuid = user.uuid,
               let participants = event.participants,
-            let participantID = participants.first(where: { $0.uuid == uuid })?.id else {
+              let participantID = participants.first(where: { $0.user?.uuid == uuid })?.id else {
             handleFailure()
             return
         }

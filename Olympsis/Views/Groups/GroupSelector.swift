@@ -21,7 +21,7 @@ struct GroupSelector: View {
         VStack {
             List(selection: $selection) {
                 Section {
-                    ForEach(groups.filter({ $0.type == "club" })) { c in
+                    ForEach(groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
                         HStack {
                             AsyncImage(url: URL(string: GenerateImageURL(c.club?.imageURL ?? "https://api.olympsis.com"))){ image in
                                 image.resizable()
@@ -42,9 +42,9 @@ struct GroupSelector: View {
                 } header: {
                     Text("Clubs")
                 }
-                if (groups.filter({ $0.type == "organization" }).count != 0) {
+                if (groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
                     Section {
-                        ForEach(groups.filter({ $0.type == "organization" })) { c in
+                        ForEach(groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
                             HStack {
                                 AsyncImage(url: URL(string: GenerateImageURL(c.organization?.imageURL ?? "https://api.olympsis.com"))){ image in
                                     image.resizable()

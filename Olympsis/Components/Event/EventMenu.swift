@@ -35,40 +35,38 @@ struct EventMenu: View {
         // check to see if you're the poster
         if let user = session.user,
            let uuid = user.uuid {
-            if event.poster == uuid {
+            if event.poster?.uuid == uuid {
                 return true
             }
         }
         
-        if let data = event.data {
-            // check to see if you're an admin of an associated club
-            if let clubs = data.clubs {
-                if let userClubs = session.user?.clubs {
-                    let eventClubs = clubs.filter { c in
-                        userClubs.contains { $0 == c.id }
-                    }
-                    guard let userID = session.user?.uuid else {
-                        return false
-                    }
-                    return eventClubs.first { e in
-                        e.members?.contains { ($0.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
-                    } != nil
+        // check to see if you're an admin of an associated club
+        if let clubs = event.clubs {
+            if let userClubs = session.user?.clubs {
+                let eventClubs = clubs.filter { c in
+                    userClubs.contains { $0 == c.id }
                 }
+                guard let userID = session.user?.uuid else {
+                    return false
+                }
+                return eventClubs.first { e in
+                    e.members?.contains { ($0.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
+                } != nil
             }
-            
-            // check to see if you're an manager of an associated org
-            if let organizations = data.organizations {
-                if let userOrgs = session.user?.organizations {
-                    let eventOrgs = organizations.filter { o in
-                        userOrgs.contains { $0 == o.id }
-                    }
-                    guard let userID = session.user?.uuid else {
-                        return false
-                    }
-                    return eventOrgs.first { e in
-                        e.members?.contains { $0.uuid == userID } ?? false
-                    } != nil
+        }
+        
+        // check to see if you're an manager of an associated org
+        if let organizations = event.organizations {
+            if let userOrgs = session.user?.organizations {
+                let eventOrgs = organizations.filter { o in
+                    userOrgs.contains { $0 == o.id }
                 }
+                guard let userID = session.user?.uuid else {
+                    return false
+                }
+                return eventOrgs.first { e in
+                    e.members?.contains { $0.uuid == userID } ?? false
+                } != nil
             }
         }
         
@@ -77,7 +75,7 @@ struct EventMenu: View {
     
     func startEvent() async {
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualSTime: now)
+        let dao = EventDao(actualStopTime: now)
         loadingState = .loading
         guard let id = event.id else {
             return

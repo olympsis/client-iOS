@@ -22,7 +22,7 @@ struct PostMenu: View {
               let group = session.selectedGroup else {
             return false
         }
-        if group.type == GROUP_TYPE.Club.rawValue {
+        if group.type == GROUP_TYPE.Club {
             guard let type = post.type,
                   type == "post",
                   let club = group.club,
@@ -48,7 +48,7 @@ struct PostMenu: View {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club else {
                 return false
             }
@@ -72,7 +72,7 @@ struct PostMenu: View {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club,
                   let id = club.id,
                   let postId = post.id else {
@@ -103,7 +103,7 @@ struct PostMenu: View {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club,
                   let id = club.id else {
                 return

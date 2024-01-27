@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NewEvent: View {
     
+    @StateObject var manager: NewEventManager
     @State private var selection: Int = 0
     @State private var showPickUp: Bool = false
     @State private var showTournament: Bool = false
@@ -76,10 +77,15 @@ struct NewEvent: View {
                         .navigationTitle("New Event")
                         .navigationBarTitleDisplayMode(.inline)
                         .tag(0)
-                    if session.fields.count > 0 {
-                        NewPickUpEvent(eventField: session.fields[0]).tag(1)
-                        NewTournamentEvent(eventField: session.fields[0]).tag(2)
-                    }
+                    
+                    NewPickUpEvent()
+                        .environmentObject(manager)
+                        .tag(1)
+                    
+                    NewTournamentEvent()
+                        .environmentObject(manager)
+                        .tag(2)
+                    
                 }.tabViewStyle(.automatic)
             }.navigationTitle("New Event")
                 .navigationBarTitleDisplayMode(.inline)
@@ -95,6 +101,6 @@ struct NewEvent: View {
 }
 
 #Preview {
-    NewEvent()
+    NewEvent(manager: NewEventManager())
         .environmentObject(SessionStore())
 }

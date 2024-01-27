@@ -176,3 +176,32 @@ enum EVENT_SKILL_LEVELS: String, CaseIterable {
         }
     }
 }
+
+enum NEW_EVENT_ERROR: Error {
+    case unexpected
+    case noTitle
+    case noDescription
+    case noSelectedField
+}
+
+enum SkillLevel: String, CaseIterable {
+    case any = "Any Level"
+    case beginner   = "Beginner"
+    case amateur    = "Amateur"
+    case expert     = "Expert"
+}
+
+enum EVENT_TYPES: String, CaseIterable {
+    case PickUp = "pickup"
+    case Tournament = "tournament"
+}
+
+enum FIELD_TYPES: String {
+    case Internal = "internal"
+    case External = "external"
+}
+
+enum RSVP_STATUS: String {
+    case Going = "going"
+    case Maybe = "maybe"
+}

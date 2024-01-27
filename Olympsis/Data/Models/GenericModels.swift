@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 struct Invitation: Codable {
     var id: String?
@@ -106,4 +107,24 @@ struct LikeDao: Codable {
 
 struct CreateResponse: Codable {
     let id: String?
+}
+
+
+struct CustomField: Identifiable {
+    let id = UUID()
+    let item: MKMapItem
+}
+
+struct SelectedCustomField {
+    var field: FieldDescriptor?
+    var administrativeArea: String
+    var subAdministrativeArea: String
+    var country: String
+    
+    init(field: FieldDescriptor? = nil, administrativeArea: String="", subAdministrativeArea: String="", country: String="") {
+        self.field = field
+        self.administrativeArea = administrativeArea
+        self.subAdministrativeArea = subAdministrativeArea
+        self.country = country
+    }
 }

@@ -39,6 +39,18 @@ struct EventViewExt: View {
         return body
     }
     
+    var eventField: Field? {
+        guard let field = event.fieldData else {
+            guard let field = event.field,
+                  let name = field.name,
+                  let location = field.location else {
+                return nil
+            }
+            return Field(id: "", name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: "", state: "", country: "")
+        }
+        return field
+    }
+    
     func reloadEvent() async {
         guard let id = event.id,
               let resp = await session.eventObserver.fetchEvent(id: id) else {
@@ -128,7 +140,7 @@ struct EventViewExt: View {
                         .zIndex(1)
                     
                     // MARK: - Field Info
-                    if let field = event.data?.field {
+                    if let field = eventField {
                         EventFieldInfo(field: field)
                             .zIndex(1)
                     }
