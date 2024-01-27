@@ -52,47 +52,14 @@ let ORGANIZATION_APPLICATIONS = [
 ]
 
 let GROUP_SELECTIONS = [
-        GroupSelection(type: "club", club: CLUBS[0], organization: nil, posts: nil),
-        GroupSelection(type: "organization", club: nil, organization: ORGANIZATIONS[0], posts: nil)
+    GroupSelection(type: .Club, club: CLUBS[0], organization: nil, posts: nil),
+    GroupSelection(type: .Organization, club: nil, organization: ORGANIZATIONS[0], posts: nil)
 ]
 
 let EVENTS = [
-    Event(id: UUID().uuidString, type: "tournament", poster: "", organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CrimsonWanderer", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "MysticHarmony", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "EchoEnigma", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780)
-        
-    ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780),
-    Event(id: UUID().uuidString, type: "pickup", poster: "",organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString),Organizer(type: GROUP_TYPE.Organization.rawValue, id: ORGANIZATIONS[0].id ?? UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, location: nil), imageURL: "soccer-0", title: "Sunday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, actualStopTime: 0, minParticipants: 10, maxParticipants: 0, participants: [
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CrimsonWanderer", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780)
-        
-    ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780),
-    Event(id: UUID().uuidString, type: "pickup", poster: "",organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString), Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[1].id ?? UUID().uuidString), Organizer(type: GROUP_TYPE.Organization.rawValue, id: ORGANIZATIONS[0].id ?? UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, location: nil), imageURL: "soccer-0", title: "Tuesday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1702688400, actualStartTime: nil, stopTime: nil, actualStopTime: 0, maxParticipants: 10, participants: [
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        
-    ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780),
-    Event(id: UUID().uuidString, type: "tournament", poster: "", organizers: [Organizer(type: "", id: UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, location: nil), imageURL: "soccer-0", title: "Friday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, actualStopTime: 0, maxParticipants: 10, participants: [
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CrimsonWanderer", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "MysticHarmony", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780)
-        
-    ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780),
-    Event(id: UUID().uuidString, type: "pickup", poster: "", organizers: [Organizer(type: "", id: UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, location: nil), imageURL: "soccer-0", title: "Monday Ball", body: "Lets go play boys!!!", sport: "soccer", level: 1, startTime: 1703089800, actualStartTime: nil, stopTime: nil, actualStopTime: 0, maxParticipants: 10, participants: [
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "QuantumJester", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CelestialWhisper", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "yes", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "NebulaNomad", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "no", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "CrimsonWanderer", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780),
-        Participant(id: UUID().uuidString, uuid: "", data: UserData(uuid: "", username: "MysticHarmony", firstName: "", lastName: "", imageURL: "", visibility: "", bio: "", clubs: nil, sports: nil, deviceToken: nil), status: "maybe", createdAt: 1639364780)
-        
-    ], visibility: "", data: EventData(poster: USERS_DATA[0], field: FIELDS[0], clubs: CLUBS, organizations: ORGANIZATIONS), createdAt: 1639364780)
+    Event(id: UUID().uuidString, type: "tournament", poster: USER_SNIPPETS[0], organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, name: nil, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
+        Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
+    ], visibility: "", createdAt: 1639364780,  clubs: CLUBS, organizations: ORGANIZATIONS, fieldData: FIELDS[0]),
 ]
 
 
@@ -116,9 +83,9 @@ let CLUB_APPLICATIONS = [
 
 // Preview data
 let GROUPS = [
-    GroupSelection(type: GROUP_TYPE.Club.rawValue, club: CLUBS[0], organization: nil),
-    GroupSelection(type: GROUP_TYPE.Club.rawValue, club: CLUBS[1], organization: nil),
-    GroupSelection(type: GROUP_TYPE.Organization.rawValue, club: nil, organization: ORGANIZATIONS[0])
+    GroupSelection(type: GROUP_TYPE.Club, club: CLUBS[0], organization: nil),
+    GroupSelection(type: GROUP_TYPE.Club, club: CLUBS[1], organization: nil),
+    GroupSelection(type: GROUP_TYPE.Organization, club: nil, organization: ORGANIZATIONS[0])
 ]
 
 let ROOMS = [

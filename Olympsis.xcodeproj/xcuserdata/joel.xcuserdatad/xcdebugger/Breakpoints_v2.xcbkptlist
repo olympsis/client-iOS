@@ -97,6 +97,38 @@
             endingLineNumber = "24"
             landmarkName = "location(longitude:latitude:radius:sports:status:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
+                  moduleName = "Olympsis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "1476">
+               </Location>
+               <Location
+                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
+                  moduleName = "Olympsis"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "1524">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

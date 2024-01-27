@@ -87,7 +87,7 @@ struct NewOrganization: View {
             // create new organization
             let resp = try await session.orgObserver.createOrganization(organization: org)
             
-            let group = GroupSelection(type: "organization", club: nil, organization: resp, posts: nil)
+            let group = GroupSelection(type: GROUP_TYPE.Organization, club: nil, organization: resp, posts: nil)
             session.groups.append(group)
             
             showToast = true

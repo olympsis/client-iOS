@@ -24,20 +24,17 @@ struct EventOrganizersView: View {
     
     /// The first group that is organizing this event
     private var host: String {
-        guard let data = event.data else {
-            return "organizer"
-        }
         guard let o = organizers.first else {
             return "organizer"
         }
         if o.type == GROUP_TYPE.Club.rawValue {
-            guard let club = data.clubs?.first(where: { $0.id == o.id }),
+            guard let club = event.clubs?.first(where: { $0.id == o.id }),
                   let name = club.name else {
                 return "organizer"
             }
             return name
         } else {
-            guard let org = data.organizations?.first(where: { $0.id == o.id }),
+            guard let org = event.organizations?.first(where: { $0.id == o.id }),
                   let name = org.name else {
                 return "organizer"
             }
@@ -47,18 +44,15 @@ struct EventOrganizersView: View {
     
     /// the co host or second organizer if there is only two
     private var coHost: String {
-        guard let data = event.data else {
-            return "organizer"
-        }
         if organizers.count == 2 {
             if organizers[1].type == GROUP_TYPE.Club.rawValue {
-                guard let club = data.clubs?.first(where: { $0.id == organizers[1].id }),
+                guard let club = event.clubs?.first(where: { $0.id == organizers[1].id }),
                       let name = club.name else {
                     return "organizer"
                 }
                 return name
             } else {
-                guard let org = data.organizations?.first(where: { $0.id == organizers[1].id }),
+                guard let org = event.organizations?.first(where: { $0.id == organizers[1].id }),
                       let name = org.name else {
                     return "organizer"
                 }
@@ -80,14 +74,12 @@ struct EventOrganizersView: View {
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
-                                if let data = event.data,
-                                   let clubs = data.clubs,
+                                if let clubs = event.clubs,
                                    let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubView(club: club)
                                 }
                             } else {
-                                if let data = event.data,
-                                   let orgs = data.organizations,
+                                if let orgs = event.organizations,
                                    let org = orgs.first(where: { $0.id == org.id }) {
                                     OrgView(organization: org)
                                 }
@@ -105,14 +97,12 @@ struct EventOrganizersView: View {
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
-                                if let data = event.data,
-                                   let clubs = data.clubs,
+                                if let clubs = event.clubs,
                                    let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubView(club: club)
                                 }
                             } else {
-                                if let data = event.data,
-                                   let orgs = data.organizations,
+                                if let orgs = event.organizations,
                                    let org = orgs.first(where: { $0.id == org.id }) {
                                     OrgView(organization: org)
                                 }
@@ -130,14 +120,12 @@ struct EventOrganizersView: View {
                     }
                     .fullScreenCover(isPresented: $showSecond, content: {
                         if organizers[1].type == GROUP_TYPE.Club.rawValue {
-                            if let data = event.data,
-                               let clubs = data.clubs,
+                            if let clubs = event.clubs,
                                let club = clubs.first(where: { $0.id == organizers[1].id }) {
                                 ClubView(club: club)
                             }
                         } else {
-                            if let data = event.data,
-                               let orgs = data.organizations,
+                            if let orgs = event.organizations,
                                let org = orgs.first(where: { $0.id == organizers[1].id }) {
                                 OrgView(organization: org)
                             }
@@ -153,14 +141,12 @@ struct EventOrganizersView: View {
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
-                                if let data = event.data,
-                                   let clubs = data.clubs,
+                                if let clubs = event.clubs,
                                    let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubView(club: club)
                                 }
                             } else {
-                                if let data = event.data,
-                                   let orgs = data.organizations,
+                                if let orgs = event.organizations,
                                    let org = orgs.first(where: { $0.id == org.id }) {
                                     OrgView(organization: org)
                                 }
@@ -177,7 +163,7 @@ struct EventOrganizersView: View {
                     }
                     .sheet(isPresented: $showGroups, content: {
                         if organizers.first != nil {
-                            GroupsView(organizers: organizers, clubs: event.data?.clubs ?? [Club](), organizations: event.data?.organizations ?? [Organization]())
+                            GroupsView(organizers: organizers, clubs: event.clubs ?? [Club](), organizations: event.organizations ?? [Organization]())
                                 .presentationDetents([.medium, .large])
                         }
                     })
@@ -187,5 +173,5 @@ struct EventOrganizersView: View {
 }
 
 #Preview {
-    EventOrganizersView(event: EVENTS[2])
+    EventOrganizersView(event: EVENTS[0])
 }

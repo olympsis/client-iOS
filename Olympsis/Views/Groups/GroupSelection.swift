@@ -10,12 +10,12 @@ import Foundation
 
 class GroupSelection: ObservableObject, Identifiable, Equatable {
     let id = UUID()
-    let type: String
+    let type: GROUP_TYPE
     let club: Club?
     let organization: Organization?
     @Published var posts: [Post]?
     
-    init(type: String, club: Club?, organization: Organization?, posts: [Post]? = nil) {
+    init(type: GROUP_TYPE, club: Club?=nil, organization: Organization?=nil, posts: [Post]? = nil) {
         self.type = type
         self.club = club
         self.organization = organization

@@ -50,7 +50,7 @@ struct GroupToolbar: ToolbarContent {
                 }
             } else {
                 if let group = session.selectedGroup { // MARK: - Club Selected
-                    if group.type == "club" {
+                    if group.type == GROUP_TYPE.Club {
                         ToolbarItem(placement: .topBarLeading) {
                             Button(action: { self.showSelector.toggle() }) {
                                 HStack {

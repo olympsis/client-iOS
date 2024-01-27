@@ -141,7 +141,7 @@ struct PostView: View {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
-        if selectedGroup.type == GROUP_TYPE.Club.rawValue {
+        if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club else {
                 return false
             }

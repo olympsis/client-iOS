@@ -12,7 +12,7 @@ struct ParticipantView: View {
     @State var participant: Participant
     
     var imageURL: String {
-        guard let data = participant.data,
+        guard let data = participant.user,
               let img = data.imageURL else {
             return "https://api.olympsis.com"
         }
@@ -20,7 +20,7 @@ struct ParticipantView: View {
     }
     
     var ringColor: Color {
-        guard participant.data != nil else {
+        guard participant.user != nil else {
             return Color("color-prime")
         }
         if participant.status == "yes" {

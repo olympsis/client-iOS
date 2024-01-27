@@ -17,7 +17,7 @@ struct EventDetailActionButton: View {
     
     func startEvent() async {
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(maxParticipants: event.maxParticipants ?? 0, minParticipants: event.minParticipants ?? 0, level: event.level ?? 0, actualSTime: now, externalLink: event.externalLink ?? "")
+        let dao = EventDao(actualStartTime: now)
         state = .loading
         guard let id = event.id else {
             return
@@ -35,7 +35,7 @@ struct EventDetailActionButton: View {
     
     func stopEvent() async {
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(maxParticipants: event.maxParticipants ?? 0, minParticipants: event.minParticipants ?? 0, level: event.level ?? 0, actualStopTime: now, externalLink: event.externalLink ?? "")
+        let dao = EventDao(actualStopTime: now)
         state = .loading
         guard let id = event.id else {
             return

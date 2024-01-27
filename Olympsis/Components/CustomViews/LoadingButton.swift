@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoadingButton: View {
     
-    @State var text: String
+    @State var text: String?
     @State var image: Image?
     @State var width: CGFloat = 150
     @State var height: CGFloat = 40
@@ -30,7 +30,7 @@ struct LoadingButton: View {
                     Rectangle()
                         .foregroundColor(color)
                         .frame(width: width, height: height)
-                    Text(text)
+                    Text(text ?? "")
                         .font(.caption)
                         .textCase(.uppercase)
                         .foregroundColor(.white)

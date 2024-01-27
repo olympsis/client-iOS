@@ -11,44 +11,33 @@ import SwiftUI
 struct EventView: View {
     
     @State var event: Event
-    @State var status: LOADING_STATE = .loading
-    @State var showDetails = false
-    @EnvironmentObject var session:SessionStore
+    @State private var status: LOADING_STATE = .loading
+    @State private var showDetails = false
+    @EnvironmentObject private var session:SessionStore
     
-    var title: String {
+    private var title: String {
         guard let title = event.title else {
             return "Event"
         }
         return title
     }
     
-    var eventBody: String {
-        guard let body = event.body else {
-            return "Event Body"
-        }
-        return body
-    }
-    
-    var imageURL: String {
+    private var imageURL: String {
         guard let img = event.imageURL else {
             return ""
         }
         return img
     }
     
-    var fieldName: String {
-        guard let data = event.data,
-              let field = data.field else {
-            return "Field Name"
+    private var fieldName: String {
+        guard let field = event.fieldData else {
+            guard let field = event.field,
+                  let name = field.name else {
+                return ""
+            }
+            return name
         }
         return field.name
-    }
-    
-    var startTime: Int {
-        guard let time = event.startTime else {
-            return 0
-        }
-        return time
     }
     
     var body: some View {

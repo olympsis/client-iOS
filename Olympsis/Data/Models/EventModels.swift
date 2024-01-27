@@ -13,7 +13,7 @@ class Event: Codable, Identifiable, ObservableObject {
     
     let id: String?
     let type: String?
-    let poster: String?
+    let poster: UserSnippet?
     var organizers: [Organizer]?
     var field: FieldDescriptor?
     var imageURL: String?
@@ -29,7 +29,9 @@ class Event: Codable, Identifiable, ObservableObject {
     var maxParticipants: Int?
     var participants: [Participant]?
     var visibility: String?
-    var data: EventData?
+    let clubs: [Club]?
+    let organizations: [Organization]?
+    let fieldData: Field?
     let createdAt: Int?
     var externalLink: String?
     
@@ -52,12 +54,14 @@ class Event: Codable, Identifiable, ObservableObject {
         case maxParticipants = "max_participants"
         case participants
         case visibility
-        case data
+        case clubs = "clubs"
+        case organizations = "organizations"
+        case fieldData = "field_data"
         case createdAt = "created_at"
         case externalLink = "external_link"
     }
     
-    init(id: String?=nil, type: String, poster: String?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, data: EventData?=nil, createdAt: Int?=nil, externalLink: String?=nil) {
+    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [Club]?=nil, organizations: [Organization]?=nil, fieldData: Field?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -76,7 +80,9 @@ class Event: Codable, Identifiable, ObservableObject {
         self.maxParticipants = maxParticipants
         self.participants = participants
         self.visibility = visibility
-        self.data = data
+        self.clubs = clubs
+        self.organizations = organizations
+        self.fieldData = fieldData
         self.createdAt = createdAt
         self.externalLink = externalLink
     }
@@ -90,6 +96,7 @@ struct Organizer: Codable, Identifiable {
 struct FieldDescriptor: Codable {
     let type: String
     let id: String?
+    let name: String?
     let location: GeoJSON?
 }
 
@@ -99,15 +106,13 @@ struct Participant: Codable, Identifiable, Hashable {
     }
     
     var id: String?
-    let uuid: String
-    var data: UserData?
+    var user: UserSnippet?
     let status: String
     let createdAt: Int?
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
-        case data
+        case user
         case status
         case createdAt = "created_at"
     }
@@ -200,9 +205,12 @@ extension Event {
     /// Returns in string the estimated time to an event's field
     func estimatedTimeToField(_ loc: CLLocationCoordinate2D?) -> String {
         var fieldLocation: [Double] {
-            guard let data = self.data,
-                  let field = data.field else {
-                return [0, 0]
+            guard let field = self.fieldData else {
+                guard let field = self.field,
+                      let coordinates = field.location?.coordinates else {
+                    return [0,0]
+                }
+                return coordinates
             }
             return field.location.coordinates
         }
@@ -241,7 +249,7 @@ extension [Event] {
         guard self.count > 0 else {
             return nil
         }
-        var filtered = self.filter{ $0.participants?.first(where: { $0.uuid == uuid }) != nil }
+        var filtered = self.filter{ $0.participants?.first(where: { $0.user?.uuid == uuid }) != nil }
         filtered = filtered.sorted { ($0.startTime ?? 0) < ($1.startTime ?? 0) }
         
         guard filtered.count > 0 else {
@@ -263,5 +271,72 @@ extension [Event] {
         }
         
         return filtered.sorted { $0.startTime! < $1.startTime! }
+    }
+}
+
+class EventDao: Codable, Identifiable, ObservableObject {
+    
+    let type: String?
+    let poster: String?
+    var organizers: [Organizer]?
+    var field: FieldDescriptor?
+    var imageURL: String?
+    var title: String?
+    var body: String?
+    let sport: String?
+    var level: Int?
+    var startTime: Int?
+    var actualStartTime: Int?
+    var stopTime: Int?
+    var actualStopTime: Int?
+    var minParticipants: Int?
+    var maxParticipants: Int?
+    var participants: [Participant]?
+    var visibility: String?
+    let createdAt: Int?
+    var externalLink: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case poster
+        case organizers
+        case field
+        case imageURL = "image_url"
+        case title
+        case body
+        case sport
+        case level
+        case startTime = "start_time"
+        case actualStartTime = "actual_start_time"
+        case stopTime = "stop_time"
+        case actualStopTime = "actual_stop_time"
+        case minParticipants = "min_participants"
+        case maxParticipants = "max_participants"
+        case participants
+        case visibility
+        case createdAt = "created_at"
+        case externalLink = "external_link"
+    }
+    
+    init(type: String? = EVENT_TYPES.PickUp.rawValue, poster: String?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil) {
+        self.type = type
+        self.poster = poster
+        self.organizers = organizers
+        self.field = field
+        self.imageURL = imageURL
+        self.title = title
+        self.body = body
+        self.sport = sport
+        self.level = level
+        self.startTime = startTime
+        self.actualStartTime = actualStartTime
+        self.stopTime = stopTime
+        self.actualStopTime = actualStopTime
+        self.minParticipants = minParticipants
+        self.maxParticipants = maxParticipants
+        self.participants = participants
+        self.visibility = visibility
+        self.createdAt = createdAt
+        self.externalLink = externalLink
     }
 }

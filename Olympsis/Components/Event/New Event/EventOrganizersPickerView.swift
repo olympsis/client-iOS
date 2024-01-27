@@ -29,11 +29,11 @@ struct EventOrganizersPickerView: View {
                     } else if (!(selectedOrganizers.contains(where: { $0.id == a.id })) && (selectedOrganizers.contains(where: { $0.id == b.id }))){
                         return false
                     } else {
-                        return a.type < b.type
+                        return a.type.rawValue < b.type.rawValue
                     }
                 })) { organizer in
                     // MARK: - Club View
-                    if organizer.type == GROUP_TYPE.Club.rawValue {
+                    if organizer.type == GROUP_TYPE.Club {
                         HStack {
                             Button(action: {
                                 if (selectedOrganizers.contains(where: { $0.id == organizer.id })) {

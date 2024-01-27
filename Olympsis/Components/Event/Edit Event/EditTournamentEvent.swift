@@ -73,14 +73,14 @@ struct EditTournamentEvent: View {
         }
         
         let dao = EventDao(
+            imageURL: eventImageURL, 
             title: eventTitle,
             body: eventBody,
-            imageURL: eventImageURL,
+            level: eventLevel, 
             startTime: Int(eventStartTime.timeIntervalSince1970),
-            maxParticipants: Int(eventMaxParticipants),
-            minParticipants: Int(eventMinParticipants),
-            level: eventLevel,
             stopTime: stopTime,
+            minParticipants: Int(eventMinParticipants),
+            maxParticipants: Int(eventMaxParticipants),
             visibility: eventVisibility.rawValue,
             externalLink: eventExternalLink
         )

@@ -66,5 +66,5 @@ struct GroupsView: View {
 }
 
 #Preview {
-    GroupsView(organizers: EVENTS[2].organizers ?? [Organizer](), clubs: CLUBS, organizations: ORGANIZATIONS)
+    GroupsView(organizers: EVENTS[0].organizers ?? [Organizer](), clubs: CLUBS, organizations: ORGANIZATIONS)
 }

@@ -85,7 +85,7 @@ class SessionStore: ObservableObject {
                 if let c = resp.clubs {
                     self.clubs = c
                     c.forEach { c in
-                        let group = GroupSelection(type: "club", club: c, organization: nil, posts: nil)
+                        let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
                         self.groups.append(group)
                     }
                     self.clubsState = .success
@@ -99,7 +99,7 @@ class SessionStore: ObservableObject {
                 if let o = resp.organizations {
                     self.orgs = o
                     o.forEach { o in
-                        let group = GroupSelection(type: "organization", club: nil, organization: o, posts: nil)
+                        let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
                         self.groups.append(group)
                     }
                     if (self.selectedGroup == nil) {

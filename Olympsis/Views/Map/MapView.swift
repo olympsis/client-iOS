@@ -115,7 +115,7 @@ struct MapView: View {
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent) {
-                NewEvent()
+                NewEvent(manager: NewEventManager())
             }
             .sheet(isPresented: $showBottomSheet) {
                 EventsModalView(events: $session.events)

@@ -22,16 +22,16 @@ struct EventParticipantsView: View {
     var participants: [Participant] {
         guard var ptps = event.participants else {
             return [
-                Participant(id: UUID().uuidString, uuid: UUID().uuidString, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, uuid: UUID().uuidString, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, uuid: UUID().uuidString, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, uuid: UUID().uuidString, status: "going", createdAt: 0)
+                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0)
             ]
         }
         if ptps.count < 5 {
             let remainder = 5 - ptps.count
             for _ in 1...remainder {
-                ptps.append(Participant(id: UUID().uuidString, uuid: UUID().uuidString, status: "going", createdAt: 0))
+                ptps.append(Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0))
             }
         } else {
             return ptps.dropLast(ptps.count - 5)
@@ -129,7 +129,7 @@ struct EventParticipantsViewExt: View {
                 ForEach(participants) { p in
                     HStack {
                         ParticipantView(participant: p)
-                        Text(p.data?.username ?? "olympsis_user")
+                        Text(p.user?.username ?? "olympsis_user")
                         Spacer()
                     }.padding(.horizontal)
                 }
