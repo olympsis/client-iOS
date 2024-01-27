@@ -8,5 +8,5 @@
 import Foundation
 
 class NewPostManager: ObservableObject {
-    
+    @Published var body: String = ""
 }

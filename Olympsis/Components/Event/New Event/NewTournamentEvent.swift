@@ -477,10 +477,8 @@ struct NewTournamentEvent: View {
                         }.padding(.vertical, 50)
                     }
                     .onChange(of: manager.startDate) { v in
-                        if hasEndTime {
-                            if v > manager.endDate {
-                                manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
-                            }
+                        if v > manager.endDate {
+                            manager.endDate = v.addingTimeInterval(30 * 60)
                         }
                     }
                     .onChange(of: manager.endDate) { v in
