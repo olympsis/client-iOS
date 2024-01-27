@@ -156,7 +156,7 @@ struct NewPickUpEvent: View {
         }
         status = .loading
 
-        guard let dao = manager.generateNewEventData() else {
+        guard let dao = manager.GenerateNewEventData() else {
             log.error("Failed to generate new event data")
             handleFailure()
             return
@@ -167,7 +167,7 @@ struct NewPickUpEvent: View {
         }
         
         guard let user = session.user,
-              let event = manager.generateNewEvent(id: id, dao: dao, user: user) else {
+              let event = manager.GenerateNewEvent(id: id, dao: dao, user: user) else {
             return
         }
         
@@ -456,10 +456,8 @@ struct NewPickUpEvent: View {
                         }.padding(.vertical, 50)
                     }
                     .onChange(of: manager.startDate) { v in
-                        if hasEndTime {
-                            if v > manager.endDate {
-                                manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
-                            }
+                        if v > manager.endDate {
+                            manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
                         }
                     }
                     .onChange(of: manager.endDate) { v in

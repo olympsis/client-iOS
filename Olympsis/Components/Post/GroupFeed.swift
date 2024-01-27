@@ -175,9 +175,9 @@ struct GroupFeed: View {
         }.fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {
                 if let club = group.club {
-                    CreateNewPost(club: club, posts: $posts)
+                    NewPost(club: club, posts: $posts)
                 } else if let org = group.organization {
-                    CreateNewAnnouncement(organization: org)
+                    NewAnnouncement(organization: org, posts: $posts)
                 }
             }
         }
