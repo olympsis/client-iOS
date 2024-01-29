@@ -50,7 +50,7 @@ struct EventMenu: View {
                     return false
                 }
                 return eventClubs.first { e in
-                    e.members?.contains { ($0.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
+                    e.members?.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
                 } != nil
             }
         }
@@ -65,7 +65,7 @@ struct EventMenu: View {
                     return false
                 }
                 return eventOrgs.first { e in
-                    e.members?.contains { $0.uuid == userID } ?? false
+                    e.members?.contains { $0.user?.uuid == userID } ?? false
                 } != nil
             }
         }

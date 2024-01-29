@@ -53,7 +53,7 @@ struct TabBar: View {
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
                             .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
-                        Text("NEARBY")
+                        Text("EVENTS")
                             .font(.caption2)
                             .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
                     }

@@ -12,8 +12,8 @@ let _one_hr = Calendar.current.date(byAdding: .hour, value: 1, to: _current_date
 let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
 let USER_SNIPPETS = [
-    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=3552&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
-    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"),
+    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg")
 ]
 
 let COMMENTS = [
@@ -33,15 +33,15 @@ let FIELDS = [
 
 
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", parentId: "", type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", imageGallery: [""], visibility: "public", members: [
-        Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
-        Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
-        Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil),
-        Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
-    ], rules: nil, data: ClubData(parent: Organization(id: UUID().uuidString, name: "Utah Soccer", description: "", sport: "soccer", city: "", state: "", country: "", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: nil, members: nil, pinnedPostId: nil, createdAt: nil)), pinnedPostId: POSTS[0].id, createdAt: nil),
-    Club(id: UUID().uuidString, parentId: "", type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
-        Member(id: UUID().uuidString, uuid: "111", role: "owner", data: UserData(uuid: "", username: "yomomma", firstName: "John", lastName: "Doe", imageURL: "", visibility: "public", bio: "", clubs: nil, sports: ["soccer","golf"], deviceToken: ""), joinedAt: nil)
-    ], rules: nil, data: nil, pinnedPostId: POSTS[0].id, createdAt: nil)
+    Club(id: "609f6db90c34d41863a0e721", parent: nil, type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", imageGallery: [""], visibility: "public", members: [
+        Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
+        Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
+        Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
+        Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
+    ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil),
+    Club(id: UUID().uuidString, parent: nil, type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
+        Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
+    ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil)
 ]
 
 let ORGANIZATIONS = [

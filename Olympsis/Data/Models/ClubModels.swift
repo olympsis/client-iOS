@@ -10,6 +10,88 @@ import Foundation
 class Club: Codable, Identifiable {
 
     let id: String?
+    let parent: OrganizationDao?
+    let type: String?
+    let name: String?
+    let description: String?
+    let sport: String?
+    let city: String?
+    let state: String?
+    let country: String?
+    let imageURL: String?
+    let imageGallery: [String]?
+    let visibility: String?
+    let members: [Member]?
+    let rules: [String]?
+    var pinnedPostId: String?
+    let createdAt: Int64?
+    
+    init(id: String?,
+         parent: OrganizationDao?,
+         type: String?,
+         name: String?,
+         description: String?,
+         sport: String?,
+         city: String?,
+         state: String?,
+         country: String?,
+         imageURL: String?,
+         imageGallery: [String]?,
+         visibility: String?,
+         members: [Member]?,
+         rules: [String]?,
+         pinnedPostId: String?,
+         createdAt: Int64?) {
+        
+        self.id = id
+        self.parent = parent
+        self.type = type
+        self.name = name
+        self.description = description
+        self.sport = sport
+        self.city = city
+        self.state = state
+        self.country = country
+        self.imageURL = imageURL
+        self.imageGallery = imageGallery
+        self.visibility = visibility
+        self.members = members
+        self.rules = rules
+        self.pinnedPostId = pinnedPostId
+        self.createdAt = createdAt
+    }
+    
+    static func == (lhs: Club, rhs: Club) -> Bool {
+        guard let lhsID = lhs.id,
+              let rhsID = rhs.id else {
+            return false
+        }
+        return lhsID == rhsID
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case parent
+        case type
+        case name
+        case description
+        case sport
+        case city
+        case state
+        case country
+        case imageURL = "image_url"
+        case imageGallery = "image_gallery"
+        case visibility
+        case members
+        case rules
+        case pinnedPostId = "pinned_post_id"
+        case createdAt = "created_at"
+    }
+}
+
+class ClubDao: Codable, Identifiable {
+
+    let id: String?
     let parentId: String?
     let type: String?
     let name: String?
@@ -23,27 +105,23 @@ class Club: Codable, Identifiable {
     let visibility: String?
     let members: [Member]?
     let rules: [String]?
-    let data: ClubData?
     var pinnedPostId: String?
-    let createdAt: Int64?
     
-    init(id: String?,
-         parentId: String?,
-         type: String?,
-         name: String?,
-         description: String?,
-         sport: String?,
-         city: String?,
-         state: String?,
-         country: String?,
-         imageURL: String?,
-         imageGallery: [String]?,
-         visibility: String?,
-         members: [Member]?,
-         rules: [String]?,
-         data: ClubData?,
-         pinnedPostId: String?,
-         createdAt: Int64?) {
+    init(id: String?=nil,
+         parentId: String?=nil,
+         type: String?=nil,
+         name: String?=nil,
+         description: String?=nil,
+         sport: String?=nil,
+         city: String?=nil,
+         state: String?=nil,
+         country: String?=nil,
+         imageURL: String?=nil,
+         imageGallery: [String]?=nil,
+         visibility: String?=nil,
+         members: [Member]?=nil,
+         rules: [String]?=nil,
+         pinnedPostId: String?=nil) {
         
         self.id = id
         self.parentId = parentId
@@ -59,17 +137,7 @@ class Club: Codable, Identifiable {
         self.visibility = visibility
         self.members = members
         self.rules = rules
-        self.data = data
         self.pinnedPostId = pinnedPostId
-        self.createdAt = createdAt
-    }
-    
-    static func == (lhs: Club, rhs: Club) -> Bool {
-        guard let lhsID = lhs.id,
-              let rhsID = rhs.id else {
-            return false
-        }
-        return lhsID == rhsID
     }
     
     enum CodingKeys: String, CodingKey {
@@ -87,39 +155,7 @@ class Club: Codable, Identifiable {
         case visibility
         case members
         case rules
-        case data
         case pinnedPostId = "pinned_post_id"
-        case createdAt = "created_at"
-    }
-}
-
-class Member: Codable, Identifiable {
-    
-    let id: String?
-    let uuid: String
-    let role: String
-    let data: UserData?
-    let joinedAt: Int64?
-    
-    init(id: String?,
-         uuid: String,
-         role: String,
-         data: UserData?,
-         joinedAt: Int64?) {
-        
-        self.id = id
-        self.uuid = uuid
-        self.role = role
-        self.data = data
-        self.joinedAt = joinedAt
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case uuid
-        case role
-        case data
-        case joinedAt = "joined_at"
     }
 }
 

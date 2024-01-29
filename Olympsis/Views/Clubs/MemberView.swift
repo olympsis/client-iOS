@@ -14,17 +14,8 @@ struct MemberView: View {
     @State private var showMenu = false
     @EnvironmentObject var session:SessionStore
     
-    var fullName: String {
-        guard let data = member.data,
-              let firstName = data.firstName,
-              let lastName = data.lastName else {
-            return "Olympsis User"
-        }
-        return firstName + " " + lastName;
-    }
-    
     var username: String {
-        guard let data = member.data, let username = data.username else {
+        guard let data = member.user, let username = data.username else {
             return "olympsis-user"
         }
         return username
@@ -33,7 +24,7 @@ struct MemberView: View {
     var userRole: String {
         guard let user = session.user,
               let members = club.members,
-              let member = members.first(where: {$0.uuid == user.uuid}) else {
+              let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
         return member.role
@@ -43,19 +34,19 @@ struct MemberView: View {
         guard let user = session.user, let uuid = user.uuid else {
             return false
         }
-        return uuid == member.uuid
+        return uuid == member.user?.uuid
     }
     
     var body: some View {
         HStack {
             ZStack {
-                AsyncImage(url: URL(string: GenerateImageURL((member.data?.imageURL ?? "")))){ phase in
+                AsyncImage(url: URL(string: GenerateImageURL((member.user?.imageURL ?? "")))){ phase in
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
                                 .clipShape(Circle())
-                                .frame(width: 50)
                                 .scaledToFill()
+                                .frame(width: 50)
                                 .clipped()
                         } else if phase.error != nil {
                             ZStack {
@@ -78,7 +69,6 @@ struct MemberView: View {
             }
             
             VStack(alignment: .leading) {
-                Text(fullName)
                 Text(username)
                     .font(.subheadline)
                     .foregroundColor(.gray)
