@@ -27,7 +27,7 @@ struct PostMenu: View {
                   type == "post",
                   let club = group.club,
                   let members = club.members,
-                  let member = members.first(where: { $0.uuid == uuid }) else {
+                  let member = members.first(where: { $0.user?.uuid == uuid }) else {
                 if post.type == "post" {
                     return (post.poster?.uuid == uuid)
                 } else {
@@ -53,8 +53,7 @@ struct PostMenu: View {
                 return false
             }
             if post.type == "announcement" {
-                if let data = club.data,
-                   let parent = data.parent {
+                if let parent = club.parent {
                     return post.id == parent.pinnedPostId
                 }
             }

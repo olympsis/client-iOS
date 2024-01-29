@@ -116,3 +116,57 @@ struct OrganizationApplication: Codable, Identifiable {
 struct OrganizationApplicationData: Codable {
     let club: Club?
 }
+
+class OrganizationDao: Codable {
+
+    let id: String?
+    let name: String?
+    let description: String?
+    let sport: String?
+    let city: String?
+    let state: String?
+    let country: String?
+    let imageURL: String?
+    let imageGallery: [String]?
+    let members: [MemberDao]?
+    var pinnedPostId: String?
+    
+    init(id: String?=nil,
+         name: String?=nil,
+         description: String?=nil,
+         sport: String?=nil,
+         city: String?=nil,
+         state: String?=nil,
+         country: String?=nil,
+         imageURL: String?=nil,
+         imageGallery: [String]?=nil,
+         members: [MemberDao]?=nil,
+         pinnedPostId: String?=nil) {
+        
+        self.id = id
+        self.name = name
+        self.description = description
+        self.sport = sport
+        self.city = city
+        self.state = state
+        self.country = country
+        self.imageURL = imageURL
+        self.imageGallery = imageGallery
+        self.members = members
+        self.pinnedPostId = pinnedPostId
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case sport
+        case city
+        case state
+        case country
+        case imageURL = "image_url"
+        case imageGallery = "image_gallery"
+        case members
+        case pinnedPostId = "pinned_post_id"
+    }
+}

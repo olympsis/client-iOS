@@ -24,8 +24,7 @@ struct GroupFeed: View {
                 return false
             }
             if post.type == "announcement" {
-                if let data = club.data,
-                   let parent = data.parent {
+                if let parent = club.parent {
                     return post.id == parent.pinnedPostId
                 }
             }
@@ -60,15 +59,14 @@ struct GroupFeed: View {
             guard let club = selectedGroup.club else {
                 return [Post]()
             }
-            guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id ?? "", parentId: club.parentId) else {
+            guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id ?? "", parentId: club.parent?.id) else {
                 return [Post]()
             }
             
             var pinned = [Post]()
             var sorted = response.sorted(by: condition)
             
-            if let data = club.data,
-                let parent = data.parent,
+            if let parent = club.parent,
                 let pinnedPostId = parent.pinnedPostId {
                 if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
                     pinned.append(resp)

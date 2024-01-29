@@ -128,3 +128,59 @@ struct SelectedCustomField {
         self.country = country
     }
 }
+
+class Member: Codable, Identifiable {
+    
+    let id: String?
+    let role: String
+    let user: UserSnippet?
+    let joinedAt: Int64?
+    
+    init(id: String?,
+         role: String,
+         user: UserSnippet?,
+         joinedAt: Int64?) {
+        
+        self.id = id
+        self.role = role
+        self.user = user
+        self.joinedAt = joinedAt
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case role
+        case user
+        case joinedAt = "joined_at"
+    }
+}
+
+class MemberDao: Codable, Identifiable {
+    
+    let id: String?
+    let uuid: String
+    let role: String
+    let data: UserData?
+    let joinedAt: Int64?
+    
+    init(id: String?,
+         uuid: String,
+         role: String,
+         data: UserData?,
+         joinedAt: Int64?) {
+        
+        self.id = id
+        self.uuid = uuid
+        self.role = role
+        self.data = data
+        self.joinedAt = joinedAt
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case uuid
+        case role
+        case data
+        case joinedAt = "joined_at"
+    }
+}

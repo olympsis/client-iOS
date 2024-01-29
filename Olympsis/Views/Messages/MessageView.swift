@@ -10,7 +10,7 @@ import SwiftUI
 struct MessageView: View {
     
     @State var room: Room
-    @State var data: UserData?
+    @State var user: UserSnippet?
     @State var message: Message
     
     @EnvironmentObject var session: SessionStore
@@ -24,7 +24,7 @@ struct MessageView: View {
     }
     
     var username : String {
-        guard let user = data,
+        guard let user = user,
               let username = user.username else {
             return "@OlympsisUser"
         }
@@ -32,7 +32,7 @@ struct MessageView: View {
     }
     
     var imageURL : String {
-        guard let user = data,
+        guard let user = user,
               let image = user.imageURL else {
             return ""
         }
@@ -112,7 +112,7 @@ struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
         let message = Message(id: 0, type: "text", sender: "", body: "Hey everyone! Who's up for a pick-up soccer game tomorrow at the park? Bring your cleats and a positive attitude. Game starts at 3pm. See you there!", timestamp: 0)
         let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
-        MessageView(room: room, data: USERS_DATA[0], message: message)
+        MessageView(room: room, user: USER_SNIPPETS[0], message: message)
             .environmentObject(SessionStore())
     }
 }

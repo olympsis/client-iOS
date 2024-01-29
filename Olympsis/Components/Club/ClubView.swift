@@ -156,7 +156,7 @@ struct ClubView: View {
                         
                         HStack(spacing: -20) {
                             ForEach(members, id: \.id) { m in
-                                AsyncImage(url: URL(string: GenerateImageURL(m.data?.imageURL ?? "https://api.olympsis.com"))){ phase in
+                                AsyncImage(url: URL(string: GenerateImageURL(m.user?.imageURL ?? "https://api.olympsis.com"))){ phase in
                                     if let image = phase.image {
                                             image // Displays the loaded image.
                                                 .resizable()
@@ -188,7 +188,7 @@ struct ClubView: View {
                         .padding(.vertical)
                     
                     // MARK: - Organizations
-                    if let org = club.data?.parent {
+                    if let org = club.parent {
                         VStack(alignment: .leading) {
                             HStack {
                                 Image(systemName: "building.fill")

@@ -42,7 +42,7 @@ struct PostView: View {
     
     var orgImageURL: String {
         guard let club = session.selectedGroup?.club,
-              let org = club.data?.parent,
+              let org = club.parent,
               let image = org.imageURL else {
             return GenerateImageURL("https://api.olympsis.com")
         }
@@ -61,7 +61,7 @@ struct PostView: View {
     
     var orgName: String {
         guard let club = session.selectedGroup?.club,
-              let org = club.data?.parent,
+              let org = club.parent,
               let name = org.name,
               name != "" else {
             return "Olympsis Organization"
@@ -99,7 +99,7 @@ struct PostView: View {
               let selectedGroup = session.selectedGroup,
               let club = selectedGroup.club,
               let members = club.members,
-              let member = members.first(where: { $0.uuid == uuid }) else {
+              let member = members.first(where: { $0.user?.uuid == uuid }) else {
             return false
         }
         return member.role != "member"
@@ -163,8 +163,7 @@ struct PostView: View {
                 return false
             }
             if post.type == "announcement" {
-                if let data = club.data,
-                   let parent = data.parent {
+                if let parent = club.parent {
                     return post.id == parent.pinnedPostId
                 }
             }

@@ -55,11 +55,11 @@ struct GroupRoomView: View {
         }
     }
     
-    func GetData(uuid: String) -> UserData? {
-        guard let user = org.members!.first(where: {$0.uuid == uuid}) else {
+    func GetData(uuid: String) -> UserSnippet? {
+        guard let user = org.members!.first(where: {$0.user?.uuid == uuid}) else {
             return nil
         }
-        return user.data
+        return user.user
     }
     
     var body: some View {
@@ -70,7 +70,7 @@ struct GroupRoomView: View {
                         ProgressView()
                     } else if state == .success {
                         ForEach(messages, id: \.timestamp){ message in
-                            MessageView(room: room, data: GetData(uuid: message.sender), message: message)
+                            MessageView(room: room, user: GetData(uuid: message.sender), message: message)
                                 .padding(.top)
                         }
                     } else if state == .failure {

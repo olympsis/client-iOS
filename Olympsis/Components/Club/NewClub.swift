@@ -81,7 +81,7 @@ struct NewClub: View {
                   let city = pk.first?.locality else {
                 return
             }
-            let club = Club(id: nil, parentId: nil, type: "club", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: nil, rules: nil, data: nil, pinnedPostId: nil, createdAt: nil)
+            let club = Club(id: nil, parent: nil, type: "club", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: nil, rules: nil, pinnedPostId: nil, createdAt: nil)
             
             // create new club
             let resp = try await session.clubObserver.createClub(club: club)
