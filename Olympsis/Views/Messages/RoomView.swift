@@ -72,6 +72,7 @@ struct RoomView: View {
                         } else if state == .success {
                             ForEach(messages, id: \.timestamp){ message in
                                 MessageView(room: room, user: GetData(uuid: message.sender), message: message)
+                                    .id(message.id)
                                     .padding(.top)
                             }
                         } else if state == .failure {
@@ -115,6 +116,11 @@ struct RoomView: View {
                             }
                         }
                     }
+                    .onChange(of: messages, perform: { value in
+                        withAnimation {
+                            scrollView.scrollTo(value.last?.id, anchor: .bottom)
+                        }
+                    })
                 }
                
                 HStack {

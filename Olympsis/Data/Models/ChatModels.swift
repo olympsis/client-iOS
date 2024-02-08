@@ -45,7 +45,7 @@ struct ChatMember: Codable {
     let status: String
 }
 
-struct Message: Codable, Identifiable {
+struct Message: Codable, Identifiable, Equatable {
     let id: String?
     let type: String
     let sender: String
