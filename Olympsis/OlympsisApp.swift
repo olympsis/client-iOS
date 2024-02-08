@@ -38,24 +38,12 @@ struct OlympsisApp: App {
             Task {
                 await MainActor.run {
                     if sessionStore.authStatus == .authenticated {
-                        if showAuth == nil {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                showAuth = false
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                showAuth = false
-                            }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            showAuth = false
                         }
                     } else {
-                        if showAuth == nil {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                showAuth = true
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                showAuth = true
-                            }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            showAuth = true
                         }
                     }
                 }
