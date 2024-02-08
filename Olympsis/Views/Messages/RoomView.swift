@@ -65,54 +65,62 @@ struct RoomView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ScrollView(showsIndicators: false) {
-                    if state == .loading {
-                        ProgressView()
-                    } else if state == .success {
-                        ForEach(messages, id: \.timestamp){ message in
-                            MessageView(room: room, user: GetData(uuid: message.sender), message: message)
-                                .padding(.top)
-                        }
-                    } else if state == .failure {
-                        Text("Failed to get messages 😞")
-                            .font(.caption)
-                            .padding(.top, 50)
-                    }
-                }.onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                }
-                .sheet(isPresented: $showMenu, onDismiss: DidDismiss) {
-                    RoomSettingsView(room: room, hasDeleted: $hasDeleted, observer: observer)
-                        .presentationDetents([.height(250)])
-                }
-                .refreshable {
-                    state = .loading
-                    guard let id = room.id else {
-                        return
-                    }
-                    let resp = await observer.GetRoom(id: id)
-                    if let r = resp {
-                        await MainActor.run {
-                            guard let history = r.history else {
-                                state = .success
-                                return
+                ScrollViewReader { scrollView in
+                    ScrollView(showsIndicators: false) {
+                        if state == .loading {
+                            ProgressView()
+                        } else if state == .success {
+                            ForEach(messages, id: \.timestamp){ message in
+                                MessageView(room: room, user: GetData(uuid: message.sender), message: message)
+                                    .id(message.id)
+                                    .padding(.top)
                             }
-                            messages = history
-                            state = .success
+                        } else if state == .failure {
+                            Text("Failed to get messages 😞")
+                                .font(.caption)
+                                .padding(.top, 50)
+                        }
+                    }.onTapGesture {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                    }
+                    .sheet(isPresented: $showMenu, onDismiss: DidDismiss) {
+                        RoomSettingsView(room: room, hasDeleted: $hasDeleted, observer: observer)
+                            .presentationDetents([.height(250)])
+                    }
+                    .refreshable {
+                        state = .loading
+                        guard let id = room.id else {
+                            return
+                        }
+                        let resp = await observer.GetRoom(id: id)
+                        if let r = resp {
+                            await MainActor.run {
+                                guard let history = r.history else {
+                                    state = .success
+                                    return
+                                }
+                                messages = history
+                                state = .success
+                            }
+                        }
+                        await observer.InitiateSocketConnection(id: id)
+                        observer.Ping()
+                        while true {
+                            let msg = await observer.ReceiveMessage()
+                            if let m = msg {
+                                messages.append(m)
+                            } else {
+                                log.error("Failed to get message")
+                                await observer.InitiateSocketConnection(id: id)
+                                observer.Ping()
+                            }
                         }
                     }
-                    await observer.InitiateSocketConnection(id: id)
-                    observer.Ping()
-                    while true {
-                        let msg = await observer.ReceiveMessage()
-                        if let m = msg {
-                            messages.append(m)
-                        } else {
-                            log.error("Failed to get message")
-                            await observer.InitiateSocketConnection(id: id)
-                            observer.Ping()
+                    .onChange(of: messages, perform: { value in
+                        withAnimation {
+                            scrollView.scrollTo(value.last?.id, anchor: .bottom)
                         }
-                    }
+                    })
                 }
                
                 HStack {

@@ -45,14 +45,14 @@ struct ChatMember: Codable {
     let status: String
 }
 
-struct Message: Codable, Identifiable {
-    let id: Int?
+struct Message: Codable, Identifiable, Equatable {
+    let id: String?
     let type: String
     let sender: String
     let body: String
     let timestamp: Int64?
     
-    init(id: Int?=nil, type: String, sender: String, body: String, timestamp: Int64?=nil) {
+    init(id: String?=nil, type: String, sender: String, body: String, timestamp: Int64?=nil) {
         self.id = id
         self.type = type
         self.sender = sender
