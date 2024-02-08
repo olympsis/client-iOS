@@ -110,7 +110,7 @@ struct MessageView: View {
 
 struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        let message = Message(id: 0, type: "text", sender: "", body: "Hey everyone! Who's up for a pick-up soccer game tomorrow at the park? Bring your cleats and a positive attitude. Game starts at 3pm. See you there!", timestamp: 0)
+        let message = Message(id: UUID().uuidString, type: "text", sender: "", body: "Hey everyone! Who's up for a pick-up soccer game tomorrow at the park? Bring your cleats and a positive attitude. Game starts at 3pm. See you there!", timestamp: 0)
         let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
         MessageView(room: room, user: USER_SNIPPETS[0], message: message)
             .environmentObject(SessionStore())

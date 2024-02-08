@@ -29,17 +29,17 @@ struct Messages: View {
     private var joinedRooms: [Room] {
         guard let user = session.user,
               let uuid = user.uuid else {
-            return rooms //[Room]()
+            return rooms
         }
         return rooms.filter({$0.members.contains(where: {$0.uuid == uuid })})
     }
     
-    private var notJoinedRooms: [Room] {
+    private var allRooms: [Room] {
         guard let user = session.user,
               let uuid = user.uuid else {
-            return [Room]()
+            return rooms
         }
-        return rooms.filter({ !($0.members.contains(where: { $0.uuid == uuid })) })
+        return rooms.sorted(by: { $0.name < $1.name })
     }
     
     var body: some View {
@@ -108,13 +108,19 @@ struct Messages: View {
                                         }
                                 }
                             }
-                        }.tabItem {
-                            Text("Joined")
-                        }
-                        .tag(0)
+                        }.tag(0)
+                            .refreshable {
+                                let resp = await chatObserver.GetRooms(id: club.id!)
+                                guard let r = resp  else {
+                                    return
+                                }
+                                await MainActor.run {
+                                    rooms = r.rooms
+                                }
+                            }
                         
                         ScrollView() {
-                            ForEach(notJoinedRooms) { room in
+                            ForEach(allRooms) { room in
                                 Button(action:{ self.showDetail.toggle() }){
                                     RoomListView(room: room, rooms: $rooms, observer: chatObserver)
                                         .padding(.bottom)
@@ -122,10 +128,17 @@ struct Messages: View {
                                     RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
-                        }.tabItem {
-                            Text("Not Joined")
-                        }
-                        .tag(1)
+                        }.tag(1)
+                            .refreshable {
+                                let resp = await chatObserver.GetRooms(id: club.id!)
+                                guard let r = resp  else {
+                                    return
+                                }
+                                await MainActor.run {
+                                    rooms = r.rooms
+                                }
+                            }
+                        
                     }.tabViewStyle(.page)
                         .padding(.top)
                 }
@@ -159,9 +172,13 @@ struct Messages: View {
                 } else {
                     state = .success
                 }
+                await chatObserver.CloseSocketConnection()
             }
             .onDisappear {
                 notificationManager.inMessageView = false
+                Task {
+                    await chatObserver.CloseSocketConnection()
+                }
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)
