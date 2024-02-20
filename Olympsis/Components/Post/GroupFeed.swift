@@ -12,8 +12,31 @@ struct GroupFeed: View {
     @State var posts: [Post] = [Post]()
     @State var selectedPost: Post?
     @Binding var showNewPost: Bool
+    @State private var showEvents: Bool = false
     @State private var status: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
+    
+    var groupEvents: [Event] {
+        guard let selectedGroup = session.selectedGroup else {
+            return [Event]()
+        }
+        switch selectedGroup.type {
+        case .Club:
+            return session.events.filter { event in
+                guard let club = selectedGroup.club else {
+                    return false
+                }
+                return event.organizers?.contains(where: { $0.id == club.id  || club.parent?.id == $0.id}) ?? false
+            }
+        case .Organization:
+            return session.events.filter { event in
+                guard let org = selectedGroup.organization else {
+                    return false
+                }
+                return event.organizers?.contains(where: { $0.id == org.id }) ?? false
+            }
+        }
+    }
     
     func isPinned(post: Post) -> Bool {
         guard let selectedGroup = session.selectedGroup else {
@@ -117,7 +140,6 @@ struct GroupFeed: View {
             return sorted
         }
     }
-    
 
     
     var body: some View {
@@ -127,6 +149,30 @@ struct GroupFeed: View {
                 ProgressView()
             case .pending, .success:
                 ScrollView(showsIndicators: false) {
+                    if groupEvents.count > 0  {
+                        VStack{
+                            HStack {
+                                Text("Events")
+                                    .bold()
+                                Spacer()
+                                Button(action:{ showEvents.toggle() }) {
+                                    HStack {
+                                        Text("More")
+                                            .lineLimit(1)
+                                        Image(systemName: "chevron.down")
+                                    }
+                                }
+                            }.fullScreenCover(isPresented: $showEvents, content: {
+                                EventsList(events: groupEvents)
+                            })
+                            
+                            if let event = groupEvents.first {
+                                EventView(event: event)
+                            }
+                        }.padding(.horizontal)
+                            .padding(.vertical)
+                    }
+                    
                     if posts.count > 0 {
                         ForEach(posts) { post in
                             PostView(post: post, posts: $posts)
