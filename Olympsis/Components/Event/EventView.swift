@@ -50,6 +50,7 @@ struct EventView: View {
                             .scaledToFill()
                             .frame(width: 80, height: 80)
                             .clipped()
+                            .cornerRadius(radius: 10, corners: .allCorners)
                         VStack(alignment: .leading){
                             Text(title)
                                 .font(.custom("Helvetica-Nue", size: 20))
@@ -77,7 +78,7 @@ struct EventView: View {
         }
         .clipShape(Rectangle())
             .background {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(Color("background"))
             }
         .fullScreenCover(isPresented: $showDetails) {
