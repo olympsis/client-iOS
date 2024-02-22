@@ -265,6 +265,9 @@ struct NewTournamentEvent: View {
                                 
                         }.padding(.top)
                             .padding(.horizontal)
+                            .onChange(of: manager.sport, perform: { v in
+                                manager.image = v.Images().first
+                            })
                             .onTapGesture {
                                 titleFocus = false
                                 descriptionFocus = false
