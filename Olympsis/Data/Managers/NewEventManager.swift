@@ -45,13 +45,13 @@ class NewEventManager: ObservableObject {
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
         self.sport = sport
-        self.image = image
+        self.image = sport.Images().first
         self.skillLevel = skillLevel
         self.visibility = visibility
     }
     
     convenience init(type: EVENT_TYPES = .PickUp) {
-        self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: nil, skillLevel: .All, visibility: .Public)
+        self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: SPORT.soccer.Images().first, skillLevel: .All, visibility: .Public)
     }
     
     func GenerateOrganizers() -> [Organizer] {

@@ -42,32 +42,28 @@ struct EventMenu: View {
         
         // check to see if you're an admin of an associated club
         if let clubs = event.clubs {
-            if let userClubs = session.user?.clubs {
-                let eventClubs = clubs.filter { c in
-                    userClubs.contains { $0 == c.id }
-                }
-                guard let userID = session.user?.uuid else {
-                    return false
-                }
-                return eventClubs.first { e in
-                    e.members?.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
-                } != nil
+            let eventClubs = clubs.filter { c in
+                return session.clubs.contains { $0.id == c.id }
             }
+            guard let userID = session.user?.uuid else {
+                return false
+            }
+            return eventClubs.first { e in
+                e.members?.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
+            } != nil
         }
         
         // check to see if you're an manager of an associated org
         if let organizations = event.organizations {
-            if let userOrgs = session.user?.organizations {
-                let eventOrgs = organizations.filter { o in
-                    userOrgs.contains { $0 == o.id }
-                }
-                guard let userID = session.user?.uuid else {
-                    return false
-                }
-                return eventOrgs.first { e in
-                    e.members?.contains { $0.user?.uuid == userID } ?? false
-                } != nil
+            let eventOrgs = organizations.filter { o in
+                return session.orgs.contains { $0.id == o.id }
             }
+            guard let userID = session.user?.uuid else {
+                return false
+            }
+            return eventOrgs.first { e in
+                e.members?.contains { $0.user?.uuid == userID } ?? false
+            } != nil
         }
         
         return true
@@ -75,7 +71,7 @@ struct EventMenu: View {
     
     func startEvent() async {
         let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStopTime: now)
+        let dao = EventDao(actualStartTime: now)
         loadingState = .loading
         guard let id = event.id else {
             return

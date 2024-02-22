@@ -263,6 +263,9 @@ struct NewPickUpEvent: View {
                                     Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
                                 }
                             }
+                            .onChange(of: manager.sport, perform: { v in
+                                manager.image = v.Images().first
+                            })
                             .modifier(InputField())
                                 
                         }.padding(.top)
