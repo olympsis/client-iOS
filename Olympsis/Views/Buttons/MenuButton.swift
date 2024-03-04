@@ -25,9 +25,9 @@ struct MenuButton: View {
             switch type {
             case .normal:
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color("background"))
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(lineWidth: 1)
                         .foregroundStyle(.gray)
                         .opacity(0.2)
@@ -43,9 +43,9 @@ struct MenuButton: View {
                 }.padding(.horizontal)
             case .destructive:
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color("background"))
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(lineWidth: 1)
                         .foregroundStyle(Color("destructive"))
                     
@@ -61,9 +61,9 @@ struct MenuButton: View {
                 
             case .start:
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color("background"))
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(lineWidth: 1)
                         .foregroundStyle(.green)
                     

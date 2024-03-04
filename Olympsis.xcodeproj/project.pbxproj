@@ -56,6 +56,10 @@
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
+		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
+		5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF32B95282D00B67CFB /* PostReportView.swift */; };
+		5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF72B95531600B67CFB /* FieldReportView.swift */; };
+		5DBA3AFA2B95532100B67CFB /* EventReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF92B95532100B67CFB /* EventReportView.swift */; };
 		5DBB94C52B0320650031876D /* NewTournamentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C42B0320650031876D /* NewTournamentEvent.swift */; };
 		5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C62B0321560031876D /* NewPickUpEvent.swift */; };
 		5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94C82B03252B0031876D /* NewOrganization.swift */; };
@@ -348,6 +352,10 @@
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
+		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
+		5DBA3AF32B95282D00B67CFB /* PostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportView.swift; sourceTree = "<group>"; };
+		5DBA3AF72B95531600B67CFB /* FieldReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldReportView.swift; sourceTree = "<group>"; };
+		5DBA3AF92B95532100B67CFB /* EventReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportView.swift; sourceTree = "<group>"; };
 		5DBB94C42B0320650031876D /* NewTournamentEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTournamentEvent.swift; sourceTree = "<group>"; };
 		5DBB94C62B0321560031876D /* NewPickUpEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPickUpEvent.swift; sourceTree = "<group>"; };
 		5DBB94C82B03252B0031876D /* NewOrganization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrganization.swift; sourceTree = "<group>"; };
@@ -658,6 +666,24 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5DBA3AEF2B9404AC00B67CFB /* Management */ = {
+			isa = PBXGroup;
+			children = (
+				5DBA3AF02B94058400B67CFB /* MemberReportView.swift */,
+				5DBA3AF32B95282D00B67CFB /* PostReportView.swift */,
+				5DBA3AF72B95531600B67CFB /* FieldReportView.swift */,
+				5DBA3AF92B95532100B67CFB /* EventReportView.swift */,
+			);
+			path = Management;
+			sourceTree = "<group>";
+		};
+		5DBA3AF22B94E75900B67CFB /* Member */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
 		5DBB94C32B028D310031876D /* New Event */ = {
 			isa = PBXGroup;
 			children = (
@@ -780,6 +806,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5DBA3AF22B94E75900B67CFB /* Member */,
 				9A81B62129247707009CA6ED /* CustomViews */,
 				5F493FA32A54024900EAF5A4 /* Buttons */,
 				5D9557A22A6C5E19006A1EF8 /* Onboarding */,
@@ -964,6 +991,7 @@
 		9A8FF0BE28BB18B800DE4CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5DBA3AEF2B9404AC00B67CFB /* Management */,
 				5DBB94D92B125BCB0031876D /* Groups */,
 				5DBB94D82B1259E90031876D /* Organizations */,
 				9AC5BAC0295E6D17003E851B /* Activity */,
@@ -1592,6 +1620,7 @@
 				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
 				5F8D13AD2A213C150054F631 /* FieldModels.swift in Sources */,
 				9A5D3369292AC610008CF61D /* PostComments.swift in Sources */,
+				5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */,
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
@@ -1610,9 +1639,11 @@
 				5D18BD282B3F8FB300F90777 /* GroupFeed.swift in Sources */,
 				5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
+				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
+				5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
@@ -1663,6 +1694,7 @@
 				5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */,
 				5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */,
 				9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */,
+				5DBA3AFA2B95532100B67CFB /* EventReportView.swift in Sources */,
 				9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */,
 				9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */,
 				5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */,
