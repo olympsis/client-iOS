@@ -27,7 +27,7 @@ struct FieldReportView: View {
                         VStack(alignment: .leading) {
                             Text("What is wrong with this field?")
                                 .font(.title2)
-                            Text("Please report issues to keep our fields safe")
+                            Text("Please report issues to keep Olympsis safe")
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
                         }
@@ -112,7 +112,7 @@ struct FieldReportView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Report")
+                    Text("Report a field")
                         .fontWeight(.bold)
                 }
             }.navigationBarTitleDisplayMode(.inline)

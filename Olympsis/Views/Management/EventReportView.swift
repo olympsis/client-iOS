@@ -26,11 +26,13 @@ struct EventReportView: View {
                 VStack{
                     HStack(alignment: .top) {
                         VStack(alignment: .leading) {
-                            Text("What is wrong with this event?")
+                            Text("What is/was wrong with this event?")
                                 .font(.title2)
-                            Text("Please report bad actors to keep our events safe")
+                            Text("Please report bad actors to keep Olympsis safe")
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
+                            EventView(event: event)
+                                .disabled(true)
                         }
                         Spacer()
                     }.padding(.horizontal)
@@ -109,11 +111,11 @@ struct EventReportView: View {
             }.toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: "xmark")
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Report")
+                    Text("Report an event")
                         .fontWeight(.bold)
                 }
             }.navigationBarTitleDisplayMode(.inline)

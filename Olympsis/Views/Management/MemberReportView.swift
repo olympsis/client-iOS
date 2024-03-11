@@ -27,7 +27,7 @@ struct MemberReportView: View {
                         VStack(alignment: .leading) {
                             Text("What did they do? 😡")
                                 .font(.title2)
-                            Text("Please report bad actors to keep our groups safe")
+                            Text("Please report bad actors to keep Olympsis safe")
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
                         }
