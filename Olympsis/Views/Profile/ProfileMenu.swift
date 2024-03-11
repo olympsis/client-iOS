@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ProfileMenu: View {
     
-    @State var showDeleteView = false
+    @State private var showBugReport: Bool = false
+    @State private var showDeleteView: Bool = false
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
     
@@ -19,6 +20,12 @@ struct ProfileMenu: View {
                 VStack {
                     MenuButton(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
                         .padding(.top)
+                    
+                    MenuButton(icon: Image(systemName: "ladybug"), text: "Report a bug"){
+                        showBugReport.toggle()
+                    }.fullScreenCover(isPresented: $showBugReport, content: {
+                        BugReportView()
+                    })
                     
                     MenuButton(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
                     

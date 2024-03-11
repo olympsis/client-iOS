@@ -112,7 +112,8 @@ struct FieldImages: View {
 struct FieldActionButtons: View {
     
     @State var field: Field
-    @State private var showNewEvent = false
+    @State private var showReport: Bool = false
+    @State private var showNewEvent: Bool = false
     @EnvironmentObject private var session: SessionStore
     
     private var canCreateEvent: Bool {
@@ -218,7 +219,7 @@ struct FieldActionButtons: View {
             }
             
             Menu{
-                Button(action:{}){
+                Button(action:{ showReport.toggle() }){
                     Label("Report an Issue", systemImage: "exclamationmark.shield")
                 }
             }label: {
@@ -235,7 +236,9 @@ struct FieldActionButtons: View {
                         Text("More")
                     }.foregroundColor(.white)
                 }
-            }
+            }.fullScreenCover(isPresented: $showReport, content: {
+                FieldReportView(field: field)
+            })
             
         }.padding(.horizontal)
     }

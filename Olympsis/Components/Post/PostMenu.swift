@@ -12,6 +12,7 @@ struct PostMenu: View {
     @State var post: Post
     @Binding var posts: [Post]
     @Binding var pinned: Bool
+    @State private var showReport: Bool = false
     @StateObject private var uploadObserver = UploadObserver()
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
@@ -176,7 +177,11 @@ struct PostMenu: View {
                 }
             }
             
-            MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post")
+            MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post") {
+                showReport.toggle()
+            }.fullScreenCover(isPresented: $showReport, content: {
+                PostReportView(post: post)
+            })
             
             if isPosterOrAdmin {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {

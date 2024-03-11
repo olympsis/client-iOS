@@ -11,6 +11,7 @@ struct ClubMemberMenu: View {
     @State var club: Club
     @State var role: String
     @State var member: Member
+    @State private var showReport: Bool = false
     @EnvironmentObject var session:SessionStore
     
     func Promote(_ role: String) async {
@@ -53,7 +54,11 @@ struct ClubMemberMenu: View {
 
             }
             
-            MenuButton(icon: Image(systemName: "exclamationmark.bubble"), text: "Report Member", action: {})
+            MenuButton(icon: Image(systemName: "exclamationmark.bubble"), text: "Report Member") {
+                showReport.toggle()
+            }.fullScreenCover(isPresented: $showReport, content: {
+                MemberReportView(member: member)
+            })
             
             if role != "member" {
                 MenuButton(icon: Image(systemName: "door.right.hand.open"), text: "Remove Member from Club", action: {

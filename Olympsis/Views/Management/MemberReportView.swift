@@ -108,7 +108,7 @@ struct MemberReportView: View {
             }.toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: "xmark")
                     }
                 }
                 ToolbarItem(placement: .principal) {

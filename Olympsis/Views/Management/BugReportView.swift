@@ -23,6 +23,7 @@ struct BugReportView: View {
             ScrollView {
                 VStack(alignment: .center){
                     Text("If the app or a feature is not working as expected, please let us know the details so we can make Olympsis better")
+                        .font(.subheadline)
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
                     VStack(alignment: .leading) {
