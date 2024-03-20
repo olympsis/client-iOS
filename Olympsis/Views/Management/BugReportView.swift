@@ -5,18 +5,53 @@
 //  Created by Joel Joseph on 3/10/24.
 //
 
+import os
 import SwiftUI
 
 struct BugReportView: View {
     
-    @State private var issue: String = ""
     @State private var notes: String = ""
     @State private var showProblems: Bool = false
     @State private var state: LOADING_STATE = .pending
     
+    @StateObject private var managementObserver = ManagementObserver()
+    
     @Environment(\.dismiss) private var dismiss
     
-    func createReport() async {}
+    private let log = Logger(subsystem: "com.olympsis.ui", category: "bug_report_view")
+    
+    func createReport() async {
+        guard notes != "" else {
+            return
+        }
+        state = .loading
+        let report = BugReportDao(notes: notes)
+        do {
+            let resp = try await managementObserver.createBugReport(report: report)
+            guard resp else {
+                handleFailure()
+                return
+            }
+            handleSuccess()
+        } catch {
+            log.error("\(error.localizedDescription)")
+            handleFailure()
+        }
+    }
+    
+    private func handleFailure() {
+        state = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            state = .pending
+        }
+    }
+
+    private func handleSuccess() {
+        state = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            dismiss()
+        }
+    }
     
     var body: some View {
         NavigationStack {

@@ -5,6 +5,7 @@
 //  Created by Joel on 3/3/24.
 //
 
+import os
 import SwiftUI
 
 struct PostReportView: View {
@@ -14,10 +15,45 @@ struct PostReportView: View {
     @State private var notes: String = ""
     @State private var showProblems: Bool = false
     @State private var state: LOADING_STATE = .pending
+    @StateObject private var managementObserver = ManagementObserver()
     
     @Environment(\.dismiss) private var dismiss
     
-    func createReport() async {}
+    private let log = Logger(subsystem: "com.olympsis.ui", category: "post_report_view")
+    
+    func createReport() async {
+        guard issue != "",
+              notes != "" else {
+            return
+        }
+        state = .loading
+        let report = PostReportDao(postID: post.id, type: issue, notes: notes)
+        do {
+            let resp = try await managementObserver.createPostReport(report: report)
+            guard resp else {
+                handleFailure()
+                return
+            }
+            handleSuccess()
+        } catch {
+            log.error("\(error.localizedDescription)")
+            handleFailure()
+        }
+    }
+    
+    private func handleFailure() {
+        state = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            state = .pending
+        }
+    }
+
+    private func handleSuccess() {
+        state = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            dismiss()
+        }
+    }
     
     var body: some View {
         NavigationStack {
