@@ -12,57 +12,57 @@ import Foundation
 class ChatService {
     
     private var http: Courrier
-    private let tokenStore = SecureStore()
+    private let tokenStore: SecureStore
     
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
-        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key)
+        self.http = Courrier(.HTTPS, host: host)
+        self.tokenStore = SecureStore()
     }
     
     func createRoom(room: Room) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/chats")
+        let endpoint = Hermes.Endpoint("/chats")
         
-        return try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(room), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(room), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func getRooms(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/chats/group/\(id)")
+        let endpoint = Hermes.Endpoint("/chats/group/\(id)")
         
-        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func getRoom(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/chats/\(id)")
+        let endpoint = Hermes.Endpoint("/chats/\(id)")
         
-        return try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func updateRoom(id: String, dao: RoomDao) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/chats/\(id)")
+        let endpoint = Hermes.Endpoint("/chats/\(id)")
         
-        return try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func deleteRoom(id: String) async throws -> (Data, URLResponse) {
         
-        let endpoint = Hermes.Endpoint(path: "/chats/\(id)")
+        let endpoint = Hermes.Endpoint("/chats/\(id)")
         
-        return try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func joinRoom(id: String, member: ChatMember) async throws -> (Data, URLResponse) {
-        let endpoint = Hermes.Endpoint(path: "/chats/\(id)/join")
+        let endpoint = Hermes.Endpoint("/chats/\(id)/join")
         
-        return try await http.Request(endpoint: endpoint, method: Method.POST, body: EncodeToData(member), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(member), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     func leaveRoom(id: String) async throws -> URLResponse {
-        let endpoint = Hermes.Endpoint(path: "/chats/\(id)/leave")
+        let endpoint = Hermes.Endpoint("/chats/\(id)/leave")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(.POST, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
 }

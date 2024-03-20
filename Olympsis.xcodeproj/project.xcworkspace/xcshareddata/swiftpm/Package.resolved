@@ -1,12 +1,13 @@
 {
+  "originHash" : "829d88d62920a18e08a991986c160ce1f949125594fa82027da1ae3a4738f18c",
   "pins" : [
     {
       "identity" : "hermes",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NokoAnubis/Hermes.git",
+      "location" : "https://github.com/josephjoeljo/Hermes",
       "state" : {
-        "revision" : "aaf97839ac27eac28baa083403c154c87cbd9251",
-        "version" : "0.1.0"
+        "revision" : "edde43565c164593ad8424fa6020eaf0693fda5d",
+        "version" : "0.2.1"
       }
     },
     {
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
