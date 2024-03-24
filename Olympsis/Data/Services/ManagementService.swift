@@ -33,7 +33,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createBugReport(dao: BugReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/bugs")
+        let endpoint = Endpoint("/report/bugs")
         return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
 
@@ -43,7 +43,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getBugReports(uuid: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/bugs", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        let endpoint = Endpoint("/report/bugs", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -53,7 +53,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createFieldReport(dao: FieldReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/fields")
+        let endpoint = Endpoint("/report/fields")
         return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -63,7 +63,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func getFieldReports(uuid: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/fields", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        let endpoint = Endpoint("/report/fields", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -73,7 +73,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createEventReport(dao: EventReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/events")
+        let endpoint = Endpoint("/report/events")
         return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -83,8 +83,18 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getEventReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/events", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        let endpoint = Endpoint("/report/events", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
+    /// HTTP request to update an event report
+    ///
+    /// The dao object is the data needed to update the report
+    ///
+    /// - Returns: the http body and headers
+    func updateEventReport(id: String, dao: EventReportDao) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/report/events/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     /// HTTP request to create a post report
@@ -93,7 +103,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createPostReport(dao: PostReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/posts")
+        let endpoint = Endpoint("/report/posts")
         return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -103,8 +113,18 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getPostReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/posts", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        let endpoint = Endpoint("/report/posts", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
+    
+    /// HTTP request to update a post report
+    ///
+    /// The dao object is the data needed to update the report
+    ///
+    /// - Returns: the http body and headers
+    func updatePostReport(id: String, dao: PostReportDao) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/report/posts/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
     /// HTTP request to create a member report
@@ -113,7 +133,7 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createMemberReport(dao: MemberReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/members")
+        let endpoint = Endpoint("/report/members")
         return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
@@ -123,8 +143,17 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getMemberReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/reports/members", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        let endpoint = Endpoint("/report/members", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
+    /// HTTP request to update a member report
+    ///
+    /// The dao object is the data needed to update the report
+    ///
+    /// - Returns: the http body and headers
+    func updateMemberReport(id: String, dao: MemberReportDao) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/report/members/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+    }
 }

@@ -39,7 +39,7 @@ struct OrgMenu: View {
               let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
-        return member.role
+        return member.role ?? ""
     }
     
     // this will be handled in the backend as well

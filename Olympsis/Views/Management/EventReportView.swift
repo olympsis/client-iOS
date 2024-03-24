@@ -29,7 +29,7 @@ struct EventReportView: View {
             return
         }
         state = .loading
-        let report = EventReportDao(type: issue, eventID: event.id, notes: notes)
+        let report = EventReportDao(type: issue, eventID: event.id, groups: event.organizers?.map{ return $0.id }, notes: notes)
         do {
             let resp = try await managementObserver.createEventReport(report: report)
             guard resp else {

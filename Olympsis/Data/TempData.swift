@@ -96,3 +96,15 @@ let ROOMS = [
 let INVITATIONS = [
     Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id ?? UUID().uuidString, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Int(Date().timeIntervalSinceNow))
 ]
+
+let POST_REPORTS = [
+    PostReport(id: UUID().uuidString, post: POSTS[0], type: "Sensitive Content", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+]
+
+let EVENT_REPORTS = [
+    EventReport(id: UUID().uuidString, type: "Other Issue", event: EVENTS[0], notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+]
+
+let MEMBER_REPORTS = [
+    MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+]

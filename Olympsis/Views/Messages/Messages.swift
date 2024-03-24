@@ -36,7 +36,7 @@ struct Messages: View {
     
     private var allRooms: [Room] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let _ = user.uuid else {
             return rooms
         }
         return rooms.sorted(by: { $0.name < $1.name })

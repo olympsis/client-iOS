@@ -18,53 +18,6 @@
             endingLineNumber = "85"
             landmarkName = "CheckIn()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "824">
-               </Location>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "896">
-               </Location>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "916">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -97,38 +50,6 @@
             endingLineNumber = "24"
             landmarkName = "location(longitude:latitude:radius:sports:status:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "1476">
-               </Location>
-               <Location
-                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "1524">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -144,6 +65,22 @@
             startingLineNumber = "162"
             endingLineNumber = "162"
             landmarkName = "getNearbyData(location:selectedSports:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B2C4CF6B-12B1-4088-AFB5-59BBCF2CCEE2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Data/Observers/ManagementObserver.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "getMemberReports(id:status:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

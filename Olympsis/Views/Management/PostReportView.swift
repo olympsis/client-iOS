@@ -18,6 +18,7 @@ struct PostReportView: View {
     @StateObject private var managementObserver = ManagementObserver()
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
     
     private let log = Logger(subsystem: "com.olympsis.ui", category: "post_report_view")
     
@@ -26,8 +27,18 @@ struct PostReportView: View {
               notes != "" else {
             return
         }
+        var groupID = ""
+        guard let selectedGroup = session.selectedGroup else {
+            return
+        }
+        if let club = selectedGroup.club {
+            groupID = club.id ?? ""
+        }
+        if let org = selectedGroup.organization {
+            groupID = org.id ?? ""
+        }
         state = .loading
-        let report = PostReportDao(postID: post.id, type: issue, notes: notes)
+        let report = PostReportDao(postID: post.id, groupID: groupID, type: issue, notes: notes)
         do {
             let resp = try await managementObserver.createPostReport(report: report)
             guard resp else {

@@ -50,7 +50,7 @@ struct EventActionButtons: View {
     func rsvp(status: String) async {
         state = .loading
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let _ = user.uuid else {
             handleFailure()
             return
         }

@@ -22,7 +22,7 @@ struct PostView: View {
     @StateObject private var postObserver = PostObserver()
     @StateObject private var uploadObserver = UploadObserver()
     @Environment(\.openURL) private var openURL
-    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject private var session: SessionStore
     
     var isOrg: Bool {
         guard let selectedGroup = session.selectedGroup,

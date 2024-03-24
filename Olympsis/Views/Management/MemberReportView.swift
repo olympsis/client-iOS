@@ -6,6 +6,7 @@
 //
 
 import os
+import Hermes
 import SwiftUI
 
 struct MemberReportView: View {
@@ -18,6 +19,7 @@ struct MemberReportView: View {
     @StateObject private var managementObserver = ManagementObserver()
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
     
     private let log = Logger(subsystem: "com.olympsis.ui", category: "member_report_view")
     
@@ -26,8 +28,18 @@ struct MemberReportView: View {
               notes != "" else {
             return
         }
+        var groupID = ""
+        guard let selectedGroup = session.selectedGroup else {
+            return
+        }
+        if let club = selectedGroup.club {
+            groupID = club.id ?? ""
+        }
+        if let org = selectedGroup.organization {
+            groupID = org.id ?? ""
+        }
         state = .loading
-        let report = MemberReportDao(memberID: member.id, type: issue, notes: notes)
+        let report = MemberReportDao(memberID: member.id, groupID: groupID, type: issue, notes: notes)
         do {
             let resp = try await managementObserver.createMemberReport(report: report)
             guard resp else {
@@ -36,7 +48,7 @@ struct MemberReportView: View {
             }
             handleSuccess()
         } catch {
-            log.error("\(error.localizedDescription)")
+            log.error("\(error as! NetworkError)")
             handleFailure()
         }
     }
@@ -158,4 +170,5 @@ struct MemberReportView: View {
 
 #Preview {
     MemberReportView(member: Member(id: "", role: "", user: UserSnippet(uuid: "", username: "johndoe"), joinedAt: 0))
+        .environmentObject(SessionStore())
 }

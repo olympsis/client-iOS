@@ -58,6 +58,7 @@ struct EventReportDao: Codable {
     var user: String?
     var type: String?
     var eventID: String?
+    var groups: [String]?
     var notes: String?
     var status: String?
     var messages: [Message]?
@@ -68,6 +69,7 @@ struct EventReportDao: Codable {
         case user
         case type
         case eventID = "event_id"
+        case groups
         case notes
         case status
         case messages
@@ -75,7 +77,7 @@ struct EventReportDao: Codable {
     }
 }
 
-struct EventReport: Codable {
+struct EventReport: Codable, Identifiable {
     var id: String
     var user: UserSnippet?
     var type: String
@@ -119,7 +121,7 @@ struct PostReportDao: Codable {
     }
 }
 
-struct PostReport: Codable {
+struct PostReport: Codable, Identifiable {
     var id: String
     var post: Post?
     var type: String
@@ -161,9 +163,9 @@ struct MemberReportDao: Codable {
     }
 }
 
-struct MemberReport: Codable {
+struct MemberReport: Codable, Identifiable {
     var id: String
-    var member: Member?
+    var member: UserSnippet?
     var type: String
     var notes: String?
     var status: String
