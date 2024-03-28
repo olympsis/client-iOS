@@ -111,7 +111,7 @@ struct MapView: View {
                 }
             }
             .sheet(item: $selectedField) { field in
-                FieldViewExt(field: field)
+                FieldView(field: field)
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent) {

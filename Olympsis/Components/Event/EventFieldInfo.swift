@@ -37,7 +37,7 @@ struct EventFieldInfo: View {
                 }
             }
         .sheet(isPresented: $showSheet, content: {
-            FieldViewExt(field: field)
+            FieldView(field: field)
         })
     }
 }

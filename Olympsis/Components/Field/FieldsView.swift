@@ -23,7 +23,7 @@ struct FieldsView: View {
                     ScrollView(.horizontal, showsIndicators: false){
                         HStack{
                             ForEach(fields.prefix(3), id: \.name){ field in
-                                FieldView(field: field)
+                                FieldListItemView(field: field)
                             }
                         }
                     }.frame(width: SCREEN_WIDTH, height: 365, alignment: .center)
