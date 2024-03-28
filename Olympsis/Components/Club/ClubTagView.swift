@@ -17,18 +17,18 @@ struct ClubTagView: View {
             Text(tagName.prefix(1).capitalized + tagName.dropFirst())
                 .foregroundStyle(Color("background"))
                 .padding(.horizontal)
-                .frame(height: 30)
+                .frame(height: 25)
                 .background {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color("foreground"))
                 }
         } else {
             Text(tagName.prefix(1).capitalized + tagName.dropFirst())
                 .foregroundStyle(Color("foreground"))
                 .padding(.horizontal)
-                .frame(height: 30)
+                .frame(height: 25)
                 .background {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(lineWidth: 1)
                         .foregroundStyle(Color("foreground"))
                 }

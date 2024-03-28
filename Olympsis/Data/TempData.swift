@@ -39,7 +39,7 @@ let CLUBS = [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
     ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil),
-    Club(id: UUID().uuidString, parent: nil, type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], visibility: "public", members: [
+    Club(id: UUID().uuidString, parent: nil, type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: nil, imageGallery: [""], visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
     ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil)
 ]
