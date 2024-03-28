@@ -71,7 +71,7 @@ struct EventsList: View {
                     ForEach(eventsGrouped, id: \.id) { group in
                         Section(header: Text(group.dayInString)) {
                             ForEach(group.events, id: \.id) { event in
-                                EventView(event: event)
+                                EventListItemView(event: event)
                             }
                         }
                     }

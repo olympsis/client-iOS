@@ -62,7 +62,7 @@ struct Home: View {
                     if let e = event {
                         if status == .success {
                             VStack (alignment: .center){
-                                EventView(event: e)
+                                EventListItemView(event: e)
                                     .padding(.horizontal)
                             }
                         }

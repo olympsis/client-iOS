@@ -193,7 +193,6 @@ struct FieldActionButtons: View {
                                 .frame(width: 20, height: 25)
                             Text("Private")
                         }.foregroundColor(Color("foreground"))
-                            .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                     } else {
                         VStack {
                             Image(systemName: "globe")
@@ -201,7 +200,6 @@ struct FieldActionButtons: View {
                                 .frame(width: 25, height: 25)
                             Text("Public")
                         }.foregroundColor(Color("foreground"))
-                            .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                     }
                 }
             }
@@ -217,7 +215,6 @@ struct FieldActionButtons: View {
                             .frame(width: 25, height: 25)
                         Text("Event")
                     }.foregroundColor(Color("foreground"))
-                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                 }
             }.disabled(canCreateEvent == false ? true : false)
             .sheet(isPresented: $showNewEvent) {
@@ -241,7 +238,6 @@ struct FieldActionButtons: View {
                         }.frame(height: 25)
                         Text("More")
                     }.foregroundColor(Color("foreground"))
-                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                 }
             }.fullScreenCover(isPresented: $showReport, content: {
                 FieldReportView(field: field)
@@ -344,7 +340,7 @@ struct FieldEventsView: View {
                             .padding(.top)
                     }else {
                         ForEach(fieldEvents) { event in
-                            EventView(event: event)
+                            EventListItemView(event: event)
                         }
                     }
                 }

@@ -68,7 +68,7 @@ struct EventReportView: View {
                             Text("Please report bad actors to keep Olympsis safe")
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
-                            EventView(event: event)
+                            EventListItemView(event: event)
                                 .disabled(true)
                         }
                         Spacer()
