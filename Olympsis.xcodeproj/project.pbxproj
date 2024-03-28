@@ -33,7 +33,7 @@
 		5D20625A2B142D4700A9D408 /* ManagersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062592B142D4700A9D408 /* ManagersListView.swift */; };
 		5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625B2B142D6900A9D408 /* ManagerView.swift */; };
 		5D20625E2B1435F300A9D408 /* OrgApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */; };
-		5D2062602B14463400A9D408 /* OrgListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListView.swift */; };
+		5D2062602B14463400A9D408 /* OrgListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListItemView.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D2DEFBE2B1AB1770082FE73 /* NewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
@@ -348,7 +348,7 @@
 		5D2062592B142D4700A9D408 /* ManagersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagersListView.swift; sourceTree = "<group>"; };
 		5D20625B2B142D6900A9D408 /* ManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerView.swift; sourceTree = "<group>"; };
 		5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplicationView.swift; sourceTree = "<group>"; };
-		5D20625F2B14463400A9D408 /* OrgListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListView.swift; sourceTree = "<group>"; };
+		5D20625F2B14463400A9D408 /* OrgListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItemView.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAnnouncement.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
@@ -744,7 +744,7 @@
 		5DBB94D72B1259BD0031876D /* Organization */ = {
 			isa = PBXGroup;
 			children = (
-				5D20625F2B14463400A9D408 /* OrgListView.swift */,
+				5D20625F2B14463400A9D408 /* OrgListItemView.swift */,
 				5D20625D2B1435F300A9D408 /* OrgApplicationView.swift */,
 				5D2062632B144A1F00A9D408 /* OrganizationsView.swift */,
 				5DBB94C82B03252B0031876D /* NewOrganization.swift */,
@@ -1615,7 +1615,7 @@
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
-				5D2062602B14463400A9D408 /* OrgListView.swift in Sources */,
+				5D2062602B14463400A9D408 /* OrgListItemView.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,

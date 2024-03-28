@@ -45,7 +45,8 @@ let CLUBS = [
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil),
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: nil, imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil)
 ]
 
 let ORGANIZATION_APPLICATIONS = [

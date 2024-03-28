@@ -105,6 +105,7 @@ struct ClubListItemView: View {
                             .opacity(0.5)
                         Image(systemName: "person.3.fill")
                             .foregroundStyle(Color("foreground"))
+                            .imageScale(.large)
                     }
                 }
                 
