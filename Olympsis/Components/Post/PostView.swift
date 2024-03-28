@@ -189,18 +189,16 @@ struct PostView: View {
                                 .scaledToFill()
                                 .clipped()
                         } else if phase.error != nil {
-                            Color.gray // Indicates an error.
+                            Color("background") // Indicates an error.
                                 .clipShape(Circle())
-                                .opacity(0.3)
                                 .overlay {
-                                    Image(systemName: "person")
-                                        .foregroundStyle(.primary)
+                                    Image(systemName: "person.fill")
+                                        .foregroundStyle(Color("foreground"))
                                 }
                         } else {
                             ZStack {
-                                Color.gray // Acts as a placeholder.
+                                Color("background") // Acts as a placeholder.
                                     .clipShape(Circle())
-                                .opacity(0.3)
                                 ProgressView()
                             }
                         }
@@ -280,15 +278,19 @@ struct PostView: View {
                         }
                     }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
-                    
+                }
+            }
+            
+            VStack(alignment: .leading) {
+                Text(post.body)
+                    .font(.callout)
+                HStack (alignment: .center){
+                    Text("Posted \(timestamp)")
+                        .font(.caption2)
+                        .foregroundStyle(.gray)
+                    Spacer()
                     if hasExternalLink {
-                        ZStack(alignment: .trailing) {
-                            Rectangle()
-                                .frame(height: 40)
-                                .foregroundStyle(.gray)
-                                .opacity(0.3)
-                                .background(.ultraThinMaterial)
-                                .blur(radius: 3.0)
+                        HStack {
                             Button(action: {
                                 guard let extLink = post.externalLink,
                                       let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
@@ -296,34 +298,17 @@ struct PostView: View {
                                 }
                                 openURL(url)
                             }) {
-                                SimpleButtonLabel(text: "See More", width: 100, height: 30)
+                                HStack {
+                                    Image(systemName: "chevron.left")
+                                        .font(.caption)
+                                    Text("Learn More")
+                                        .font(.caption)
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                }
                             }.padding(.trailing, 5)
                         }
                     }
-                }
-            }
-            
-            VStack(alignment: .leading) {
-                Text(post.body)
-                    .font(.callout)
-                if hasExternalLink && post.images == nil {
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            guard let extLink = post.externalLink,
-                                  let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-                                return
-                            }
-                            openURL(url)
-                        }) {
-                            SimpleButtonLabel(text: "See More", width: 100, height: 30)
-                        }.padding(.trailing, 5)
-                    }
-                }
-                HStack (alignment: .center){
-                    Text("Posted \(timestamp)")
-                        .font(.caption2)
-                        .foregroundStyle(.gray)
                     Spacer()
                     Button(action:{
                         Task {
@@ -372,7 +357,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(post: POSTS[0], posts: .constant(POSTS))
+        PostView(post: POSTS[1], posts: .constant(POSTS))
             .environmentObject(SessionStore())
     }
 }
