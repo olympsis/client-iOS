@@ -1,62 +1,62 @@
 //
-//  ClubApplicationView.swift
+//  OrgApplicationView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/27/22.
+//  Created by Joel on 11/26/23.
 //
 
 import SwiftUI
 
-struct ClubApplicationListItem: View {
+struct OrgApplicationListItem: View {
     
-    @State var club: Club
-    @State var application: ClubApplication
-    @Binding var applications: [ClubApplication]
-    @EnvironmentObject var session: SessionStore
+    @State var application: OrganizationApplication
+    @Binding var applications: [OrganizationApplication]
+    @EnvironmentObject private var session: SessionStore
     
-    var fullName: String {
-        guard let data = application.data,
-              let firstName = data.firstName,
-              let lastName = data.lastName else {
-            return "Olympsis User"
+    var clubName: String {
+        guard let club = application.data?.club,
+              let name = club.name else {
+            return "club_name"
         }
-        return firstName + " " + lastName;
+        return name
     }
     
-    var username: String {
-        guard let data = application.data,
-              let username = data.username else {
-            return "olympsis-user"
-        }
-        return "\(username)";
-    }
-    
-    var userBio: String {
-        guard let data = application.data,
-              let bio = data.bio else {
-                  return "..."
-              }
-        return bio;
-    }
-    
-    var userImageURL: String {
-        guard let data = application.data,
-              let imageURL = data.imageURL else {
+    var clubLocation: String {
+        guard let club = application.data?.club,
+              let city = club.city,
+              let state = club.state else {
             return ""
         }
-        return GenerateImageURL(imageURL)
+        return "\(city), \(state)"
+    }
+    
+    var imageURL: String {
+        guard let club = application.data?.club,
+              let url = club.imageURL else {
+            return GenerateImageURL("")
+        }
+        return GenerateImageURL(url)
+    }
+    
+    var clubDescription: String {
+        guard let club = application.data?.club,
+              let description = club.description else {
+            return "..."
+        }
+        return description
     }
     
     var dateTimeInString: String {
-        return Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year());
+        guard let club = application.data?.club,
+              let time = club.createdAt else {
+            return "Created at: unknown"
+        }
+        return Date(timeIntervalSince1970: TimeInterval(time)).formatted(.dateTime.day().month().year());
     }
     
     func accept() async {
-        guard let id = club.id else {
-            return
-        }
-        let req = ApplicationUpdateRequest(status: "accepted")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        application.status = "accepted"
+        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -65,11 +65,8 @@ struct ClubApplicationListItem: View {
     }
     
     func deny() async {
-        guard let id = club.id else {
-            return
-        }
-        let req = ApplicationUpdateRequest(status: "denied")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        application.status = "denied"
+        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -80,43 +77,42 @@ struct ClubApplicationListItem: View {
     var body: some View {
         VStack (alignment: .leading){
             HStack {
-                AsyncImage(url: URL(string: userImageURL)){ phase in
+                AsyncImage(url: URL(string: imageURL)){ phase in
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
-                                .clipShape(Circle())
                                 .scaledToFill()
-                                .frame(width: 80, height: 80)
+                                .frame(width: 100, height: 100)
                                 .clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                         } else if phase.error != nil {
                             ZStack {
-                                Color.gray // Indicates an error.
-                                    .clipShape(Circle())
-                                .opacity(0.3)
+                                RoundedRectangle(cornerRadius: 10) // Indicates an error.
+                                    .foregroundStyle(.gray)
+                                    .opacity(0.5)
                                 Image(systemName: "exclamationmark.circle")
                                     .foregroundColor(Color("foreground"))
                             }
                         } else {
                             ZStack {
-                                Color.gray // Acts as a placeholder.
-                                    .clipShape(Circle())
-                                    .opacity(0.3)
+                                RoundedRectangle(cornerRadius: 10) // Acts as a placeholder.
+                                    .foregroundStyle(.gray)
+                                    .opacity(0.5)
                                 ProgressView()
                             }
                         }
-                }.frame(width: 80, height: 80)
+                }.frame(width: 100, height: 100)
                     .padding(.all)
                 VStack (alignment: .leading){
-                    Text(fullName)
+                    Text(clubName)
                         .font(.headline)
-                    Text(username)
-                        .font(.body)
-                        .foregroundColor(.gray)
+                    Text(clubLocation)
+                        .foregroundStyle(.gray)
                 }
             }
             
             HStack {
-                Text(userBio)
+                Text(clubDescription)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal)
                     .lineLimit(nil)
@@ -125,10 +121,9 @@ struct ClubApplicationListItem: View {
             HStack {
                 Text("Created at:")
                     .font(.caption)
-                    .fontWeight(.bold)
+                    .bold()
                 Text(dateTimeInString)
                     .font(.caption)
-                    .italic()
             }.padding(.leading)
                 .padding(.bottom)
             
@@ -147,7 +142,7 @@ struct ClubApplicationListItem: View {
                             .textCase(.uppercase)
                     }
                 }.frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
-                    .padding(.trailing)
+                    
                 Button(action:{
                     Task {
                         await deny()
@@ -165,7 +160,8 @@ struct ClubApplicationListItem: View {
                     .padding(.leading)
             }.padding(.horizontal)
                 .padding(.bottom, 20)
-        }.background {
+        }
+        .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color("background"))
                 .padding(.horizontal, 5)
@@ -173,8 +169,7 @@ struct ClubApplicationListItem: View {
     }
 }
 
-struct ClubApplicationView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubApplicationListItem(club: CLUBS[0], application: CLUB_APPLICATIONS[0], applications: .constant([ClubApplication]()))
-    }
+#Preview {
+    OrgApplicationListItem(application: ORGANIZATION_APPLICATIONS[0], applications: .constant(ORGANIZATION_APPLICATIONS))
+        .environmentObject(SessionStore())
 }

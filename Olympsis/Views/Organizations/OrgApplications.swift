@@ -28,7 +28,7 @@ struct OrgApplications: View {
                 ScrollView(showsIndicators: false) {
                     if applications.filter({$0.status != "accepted"}).count > 0 {
                         ForEach(applications.filter({$0.status != "accepted"})) { application in
-                            OrgApplicationView(application: application, applications: $applications)
+                            OrgApplicationListItem(application: application, applications: $applications)
                         }
                     } else {
                         Text("No Applications")
