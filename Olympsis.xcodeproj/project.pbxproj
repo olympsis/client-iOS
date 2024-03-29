@@ -63,6 +63,8 @@
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
+		5D9F693D2BB665630057D205 /* ProfileSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */; };
+		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
 		5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF32B95282D00B67CFB /* PostReportView.swift */; };
 		5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF72B95531600B67CFB /* FieldReportView.swift */; };
@@ -368,6 +370,8 @@
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
+		5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSportsPicker.swift; sourceTree = "<group>"; };
+		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF32B95282D00B67CFB /* PostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF72B95531600B67CFB /* FieldReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldReportView.swift; sourceTree = "<group>"; };
@@ -704,6 +708,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5D9F693B2BB663F60057D205 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */,
+				5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		5DBA3AEF2B9404AC00B67CFB /* Management */ = {
 			isa = PBXGroup;
 			children = (
@@ -846,6 +859,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5D9F693B2BB663F60057D205 /* Profile */,
 				5D3FFAA12BAD01C100B54E02 /* Reports */,
 				5DBA3AF22B94E75900B67CFB /* Member */,
 				9A81B62129247707009CA6ED /* CustomViews */,
@@ -1584,6 +1598,7 @@
 				5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
+				5D9F693D2BB665630057D205 /* ProfileSportsPicker.swift in Sources */,
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
@@ -1639,6 +1654,7 @@
 				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
+				5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */,
 				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberView.swift in Sources */,

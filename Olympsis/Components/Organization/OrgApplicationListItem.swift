@@ -103,6 +103,7 @@ struct OrgApplicationListItem: View {
                         }
                 }.frame(width: 100, height: 100)
                     .padding(.all)
+                
                 VStack (alignment: .leading){
                     Text(clubName)
                         .font(.headline)
