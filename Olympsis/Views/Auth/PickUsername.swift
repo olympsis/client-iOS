@@ -126,9 +126,8 @@ struct PickUsername: View {
                     .font(.title3)
                 HStack {
                     ZStack {
-                        Rectangle()
-                            .stroke(lineWidth: 1)
-                            .foregroundColor(Color("color-prime"))
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color("background"))
                         TextField("", text: $username)
                             .focused($isFocused)
                             .padding(.horizontal)
@@ -149,10 +148,9 @@ struct PickUsername: View {
                         .padding(.horizontal)
                     
                     ZStack {
-                        Rectangle()
-                            .stroke(lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color("background"))
                             .frame(width: 45, height: 45)
-                            .foregroundColor(Color("color-prime"))
                             .overlay {
                                 switch status {
                                 case .pending:

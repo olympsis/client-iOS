@@ -12,10 +12,13 @@ import CoreLocation
 struct Location: View {
     
     @Binding var currentView: AuthTab
-    
+    @State private var coordinates: [Double] = []
+    @State private var showHomeTown: Bool = false
+    @State private var showExplination: Bool = false
     @State private var status: LOADING_STATE = .pending
     @State private var location = LocationObserver()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "location_permission_view")
+    
     
     func handleAllow() async {
         do {
@@ -42,8 +45,9 @@ struct Location: View {
                     .fontWeight(.medium)
                 Text("To help you find fields in the area and trigger events in the app, we need to have your location even when the app is in the background.")
                     .multilineTextAlignment(.center)
-                    .padding(.top)
+                    .padding(.vertical)
                     .font(.callout)
+                    .padding(.horizontal)
             }.frame(width: SCREEN_WIDTH)
             .padding(.horizontal)
                 .padding(.vertical)
@@ -81,11 +85,24 @@ struct Location: View {
                     SimpleButtonLabel(text: "Allow")
                 }
                 
-                Button(action:{}) {
+                Button(action:{ self.showHomeTown.toggle() }) {
+                    Text("No Thanks")
+                        .foregroundColor(.primary)
+                        .font(.callout)
+                }.padding(.top)
+                    .fullScreenCover(isPresented: $showHomeTown, onDismiss: { currentView = .notifications }, content: {
+                        HometownPicker(hometown: $coordinates)
+                    })
+                
+                
+                Button(action: { self.showExplination.toggle() }) {
                     Text("How is my location used?")
                         .foregroundColor(.primary)
                         .font(.callout)
                 }.padding(.top)
+                    .fullScreenCover(isPresented: $showExplination, content: {
+                        LocationUsage()
+                    })
             }
             .padding(.bottom)
         }

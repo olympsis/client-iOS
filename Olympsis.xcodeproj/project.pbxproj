@@ -67,6 +67,8 @@
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69402BB7653F0057D205 /* MapFunctions.swift */; };
 		5D9F69432BB768610057D205 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69422BB768610057D205 /* ProfileViewModel.swift */; };
+		5D9F69452BB86F020057D205 /* LocationUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69442BB86F020057D205 /* LocationUsage.swift */; };
+		5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69462BB87A350057D205 /* HometownPicker.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
 		5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF32B95282D00B67CFB /* PostReportView.swift */; };
 		5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF72B95531600B67CFB /* FieldReportView.swift */; };
@@ -376,6 +378,8 @@
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5D9F69402BB7653F0057D205 /* MapFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFunctions.swift; sourceTree = "<group>"; };
 		5D9F69422BB768610057D205 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		5D9F69442BB86F020057D205 /* LocationUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUsage.swift; sourceTree = "<group>"; };
+		5D9F69462BB87A350057D205 /* HometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HometownPicker.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF32B95282D00B67CFB /* PostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF72B95531600B67CFB /* FieldReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldReportView.swift; sourceTree = "<group>"; };
@@ -857,6 +861,7 @@
 				5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */,
 				5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */,
 				5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */,
+				5D9F69462BB87A350057D205 /* HometownPicker.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -1096,6 +1101,7 @@
 				5F00FEA32A4123FB0019E9F7 /* Location.swift */,
 				5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */,
 				5F493FA62A547D6C00EAF5A4 /* PickSports.swift */,
+				5D9F69442BB86F020057D205 /* LocationUsage.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -1662,6 +1668,7 @@
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
 				5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */,
+				5D9F69452BB86F020057D205 /* LocationUsage.swift in Sources */,
 				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberView.swift in Sources */,
@@ -1769,6 +1776,7 @@
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				5DC468C82B9FD6830023353D /* ManagementModels.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
+				5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */,
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */,
