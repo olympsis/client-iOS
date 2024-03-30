@@ -50,7 +50,7 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
     }
     
-    func UpdateUserData(update: User) async throws -> URLResponse {
+    func UpdateUserData(update: UserDao) async throws -> URLResponse {
         let endpoint = Endpoint("/users/user", queryItems: [URLQueryItem]())
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp

@@ -16,12 +16,10 @@ struct EditProfileButton: View {
             Button(action:{self.showEditProfile.toggle()}){
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(height: 35)
-                        .foregroundColor(Color("color-secnd"))
-                        .frame(width: 250)
-                        .opacity(0.5)
+                        .frame(width: 250, height: 35)
+                        .foregroundColor(Color("background"))
                     Text("Edit Profile")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("foreground"))
                         .bold()
                         .font(.callout)
                 }

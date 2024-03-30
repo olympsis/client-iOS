@@ -10,92 +10,25 @@ import PhotosUI
 
 struct EditProfile: View {
     
-    @State private var bio: String = ""
-    @State private var username: String = ""
-    @State private var isPublic: Bool = true
-    @State private var visibility: String = "public"
-
-    @State private var selectedSports: Set<String> = []
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
-    
     @State private var showSportsPicker: Bool = false
     @State private var showHometownPicker: Bool = false
     
-    @State private var uploadingStatus: LOADING_STATE = .pending
-    
-    @State var userObserver = UserObserver()
-    @StateObject var uploadObserver = UploadObserver()
-    
+    @EnvironmentObject private var viewModel: ProfileViewModel
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
     
-    func UpdateProfile() async {
-        var imageURL: String = ""
-        uploadingStatus = .loading
-        // new image
-        let imageId = UUID().uuidString
-        
-        // check for updated image
-        guard let data = selectedImageData else {
-            guard let user = session.user else {
-                uploadingStatus = .failure
-                return
-            }
-            let update = User(username: user.username, bio: bio, sports: Array(selectedSports))
-            let res = await userObserver.UpdateUserData(update: update)
-            
-            guard res == true else {
-                uploadingStatus = .failure
-                return
-            }
-            uploadingStatus = .success
-            return
-        }
-        
-        let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)
-        
-        guard res == true else {
-            uploadingStatus = .failure
-            return
-        }
-        
-        imageURL = "profile-images/\(imageId).jpeg"
-        
-        guard var user = session.user else {
-            return
-        }
-        
-        if let img = user.imageURL {
-            // delete old picture
-            _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
-        }
-        
-        // update user data
-        let update = User(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports))
-        let resp = await userObserver.UpdateUserData(update: update)
-        
-        guard resp == true else {
-            uploadingStatus = .failure
-            return
-        }
-        
-        user.imageURL = imageURL
-        session.user = user
-        uploadingStatus = .success
-    }
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack {
                     VStack {
-                        if let data = selectedImageData {
+                        if let data = viewModel.selectedPhotoData {
                             if let img = UIImage(data: data) {
                                 Image(uiImage: img)
                                     .resizable()
                                     .clipShape(Circle())
-                                    .scaledToFit()
+                                    .scaledToFill()
                                     .frame(width: 100, height: 100)
                             }
                         } else {
@@ -135,17 +68,17 @@ struct EditProfile: View {
                             }
                         }
                         PhotosPicker(
-                            selection: $selectedItem,
+                            selection: $viewModel.selectedPhotoItem,
                             matching: .images,
                             photoLibrary: .shared()) {
                                 Text("Edit Picture")
                                     .foregroundColor(Color("color-prime"))
-                        }.onChange(of: selectedItem) { newItem in
+                        }.onChange(of: viewModel.selectedPhotoItem) { newItem in
                             Task {
                                 // Retrive selected asset in the form of Data
                                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                     let img = UIImage(data: data)
-                                    selectedImageData = img!.jpegData(compressionQuality: 0.5)
+                                    viewModel.selectedPhotoData = img!.jpegData(compressionQuality: 0.5)
                                 }
                             }
                         }
@@ -161,7 +94,7 @@ struct EditProfile: View {
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }
-                        TextField("\(session.user?.username ?? "error")", text: $username)
+                        TextField("\(session.user?.username ?? "error")", text: $viewModel.username)
                             .padding(.leading)
                             .disabled(true)
                             .background {
@@ -181,7 +114,7 @@ struct EditProfile: View {
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }
-                        TextEditor(text: $bio)
+                        TextEditor(text: $viewModel.bio)
                             .padding(.horizontal, 5)
                             .frame(height: 100)
                             .scrollContentBackground(.hidden)
@@ -194,23 +127,23 @@ struct EditProfile: View {
                         .padding(.bottom, 15)
                     .task {
                         if let user = session.user {
-                            bio = user.bio ?? ""
-                            isPublic = (user.visibility == "private" ? false : true)
+                            viewModel.bio = user.bio ?? ""
+                            viewModel.isPublic = (user.visibility == "private" ? false : true)
                         }
                         
                     }
                     
                     // MARK: - Profile Visibility Toggle
                     VStack(alignment: .leading){
-                        Toggle(isOn: $isPublic) {
+                        Toggle(isOn: $viewModel.isPublic) {
                             Text("Profile Visibility")
                         }.frame(width: SCREEN_WIDTH-30, height: 40)
                             .tint(Color("color-secnd"))
-                            .onChange(of: isPublic) { newValue in
+                            .onChange(of: viewModel.isPublic) { newValue in
                                 if newValue {
-                                    visibility = "public"
+                                    viewModel.visibility = "public"
                                 } else {
-                                    visibility = "private"
+                                    viewModel.visibility = "private"
                                 }
                             }
                         Text("Allow users not on your friends list to see your profile")
@@ -228,11 +161,13 @@ struct EditProfile: View {
                                     .foregroundStyle(.gray)
                             }.foregroundStyle(.gray)
                         }
-                        Button(action: { self.showSportsPicker.toggle() }) {
-                            if !selectedSports.isEmpty {
+                        Button(action: {
+                            self.showSportsPicker.toggle()
+                        }) {
+                            if !viewModel.selectedSports.isEmpty {
                                 ScrollView(.horizontal) {
                                     HStack(alignment: .center) {
-                                        ForEach(Array(selectedSports), id: \.self) { sport in
+                                        ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
                                             Text(sport)
                                                 .foregroundStyle(.white)
                                                 .padding(.horizontal, 10)
@@ -256,7 +191,7 @@ struct EditProfile: View {
                     }.padding(.horizontal)
                         .padding(.top)
                         .fullScreenCover(isPresented: $showSportsPicker, content: {
-                            ProfileSportsPicker(selectedSports: $selectedSports)
+                            ProfileSportsPicker(selectedSports: $viewModel.selectedSports)
                                 .presentationDetents([.medium])
                         })
                     
@@ -271,7 +206,11 @@ struct EditProfile: View {
                             }.foregroundStyle(.gray)
                         }
                         Button(action: { self.showHometownPicker.toggle() }) {
-                            Text("N/A")
+                            if (viewModel.hometown == nil) {
+                                Text("N/A")
+                            } else {
+                                Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                            }
                         }.frame(maxWidth: .infinity, idealHeight: 40)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
@@ -282,6 +221,7 @@ struct EditProfile: View {
                         .padding(.vertical, 15)
                         .fullScreenCover(isPresented: $showHometownPicker, content: {
                             ProfileHometownPicker()
+                                .environmentObject(viewModel)
                         })
                     
                     
@@ -291,24 +231,21 @@ struct EditProfile: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                            Button(action:{ dismiss() }){
                                 Text("Cancel")
                                     .foregroundColor(.primary)
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{
-                        
                                 Task {
-                                    await UpdateProfile()
-                                    let _ = await session.CheckIn()
+                                    await viewModel.UpdateProfile()
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        self.presentationMode.wrappedValue.dismiss()
+                                        dismiss()
                                     }
                                 }
-                                
                             }){
-                                LoadingButton(text: "Save", width: 50, height: 25, status: $uploadingStatus)
+                                LoadingButton(text: "Save", width: 50, height: 25, status: viewModel.$status)
                             }
                         }
                     }
@@ -316,7 +253,7 @@ struct EditProfile: View {
                         if let usr = session.user {
                             if let sports = usr.sports {
                                 for sport in sports {
-                                    selectedSports.insert(sport)
+                                    viewModel.selectedSports.insert(sport)
                                 }
                             }
                         }
@@ -329,6 +266,8 @@ struct EditProfile: View {
 
 struct EditProfile_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfile().environmentObject(SessionStore())
+        EditProfile()
+            .environmentObject(SessionStore())
+            .environmentObject(ProfileViewModel())
     }
 }

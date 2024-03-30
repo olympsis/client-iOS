@@ -56,7 +56,7 @@ class UserObserver: ObservableObject {
     }
     
     // have this return a bool if status 200
-    func UpdateUserData(update: User) async -> Bool {
+    func UpdateUserData(update: UserDao) async -> Bool {
         do {
             _ = try await userService.UpdateUserData(update: update)
             return true

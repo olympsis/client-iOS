@@ -10,6 +10,7 @@ import SwiftUI
 struct Profile: View {
 
     @State private var showMenu = false
+    @StateObject private var viewModel = ProfileViewModel()
     @EnvironmentObject private var session: SessionStore
     
     var username: String {
@@ -31,6 +32,7 @@ struct Profile: View {
                     // Edit profile button
                     EditProfileButton()
                         .padding(.bottom, 30)
+                        .environmentObject(viewModel)
                     
                     // Badges View
                     BadgesView()

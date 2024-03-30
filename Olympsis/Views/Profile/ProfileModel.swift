@@ -56,11 +56,11 @@ struct ProfileModel: View {
                                     .clipped()
                             } else if phase.error != nil {
                                 ZStack {
-                                    Image(systemName: "person")
+                                    Image(systemName: "person.fill")
                                         .resizable()
-                                        .frame(width: 50, height: 50)
+                                        .frame(width: 35, height: 35)
                                         .foregroundColor(.red)
-                                    Color.gray // Acts as a placeholder.
+                                    Color("background") // Acts as a placeholder.
                                         .clipShape(Circle())
                                         .opacity(0.3)
                                 }
@@ -69,11 +69,11 @@ struct ProfileModel: View {
                 } else {
                     ZStack {
                         Circle() // Acts as a placeholder.
-                            .foregroundStyle(Color("color-secnd"))
-                        Image(systemName: "person")
+                            .foregroundStyle(Color("background"))
+                        Image(systemName: "person.fill")
                             .resizable()
-                            .frame(width: 50, height: 50)
-                            .foregroundStyle(Color(.label))
+                            .frame(width: 35, height: 35)
+                            .foregroundStyle(Color("foreground"))
                     }.frame(width: 100, height: 100)
                 }
                 
