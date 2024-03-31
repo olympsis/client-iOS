@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ProfileModel: View {
     
-    @EnvironmentObject private var session: SessionStore
+    @Binding var userData: UserData?
     
     var imageURL: String {
-        guard let user = session.user,
+        guard let user = userData,
               let image = user.imageURL else {
             return ""
         }
@@ -20,7 +20,7 @@ struct ProfileModel: View {
     }
     
     var firstName: String {
-        guard let user = session.user,
+        guard let user = userData,
               let name = user.firstName else {
             return "Olympsis"
         }
@@ -28,7 +28,7 @@ struct ProfileModel: View {
     }
     
     var lastName: String {
-        guard let user = session.user,
+        guard let user = userData,
               let name = user.lastName else {
             return "User"
         }
@@ -36,7 +36,7 @@ struct ProfileModel: View {
     }
     
     var bio: String {
-        guard let user = session.user,
+        guard let user = userData,
               let bio = user.bio else {
             return ""
         }
@@ -98,7 +98,6 @@ struct ProfileModel: View {
 
 struct ProfileModel_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileModel()
-            .environmentObject(SessionStore())
+        ProfileModel(userData: .constant(UserData(firstName: "John", lastName: "Doe")))
     }
 }

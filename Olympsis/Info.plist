@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>DEBUG_HOST</key>
-	<string>localhost</string>
 	<key>API-KEY</key>
 	<string>X0HyasjIZL6GLo7hBzwZneCQhmCIkZoW</string>
 	<key>CFBundleDocumentTypes</key>
@@ -32,6 +30,8 @@
 	</array>
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
+	<key>DEBUG_HOST</key>
+	<string>localhost</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>HOST</key>

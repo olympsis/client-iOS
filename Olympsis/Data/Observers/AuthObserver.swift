@@ -53,7 +53,7 @@ class AuthObserver: ObservableObject {
         let (data, _) = try await authService.LogIn(request: req)
         let object = try decoder.decode(AuthResponse.self, from: data)
         
-        let usr = UserData(uuid: nil, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
+        let usr = UserData(uuid: object.uuid, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
         
         // cache user data & token
         cacheService.cacheUser(user: usr)

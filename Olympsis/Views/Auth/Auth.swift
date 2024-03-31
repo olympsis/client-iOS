@@ -15,6 +15,8 @@ struct Auth: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var observer = AuthObserver()
+    @StateObject private var cacheService = CacheService()
+    
     @EnvironmentObject var sessionStore: SessionStore
     
     var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
@@ -64,9 +66,8 @@ struct Auth: View {
                                             currentView = .username
                                         }
                                     } else if resp == USER_STATUS.returning {
-                                        guard let user = sessionStore.user,
-                                              user.uuid != nil,
-                                              user.username != nil else {
+                                        guard let user = cacheService.fetchUser(),
+                                              user.uuid != nil else {
                                             withAnimation {
                                                 currentView = .username
                                             }

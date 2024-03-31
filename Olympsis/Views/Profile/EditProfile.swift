@@ -10,20 +10,105 @@ import PhotosUI
 
 struct EditProfile: View {
     
+    @State private var city: String = ""
+    @State private var state: String = ""
+    @State private var country: String = ""
+    @State private var latitude: Double = 0
+    @State private var longitude: Double = 0
+    
+    
+    @State private var bio: String = ""
+    @State private var username: String = ""
+    @State private var isPublic: Bool = true
+    @State private var visibility: String = "public"
+    
     @State private var showSportsPicker: Bool = false
     @State private var showHometownPicker: Bool = false
     
-    @EnvironmentObject private var viewModel: ProfileViewModel
+    @State private var hometown: CLLocationCoordinate2D?
+    
+    
+    @State private var selectedSports: Set<String> = []
+    
+    @State private var selectedPhotoData: Data?
+    @State private var selectedPhotoItem: PhotosPickerItem?
+    
+    @State private var status: LOADING_STATE = .pending
+    
+    private var cacheService: CacheService = CacheService()
+    private var userObserver: UserObserver = UserObserver()
+    private var uploadObserver: UploadObserver = UploadObserver()
+    
     @EnvironmentObject private var session: SessionStore
     
     @Environment(\.dismiss) private var dismiss
+    
+    func UpdateProfile() async {
+        var imageURL: String = ""
+        status = .loading
+        // new image
+        let imageId = UUID().uuidString
+        
+        // check for updated image
+        guard let data = selectedPhotoData else {
+            guard let user = session.user else {
+                status = .failure
+                return
+            }
+            let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports))
+            let res = await userObserver.UpdateUserData(update: update)
+            
+            guard res == true else {
+                status = .failure
+                return
+            }
+            status = .success
+            return
+        }
+        
+        let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)
+        
+        guard res == true else {
+            status = .failure
+            return
+        }
+        
+        imageURL = "profile-images/\(imageId).jpeg"
+        
+        guard var user = session.user else {
+            return
+        }
+        
+        if let img = user.imageURL {
+            // delete old picture
+            _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
+        }
+        
+        // update user data
+        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, hometown: [latitude, longitude], sports: Array(selectedSports))
+        let resp = await userObserver.UpdateUserData(update: update)
+        
+        guard resp == true else {
+            status = .failure
+            return
+        }
+        
+        user.bio = bio
+        user.visibility = visibility
+        user.sports = Array(selectedSports)
+        user.imageURL = imageURL
+        user.hometown = [latitude, longitude]
+        session.user = user
+        cacheService.cacheUser(user: user)
+        status = .success
+    }
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack {
                     VStack {
-                        if let data = viewModel.selectedPhotoData {
+                        if let data = selectedPhotoData {
                             if let img = UIImage(data: data) {
                                 Image(uiImage: img)
                                     .resizable()
@@ -68,17 +153,17 @@ struct EditProfile: View {
                             }
                         }
                         PhotosPicker(
-                            selection: $viewModel.selectedPhotoItem,
+                            selection: $selectedPhotoItem,
                             matching: .images,
                             photoLibrary: .shared()) {
                                 Text("Edit Picture")
                                     .foregroundColor(Color("color-prime"))
-                        }.onChange(of: viewModel.selectedPhotoItem) { newItem in
+                        }.onChange(of: selectedPhotoItem) { _, newItem in
                             Task {
                                 // Retrive selected asset in the form of Data
                                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                     let img = UIImage(data: data)
-                                    viewModel.selectedPhotoData = img!.jpegData(compressionQuality: 0.5)
+                                    selectedPhotoData = img!.jpegData(compressionQuality: 0.5)
                                 }
                             }
                         }
@@ -94,7 +179,7 @@ struct EditProfile: View {
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }
-                        TextField("\(session.user?.username ?? "error")", text: $viewModel.username)
+                        TextField("\(session.user?.username ?? "error")", text: $username)
                             .padding(.leading)
                             .disabled(true)
                             .background {
@@ -114,7 +199,7 @@ struct EditProfile: View {
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }
-                        TextEditor(text: $viewModel.bio)
+                        TextEditor(text: $bio)
                             .padding(.horizontal, 5)
                             .frame(height: 100)
                             .scrollContentBackground(.hidden)
@@ -127,23 +212,23 @@ struct EditProfile: View {
                         .padding(.bottom, 15)
                     .task {
                         if let user = session.user {
-                            viewModel.bio = user.bio ?? ""
-                            viewModel.isPublic = (user.visibility == "private" ? false : true)
+                            bio = user.bio ?? ""
+                            isPublic = (user.visibility == "private" ? false : true)
                         }
                         
                     }
                     
                     // MARK: - Profile Visibility Toggle
                     VStack(alignment: .leading){
-                        Toggle(isOn: $viewModel.isPublic) {
+                        Toggle(isOn: $isPublic) {
                             Text("Profile Visibility")
                         }.frame(width: SCREEN_WIDTH-30, height: 40)
                             .tint(Color("color-secnd"))
-                            .onChange(of: viewModel.isPublic) { newValue in
+                            .onChange(of: isPublic) { newValue in
                                 if newValue {
-                                    viewModel.visibility = "public"
+                                    visibility = "public"
                                 } else {
-                                    viewModel.visibility = "private"
+                                    visibility = "private"
                                 }
                             }
                         Text("Allow users not on your friends list to see your profile")
@@ -164,10 +249,10 @@ struct EditProfile: View {
                         Button(action: {
                             self.showSportsPicker.toggle()
                         }) {
-                            if !viewModel.selectedSports.isEmpty {
+                            if !selectedSports.isEmpty {
                                 ScrollView(.horizontal) {
                                     HStack(alignment: .center) {
-                                        ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
+                                        ForEach(Array(selectedSports), id: \.self) { sport in
                                             Text(sport)
                                                 .foregroundStyle(.white)
                                                 .padding(.horizontal, 10)
@@ -191,7 +276,7 @@ struct EditProfile: View {
                     }.padding(.horizontal)
                         .padding(.top)
                         .fullScreenCover(isPresented: $showSportsPicker, content: {
-                            ProfileSportsPicker(selectedSports: $viewModel.selectedSports)
+                            ProfileSportsPicker(selectedSports: $selectedSports)
                                 .presentationDetents([.medium])
                         })
                     
@@ -206,10 +291,10 @@ struct EditProfile: View {
                             }.foregroundStyle(.gray)
                         }
                         Button(action: { self.showHometownPicker.toggle() }) {
-                            if (viewModel.hometown == nil) {
+                            if (latitude == 0 && longitude == 0 && session.user?.hometown == nil) {
                                 Text("N/A")
                             } else {
-                                Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                                Text("\(city), \(state) (\(country))")
                             }
                         }.frame(maxWidth: .infinity, idealHeight: 40)
                         .background {
@@ -220,8 +305,7 @@ struct EditProfile: View {
                     }.padding(.horizontal)
                         .padding(.vertical, 15)
                         .fullScreenCover(isPresented: $showHometownPicker, content: {
-                            ProfileHometownPicker()
-                                .environmentObject(viewModel)
+                            ProfileHometownPicker(city: $city, state: $state, country: $country, latitude: $latitude, longitude: $longitude)
                         })
                     
                     
@@ -239,13 +323,13 @@ struct EditProfile: View {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{
                                 Task {
-                                    await viewModel.UpdateProfile()
+                                    await UpdateProfile()
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         dismiss()
                                     }
                                 }
                             }){
-                                LoadingButton(text: "Save", width: 50, height: 25, status: viewModel.$status)
+                                LoadingButton(text: "Save", width: 50, status: $status)
                             }
                         }
                     }
@@ -253,7 +337,24 @@ struct EditProfile: View {
                         if let usr = session.user {
                             if let sports = usr.sports {
                                 for sport in sports {
-                                    viewModel.selectedSports.insert(sport)
+                                    selectedSports.insert(sport)
+                                }
+                            }
+                            
+                            if let home = usr.hometown {
+                                hometown = CLLocationCoordinate2D(latitude: home[0], longitude: home[1])
+                                getPlacemark(from: CLLocationCoordinate2D(latitude: home[0], longitude: home[1])) { placemark in
+                                    if let placemark = placemark {
+                                        let city = placemark.locality ?? ""
+                                        let state = placemark.administrativeArea ?? ""
+                                        let country = placemark.country ?? ""
+                                        
+                                        self.city = city
+                                        self.state = state
+                                        self.country = country
+                                    } else {
+                                        print("Unable to get placemark information")
+                                    }
                                 }
                             }
                         }
@@ -268,6 +369,5 @@ struct EditProfile_Previews: PreviewProvider {
     static var previews: some View {
         EditProfile()
             .environmentObject(SessionStore())
-            .environmentObject(ProfileViewModel())
     }
 }

@@ -11,15 +11,17 @@ import SwiftUI
 
 struct ProfileHometownPicker: View {
     
-    @State private var city: String = ""
-    @State private var state: String = ""
-    @State private var country: String = ""
+    @Binding var city: String
+    @Binding var state: String
+    @Binding var country: String
+    
+    @Binding var latitude: Double
+    @Binding var longitude: Double
+    
     @State private var pin: CLLocationCoordinate2D?
     
     @GestureState private var isLongPressing = false
     @Environment(\.dismiss) private var dismiss
-    
-    @EnvironmentObject private var viewModel: ProfileViewModel
     
     var body: some View {
         VStack {
@@ -71,7 +73,8 @@ struct ProfileHometownPicker: View {
                                     
                                     withAnimation {
                                         pin = coordinates
-                                        self.viewModel.hometown = pin
+                                        latitude = coordinates.latitude
+                                        longitude = coordinates.longitude
                                         getPlacemark(from: coordinates) { placemark in
                                             if let placemark = placemark {
                                                 let city = placemark.locality ?? ""
@@ -81,10 +84,6 @@ struct ProfileHometownPicker: View {
                                                 self.city = city
                                                 self.state = state
                                                 self.country = country
-                                                
-                                                self.viewModel.city = city
-                                                self.viewModel.state = state
-                                                self.viewModel.country = country
                                             } else {
                                                 print("Unable to get placemark information")
                                             }
@@ -100,6 +99,5 @@ struct ProfileHometownPicker: View {
 }
 
 #Preview {
-    ProfileHometownPicker()
-        .environmentObject(ProfileViewModel())
+    ProfileHometownPicker(city: .constant(""), state: .constant(""), country: .constant(""), latitude: .constant(0), longitude: .constant(0))
 }

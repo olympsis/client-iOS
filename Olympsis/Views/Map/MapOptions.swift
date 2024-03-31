@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct MapOptions: View {
     
@@ -15,7 +16,10 @@ struct MapOptions: View {
     @State private var sliderValue = 5.0
     @EnvironmentObject var session:SessionStore
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    
+    @AppStorage("latitude") private var latitude: Double?
+    @AppStorage("longitude") private var longitude: Double?
+    @AppStorage("searchRadius") private var radius: Double? // search radius for fields/events in meters
     
     func updateSports(sport:String){
         selectedSports.contains(where: {$0 == sport}) ? selectedSports.removeAll(where: {$0 == sport}) : selectedSports.append(sport)
@@ -26,19 +30,51 @@ struct MapOptions: View {
     }
     
     func NewSearch() async {
-        guard let location = session.locationManager.location else {
+        if let location = session.locationManager.location {
+            await session.getNearbyData(location: location, selectedSports: selectedSports)
             return
+        } else {
+            guard let lat = latitude,
+                  let long = longitude else {
+                return
+            }
+            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: lat, longitude: long), selectedSports: selectedSports)
         }
-        await session.getNearbyData(location: location, selectedSports: selectedSports)
+        
     }
     
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 35, height: 5)
-                .foregroundColor(.gray)
-                .opacity(0.3)
-                .padding(.top, 5)
+            HStack {
+                Button(action:{ dismiss() }){
+                    Text("Cancel")
+                        .font(.caption)
+                        .textCase(.uppercase)
+                        .foregroundColor(.red)
+                }.frame(height: 40)
+                
+                Spacer()
+                
+                Button(action:{
+                    Task {
+                        await MainActor.run {
+                            self.status = .loading
+                        }
+                        await NewSearch()
+                        await MainActor.run {
+                            self.status = .success
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                            dismiss()
+                        }
+                    }
+                }){
+                    LoadingButton(text: "Search", width: 100, status: $status)
+                        .frame(width: 100)
+                }
+            }.padding(.horizontal)
+                .padding(.top)
+            
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     Text("Search Radius:")
@@ -49,7 +85,7 @@ struct MapOptions: View {
                             .tint(Color("color-prime"))
                         Text("\(Int(sliderValue)) miles")
                             .padding(.trailing)
-                            .onChange(of: sliderValue) { newValue in
+                            .onChange(of: sliderValue) { _, newValue in
                                 radius = milesToMeters(radius: sliderValue)
                             }
                     }
@@ -68,34 +104,7 @@ struct MapOptions: View {
                         }.padding(.top)
                     }
                     
-                    HStack {
-                        Button(action:{ dismiss() }){
-                            Text("Cancel")
-                                .font(.caption)
-                                .textCase(.uppercase)
-                                .foregroundColor(.red)
-                        }.frame(height: 40)
-                        
-                        Spacer()
-                        
-                        Button(action:{
-                            Task {
-                                await MainActor.run {
-                                    self.status = .loading
-                                }
-                                await NewSearch()
-                                await MainActor.run {
-                                    self.status = .success
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                                    dismiss()
-                                }
-                            }
-                        }){
-                            LoadingButton(text: "Search", width: 100, status: $status)
-                                .frame(width: 100)
-                        }.padding(.trailing)
-                    }.padding(.top)
+                    
                 }.padding(.leading)
                     .task {
                         guard let radiusValue = radius else {

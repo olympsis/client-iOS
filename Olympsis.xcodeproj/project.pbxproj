@@ -66,7 +66,6 @@
 		5D9F693D2BB665630057D205 /* ProfileSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69402BB7653F0057D205 /* MapFunctions.swift */; };
-		5D9F69432BB768610057D205 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69422BB768610057D205 /* ProfileViewModel.swift */; };
 		5D9F69452BB86F020057D205 /* LocationUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69442BB86F020057D205 /* LocationUsage.swift */; };
 		5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69462BB87A350057D205 /* HometownPicker.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
@@ -377,7 +376,6 @@
 		5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5D9F69402BB7653F0057D205 /* MapFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFunctions.swift; sourceTree = "<group>"; };
-		5D9F69422BB768610057D205 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5D9F69442BB86F020057D205 /* LocationUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUsage.swift; sourceTree = "<group>"; };
 		5D9F69462BB87A350057D205 /* HometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HometownPicker.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
@@ -684,7 +682,6 @@
 			isa = PBXGroup;
 			children = (
 				5D4942BB2B1299F000D19188 /* GroupViewModel.swift */,
-				5D9F69422BB768610057D205 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1603,7 +1600,6 @@
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
-				5D9F69432BB768610057D205 /* ProfileViewModel.swift in Sources */,
 				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9A550849293E335500B924B1 /* ImageHandler.swift in Sources */,
@@ -2070,7 +2066,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate data, we need to have your location even when the app\n is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate results, we need to have your location when you're using the app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Our app needs access to your photo library to upload profile images and to post images on your club's timeline.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -2113,7 +2109,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate data, we need to have your location even when the app\n is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate results, we need to have your location when you're using the app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Our app needs access to your photo library to upload profile images and to post images on your club's timeline.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

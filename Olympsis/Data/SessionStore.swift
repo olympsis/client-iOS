@@ -76,8 +76,11 @@ class SessionStore: ObservableObject {
                 return
             }
             await MainActor.run {
-                if let usr = resp.user {
+                if var usr = resp.user {
+                    let temp = cacheService.fetchUser()
                     user = usr
+                    usr.hometown = temp?.hometown
+                    user?.hometown = temp?.hometown
                     cacheService.cacheUser(user: usr)
                 } else {
                     user = cacheService.fetchUser()

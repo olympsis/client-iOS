@@ -10,29 +10,21 @@ import SwiftUI
 struct Profile: View {
 
     @State private var showMenu = false
-    @StateObject private var viewModel = ProfileViewModel()
     @EnvironmentObject private var session: SessionStore
     
-    var username: String {
-        guard let user = session.user,
-              let name = user.username else {
-            return "olympsis-user"
-        }
-        return name
-    }
+    @State private var username: String = "olympsis-user"
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    ProfileModel()
+                    ProfileModel(userData: $session.user)
                         .padding(.top, 20)
                         .padding(.leading)
                     
                     // Edit profile button
                     EditProfileButton()
                         .padding(.bottom, 30)
-                        .environmentObject(viewModel)
                     
                     // Badges View
                     BadgesView()

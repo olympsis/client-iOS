@@ -5,16 +5,33 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
+import MapKit
+import SwiftUI
 import Foundation
 import CoreLocation
-import SwiftUI
-import MapKit
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var manager = CLLocationManager()
     @Published var location: CLLocationCoordinate2D?
     @Published var region : MKCoordinateRegion = .init()
+    
+    @AppStorage("latitude") private var latitude: Double?
+    @AppStorage("longitude") private var longitude: Double?
+    
+    var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "location_manager")
+    
+    var isAuthorized: Bool {
+        switch (manager.authorizationStatus) {
+        case .authorizedWhenInUse, .authorizedAlways:
+            return true
+        case .notDetermined, .denied, .restricted:
+            return false
+        @unknown default:
+            return false
+        }
+    }
     
     override init(){
         super.init()
@@ -23,26 +40,48 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func requestLocation() {
         manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
-        manager.requestLocation()
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse{
-            manager.requestLocation()
-            manager.startUpdatingLocation()
-        }else{
-            print("Not Authorized")
+    func changeLocationRegion(location: CLLocationCoordinate2D) {
+        region = MKCoordinateRegion(center: location, latitudinalMeters: 10000, longitudinalMeters: 10000)
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+            case .authorizedWhenInUse:  // Location services are available.
+                manager.startMonitoringSignificantLocationChanges()
+                break
+                
+            case .restricted, .denied:  // Location services currently unavailable.
+                guard let lat = latitude,
+                      let long = longitude else {
+                    // We will use apple park as the fallback location
+                    let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
+                    region = MKCoordinateRegion(center: loc, latitudinalMeters: 10000, longitudinalMeters: 10000)
+                    return
+                }
+                
+                // if the user has a hometown we will go there
+                let loc = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                region = MKCoordinateRegion(center: loc, latitudinalMeters: 10000, longitudinalMeters: 10000)
+                break
+                
+            case .notDetermined:        // Authorization not determined yet.
+                manager.requestWhenInUseAuthorization()
+                break
+                
+            default:
+                break
         }
     }
     
-    func locationManager(_manager: CLLocationManager, didFailWithError error: Error){
-        print("error: \(error)")
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
+        logger.error("error: \(error)")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last?.coordinate else {
-            print("no location")
+            logger.error("no location")
             return
         }
         Task {
@@ -51,9 +90,5 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 region = MKCoordinateRegion(center: location, latitudinalMeters: 10000, longitudinalMeters: 10000)
             }
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error: \(error.localizedDescription)")
     }
 }

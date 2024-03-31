@@ -29,6 +29,9 @@ struct Home: View {
     
     @EnvironmentObject var session: SessionStore
     
+    @AppStorage("latitude") private var latitude: Double?
+    @AppStorage("longitude") private var longitude: Double?
+    
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
             log.error("failed to get user's name")
@@ -119,6 +122,25 @@ struct Home: View {
                         // later i might add a button for you to reload, however, i dont see the need to
                         // unless you are in map view.
                         hasLoaded = true
+                    }
+                    .task {
+                        if (!session.locationManager.isAuthorized) {
+                            guard hasLoaded == false else {
+                                return
+                            }
+                            guard let lat = latitude,
+                                  let long = longitude else {
+                                // fall back location is apple park
+                                let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
+                                await session.getNearbyData(location: loc)
+                                status = .success
+                                return
+                            }
+                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            status = .success
+                            
+                            hasLoaded = true
+                        }
                     }
                     .padding(.bottom, 100)
                 }.fullScreenCover(isPresented: $showNotifications, content: {
