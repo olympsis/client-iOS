@@ -17,8 +17,6 @@ struct MapOptions: View {
     @EnvironmentObject var session:SessionStore
     @Environment(\.dismiss) private var dismiss
     
-    @AppStorage("latitude") private var latitude: Double?
-    @AppStorage("longitude") private var longitude: Double?
     @AppStorage("searchRadius") private var radius: Double? // search radius for fields/events in meters
     
     func updateSports(sport:String){
@@ -34,13 +32,12 @@ struct MapOptions: View {
             await session.getNearbyData(location: location, selectedSports: selectedSports)
             return
         } else {
-            guard let lat = latitude,
-                  let long = longitude else {
+            guard let user = session.user,
+                let hometown = user.hometown else {
                 return
             }
-            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: lat, longitude: long), selectedSports: selectedSports)
+            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), selectedSports: selectedSports)
         }
-        
     }
     
     var body: some View {

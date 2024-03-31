@@ -55,13 +55,29 @@ struct EditProfile: View {
                 status = .failure
                 return
             }
-            let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports))
+            
+            var coords: [Double]?
+            if (latitude != 0 && longitude != 0) {
+                coords = [latitude, longitude]
+            }
+            
+            let update = UserDao(username: user.username, bio: bio, hometown: coords, sports: Array(selectedSports))
             let res = await userObserver.UpdateUserData(update: update)
             
             guard res == true else {
                 status = .failure
                 return
             }
+            
+            session.user?.bio = bio
+            session.user?.visibility = visibility
+            session.user?.sports = Array(selectedSports)
+            session.user?.hometown = [latitude, longitude]
+            guard let usr = session.user else {
+                status = .success
+                return
+            }
+            cacheService.cacheUser(user: usr)
             status = .success
             return
         }
@@ -84,8 +100,13 @@ struct EditProfile: View {
             _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
         }
         
+        var coords: [Double]?
+        if (latitude != 0 && longitude != 0) {
+            coords = [latitude, longitude]
+        }
+        
         // update user data
-        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, hometown: [latitude, longitude], sports: Array(selectedSports))
+        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, hometown: coords, sports: Array(selectedSports))
         let resp = await userObserver.UpdateUserData(update: update)
         
         guard resp == true else {
@@ -93,13 +114,16 @@ struct EditProfile: View {
             return
         }
         
-        user.bio = bio
-        user.visibility = visibility
-        user.sports = Array(selectedSports)
-        user.imageURL = imageURL
-        user.hometown = [latitude, longitude]
-        session.user = user
-        cacheService.cacheUser(user: user)
+        session.user?.bio = bio
+        session.user?.visibility = visibility
+        session.user?.sports = Array(selectedSports)
+        session.user?.imageURL = imageURL
+        session.user?.hometown = [latitude, longitude]
+        guard let usr = session.user else {
+            status = .success
+            return
+        }
+        cacheService.cacheUser(user: usr)
         status = .success
     }
     

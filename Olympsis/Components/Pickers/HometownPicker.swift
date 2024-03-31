@@ -19,9 +19,6 @@ struct HometownPicker: View {
     @State private var pin: CLLocationCoordinate2D?
     @State private var cacheService = CacheService()
     
-    @AppStorage("latitude") private var latitude: Double?
-    @AppStorage("longitude") private var longitude: Double?
-    
     @GestureState private var isLongPressing = false
     @Environment(\.dismiss) private var dismiss
     
@@ -37,8 +34,6 @@ struct HometownPicker: View {
             return
         }
         user.hometown = hometown
-        latitude = location.latitude
-        longitude = location.longitude
         cacheService.cacheUser(user: user)
         dismiss()
     }

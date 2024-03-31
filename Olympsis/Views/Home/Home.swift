@@ -29,9 +29,6 @@ struct Home: View {
     
     @EnvironmentObject var session: SessionStore
     
-    @AppStorage("latitude") private var latitude: Double?
-    @AppStorage("longitude") private var longitude: Double?
-    
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
             log.error("failed to get user's name")
@@ -128,15 +125,15 @@ struct Home: View {
                             guard hasLoaded == false else {
                                 return
                             }
-                            guard let lat = latitude,
-                                  let long = longitude else {
+                            guard let user = session.user,
+                                  let hometown = user.hometown else {
                                 // fall back location is apple park
                                 let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
                                 await session.getNearbyData(location: loc)
                                 status = .success
                                 return
                             }
-                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: lat, longitude: long))
+                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
                             status = .success
                             
                             hasLoaded = true
