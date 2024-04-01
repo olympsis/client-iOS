@@ -86,7 +86,7 @@ struct ClubsList: View {
                             }
                         } else {
                             ForEach(filteredClubs, id: \.id){ c in
-                                ClubListView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
+                                ClubListItemView(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
                                     .clipShape(Rectangle())
                             }
                         }

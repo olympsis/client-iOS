@@ -196,12 +196,8 @@ struct NewPickUpEvent: View {
                                 .font(.subheadline)
                             
                             Button(action: { self.showOrganizersPicker.toggle() }) {
-                                ZStack {
-                                    Rectangle()
-                                        .stroke(lineWidth: 1)
-                                        .modifier(InputField())
-                                    EventOrganizerView(organizers: $manager.organizers)
-                                }
+                                EventOrganizerView(organizers: $manager.organizers)
+                                    .modifier(InputField())
                             }
                         }
                         .padding(.horizontal)
@@ -235,9 +231,8 @@ struct NewPickUpEvent: View {
                                 .foregroundColor(validationStatus == .noDescription ? .red : .gray)
                                 .font(.subheadline)
                             ZStack {
-                                Rectangle()
-                                    .stroke(lineWidth: 1)
-                                    .foregroundColor(Color("color-prime"))
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(Color("background"))
                                     .frame(height: 100)
                                 TextEditor(text: $manager.body)
                                     .focused($descriptionFocus)
@@ -289,12 +284,8 @@ struct NewPickUpEvent: View {
                                 descriptionFocus = false
                                 self.showFieldPicker.toggle()
                             }) {
-                                ZStack {
-                                    Rectangle()
-                                        .stroke(lineWidth: 1)
-                                        .modifier(InputField())
-                                    Text(fieldName)
-                                }
+                                Text(fieldName)
+                                    .modifier(InputField())
                             }
                         }.padding(.top)
                         .padding(.horizontal)
@@ -314,12 +305,8 @@ struct NewPickUpEvent: View {
                                 descriptionFocus = false
                                 self.showStartTimePicker.toggle()
                             }) {
-                                ZStack {
-                                    Rectangle()
-                                        .stroke(lineWidth: 1)
-                                        .modifier(InputField())
-                                    Text(startTimeString)
-                                }
+                                Text(startTimeString)
+                                    .modifier(InputField())
                             }
                         }.padding()
                             .sheet(isPresented: $showStartTimePicker, content: {
@@ -348,12 +335,8 @@ struct NewPickUpEvent: View {
                                     descriptionFocus = false
                                     self.showStopTimePicker.toggle()
                                 }) {
-                                    ZStack {
-                                        Rectangle()
-                                            .stroke(lineWidth: 1)
-                                            .modifier(InputField())
-                                        Text(stopTimeString)
-                                    }
+                                    Text(stopTimeString)
+                                        .modifier(InputField())
                                 }
                             }
                         }.padding(.horizontal)
@@ -429,6 +412,7 @@ struct NewPickUpEvent: View {
                                                 Image(image)
                                                     .resizable()
                                                     .frame(width: 100, height: 150)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                                                 if manager.image == image {
                                                     Image(systemName: "circle.fill")
                                                         .foregroundColor(Color("color-secnd"))

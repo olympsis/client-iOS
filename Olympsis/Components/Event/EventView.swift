@@ -1,171 +1,188 @@
 //
-//  EventView.swift
+//  EventViewExt.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 11/16/22.
+//  Created by Joel on 7/27/23.
 //
 
+import MapKit
 import SwiftUI
+import CoreLocation
 
-/// A view that shows an event's data at a glance. A list item.
+/// A view that shows more detail about a specific event
 struct EventView: View {
     
-    @State var event: Event
-    @State private var status: LOADING_STATE = .loading
-    @State private var showDetails = false
-    @EnvironmentObject private var session:SessionStore
+    @Binding var event: Event
+    @State private var status: LOADING_STATE = .pending
     
-    private var title: String {
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
+    
+    var eventTitle: String {
         guard let title = event.title else {
-            return "Event"
+            return "Error"
         }
         return title
     }
     
-    private var imageURL: String {
+    var eventImage: String {
         guard let img = event.imageURL else {
             return ""
         }
-        return img
+        return  img
     }
     
-    private var fieldName: String {
+    var eventBody: String {
+        guard let body = event.body else {
+            return ""
+        }
+        return body
+    }
+    
+    var eventField: Field? {
         guard let field = event.fieldData else {
             guard let field = event.field,
-                  let name = field.name else {
-                return ""
+                  let name = field.name,
+                  let location = field.location else {
+                return nil
             }
-            return name
+            return Field(id: "", name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: "", state: "", country: "")
         }
-        return field.name
+        return field
     }
     
-    var body: some View {
-        Button(action:{ self.showDetails.toggle() }) {
-            VStack {
-                VStack(alignment: .leading){
-                    HStack {
-                        Image(imageURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 80, height: 80)
-                            .clipped()
-                            .cornerRadius(radius: 10, corners: .allCorners)
-                        VStack(alignment: .leading){
-                            Text(title)
-                                .font(.custom("Helvetica-Nue", size: 20))
-                                .bold()
-                                .frame(height: 20)
-                                .padding(.top)
-                                .foregroundColor(.primary)
-                            
-                            Text(fieldName)
-                                .foregroundColor(.gray)
-                                .lineLimit(1)
-                            Spacer()
-                            if event.type == "tournament" {
-                                Text("Tournament")
-                                    .font(.caption)
-                                    .padding(.bottom)
-                                    .foregroundStyle(Color("color-tert"))
-                            }
-                        }
-                        Spacer()
-                        _TrailingView(event: $event)
-                    }
-                }.padding(.horizontal)
-            }.frame(height: 100)
+    func reloadEvent() async {
+        guard let id = event.id,
+              let resp = await session.eventObserver.fetchEvent(id: id) else {
+            handleFailure()
+            return
         }
-        .clipShape(Rectangle())
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color("background"))
-            }
-        .fullScreenCover(isPresented: $showDetails) {
-            EventViewExt(event: $event)
-                .presentationDetents([.large])
-        }
-    }
-}
-
-/// Trailing view for Event view.
-/// Contains the start date and time and participants view.
-struct _TrailingView: View {
-    
-    @Binding var event: Event
-    
-    var participantsCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        return participants.count
+        
+        event = resp
+        handleSuccess()
     }
     
-    var minParticipantsCount: Int {
-        guard let minParticipants = event.minParticipants else {
-            return 0
+    func handleSuccess() {
+        status = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
         }
-        return minParticipants
     }
     
-    var iconColor: Color {
-        if (minParticipantsCount != 0) && (participantsCount != 0) && (participantsCount < minParticipantsCount) {
-            return .yellow
-        } else {
-            return Color("color-prime")
+    func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
         }
     }
     
     var body: some View {
-        VStack (alignment: .trailing){
-            if event.actualStopTime != nil {
-                VStack (alignment: .trailing){
-                    HStack {
-                        Text("Ended")
-                            .bold()
-                            .font(.callout)
-                    }.foregroundStyle(.gray)
-                    
-                    Text(event.timeDifferenceToString())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            } else if event.actualStartTime != nil {
-                VStack (alignment: .trailing){
-                    HStack {
-                        Circle()
-                            .frame(width: 10, height: 10)
-                        
-                        Text("Live")
-                            .bold()
-                            .font(.callout)
-                    }.foregroundStyle(.red)
-                    
-                    Text(event.timeDifferenceToString())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            } else {
-                VStack (alignment: .trailing){
-                    Text(event.timeToString())
-                        .bold()
-                        .font(.callout)
-                        .foregroundColor(.primary)
-                    
-                    Text(event.timeDifferenceToString())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            }
-            
+        VStack {
             HStack {
-                Image(systemName: "person.3.sequence.fill")
-                    .foregroundColor(iconColor)
-                Text("\(participantsCount)")
-                    .foregroundColor(.primary)
+                Text(eventTitle)
+                    .font(.largeTitle)
+                    .bold()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+
+                Spacer()
+                
+                Button(action: { Task { await reloadEvent() }}) {
+                    switch status {
+                    case .pending:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .loading:
+                        withAnimation {
+                            ProgressView()
+                        }
+                    case .success:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .failure:
+                        withAnimation {
+                            Image(systemName: "exclamationmark.circle.fill")
+                                .foregroundColor(.red)
+                                .imageScale(.medium)
+                        }
+                    }
+                }.clipShape(Circle())
+                    .frame(width: 25, height: 20)
+                
+                Button(action:{ dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .imageScale(.large)
+                }.clipShape(Circle())
+                    .frame(width: 25, height: 20)
+
+            }.padding(.horizontal)
+                .padding(.top)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    
+                    if event.type == "tournament" {
+                        Text("Tournament")
+                            .font(.caption)
+                            .padding(.leading)
+                            .bold()
+                            .foregroundStyle(Color("color-tert"))
+                    }
+                    
+                    // MARK: - Organizers Names
+                    EventOrganizersView(event: event)
+                        .padding(.horizontal)
+                        .padding(.bottom, 3)
+                        .zIndex(1)
+                    
+                    // MARK: - Field Info
+                    if let field = eventField {
+                        EventFieldInfo(field: field)
+                            .zIndex(1)
+                    }
+                        
+                    // MARK: - Event Image
+                    Image(eventImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 300)
+                        .clipped()
+                        .zIndex(0)
+                    
+                    // MARK: - Detail/Body
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Details")
+                                .font(.title2)
+                                .bold()
+                            Rectangle()
+                                .frame(height: 1)
+                            Text(event.timeToString())
+                                .font(.callout)
+                        }
+                        Text(eventBody)
+                    }.padding(.all)
+                    
+                    // MARK: - Middle View
+                    EventMiddleView(event: $event)
+                    
+                    // MARK: - Action Buttons
+                    EventActionButtons(event: $event)
+                    
+                    // MARK: - Participants View
+                    EventParticipantsView(event: $event)
+                    
+                }
             }
         }
     }
 }
 
 #Preview {
-    EventView(event: EVENTS[0])
+    EventView(event: .constant(EVENTS[0]))
         .environmentObject(SessionStore())
 }

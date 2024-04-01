@@ -14,7 +14,7 @@ struct FieldsList: View {
         NavigationView {
             ScrollView {
                 ForEach(fields, id: \.name){ field in
-                    FieldView(field: field)
+                    FieldListItemView(field: field)
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

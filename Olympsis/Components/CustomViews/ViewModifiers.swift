@@ -23,9 +23,8 @@ struct SettingButton: ViewModifier {
 struct InputField: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
-            Rectangle()
-                .stroke(lineWidth: 1)
-                .foregroundColor(Color("color-prime"))
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color("background"))
             content
         }.frame(height: 50)
     }

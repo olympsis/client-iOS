@@ -23,7 +23,7 @@ struct SimpleButtonLabel: View {
         switch style {
         case .normal:
             ZStack {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .frame(width: width, height: height)
                     .foregroundColor(Color("color-prime"))
                 Text(text)
@@ -33,7 +33,7 @@ struct SimpleButtonLabel: View {
             }
         case .outline:
             ZStack {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .stroke(Color("color-prime"), lineWidth: 1)
                     .frame(width: width, height: height)
                 Text(text)

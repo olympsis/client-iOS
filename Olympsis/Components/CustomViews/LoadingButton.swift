@@ -19,7 +19,7 @@ struct LoadingButton: View {
     var body: some View {
         if (self.status == .loading) {
             ZStack {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(color)
                     .frame(width: 40, height: 40)
                 ProgressView()
@@ -27,7 +27,7 @@ struct LoadingButton: View {
         } else if (self.status == .pending) {
             if (image == nil) {
                 ZStack{
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(color)
                         .frame(width: width, height: height)
                     Text(text ?? "")
@@ -38,7 +38,7 @@ struct LoadingButton: View {
                 }
             } else {
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(color)
                         .frame(width: width, height: height)
                     image
@@ -47,7 +47,7 @@ struct LoadingButton: View {
             }
         } else if (self.status == .success) {
             ZStack {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .frame(width: 40, height: 40)
                     .foregroundColor(color)
                 Image(systemName: "checkmark")
@@ -58,7 +58,7 @@ struct LoadingButton: View {
                
         } else if (self.status == .failure) {
             ZStack {
-                 Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .frame(width: 40, height: 40)
                     .foregroundColor(color)
                 Image(systemName: "xmark")

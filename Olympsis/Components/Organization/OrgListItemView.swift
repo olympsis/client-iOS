@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OrgListView: View {
+struct OrgListItemView: View {
     
     @State var organization: Organization
     
@@ -79,32 +79,45 @@ struct OrgListView: View {
         VStack (alignment: .leading){
             HStack {
                 // IMAGE
-                AsyncImage(url: URL(string: imageURL)){ phase in
-                    if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 100, height: 100, alignment: .center)
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Rectangle()
-                                    .stroke(Color("foreground"), lineWidth: 1.0)
-                                    .frame(width: 100, height: 100)
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .foregroundColor(.red)
-                                    .imageScale(.large)
+                if (organization.imageURL != nil) {
+                    AsyncImage(url: URL(string: imageURL)){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100, alignment: .center)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else if phase.error != nil {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .opacity(0.5)
+                                        .frame(width: 100, height: 100)
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.red)
+                                        .imageScale(.large)
+                                }
+                            } else {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .opacity(0.5)
+                                        .frame(width: 100, height: 100)
+                                        .accentColor(Color("foreground"))
+                                    ProgressView()
+                                }
                             }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .opacity(0.1)
-                                    .frame(width: 100, height: 100)
-                                    .accentColor(Color("foreground"))
-                                ProgressView()
-                            }
-                        }
-                }.frame(width: 100, height: 100, alignment: .center)
+                    }.frame(width: 100, height: 100, alignment: .center)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.gray)
+                            .opacity(0.5)
+                            .frame(width: 100, height: 100)
+                        Image(systemName: "building.fill")
+                            .foregroundStyle(Color("foreground"))
+                            .imageScale(.large)
+                    }
+                }
                 
                 VStack(alignment:.leading){
                     Text(name)
@@ -132,22 +145,24 @@ struct OrgListView: View {
                 .padding(.top)
             
             HStack(spacing: 15) {
-                Button(action:{ Task{ await Apply() } }) {
-                    LoadingButton(text: "Request", width: SCREEN_WIDTH-100, status: $status)
+                Button(action: { self.showDetails.toggle() }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.gray)
+                            .opacity(0.5)
+                            .frame(height: 35)
+                        Text("Details")
+                            .foregroundStyle(Color("foreground"))
+                    }
                 }.contentShape(Rectangle())
-                    .frame(maxWidth: .infinity)
-//                Button(action: { self.showDetails.toggle() }) {
-//                    ZStack {
-//                        RoundedRectangle(cornerRadius: 20)
-//                            .stroke(lineWidth: 1)
-//                            .frame(height: 40)
-//                        Text("Details")
-//                    }
-//                }.contentShape(Rectangle())
-                    .frame(maxWidth: .infinity)
+                    .frame(width: (SCREEN_WIDTH/2)-25)
+                
+                Button(action:{ Task{ await Apply() } }) {
+                    LoadingButton(text: "Request", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
+                }.contentShape(Rectangle())
             }.padding(.all)
         }.background {
-            Rectangle()
+            RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color("background"))
                 .padding(.horizontal, 5)
         }
@@ -158,5 +173,6 @@ struct OrgListView: View {
 }
 
 #Preview {
-    OrgListView(organization: ORGANIZATIONS[0], showToast: .constant(false))
+    OrgListItemView(organization: ORGANIZATIONS[1], showToast: .constant(false))
+        .environmentObject(SessionStore())
 }

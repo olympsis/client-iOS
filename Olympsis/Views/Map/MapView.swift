@@ -10,7 +10,7 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
-///
+/// Map view to see fields
 struct MapView: View {
     
     @State private var showError: Bool = false
@@ -20,11 +20,12 @@ struct MapView: View {
     @State private var showOptions: Bool = false
     
     @State private var selectedField: Field?
+    @State private var cameraPosition: MapCameraPosition = .automatic
     
-    @State var trackingMode: MapUserTrackingMode = .follow
-    @State var region : MKCoordinateRegion = .init()
-    @EnvironmentObject var session:SessionStore
-
+    @EnvironmentObject private var session:SessionStore
+    
+    var visibleRegion: MKCoordinateRegion?
+    
     var sports: [String] {
         guard let user = session.user,
               let sports = user.sports else {
@@ -33,21 +34,67 @@ struct MapView: View {
         return sports
     }
     
+    // This fallback location is a second location in case we are unable to find the user's current location
+    // In this case we check to see if they have a stored location(hometown)
+    // If not then we default to apple park
+    var fallbackLocation: MKCoordinateRegion {
+        guard let user = session.user, let hometown = user.hometown else {
+            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
+        }
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 5000, longitudinalMeters: 5000)
+    }
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                ZStack(alignment: .topTrailing){
-                    Map(coordinateRegion: $session.locationManager.region, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: session.fields, annotationContent: { field in
-                        MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
-                            PlaceAnnotationView(field: field)
-                                .onTapGesture {
-                                    withAnimation(.easeInOut) {
-                                        selectedField = field
-                                        session.locationManager.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500)
-                                    }
-                                }
+        Map(position: $cameraPosition) {
+            ForEach(session.fields) { field in
+                Annotation(field.name, coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchor: .bottom) {
+                    PlaceAnnotationView(field: field)
+                        .onTapGesture {
+                            withAnimation(.easeInOut) {
+                                selectedField = field
+                                cameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500))
+                            }
                         }
-                    }) .edgesIgnoringSafeArea(.all)
+                }
+            }
+            
+            UserAnnotation()
+            
+        }.ignoresSafeArea(edges: .all)
+            .mapStyle(.standard(elevation: .realistic))
+            .overlay(alignment: .topTrailing) {
+                VStack(alignment: .trailing) {
+                    HStack {
+                        Text("Map")
+                            .font(.title)
+                            .bold()
+                        
+                        Spacer()
+                        LocationButton(.currentLocation){
+                            session.locationManager.requestLocation()
+                            withAnimation {
+                                cameraPosition = .automatic
+                            }
+                        }
+                        .clipShape(Circle())
+                        .labelStyle(.iconOnly)
+                        .symbolVariant(.fill)
+                        .foregroundColor(.white)
+                        .tint(Color("color-secnd"))
+                        .frame(width: 40, height: 40)
+                        
+                        Button(action:{ self.showOptions.toggle() }){
+                            ZStack {
+                                Circle()
+                                    .tint(Color("color-secnd"))
+                                    .frame(width: 41, height: 41)
+                                Image(systemName: "slider.vertical.3")
+                                    .imageScale(.large)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundColor(.white)
+                            }
+                        }.frame(width: 41, height: 41)
+                    }.padding(.horizontal)
                     
                     VStack {
                         Button(action:{ self.showNewEvent.toggle() }){
@@ -59,8 +106,7 @@ struct MapView: View {
                                     .symbolRenderingMode(.palette)
                                     .foregroundColor(.white)
                             }
-                        }.padding(.vertical, 10)
-                        .frame(width: 41)
+                        }.frame(width: 41)
                         
                         Button(action:{ self.showBottomSheet.toggle() }){
                             ZStack {
@@ -73,45 +119,10 @@ struct MapView: View {
                             }
                         }.frame(width: 41)
                     }.padding(.horizontal)
-                    
+                        .padding(.top, -13)
                 }
-            }.toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Map")
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.primary)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    LocationButton(.currentLocation){
-                        session.locationManager.manager.requestWhenInUseAuthorization()
-                        withAnimation{
-                            trackingMode = .follow;
-                        }
-                    }
-                    .clipShape(Circle())
-                    .labelStyle(.iconOnly)
-                    .symbolVariant(.fill)
-                    .foregroundColor(.white)
-                    .tint(Color("color-secnd"))
-                    .frame(width: 40, height: 40)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{ self.showOptions.toggle() }){
-                        ZStack {
-                            Circle()
-                                .tint(Color("color-secnd"))
-                                .frame(width: 41, height: 41)
-                            Image(systemName: "slider.vertical.3")
-                                .imageScale(.large)
-                                .symbolRenderingMode(.palette)
-                                .foregroundColor(.white)
-                        }
-                    }.frame(width: 41, height: 41)
-                }
-            }
-            .sheet(item: $selectedField) { field in
-                FieldViewExt(field: field)
+            }.sheet(item: $selectedField) { field in
+                FieldView(field: field)
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent) {
@@ -130,7 +141,9 @@ struct MapView: View {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 }))
             }
-        }
+            .task {
+                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
+            }
     }
 }
 

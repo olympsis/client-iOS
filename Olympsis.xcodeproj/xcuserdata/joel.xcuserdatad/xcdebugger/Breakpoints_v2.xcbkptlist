@@ -14,57 +14,10 @@
             filePath = "Olympsis/Data/SessionStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "CheckIn()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "824">
-               </Location>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "896">
-               </Location>
-               <Location
-                  uuid = "38BF86C2-406A-4BB0-B0EC-BDF66B6354AA - ff02d91eede7ce77"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor @Sendable () -&gt; () in Olympsis.SessionStore.CheckIn() async -&gt; ()"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/SessionStore.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "916">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -87,7 +40,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Olympsis/Data/Observers/EventObserver.swift"
@@ -97,38 +50,6 @@
             endingLineNumber = "24"
             landmarkName = "location(longitude:latitude:radius:sports:status:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "1476">
-               </Location>
-               <Location
-                  uuid = "8BFD27CB-20BF-4EE5-940A-88C39DA835C1 - 60e4a6239bffa90"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Olympsis.EventObserver.location(longitude: Swift.Double, latitude: Swift.Double, radius: Swift.Int, sports: Swift.String, status: Swift.String) async -&gt; Swift.Optional&lt;Olympsis.LocationResponse&gt;"
-                  moduleName = "Olympsis"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joel/Desktop/Projects/olympsis/client-ios/Olympsis/Data/Observers/EventObserver.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "1524">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -141,10 +62,90 @@
             filePath = "Olympsis/Data/SessionStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "getNearbyData(location:selectedSports:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B2C4CF6B-12B1-4088-AFB5-59BBCF2CCEE2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Data/Observers/ManagementObserver.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "getMemberReports(id:status:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FAF2A82-AE0B-40E6-BD35-EE50200828C7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Views/Auth/Auth.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39BB621A-1D4C-4BF9-98AC-BF08798BCBC0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Views/Profile/EditProfile.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C7AAF766-57F8-45EE-85F7-BDB698C59875"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Views/Home/Home.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53CD5B68-3C7B-446A-A3FF-65D912C49420"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Views/Home/Home.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

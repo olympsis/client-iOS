@@ -26,7 +26,7 @@ struct Notifications: View {
                 status = .failure
                 return
             }
-            _ = await userObserver.UpdateUserData(update: User(deviceToken: tk))
+            _ = await userObserver.UpdateUserData(update: UserDao(deviceToken: tk))
             status = .success
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 sessionStore.authStatus = .authenticated
@@ -49,7 +49,7 @@ struct Notifications: View {
                     .fontWeight(.medium)
                 Text("In order to notify you of local events, and club activities we need to be able to send you notifications.")
                     .multilineTextAlignment(.center)
-                    .padding(.top)
+                    .padding(.vertical)
                     .font(.callout)
                     .padding(.horizontal)
             }.frame(width: SCREEN_WIDTH)
@@ -87,7 +87,7 @@ struct Notifications: View {
                     SimpleButtonLabel(text: "Allow")
                 }
                 
-                Button(action:{}) {
+                Button(action:{ sessionStore.authStatus = .authenticated }) {
                     Text("No Thanks")
                         .foregroundColor(.primary)
                         .font(.callout)

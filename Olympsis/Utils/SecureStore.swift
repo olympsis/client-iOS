@@ -45,11 +45,11 @@ class SecureStore {
         ]
         let fetchStatus = SecItemCopyMatching(query as CFDictionary, &result)
         guard fetchStatus == errSecSuccess, let data = result as? Data else {
-            log.error("failed to get userID")
+            log.error("user id does not exist or an error occured")
             return nil
         }
         guard let userID = String(data: data, encoding: .utf8) else {
-            log.error("failed to decode userID")
+            log.error("failed to decode user id")
             return nil
         }
         return userID

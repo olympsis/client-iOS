@@ -30,6 +30,8 @@
 	</array>
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
+	<key>DEBUG_HOST</key>
+	<string>localhost</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>HOST</key>

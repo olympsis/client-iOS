@@ -62,7 +62,7 @@ struct Home: View {
                     if let e = event {
                         if status == .success {
                             VStack (alignment: .center){
-                                EventView(event: e)
+                                EventListItemView(event: e)
                                     .padding(.horizontal)
                             }
                         }
@@ -119,6 +119,25 @@ struct Home: View {
                         // later i might add a button for you to reload, however, i dont see the need to
                         // unless you are in map view.
                         hasLoaded = true
+                    }
+                    .task {
+                        if (!session.locationManager.isAuthorized) {
+                            guard hasLoaded == false else {
+                                return
+                            }
+                            guard let user = session.user,
+                                  let hometown = user.hometown else {
+                                // fall back location is apple park
+                                let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
+                                await session.getNearbyData(location: loc)
+                                status = .success
+                                return
+                            }
+                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
+                            status = .success
+                            
+                            hasLoaded = true
+                        }
                     }
                     .padding(.bottom, 100)
                 }.fullScreenCover(isPresented: $showNotifications, content: {

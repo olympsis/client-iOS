@@ -43,6 +43,45 @@ struct User: Codable {
     }
 }
 
+struct UserDao: Codable {
+    let uuid: String?
+    let username: String?
+    let bio: String?
+    let imageURL: String?
+    let visibility: String?
+    var hometown: [Double]?
+    let clubs: [String]?
+    var organizations: [String]?
+    let sports: [String]?
+    let deviceToken: String?
+
+    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, hometown: [Double]?=nil, clubs: [String]?=nil, organizations: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
+        self.uuid = uuid
+        self.username = username
+        self.bio = bio
+        self.imageURL = imageURL
+        self.visibility = visibility
+        self.hometown = hometown
+        self.clubs = clubs
+        self.organizations = organizations
+        self.sports = sports
+        self.deviceToken = deviceToken
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case uuid
+        case username
+        case bio
+        case imageURL = "image_url"
+        case visibility
+        case hometown
+        case clubs
+        case organizations
+        case sports
+        case deviceToken = "device_token"
+    }
+}
+
 struct UsernameAvailabilityResponse: Codable {
     var isAvailable: Bool
     
@@ -60,6 +99,7 @@ struct UserData: Codable, Hashable {
     var visibility: String?
     var bio: String?
     var clubs: [String]?
+    var hometown: [Double]?
     var organizations: [String]?
     var sports: [String]?
     var deviceToken: String?
@@ -81,6 +121,7 @@ struct UserData: Codable, Hashable {
         case visibility
         case bio
         case clubs
+        case hometown
         case organizations
         case sports
         case deviceToken = "device_token"

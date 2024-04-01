@@ -50,7 +50,7 @@ struct EventActionButtons: View {
     func rsvp(status: String) async {
         state = .loading
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let _ = user.uuid else {
             handleFailure()
             return
         }
@@ -119,9 +119,9 @@ struct EventActionButtons: View {
             // MARK: - Map Button
             Button(action:{ leadToMaps() }) {
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("color-prime"))
+                        .foregroundColor(Color("background"))
                     
                     VStack {
                         VStack {
@@ -131,15 +131,15 @@ struct EventActionButtons: View {
                             .imageScale(.large)
                         }.frame(height: 25)
                         Text(event.estimatedTimeToField(session.locationManager.location))
-                    }.foregroundStyle(.white)
+                    }.foregroundStyle(Color("foreground"))
                 }
             }
             
             // MARK: - Event Visibility
             ZStack {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("color-prime"))
+                    .foregroundColor(Color("background"))
                 VStack {
                     if event.visibility == "private" {
                         VStack {
@@ -154,7 +154,7 @@ struct EventActionButtons: View {
                                 .resizable()
                                 .frame(width: 25, height: 25)
                             Text("Public")
-                        }.foregroundStyle(.white)
+                        }.foregroundStyle(Color("foreground"))
                     }
                 }
             }
@@ -170,7 +170,7 @@ struct EventActionButtons: View {
                     }
                 } label: {
                     ZStack {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
                             .foregroundColor(Color("color-prime"))
                         VStack {
@@ -192,7 +192,7 @@ struct EventActionButtons: View {
             } else {
                 Button(action: { Task { await cancel() }}) {
                     ZStack {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
                             .foregroundColor(Color("color-prime"))
                         VStack {
@@ -215,9 +215,9 @@ struct EventActionButtons: View {
             // MARK: - Menu Button
             Button(action:{ self.showMenu.toggle() }) {
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("color-prime"))
+                        .foregroundColor(Color("background"))
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")
@@ -225,7 +225,7 @@ struct EventActionButtons: View {
                             .frame(width: 25, height: 5)
                         }.frame(height: 25)
                         Text("More")
-                    }.foregroundStyle(.white)
+                    }.foregroundStyle(Color("foreground"))
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(event: $event)

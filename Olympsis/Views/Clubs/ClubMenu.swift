@@ -19,12 +19,12 @@ struct ClubMenu: View {
     @State private var showAlert = false
     @State private var showOrganizations = false
     @State private var showClubs = false
+    @State private var showReports = false
     @State private var showNewClub = false
     @State private var showMembers = false
     @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false
-    
     @State private var alertType = Alerts.LeaveClub
     
     @StateObject private var clubObserver = ClubObserver()
@@ -39,7 +39,7 @@ struct ClubMenu: View {
               let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
-        return member.role
+        return member.role ?? ""
     }
     
     // this will be handled in the backend as well
@@ -120,6 +120,12 @@ struct ClubMenu: View {
                         }
                         
                         if role != "member" {
+                            MenuButton(icon: Image(systemName: "ladybug"), text: "Reports", action: {
+                                self.showReports.toggle()
+                            })
+                        }
+                        
+                        if role != "member" {
                             MenuButton(icon: Image(systemName: "building.fill"), text: "Change Organization", action: {
                                 self.showOrganizations.toggle()
                             })
@@ -177,6 +183,9 @@ struct ClubMenu: View {
             .fullScreenCover(isPresented: $showClubs) {
                 ClubsList2()
             }
+            .fullScreenCover(isPresented: $showReports, content: {
+                GroupReports()
+            })
             .alert(isPresented: $showAlert) {
                 switch alertType {
                 case .LeaveClub:

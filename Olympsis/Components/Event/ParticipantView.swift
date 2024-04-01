@@ -50,10 +50,10 @@ struct ParticipantView: View {
                     Circle()
                         .frame(width: 65, height: 65)
                         .foregroundColor(ringColor)
-                    Color.gray // Indicates an error.
+                    Color("background") // Indicates an error.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
-                    Image(systemName: "person")
+                    Image(systemName: "person.fill")
                         .imageScale(.large)
                         .foregroundStyle(.primary)
                 }.frame(width: 65, height: 65)
@@ -62,7 +62,7 @@ struct ParticipantView: View {
                     Circle()
                         .frame(width: 65, height: 65)
                         .foregroundColor(ringColor)
-                    Color.gray // Acts as a placeholder.
+                    Color("background") // Acts as a placeholder.
                         .clipShape(Circle())
                         .frame(width: 55, height: 55)
                     ProgressView()

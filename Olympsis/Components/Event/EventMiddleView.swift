@@ -70,11 +70,10 @@ struct EventMiddleView: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .stroke(lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
+            RoundedRectangle(cornerRadius: 10)
                 .padding(.horizontal)
                 .frame(height: 70)
-                .foregroundStyle(Color("color-prime"))
+                .foregroundStyle(Color("background"))
             HStack (alignment: .center) {
                 VStack(alignment: .center){
                     if event.actualStopTime != nil {

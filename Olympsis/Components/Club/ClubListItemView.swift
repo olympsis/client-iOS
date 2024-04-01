@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct ClubListView: View {
+struct ClubListItemView: View {
 
     @State private var status: LOADING_STATE = .pending
     @State private var showDetails: Bool = false
@@ -68,32 +68,46 @@ struct ClubListView: View {
         VStack (alignment: .leading){
             HStack {
                 // IMAGE
-                AsyncImage(url: URL(string: imageURL)){ phase in
-                    if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 100, height: 100, alignment: .center)
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Rectangle()
-                                    .stroke(Color("foreground"), lineWidth: 1.0)
-                                    .frame(width: 100, height: 100)
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .foregroundColor(.red)
-                                    .imageScale(.large)
+                if (club.imageURL != nil) {
+                    AsyncImage(url: URL(string: imageURL)){ phase in
+                        if let image = phase.image {
+                                image // Displays the loaded image.
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100, alignment: .center)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else if phase.error != nil {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(.gray)
+                                        .opacity(0.5)
+                                        .frame(width: 100, height: 100)
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.red)
+                                        .imageScale(.large)
+                                }
+                            } else {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .opacity(0.5)
+                                        .frame(width: 100, height: 100)
+                                        .foregroundStyle(.gray)
+                                    ProgressView()
+                                }
                             }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .opacity(0.1)
-                                    .frame(width: 100, height: 100)
-                                    .accentColor(Color("foreground"))
-                                ProgressView()
-                            }
-                        }
-                }.frame(width: 100, height: 100, alignment: .center)
+                    }.frame(width: 100, height: 100, alignment: .center)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 100, height: 100)
+                            .foregroundStyle(.gray)
+                            .opacity(0.5)
+                        Image(systemName: "person.3.fill")
+                            .foregroundStyle(Color("foreground"))
+                            .imageScale(.large)
+                    }
+                }
                 
                 VStack(alignment:.leading){
                     Text(clubName)
@@ -134,24 +148,25 @@ struct ClubListView: View {
                 .padding(.top)
             
             HStack(spacing: 15) {
-                Button(action:{ Task{ await Apply() } }) {
-                    LoadingButton(text: "Apply", width: 250, status: $status)
-                }.contentShape(Rectangle())
-                    .frame(width: 250)
-                    
                 Button(action: { self.showDetails.toggle() }) {
                     ZStack {
-                        Rectangle()
-                            .stroke(lineWidth: 1)
-                            .frame(width: 100,height: 40)
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: (SCREEN_WIDTH/2)-25,height: 35)
+                            .foregroundStyle(.gray)
+                            .opacity(0.5)
                         Text("Details")
                             .textCase(.uppercase)
                             .font(.caption)
+                            .foregroundStyle(.white)
                     }
-                }.contentShape(Rectangle())
+                }.contentShape(RoundedRectangle(cornerRadius: 10))
+                
+                Button(action:{ Task{ await Apply() } }) {
+                    LoadingButton(text: "Apply", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
+                }.contentShape(RoundedRectangle(cornerRadius: 10))
             }.padding(.all)
         }.background {
-            Rectangle()
+            RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color("background"))
                 .padding(.horizontal, 5)
         }
@@ -162,5 +177,5 @@ struct ClubListView: View {
 }
 
 #Preview {
-    ClubListView(club: CLUBS[0], showToast: .constant(false), observer: ClubObserver())
+    ClubListItemView(club: CLUBS[1], showToast: .constant(false), observer: ClubObserver())
 }

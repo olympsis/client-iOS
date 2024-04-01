@@ -93,9 +93,8 @@ struct NewPost: View {
                         Text("What's up?")
                             .bold()
                         ZStack {
-                            Rectangle()
-                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
-                                .opacity(0.3)
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color("background"))
                             TextEditor(text: $manager.body)
                                 .scrollContentBackground(.hidden)
                                 .tint(Color("color-prime"))
@@ -113,7 +112,7 @@ struct NewPost: View {
                                 matching: .images,
                                 photoLibrary: .shared()) {
                                     ZStack {
-                                        Rectangle()
+                                        RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 100, height: 30)
                                             .foregroundColor(Color("color-prime"))
                                         Text("upload")

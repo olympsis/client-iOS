@@ -13,54 +13,55 @@ import Foundation
 class ClubService {
     
     private var http: Courrier
-    private let tokenStore = SecureStore()
-    private let cacheService = CacheService()
+    private let tokenStore: SecureStore
+    private let cacheService: CacheService
     
     init() {
         let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-        let key = Bundle.main.object(forInfoDictionaryKey: "API-KEY") as? String ?? ""
-        self.http = Courrier(host: host, apiKey: key)
+        self.http = Courrier(.HTTPS, host: host)
+        self.tokenStore = SecureStore()
+        self.cacheService = CacheService()
     }
     
     func getClubs(c: String, s: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/clubs", queryItems: [
+        let endpoint = Endpoint("/clubs", queryItems: [
             URLQueryItem(name: "country", value: c),
             URLQueryItem(name: "state", value: s)
         ])
-        let (data, resp) = try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (data, resp) = try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return (data, resp)
     }
     
     func getUserClubs(clubs: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/clubs/user", queryItems: [
+        let endpoint = Endpoint("/clubs/user", queryItems: [
             URLQueryItem(name: "clubs", value: clubs)
         ])
-        let (data, resp) = try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (data, resp) = try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return (data, resp)
     }
     
     func getClub(id: String) async throws -> Data {
-        let endpoint = Endpoint(path: "/clubs/\(id)")
-        let (data, _) = try await http.Request(endpoint: endpoint, method: .GET, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let endpoint = Endpoint("/clubs/\(id)")
+        let (data, _) = try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return data
     }
     
     func createClub(club: Club) async throws -> Data {
-        let endpoint = Endpoint(path: "/clubs")
-        let (data, _) = try await http.Request(endpoint: endpoint, method: .POST, body: EncodeToData(club), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let endpoint = Endpoint("/clubs")
+        let (data, _) = try await http.Request(.POST, endpoint, body: EncodeToData(club), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return data
     }
     
     func leaveClub(id: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)/leave")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let endpoint = Endpoint("/clubs/\(id)/leave")
+        let (_, resp) = try await http.Request(.PUT, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return resp
     }
     
     // TODO: FOR ADMINS
     func deleteClub(id: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: [
+        let endpoint = Endpoint("/clubs/\(id)")
+        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -68,9 +69,9 @@ class ClubService {
     }
     
     func createClubApplication(id: String) async throws -> Bool {
-        let endpoint = Endpoint(path: "/clubs/\(id)/applications")
+        let endpoint = Endpoint("/clubs/\(id)/applications")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .POST, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(.POST, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
             return false
         }
@@ -78,16 +79,16 @@ class ClubService {
     }
     
     func deleteClubApplication(id: String) async throws -> Data {
-        let endpoint = Endpoint(path: "/clubs/applications/\(id)")
+        let endpoint = Endpoint("/clubs/applications/\(id)")
         
-        let (data, _) = try await http.Request(endpoint: endpoint, method: .DELETE, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (data, _) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
         return data
     }
     
     func getApplications(id: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint(path: "/clubs/\(id)/applications")
+        let endpoint = Endpoint("/clubs/\(id)/applications")
         
-        let (data, resp) = try await http.Request(endpoint: endpoint, method: .GET, headers: [
+        let (data, resp) = try await http.Request(.GET, endpoint, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -95,9 +96,9 @@ class ClubService {
     }
     
     func updateApplication(id: String, appID: String, req: ApplicationUpdateRequest) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)/applications/\(appID)")
+        let endpoint = Endpoint("/clubs/\(id)/applications/\(appID)")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, body: EncodeToData(req), headers: [
+        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(req), headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -106,8 +107,8 @@ class ClubService {
     
     func changeRank(id: String, memberId: String, role: String) async throws -> URLResponse {
         let req = ChangeRoleRequest(role: role)
-        let endpoint = Endpoint(path: "/clubs/\(id)/members/\(memberId)/rank")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method:.PUT, body: EncodeToData(req), headers: [
+        let endpoint = Endpoint("/clubs/\(id)/members/\(memberId)/rank")
+        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(req), headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -115,9 +116,9 @@ class ClubService {
     }
     
     func kickMember(id: String, memberId: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)/members/\(memberId)/kick")
+        let endpoint = Endpoint("/clubs/\(id)/members/\(memberId)/kick")
         
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: [
+        let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -125,8 +126,8 @@ class ClubService {
     }
     
     func pinPost(id: String, postId: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)/post/\(postId)")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: [
+        let endpoint = Endpoint("/clubs/\(id)/post/\(postId)")
+        let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])
@@ -134,8 +135,8 @@ class ClubService {
     }
     
     func unPinPost(id: String) async throws -> URLResponse {
-        let endpoint = Endpoint(path: "/clubs/\(id)/post")
-        let (_, resp) = try await http.Request(endpoint: endpoint, method: .PUT, headers: [
+        let endpoint = Endpoint("/clubs/\(id)/post")
+        let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
             "Authorization": tokenStore.fetchTokenFromKeyChain(),
             "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
         ])

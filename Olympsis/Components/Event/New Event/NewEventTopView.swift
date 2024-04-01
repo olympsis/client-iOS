@@ -37,7 +37,7 @@ struct NewEventTopView: View {
                 }.padding(.horizontal)
                     .padding(.vertical, 5)
                     .background {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color("color-prime"))
                     }
             }
@@ -54,7 +54,7 @@ struct NewEventTopView: View {
                 }.padding(.horizontal)
                     .padding(.vertical, 5)
                     .background {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color("color-prime"))
                     }
             }

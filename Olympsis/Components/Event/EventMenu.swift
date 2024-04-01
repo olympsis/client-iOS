@@ -11,8 +11,10 @@ struct EventMenu: View {
     
     @Binding var event: Event
     @State private var loadingState: LOADING_STATE = .pending
-    @State private var showNotification: Bool = false
+    
+    @State private var showReport: Bool = false
     @State private var showEditEvent: Bool = false
+    @State private var showNotification: Bool = false
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
@@ -145,7 +147,8 @@ struct EventMenu: View {
                 }
             }
             
-            MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue")
+            MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
+            
             
             if isPosterOrAdmin {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
@@ -158,6 +161,9 @@ struct EventMenu: View {
             Spacer()
         }.sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)
+        })
+        .fullScreenCover(isPresented: $showReport, content: {
+            EventReportView(event: event)
         })
         .fullScreenCover(isPresented: $showEditEvent, content: {
             if event.type == "pickup" {

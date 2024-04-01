@@ -14,17 +14,17 @@ struct Profile: View {
     
     var username: String {
         guard let user = session.user,
-              let name = user.username else {
+              let username = user.username else {
             return "olympsis-user"
         }
-        return name
+        return username
     }
     
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    ProfileModel()
+                    ProfileModel(userData: $session.user)
                         .padding(.top, 20)
                         .padding(.leading)
                     

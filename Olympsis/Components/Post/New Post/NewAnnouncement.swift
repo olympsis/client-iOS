@@ -93,9 +93,8 @@ struct NewAnnouncement: View {
                         Text("What's up?")
                             .bold()
                         ZStack {
-                            Rectangle()
-                                .stroke(lineWidth: 1)
-                                .foregroundColor(Color("color-prime"))
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color("background"))
                             TextEditor(text: $manager.body)
                                 .scrollContentBackground(.hidden)
                                 .foregroundColor(.primary)
@@ -127,6 +126,7 @@ struct NewAnnouncement: View {
                                 }
                             }
                     }.padding(.horizontal)
+                        .padding(.top)
                     
                     HStack {
                         Text("Image")
@@ -138,7 +138,7 @@ struct NewAnnouncement: View {
                                 matching: .images,
                                 photoLibrary: .shared()) {
                                     ZStack {
-                                        Rectangle()
+                                        RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 100, height: 30)
                                             .foregroundColor(Color("color-prime"))
                                         Text("upload")

@@ -21,7 +21,7 @@ struct ClubApplications: View {
                 ScrollView(showsIndicators: false) {
                     if applications.filter({$0.status != "accepted"}).count > 0 {
                         ForEach(applications.filter({$0.status != "accepted"})) { application in
-                            ClubApplicationView(club: club, application: application, applications: $applications)
+                            ClubApplicationListItem(club: club, application: application, applications: $applications)
                         }
                     } else {
                         Text("No Applications")

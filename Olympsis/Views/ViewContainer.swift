@@ -42,8 +42,8 @@ struct ViewContainer: View {
         }
         .task {
             await session.CheckIn()
-            session.locationManager.requestLocation()
-        }  
+            session.locationManager.requestLocation() // requesting location so that it starts updating
+        }
     }
 }
 

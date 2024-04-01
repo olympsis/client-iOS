@@ -132,7 +132,7 @@ struct SelectedCustomField {
 class Member: Codable, Identifiable {
     
     let id: String?
-    let role: String
+    let role: String?
     let user: UserSnippet?
     let joinedAt: Int64?
     

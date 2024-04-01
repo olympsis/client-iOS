@@ -34,7 +34,7 @@ struct OlympsisApp: App {
                         .environmentObject(notificationManager)
                 }
             }
-        }.onChange(of: sessionStore.authStatus) { newValue in
+        }.onChange(of: sessionStore.authStatus) { _, newValue in
             Task {
                 await MainActor.run {
                     if sessionStore.authStatus == .authenticated {
@@ -69,10 +69,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         _token = token;
-        log.debug("registered for remote notifications successfull")
+        log.info("registered for remote notifications successfull")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        log.debug("railed to register for remote notifications")
+        log.error("failed to register for remote notifications")
     }
 }
