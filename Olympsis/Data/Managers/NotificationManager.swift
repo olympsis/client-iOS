@@ -27,6 +27,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
         _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay]) // 
     }
+
     
     // checks and makes sure all the notification authorizations are there
     func checkAuthorizationStatus() async throws -> Bool {

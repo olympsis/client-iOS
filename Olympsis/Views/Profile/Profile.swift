@@ -12,7 +12,13 @@ struct Profile: View {
     @State private var showMenu = false
     @EnvironmentObject private var session: SessionStore
     
-    @State private var username: String = "olympsis-user"
+    var username: String {
+        guard let user = session.user,
+              let username = user.username else {
+            return "olympsis-user"
+        }
+        return username
+    }
     
     var body: some View {
         NavigationView {
