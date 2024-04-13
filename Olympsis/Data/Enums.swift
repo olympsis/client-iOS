@@ -17,7 +17,7 @@ enum ACCOUNT_STATE {
     case Incomplete
 }
 
-enum AUTH_STATUS {
+enum AUTH_STATUS: String, CaseIterable {
     case unknown
     case not_finished
     case authenticated

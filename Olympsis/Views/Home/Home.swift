@@ -12,15 +12,6 @@ import NotificationCenter
 
 struct Home: View {
     
-    // status of loading event
-    enum ViewStatus {
-        case loading
-        case failed
-        case done
-    }
-    
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
-    @State private var fieldIndex = "0"
     @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
     @State private var showMoreFields = false
@@ -28,6 +19,8 @@ struct Home: View {
     @State private var status: LOADING_STATE = .loading
     
     @EnvironmentObject var session: SessionStore
+    
+    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
     
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
@@ -121,6 +114,7 @@ struct Home: View {
                         hasLoaded = true
                     }
                     .task {
+                        // If we don't have the user's location, we will use the fallback location
                         if (!session.locationManager.isAuthorized) {
                             guard hasLoaded == false else {
                                 return

@@ -21,7 +21,10 @@ struct SearchBar: View {
                 .keyboardType(.webSearch)
         }
         .padding(8)
-        .background(Color(.secondarySystemBackground))
+        .background(
+            Color(.secondarySystemBackground)
+                .cornerRadius(radius: 10, corners: .allCorners)
+        )
     }
 }
 

@@ -16,6 +16,7 @@ struct ViewContainer: View {
     @State private var showBeta: Bool = false
     @State private var accountState: ACCOUNT_STATE = .Unknown
     @State private var authObserver = AuthObserver()
+    
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var notificationManager: NotificationManager
     
@@ -41,7 +42,11 @@ struct ViewContainer: View {
             BetaPage()
         }
         .task {
+            await session.fetchUser()
             await session.CheckIn()
+            guard session.locationManager.isAuthorized else {
+                return
+            }
             session.locationManager.requestLocation() // requesting location so that it starts updating
         }
     }
@@ -49,6 +54,8 @@ struct ViewContainer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewContainer().environmentObject(SessionStore()).environmentObject(NotificationManager())
+        ViewContainer()
+            .environmentObject(SessionStore())
+            .environmentObject(NotificationManager())
     }
 }

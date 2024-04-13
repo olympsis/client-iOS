@@ -74,7 +74,11 @@ struct Auth: View {
                                             return
                                         }
                                         withAnimation {
-                                            currentView = .location
+                                            if (sessionStore.locationManager.isAuthorized) {
+                                                currentView = .notifications
+                                            } else {
+                                                currentView = .location
+                                            }
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
