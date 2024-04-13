@@ -160,12 +160,13 @@ struct ClubListItemView: View {
                             .foregroundStyle(.white)
                     }
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
-                
+                Spacer()
                 Button(action:{ Task{ await Apply() } }) {
                     LoadingButton(text: "Apply", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
             }.padding(.all)
-        }.background {
+        }
+        .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color("background"))
                 .padding(.horizontal, 5)

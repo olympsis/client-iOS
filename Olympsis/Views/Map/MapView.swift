@@ -71,7 +71,6 @@ struct MapView: View {
                         
                         Spacer()
                         LocationButton(.currentLocation){
-                            session.locationManager.requestLocation()
                             withAnimation {
                                 cameraPosition = .automatic
                             }
@@ -118,8 +117,9 @@ struct MapView: View {
                                     .foregroundColor(.white)
                             }
                         }.frame(width: 41)
+                            .padding(.top, 2)
                     }.padding(.horizontal)
-                        .padding(.top, -13)
+                        .padding(.top, -12)
                 }
             }.sheet(item: $selectedField) { field in
                 FieldView(field: field)

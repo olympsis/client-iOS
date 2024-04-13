@@ -14,39 +14,25 @@ import AuthenticationServices
 @main
 struct OlympsisApp: App {
     
-    @State var showAuth: Bool?
+    @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
+    
     @StateObject private var sessionStore = SessionStore()
     @StateObject private var notificationManager = NotificationManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
         WindowGroup {
-            if showAuth == nil {
+            switch authStatus {
+            case .unknown, .none:
                 LaunchScreen()
-            } else {
-                if !showAuth! {
-                    ViewContainer() // home view
-                        .environmentObject(sessionStore)
-                        .environmentObject(notificationManager)
-                } else {
-                    AuthContainer() // auth view
-                        .environmentObject(sessionStore)
-                        .environmentObject(notificationManager)
-                }
-            }
-        }.onChange(of: sessionStore.authStatus) { _, newValue in
-            Task {
-                await MainActor.run {
-                    if sessionStore.authStatus == .authenticated {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            showAuth = false
-                        }
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            showAuth = true
-                        }
-                    }
-                }
+            case .authenticated:
+                ViewContainer()
+                    .environmentObject(sessionStore)
+                    .environmentObject(notificationManager)
+            case .unauthenticated, .not_finished:
+                AuthContainer()
+                    .environmentObject(sessionStore)
+                    .environmentObject(notificationManager)
             }
         }
     }

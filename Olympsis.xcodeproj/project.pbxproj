@@ -239,7 +239,6 @@
 		9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */; };
 		9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6B22903BE2F0003D501 /* CacheService.swift */; };
 		9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F422901F0E6008C07F1 /* CreateUserDataRequest.swift */; };
-		9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F4629023E9F008C07F1 /* LocationObserver.swift */; };
 		9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F4D290246BD008C07F1 /* NotificationManager.swift */; };
 		9AB02F5729024D04008C07F1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5629024D04008C07F1 /* Home.swift */; };
 		9AB02F5929024D24008C07F1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F5829024D24008C07F1 /* MapView.swift */; };
@@ -260,7 +259,6 @@
 		9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208EC2931EF2D007A62C4 /* UpdateUserDataDao.swift */; };
 		9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F12933F4F8007A62C4 /* Messages.swift */; };
 		9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F32933FE41007A62C4 /* EventMenu.swift */; };
-		9AD208F6293425C6007A62C4 /* MyClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F5293425C6007A62C4 /* MyClubView.swift */; };
 		9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208F7293429E3007A62C4 /* ClubsList.swift */; };
 		9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FB293432A4007A62C4 /* ClubMenu.swift */; };
 		9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FD2934448D007A62C4 /* ClubApplications.swift */; };
@@ -550,7 +548,6 @@
 		9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataResponse.swift; sourceTree = "<group>"; };
 		9AAAA6B22903BE2F0003D501 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		9AB02F422901F0E6008C07F1 /* CreateUserDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserDataRequest.swift; sourceTree = "<group>"; };
-		9AB02F4629023E9F008C07F1 /* LocationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationObserver.swift; sourceTree = "<group>"; };
 		9AB02F4D290246BD008C07F1 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		9AB02F5629024D04008C07F1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		9AB02F5829024D24008C07F1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -572,7 +569,6 @@
 		9AD208EC2931EF2D007A62C4 /* UpdateUserDataDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDataDao.swift; sourceTree = "<group>"; };
 		9AD208F12933F4F8007A62C4 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		9AD208F32933FE41007A62C4 /* EventMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMenu.swift; sourceTree = "<group>"; };
-		9AD208F5293425C6007A62C4 /* MyClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyClubView.swift; sourceTree = "<group>"; };
 		9AD208F7293429E3007A62C4 /* ClubsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsList.swift; sourceTree = "<group>"; };
 		9AD208FB293432A4007A62C4 /* ClubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMenu.swift; sourceTree = "<group>"; };
 		9AD208FD2934448D007A62C4 /* ClubApplications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplications.swift; sourceTree = "<group>"; };
@@ -1156,7 +1152,6 @@
 			children = (
 				9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */,
 				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
-				9AB02F4629023E9F008C07F1 /* LocationObserver.swift */,
 				9ABB1EC2290604060050C0F0 /* FeedObserver.swift */,
 				9A81B60A2924254D009CA6ED /* FieldObserver.swift */,
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
@@ -1297,7 +1292,6 @@
 			isa = PBXGroup;
 			children = (
 				9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */,
-				9AD208F5293425C6007A62C4 /* MyClubView.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
 				9AD20901293444A4007A62C4 /* MemberView.swift */,
 				5D0CC9422BB0CC8700E16B95 /* MemberView2.swift */,
@@ -1611,7 +1605,6 @@
 				9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */,
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
-				9AB02F4729023E9F008C07F1 /* LocationObserver.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
@@ -1757,7 +1750,6 @@
 				5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */,
 				5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */,
 				9A5CA4DB296F725C00C63A32 /* MembersListView.swift in Sources */,
-				9AD208F6293425C6007A62C4 /* MyClubView.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
 				5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
@@ -1997,7 +1989,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2052,7 +2044,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -17,8 +17,6 @@ class SessionStore: ObservableObject {
     private let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
     
-    @Published var authStatus: AUTH_STATUS = .unknown
-    
     @Published var user: UserData?              // User data Cache
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
@@ -53,13 +51,14 @@ class SessionStore: ObservableObject {
      Whenever set, this is cached in app until changed or app is removed
      */
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     init() {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = notificationsManager
         self.user = cacheService.fetchUser()
         authObserver.checkAuthStatus { (auth) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.authStatus = auth
             }
         }

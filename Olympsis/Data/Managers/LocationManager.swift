@@ -40,6 +40,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func requestLocation() {
         manager.requestWhenInUseAuthorization()
+        manager.startMonitoringSignificantLocationChanges()
     }
     
     func changeLocationRegion(location: CLLocationCoordinate2D) {

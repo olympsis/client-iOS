@@ -46,12 +46,12 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func GetUserData() async throws -> User {
+    func GetUserData() async throws -> UserData {
         let (data, resp) = try await userService.GetUserData()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             throw UserObserverError.NotFound
         }
-        let object = try decoder.decode(User.self, from: data)
+        let object = try decoder.decode(UserData.self, from: data)
         return object
     }
     

@@ -16,20 +16,15 @@ struct Location: View {
     @State private var showHomeTown: Bool = false
     @State private var showExplination: Bool = false
     @State private var status: LOADING_STATE = .pending
-    @State private var location = LocationObserver()
+    @State private var location = LocationManager()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "location_permission_view")
     
     
     func handleAllow() async {
-        do {
-            try await location.requestAuthorization()
-            status = .success
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                currentView = .notifications
-            }
-        } catch {
-            status = .failure
-            log.error("failed to request location authorization: \(error.localizedDescription)")
+        location.requestLocation()
+        status = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            currentView = .notifications
         }
     }
     

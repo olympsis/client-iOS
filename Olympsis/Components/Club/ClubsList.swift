@@ -23,6 +23,13 @@ struct ClubsList: View {
     private var geoCoder = CLGeocoder()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "clubs_list_view")
     
+    private var fallbackLocation: CLLocation {
+        guard let user = session.user, let hometown = user.hometown else {
+            return CLLocation(latitude: 37.334886, longitude: -122.008988)
+        }
+        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+    }
+    
     private var filteredClubs: [Club] {
         if text == "" {
             guard let user = session.user,
@@ -118,27 +125,79 @@ struct ClubsList: View {
         }
         .task {
             if clubs.isEmpty {
-                guard let location = session.locationManager.location else {
-                    return
-                }
                 
-                let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
-                
-                do {
-                    let locale = Locale(identifier: "en_US")
-                    let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
-                    guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea,
-                          let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                // If we are not authorized to have the user's location we rely on the fallback location
+                if (!session.locationManager.isAuthorized) {
+                    do {
+                        let locale = Locale(identifier: "en_US")
+                        let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
+                        let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+                        guard let country = pk.first?.country,
+                              let state = pk.first?.administrativeArea,
+                              let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                            status = .failure
+                            return
+                        }
+                        await MainActor.run {
+                            self.clubs = resp
+                            status = .success
+                        }
+                    } catch {
+                        log.error("\(error)")
                         status = .failure
                         return
                     }
-                    await MainActor.run {
-                        self.clubs = resp
+                    
+                    status = .success
+                    return
+                    
+                } else {
+                    
+                    // Check and see if we have the user's actual location
+                    // If we don't then we use the location fall back
+                    guard let location = session.locationManager.location else {
+                        do {
+                            let locale = Locale(identifier: "en_US")
+                            let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
+                            let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+                            guard let country = pk.first?.country,
+                                  let state = pk.first?.administrativeArea,
+                                  let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                                status = .failure
+                                return
+                            }
+                            await MainActor.run {
+                                self.clubs = resp
+                                status = .success
+                            }
+                        } catch {
+                            log.error("\(error)")
+                        }
                         status = .success
+                        return
                     }
-                } catch {
-                    log.error("\(error)")
+                    
+                    // We do have the user's location, then continue with query
+                    let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                    do {
+                        let locale = Locale(identifier: "en_US")
+                        let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+                        guard let country = pk.first?.country,
+                              let state = pk.first?.administrativeArea,
+                              let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                            status = .failure
+                            return
+                        }
+                        await MainActor.run {
+                            self.clubs = resp
+                            status = .success
+                            return
+                        }
+                    } catch {
+                        log.error("\(error)")
+                        status = .failure
+                        return
+                    }
                 }
             }
         }
