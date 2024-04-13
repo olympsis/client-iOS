@@ -62,7 +62,6 @@
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
-		5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9F693D2BB665630057D205 /* ProfileSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* ProfileSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
@@ -114,14 +113,6 @@
 		5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
-		5DD0E3F52AC889FA00C85B94 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */; };
-		5DD0E3F72AC889FA00C85B94 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */; };
-		5DD0E3FA2AC889FA00C85B94 /* LiveEventBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */; };
-		5DD0E3FC2AC889FA00C85B94 /* LiveEventLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */; };
-		5DD0E3FE2AC889FA00C85B94 /* LiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */; };
-		5DD0E4002AC889FA00C85B94 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */; };
-		5DD0E4022AC889FA00C85B94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DD0E4012AC889FA00C85B94 /* Assets.xcassets */; };
-		5DD0E4062AC889FA00C85B94 /* LiveEventExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
 		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* FieldView.swift */; };
@@ -297,13 +288,6 @@
 			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
 			remoteInfo = Olympsis;
 		};
-		5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5DD0E3F22AC889F900C85B94;
-			remoteInfo = LiveEventExtension;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -323,7 +307,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				5DD0E4062AC889FA00C85B94 /* LiveEventExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,15 +405,8 @@
 		5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
 		5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWorkoutView.swift; sourceTree = "<group>"; };
 		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
-		5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveEventExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEventBundle.swift; sourceTree = "<group>"; };
-		5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEventLiveActivity.swift; sourceTree = "<group>"; };
-		5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEvent.swift; sourceTree = "<group>"; };
-		5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
-		5DD0E4012AC889FA00C85B94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5DD0E4032AC889FA00C85B94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
 		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
@@ -606,15 +582,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DD0E3F02AC889F900C85B94 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E3F72AC889FA00C85B94 /* SwiftUI.framework in Frameworks */,
-				5DD0E3F52AC889FA00C85B94 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,19 +803,6 @@
 			path = Activities;
 			sourceTree = "<group>";
 		};
-		5DD0E3F82AC889FA00C85B94 /* LiveEvent */ = {
-			isa = PBXGroup;
-			children = (
-				5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */,
-				5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */,
-				5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */,
-				5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */,
-				5DD0E4012AC889FA00C85B94 /* Assets.xcassets */,
-				5DD0E4032AC889FA00C85B94 /* Info.plist */,
-			);
-			path = LiveEvent;
-			sourceTree = "<group>";
-		};
 		5F493FA32A54024900EAF5A4 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,7 +970,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
-				5DD0E3F82AC889FA00C85B94 /* LiveEvent */,
 				5D8086042B2FF9C100EA01AC /* OlympsisTests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
@@ -1027,7 +980,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
-				5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */,
 				5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */,
 			);
 			name = Products;
@@ -1398,23 +1350,6 @@
 			productReference = 5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5DD0E3F22AC889F900C85B94 /* LiveEventExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */;
-			buildPhases = (
-				5DD0E3EF2AC889F900C85B94 /* Sources */,
-				5DD0E3F02AC889F900C85B94 /* Frameworks */,
-				5DD0E3F12AC889F900C85B94 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = LiveEventExtension;
-			productName = LiveEventExtension;
-			productReference = 5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A8FF0BB28BB14C100DE4CF8 /* Build configuration list for PBXNativeTarget "Olympsis" */;
@@ -1428,7 +1363,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -1453,9 +1387,6 @@
 						CreatedOnToolsVersion = 15.1;
 						TestTargetID = 9A8FF0AC28BB14BF00DE4CF8;
 					};
-					5DD0E3F22AC889F900C85B94 = {
-						CreatedOnToolsVersion = 15.0;
-					};
 					9A8FF0AC28BB14BF00DE4CF8 = {
 						CreatedOnToolsVersion = 14.0;
 					};
@@ -1479,7 +1410,6 @@
 			projectRoot = "";
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
-				5DD0E3F22AC889F900C85B94 /* LiveEventExtension */,
 				5D8086022B2FF9C100EA01AC /* OlympsisTests */,
 			);
 		};
@@ -1490,15 +1420,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DD0E3F12AC889F900C85B94 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E4022AC889FA00C85B94 /* Assets.xcassets in Resources */,
-				5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1555,17 +1476,6 @@
 				5DBEFB572B641D1100FFCADA /* NewEventManagerTests.swift in Sources */,
 				5D8086102B30057000EA01AC /* EventModels.swift in Sources */,
 				5DBEFB5B2B643EB000FFCADA /* GenericModels.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DD0E3EF2AC889F900C85B94 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E3FE2AC889FA00C85B94 /* LiveEvent.swift in Sources */,
-				5DD0E4002AC889FA00C85B94 /* AppIntent.swift in Sources */,
-				5DD0E3FA2AC889FA00C85B94 /* LiveEventBundle.swift in Sources */,
-				5DD0E3FC2AC889FA00C85B94 /* LiveEventLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1814,11 +1724,6 @@
 			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
 			targetProxy = 5D8086072B2FF9C100EA01AC /* PBXContainerItemProxy */;
 		};
-		5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5DD0E3F22AC889F900C85B94 /* LiveEventExtension */;
-			targetProxy = 5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1875,77 +1780,6 @@
 			};
 			name = Release;
 		};
-		5DD0E4082AC889FA00C85B94 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A6H49Q85D;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LiveEvent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveEvent;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		5DD0E4092AC889FA00C85B94 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A6H49Q85D;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LiveEvent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveEvent;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.coronislabs.Olympsis.LiveEvent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
 		9A8FF0B928BB14C100DE4CF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1997,7 +1831,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2052,7 +1886,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2156,15 +1990,6 @@
 			buildConfigurations = (
 				5D80860A2B2FF9C100EA01AC /* Debug */,
 				5D80860B2B2FF9C100EA01AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5DD0E4082AC889FA00C85B94 /* Debug */,
-				5DD0E4092AC889FA00C85B94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
