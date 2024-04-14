@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<dict>
+		<key>NSPrivacyAccessedAPIType</key>
+		<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+		<key>NSPrivacyAccessedAPITypeReasons</key>
+		<array>
+			<string>CA92.1</string>
+		</array>
+	</dict>
+	<key>CFBundleIdentifier</key>
+	<string></string>
 	<key>API-KEY</key>
 	<string>X0HyasjIZL6GLo7hBzwZneCQhmCIkZoW</string>
 	<key>CFBundleDocumentTypes</key>
@@ -32,7 +43,7 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>In order to notify you of local events, and club activities our app needs to be able send you notifications.</string>
+	<string>This app requires access to your location to show you nearby events and activities happening in your area. For example, if there&apos;s pick up or a tournament happening within a few miles of your current location, we can notify you about it and provide relevant details. We will also use your location to trigger location-based features when you visit specific areas or venues, such as checking in to events or receiving special offers when you arrive at a particular venue.</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>
