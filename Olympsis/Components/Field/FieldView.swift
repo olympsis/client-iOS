@@ -340,7 +340,7 @@ struct FieldEventsView: View {
                             .padding(.top)
                     }else {
                         ForEach(fieldEvents) { event in
-                            EventListItemView(event: event)
+                            EventListItem(event: event)
                         }
                     }
                 }

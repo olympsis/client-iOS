@@ -68,7 +68,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 break
                 
             case .notDetermined:        // Authorization not determined yet.
-                manager.requestWhenInUseAuthorization()
                 break
                 
             default:

@@ -9,23 +9,24 @@ import os
 import OSLog
 import SwiftUI
 import Foundation
+import FirebaseAuth
 import CoreLocation
 
 /// App session data, fetched every session, stored in memory until app is closed
 class SessionStore: ObservableObject {
     
     private let secureStore = SecureStore()
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     @Published var user: UserData?              // User data Cache
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
     @Published var events = [Event]()           // Events Cache
     @Published var fields = [Field]()           // Fields Cache
+    @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
     @Published var clubsState: LOADING_STATE = .loading
-    var clubTokens = [String:String]()
     
     // groups & posts
     @Published var selectedGroup: GroupSelection?
@@ -51,27 +52,48 @@ class SessionStore: ObservableObject {
      Whenever set, this is cached in app until changed or app is removed
      */
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
+    
+    var isRegisterComplete: Bool {
+        
+        let user = cacheService.fetchUser()
+        guard user?.username != nil,
+              user?.sports != nil,
+              user?.visibility != nil else {
+            return false
+        }
+        return true
+    }
     
     init() {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = notificationsManager
-        self.user = cacheService.fetchUser()
-        authObserver.checkAuthStatus { (auth) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.authStatus = auth
+        authStatus = .unknown
+        user = cacheService.fetchUser()
+        
+        Auth.auth().addStateDidChangeListener { auth, usr in
+            if (usr != nil) {
+                guard self.authType != nil && self.authType == .new else {
+                    guard self.isRegisterComplete else {
+                        self.authStatus = .unauthenticated
+                        return
+                    }
+                    self.authStatus = .authenticated
+                    return
+                }
+                self.authStatus = .unauthenticated
+            } else {
+                self.authStatus = .unauthenticated
             }
         }
     }
+
     
-    func fetchUser() async {
-        user = cacheService.fetchUser()
-    }
     
     func CheckIn() async {
         do {
             guard let resp = try await userObserver.CheckIn() else {
-                authStatus = .unauthenticated
                 return
             }
             await MainActor.run {
@@ -114,22 +136,11 @@ class SessionStore: ObservableObject {
                 if let i = resp.invitations {
                     invitations = i
                 }
-                if let t = resp.token {
-                    secureStore.saveTokenToKeyChain(token: t)
-                }
                 authStatus = .authenticated
             }
         } catch {
             authStatus = .unauthenticated
         }
-    }
-    
-    func reInitObservers() {
-        cacheService = CacheService()
-        userObserver = UserObserver()
-        clubObserver = ClubObserver()
-        fieldObserver = FieldObserver()
-        eventObserver = EventObserver()
     }
     
     func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
@@ -167,11 +178,14 @@ class SessionStore: ObservableObject {
     }
     
     func logout() async {
-        // clear cached app data
         cacheService.clearCache()
         
-        // clear secure store
-        secureStore.clearKeyChain()
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            log.error("Failed to sign user out: \(error.localizedDescription)")
+            return
+        }
         
         // go back to login page
         authStatus = .unauthenticated
@@ -192,7 +206,7 @@ class SessionStore: ObservableObject {
             secureStore.clearKeyChain()
             return true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to delete user account: \(error)")
         }
         return false
     }

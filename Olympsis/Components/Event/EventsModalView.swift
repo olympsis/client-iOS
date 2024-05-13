@@ -81,7 +81,7 @@ struct EventsModalView: View {
                 ForEach(eventsGrouped, id: \.id) { group in
                     Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
                         ForEach(group.events, id: \.id) { event in
-                            EventListItemView(event: event)
+                            EventListItem(event: event)
                         }
                     }
                 }

@@ -27,6 +27,8 @@ struct PickUsername: View {
     @State private var cacheService = CacheService()
     @State private var userObserver = UserObserver()
     
+    @AppStorage("auth_type") private var authType: USER_STATUS?
+    
     var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_username_view")
     
     /// Validates the username input to make sure it's safe
@@ -76,7 +78,7 @@ struct PickUsername: View {
             return true
         } catch {
             handleUnknownFaillureError()
-            self.log.error("failed to check username's availability: \(error.localizedDescription)")
+            self.log.error("Failed to check username's availability: \(error.localizedDescription)")
             return false
         }
     }
@@ -85,12 +87,7 @@ struct PickUsername: View {
     func storeUsername() async {
         let available = await isUsernameAvailable()
         if (available) {
-            guard var user = cacheService.fetchUser() else {
-                log.error("failed to fetch user data from cache")
-                handleUnknownFaillureError()
-                return
-            }
-            user.username = username
+            var user = UserData(username: username, firstName: "", lastName: "")
             cacheService.cacheUser(user: user)
             currentView = .sports
         } else {
@@ -139,10 +136,10 @@ struct PickUsername: View {
                                     await isUsernameAvailable()
                                 }
                             }
-                            .onChange(of: username, perform: { _ in
+                            .onChange(of: username) { _, _ in
                                 status = .pending
                                 uStatus = .pending
-                            })
+                            }
                             
                     }.frame(height: 45)
                         .padding(.horizontal)

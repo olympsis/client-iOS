@@ -18,6 +18,9 @@ struct PickSports: View {
     @State private var userObserver = UserObserver()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_sports_view")
     
+    @AppStorage("auth_type") private var authType: USER_STATUS?
+    @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
+    
     func createUserData() async {
         
         // re initializing user observer hoping that auth issue will be fixed
@@ -35,11 +38,10 @@ struct PickSports: View {
                 handleFailure()
                 return
             }
-            user.sports = data.sports
-            cacheService.cacheUser(user: user)
+            cacheService.cacheUser(user: data)
             handleSuccess()
         } catch {
-            log.error("failed to create user: \(error.localizedDescription)")
+            log.error("Failed to create user: \(error.localizedDescription)")
             handleFailure()
             return
         }
@@ -55,7 +57,8 @@ struct PickSports: View {
     func handleSuccess() {
         status = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            currentView = .location
+            authType = nil
+            authStatus = .authenticated
         }
     }
     

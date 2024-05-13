@@ -14,18 +14,18 @@ struct WelcomeView: View {
         VStack(alignment: .leading){
             if status == .success {
                 if name == "" {
-                    Text("Welcome!")
+                    Text(String(localized: "Welcome!", table: "General"))
                         .font(.custom("Helvetica Neue", size: 25))
                         .fontWeight(.regular)
-                    Text("are you ready to play?")
+                    Text(String(localized: "are you ready to play?", table: "General"))
                         .font(.custom("Helvetica Neue", size: 20))
                         .fontWeight(.light)
                         .foregroundColor(.gray)
                 } else {
-                    Text("Welcome back \(name)")
+                    Text("\(String(localized: "Welcome back", table: "General")) \(name)")
                         .font(.custom("Helvetica Neue", size: 25))
                         .fontWeight(.regular)
-                    Text("ready to play?")
+                    Text(String(localized: "ready to play?", table: "General"))
                         .font(.custom("Helvetica Neue", size: 20))
                         .fontWeight(.light)
                         .foregroundColor(.gray)

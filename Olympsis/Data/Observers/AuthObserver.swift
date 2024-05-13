@@ -7,7 +7,9 @@
 
 import os
 import SwiftUI
+import CryptoKit
 import Foundation
+import FirebaseAuth
 import AuthenticationServices
 
 class AuthObserver: ObservableObject {
@@ -18,125 +20,123 @@ class AuthObserver: ObservableObject {
     let authService = AuthService()
     let cacheService = CacheService()
     
-    @AppStorage("userID") var userID: String?
+    @AppStorage("auth_type") private var authType: USER_STATUS?
     
-    func signUp(firstName:String, lastName:String, email:String, code: String) async throws {
-        let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, code: code, provider: "https://appleid.apple.com")
-        let (data, _) = try await authService.SignUp(request: req)
-        let object = try decoder.decode(AuthResponse.self, from: data)
-        
-        let usr = UserData(uuid: nil, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
-        
-        // cache user data & token
-        cacheService.cacheUser(user: usr)
-        secureStore.saveTokenToKeyChain(token: object.token)
-    }
-    
-    func refreshAuthToken() async {
-        struct TokenResponse: Decodable {
-            var authToken: String
-        }
-        
-        do {
-            let (data, _) = try await authService.Token()
-            let object = try decoder.decode(TokenResponse.self, from: data)
-            
-            // cache token
-            secureStore.saveTokenToKeyChain(token: object.authToken)
-        } catch {
-            log.error("failed to update token: \(error.localizedDescription)")
+    func Register(firstName:String, lastName:String, email:String, token: String) async throws {
+        let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, token: token)
+        let (_, resp) = try await authService.Register(request: req)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200  else {
+            log.error("Failed to register user")
+            return
         }
     }
     
-    func logIn(code: String) async throws {
-        let req = AuthRequest(code: code, provider: "https://appleid.apple.com")
+    func Login(token: String) async throws {
+        let req = AuthRequest(token: token)
         let (data, _) = try await authService.LogIn(request: req)
-        let object = try decoder.decode(AuthResponse.self, from: data)
+        let object = try decoder.decode(UserData.self, from: data)
         
-        let usr = UserData(uuid: object.uuid, username: nil, firstName: object.firstName, lastName: object.lastName, imageURL: nil, visibility: nil, bio: nil, clubs: nil, sports: nil, deviceToken: nil)
-        
-        // cache user data & token
-        cacheService.cacheUser(user: usr)
-        secureStore.saveTokenToKeyChain(token: object.token)
+        // store user data
+        cacheService.cacheUser(user: object)
     }
     
     func deleteAccount() async throws -> Bool {
         // clear server data
         let (_, resp) = try await authService.DeleteAccount()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-            log.error("failed to delete remote user data")
+            log.error("Failed to delete remote user data")
             return false
         }
         return true
     }
+
     
-    func handleSignInWithApple(result:  Result<ASAuthorization, Error>) async throws -> USER_STATUS {
+    func handleSignInWithApple(result:  Result<ASAuthorization, Error>, nonce: String?) async throws -> USER_STATUS {
+        
         switch result {
         case .success(let authorization):
             if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = nonce else {
+                    log.error("Invalid state: A login callback was received, but no login request was sent.")
+                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                }
+
                 if let _ = appleIdCredential.email, let _ = appleIdCredential.fullName {
+                    
                     /*
                         New User
                      */
-                    
-                    log.trace("new user signing in")
-                    guard let code = appleIdCredential.authorizationCode,
-                          let email = appleIdCredential.email,
+                    DispatchQueue.main.async {
+                        self.authType = .new
+                    }
+                    log.debug("New user signing in")
+                    guard let email = appleIdCredential.email,
                           let fullName = appleIdCredential.fullName,
                           let firstName = fullName.givenName,
-                          let lastName = fullName.familyName else {
+                          let lastName = fullName.familyName,
+                          let idToken = appleIdCredential.identityToken
+                              .flatMap({ String(data: $0, encoding: .utf8) }) else {
                         return USER_STATUS.unknown
                     }
-                    secureStore.saveCurrentUserID(uuid: appleIdCredential.user)
-                    try await signUp(firstName: firstName, lastName: lastName, email: email, code: String(data: code, encoding: .utf8)!)
-                    return USER_STATUS.new
+                    
+                    let creds = OAuthProvider.appleCredential(withIDToken: idToken, rawNonce: nonce, fullName: fullName)
+                    
+                    do {
+                        try await Auth.auth().signIn(with: creds)
+                        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                            return USER_STATUS.unknown
+                        }
+                        
+                        try await Register(firstName: firstName, lastName: lastName, email: email, token: token)
+                        return USER_STATUS.new
+                    } catch {
+                        log.error("Authentication Failed: \(error.localizedDescription)")
+                        return USER_STATUS.unknown
+                    }
+                    
                 } else {
+                    
                     /*
                         Existing User
                      */
-                    
-                    log.trace("existing user logging in")
-                    guard let code = appleIdCredential.authorizationCode else {
+                    DispatchQueue.main.async {
+                        self.authType = .returning
+                    }
+                    log.debug("Existing user logging in")
+                    guard let idToken = appleIdCredential.identityToken
+                              .flatMap({ String(data: $0, encoding: .utf8) }) else {
                         return USER_STATUS.unknown
                     }
-                    secureStore.saveCurrentUserID(uuid: appleIdCredential.user)
-                    try await logIn(code: String(data: code, encoding: .utf8)!)
-                    return USER_STATUS.returning
+                    
+                    let creds = OAuthProvider.credential(withProviderID: "apple.com", idToken: idToken, rawNonce: nonce)
+                    
+                    do {
+                        try await Auth.auth().signIn(with: creds)
+                        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                            return USER_STATUS.unknown
+                        }
+                        
+                        try await Login(token: token)
+                        
+                        let user = cacheService.fetchUser()
+                        guard user?.username != "",
+                              user?.sports != nil,
+                              user?.visibility != "" else {
+                            return USER_STATUS.not_finished
+                        }
+                        
+                        return USER_STATUS.returning
+                    } catch {
+                        log.error("Authentication Failed: \(error.localizedDescription)")
+                        return USER_STATUS.unknown
+                    }
                 }
             }
         case .failure(let error):
-            log.error("apple signIn cancelled or an error occured: \(error)")
+            log.error("SignIn with Apple was cancelled or an error occured: \(error)")
             throw error
         }
         return USER_STATUS.unknown
-    }
-    
-    // check the status of the current user
-    func checkAuthStatus(completion: @escaping (AUTH_STATUS) -> Void) {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        
-        // fetch stored user id
-        guard let userID = secureStore.fetchCurrentUserID() else {
-            completion(AUTH_STATUS.unauthenticated)
-            return
-        }
-        
-        appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
-            switch credentialState {
-            case .authorized:
-                let token = self.secureStore.fetchTokenFromKeyChain()
-                if token != "" {
-                    completion(AUTH_STATUS.authenticated)
-                } else {
-                    completion(AUTH_STATUS.unauthenticated)
-                }
-            case .revoked, .notFound:
-                completion(AUTH_STATUS.unauthenticated)
-            default:
-                break
-            }
-        }
-        completion(AUTH_STATUS.unknown)
     }
 }
 

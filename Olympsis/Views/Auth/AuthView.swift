@@ -9,17 +9,28 @@ import os
 import SwiftUI
 import AuthenticationServices
 
-struct Auth: View {
+struct AuthView: View {
     
     @Binding var currentView: AuthTab
     @State private var state: LOADING_STATE = .pending
+    @State private var nonce: String = randomNonceString()
     
     @StateObject private var observer = AuthObserver()
     @StateObject private var cacheService = CacheService()
     
     @EnvironmentObject var sessionStore: SessionStore
+    @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
+    
+    var usernameCompleted: Bool {
+        let user = cacheService.fetchUser()
+        guard user?.username != nil,
+              user?.username != "" else {
+            return false
+        }
+        return true
+    }
     
     var body: some View {
         VStack {
@@ -51,6 +62,7 @@ struct Auth: View {
                 case .pending, .success, .failure:
                     SignInWithAppleButton(
                         onRequest: { request in
+                            request.nonce = sha256(nonce)
                             request.requestedScopes = [.fullName, .email]
                         },
                         onCompletion: { result in
@@ -60,36 +72,36 @@ struct Auth: View {
                                         state = .loading
                                     }
                                     
-                                    let resp = try await observer.handleSignInWithApple(result: result)
+                                    let resp = try await observer.handleSignInWithApple(result: result, nonce: nonce)
                                     if resp == USER_STATUS.new {
                                         withAnimation {
                                             currentView = .username
                                         }
                                     } else if resp == USER_STATUS.returning {
-                                        guard let user = cacheService.fetchUser(),
-                                              user.uuid != nil else {
+                                        withAnimation {
+                                            authStatus = .authenticated
+                                        }
+                                    } else if resp == USER_STATUS.not_finished {
+                                        guard usernameCompleted else {
                                             withAnimation {
                                                 currentView = .username
                                             }
                                             return
                                         }
                                         withAnimation {
-                                            if (sessionStore.locationManager.isAuthorized) {
-                                                currentView = .notifications
-                                            } else {
-                                                currentView = .location
-                                            }
+                                            currentView = .sports
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
-                                            currentView = .auth
+                                            state = .pending
+                                            log.error("Failed gracefully. Unknown user status returned.")
                                         }
                                     }
                                 } catch {
                                     withAnimation {
                                         state = .pending
                                     }
-                                    log.error("failed to sign user in: \(error)")
+                                    log.error("Failed to sign user in: \(error)")
                                 }
                             }
                         }
@@ -130,6 +142,6 @@ struct Auth: View {
 
 struct Auth_Previews: PreviewProvider {
     static var previews: some View {
-        Auth(currentView: .constant(.auth))
+        AuthView(currentView: .constant(.auth))
     }
 }

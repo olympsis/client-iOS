@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A view that shows an event's data at a glance. A list item.
-struct EventListItemView: View {
+struct EventListItem: View {
     
     @State var event: Event
     @State private var status: LOADING_STATE = .loading
@@ -166,6 +166,6 @@ struct _TrailingView: View {
 }
 
 #Preview {
-    EventListItemView(event: EVENTS[0])
+    EventListItem(event: EVENTS[0])
         .environmentObject(SessionStore())
 }

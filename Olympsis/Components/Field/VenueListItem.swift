@@ -9,26 +9,26 @@ import SwiftUI
 
 import SwiftUI
 
-struct FieldListItemView: View {
+struct VenueListItem: View {
     
-    @State var field: Field
+    @State var venue: Field
     @State var showDetail = false // show field view detail
     @State var showReport = false // show make a report view
     @EnvironmentObject var session:SessionStore
     
     var fieldCityString: String {
-        return field.city + ", " + field.state
+        return venue.city + ", " + venue.state
     }
     
     func leadToMaps(){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
+        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
     }
     
     var body: some View {
         VStack {
             //MARK: - ASYNC Image
             VStack {
-                AsyncImage(url: URL(string: GenerateImageURL(field.images[0]))){ phase in
+                AsyncImage(url: URL(string: GenerateImageURL(venue.images[0]))){ phase in
                     if let image = phase.image {
                         image // Displays the loaded image.
                             .resizable()
@@ -58,7 +58,7 @@ struct FieldListItemView: View {
                         .foregroundColor(.gray)
                         .font(.body)
                     
-                    Text(field.name)
+                    Text(venue.name)
                         .font(.title2)
                         .bold()
                         .foregroundColor(.primary)
@@ -81,7 +81,7 @@ struct FieldListItemView: View {
                 
             }
             .sheet(isPresented: $showDetail) {
-                FieldView(field: field)
+                FieldView(field: venue)
                     .presentationDetents([.large])
             }
         }.onTapGesture {
@@ -92,7 +92,7 @@ struct FieldListItemView: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        FieldListItemView(field: FIELDS[0])
+        VenueListItem(venue: FIELDS[0])
             .environmentObject(SessionStore())
     }
 }

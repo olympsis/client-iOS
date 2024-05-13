@@ -8,6 +8,7 @@
 import SwiftUI
 import Security
 import SwiftToast
+import Firebase
 import AuthenticationServices
 
 struct ViewContainer: View {
@@ -42,12 +43,7 @@ struct ViewContainer: View {
             BetaPage()
         }
         .task {
-            await session.fetchUser()
             await session.CheckIn()
-            guard session.locationManager.isAuthorized else {
-                return
-            }
-            session.locationManager.requestLocation() // requesting location so that it starts updating
         }
     }
 }

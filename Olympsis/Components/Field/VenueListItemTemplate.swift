@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FieldViewTemplate: View {
+struct VenueListItemTemplate: View {
     var body: some View {
         VStack {
             Rectangle()
@@ -42,6 +42,6 @@ struct FieldViewTemplate: View {
 
 struct FieldViewTemplate_Previews: PreviewProvider {
     static var previews: some View {
-        FieldViewTemplate()
+        VenueListItemTemplate()
     }
 }

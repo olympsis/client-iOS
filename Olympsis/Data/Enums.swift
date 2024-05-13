@@ -24,7 +24,7 @@ enum AUTH_STATUS: String, CaseIterable {
     case unauthenticated
 }
 
-enum USER_STATUS {
+enum USER_STATUS: String, CaseIterable {
     case new
     case unknown
     case returning

@@ -17,8 +17,12 @@ class PostService {
     
     init() {
         self.tokenStore = SecureStore()
-        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-        self.http = Courrier(.HTTPS, host: host)
+        #if DEBUG
+            self.http = Courrier(.HTTP, host: "localhost")
+        #else
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+            self.http = Courrier(.HTTPS, host: host)
+        #endif
     }
     
     func getPosts(id: String, parentId: String?) async throws -> (Data, URLResponse) {

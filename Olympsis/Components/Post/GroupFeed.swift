@@ -167,7 +167,7 @@ struct GroupFeed: View {
                             })
                             
                             if let event = groupEvents.first {
-                                EventListItemView(event: event)
+                                EventListItem(event: event)
                             }
                         }.padding(.horizontal)
                             .padding(.vertical)
