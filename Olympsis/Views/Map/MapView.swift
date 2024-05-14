@@ -122,7 +122,7 @@ struct MapView: View {
                         .padding(.top, -12)
                 }
             }.sheet(item: $selectedField) { field in
-                FieldView(field: field)
+                Venue(venue: field)
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent) {

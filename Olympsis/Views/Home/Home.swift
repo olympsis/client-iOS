@@ -108,7 +108,7 @@ struct Home: View {
                                 VenuesList(venues: session.fields)
                             }
                             
-                            VenuesView(venues: $session.fields, status: $status)
+                            Venues(venues: $session.fields, status: $status)
                         }
                     }.onReceive(session.locationManager.$location) { newLoc in
                         

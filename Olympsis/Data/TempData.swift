@@ -66,8 +66,8 @@ let EVENTS = [
 
 
 let USERS_DATA = [
-    UserData(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", visibility: "public", bio: "Love to play soccer", clubs: nil, sports: nil, deviceToken: nil),
-    UserData(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", visibility: "private", bio: "Born and raised Utah. Love to snowboard.", clubs: nil, sports: nil, deviceToken: nil)
+    UserData(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", bio: "Love to play soccer", sports: nil, visibility: "public", clubs: nil, deviceToken: nil),
+    UserData(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil, deviceToken: nil)
 ]
 
 let USERS = [
@@ -80,7 +80,7 @@ let ANNOUCEMENTS = [
 ]
 
 let CLUB_APPLICATIONS = [
-    ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "", visibility: "", bio: nil, clubs: nil, sports: nil, deviceToken: nil), createdAt: 1685813111)
+    ClubApplication(id: "", uuid: "", clubID: "", status: "pending", data: UserData(uuid: "", username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "", bio: nil, sports: nil, visibility: "", clubs: nil, deviceToken: nil), createdAt: 1685813111)
 ]
 
 // Preview data

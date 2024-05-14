@@ -41,6 +41,8 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
+	<string>This app requires access to your location to show you nearby events and activities happening in your area. For example, if there&apos;s pick up or a tournament happening within a few miles of your current location, we can notify you about it and provide relevant details. We will also use your location to trigger location-based features when you visit specific areas or venues, such as checking in to events or receiving special offers when you arrive at a particular venue.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Olympsis needs access to your location to show you nearby venues and events happening in your area. This allows us to provide a personalized experience and recommend exciting local happenings close to where you are.</string>
 	<key>Scene Configuration</key>
 	<dict/>

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct VenuesView: View {
+struct Venues: View {
     
     @Binding var venues: [Field]
     @Binding var status: LOADING_STATE
@@ -45,6 +45,6 @@ struct VenuesView: View {
 
 struct FieldsView_Previews: PreviewProvider {
     static var previews: some View {
-        VenuesView(venues: .constant([]), status: .constant(.success))
+        Venues(venues: .constant([]), status: .constant(.success))
     }
 }

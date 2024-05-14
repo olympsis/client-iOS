@@ -8,13 +8,16 @@
 import SwiftUI
 
 
-struct ClubListItemView: View {
+struct ClubListItem: View {
 
-    @State private var status: LOADING_STATE = .pending
+    @State private var showEULA: Bool = false
     @State private var showDetails: Bool = false
+    @State private var status: LOADING_STATE = .pending
+    
     @State var club: Club
     @Binding var showToast: Bool
     @ObservedObject var observer: ClubObserver
+    @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
         guard let name = club.name else {
@@ -44,7 +47,22 @@ struct ClubListItemView: View {
         return s
     }
     
+    var acceptedEULA: Bool {
+        guard let user = session.user,
+              let hasAccepted = user.acceptedEULA else {
+            return false
+        }
+        return hasAccepted
+    }
+    
     func Apply() async {
+        
+        // You need to have accepted EULA before joining a group
+        guard acceptedEULA else {
+            self.showEULA.toggle()
+            return
+        }
+        
         status = .loading
         guard let id = club.id else {
             status = .failure
@@ -174,9 +192,13 @@ struct ClubListItemView: View {
         .fullScreenCover(isPresented: $showDetails, content: {
             ClubView(club: club)
         })
+        .sheet(isPresented: $showEULA, content: {
+            EndUserLicenseAgreement()
+        })
     }
 }
 
 #Preview {
-    ClubListItemView(club: CLUBS[1], showToast: .constant(false), observer: ClubObserver())
+    ClubListItem(club: CLUBS[1], showToast: .constant(false), observer: ClubObserver())
+        .environmentObject(SessionStore())
 }

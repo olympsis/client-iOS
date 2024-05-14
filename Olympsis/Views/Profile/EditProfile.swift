@@ -61,7 +61,7 @@ struct EditProfile: View {
                 coords = [latitude, longitude]
             }
             
-            let update = UserDao(username: user.username, bio: bio, hometown: coords, sports: Array(selectedSports))
+            let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
             let res = await userObserver.UpdateUserData(update: update)
             
             guard res == true else {
@@ -106,7 +106,7 @@ struct EditProfile: View {
         }
         
         // update user data
-        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, hometown: coords, sports: Array(selectedSports))
+        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
         let resp = await userObserver.UpdateUserData(update: update)
         
         guard resp == true else {

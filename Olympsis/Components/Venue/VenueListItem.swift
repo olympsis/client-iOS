@@ -81,7 +81,7 @@ struct VenueListItem: View {
                 
             }
             .sheet(isPresented: $showDetail) {
-                FieldView(field: venue)
+                Venue(venue: venue)
                     .presentationDetents([.large])
             }
         }.onTapGesture {

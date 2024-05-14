@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Accept" : {
+
+    },
     "Allow" : {
       "extractionState" : "manual",
       "localizations" : {

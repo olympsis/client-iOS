@@ -8,15 +8,15 @@
 import SwiftUI
 import CoreLocation
 
-struct FieldView: View {
+struct Venue: View {
     
-    @State var field: Field
+    @State var venue: Field
     @State private var status: LOADING_STATE = .loading
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
     
     var fieldLocation: String {
-        return field.city + ", " + field.state
+        return venue.city + ", " + venue.state
     }
     
     var body: some View {
@@ -25,7 +25,7 @@ struct FieldView: View {
                 // MARK: - Name
                 VStack(alignment: .leading) {
                     HStack {
-                        Text(field.name)
+                        Text(venue.name)
                             .font(.title)
                             .minimumScaleFactor(0.5)
                             .lineLimit(1)
@@ -45,7 +45,7 @@ struct FieldView: View {
                 }
                 
                 // MARK: - Images
-                FieldImages(field: field)
+                FieldImages(field: venue)
                 
                 // MARK: - Description
                 Text("About this Place")
@@ -54,16 +54,16 @@ struct FieldView: View {
                     .padding(.leading)
                     .padding(.top)
                 
-                Text(field.description)
+                Text(venue.description)
                     .font(.callout)
                     .padding(.horizontal)
                     .padding(.bottom)
                 
                 // MARK: - Action Buttons
-                FieldActionButtons(field: field)
+                FieldActionButtons(field: venue)
                 
                 //MARK: - Events View
-                FieldEventsView(field: $field)
+                FieldEventsView(field: $venue)
                 
             }       
         }.padding(.top)
@@ -351,6 +351,6 @@ struct FieldEventsView: View {
 
 struct FieldViewExt_Previews: PreviewProvider {
     static var previews: some View {
-        FieldView(field: FIELDS[0]).environmentObject(SessionStore())
+        Venue(venue: FIELDS[0]).environmentObject(SessionStore())
     }
 }
