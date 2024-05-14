@@ -22,7 +22,7 @@ class SessionStore: ObservableObject {
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
     @Published var events = [Event]()           // Events Cache
-    @Published var fields = [Field]()           // Fields Cache
+    @Published var fields = [Venue]()           // Fields Cache
     @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
@@ -112,13 +112,10 @@ class SessionStore: ObservableObject {
                         let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
                         self.groups.append(group)
                     }
-                    self.clubsState = .success
                     guard let g = self.groups.first else {
                         return
                     }
                     self.selectedGroup = g
-                } else {
-                    self.clubsState = .pending
                 }
                 if let o = resp.organizations {
                     self.orgs = o
@@ -172,7 +169,7 @@ class SessionStore: ObservableObject {
         }
         
         await MainActor.run {
-            self.fields = resp.fields ?? [Field]()
+            self.fields = resp.fields ?? [Venue]()
             self.events = resp.events ?? [Event]()
         }
     }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VenuesList: View {
     
-    @State var venues:[Field]
+    @State var venues:[Venue]
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
@@ -81,7 +81,7 @@ struct VenuesList: View {
 
 struct FieldsList_Previews: PreviewProvider {
     static var previews: some View {
-        VenuesList(venues: [Field]())
+        VenuesList(venues: [Venue]())
             .environmentObject(SessionStore())
     }
 }

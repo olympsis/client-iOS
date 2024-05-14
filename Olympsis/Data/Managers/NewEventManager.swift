@@ -15,7 +15,7 @@ class NewEventManager: ObservableObject {
     @Published var body: String
     @Published var externalLink: String
     
-    @Published var field: Field?
+    @Published var field: Venue?
     @Published var organizers: [GroupSelection]
     
     @Published var startDate: Date
@@ -33,7 +33,7 @@ class NewEventManager: ObservableObject {
     private var logger: Logger = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_manager")
     
     
-    init(type: EVENT_TYPES = .PickUp, title: String = "", body: String = "", externalLink: String = "", field: Field? = nil, organizers: [GroupSelection] = [GroupSelection](), startDate: Date = Date(), endDate: Date = Date().addingTimeInterval(30 * 60), minParticipants: Double = 0, maxParticipants: Double = 0, sport: SPORT = .soccer, image: String? = nil, skillLevel: EVENT_SKILL_LEVELS = .All, visibility: EVENT_VISIBILITY_TYPES = .Public) {
+    init(type: EVENT_TYPES = .PickUp, title: String = "", body: String = "", externalLink: String = "", field: Venue? = nil, organizers: [GroupSelection] = [GroupSelection](), startDate: Date = Date(), endDate: Date = Date().addingTimeInterval(30 * 60), minParticipants: Double = 0, maxParticipants: Double = 0, sport: SPORT = .soccer, image: String? = nil, skillLevel: EVENT_SKILL_LEVELS = .All, visibility: EVENT_VISIBILITY_TYPES = .Public) {
         self.type = type
         self.title = title
         self.body = body

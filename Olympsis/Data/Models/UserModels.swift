@@ -157,7 +157,7 @@ struct CheckIn: Codable {
 }
 
 struct LocationResponse: Codable {
-    let fields: [Field]?
+    let fields: [Venue]?
     let events: [Event]?
 }
 

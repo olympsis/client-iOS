@@ -5,18 +5,28 @@
 //  Created by Joel on 7/26/23.
 //
 
+import TipKit
 import SwiftUI
 import CoreLocation
 
-struct Venue: View {
+struct VenueView: View {
     
-    @State var venue: Field
+    @State var venue: Venue
     @State private var status: LOADING_STATE = .loading
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) private var presentationMode
     
     var fieldLocation: String {
         return venue.city + ", " + venue.state
+    }
+    
+    var hasClubs: Bool {
+        guard let user = session.user,
+              let clubs = user.clubs,
+              !clubs.isEmpty else {
+            return false
+        }
+        return true
     }
     
     var body: some View {
@@ -45,10 +55,10 @@ struct Venue: View {
                 }
                 
                 // MARK: - Images
-                FieldImages(field: venue)
+                VenueImages(venue: venue)
                 
                 // MARK: - Description
-                Text("About this Place")
+                Text(String(localized: "About this Venue", table: "General"))
                     .bold()
                     .font(.title2)
                     .padding(.leading)
@@ -60,10 +70,10 @@ struct Venue: View {
                     .padding(.bottom)
                 
                 // MARK: - Action Buttons
-                FieldActionButtons(field: venue)
+                VenueActionButtons(venue: venue)
                 
                 //MARK: - Events View
-                FieldEventsView(field: $venue)
+                VenueEventsView(field: $venue)
                 
             }       
         }.padding(.top)
@@ -71,14 +81,14 @@ struct Venue: View {
 }
 
 
-struct FieldImages: View {
+struct VenueImages: View {
     
-    @State var field: Field
+    @State var venue: Venue
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(field.images, id: \.self) { i in
+                ForEach(venue.images, id: \.self) { i in
                     AsyncImage(url: URL(string:  GenerateImageURL(i))){ phase in
                         if let image = phase.image {
                                 image // Displays the loaded image.
@@ -112,12 +122,15 @@ struct FieldImages: View {
     }
 }
 
-struct FieldActionButtons: View {
+struct VenueActionButtons: View {
     
-    @State var field: Field
+    @State var venue: Venue
     @State private var showReport: Bool = false
     @State private var showNewEvent: Bool = false
+    @State private var showVisibility: Bool = false
     @EnvironmentObject private var session: SessionStore
+    
+    var joinGroupTip = JoinGroupTip()
     
     private var canCreateEvent: Bool {
         guard let user = session.user,
@@ -136,7 +149,7 @@ struct FieldActionButtons: View {
         }
         
         let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let targetLocation = CLLocation(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0])
+        let targetLocation = CLLocation(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0])
         let distance = currentLocation.distance(from: targetLocation)
         let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
         let timeDifference = distance / speed
@@ -158,7 +171,7 @@ struct FieldActionButtons: View {
     }
     
     private func leadToMaps(){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
+        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
     }
     
     var body: some View {
@@ -186,23 +199,47 @@ struct FieldActionButtons: View {
                     .frame(maxWidth: .infinity, idealHeight: 80)
                     .foregroundColor(Color("background"))
                 VStack {
-                    if field.owner.type == "private" {
-                        VStack {
-                            Image(systemName: "lock.fill")
-                                .resizable()
-                                .frame(width: 20, height: 25)
-                            Text("Private")
-                        }.foregroundColor(Color("foreground"))
-                    } else {
+                    if venue.isPublic() {
                         VStack {
                             Image(systemName: "globe")
                                 .resizable()
                                 .frame(width: 25, height: 25)
                             Text("Public")
                         }.foregroundColor(Color("foreground"))
+                    } else {
+                        VStack {
+                            Image(systemName: "lock.fill")
+                                .resizable()
+                                .frame(width: 20, height: 25)
+                            Text("Private")
+                        }.foregroundColor(Color("foreground"))
                     }
                 }
+            }.onTapGesture {
+                showVisibility.toggle()
             }
+            .popover(isPresented: $showVisibility, attachmentAnchor: .point(.top), arrowEdge: .top, content: {
+                VStack {
+                    if venue.isPublic() {
+                        Text("Public")
+                            .fontWeight(.bold)
+                        Text("This venue is owned by your state/local government.")
+                            .font(.callout)
+                            .multilineTextAlignment(.center)
+                    } else {
+                        Text("Private")
+                            .fontWeight(.bold)
+                        Text("This venue is privately owned by \(venue.owner.name)")
+                            .font(.callout)
+                            .multilineTextAlignment(.center)
+                    }
+                }.presentationCompactAdaptation(.popover)
+                    .presentationBackground(content: {
+                        Color("background")
+                    })
+                    .frame(width: 200)
+                    .padding(.vertical)
+            })
             
             Button(action: { self.showNewEvent.toggle() }) {
                 ZStack {
@@ -214,11 +251,12 @@ struct FieldActionButtons: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                         Text("Event")
-                    }.foregroundColor(Color("foreground"))
+                    }.foregroundStyle(canCreateEvent == false ? .gray : Color("foreground"))
                 }
             }.disabled(canCreateEvent == false ? true : false)
+                .popoverTip(joinGroupTip)
             .sheet(isPresented: $showNewEvent) {
-                NewEvent(manager: NewEventManager(field: field))
+                NewEvent(manager: NewEventManager(field: venue))
             }
             
             Menu{
@@ -240,16 +278,22 @@ struct FieldActionButtons: View {
                     }.foregroundColor(Color("foreground"))
                 }
             }.fullScreenCover(isPresented: $showReport, content: {
-                FieldReportView(field: field)
+                FieldReportView(field: venue)
             })
             
         }.padding(.horizontal)
+            .task {
+                try? Tips.configure([
+                    .displayFrequency(.immediate),
+                    .datastoreLocation(.applicationDefault)
+                ])
+            }
     }
 }
 
-struct FieldEventsView: View {
+struct VenueEventsView: View {
     
-    @Binding var field: Field
+    @Binding var field: Venue
     @State private var status: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
@@ -351,6 +395,6 @@ struct FieldEventsView: View {
 
 struct FieldViewExt_Previews: PreviewProvider {
     static var previews: some View {
-        Venue(venue: FIELDS[0]).environmentObject(SessionStore())
+        VenueView(venue: FIELDS[2]).environmentObject(SessionStore())
     }
 }

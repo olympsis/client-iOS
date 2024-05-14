@@ -10,7 +10,7 @@ import SwiftUI
 
 struct NewTournamentEvent: View {
     
-    @State var field: Field?
+    @State var field: Venue?
     
     @State private var isEditing: Bool = false
     @State private var status: LOADING_STATE = .pending

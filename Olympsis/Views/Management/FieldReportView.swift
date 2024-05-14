@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FieldReportView: View {
     
-    @State var field: Field
+    @State var field: Venue
     @State private var issue: String = ""
     @State private var notes: String = ""
     @State private var showProblems: Bool = false

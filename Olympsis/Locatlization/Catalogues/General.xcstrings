@@ -1,8 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "About this Venue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À propos de ce lieu"
+          }
+        }
+      }
+    },
     "Accept" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter"
+          }
+        }
+      }
     },
     "Allow" : {
       "extractionState" : "manual",
@@ -117,8 +135,7 @@
         }
       }
     },
-    "Share your location" : {
-      "extractionState" : "manual",
+    "Share Your Location" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -127,9 +144,6 @@
           }
         }
       }
-    },
-    "Share Your Location" : {
-
     },
     "Sorry there are no venues in your area" : {
       "extractionState" : "manual",

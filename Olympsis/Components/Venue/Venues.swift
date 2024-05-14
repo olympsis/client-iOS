@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Venues: View {
     
-    @Binding var venues: [Field]
+    @Binding var venues: [Venue]
     @Binding var status: LOADING_STATE
     
     var body: some View {

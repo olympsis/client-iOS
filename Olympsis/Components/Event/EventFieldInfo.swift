@@ -9,19 +9,19 @@ import SwiftUI
 
 struct EventFieldInfo: View {
     
-    @State var field: Field
+    @State var venue: Venue
     @State private var showSheet: Bool = false
     
     private var fieldLocality: String {
-        guard field.city != "" else {
+        guard venue.city != "" else {
             return ""
         }
-        return field.city + ", " + field.state
+        return venue.city + ", " + venue.state
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(field.name)
+            Text(venue.name)
                 .font(.title3)
                 .bold()
                 .foregroundStyle(Color("foreground"))
@@ -30,19 +30,19 @@ struct EventFieldInfo: View {
                 .foregroundStyle(Color("foreground"))
         }.padding(.leading)
             .onTapGesture {
-                if field.description == "external" {
-                    UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(field.location.coordinates[1]),\(field.location.coordinates[0])")! as URL)
+                if venue.description == "external" {
+                    UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
                 } else {
                     self.showSheet.toggle()
                 }
             }
         .sheet(isPresented: $showSheet, content: {
-            Venue(venue: field)
+            VenueView(venue: venue)
         })
     }
 }
 
 #Preview {
-    EventFieldInfo(field: FIELDS[0])
+    EventFieldInfo(venue: FIELDS[0])
         .environmentObject(SessionStore())
 }

@@ -10,8 +10,8 @@ import SwiftUI
 /// A simple view to help users pick which fields near them they would like to host an event at
 struct EventFieldPickerView: View {
     
-    @Binding var selectedField: Field?
-    @State var fields: [Field]
+    @Binding var selectedField: Venue?
+    @State var fields: [Venue]
     
     @State private var search: String = ""
     @State private var showCustom: Bool = false
@@ -20,7 +20,7 @@ struct EventFieldPickerView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    func sortSelected(item1: Field, item2: Field) -> Bool {
+    func sortSelected(item1: Venue, item2: Venue) -> Bool {
         guard let field = selectedField else {
             return item1.name > item2.name
         }
@@ -91,7 +91,7 @@ struct EventFieldPickerView: View {
                               let name = custom.name else {
                             return
                         }
-                        let field = Field(id: UUID().uuidString, name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: selectedCustomField.subAdministrativeArea, state: selectedCustomField.administrativeArea, country: selectedCustomField.country)
+                        let field = Venue(id: UUID().uuidString, name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: selectedCustomField.subAdministrativeArea, state: selectedCustomField.administrativeArea, country: selectedCustomField.country)
                         selectedField = field
                         fields.append(field)
                     }

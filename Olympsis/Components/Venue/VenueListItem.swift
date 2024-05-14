@@ -11,7 +11,7 @@ import SwiftUI
 
 struct VenueListItem: View {
     
-    @State var venue: Field
+    @State var venue: Venue
     @State var showDetail = false // show field view detail
     @State var showReport = false // show make a report view
     @EnvironmentObject var session:SessionStore
@@ -81,7 +81,7 @@ struct VenueListItem: View {
                 
             }
             .sheet(isPresented: $showDetail) {
-                Venue(venue: venue)
+                VenueView(venue: venue)
                     .presentationDetents([.large])
             }
         }.onTapGesture {

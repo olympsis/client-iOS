@@ -6,6 +6,7 @@
 //
 
 import os
+import TipKit
 import SwiftUI
 import Foundation
 import FirebaseCore
@@ -38,6 +39,8 @@ struct OlympsisApp: App {
             }
         }
     }
+    
+    
 }
 
 

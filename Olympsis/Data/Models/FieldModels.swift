@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Field: Codable, Identifiable, Equatable {
+class Venue: Codable, Identifiable, Equatable {
     
     let id: String
     let name: String
@@ -46,8 +46,12 @@ class Field: Codable, Identifiable, Equatable {
         self.country = country
     }
     
-    static func == (lhs: Field, rhs: Field) -> Bool {
+    static func == (lhs: Venue, rhs: Venue) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    func isPublic() -> Bool {
+        return owner.type == "public" ? true : false
     }
 }
 
@@ -68,7 +72,7 @@ struct Ownership: Codable, Hashable {
 }
 
 struct FieldsResponse: Codable {
-    let fields: [Field]
+    let fields: [Venue]
     let totalFields: Int
     
     private enum CodingKeys: String, CodingKey {
