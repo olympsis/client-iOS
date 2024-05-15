@@ -87,7 +87,7 @@ struct PickUsername: View {
     func storeUsername() async {
         let available = await isUsernameAvailable()
         if (available) {
-            var user = UserData(username: username, firstName: "", lastName: "")
+            let user = UserData(username: username, firstName: "", lastName: "")
             cacheService.cacheUser(user: user)
             currentView = .sports
         } else {

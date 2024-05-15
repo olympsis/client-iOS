@@ -91,7 +91,7 @@ struct EditProfile: View {
         
         imageURL = "profile-images/\(imageId).jpeg"
         
-        guard var user = session.user else {
+        guard let user = session.user else {
             return
         }
         
@@ -248,7 +248,7 @@ struct EditProfile: View {
                             Text("Profile Visibility")
                         }.frame(width: SCREEN_WIDTH-30, height: 40)
                             .tint(Color("color-secnd"))
-                            .onChange(of: isPublic) { newValue in
+                            .onChange(of: isPublic) { _, newValue in
                                 if newValue {
                                     visibility = "public"
                                 } else {

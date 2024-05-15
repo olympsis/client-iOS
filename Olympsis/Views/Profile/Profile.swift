@@ -1,5 +1,5 @@
 //
-//  Settings.swift
+//  Profile.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 10/20/22.

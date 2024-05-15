@@ -141,7 +141,7 @@ struct EventView: View {
                     
                     // MARK: - Field Info
                     if let field = eventField {
-                        EventFieldInfo(venue: field)
+                        VenueFieldInfo(venue: field)
                             .zIndex(1)
                     }
                         

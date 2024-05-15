@@ -116,11 +116,11 @@ struct RoomView: View {
                             }
                         }
                     }
-                    .onChange(of: messages, perform: { value in
+                    .onChange(of: messages) { _, newValue in
                         withAnimation {
-                            scrollView.scrollTo(value.last?.id, anchor: .bottom)
+                            scrollView.scrollTo(newValue.last?.id, anchor: .bottom)
                         }
-                    })
+                    }
                 }
                
                 HStack {

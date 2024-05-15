@@ -26,7 +26,7 @@ struct HometownPicker: View {
     
     /// Stores username into cache
     func storeHometown() {
-        guard let location = pin else {
+        guard pin != nil else {
             return
         }
         guard var user = cacheService.fetchUser() else {

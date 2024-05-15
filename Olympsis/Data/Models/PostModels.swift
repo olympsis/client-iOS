@@ -18,8 +18,10 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     let images: [String]?
     var likes: [Like]?
     var comments: [Comment]?
-    let createdAt: Int?
     let externalLink: String?
+    var isSensitive: Bool?
+    let createdAt: Int?
+    
     
     /// Complete initializer for the post class
     init(id: String?,
@@ -30,8 +32,9 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
          images: [String]?,
          likes: [Like]?,
          comments: [Comment]?,
-         createdAt: Int?,
-         externalLink: String?) {
+         externalLink: String?,
+         isSensitive: Bool?,
+         createdAt: Int?) {
         
         self.id = id
         self.type = type
@@ -41,8 +44,9 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         self.images = images
         self.likes = likes
         self.comments = comments
-        self.createdAt = createdAt
         self.externalLink = externalLink
+        self.isSensitive = isSensitive
+        self.createdAt = createdAt
     }
     
     enum CodingKeys: String, CodingKey {
@@ -54,8 +58,9 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         case images
         case likes
         case comments
-        case createdAt = "created_at"
         case externalLink = "external_link"
+        case isSensitive = "is_sensistive"
+        case createdAt = "created_at"
     }
     
     // RandomAccessCollection requirements

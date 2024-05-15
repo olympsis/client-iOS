@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EventFieldInfo: View {
+struct VenueFieldInfo: View {
     
     @State var venue: Venue
     @State private var showSheet: Bool = false
@@ -43,6 +43,6 @@ struct EventFieldInfo: View {
 }
 
 #Preview {
-    EventFieldInfo(venue: FIELDS[0])
+    VenueFieldInfo(venue: FIELDS[0])
         .environmentObject(SessionStore())
 }

@@ -58,11 +58,13 @@ class NewPostManager: ObservableObject {
             type: dao.type,
             poster: snippet,
             body: dao.body ?? "",
+            event: nil,
             images: dao.images,
             likes: nil,
             comments: nil,
-            createdAt: Int(Date().timeIntervalSinceNow),
-            externalLink: dao.externalLink
+            externalLink: dao.externalLink,
+            isSensitive: false,
+            createdAt: Int(Date().timeIntervalSinceNow)
         )
     }
     

@@ -38,7 +38,7 @@
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D2DEFBE2B1AB1770082FE73 /* NewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
-		5D2DEFC82B280E850082FE73 /* EventFieldInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */; };
+		5D2DEFC82B280E850082FE73 /* VenueFieldInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueFieldInfo.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -371,7 +371,7 @@
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAnnouncement.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
-		5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFieldInfo.swift; sourceTree = "<group>"; };
+		5D2DEFC72B280E850082FE73 /* VenueFieldInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueFieldInfo.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -958,7 +958,7 @@
 				5DCAEA322B01A87E00B9C22A /* EventLevelView.swift */,
 				5DBB94D12B05BEB10031876D /* EventNotification.swift */,
 				5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */,
-				5D2DEFC72B280E850082FE73 /* EventFieldInfo.swift */,
+				5D2DEFC72B280E850082FE73 /* VenueFieldInfo.swift */,
 				5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */,
 			);
 			path = Event;
@@ -1753,7 +1753,7 @@
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				5DFB8A062A720B560002A560 /* VenueView.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
-				5D2DEFC82B280E850082FE73 /* EventFieldInfo.swift in Sources */,
+				5D2DEFC82B280E850082FE73 /* VenueFieldInfo.swift in Sources */,
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
 				5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */,
@@ -1961,7 +1961,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.3;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.client.live-event";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1997,7 +1997,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.5.3;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.client.live-event";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2146,6 +2146,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Olympsis needs access to your location to show you nearby venues and events happening in your area. This allows us to provide a personalized experience and recommend exciting local happenings close to where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate results, we need to have your location when you're using the app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Our app needs access to your photo library to upload profile images and to post images on your club's timeline.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -2157,7 +2158,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2189,6 +2190,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to keep track of your activity metrics.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Our app needs access to your health data to keep track of your activity metrics.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Olympsis needs access to your location to show you nearby venues and events happening in your area. This allows us to provide a personalized experience and recommend exciting local happenings close to where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To provide a better experience and more accurate results, we need to have your location when you're using the app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Our app needs access to your photo library to upload profile images and to post images on your club's timeline.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -2200,7 +2202,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -15,7 +15,7 @@ struct JoinGroupTip: Tip {
 
 
     var message: Text? {
-        Text("Creating events require that you are part of a group. Go to the groups page and join one.")
+        Text("Creating events require that you are part of a group. Go to the groups page to join or create one.")
     }
     
     var options: [Option] {

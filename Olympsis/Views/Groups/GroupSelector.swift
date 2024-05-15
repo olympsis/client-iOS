@@ -80,14 +80,15 @@ struct GroupSelector: View {
                 }
             }.frame(height: 50)
                 .padding(.all)
-        }.onChange(of: selection, perform: { value in
+        }
+        .onChange(of: selection) { _, _ in
             guard let select = groups.first(where: { $0.id == selection }) else {
                 self.presentationMode.wrappedValue.dismiss()
                 return
             }
             session.selectedGroup = select
             self.presentationMode.wrappedValue.dismiss()
-        })
+        }
     }
 }
 

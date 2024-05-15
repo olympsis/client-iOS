@@ -26,7 +26,7 @@ struct PickSports: View {
         // re initializing user observer hoping that auth issue will be fixed
         userObserver = UserObserver()
         
-        guard var user = cacheService.fetchUser(),
+        guard let user = cacheService.fetchUser(),
               let username = user.username else {
             currentView = .auth
             return

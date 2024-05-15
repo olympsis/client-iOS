@@ -183,10 +183,11 @@ struct NewOrganization: View {
                                                 .font(.caption)
                                                 .textCase(.uppercase)
                                         }
-                                    }.onChange(of: selectedItem) { newItem in
+                                    }
+                                    .onChange(of: selectedItem) { _, newValue in
                                         Task {
                                             // Retrive selected asset in the form of Data
-                                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
                                                 withAnimation(.easeIn){
                                                     selectedImageData = data
                                                 }

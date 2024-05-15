@@ -60,7 +60,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         _token = token;
-        log.info("Registered for remote notifications successfull")
+        log.info("Registering for remote notifications successfull")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

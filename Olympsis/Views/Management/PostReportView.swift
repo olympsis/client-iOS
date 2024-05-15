@@ -168,5 +168,5 @@ struct PostReportView: View {
 }
 
 #Preview {
-    PostReportView(post: Post(id: "", type: "", poster: UserSnippet(uuid: "", username: "johndoe"), body: "", event: nil, images: nil, likes: nil, comments: nil, createdAt: 0, externalLink: nil))
+    PostReportView(post: POSTS[0])
 }
