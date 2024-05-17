@@ -211,3 +211,9 @@ enum POST_TYPE: String {
     case Announcement = "announcement"
     case Advertisement = "advertisement"
 }
+
+enum IMAGE_SIZING: String {
+    case PROFILE = "200x200"
+    case LANDSCAPE = "1080x566"
+    case SQUARE = "1080x1080"
+}

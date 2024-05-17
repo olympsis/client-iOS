@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import SwiftUI
 import PhotosUI
 
@@ -22,18 +23,25 @@ struct EditProfile: View {
     @State private var isPublic: Bool = true
     @State private var visibility: String = "public"
     
+    @State private var showImageCropper: Bool = false
     @State private var showSportsPicker: Bool = false
     @State private var showHometownPicker: Bool = false
+    
+    @State private var testCroppedImage: UIImage?
+    @State private var showTestCroppedImage: Bool = false
     
     @State private var hometown: CLLocationCoordinate2D?
     
     
     @State private var selectedSports: Set<String> = []
     
+    @State private var selectedPhoto: UIImage?
     @State private var selectedPhotoData: Data?
-    @State private var selectedPhotoItem: PhotosPickerItem?
+    
+    @State private var croppedPhotoData: Data?
     
     @State private var status: LOADING_STATE = .pending
+    @StateObject private var photoViewModel = PhotoPickerViewModel()
     
     private var cacheService: CacheService = CacheService()
     private var userObserver: UserObserver = UserObserver()
@@ -42,6 +50,8 @@ struct EditProfile: View {
     @EnvironmentObject private var session: SessionStore
     
     @Environment(\.dismiss) private var dismiss
+    
+    var log = Logger(subsystem: "com.olympsis.client", category: "edit_profile_view")
     
     func UpdateProfile() async {
         var imageURL: String = ""
@@ -177,20 +187,33 @@ struct EditProfile: View {
                             }
                         }
                         PhotosPicker(
-                            selection: $selectedPhotoItem,
+                            selection: $photoViewModel.imageSelection,
                             matching: .images,
                             photoLibrary: .shared()) {
                                 Text("Edit Picture")
                                     .foregroundColor(Color("color-prime"))
-                        }.onChange(of: selectedPhotoItem) { _, newItem in
-                            Task {
-                                // Retrive selected asset in the form of Data
-                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                    let img = UIImage(data: data)
-                                    selectedPhotoData = img!.jpegData(compressionQuality: 0.5)
+                            }
+                            .fullScreenCover(isPresented: $photoViewModel.showImageCropper, content: {
+                                if let image = photoViewModel.selectedPhoto {
+                                    VStack {
+                                        CropView(image: image, configuration: .init(rotateImage: false, zoomSensitivity: 0.5, maskShape: .circle)) { img in
+                                            if let i = img {
+                                                selectedPhoto = i
+                                                selectedPhotoData = i.jpegData(compressionQuality: 0.5)
+                                            }
+                                        }
+                                    } .frame(width: SCREEN_WIDTH)
+                            } else {
+                                VStack {
+                                    Spacer()
+                                    Text("Something went wrong")
+                                    if let i = selectedPhoto {
+                                        Image(uiImage: i)
+                                    }
+                                    Spacer()
                                 }
                             }
-                        }
+                        })
                         
                     }.padding(.bottom, 30)
                         .padding(.top)
