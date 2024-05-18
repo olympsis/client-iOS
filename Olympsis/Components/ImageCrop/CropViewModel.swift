@@ -14,20 +14,46 @@ class CropViewModel: ObservableObject {
     
     private var configuration: CropConfiguration
     
+    @Published var images: [UIImage] = []
+    
+    @Published var selectedIndex: Int = 0 {
+        didSet {
+            scale = scales[selectedIndex]
+            offset = offsets[selectedIndex]
+            
+            lastScale = scales[selectedIndex]
+            lastOffset = offsets[selectedIndex]
+        }
+    }
+    
     @Published var maskWidthRadius: CGFloat
     @Published var maskHeightRadius: CGFloat
 
     @Published var scale: CGFloat = 1.0
-    @Published var lastScale: CGFloat = 1.0
+    @Published var scales: [CGFloat] = []
+    @Published var lastScale: CGFloat = 1.0 {
+        didSet {
+            scales[selectedIndex] = lastScale
+        }
+    }
+    
     @Published var offset: CGSize = .zero
-    @Published var lastOffset: CGSize = .zero
+    @Published var offsets: [CGSize] = []
+    @Published var lastOffset: CGSize = .zero {
+        didSet {
+            offsets[selectedIndex] = lastOffset
+        }
+    }
+    
     @Published var angle: Angle = Angle(degrees: 0)
     @Published var lastAngle: Angle = Angle(degrees: 0)
 
     init(
+        images: [UIImage],
         maxMagnificationScale: CGFloat,
         configuration: CropConfiguration
     ) {
+        self.images = images
         self.maxMagnificationScale = maxMagnificationScale
         self.configuration = configuration
         
@@ -38,6 +64,11 @@ class CropViewModel: ObservableObject {
         case .rectangle:
             self.maskWidthRadius = configuration.screenWidth / 2
             self.maskHeightRadius = configuration.screenWidth * ((566.0 / 1080.0) / 2)
+        }
+        
+        for _ in 0..<images.count {
+            scales.append(1.0)
+            offsets.append(.zero)
         }
     }
 
@@ -71,6 +102,16 @@ class CropViewModel: ObservableObject {
         
     }
 
+    func cropImages() -> [UIImage] {
+        var results: [UIImage] = []
+        for image in images {
+            if let img = cropImage(image) {
+                results.append(img)
+            }
+        }
+        return results
+    }
+    
     func cropImage(_ image: UIImage) -> UIImage? {
         switch configuration.maskShape {
         case .circle:

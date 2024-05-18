@@ -36,6 +36,8 @@ class MediaPickerViewModel: ObservableObject {
         }
     }
 
+    @Published var selectedImages: [UIImage] = []
+    
     var log = Logger(subsystem: "com.media_picker.package", category: "media_picker_view_model")
     
     init (
@@ -60,14 +62,13 @@ class MediaPickerViewModel: ObservableObject {
         }
     }
     
-    func loadContents() async -> [UIImage] {
+    func loadContents() async {
         state = .loading
-        var images = [UIImage]()
         do {
             for content in selectedContent {
                 if let data = try await content.loadTransferable(type: Data.self) {
                     if let img = UIImage(data: data) {
-                        images.append(img)
+                        selectedImages.append(img)
                     }
                 }
             }
@@ -76,6 +77,5 @@ class MediaPickerViewModel: ObservableObject {
             self.log.error("Failed to load images: \(error.localizedDescription)")
         }
         state = .success
-        return images
     }
 }

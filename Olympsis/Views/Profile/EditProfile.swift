@@ -23,6 +23,7 @@ struct EditProfile: View {
     @State private var isPublic: Bool = true
     @State private var visibility: String = "public"
     
+    @State private var showMediaPicker: Bool = false
     @State private var showImageCropper: Bool = false
     @State private var showSportsPicker: Bool = false
     @State private var showHometownPicker: Bool = false
@@ -186,31 +187,15 @@ struct EditProfile: View {
                                 }.frame(width: 100, height: 100)
                             }
                         }
-                        PhotosPicker(
-                            selection: $photoViewModel.imageSelection,
-                            matching: .images,
-                            photoLibrary: .shared()) {
-                                Text("Edit Picture")
-                                    .foregroundColor(Color("color-prime"))
-                            }
-                            .fullScreenCover(isPresented: $photoViewModel.showImageCropper, content: {
-                                if let image = photoViewModel.selectedPhoto {
-                                    VStack {
-                                        CropView(image: image, configuration: .init(rotateImage: false, zoomSensitivity: 0.5, maskShape: .circle)) { img in
-                                            if let i = img {
-                                                selectedPhoto = i
-                                                selectedPhotoData = i.jpegData(compressionQuality: 0.5)
-                                            }
-                                        }
-                                    } .frame(width: SCREEN_WIDTH)
-                            } else {
-                                VStack {
-                                    Spacer()
-                                    Text("Something went wrong")
-                                    if let i = selectedPhoto {
-                                        Image(uiImage: i)
-                                    }
-                                    Spacer()
+                        
+                        Button(action: { self.showMediaPicker.toggle() }) {
+                            Text("Edit Picture")
+                                .foregroundColor(Color("color-prime"))
+                        }.fullScreenCover(isPresented: $showMediaPicker, content: {
+                            MediaPicker(pickerType: .profile) { images in
+                                if let img = images.first {
+                                    selectedPhoto = img
+                                    selectedPhotoData = img.jpegData(compressionQuality: 0.5)
                                 }
                             }
                         })

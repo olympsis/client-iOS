@@ -11,25 +11,38 @@ import PhotosUI
 struct MediaPicker: View {
     
     var pickerType: MediaPickerType
-    @State private var path: [String] = ["picker", "cropper"]
+    let onComplete: ([UIImage]) -> Void
+    
+    var maskShape: CropMaskShape = .square
+    
+    @State private var path = NavigationPath()
+    @State private var croppedImages: [UIImage] = []
     @StateObject private var viewModel: MediaPickerViewModel
     @Environment(\.dismiss) private var dismiss
     
-    init (pickerType: MediaPickerType) {
+    init (
+        pickerType: MediaPickerType,
+        onComplete: @escaping ([UIImage]) -> Void
+    ) {
         
         self.pickerType = pickerType
+        self.onComplete = onComplete
         
         var maxSelection = 0
         
         switch pickerType {
         case .newPost:
             maxSelection = 3
+            maskShape = .square
         case .profile:
             maxSelection = 1
+            maskShape = .circle
         case .newAnnouncement:
             maxSelection = 3
+            maskShape = .square
         case .newEvent:
             maxSelection = 1
+            maskShape = .square
         }
         
         _viewModel = StateObject(wrappedValue:
@@ -70,13 +83,28 @@ struct MediaPicker: View {
                     
                     Spacer()
                     
-                    NavigationLink {
-                        
-                    } label: {
-                        Text("Next")
+                    Button(action: {
+                        Task {
+                            if (viewModel.selectedContent.count > 0) {
+                                await viewModel.loadContents()
+                                path.append("cropper")
+                            }
+                        }
+                    }) {
+                        switch viewModel.state {
+                        case .pending:
+                            Text("Next")
+                        case .loading:
+                            ProgressView()
+                        case .success:
+                            Text("Next")
+                        case .failure:
+                            Text("Next")
+                        }
                     }
 
-                }.padding(.horizontal)
+                }
+                .padding(.horizontal)
                 
                 VStack {
                     if let image = viewModel.latestSelected {
@@ -86,7 +114,8 @@ struct MediaPicker: View {
                     } else {
                         Text("Select an image")
                     }
-                }.frame(minWidth: SCREEN_WIDTH, maxHeight: .infinity)
+                }
+                .frame(minWidth: SCREEN_WIDTH, maxHeight: .infinity)
                 
                 VStack {
                     switch pickerType {
@@ -100,7 +129,8 @@ struct MediaPicker: View {
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundStyle(Color("background"))
-                            }.padding(.horizontal)
+                            }
+                            .padding(.horizontal)
                         }
                     default:
                         EmptyView()
@@ -120,9 +150,19 @@ struct MediaPicker: View {
                     .photosPickerAccessoryVisibility(.hidden, edges: .all)
                     .frame(height: 200)
                 }
-            }.navigationDestination(for: String.self) { value in
-                if value == "cropper" {
-                    
+            }
+            .navigationDestination(for: String.self) { value in
+                switch value {
+                case "cropper":
+                    if viewModel.selectedImages.count > 0 {
+                        CropView(images: viewModel.selectedImages, configuration: .init(rotateImage: false, maskShape: maskShape)) { images in
+                            croppedImages = images
+                            onComplete(croppedImages)
+                            dismiss()
+                        }
+                    }
+                default:
+                    EmptyView()
                 }
             }
         }
@@ -130,5 +170,5 @@ struct MediaPicker: View {
 }
 
 #Preview {
-    MediaPicker(pickerType: .newPost)
+    MediaPicker(pickerType: .newPost, onComplete: { _ in })
 }

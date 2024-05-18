@@ -16,31 +16,30 @@ struct CropView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CropViewModel
     
-    private let image: UIImage
+    private let images: [UIImage]
     private let configuration: CropConfiguration
-    private let onComplete: (UIImage?) -> Void
+    private let onComplete: ([UIImage]) -> Void
     
     private let SCREEN_WIDTH = UIScreen.main.bounds.width
     private let SCREEN_HEIGHT = UIScreen.main.bounds.height
 
     init(
-        image: UIImage,
+        images: [UIImage],
         configuration: CropConfiguration,
-        onComplete: @escaping (UIImage?) -> Void
+        onComplete: @escaping ([UIImage]) -> Void
     ) {
-        self.image = image
+        self.images = images
         self.configuration = configuration
         self.onComplete = onComplete
         
         _viewModel = StateObject(
             wrappedValue: CropViewModel(
+                images: images,
                 maxMagnificationScale: configuration.maxMagnificationScale,
                 configuration: configuration
             )
         )
     }
-
-    @State var selectedContent: [PhotosPickerItem] = []
     
     var body: some View {
         let magnificationGesture = MagnificationGesture()
@@ -103,7 +102,7 @@ struct CropView: View {
             
             // MARK: - Image Cropping
             ZStack {
-                Image(uiImage: image)
+                Image(uiImage: images[viewModel.selectedIndex])
                     .resizable()
                     .scaledToFit()
                     .rotationEffect(viewModel.angle)
@@ -116,10 +115,14 @@ struct CropView: View {
                                 .onAppear {
                                     viewModel.imageSizeInView = geometry.size
                                 }
+                                .onChange(of: viewModel.selectedIndex) { _, _ in
+                                    viewModel.imageSizeInView = geometry.size
+                                }
                         }
                     )
+                    
 
-                Image(uiImage: image)
+                Image(uiImage: images[viewModel.selectedIndex])
                     .resizable()
                     .scaledToFill()
                     .rotationEffect(viewModel.angle)
@@ -134,41 +137,29 @@ struct CropView: View {
             .simultaneousGesture(dragGesture)
             .simultaneousGesture(configuration.rotateImage ? rotationGesture : nil)
         
-
-            // MARK: - Action Buttons
+            // MARK: - Image thumbnails
             HStack {
-                Button {
-                    dismiss()
-                } label: {
-                    Text(String(localized: "Cancel", table: "General"))
+                ForEach(images.indices, id: \.self) { i in
+                    Button(action: { viewModel.selectedIndex = i }) {
+                        Image(uiImage: images[i])
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .border(Color.white, width: viewModel.selectedIndex == i ? 1 : 0)
+                    }
                 }
-                .foregroundColor(.white)
-
-                Spacer()
-
-                Button {
-                    onComplete(cropImage())
-                    dismiss()
-                } label: {
-                    Text(String(localized: "Save", table: "General"))
-                }
-                .foregroundColor(.white)
-            }.padding()
+            }.frame(height: 100)
         }
-        .background(.black)
-    }
-
-    private func cropImage() -> UIImage? {
-        var editedImage: UIImage = image
-        if configuration.rotateImage {
-            if let rotatedImage: UIImage = viewModel.rotate(
-                editedImage,
-                viewModel.lastAngle
-            ) {
-                editedImage = rotatedImage
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    onComplete(viewModel.cropImages())
+                    dismiss()
+                }) {
+                    Text("Done")
+                }
             }
         }
-        return viewModel.cropImage(editedImage)
+        .background(.black)
     }
 
     private struct MaskShapeView: View {
@@ -199,5 +190,5 @@ struct CropView: View {
 }
 
 #Preview {
-    CropView(image: UIImage(named: "volleyball-1")!, configuration: .init(rotateImage: false, maskShape: .rectangle), onComplete: { _ in })
+    CropView(images: [UIImage(named: "volleyball-1")!, UIImage(named: "soccer-1")!, UIImage(named: "tennis-1")!], configuration: .init(rotateImage: false, maskShape: .rectangle), onComplete: { _ in })
 }
