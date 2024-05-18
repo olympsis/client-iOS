@@ -54,6 +54,9 @@
 		5D666A8F2BF66580001EE754 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A8E2BF66580001EE754 /* CropView.swift */; };
 		5D666A932BF69715001EE754 /* CropModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A922BF69715001EE754 /* CropModels.swift */; };
 		5D666A952BF6AD29001EE754 /* PhotosPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A942BF6AD29001EE754 /* PhotosPickerViewModel.swift */; };
+		5D666A992BF7C84A001EE754 /* MediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A982BF7C84A001EE754 /* MediaPicker.swift */; };
+		5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A9A2BF7CBA2001EE754 /* MediaPickerEnums.swift */; };
+		5D666A9F2BF7CDAD001EE754 /* MediaPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A9E2BF7CDAD001EE754 /* MediaPickerViewModel.swift */; };
 		5D67494A2A73339E00AEC868 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventView.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
@@ -388,6 +391,9 @@
 		5D666A8E2BF66580001EE754 /* CropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropView.swift; sourceTree = "<group>"; };
 		5D666A922BF69715001EE754 /* CropModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropModels.swift; sourceTree = "<group>"; };
 		5D666A942BF6AD29001EE754 /* PhotosPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerViewModel.swift; sourceTree = "<group>"; };
+		5D666A982BF7C84A001EE754 /* MediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPicker.swift; sourceTree = "<group>"; };
+		5D666A9A2BF7CBA2001EE754 /* MediaPickerEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerEnums.swift; sourceTree = "<group>"; };
+		5D666A9E2BF7CDAD001EE754 /* MediaPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerViewModel.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
@@ -747,6 +753,16 @@
 			path = ImageCrop;
 			sourceTree = "<group>";
 		};
+		5D666A972BF7C832001EE754 /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				5D666A982BF7C84A001EE754 /* MediaPicker.swift */,
+				5D666A9A2BF7CBA2001EE754 /* MediaPickerEnums.swift */,
+				5D666A9E2BF7CDAD001EE754 /* MediaPickerViewModel.swift */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
 		5D8086042B2FF9C100EA01AC /* OlympsisTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -936,6 +952,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5D666A972BF7C832001EE754 /* MediaPicker */,
 				5D666A872BF66477001EE754 /* ImageCrop */,
 				5D9F693B2BB663F60057D205 /* Profile */,
 				5D3FFAA12BAD01C100B54E02 /* Reports */,
@@ -1673,6 +1690,7 @@
 				5DBB94C52B0320650031876D /* NewTournamentEvent.swift in Sources */,
 				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
+				5D666A992BF7C84A001EE754 /* MediaPicker.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
 				5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */,
@@ -1756,6 +1774,7 @@
 				5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */,
 				5DC468C42B9E1A4C0023353D /* BugReportView.swift in Sources */,
 				5D9F694B2BB9F7F90057D205 /* AboutUs.swift in Sources */,
+				5D666A9F2BF7CDAD001EE754 /* MediaPickerViewModel.swift in Sources */,
 				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
@@ -1851,6 +1870,7 @@
 				9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
+				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,
 				5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */,
 				9AF0A1B7293091D80055D1F6 /* PlaceAnnotationView.swift in Sources */,
 				5D18BD182B391D9000F90777 /* GenericModels.swift in Sources */,

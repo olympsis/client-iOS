@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import PhotosUI
 import Foundation
 
 
@@ -39,6 +40,8 @@ struct CropView: View {
         )
     }
 
+    @State var selectedContent: [PhotosPickerItem] = []
+    
     var body: some View {
         let magnificationGesture = MagnificationGesture()
             .onChanged { value in
@@ -130,6 +133,7 @@ struct CropView: View {
             .simultaneousGesture(magnificationGesture)
             .simultaneousGesture(dragGesture)
             .simultaneousGesture(configuration.rotateImage ? rotationGesture : nil)
+        
 
             // MARK: - Action Buttons
             HStack {
