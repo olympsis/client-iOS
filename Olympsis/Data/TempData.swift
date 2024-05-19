@@ -22,6 +22,7 @@ let COMMENTS = [
 
 let POSTS = [
     Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: nil, comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive:false, createdAt: 1639364779),
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: ["feed-images/038368E5-AD87-4BEF-8B3A-F6DCE0F6BBBC.jpeg", "feed-images/1B89C014-A399-4797-9A07-C2C85BE8876B.jpeg", "feed-images/2BCB42D7-EA02-4583-8D23-45B3DD167293.jpeg"], likes: nil, comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
     Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: nil, comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: 1639364779)
 ]
 

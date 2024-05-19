@@ -93,9 +93,7 @@ struct EditProfile: View {
             return
         }
         
-        let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)
-        
-        guard res == true else {
+        guard let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data) else {
             status = .failure
             return
         }

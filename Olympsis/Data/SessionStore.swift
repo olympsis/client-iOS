@@ -26,7 +26,7 @@ class SessionStore: ObservableObject {
     @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
-    @Published var clubsState: LOADING_STATE = .loading
+    @Published var clubsState: LOADING_STATE = .pending
     
     // groups & posts
     @Published var selectedGroup: GroupSelection?

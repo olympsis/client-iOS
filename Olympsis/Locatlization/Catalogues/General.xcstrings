@@ -55,9 +55,6 @@
         }
       }
     },
-    "Cancel" : {
-
-    },
     "Events can be created anywhere, venues are locations vetted by Olympsis" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -140,9 +137,6 @@
           }
         }
       }
-    },
-    "Save" : {
-
     },
     "Share Your Location" : {
       "localizations" : {

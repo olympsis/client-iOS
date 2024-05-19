@@ -16,7 +16,7 @@ struct NewAnnouncement: View {
     @FocusState private var bodyFocus: Bool
     
     @State private var status: LOADING_STATE = .pending
-    @StateObject private var manager: NewPostManager = NewPostManager(type: .Announcement)
+    @StateObject private var manager: NewPostViewModel = NewPostViewModel(type: .Announcement)
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
@@ -49,31 +49,31 @@ struct NewAnnouncement: View {
         }
         
         // generate dao
-        guard var dao = manager.GenerateNewPostData(groupId: id) else {
+        guard var dao = manager.generateNewPostData(groupId: id) else {
             handleFailure()
             return
         }
         
         // upload image
-        if manager.selectedImageData != nil {
-            guard let img = await self.manager.UploadImage(data: manager.selectedImageData!) else {
-                handleFailure()
-                return
-            }
-            dao.images = [img]
-        }
+//        if manager.selectedImageData != nil {
+//            guard let img = await self.manager.uploadImage(data: manager.selectedImageData!) else {
+//                handleFailure()
+//                return
+//            }
+//            dao.images = [img]
+//        }
         
         // create post and get the id
-        guard let postId = await session.postObserver.createPost(dao: dao) else {
+        guard let postId = await session.postObserver.createPost(dto: dao) else {
             if let images = dao.images {
-                _ = await manager.DeleteImages(images: images)
+                _ = await manager.deleteImages(images: images)
             }
             handleFailure()
             return
         }
         
         // generate local post data
-        guard let post = manager.GenerateNewPost(id: postId, user: user, dao: dao) else {
+        guard let post = manager.generateNewPost(id: postId, user: user, dto: dao) else {
             handleFailure()
             dismiss()
             return
@@ -132,58 +132,8 @@ struct NewAnnouncement: View {
                         Text("Image")
                             .bold()
                         Spacer()
-                        if manager.selectedImageData == nil {
-                            PhotosPicker(
-                                selection: $manager.selectedItem,
-                                matching: .images,
-                                photoLibrary: .shared()) {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 100, height: 30)
-                                            .foregroundColor(Color("color-prime"))
-                                        Text("upload")
-                                            .foregroundColor(.white)
-                                            .frame(height: 30)
-                                            .font(.caption)
-                                            .textCase(.uppercase)
-                                    }
-                                }.onChange(of: manager.selectedItem) { newItem in
-                                    Task {
-                                        bodyFocus = false
-                                        // Retrive selected asset in the form of Data
-                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                            withAnimation(.easeIn){
-                                                manager.selectedImageData = data
-                                            }
-                                        }
-                                    }
-                                }
-                        } else {
-                            Button(action:{
-                                withAnimation(.easeOut){
-                                    manager.selectedImageData = nil
-                                    manager.selectedItem = nil
-                                }
-                            }){
-                                Image(systemName: "x.circle.fill")
-                                    .imageScale(.large)
-                                    .foregroundColor(Color("color-prime"))
-                            }
-                        }
                     }.frame(height: 50)
                         .padding(.horizontal)
-                    if let imgData = manager.selectedImageData {
-                        let img = UIImage(data: imgData)
-                        if let i = img {
-                            Image(uiImage: i)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 250)
-                                .clipped()
-                                .padding(.horizontal)
-                        }
-                        
-                    }
                     Spacer()
                 }
                 .toolbar {

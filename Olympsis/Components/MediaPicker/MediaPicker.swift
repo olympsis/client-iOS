@@ -112,7 +112,11 @@ struct MediaPicker: View {
                             .resizable()
                             .scaledToFit()
                     } else {
-                        Text("Select an image")
+                        if (viewModel.selectingMultiple) {
+                            Text("Select up to 3 images")
+                        } else {
+                            Text("Select an image")
+                        }
                     }
                 }
                 .frame(minWidth: SCREEN_WIDTH, maxHeight: .infinity)
@@ -148,7 +152,7 @@ struct MediaPicker: View {
                     .ignoresSafeArea()
                     .photosPickerDisabledCapabilities(.selectionActions)
                     .photosPickerAccessoryVisibility(.hidden, edges: .all)
-                    .frame(height: 200)
+                    .frame(height: 250)
                 }
             }
             .navigationDestination(for: String.self) { value in
@@ -159,7 +163,7 @@ struct MediaPicker: View {
                             croppedImages = images
                             onComplete(croppedImages)
                             dismiss()
-                        }
+                        }.frame(height: SCREEN_HEIGHT)
                     }
                 default:
                     EmptyView()

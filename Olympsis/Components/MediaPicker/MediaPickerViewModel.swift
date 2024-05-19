@@ -62,8 +62,10 @@ class MediaPickerViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func loadContents() async {
         state = .loading
+        selectedImages = []
         do {
             for content in selectedContent {
                 if let data = try await content.loadTransferable(type: Data.self) {

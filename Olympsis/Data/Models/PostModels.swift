@@ -93,7 +93,7 @@ struct PostsResponse: Decodable {
     }
 }
 
-struct PostDao: Codable {
+struct PostDTO: Codable {
     var type: String?
     var poster: String?
     var groupID: String?

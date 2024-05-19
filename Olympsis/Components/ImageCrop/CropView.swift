@@ -13,15 +13,12 @@ import Foundation
 
 struct CropView: View {
     
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: CropViewModel
-    
     private let images: [UIImage]
     private let configuration: CropConfiguration
     private let onComplete: ([UIImage]) -> Void
     
-    private let SCREEN_WIDTH = UIScreen.main.bounds.width
-    private let SCREEN_HEIGHT = UIScreen.main.bounds.height
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel: CropViewModel
 
     init(
         images: [UIImage],
@@ -132,7 +129,6 @@ struct CropView: View {
                         MaskShapeView(configuration: configuration)
                     )
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .simultaneousGesture(magnificationGesture)
             .simultaneousGesture(dragGesture)
             .simultaneousGesture(configuration.rotateImage ? rotationGesture : nil)
@@ -148,7 +144,8 @@ struct CropView: View {
                     }
                 }
             }.frame(height: 100)
-        }
+                .safeAreaPadding(.bottom, 50)
+        }.frame(height: SCREEN_HEIGHT)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
@@ -190,5 +187,5 @@ struct CropView: View {
 }
 
 #Preview {
-    CropView(images: [UIImage(named: "volleyball-1")!, UIImage(named: "soccer-1")!, UIImage(named: "tennis-1")!], configuration: .init(rotateImage: false, maskShape: .rectangle), onComplete: { _ in })
+    CropView(images: [UIImage(named: "volleyball-1")!, UIImage(named: "soccer-1")!, UIImage(named: "tennis-1")!], configuration: .init(rotateImage: false, maskShape: .square), onComplete: { _ in })
 }
