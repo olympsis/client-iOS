@@ -10,6 +10,11 @@ import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
 
+enum NewPostError: Error {
+    case innapropriateContent
+    case unexpected(_ reason: String)
+}
+
 class NewPostViewModel: ObservableObject {
     
     @Published var type: POST_TYPE
@@ -50,7 +55,7 @@ class NewPostViewModel: ObservableObject {
      - Returns:
         an optional `Post` object in case we fail to create the post
      */
-    func createPost(groupId: String, user: UserData) async -> Post? {
+    func createPost(groupId: String, user: UserData) async throws -> Post? {
         
         DispatchQueue.main.async {
             self.status = .loading
@@ -65,15 +70,21 @@ class NewPostViewModel: ObservableObject {
         // upload images
         if (!selectedImagesData.isEmpty) {
             
-            let imageResponses = await withTaskGroup(of: ImageUploadResponse?.self) { group -> [ImageUploadResponse] in
+            let imageResponses = try await withThrowingTaskGroup(of: ImageUploadResponse?.self) { group -> [ImageUploadResponse] in
                 for data in selectedImagesData {
                     group.addTask {
                         await self.uploadImage(data: data)
                     }
                 }
                 
-                let tasks = await group.reduce(into: [ImageUploadResponse]()) {
+                let tasks = try await group.reduce(into: [ImageUploadResponse]()) {
                     if let resp = $1 {
+                        if resp.score > 4 {                            
+                            throw NewPostError.innapropriateContent
+                        }
+                        if resp.score > 3 {
+                            dto.isSensitive = true
+                        }
                         $0.append(resp)
                     }
                 }

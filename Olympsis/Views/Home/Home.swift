@@ -162,13 +162,18 @@ struct Home: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{ self.showNotifications.toggle() }) {
-                        Image(systemName: "bell")
-                            .foregroundStyle(Color("foreground"))
-                            .overlay {
-                                if session.invitations.count > 0 {
-                                    NotificationCountView(value: $session.invitations.count)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 45, height: 35)
+                                .foregroundStyle(Color("background"))
+                            Image(systemName: "bell")
+                                .foregroundStyle(Color("foreground"))
+                                .overlay {
+                                    if session.invitations.count > 0 {
+                                        NotificationCountView(value: $session.invitations.count)
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
             }

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PostViewer: View {
     
-    @State var post: Post
+    @Binding var post: Post
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                PostView(post: post, posts: $session.posts)
+                PostView(post: $post, posts: $session.posts)
             }.toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action:{ dismiss() }) {
@@ -30,6 +30,6 @@ struct PostViewer: View {
 }
 
 #Preview {
-    PostViewer(post: POSTS[1])
+    PostViewer(post: .constant(POSTS[1]))
         .environmentObject(SessionStore())
 }

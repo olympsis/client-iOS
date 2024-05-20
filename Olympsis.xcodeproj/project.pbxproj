@@ -144,6 +144,7 @@
 		5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */; };
 		5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */; };
 		5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF945AB2BF9CCB500BE3C63 /* Kingfisher */; };
+		5DF945AE2BFAAFAD00BE3C63 /* PostViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */; };
 		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* VenueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* VenueView.swift */; };
 		5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA12A4123EF0019E9F7 /* Notifications.swift */; };
@@ -470,6 +471,7 @@
 		5DF8C87B2BF1AE50002FE392 /* Salt Lake City.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Salt Lake City.gpx"; path = "../../../../Salt Lake City.gpx"; sourceTree = "<group>"; };
 		5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSmallListItem.swift; sourceTree = "<group>"; };
 		5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndUserLicenseAgreement.swift; sourceTree = "<group>"; };
+		5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViolation.swift; sourceTree = "<group>"; };
 		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* VenueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueView.swift; sourceTree = "<group>"; };
 		5F00FEA12A4123EF0019E9F7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -928,6 +930,7 @@
 			children = (
 				5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */,
 				5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */,
+				5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1741,6 +1744,7 @@
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
 				5FA350582A6737AF00669B2C /* Enums.swift in Sources */,
 				5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */,
+				5DF945AE2BFAAFAD00BE3C63 /* PostViolation.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */,
 				5D18BD162B38EE8D00F90777 /* UserDataListView.swift in Sources */,
@@ -2296,8 +2300,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/josephjoeljo/Hermes";
 			requirement = {
-				kind = exactVersion;
-				version = 0.2.1;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
 			};
 		};
 		5D5BEF7C2BEF16E7008648C5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {

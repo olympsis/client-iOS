@@ -1,5 +1,5 @@
 {
-  "originHash" : "62381a08c3d18ce481a1fac7c4e9e716d277315293c48d3ead2001593684d5be",
+  "originHash" : "8f6320984dd03050bc08863e5536c8556a26968a9a864dcaa6db1b09694f1a50",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/josephjoeljo/Hermes",
       "state" : {
-        "revision" : "edde43565c164593ad8424fa6020eaf0693fda5d",
-        "version" : "0.2.1"
+        "revision" : "52c026a3f9285c663c4d2112b47d42a0e45bfd8f",
+        "version" : "0.2.2"
       }
     },
     {

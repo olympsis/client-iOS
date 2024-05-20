@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 5/18/24.
 //
 
+import os
 import SwiftUI
 
 struct PostCreator: View {
@@ -15,10 +16,13 @@ struct PostCreator: View {
     
     @FocusState private var bodyFocused: Bool
     @State private var showMediaPicker: Bool = false
+    @State private var showPostViolation: Bool = false
     @StateObject private var viewModel: NewPostViewModel
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
+    
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "post_creator_view")
     
     init(type: NEW_POST_TYPE, groupId: String, posts: Binding<[Post]>) {
         self.type = type
@@ -37,9 +41,9 @@ struct PostCreator: View {
         }
     }
     
-    func createPost() async {
+    func createPost() async throws {
         guard let user = session.user,
-              let post = await viewModel.createPost(groupId: groupId, user: user) else {
+              let post = try await viewModel.createPost(groupId: groupId, user: user) else {
             return
         }
         
@@ -56,7 +60,17 @@ struct PostCreator: View {
                 
                 Spacer()
                 
-                Button(action:{ Task { await createPost() }}){
+                Button(action:{
+                    Task {
+                        do {
+                            try await createPost()
+                        } catch NewPostError.innapropriateContent {
+                            self.showPostViolation.toggle()
+                        } catch NewPostError.unexpected(let reason) {
+                            log.error("Failed to create post: \(reason)")
+                        }
+                    }
+                }){
                     LoadingButton(text: "Create", width: 70, status: $viewModel.status)
                 }
                 .disabled(viewModel.status == .loading ? true : false)
@@ -115,7 +129,9 @@ struct PostCreator: View {
                         }
                     })
                 }.padding(.horizontal)
-            }
+            }.sheet(isPresented: $showPostViolation, onDismiss: { dismiss() }, content: {
+                PostViolation()
+            })
         }
     }
 }

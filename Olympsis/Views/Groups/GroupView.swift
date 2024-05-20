@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GroupView: View {
     
+    @State private var showEULA: Bool = false
     @State private var showMenu: Bool = false
     @State private var showNewPost: Bool = false
     @State private var showSelector: Bool = false
@@ -41,7 +42,7 @@ struct GroupView: View {
                     }
                 }
             }.toolbar {
-                GroupToolbar(showMenu: $showMenu, showNewPost: $showNewPost, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
+                GroupToolbar(showEULA: $showEULA, showMenu: $showMenu, showNewPost: $showNewPost, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
             }
             .sheet(isPresented: $showSelector) {
                 GroupSelector(showNewGroup: $showNewGroup, groups: session.groups)
@@ -70,6 +71,9 @@ struct GroupView: View {
             .fullScreenCover(isPresented: $showNewGroup) {
                 NewGroup()
             }
+            .sheet(isPresented: $showEULA, content: {
+                EndUserLicenseAgreement()
+            })
         }
     }
     

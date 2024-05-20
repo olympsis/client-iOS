@@ -174,7 +174,7 @@ struct GroupFeed: View {
                     }
                     
                     if posts.count > 0 {
-                        ForEach(posts) { post in
+                        ForEach($posts) { post in
                             PostView(post: post, posts: $posts)
                         }
                     } else {
@@ -189,7 +189,7 @@ struct GroupFeed: View {
                 }.task{
                     self.posts = await getLatestPosts()
                 }
-                .onChange(of: session.selectedGroup, perform: { value in
+                .onChange(of: session.selectedGroup, { _, _ in
                     Task {
                         self.posts = await getLatestPosts()
                     }
@@ -229,6 +229,6 @@ struct GroupFeed: View {
 }
 
 #Preview {
-    GroupFeed(showNewPost: .constant(false))
+    GroupFeed(posts: POSTS, showNewPost: .constant(false))
         .environmentObject(SessionStore())
 }

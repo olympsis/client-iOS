@@ -11,12 +11,22 @@ import SwiftUI
 /// Helps manages how to transition between these states and keep track of them all.
 struct GroupToolbar: ToolbarContent {
     
+    @Binding var showEULA: Bool
     @Binding var showMenu: Bool
     @Binding var showNewPost: Bool
     @Binding var showSelector: Bool
     @Binding var showMessages: Bool
     @Binding var groupState: LOADING_STATE
+    
     @EnvironmentObject private var session: SessionStore
+    
+    var acceptedEULA: Bool {
+        guard let user = session.user,
+              let hasAccepted = user.acceptedEULA else {
+            return false
+        }
+        return hasAccepted
+    }
     
     func retryFetchingClubData() {
         groupState = .loading
@@ -45,7 +55,13 @@ struct GroupToolbar: ToolbarContent {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action:{ self.showMenu.toggle() }) {
-                        Image(systemName: "slider.horizontal.3")
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 40, height: 35)
+                                .foregroundStyle(Color("background"))
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundStyle(Color("foreground"))
+                        }
                     }
                 }
             } else {
@@ -70,15 +86,32 @@ struct GroupToolbar: ToolbarContent {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: { self.showNewPost.toggle() }) {
-                                Image(systemName: "plus.square.dashed")
-                                    .foregroundColor(Color("color-prime"))
+                            Button(action: {
+                                // You need to have accepted EULA before being able to make a post
+                                guard acceptedEULA else {
+                                    self.showEULA.toggle()
+                                    return
+                                }
+                                self.showNewPost.toggle()
+                            }) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 40, height: 35)
+                                        .foregroundStyle(Color("background"))
+                                    Image(systemName: "plus.square.dashed")
+                                        .foregroundStyle(Color("foreground"))
+                                }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMessages.toggle() }){
-                                Image(systemName: "bubble.left.and.bubble.right")
-                                    .foregroundColor(Color("color-prime"))
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 45, height: 35)
+                                        .foregroundStyle(Color("background"))
+                                    Image(systemName: "bubble.left.and.bubble.right")
+                                        .foregroundStyle(Color("foreground"))
+                                }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
@@ -118,14 +151,24 @@ struct GroupToolbar: ToolbarContent {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { self.showNewPost.toggle() }) {
-                                Image(systemName: "plus.square.dashed")
-                                    .foregroundColor(Color("color-prime"))
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 40, height: 35)
+                                        .foregroundStyle(Color("background"))
+                                    Image(systemName: "plus.square.dashed")
+                                        .foregroundStyle(Color("foreground"))
+                                }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMessages.toggle() }){
-                                Image(systemName: "bubble.left.and.bubble.right")
-                                    .foregroundColor(Color("color-prime"))
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 45, height: 35)
+                                        .foregroundStyle(Color("background"))
+                                    Image(systemName: "bubble.left.and.bubble.riht")
+                                        .foregroundStyle(Color("foreground"))
+                                }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
@@ -160,7 +203,13 @@ struct GroupToolbar: ToolbarContent {
                     ProgressView()
                 } else {
                     Button(action:{ retryFetchingClubData() }) {
-                        Image(systemName: "arrow.clockwise")
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 40, height: 35)
+                                .foregroundStyle(Color("background"))
+                            Image(systemName: "arrow.clockwise")
+                                .foregroundStyle(Color("foreground"))
+                        }
                     }
                 }
             }
@@ -171,7 +220,7 @@ struct GroupToolbar: ToolbarContent {
 #Preview {
     NavigationStack {
         VStack {}.toolbar {
-            GroupToolbar(showMenu: .constant(false), showNewPost: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
+            GroupToolbar(showEULA: .constant(false), showMenu: .constant(false), showNewPost: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
         }
         .environmentObject(SessionStore())
     }

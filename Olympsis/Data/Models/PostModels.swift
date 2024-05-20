@@ -59,7 +59,7 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         case likes
         case comments
         case externalLink = "external_link"
-        case isSensitive = "is_sensistive"
+        case isSensitive = "is_sensitive"
         case createdAt = "created_at"
     }
     
@@ -100,18 +100,20 @@ struct PostDTO: Codable {
     var body: String?
     var eventID: String?
     var images: [String]?
-    var createdAt: Int64?
+    var isSensitive: Bool
     var externalLink: String?
+    var createdAt: Int64?
     
-    init(type: String? = nil, poster: String? = nil, groupID: String? = nil, body: String? = nil, eventID: String? = nil, images: [String]? = nil, createdAt: Int64? = nil, externalLink: String? = nil) {
+    init(type: String? = nil, poster: String? = nil, groupID: String? = nil, body: String? = nil, eventID: String? = nil, images: [String]? = nil, isSensitive: Bool = false, externalLink: String? = nil, createdAt: Int64? = nil) {
         self.type = type
         self.poster = poster
         self.groupID = groupID
         self.body = body
         self.eventID = eventID
         self.images = images
-        self.createdAt = createdAt
+        self.isSensitive = isSensitive
         self.externalLink = externalLink
+        self.createdAt = createdAt
     }
     
     enum CodingKeys: String, CodingKey {
@@ -121,7 +123,8 @@ struct PostDTO: Codable {
         case body
         case eventID = "event_id"
         case images
-        case createdAt = "created_at"
+        case isSensitive = "is_sensitive"
         case externalLink = "external_link"
+        case createdAt = "created_at"
     }
 }

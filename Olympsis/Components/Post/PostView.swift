@@ -10,14 +10,27 @@ import Kingfisher
 
 struct PostView: View {
     
-    @State var post: Post
+    @Binding var post: Post
     @Binding var posts: [Post]
     
-    @State private var pinned: Bool = false
-    @State private var showMenu: Bool = false
-    @State private var showComments: Bool = false
+    @State private var pinned: Bool
+    @State private var showMenu: Bool
+    @State private var isSensitive: Bool
+    @State private var showComments: Bool
+    
+    @State private var showAlert: Bool = false
 
     @EnvironmentObject private var session: SessionStore
+    
+    init(post: Binding<Post>, posts: Binding<[Post]>, pinned: Bool = false, showMenu: Bool = false, showComments: Bool = false) {
+        self._post = post
+        self._posts = posts
+        self.pinned = pinned
+        self.showMenu = showMenu
+        self.showComments = showComments
+        
+        isSensitive = post.wrappedValue.isSensitive ?? false
+    }
     
     var body: some View {
         VStack {
@@ -26,6 +39,20 @@ struct PostView: View {
             PostBody(post: $post)
             
             PostFooter(post: $post, showComments: $showComments)
+        }
+        .overlay {
+            if isSensitive {
+                ZStack {
+                    Rectangle()
+                        .background(.ultraThinMaterial)
+                    
+                    Image(systemName: "eye.slash")
+                        .foregroundStyle(.white)
+                }
+                .onTapGesture {
+                    showAlert.toggle()
+                }
+            }
         }
         .fullScreenCover(isPresented: $showComments) {
             if let club = session.selectedGroup?.club {
@@ -36,6 +63,18 @@ struct PostView: View {
             PostMenu(post: post, posts: $posts, pinned: $pinned)
                 .presentationDetents([.height(250)])
         }
+        .alert("Show Sensitive Content", isPresented: $showAlert) {
+            Button(action: { isSensitive.toggle() }) {
+                Text("Yes")
+            }
+            
+            Button(action: {}) {
+                Text("No")
+            }
+        } message: {
+            Text("This post may contain sensitive content. Are you sure?")
+        }
+
     }
 }
 
@@ -404,7 +443,7 @@ struct PostFooter: View {
                 }.padding(.leading)
                 if likeCount > 0 {
                     Text("\(likeCount)")
-                        .font(.callout)
+                        .font(.caption)
                 }
                 Button(action:{ self.showComments.toggle() }){
                     Image(systemName: "bubble.right")
@@ -438,11 +477,11 @@ struct PostFooter: View {
 }
 
 #Preview("Footer") {
-    PostFooter(post: .constant(POSTS[0]), showComments: .constant(false))
+    PostFooter(post: .constant(POSTS[2]), showComments: .constant(false))
         .environmentObject(SessionStore())
 }
 
 #Preview {
-    PostView(post: POSTS[0], posts: .constant(POSTS))
+    PostView(post: .constant(POSTS[0]), posts: .constant(POSTS))
         .environmentObject(SessionStore())
 }

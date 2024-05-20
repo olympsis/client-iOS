@@ -76,7 +76,9 @@ struct PostReportListItem: View {
         }
         .fullScreenCover(isPresented: $showPost, content: {
             if let p = report.post {
-                PostViewer(post: p)
+                PostViewer(post: Binding(get: {
+                    p
+                }, set: { u in  report.post = u }))
             }
         })
     }

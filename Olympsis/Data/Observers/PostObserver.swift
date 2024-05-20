@@ -68,7 +68,7 @@ class PostObserver: ObservableObject{
     
     func createPost(type: String, owner: String, groupId: String, eventID: String?=nil, body: String, images:[String]?=nil, externalLink: String?=nil) async -> CreateResponse? {
         do {
-            let post = PostDTO(type: type, poster: owner, groupID: groupId, body: body, eventID: eventID, images: images, createdAt: nil, externalLink: externalLink)
+            let post = PostDTO(type: type, poster: owner, groupID: groupId, body: body, eventID: eventID, images: images, externalLink: externalLink, createdAt: nil)
             let (data, res) = try await postService.createPost(post: post)
             guard (res as? HTTPURLResponse)?.statusCode == 201 else {
                 return nil

@@ -50,8 +50,18 @@ struct Profile: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
-                            Image(systemName: "slider.horizontal.3")
-                                .foregroundColor(.primary)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 45, height: 35)
+                                    .foregroundStyle(Color("background"))
+                                Image(systemName: "slider.horizontal.3")
+                                    .foregroundStyle(Color("foreground"))
+                                    .overlay {
+                                        if session.invitations.count > 0 {
+                                            NotificationCountView(value: $session.invitations.count)
+                                        }
+                                    }
+                            }
                         }
                     }
                 }
