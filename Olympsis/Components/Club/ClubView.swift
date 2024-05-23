@@ -53,18 +53,12 @@ struct ClubView: View {
     
     // number of members in the club
     private var membersCount: Int {
-        guard let members = club.members else {
-            return 1
-        }
-        return members.count
+        return club.members.count
     }
     
     // an array with a max count of 10 to display the images
     private var members: [Member] {
-        guard let members = club.members else {
-            return [Member]()
-        }
-        return Array(members.prefix(10))
+        return Array(club.members.prefix(10))
     }
     
     // used to search region for map

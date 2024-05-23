@@ -49,7 +49,7 @@ struct NewAnnouncement: View {
         }
         
         // generate dao
-        guard var dao = manager.generateNewPostData(groupId: id) else {
+        guard let dao = manager.generateNewPostData(groupId: id) else {
             handleFailure()
             return
         }

@@ -74,6 +74,14 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
+    func getUserByUUID(uuid: String) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/users/search/uuid", queryItems: [
+            URLQueryItem(name: "uuid", value: uuid)
+        ])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+    }
+    
     func GetOrganizationInvitations() async throws -> (Data, URLResponse){
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/users/invitations/organizations")

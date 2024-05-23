@@ -10,64 +10,53 @@ import FirebaseAuth
 
 struct ProfileMenu: View {
     
-    @State private var showHelp: Bool = false
-    @State private var showAboutUs: Bool = false
-    @State private var showPrivacy: Bool = false
-    @State private var showBugReport: Bool = false
     @State private var showDeleteView: Bool = false
-    @State private var showNotifications: Bool = false
-    
     @EnvironmentObject var session:SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    MenuButton(icon: Image(systemName: "bell.fill"), text: "Notification Settings", action: {
-                        self.showNotifications.toggle()
-                    }).padding(.top)
-                        .fullScreenCover(isPresented: $showNotifications, content: {
-                            NotificationSettings()
-                        })
+                    NavigationLink(destination: NotificationSettings()) {
+                        MenuLabel(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
+                    }
                     
-                    MenuButton(icon: Image(systemName: "ladybug"), text: "Report a bug"){
-                        showBugReport.toggle()
-                    }.fullScreenCover(isPresented: $showBugReport, content: {
-                        BugReportView()
-                    })
+                    NavigationLink(destination: BugReportView()) {
+                        MenuLabel(icon: Image(systemName: "ladybug"), text: "Report a bug")
+                    }
                     
-                    MenuButton(icon: Image(systemName: "lifepreserver.fill"), text: "Help") {
-                        self.showHelp.toggle()
-                    }.fullScreenCover(isPresented: $showHelp, content: {
-                        HelpGuide()
-                    })
+                    NavigationLink(destination: BlockedUsersList()) {
+                        MenuLabel(icon: Image(systemName: "person.slash"), text: "Blocked Users")
+                    }
                     
-                    MenuButton(icon: Image(systemName: "lock.fill"), text: "Privacy Policy") {
-                        self.showPrivacy.toggle()
-                    }.fullScreenCover(isPresented: $showPrivacy, content: {
-                        PrivacyPolicy()
-                    })
-                        
-                    MenuButton(icon: Image(systemName: "info.circle.fill"), text: "About Us") {
-                        self.showAboutUs.toggle()
-                    }.fullScreenCover(isPresented: $showAboutUs, content: {
-                        AboutUs()
-                    })
+                    NavigationLink(destination: HelpGuide()) {
+                        MenuLabel(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
+                    }
+
+                    NavigationLink(destination: PrivacyPolicy()) {
+                        MenuLabel(icon: Image(systemName: "lock.fill"), text: "Privacy Policy")
+                    }
+
+                    NavigationLink(destination: AboutUs()) {
+                        MenuLabel(icon: Image(systemName: "info.circle.fill"), text: "About Us")
+                    }
                     
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
                         Task {
                             await session.logout()
-                            self.presentationMode.wrappedValue.dismiss()
+                            dismiss()
                         }
                     }, type: .destructive)
                     
                     MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
                         self.showDeleteView.toggle()
                     }, type: .destructive)
-                }.toolbar {
+                    
+                }
+                .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                        Button(action:{ dismiss() }){
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.primary)
                         }
@@ -75,7 +64,7 @@ struct ProfileMenu: View {
                 }
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
-                .fullScreenCover(isPresented: $showDeleteView, onDismiss: { self.presentationMode.wrappedValue.dismiss() }) {
+                .fullScreenCover(isPresented: $showDeleteView, onDismiss: { dismiss() }) {
                     DeleteAccountView()
                 }
             }
@@ -83,8 +72,6 @@ struct ProfileMenu: View {
     }
 }
 
-struct ProfileMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileMenu()
-    }
+#Preview("Profile Menu") {
+    ProfileMenu()
 }

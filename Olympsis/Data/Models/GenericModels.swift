@@ -129,12 +129,15 @@ struct SelectedCustomField {
     }
 }
 
-class Member: Codable, Identifiable {
+class Member: Codable, Identifiable, ObservableObject {
     
     let id: String?
     let role: String?
     let user: UserSnippet?
     let joinedAt: Int64?
+    
+    @Published var isBlocked: Bool = false
+    @Published var roleEnum: MEMBER_ROLES = .Member
     
     init(id: String?,
          role: String,
@@ -152,6 +155,25 @@ class Member: Codable, Identifiable {
         case role
         case user
         case joinedAt = "joined_at"
+    }
+    
+    func checkBlockStatus(_ user: UserData) {
+        guard let blockedUsers = user.blockedUsers,
+              let data = self.user,
+              let memberUID = data.uuid else {
+            self.isBlocked = false
+            return
+        }
+        self.isBlocked = blockedUsers.contains(where: { $0 == memberUID })
+    }
+    
+    func checkRole() {
+        guard let r = role,
+              let e = MEMBER_ROLES(rawValue: r) else {
+            self.roleEnum = .Member
+            return
+        }
+        self.roleEnum = e
     }
 }
 

@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import Kingfisher
 
-struct MemberView: View {
+struct MemberListItem: View {
     
-    @State var club: Club
-    @State var member: Member
-    @State private var showMenu = false
-    @EnvironmentObject var session:SessionStore
+    @State private var showMenu: Bool = false
+    
+    @StateObject var member: Member
+    @EnvironmentObject private var club: Club
+    @EnvironmentObject private var session:SessionStore
     
     var username: String {
         guard let data = member.user, let username = data.username else {
@@ -23,8 +25,7 @@ struct MemberView: View {
     
     var userRole: String {
         guard let user = session.user,
-              let members = club.members,
-              let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = club.members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
         return member.role ?? ""
@@ -37,6 +38,19 @@ struct MemberView: View {
         return uuid == member.user?.uuid
     }
     
+//    var isBlocked: Bool {
+//        guard let user = session.user else {
+//            return false
+//        }
+//        return self.member.checkBlockStatus(user)
+//    }
+    
+    init(member: Member) {
+        self._member = StateObject(
+            wrappedValue: member
+        )
+    }
+    
     var body: some View {
         HStack {
             ZStack {
@@ -44,10 +58,11 @@ struct MemberView: View {
                     if let image = phase.image {
                             image // Displays the loaded image.
                                 .resizable()
-                                .clipShape(Circle())
                                 .scaledToFill()
                                 .frame(width: 50)
+                                .clipShape(Circle())
                                 .clipped()
+                                
                         } else if phase.error != nil {
                             ZStack {
                                 Color.gray // Indicates an error.
@@ -66,33 +81,40 @@ struct MemberView: View {
                             }
                         }
                 }.frame(width: 50)
+            }.redacted(reason: member.isBlocked ? .placeholder : [])
+            
+            Group {
+                
             }
             
             VStack(alignment: .leading) {
                 Text(username)
                     .font(.subheadline)
                     .foregroundColor(.gray)
-            }
+            }.redacted(reason: member.isBlocked ? .placeholder : [])
+            
             Spacer()
             
-            switch member.role {
-            case "owner":
-                Image(systemName: "o.circle.fill")
-                    .imageScale(.large)
-                    .foregroundColor(.yellow)
-                    .padding(.trailing, 5)
-            case "admin":
-                Image(systemName: "a.circle.fill")
-                    .imageScale(.large)
-                    .foregroundColor(Color("tertiary-color"))
-                    .padding(.trailing, 5)
-            case "moderator":
-                Image(systemName: "a.circle.fill")
-                    .imageScale(.large)
-                    .foregroundColor(.orange)
-                    .padding(.trailing, 5)
-            default:
-                EmptyView()
+            if !member.isBlocked {
+                switch member.role {
+                case "owner":
+                    Image(systemName: "o.circle.fill")
+                        .imageScale(.large)
+                        .foregroundColor(.yellow)
+                        .padding(.trailing, 5)
+                case "admin":
+                    Image(systemName: "a.circle.fill")
+                        .imageScale(.large)
+                        .foregroundColor(Color("tertiary-color"))
+                        .padding(.trailing, 5)
+                case "moderator":
+                    Image(systemName: "a.circle.fill")
+                        .imageScale(.large)
+                        .foregroundColor(.orange)
+                        .padding(.trailing, 5)
+                default:
+                    EmptyView()
+                }
             }
             
             if !memberIsUser {
@@ -100,20 +122,29 @@ struct MemberView: View {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
                         .foregroundColor(.primary)
-                }.padding(.trailing)
-                    .sheet(isPresented: $showMenu) {
-                        ClubMemberMenu(club: club, role: userRole, member: member)
-                            .presentationDetents([.height(250)])
-                    }
+                }
+                .padding(.trailing)
+                .sheet(isPresented: $showMenu) {
+                    ClubMemberMenu(club: club, role: userRole)
+                        .environmentObject(member)
+                        .presentationDetents([.height(250)])
+                }
+                .redacted(reason: member.isBlocked ? .placeholder : [])
+                .disabled(member.isBlocked)
             }
         }.padding(.leading)
             .frame(height: 60)
+            .onAppear {
+                guard let user = session.user else {
+                    return
+                }
+                member.checkBlockStatus(user)
+            }
     }
 }
 
-struct ClubMemberView_Previews: PreviewProvider {
-    static var previews: some View {
-        MemberView(club: CLUBS[0], member: (CLUBS[0].members?.first)!)
-            .environmentObject(SessionStore())
-    }
+#Preview("Club Member") {
+    MemberListItem(member: CLUBS[0].members.first!)
+        .environmentObject(CLUBS[0])
+        .environmentObject(SessionStore())
 }

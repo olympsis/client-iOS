@@ -12,7 +12,11 @@ struct PostMenu: View {
     @State var post: Post
     @Binding var posts: [Post]
     @Binding var pinned: Bool
+    
+    @State private var isBlocked: Bool = false
     @State private var showReport: Bool = false
+    @State private var showBlocking: Bool = false
+    
     @StateObject private var uploadObserver = UploadObserver()
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
@@ -27,8 +31,7 @@ struct PostMenu: View {
             guard let type = post.type,
                   type == "post",
                   let club = group.club,
-                  let members = club.members,
-                  let member = members.first(where: { $0.user?.uuid == uuid }) else {
+                  let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
                 if post.type == "post" {
                     return (post.poster?.uuid == uuid)
                 } else {
@@ -182,6 +185,22 @@ struct PostMenu: View {
             }.fullScreenCover(isPresented: $showReport, content: {
                 PostReportView(post: post)
             })
+            
+            if !isBlocked {
+                MenuButton(icon: Image(systemName: "person.slash"), text: "Block User", action:  {
+                    showBlocking.toggle()
+                }, type: .destructive)
+                .sheet(isPresented: $showBlocking, content: {
+                    if let poster = post.poster {
+                        UserBlockingConfirmation(user: poster, onComplete: { resp in
+                            if resp {
+                                self.post.isSensitive = true
+                            }
+                        })
+                            .presentationDetents([.height(450), .medium])
+                    }
+                })
+            }
             
             if isPosterOrAdmin {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {

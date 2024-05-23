@@ -49,7 +49,7 @@ struct NewPost: View {
         }
         
         // generate dao
-        guard var dao = viewModel.generateNewPostData(groupId: id) else {
+        guard let dao = viewModel.generateNewPostData(groupId: id) else {
             handleFailure()
             return
         }

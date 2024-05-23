@@ -18,16 +18,6 @@ struct NotificationSettings: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                }
-                Text("Notification Settings")
-                    .font(.title2)
-                    .bold()
-                Spacer()
-            }.padding(.all)
-            
             Toggle(isOn: $isEnabled) {
                 Text("Allow Notifications")
             }.padding(.horizontal)
@@ -37,7 +27,10 @@ struct NotificationSettings: View {
                 .padding(.horizontal)
                 .foregroundStyle(.gray)
             Spacer()
-        }.task {
+        }
+        .padding(.top)
+        .navigationTitle("Notifications")
+        .task {
             do {
                 let status = try await notifications.checkAuthorizationStatus()
                 isEnabled = status

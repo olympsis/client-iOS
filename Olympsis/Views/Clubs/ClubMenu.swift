@@ -14,14 +14,11 @@ struct ClubMenu: View {
         case DeleteClub
     }
     
-    @State var club: Club
-    
     @State private var showAlert = false
     @State private var showOrganizations = false
     @State private var showClubs = false
     @State private var showReports = false
     @State private var showNewClub = false
-    @State private var showMembers = false
     @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false
@@ -30,13 +27,18 @@ struct ClubMenu: View {
     @StateObject private var clubObserver = ClubObserver()
     @StateObject private var postObserver = PostObserver()
     
+    @StateObject private var club: Club
     @EnvironmentObject var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
     
+    init(club: Club) {
+        self._club = StateObject(wrappedValue: club)
+    }
+    
+    // user's role
     var role: String {
         guard let user = session.user,
-              let members = club.members,
-              let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = club.members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
         return member.role ?? ""
@@ -44,121 +46,117 @@ struct ClubMenu: View {
     
     // this will be handled in the backend as well
     var isOnlyOwner: Bool {
-        guard let members = club.members else {
-            return false
-        }
-        let owners = members.filter({ $0.role == "owner" })
+        let owners = club.members.filter({ $0.role == "owner" })
         return owners.count < 2
     }
     
     var body: some View {
-        NavigationView {
-            VStack {
-                ScrollView(showsIndicators: false) {
-                    AsyncImage(url: URL(string: GenerateImageURL(club.imageURL ?? ""))){ phase in
-                        if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                    .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                                Image(systemName: "exclamationmark.circle")
-                            }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                    .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                                ProgressView()
-                            }
+        NavigationStack {
+            ScrollView(showsIndicators: false) {
+                AsyncImage(url: URL(string: GenerateImageURL(club.imageURL ?? ""))){ phase in
+                    if let image = phase.image {
+                        image // Displays the loaded image.
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                            .clipped()
+                    } else if phase.error != nil {
+                        ZStack {
+                            Rectangle()
+                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
+                                .opacity(0.3)
+                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                            Image(systemName: "exclamationmark.circle")
                         }
-                    }.frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                        .padding(.top)
-                        
-                    VStack {
-                        if club.visibility == "private" {
-                            HStack {
-                                Image(systemName: "lock.fill")
-                                    .foregroundStyle(Color("color-prime"))
-                                Text("Private group")
-                                    .font(.callout)
-                                Spacer()
-                            }.frame(height: 20)
-                                
-                        } else {
-                            HStack {
-                                Image(systemName: "globe.americas.fill")
-                                    .foregroundStyle(Color("color-prime"))
-                                Text("Public group")
-                                    .font(.callout)
-                                Spacer()
-                            }.frame(height: 20)
+                    } else {
+                        ZStack {
+                            Rectangle()
+                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
+                                .opacity(0.3)
+                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                            ProgressView()
                         }
-                        
+                    }
+                }.frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
+                    .padding(.top)
+                    
+                VStack {
+                    if club.visibility == "private" {
                         HStack {
-                            Text("\(club.members!.count)").foregroundColor(Color("color-prime")) +
-                            Text(" members")
+                            Image(systemName: "lock.fill")
+                                .foregroundStyle(Color("color-prime"))
+                            Text("Private group")
                                 .font(.callout)
                             Spacer()
-                        }
-                        
-                    }.padding(.vertical)
-                        .padding(.horizontal)
+                        }.frame(height: 20)
+                            
+                    } else {
+                        HStack {
+                            Image(systemName: "globe.americas.fill")
+                                .foregroundStyle(Color("color-prime"))
+                            Text("Public group")
+                                .font(.callout)
+                            Spacer()
+                        }.frame(height: 20)
+                    }
                     
-                    VStack {
-                        if role != "member" {
-                            MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
-                                self.showApplications.toggle()
-                            })
-                        }
-                        
-                        if role != "member" {
-                            MenuButton(icon: Image(systemName: "ladybug"), text: "Reports", action: {
-                                self.showReports.toggle()
-                            })
-                        }
-                        
-                        if role != "member" {
-                            MenuButton(icon: Image(systemName: "building.fill"), text: "Change Organization", action: {
-                                self.showOrganizations.toggle()
-                            })
-                        }
-                                
-                        MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
-                            self.showNewClub.toggle()
+                    HStack {
+                        Text("\(club.members.count)").foregroundColor(Color("color-prime")) +
+                        Text(" members")
+                            .font(.callout)
+                        Spacer()
+                    }
+                    
+                }.padding(.vertical)
+                    .padding(.horizontal)
+                
+                VStack {
+                    if role != "member" {
+                        MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
+                            self.showApplications.toggle()
                         })
-                        
-                        MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
-                            self.showClubs.toggle()
+                    }
+                    
+                    if role != "member" {
+                        MenuButton(icon: Image(systemName: "ladybug"), text: "Reports", action: {
+                            self.showReports.toggle()
                         })
-                        
-                        MenuButton(icon: Image(systemName: "person.3"), text: "Members", action: {
-                            self.showMembers.toggle()
+                    }
+                    
+                    if role != "member" {
+                        MenuButton(icon: Image(systemName: "building.fill"), text: "Change Organization", action: {
+                            self.showOrganizations.toggle()
                         })
-                        
-                        MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Club", action: {
+                    }
+                            
+                    MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
+                        self.showNewClub.toggle()
+                    })
+                    
+                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
+                        self.showClubs.toggle()
+                    })
+                    
+                    NavigationLink(destination: MembersListView().environmentObject(club)) {
+                        MenuLabel(icon: Image(systemName: "person.3"), text: "Members")
+                    }
+                    
+                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Club", action: {
+                        showAlert = false
+                        alertType = .LeaveClub
+                        showAlert.toggle()
+                    }, type: .destructive)
+                    
+                    if role == "owner" {
+                        MenuButton(icon: Image(systemName: "trash.fill"), text: "Delete Club", action: {
                             showAlert = false
-                            alertType = .LeaveClub
+                            alertType = .DeleteClub
                             showAlert.toggle()
                         }, type: .destructive)
-                        
-                        if role == "owner" {
-                            MenuButton(icon: Image(systemName: "trash.fill"), text: "Delete Club", action: {
-                                showAlert = false
-                                alertType = .DeleteClub
-                                showAlert.toggle()
-                            }, type: .destructive)
-                        }
-                    }.padding(.vertical)
-                }
-            }.toolbar {
+                    }
+                }.padding(.vertical)
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                         Image(systemName: "chevron.left")
@@ -176,9 +174,6 @@ struct ClubMenu: View {
             }
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
-            }
-            .fullScreenCover(isPresented: $showMembers) {
-                MembersListView(club: club)
             }
             .fullScreenCover(isPresented: $showClubs) {
                 ClubsList2()
@@ -247,8 +242,7 @@ struct ClubMenu: View {
     }
 }
 
-struct ClubMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubMenu(club: CLUBS[0]).environmentObject(SessionStore())
-    }
+#Preview("Club Menu") {
+    ClubMenu(club: CLUBS[0])
+        .environmentObject(SessionStore())
 }

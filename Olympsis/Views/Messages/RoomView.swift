@@ -56,7 +56,7 @@ struct RoomView: View {
     }
     
     func GetData(uuid: String) -> UserSnippet? {
-        guard let user = club.members!.first(where: {$0.user?.uuid == uuid}) else {
+        guard let user = club.members.first(where: {$0.user?.uuid == uuid}) else {
             return nil
         }
         return user.user

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Club: Codable, Identifiable {
+class Club: Codable, Identifiable, ObservableObject {
 
     let id: String?
     let parent: OrganizationDao?
@@ -21,7 +21,7 @@ class Club: Codable, Identifiable {
     let imageURL: String?
     let imageGallery: [String]?
     let visibility: String?
-    let members: [Member]?
+    var members: [Member]
     let rules: [String]?
     var pinnedPostId: String?
     let createdAt: Int64?
@@ -38,7 +38,7 @@ class Club: Codable, Identifiable {
          imageURL: String?,
          imageGallery: [String]?,
          visibility: String?,
-         members: [Member]?,
+         members: [Member] = [Member](),
          rules: [String]?,
          pinnedPostId: String?,
          createdAt: Int64?) {

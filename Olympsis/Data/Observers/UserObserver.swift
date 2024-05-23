@@ -75,6 +75,15 @@ class UserObserver: ObservableObject {
         return object.users
     }
     
+    func getUserByUUID(uuid: String) async throws -> UserData? {
+        let (data, resp) = try await userService.getUserByUUID(uuid: uuid)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return nil
+        }
+        let object = try decoder.decode(UserData.self, from: data)
+        return object
+    }
+    
     func GetOrganizationInvitations() async throws -> [Invitation] {
         let (data, resp) = try await userService.GetOrganizationInvitations()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {

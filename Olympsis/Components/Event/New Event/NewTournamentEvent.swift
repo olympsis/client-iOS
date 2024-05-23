@@ -260,8 +260,8 @@ struct NewTournamentEvent: View {
                                 
                         }.padding(.top)
                             .padding(.horizontal)
-                            .onChange(of: manager.sport, perform: { v in
-                                manager.image = v.Images().first
+                            .onChange(of: manager.sport, { _, newValue in
+                                manager.image = newValue.Images().first
                             })
                             .onTapGesture {
                                 titleFocus = false
@@ -464,12 +464,12 @@ struct NewTournamentEvent: View {
                             }
                         }.padding(.vertical, 50)
                     }
-                    .onChange(of: manager.startDate) { v in
+                    .onChange(of: manager.startDate) { _, v in
                         if v > manager.endDate {
                             manager.endDate = v.addingTimeInterval(30 * 60)
                         }
                     }
-                    .onChange(of: manager.endDate) { v in
+                    .onChange(of: manager.endDate) { _, v in
                         if v < manager.startDate {
                             manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
                         } else {

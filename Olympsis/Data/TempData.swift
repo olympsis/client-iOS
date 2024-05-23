@@ -12,8 +12,8 @@ let _one_hr = Calendar.current.date(byAdding: .hour, value: 1, to: _current_date
 let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
 let USER_SNIPPETS = [
-    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"),
-    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg")
+    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "feed-images/5439973E-7695-48F4-B611-8371B8BDF767.jpeg"),
+    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "feed-images/2E64B83A-FCF7-4589-8E17-923F496085E4.jpeg")
 ]
 
 let COMMENTS = [
@@ -110,3 +110,4 @@ let EVENT_REPORTS = [
 let MEMBER_REPORTS = [
     MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
 ]
+

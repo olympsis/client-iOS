@@ -28,11 +28,21 @@ struct ViewContainer: View {
     var body: some View {
         VStack {
             TabView(selection: $currentTab) {
-                Home().tag(Tab.home)
-                GroupView().tag(Tab.club)
-                MapView().tag(Tab.map)
-                Activity().tag(Tab.activity)
-                Profile().tag(Tab.profile)
+                Home()
+                    .tag(Tab.home)
+                
+                GroupView()
+                    .tag(Tab.club)
+                
+                MapView()
+                    .tag(Tab.map)
+                
+                Activity()
+                    .tag(Tab.activity)
+                
+                Profile()
+                    .tag(Tab.profile)
+                
             }.toast(isPresented: $notificationManager.showToast, toast: $notificationManager.toastContent)
                 .padding(.bottom, -10)
             

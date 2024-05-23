@@ -16,6 +16,7 @@ struct GroupView: View {
     @State private var showMessages: Bool = false
     @State private var showNewGroup: Bool = false
     @State private var groupState: LOADING_STATE = .pending
+    
     @EnvironmentObject private var session: SessionStore
     
     func retryFetchingClubData() {

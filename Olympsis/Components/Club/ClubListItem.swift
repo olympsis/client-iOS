@@ -139,12 +139,12 @@ struct ClubListItem: View {
                     Text(club.state!)
                         .foregroundColor(.gray)
                     HStack {
-                        if club.members!.count > 1 {
-                            Text("\(club.members!.count) members")
+                        if club.members.count > 1 {
+                            Text("\(club.members.count) members")
                                 .foregroundColor(Color("foreground"))
                                 .font(.caption)
                         } else {
-                            Text("\(club.members!.count) member")
+                            Text("\(club.members.count) member")
                                 .foregroundColor(Color("foreground"))
                                 .font(.caption)
                         }

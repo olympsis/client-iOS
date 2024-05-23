@@ -81,7 +81,7 @@ struct NewClub: View {
                   let city = pk.first?.locality else {
                 return
             }
-            let club = Club(id: nil, parent: nil, type: "club", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: nil, rules: nil, pinnedPostId: nil, createdAt: nil)
+            let club = Club(id: nil, parent: nil, type: "club", name: clubName, description: description, sport: sport, city: city, state: state, country: country, imageURL: imageURL, imageGallery: nil, visibility: "public", members: [Member](), rules: nil, pinnedPostId: nil, createdAt: nil)
             
             // create new club
             let resp = try await session.clubObserver.createClub(club: club)
@@ -187,7 +187,8 @@ struct NewClub: View {
                                                 .font(.caption)
                                                 .textCase(.uppercase)
                                         }
-                                    }.onChange(of: selectedItem) { newItem in
+                                    }
+                                    .onChange(of: selectedItem) { _, newItem in
                                         Task {
                                             // Retrive selected asset in the form of Data
                                             if let data = try? await newItem?.loadTransferable(type: Data.self) {

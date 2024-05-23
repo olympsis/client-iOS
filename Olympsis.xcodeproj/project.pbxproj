@@ -86,6 +86,7 @@
 		5D9F694B2BB9F7F90057D205 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F694A2BB9F7F90057D205 /* AboutUs.swift */; };
 		5D9F694D2BBA0B3A0057D205 /* HelpGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F694C2BBA0B3A0057D205 /* HelpGuide.swift */; };
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
+		5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681822BFEF4420084B5E8 /* MenuLabel.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
 		5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF32B95282D00B67CFB /* PostReportView.swift */; };
 		5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF72B95531600B67CFB /* FieldReportView.swift */; };
@@ -145,6 +146,9 @@
 		5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */; };
 		5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF945AB2BF9CCB500BE3C63 /* Kingfisher */; };
 		5DF945AE2BFAAFAD00BE3C63 /* PostViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */; };
+		5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */; };
+		5DF945B22BFC706100BE3C63 /* UserBlockingConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945B12BFC706100BE3C63 /* UserBlockingConfirmation.swift */; };
+		5DF945B42BFC736200BE3C63 /* BlockedUsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */; };
 		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* VenueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* VenueView.swift */; };
 		5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA12A4123EF0019E9F7 /* Notifications.swift */; };
@@ -285,7 +289,7 @@
 		9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FB293432A4007A62C4 /* ClubMenu.swift */; };
 		9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FD2934448D007A62C4 /* ClubApplications.swift */; };
 		9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FF29344498007A62C4 /* ClubApplicationListItem.swift */; };
-		9AD20902293444A4007A62C4 /* MemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20901293444A4007A62C4 /* MemberView.swift */; };
+		9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20901293444A4007A62C4 /* MemberListItem.swift */; };
 		9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20905293446A4007A62C4 /* UserPeek.swift */; };
 		9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD209102935791D007A62C4 /* ParticipantDao.swift */; };
 		9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */; };
@@ -419,6 +423,7 @@
 		5D9F694A2BB9F7F90057D205 /* AboutUs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		5D9F694C2BBA0B3A0057D205 /* HelpGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpGuide.swift; sourceTree = "<group>"; };
 		5DA38B352BF39856008C5C74 /* VenueTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTips.swift; sourceTree = "<group>"; };
+		5DB681822BFEF4420084B5E8 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF32B95282D00B67CFB /* PostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportView.swift; sourceTree = "<group>"; };
 		5DBA3AF72B95531600B67CFB /* FieldReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldReportView.swift; sourceTree = "<group>"; };
@@ -472,6 +477,9 @@
 		5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSmallListItem.swift; sourceTree = "<group>"; };
 		5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndUserLicenseAgreement.swift; sourceTree = "<group>"; };
 		5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViolation.swift; sourceTree = "<group>"; };
+		5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberBlockingConfirmation.swift; sourceTree = "<group>"; };
+		5DF945B12BFC706100BE3C63 /* UserBlockingConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockingConfirmation.swift; sourceTree = "<group>"; };
+		5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersList.swift; sourceTree = "<group>"; };
 		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* VenueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueView.swift; sourceTree = "<group>"; };
 		5F00FEA12A4123EF0019E9F7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -614,7 +622,7 @@
 		9AD208FB293432A4007A62C4 /* ClubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMenu.swift; sourceTree = "<group>"; };
 		9AD208FD2934448D007A62C4 /* ClubApplications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplications.swift; sourceTree = "<group>"; };
 		9AD208FF29344498007A62C4 /* ClubApplicationListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationListItem.swift; sourceTree = "<group>"; };
-		9AD20901293444A4007A62C4 /* MemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberView.swift; sourceTree = "<group>"; };
+		9AD20901293444A4007A62C4 /* MemberListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListItem.swift; sourceTree = "<group>"; };
 		9AD20905293446A4007A62C4 /* UserPeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPeek.swift; sourceTree = "<group>"; };
 		9AD209102935791D007A62C4 /* ParticipantDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantDao.swift; sourceTree = "<group>"; };
 		9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantResponse.swift; sourceTree = "<group>"; };
@@ -931,6 +939,7 @@
 				5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */,
 				5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */,
 				5DF945AD2BFAAFAD00BE3C63 /* PostViolation.swift */,
+				5DF945B12BFC706100BE3C63 /* UserBlockingConfirmation.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -940,6 +949,7 @@
 			children = (
 				5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */,
 				5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */,
+				5DB681822BFEF4420084B5E8 /* MenuLabel.swift */,
 			);
 			name = Buttons;
 			path = ../Views/Buttons;
@@ -1386,6 +1396,7 @@
 				5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */,
 				5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */,
 				5D666A942BF6AD29001EE754 /* PhotosPickerViewModel.swift */,
+				5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1395,12 +1406,13 @@
 			children = (
 				9A69FE58297325E000EBC5F9 /* ClubLoadingTemplateView.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
-				9AD20901293444A4007A62C4 /* MemberView.swift */,
+				9AD20901293444A4007A62C4 /* MemberListItem.swift */,
 				5D0CC9422BB0CC8700E16B95 /* MemberView2.swift */,
 				9A5CA4DC296F7DA300C63A32 /* ClubMemberMenu.swift */,
 				9AECDA4329544CAB007956FB /* NoClubMenu.swift */,
 				9A5CA4DA296F725C00C63A32 /* MembersListView.swift */,
 				5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */,
+				5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -1718,6 +1730,7 @@
 				9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */,
 				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
+				5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
@@ -1793,7 +1806,7 @@
 				5D9F69452BB86F020057D205 /* LocationUsage.swift in Sources */,
 				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
-				9AD20902293444A4007A62C4 /* MemberView.swift in Sources */,
+				9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
 				5D18BD102B35F85800F90777 /* EventDatePickerView.swift in Sources */,
 				5D0CC9432BB0CC8700E16B95 /* MemberView2.swift in Sources */,
@@ -1853,6 +1866,7 @@
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
 				5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
+				5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
 				5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */,
@@ -1896,6 +1910,7 @@
 				5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */,
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,
 				9AECDA4229542108007956FB /* LookUpMenu.swift in Sources */,
+				5DF945B42BFC736200BE3C63 /* BlockedUsersList.swift in Sources */,
 				BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */,
 				5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
@@ -1908,6 +1923,7 @@
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
 				5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */,
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
+				5DF945B22BFC706100BE3C63 /* UserBlockingConfirmation.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5D666A932BF69715001EE754 /* CropModels.swift in Sources */,
 				5DC734052B2A98D60051BE21 /* EventFieldPickerView.swift in Sources */,
