@@ -83,7 +83,6 @@
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
-		5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF13F28BC260F00DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
@@ -333,13 +332,6 @@
 			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
 			remoteInfo = Olympsis;
 		};
-		5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5DD0E3F22AC889F900C85B94;
-			remoteInfo = LiveEventExtension;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -359,7 +351,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				5DD0E4062AC889FA00C85B94 /* LiveEventExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,7 +472,6 @@
 		5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
 		5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWorkoutView.swift; sourceTree = "<group>"; };
 		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
-		5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveEventExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEventBundle.swift; sourceTree = "<group>"; };
@@ -675,15 +665,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DD0E3F02AC889F900C85B94 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E3F72AC889FA00C85B94 /* SwiftUI.framework in Frameworks */,
-				5DD0E3F52AC889FA00C85B94 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1153,7 +1134,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
-				5DD0E3F82AC889FA00C85B94 /* LiveEvent */,
 				5D8086042B2FF9C100EA01AC /* OlympsisTests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
@@ -1164,7 +1144,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
-				5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */,
 				5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */,
 			);
 			name = Products;
@@ -1550,23 +1529,6 @@
 			productReference = 5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5DD0E3F22AC889F900C85B94 /* LiveEventExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */;
-			buildPhases = (
-				5DD0E3EF2AC889F900C85B94 /* Sources */,
-				5DD0E3F02AC889F900C85B94 /* Frameworks */,
-				5DD0E3F12AC889F900C85B94 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = LiveEventExtension;
-			productName = LiveEventExtension;
-			productReference = 5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A8FF0BB28BB14C100DE4CF8 /* Build configuration list for PBXNativeTarget "Olympsis" */;
@@ -1580,7 +1542,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -1606,9 +1567,6 @@
 					5D8086022B2FF9C100EA01AC = {
 						CreatedOnToolsVersion = 15.1;
 						TestTargetID = 9A8FF0AC28BB14BF00DE4CF8;
-					};
-					5DD0E3F22AC889F900C85B94 = {
-						CreatedOnToolsVersion = 15.0;
 					};
 					9A8FF0AC28BB14BF00DE4CF8 = {
 						CreatedOnToolsVersion = 14.0;
@@ -1637,7 +1595,6 @@
 			projectRoot = "";
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
-				5DD0E3F22AC889F900C85B94 /* LiveEventExtension */,
 				5D8086022B2FF9C100EA01AC /* OlympsisTests */,
 			);
 		};
@@ -1717,17 +1674,6 @@
 				5DBEFB572B641D1100FFCADA /* NewEventManagerTests.swift in Sources */,
 				5D8086102B30057000EA01AC /* EventModels.swift in Sources */,
 				5DBEFB5B2B643EB000FFCADA /* GenericModels.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DD0E3EF2AC889F900C85B94 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E3FE2AC889FA00C85B94 /* LiveEvent.swift in Sources */,
-				5DD0E4002AC889FA00C85B94 /* AppIntent.swift in Sources */,
-				5DD0E3FA2AC889FA00C85B94 /* LiveEventBundle.swift in Sources */,
-				5DD0E3FC2AC889FA00C85B94 /* LiveEventLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2005,11 +1951,6 @@
 			isa = PBXTargetDependency;
 			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
 			targetProxy = 5D8086072B2FF9C100EA01AC /* PBXContainerItemProxy */;
-		};
-		5DD0E4052AC889FA00C85B94 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5DD0E3F22AC889F900C85B94 /* LiveEventExtension */;
-			targetProxy = 5DD0E4042AC889FA00C85B94 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2334,15 +2275,6 @@
 			buildConfigurations = (
 				5D80860A2B2FF9C100EA01AC /* Debug */,
 				5D80860B2B2FF9C100EA01AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5DD0E40A2AC889FA00C85B94 /* Build configuration list for PBXNativeTarget "LiveEventExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5DD0E4082AC889FA00C85B94 /* Debug */,
-				5DD0E4092AC889FA00C85B94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
