@@ -258,7 +258,7 @@ struct NewPickUpEvent: View {
                                     Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
                                 }
                             }
-                            .onChange(of: manager.sport, perform: { v in
+                            .onChange(of: manager.sport, { _, v in
                                 manager.image = v.Images().first
                             })
                             .modifier(InputField())
@@ -442,12 +442,12 @@ struct NewPickUpEvent: View {
                             }
                         }.padding(.vertical, 50)
                     }
-                    .onChange(of: manager.startDate) { v in
+                    .onChange(of: manager.startDate) { _, v in
                         if v > manager.endDate {
                             manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
                         }
                     }
-                    .onChange(of: manager.endDate) { v in
+                    .onChange(of: manager.endDate) { _, v in
                         if v < manager.startDate {
                             manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
                         } else {

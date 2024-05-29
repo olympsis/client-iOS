@@ -17,15 +17,12 @@ class UploadObserver: ObservableObject {
     }
     
     
-    func UploadImage(location: String, fileName: String, data: Data) async -> Bool {
+    func UploadImage(location: String, fileName: String, data: Data) async -> ImageUploadResponse? {
         do {
-            let (_, res) = try await uploadService.UploadObject(url: location, fileType: "image", fileName: fileName, body: data)
-            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return false
-            }
-            return true
+            let (data, _) = try await uploadService.UploadObject(url: location, fileType: "image", fileName: fileName, body: data)
+            return try decoder.decode(ImageUploadResponse.self, from: data)
         } catch {
-            return false
+            return nil
         }
     }
     

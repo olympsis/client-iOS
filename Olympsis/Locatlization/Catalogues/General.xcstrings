@@ -1,0 +1,197 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "About this Venue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À propos de ce lieu"
+          }
+        }
+      }
+    },
+    "Accept" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permettre"
+          }
+        }
+      }
+    },
+    "Announcements" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annonces"
+          }
+        }
+      }
+    },
+    "are you ready to play?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "êtes-vous prêt à jouer?"
+          }
+        }
+      }
+    },
+    "Events can be created anywhere, venues are locations vetted by Olympsis" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les événements peuvent être créés n'importe où, les lieux sont des lieux approuvés par Olympsis"
+          }
+        }
+      }
+    },
+    "Hot Events" : {
+
+    },
+    "How is my location used?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment ma position est-elle utilisée ?"
+          }
+        }
+      }
+    },
+    "Move and scale" : {
+
+    },
+    "Nearby Venues" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieux à proximité"
+          }
+        }
+      }
+    },
+    "No Thanks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non merci"
+          }
+        }
+      }
+    },
+    "No venues near you" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun lieu a ta proximité"
+          }
+        }
+      }
+    },
+    "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olympsis doit accéder à votre position pour vous montrer les événements sportifs et les tournois à proximité qui se déroulent dans votre région. Olympsis organisera pour vous l'expérience sportive locale optimale en fonction de votre proximité. Cela garantit que vous ne manquerez jamais les plus grands matchs et que vous pourrez facilement découvrir de nouveaux événements sportifs dans votre voisinage."
+          }
+        }
+      }
+    },
+    "ready to play?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "prêt à jouer?"
+          }
+        }
+      }
+    },
+    "Share Your Location" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagez votre position"
+          }
+        }
+      }
+    },
+    "Sorry there are no venues in your area" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désolé, il n'y a pas de lieux dans votre région."
+          }
+        }
+      }
+    },
+    "View All" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir tout"
+          }
+        }
+      }
+    },
+    "Welcome back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content de te revoir"
+          }
+        }
+      }
+    },
+    "Welcome!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenue!"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

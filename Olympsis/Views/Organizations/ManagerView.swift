@@ -89,5 +89,5 @@ struct ManagerView: View {
 }
 
 #Preview {
-    ManagerView(member: CLUBS[0].members!.first!)
+    ManagerView(member: CLUBS[0].members.first!)
 }

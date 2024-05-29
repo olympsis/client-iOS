@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import SwiftUI
 import PhotosUI
 
@@ -22,18 +23,26 @@ struct EditProfile: View {
     @State private var isPublic: Bool = true
     @State private var visibility: String = "public"
     
+    @State private var showMediaPicker: Bool = false
+    @State private var showImageCropper: Bool = false
     @State private var showSportsPicker: Bool = false
     @State private var showHometownPicker: Bool = false
+    
+    @State private var testCroppedImage: UIImage?
+    @State private var showTestCroppedImage: Bool = false
     
     @State private var hometown: CLLocationCoordinate2D?
     
     
     @State private var selectedSports: Set<String> = []
     
+    @State private var selectedPhoto: UIImage?
     @State private var selectedPhotoData: Data?
-    @State private var selectedPhotoItem: PhotosPickerItem?
+    
+    @State private var croppedPhotoData: Data?
     
     @State private var status: LOADING_STATE = .pending
+    @StateObject private var photoViewModel = PhotoPickerViewModel()
     
     private var cacheService: CacheService = CacheService()
     private var userObserver: UserObserver = UserObserver()
@@ -42,6 +51,8 @@ struct EditProfile: View {
     @EnvironmentObject private var session: SessionStore
     
     @Environment(\.dismiss) private var dismiss
+    
+    var log = Logger(subsystem: "com.olympsis.client", category: "edit_profile_view")
     
     func UpdateProfile() async {
         var imageURL: String = ""
@@ -61,7 +72,7 @@ struct EditProfile: View {
                 coords = [latitude, longitude]
             }
             
-            let update = UserDao(username: user.username, bio: bio, hometown: coords, sports: Array(selectedSports))
+            let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
             let res = await userObserver.UpdateUserData(update: update)
             
             guard res == true else {
@@ -82,16 +93,14 @@ struct EditProfile: View {
             return
         }
         
-        let res = await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)
-        
-        guard res == true else {
+        guard (await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
             status = .failure
             return
         }
         
         imageURL = "profile-images/\(imageId).jpeg"
         
-        guard var user = session.user else {
+        guard let user = session.user else {
             return
         }
         
@@ -106,7 +115,7 @@ struct EditProfile: View {
         }
         
         // update user data
-        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, hometown: coords, sports: Array(selectedSports))
+        let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
         let resp = await userObserver.UpdateUserData(update: update)
         
         guard resp == true else {
@@ -176,21 +185,18 @@ struct EditProfile: View {
                                 }.frame(width: 100, height: 100)
                             }
                         }
-                        PhotosPicker(
-                            selection: $selectedPhotoItem,
-                            matching: .images,
-                            photoLibrary: .shared()) {
-                                Text("Edit Picture")
-                                    .foregroundColor(Color("color-prime"))
-                        }.onChange(of: selectedPhotoItem) { _, newItem in
-                            Task {
-                                // Retrive selected asset in the form of Data
-                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                    let img = UIImage(data: data)
-                                    selectedPhotoData = img!.jpegData(compressionQuality: 0.5)
+                        
+                        Button(action: { self.showMediaPicker.toggle() }) {
+                            Text("Edit Picture")
+                                .foregroundColor(Color("color-prime"))
+                        }.fullScreenCover(isPresented: $showMediaPicker, content: {
+                            MediaPicker(pickerType: .profile) { images in
+                                if let img = images.first {
+                                    selectedPhoto = img
+                                    selectedPhotoData = img.jpegData(compressionQuality: 0.5)
                                 }
                             }
-                        }
+                        })
                         
                     }.padding(.bottom, 30)
                         .padding(.top)
@@ -248,7 +254,7 @@ struct EditProfile: View {
                             Text("Profile Visibility")
                         }.frame(width: SCREEN_WIDTH-30, height: 40)
                             .tint(Color("color-secnd"))
-                            .onChange(of: isPublic) { newValue in
+                            .onChange(of: isPublic) { _, newValue in
                                 if newValue {
                                     visibility = "public"
                                 } else {
@@ -300,7 +306,7 @@ struct EditProfile: View {
                     }.padding(.horizontal)
                         .padding(.top)
                         .fullScreenCover(isPresented: $showSportsPicker, content: {
-                            ProfileSportsPicker(selectedSports: $selectedSports)
+                            MultiSportsPicker(selectedSports: $selectedSports)
                                 .presentationDetents([.medium])
                         })
                     

@@ -30,11 +30,12 @@ struct AnnouncementsView: View {
                             .frame(width: 30, height: 5)
                     }
                 }.padding()
-            }.onChange(of: announcements, perform: { newValue in
+            }
+            .onChange(of: announcements) { _, _ in
                 if !announcements.isEmpty {
                     self.index = announcements[0].id
                 }
-            })
+            }
         } else {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.gray)

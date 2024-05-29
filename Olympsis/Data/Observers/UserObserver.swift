@@ -40,9 +40,9 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func createUserData(username: String, sports:[String]) async throws -> User? {
+    func createUserData(username: String, sports:[String]) async throws -> UserData? {
         let (data,_) = try await userService.createUserData(userName: username, sports: sports)
-        let object = try decoder.decode(User.self, from: data)
+        let object = try decoder.decode(UserData.self, from: data)
         return object
     }
     
@@ -73,6 +73,15 @@ class UserObserver: ObservableObject {
         }
         let object = try decoder.decode(UsersDataResponse.self, from: data)
         return object.users
+    }
+    
+    func getUserByUUID(uuid: String) async throws -> UserData? {
+        let (data, resp) = try await userService.getUserByUUID(uuid: uuid)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return nil
+        }
+        let object = try decoder.decode(UserData.self, from: data)
+        return object
     }
     
     func GetOrganizationInvitations() async throws -> [Invitation] {

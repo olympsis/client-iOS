@@ -8,6 +8,7 @@
 import os
 import Hermes
 import Foundation
+import FirebaseAuth
 
 class AuthService {
     
@@ -16,28 +17,28 @@ class AuthService {
     
     init() {
         self.tokenStore = SecureStore()
-        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-        self.http = Courrier(.HTTPS, host: host)
+        #if DEBUG
+            self.http = Courrier(.HTTP, host: "localhost")
+        #else
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+            self.http = Courrier(.HTTPS, host: host)
+        #endif
     }
     
-    func SignUp(request: AuthRequest) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/auth/signup")
+    func Register(request: AuthRequest) async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/v1/auth/register")
         return try await http.Request(.POST, endpoint, body: EncodeToData(request))
     }
     
     func LogIn(request: AuthRequest) async throws -> (Data, URLResponse){
-        let endpoint = Endpoint("/auth/login")
+        let endpoint = Endpoint("/v1/auth/login")
         return try await http.Request(.POST, endpoint, body: EncodeToData(request))
     }
     
     func DeleteAccount() async throws -> (Data, URLResponse){
-        let endpoint = Endpoint("/auth/delete")
-        return try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
-    }
-    
-    func Token() async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/auth/token")
-        return try await http.Request(.POST, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/auth/delete")
+        return try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
     }
 }
 

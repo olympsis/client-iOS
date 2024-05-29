@@ -48,23 +48,43 @@ struct UserDao: Codable {
     let username: String?
     let bio: String?
     let imageURL: String?
+    let sports: [String]?
     let visibility: String?
-    var hometown: [Double]?
     let clubs: [String]?
     var organizations: [String]?
-    let sports: [String]?
+    var acceptedEULA: Bool?
+    var hasOnboarded: Bool?
+    var blockedUsers: [String]?
+    var hometown: [Double]?
     let deviceToken: String?
 
-    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, hometown: [Double]?=nil, clubs: [String]?=nil, organizations: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
+    init(
+        uuid: String?=nil, 
+        username: String?=nil,
+        bio: String?=nil,
+        imageURL: String?=nil,
+        sports: [String]?=nil,
+        visibility: String?=nil,
+        clubs: [String]?=nil,
+        organizations: [String]?=nil,
+        acceptedEULA: Bool?=nil,
+        hasOnboarded: Bool?=nil,
+        blockedUsers: [String]?=nil,
+        hometown: [Double]?=nil,
+        deviceToken: String? = nil
+    ){
         self.uuid = uuid
         self.username = username
         self.bio = bio
         self.imageURL = imageURL
+        self.sports = sports
         self.visibility = visibility
-        self.hometown = hometown
         self.clubs = clubs
         self.organizations = organizations
-        self.sports = sports
+        self.acceptedEULA = acceptedEULA
+        self.hasOnboarded = hasOnboarded
+        self.blockedUsers = blockedUsers
+        self.hometown = hometown
         self.deviceToken = deviceToken
     }
     
@@ -74,10 +94,13 @@ struct UserDao: Codable {
         case bio
         case imageURL = "image_url"
         case visibility
-        case hometown
         case clubs
         case organizations
         case sports
+        case acceptedEULA = "accepted_eula"
+        case hasOnboarded = "has_onboarded"
+        case blockedUsers = "blocked_users"
+        case hometown
         case deviceToken = "device_token"
     }
 }
@@ -96,12 +119,15 @@ struct UserData: Codable, Hashable {
     let firstName: String?
     let lastName: String?
     var imageURL: String?
-    var visibility: String?
     var bio: String?
-    var clubs: [String]?
-    var hometown: [Double]?
-    var organizations: [String]?
     var sports: [String]?
+    var visibility: String?
+    var clubs: [String]?
+    var organizations: [String]?
+    var acceptedEULA: Bool?
+    var hasOnboarded: Bool?
+    var blockedUsers: [String]?
+    var hometown: [Double]?
     var deviceToken: String?
     
     static func == (lhs: UserData, rhs: UserData) -> Bool {
@@ -118,12 +144,15 @@ struct UserData: Codable, Hashable {
         case firstName = "first_name"
         case lastName = "last_name"
         case imageURL = "image_url"
-        case visibility
         case bio
-        case clubs
-        case hometown
-        case organizations
         case sports
+        case visibility
+        case clubs
+        case organizations
+        case acceptedEULA = "accepted_eula"
+        case hasOnboarded = "has_onboarded"
+        case blockedUsers = "blocked_users"
+        case hometown
         case deviceToken = "device_token"
     }
 }
@@ -143,11 +172,10 @@ struct CheckIn: Codable {
     let clubs: [Club]?
     let organizations: [Organization]?
     let invitations: [Invitation]?
-    let token: String?
 }
 
 struct LocationResponse: Codable {
-    let fields: [Field]?
+    let fields: [Venue]?
     let events: [Event]?
 }
 

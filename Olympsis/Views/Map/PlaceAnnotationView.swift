@@ -11,7 +11,7 @@ import CoreLocation
 
 struct PlaceAnnotationView: View {
     
-    @State var field: Field
+    @State var field: Venue
     @State var showDetails = false
     @EnvironmentObject var session: SessionStore
     

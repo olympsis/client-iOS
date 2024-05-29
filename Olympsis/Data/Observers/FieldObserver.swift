@@ -19,7 +19,7 @@ class FieldObserver: ObservableObject{
     /// - Parameter longitude: `Double`
     /// - Parameter latitude: `Double`
     /// - Parameter radius: `Int`
-    func fetchFields(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Field]? {
+    func fetchFields(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Venue]? {
         do {
             let (data, resp) = try await fieldService.getFields(long: longitude, lat: latitude, radius: radius, sports: sports)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {

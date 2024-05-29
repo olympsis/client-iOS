@@ -2,19 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>API-KEY</key>
-	<string>X0HyasjIZL6GLo7hBzwZneCQhmCIkZoW</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>None</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>None</string>
-		</dict>
-	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string></string>
+	</dict>
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
@@ -23,21 +15,29 @@
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
+	<key>STORAGE</key>
+	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>MKDirectionsApplicationSupportedModes</key>
-	<array/>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<dict>
 		<key>NSPrivacyAccessedAPIType</key>
 		<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+		<key>NSPrivacyAccessedAPITypeReasons</key>
+		<array>
+			<string>CA92.1</string>
+		</array>
 	</dict>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>In order to notify you of local events, and club activities our app needs to be able send you notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Olympsis requires your location to show you the venues and events that are happening in close proximity to you.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Olympsis requires access to your photos library to allow you to share images of the activites you&apos;re participating in with your friends.</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>

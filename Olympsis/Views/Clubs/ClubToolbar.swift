@@ -92,7 +92,7 @@ struct ClubToolbar: ToolbarContent {
                     }
                     
                     Button(action:{ self.showMenu.toggle() }) {
-                        AsyncImage(url: URL(string: GenerateImageURL((myClubs[index].imageURL ?? "")))){ image in
+                        AsyncImage(url: URL(string: GenerateImageURL((myClubs[index].logo ?? "")))){ image in
                             image.resizable()
                                 .clipShape(Circle())
                                 .frame(width: 30, height: 30)

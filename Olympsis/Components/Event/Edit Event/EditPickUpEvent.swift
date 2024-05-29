@@ -293,14 +293,14 @@ struct EditPickUpEvent: View {
                     EventDatePickerView(eventTime: $eventStopTime, startingPoint: eventStartTime.addingTimeInterval(30 * 60))
                         .presentationDetents([.medium])
                 })
-                .onChange(of: eventStartTime) { v in
+                .onChange(of: eventStartTime) { _, v in
                     if hasEndTime {
                         if v > eventStopTime {
                             eventStopTime = eventStartTime.addingTimeInterval(30 * 60)
                         }
                     }
                 }
-                .onChange(of: eventStopTime) { v in
+                .onChange(of: eventStopTime) { _, v in
                     if v < eventStartTime {
                         eventStopTime = eventStartTime.addingTimeInterval(30 * 60)
                     } else {

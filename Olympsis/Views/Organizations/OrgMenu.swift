@@ -59,7 +59,7 @@ struct OrgMenu: View {
     }
     
     var imageURL: String {
-        guard let url = organization.imageURL else {
+        guard let url = organization.logo else {
             return GenerateImageURL("")
         }
         return GenerateImageURL(url)
@@ -76,31 +76,8 @@ struct OrgMenu: View {
         NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    AsyncImage(url: URL(string: imageURL)){ phase in
-                        if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                    .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                                Image(systemName: "exclamationmark.circle")
-                            }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                    .opacity(0.3)
-                                    .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                                ProgressView()
-                            }
-                        }
-                    }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
+                    OrgBanner()
+                        .environmentObject(organization)
                         
                     VStack {
                         HStack {

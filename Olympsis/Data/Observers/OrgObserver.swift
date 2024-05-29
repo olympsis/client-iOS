@@ -28,10 +28,10 @@ class OrgObserver: ObservableObject{
         return orgs
     }
     
-    func createOrganization(organization: Organization) async throws -> Organization {
+    func createOrganization(organization: OrganizationDao) async throws -> String? {
         let res = try await orgService.createOrganization(org: organization)
-        let object = try decoder.decode(Organization.self, from: res)
-        return object
+        let object = try decoder.decode(CreateResponse.self, from: res)
+        return object.id
     }
     
     /// Calls the club service to get fields based on certain params

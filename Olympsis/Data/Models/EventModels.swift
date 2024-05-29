@@ -31,7 +31,7 @@ class Event: Codable, Identifiable, ObservableObject {
     var visibility: String?
     let clubs: [Club]?
     let organizations: [Organization]?
-    let fieldData: Field?
+    let fieldData: Venue?
     let createdAt: Int?
     var externalLink: String?
     
@@ -61,7 +61,7 @@ class Event: Codable, Identifiable, ObservableObject {
         case externalLink = "external_link"
     }
     
-    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [Club]?=nil, organizations: [Organization]?=nil, fieldData: Field?=nil) {
+    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [Club]?=nil, organizations: [Organization]?=nil, fieldData: Venue?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -120,7 +120,7 @@ struct Participant: Codable, Identifiable, Hashable {
 
 struct EventData: Codable {
     let poster: UserData?
-    let field: Field?
+    let field: Venue?
     let clubs: [Club]?
     let organizations: [Organization]?
 }

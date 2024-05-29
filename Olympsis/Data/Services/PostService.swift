@@ -9,6 +9,7 @@ import os
 import Hermes
 import SwiftUI
 import Foundation
+import FirebaseAuth
 
 class PostService {
     
@@ -17,11 +18,16 @@ class PostService {
     
     init() {
         self.tokenStore = SecureStore()
-        let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-        self.http = Courrier(.HTTPS, host: host)
+        #if DEBUG
+            self.http = Courrier(.HTTP, host: "localhost")
+        #else
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+            self.http = Courrier(.HTTPS, host: host)
+        #endif
     }
     
     func getPosts(id: String, parentId: String?) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         var endpoint = Endpoint("/posts", queryItems: [
             URLQueryItem(name: "groupID", value: id),
         ])
@@ -32,54 +38,61 @@ class PostService {
             ])
         }
         
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     func getPost(id: String) async throws -> (Data) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(id)")
-        let (data, _) = try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (data, _) = try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
         return data
     }
     
-    func createPost(post: PostDao) async throws -> (Data, URLResponse) {
+    func createPost(post: PostDTO) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts")
         
-        return try await http.Request(.POST, endpoint, body: EncodeToData(post), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(post), headers: ["Authorization": token ?? ""])
     }
     
     func deletePost(postID: String) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(postID)")
         
-        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
     }
     
     func addLike(id: String, like: LikeDao) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(id)/likes")
         return try await http.Request(.POST, endpoint, body: EncodeToData(like), headers: [
-            "Authorization": tokenStore.fetchTokenFromKeyChain()
+            "Authorization": token ?? ""
         ])
     }
     
     func removeLike(id: String, likeID: String) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(id)/likes/\(likeID)")
         
-        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
     }
     
     func addComment(id: String, comment: CommentDao) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(id)/comments")
         
         return try await http.Request(.POST, endpoint, body: EncodeToData(comment), headers: [
-            "Authorization": tokenStore.fetchTokenFromKeyChain()
+            "Authorization": token ?? ""
         ])
     }
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/posts/\(id)/comments/\(cid)")
         
-        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
     }
 }

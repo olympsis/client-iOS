@@ -19,7 +19,7 @@ struct MapView: View {
     @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false
     
-    @State private var selectedField: Field?
+    @State private var selectedField: Venue?
     @State private var cameraPosition: MapCameraPosition = .automatic
     
     @EnvironmentObject private var session:SessionStore
@@ -122,7 +122,7 @@ struct MapView: View {
                         .padding(.top, -12)
                 }
             }.sheet(item: $selectedField) { field in
-                FieldView(field: field)
+                VenueView(venue: field)
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent) {

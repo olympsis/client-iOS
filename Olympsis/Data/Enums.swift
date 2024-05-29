@@ -24,7 +24,7 @@ enum AUTH_STATUS: String, CaseIterable {
     case unauthenticated
 }
 
-enum USER_STATUS {
+enum USER_STATUS: String, CaseIterable {
     case new
     case unknown
     case returning
@@ -210,4 +210,31 @@ enum POST_TYPE: String {
     case Post = "post"
     case Announcement = "announcement"
     case Advertisement = "advertisement"
+}
+
+enum NEW_POST_TYPE: String {
+    case Post = "post"
+    case Announcement = "announcement"
+}
+
+enum POST_PRIMARY_CONTENT {
+    case Text
+    case Event
+    case Activity
+}
+
+enum IMAGE_SIZING: String {
+    case PROFILE = "200x200"
+    case LANDSCAPE = "1080x566"
+    case SQUARE = "1080x1080"
+}
+
+enum MediaUploadError: Error {
+    case innapropriateContent
+    case unexpected(_ reason: String)
+}
+
+enum CREATE_ERROR: Error {
+    case unexpected
+    case noName
 }

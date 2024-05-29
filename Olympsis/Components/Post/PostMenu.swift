@@ -9,13 +9,18 @@ import SwiftUI
 
 struct PostMenu: View {
     
-    @State var post: Post
-    @Binding var posts: [Post]
     @Binding var pinned: Bool
+    
+    @State private var isBlocked: Bool = false
     @State private var showReport: Bool = false
+    @State private var showBlocking: Bool = false
+    
     @StateObject private var uploadObserver = UploadObserver()
-    @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var post: Post
+    @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var feedModel: FeedViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var isPosterOrAdmin: Bool {
         guard let user = session.user,
@@ -27,8 +32,7 @@ struct PostMenu: View {
             guard let type = post.type,
                   type == "post",
                   let club = group.club,
-                  let members = club.members,
-                  let member = members.first(where: { $0.user?.uuid == uuid }) else {
+                  let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
                 if post.type == "post" {
                     return (post.poster?.uuid == uuid)
                 } else {
@@ -55,16 +59,16 @@ struct PostMenu: View {
             }
             if post.type == "announcement" {
                 if let parent = club.parent {
-                    return post.id == parent.pinnedPostId
+                    return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return post.id == club.pinnedPostId
+            return ((club.pinnedPosts?.contains(where: { $0 == post.id ?? ""})) != nil)
         } else {
             guard let org = selectedGroup.organization,
-                  let pinnedPostId = org.pinnedPostId else {
+                  let pinnedPosts = org.pinnedPosts else {
                 return false
             }
-            return post.id == pinnedPostId
+            return pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -80,7 +84,7 @@ struct PostMenu: View {
             }
             let resp = await session.clubObserver.pinPost(id: id, postId: postId)
             if resp {
-                club.pinnedPostId = postId
+                club.pinnedPosts?.append(postId)
                 pinned = true
             }
             return
@@ -92,7 +96,7 @@ struct PostMenu: View {
             }
             let resp = await session.orgObserver.pinPost(id: id, postId: postId)
             if resp {
-                org.pinnedPostId = postId
+                org.pinnedPosts?.append(postId)
                 pinned = true
             }
             return
@@ -110,9 +114,8 @@ struct PostMenu: View {
             }
             let resp = await session.clubObserver.unPinPost(id: id)
             if resp {
-                club.pinnedPostId = nil
+                club.pinnedPosts?.removeAll(where: { $0 == id})
                 pinned = false
-                posts = posts
             }
             return
         } else {
@@ -122,9 +125,8 @@ struct PostMenu: View {
             }
             let resp = await session.orgObserver.unPinPost(id: id)
             if resp {
-                org.pinnedPostId = nil
+                org.pinnedPosts?.removeAll(where: { $0 == id })
                 pinned = false
-                posts = posts
             }
         }
     }
@@ -137,8 +139,8 @@ struct PostMenu: View {
         let res = await session.postObserver.deletePost(postID: id)
         guard res == true,
             let images = post.images else {
-            posts.removeAll(where: { $0.id == post.id })
-            self.presentationMode.wrappedValue.dismiss()
+            feedModel.posts.removeAll(where: { $0.id == post.id })
+            dismiss()
             return
         }
         
@@ -148,8 +150,8 @@ struct PostMenu: View {
         }
         
         // remove post
-        posts.removeAll(where: { $0.id == post.id })
-        self.presentationMode.wrappedValue.dismiss()
+        feedModel.posts.removeAll(where: { $0.id == post.id })
+        dismiss()
     }
     
     var body: some View {
@@ -183,6 +185,22 @@ struct PostMenu: View {
                 PostReportView(post: post)
             })
             
+            if !isBlocked {
+                MenuButton(icon: Image(systemName: "person.slash"), text: "Block User", action:  {
+                    showBlocking.toggle()
+                }, type: .destructive)
+                .sheet(isPresented: $showBlocking, content: {
+                    if let poster = post.poster {
+                        UserBlockingConfirmation(user: poster, onComplete: { resp in
+                            if resp {
+                                self.post.isSensitive = true
+                            }
+                        })
+                        .presentationDetents([.height(450), .medium])
+                    }
+                })
+            }
+            
             if isPosterOrAdmin {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {
                     Task {
@@ -197,8 +215,9 @@ struct PostMenu: View {
     }
 }
 
-struct PostMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        PostMenu(post: POSTS[0], posts: .constant(POSTS), pinned: .constant(false)).environmentObject(SessionStore())
-    }
+#Preview("Post Menu") {
+    PostMenu(pinned: .constant(false))
+        .environmentObject(POSTS[0])
+        .environmentObject(SessionStore())
+        .environmentObject(FeedViewModel())
 }

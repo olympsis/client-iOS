@@ -9,23 +9,24 @@ import os
 import OSLog
 import SwiftUI
 import Foundation
+import FirebaseAuth
 import CoreLocation
 
 /// App session data, fetched every session, stored in memory until app is closed
 class SessionStore: ObservableObject {
     
     private let secureStore = SecureStore()
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "session_store")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     @Published var user: UserData?              // User data Cache
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
     @Published var events = [Event]()           // Events Cache
-    @Published var fields = [Field]()           // Fields Cache
+    @Published var fields = [Venue]()           // Fields Cache
+    @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
-    @Published var clubsState: LOADING_STATE = .loading
-    var clubTokens = [String:String]()
+    @Published var clubsState: LOADING_STATE = .pending
     
     // groups & posts
     @Published var selectedGroup: GroupSelection?
@@ -51,85 +52,91 @@ class SessionStore: ObservableObject {
      Whenever set, this is cached in app until changed or app is removed
      */
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
+    
+    var isRegisterComplete: Bool {
+        
+        let user = cacheService.fetchUser()
+        guard user?.username != nil,
+              user?.sports != nil,
+              user?.visibility != nil else {
+            return false
+        }
+        return true
+    }
     
     init() {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = notificationsManager
-        self.user = cacheService.fetchUser()
-        authObserver.checkAuthStatus { (auth) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.authStatus = auth
+        authStatus = .unknown
+        user = cacheService.fetchUser()
+        
+        Auth.auth().addStateDidChangeListener { auth, usr in
+            if (usr != nil) {
+                guard self.authType != nil && self.authType == .new else {
+                    guard self.isRegisterComplete else {
+                        self.authStatus = .unauthenticated
+                        return
+                    }
+                    self.authStatus = .authenticated
+                    return
+                }
+                self.authStatus = .unauthenticated
+            } else {
+                self.authStatus = .unauthenticated
             }
         }
     }
+
     
-    func fetchUser() async {
-        user = cacheService.fetchUser()
-    }
-    
+    @MainActor
     func CheckIn() async {
         do {
             guard let resp = try await userObserver.CheckIn() else {
-                authStatus = .unauthenticated
                 return
             }
-            await MainActor.run {
-                if var usr = resp.user {
-                    let temp = cacheService.fetchUser()
-                    user = usr
-                    usr.hometown = temp?.hometown
-                    user?.hometown = temp?.hometown
-                    cacheService.cacheUser(user: usr)
-                } else {
-                    user = cacheService.fetchUser()
+            if var usr = resp.user {
+                let temp = cacheService.fetchUser()
+                user = usr
+                usr.hometown = temp?.hometown
+                user?.hometown = temp?.hometown
+                cacheService.cacheUser(user: usr)
+            } else {
+                user = cacheService.fetchUser()
+            }
+            if let c = resp.clubs {
+                self.clubs = c
+                c.forEach { c in
+                    let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
+                    self.groups.append(group)
                 }
-                if let c = resp.clubs {
-                    self.clubs = c
-                    c.forEach { c in
-                        let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
-                        self.groups.append(group)
-                    }
-                    self.clubsState = .success
+                guard let g = self.groups.first else {
+                    return
+                }
+                self.selectedGroup = g
+            }
+            if let o = resp.organizations {
+                self.orgs = o
+                o.forEach { o in
+                    let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
+                    self.groups.append(group)
+                }
+                if (self.selectedGroup == nil) {
                     guard let g = self.groups.first else {
                         return
                     }
                     self.selectedGroup = g
-                } else {
-                    self.clubsState = .pending
                 }
-                if let o = resp.organizations {
-                    self.orgs = o
-                    o.forEach { o in
-                        let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
-                        self.groups.append(group)
-                    }
-                    if (self.selectedGroup == nil) {
-                        guard let g = self.groups.first else {
-                            return
-                        }
-                        self.selectedGroup = g
-                    }
-                }
-                if let i = resp.invitations {
-                    invitations = i
-                }
-                if let t = resp.token {
-                    secureStore.saveTokenToKeyChain(token: t)
-                }
-                authStatus = .authenticated
             }
+            if let i = resp.invitations {
+                invitations = i
+            }
+            authStatus = .authenticated
         } catch {
             authStatus = .unauthenticated
+            log.error("Failed to check user in: \(error.localizedDescription)")
         }
-    }
-    
-    func reInitObservers() {
-        cacheService = CacheService()
-        userObserver = UserObserver()
-        clubObserver = ClubObserver()
-        fieldObserver = FieldObserver()
-        eventObserver = EventObserver()
     }
     
     func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
@@ -161,17 +168,20 @@ class SessionStore: ObservableObject {
         }
         
         await MainActor.run {
-            self.fields = resp.fields ?? [Field]()
+            self.fields = resp.fields ?? [Venue]()
             self.events = resp.events ?? [Event]()
         }
     }
     
     func logout() async {
-        // clear cached app data
         cacheService.clearCache()
         
-        // clear secure store
-        secureStore.clearKeyChain()
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            log.error("Failed to sign user out: \(error.localizedDescription)")
+            return
+        }
         
         // go back to login page
         authStatus = .unauthenticated
@@ -192,7 +202,7 @@ class SessionStore: ObservableObject {
             secureStore.clearKeyChain()
             return true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to delete user account: \(error)")
         }
         return false
     }

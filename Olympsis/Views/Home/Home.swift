@@ -24,7 +24,7 @@ struct Home: View {
     
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
-            log.error("failed to get user's name")
+            log.error("Failed to get user's name")
             return ""
         }
         return name
@@ -55,16 +55,16 @@ struct Home: View {
                     if let e = event {
                         if status == .success {
                             VStack (alignment: .center){
-                                EventListItemView(event: e)
+                                EventListItem(event: e)
                                     .padding(.horizontal)
                             }
                         }
                     }
                     
-                    //MARK: - Announcements
+                    // MARK: - Announcements
                     HStack{
                         VStack(alignment: .leading){
-                            Text("Announcements")
+                            Text(String(localized: "Announcements", table: "General"))
                                 .font(.custom("Helvetica Neue", size: 17))
                                 .bold()
                                 .padding()
@@ -72,25 +72,43 @@ struct Home: View {
                         }
                     }
                     
-                    //MARK: - Nearby Fields
+                    // MARK: - Hot Events
+                    if (session.hotEvents.count > 0) {
+                        HStack {
+                            VStack(alignment: .leading){
+                                HStack {
+                                    Text(String(localized: "Hot Events", table: "General"))
+                                        .font(.system(.headline))
+                                    .padding()
+                                    Spacer()
+                                }
+                                
+                                ForEach(session.hotEvents) { event in
+                                    EventSmallListItem(event: event)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // MARK: - Nearby Venues
                     HStack {
                         VStack(alignment: .leading){
                             HStack {
-                                Text("Nearby Fields")
+                                Text(String(localized: "Nearby Venues", table: "General"))
                                     .font(.system(.headline))
                                 .padding()
                                 Spacer()
                                 Button(action:{self.showMoreFields.toggle()}){
-                                    Text("View All")
+                                    Text(String(localized: "View All", table: "General"))
                                        .bold()
                                     Image(systemName: "chevron.down")
                                 }.padding()
                                     .foregroundColor(Color.primary)
                             }.fullScreenCover(isPresented: $showMoreFields) {
-                                FieldsList(fields: session.fields)
+                                VenuesList(venues: session.fields)
                             }
                             
-                            FieldsView(fields: $session.fields, status: $status)
+                            Venues(venues: $session.fields, status: $status)
                         }
                     }.onReceive(session.locationManager.$location) { newLoc in
                         
@@ -144,13 +162,18 @@ struct Home: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{ self.showNotifications.toggle() }) {
-                        Image(systemName: "bell")
-                            .foregroundStyle(Color("foreground"))
-                            .overlay {
-                                if session.invitations.count > 0 {
-                                    NotificationCountView(value: $session.invitations.count)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 45, height: 35)
+                                .foregroundStyle(Color("background"))
+                            Image(systemName: "bell")
+                                .foregroundStyle(Color("foreground"))
+                                .overlay {
+                                    if session.invitations.count > 0 {
+                                        NotificationCountView(value: $session.invitations.count)
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
             }

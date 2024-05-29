@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="YOUR_NAME">
+  <metadata>
+    <name>Salt Lake City</name>
+    <desc>Salt Lake City, Utah, USA</desc>
+  </metadata>
+  <wpt lat="40.7608" lon="-111.8910">
+    <name>Salt Lake City</name>
+    <desc>Salt Lake City, the capital and most populous city of Utah, is located in the Salt Lake Valley at the foot of the Wasatch Range.</desc>
+  </wpt>
+</gpx>

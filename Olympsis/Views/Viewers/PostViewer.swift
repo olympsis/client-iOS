@@ -9,15 +9,17 @@ import SwiftUI
 
 struct PostViewer: View {
     
-    @State var post: Post
+    var post: Post
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                PostView(post: post, posts: $session.posts)
-            }.toolbar {
+                PostView(post: post)
+                    .environmentObject(post)
+            }
+            .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action:{ dismiss() }) {
                         Image(systemName: "xmark")
@@ -32,4 +34,5 @@ struct PostViewer: View {
 #Preview {
     PostViewer(post: POSTS[1])
         .environmentObject(SessionStore())
+        .environmentObject(FeedViewModel())
 }

@@ -32,7 +32,7 @@ struct OrgApplicationListItem: View {
     
     var imageURL: String {
         guard let club = application.data?.club,
-              let url = club.imageURL else {
+              let url = club.logo else {
             return GenerateImageURL("")
         }
         return GenerateImageURL(url)

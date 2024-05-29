@@ -15,3 +15,7 @@ func GrabImageIdFromURL(_ url: String) -> String {
     let url = URL(fileURLWithPath: url)
     return url.lastPathComponent
 }
+
+func generateImageURL(_ link: String) -> URL? {
+    return URL(string: "https://storage.googleapis.com/olympsis-" + link)
+}

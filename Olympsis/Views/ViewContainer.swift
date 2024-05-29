@@ -8,14 +8,14 @@
 import SwiftUI
 import Security
 import SwiftToast
+import Firebase
 import AuthenticationServices
 
 struct ViewContainer: View {
     
     @State var currentTab: Tab = .home
     @State private var showBeta: Bool = false
-    @State private var accountState: ACCOUNT_STATE = .Unknown
-    @State private var authObserver = AuthObserver()
+    @State private var showOnboarding: Bool = false
     
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var notificationManager: NotificationManager
@@ -27,27 +27,48 @@ struct ViewContainer: View {
     var body: some View {
         VStack {
             TabView(selection: $currentTab) {
-                Home().tag(Tab.home)
-                GroupView().tag(Tab.club)
-                MapView().tag(Tab.map)
-                Activity().tag(Tab.activity)
-                Profile().tag(Tab.profile)
+                Home()
+                    .tag(Tab.home)
+                
+                GroupView()
+                    .tag(Tab.club)
+                
+                MapView()
+                    .tag(Tab.map)
+                
+                Activity()
+                    .tag(Tab.activity)
+                
+                Profile()
+                    .tag(Tab.profile)
+                
             }.toast(isPresented: $notificationManager.showToast, toast: $notificationManager.toastContent)
                 .padding(.bottom, -10)
             
             TabBar(currentTab: $currentTab)
                 .background(Color("dark-color"))
                 .ignoresSafeArea(.keyboard)
-        }.fullScreenCover(isPresented: $showBeta) {
+        }
+        .fullScreenCover(isPresented: $showBeta) {
             BetaPage()
         }
+        .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
+            Task {
+                session.user?.hasOnboarded = true
+                _ = await session.userObserver.UpdateUserData(update: UserDao(hasOnboarded: true))
+            }
+        }, content: {
+            Onboarding()
+        })
         .task {
-            await session.fetchUser()
             await session.CheckIn()
-            guard session.locationManager.isAuthorized else {
+            guard let user = session.user,
+                  let hasOnboarded = user.hasOnboarded else {
                 return
             }
-            session.locationManager.requestLocation() // requesting location so that it starts updating
+            if hasOnboarded {
+                showOnboarding.toggle()
+            }
         }
     }
 }

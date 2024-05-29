@@ -16,7 +16,7 @@ struct NewPost: View {
     @FocusState private var bodyFocus: Bool
     
     @State private var status: LOADING_STATE = .pending
-    @StateObject private var manager: NewPostManager = NewPostManager(type: .Post)
+    @StateObject private var viewModel: NewPostViewModel = NewPostViewModel(type: .Post)
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
@@ -36,7 +36,7 @@ struct NewPost: View {
     }
     
     func CreateNewPost() async {
-        guard manager.body != "" || manager.body.count > 5 else {
+        guard viewModel.body != "" || viewModel.body.count > 5 else {
             return
         }
         
@@ -49,31 +49,31 @@ struct NewPost: View {
         }
         
         // generate dao
-        guard var dao = manager.GenerateNewPostData(groupId: id) else {
+        guard let dao = viewModel.generateNewPostData(groupId: id) else {
             handleFailure()
             return
         }
         
-        // upload image
-        if manager.selectedImageData != nil {
-            guard let img = await self.manager.UploadImage(data: manager.selectedImageData!) else {
-                handleFailure()
-                return
-            }
-            dao.images = [img]
-        }
+//        // upload image
+//        if viewModel.selectedImageData != nil {
+//            guard let img = await self.viewModel.uploadImage(data: viewModel.selectedImageData!) else {
+//                handleFailure()
+//                return
+//            }
+//            dao.images = [img]
+//        }
         
         // create post and get the id
-        guard let postId = await session.postObserver.createPost(dao: dao) else {
+        guard let postId = await session.postObserver.createPost(dto: dao) else {
             if let images = dao.images {
-                _ = await manager.DeleteImages(images: images)
+                _ = await viewModel.deleteImages(images: images)
             }
             handleFailure()
             return
         }
         
         // generate local post data
-        guard let post = manager.GenerateNewPost(id: postId, user: user, dao: dao) else {
+        guard let post = viewModel.generateNewPost(id: postId, user: user, dto: dao) else {
             handleFailure()
             dismiss()
             return
@@ -95,7 +95,7 @@ struct NewPost: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundColor(Color("background"))
-                            TextEditor(text: $manager.body)
+                            TextEditor(text: $viewModel.body)
                                 .scrollContentBackground(.hidden)
                                 .tint(Color("color-prime"))
                                 .focused($bodyFocus)
@@ -106,57 +106,7 @@ struct NewPost: View {
                         Text("Image")
                             .bold()
                         Spacer()
-                        if manager.selectedImageData == nil {
-                            PhotosPicker(
-                                selection: $manager.selectedItem,
-                                matching: .images,
-                                photoLibrary: .shared()) {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 100, height: 30)
-                                            .foregroundColor(Color("color-prime"))
-                                        Text("upload")
-                                            .foregroundColor(.white)
-                                            .frame(height: 30)
-                                            .font(.caption)
-                                            .textCase(.uppercase)
-                                    }
-                                }.onChange(of: manager.selectedItem) { newItem in
-                                    Task {
-                                        bodyFocus = false
-                                        // Retrive selected asset in the form of Data
-                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                            withAnimation(.easeIn){
-                                                manager.selectedImageData = data
-                                            }
-                                        }
-                                    }
-                                }
-                        } else {
-                            Button(action:{
-                                withAnimation(.easeOut){
-                                    manager.selectedImageData = nil
-                                    manager.selectedItem = nil
-                                }
-                            }){
-                                Image(systemName: "x.circle.fill")
-                                    .imageScale(.large)
-                                    .foregroundColor(Color("color-prime"))
-                            }
-                        }
                     }.frame(width: SCREEN_WIDTH-25, height: 50)
-                    if let imgData = manager.selectedImageData {
-                        let img = UIImage(data: imgData)
-                        if let i = img {
-                            Image(uiImage: i)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 250)
-                                .clipped()
-                                .padding(.horizontal)
-                        }
-                        
-                    }
                     Spacer()
                 }
                 .toolbar {

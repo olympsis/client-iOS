@@ -39,14 +39,14 @@ struct EventView: View {
         return body
     }
     
-    var eventField: Field? {
+    var eventField: Venue? {
         guard let field = event.fieldData else {
             guard let field = event.field,
                   let name = field.name,
                   let location = field.location else {
                 return nil
             }
-            return Field(id: "", name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: "", state: "", country: "")
+            return Venue(id: "", name: name, owner: Ownership(name: "", type: ""), description: "external", sports: [String](), images: [String](), location: location, city: "", state: "", country: "")
         }
         return field
     }
@@ -141,7 +141,7 @@ struct EventView: View {
                     
                     // MARK: - Field Info
                     if let field = eventField {
-                        EventFieldInfo(field: field)
+                        VenueFieldInfo(venue: field)
                             .zIndex(1)
                     }
                         
