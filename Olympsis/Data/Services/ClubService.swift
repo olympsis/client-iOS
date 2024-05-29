@@ -14,12 +14,8 @@ import FirebaseAuth
 class ClubService {
     
     private var http: Courrier
-    private let tokenStore: SecureStore
-    private let cacheService: CacheService
     
     init() {
-        self.tokenStore = SecureStore()
-        self.cacheService = CacheService()
         #if DEBUG
             self.http = Courrier(.HTTP, host: "localhost")
         #else
@@ -73,8 +69,7 @@ class ClubService {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/clubs/\(id)")
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
@@ -103,8 +98,7 @@ class ClubService {
         let endpoint = Endpoint("/clubs/\(id)/applications")
         
         let (data, resp) = try await http.Request(.GET, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return (data, resp)
     }
@@ -114,8 +108,7 @@ class ClubService {
         let endpoint = Endpoint("/clubs/\(id)/applications/\(appID)")
         
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(req), headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
@@ -125,8 +118,7 @@ class ClubService {
         let req = ChangeRoleRequest(role: role)
         let endpoint = Endpoint("/clubs/\(id)/members/\(memberId)/rank")
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(req), headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
@@ -136,8 +128,7 @@ class ClubService {
         let endpoint = Endpoint("/clubs/\(id)/members/\(memberId)/kick")
         
         let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
@@ -146,8 +137,7 @@ class ClubService {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/clubs/\(id)/post/\(postId)")
         let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
@@ -156,8 +146,7 @@ class ClubService {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/clubs/\(id)/post")
         let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
