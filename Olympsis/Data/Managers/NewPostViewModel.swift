@@ -10,11 +10,6 @@ import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
 
-enum NewPostError: Error {
-    case innapropriateContent
-    case unexpected(_ reason: String)
-}
-
 class NewPostViewModel: ObservableObject {
     
     @Published var type: POST_TYPE
@@ -80,7 +75,7 @@ class NewPostViewModel: ObservableObject {
                 let tasks = try await group.reduce(into: [ImageUploadResponse]()) {
                     if let resp = $1 {
                         if resp.score > 4 {                            
-                            throw NewPostError.innapropriateContent
+                            throw MediaUploadError.innapropriateContent
                         }
                         if resp.score > 3 {
                             dto.isSensitive = true
@@ -138,7 +133,9 @@ class NewPostViewModel: ObservableObject {
                 return nil
             }
             
-            status = .success
+            DispatchQueue.main.async {
+                self.status = .success
+            }
             return post
         }
     }
@@ -203,8 +200,8 @@ class NewPostViewModel: ObservableObject {
             body: dto.body ?? "",
             event: nil,
             images: dto.images,
-            likes: nil,
-            comments: nil,
+            likes: [Like](),
+            comments: [Comment](),
             externalLink: dto.externalLink,
             isSensitive: false,
             createdAt: Int(Date().timeIntervalSince1970)

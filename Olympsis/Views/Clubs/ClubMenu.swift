@@ -29,7 +29,7 @@ struct ClubMenu: View {
     
     @StateObject private var club: Club
     @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     init(club: Club) {
         self._club = StateObject(wrappedValue: club)
@@ -53,33 +53,10 @@ struct ClubMenu: View {
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                AsyncImage(url: URL(string: GenerateImageURL(club.imageURL ?? ""))){ phase in
-                    if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
-                            .clipped()
-                    } else if phase.error != nil {
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                .opacity(0.3)
-                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                            Image(systemName: "exclamationmark.circle")
-                        }
-                    } else {
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground) )
-                                .opacity(0.3)
-                                .frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                            ProgressView()
-                        }
-                    }
-                }.frame(width: SCREEN_WIDTH-10, height: 300, alignment: .center)
-                    .padding(.top)
                     
+                ClubBanner()
+                    .environmentObject(club)
+                
                 VStack {
                     if club.visibility == "private" {
                         HStack {
@@ -158,7 +135,7 @@ struct ClubMenu: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                    Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
                             .foregroundColor(Color("color-prime"))
                     }
@@ -203,6 +180,9 @@ struct ClubMenu: View {
                                             return
                                         }
                                         _ = await session.clubObserver.leaveClub(id: id)
+                                        session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
+                                        session.selectedGroup = session.groups.first
+                                        dismiss()
                                     }
                                 })
                             );
@@ -218,6 +198,9 @@ struct ClubMenu: View {
                                         return
                                     }
                                     _ = await session.clubObserver.leaveClub(id: id)
+                                    session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
+                                    session.selectedGroup = session.groups.first
+                                    dismiss()
                                 }
                             })
                         );
@@ -233,6 +216,9 @@ struct ClubMenu: View {
                                     return
                                 }
                                 _ = await session.clubObserver.deleteClub(id: id)
+                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
+                                session.selectedGroup = session.groups.first
+                                dismiss()
                             }
                         })
                     );

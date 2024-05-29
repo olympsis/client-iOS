@@ -10,12 +10,12 @@ import SwiftUI
 struct PostComments: View {
     
     @State var club: Club
-    @Binding var post: Post
     
     @State private var text = ""
     @FocusState private var keyboardFocused: Bool
     @State private var status: LOADING_STATE = .pending
-    @State private var comments: [Comment] = [Comment]()
+    
+    @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
     
@@ -59,7 +59,7 @@ struct PostComments: View {
         
         withAnimation {
             text = ""
-            comments.append(comment)
+            post.comments.append(comment)
         }
     }
     
@@ -71,7 +71,7 @@ struct PostComments: View {
             }
             let res = await session.postObserver.deleteComment(id: id, cid: commentID)
             if res {
-                comments.removeAll(where: { $0.id == commentID })
+                post.comments.removeAll(where: { $0.id == commentID })
             }
         }
     }
@@ -96,8 +96,8 @@ struct PostComments: View {
         NavigationView {
             VStack {
                 ScrollView(showsIndicators: false) {
-                    if comments.count != 0 {
-                        ForEach(comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
+                    if post.comments.count != 0 {
+                        ForEach(post.comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
                             Menu {
                                 Group {
                                     Button(action:{}){
@@ -129,49 +129,40 @@ struct PostComments: View {
                             Spacer()
                         }
                     }
-                }.padding(.bottom, 50)
+                }
+                .padding(.bottom, 50)
                 .listStyle(.plain)
-                    .refreshable {
-                        guard let id = post.id,
-                                let resp = await session.postObserver.getPost(id: id) else {
-                            return
-                        }
-                        post = resp
-                        guard let c = resp.comments else {
-                            return
-                        }
-                        comments = c
+                .refreshable {
+                    guard let id = post.id,
+                            let resp = await session.postObserver.getPost(id: id) else {
+                        return
                     }
-                    .task {
-                        guard let c = post.comments else {
-                            return
-                        }
-                        comments = c
-                    }
-                    .overlay {
-                        VStack {
-                            Spacer()
-                            HStack(alignment: .center) {
-                                ZStack {
-                                    TextField("Add a Comment", text: $text)
-                                        .padding(.leading)
-                                        .focused($keyboardFocused)
-                                }.frame(height: 40)
-                                if (text.count > 0) {
-                                    Button(action:{ Task { await addComment() } }) {
-                                        LoadingButton(text: "", image: Image(systemName: "paperplane.fill"), width: 40, status: $status)
-                                            .padding(.trailing, 5)
-                                    }
+                    post.comments = resp.comments
+                }
+                .overlay {
+                    VStack {
+                        Spacer()
+                        HStack(alignment: .center) {
+                            ZStack {
+                                TextField("Add a Comment", text: $text)
+                                    .padding(.leading)
+                                    .focused($keyboardFocused)
+                            }.frame(height: 40)
+                            if (text.count > 0) {
+                                Button(action:{ Task { await addComment() } }) {
+                                    LoadingButton(text: "", image: Image(systemName: "paperplane.fill"), width: 40, status: $status)
+                                        .padding(.trailing, 5)
                                 }
-                            }.ignoresSafeArea(.keyboard)
-                                .frame(height: 50)
-                                .background {
-                                    Rectangle()
-                                        .frame(height: 50)
-                                        .foregroundStyle(Color("background"))
-                                }
-                        }
+                            }
+                        }.ignoresSafeArea(.keyboard)
+                            .frame(height: 50)
+                            .background {
+                                Rectangle()
+                                    .frame(height: 50)
+                                    .foregroundStyle(Color("background"))
+                            }
                     }
+                }
             }.toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action:{ dismiss() }) {
@@ -186,8 +177,8 @@ struct PostComments: View {
     }
 }
 
-struct PostComments_Previews: PreviewProvider {
-    static var previews: some View {
-        PostComments(club: CLUBS[0], post: .constant(POSTS[0])).environmentObject(SessionStore())
-    }
+#Preview("Post Comments") {
+    PostComments(club: CLUBS[0])
+        .environmentObject(POSTS[0])
+        .environmentObject(SessionStore())
 }

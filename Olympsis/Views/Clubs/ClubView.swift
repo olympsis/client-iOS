@@ -11,13 +11,17 @@ import SwiftUI
 /// Club details are shown in this view. When you click to see details on a club list view you will reach this view to learn more about the club
 struct ClubView: View {
     
-    @State var club: Club
+    @StateObject var club: Club
     @Environment(\.presentationMode) var presentationMode
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
     @State private var trackingMode: MapUserTrackingMode = .none
+    
+    init(club: Club) {
+        self._club = StateObject(wrappedValue: club)
+    }
     
     // club name
     private var name: String {
@@ -33,14 +37,6 @@ struct ClubView: View {
             return ""
         }
         return d
-    }
-    
-    // url string of the club's image
-    private var imageURL: String {
-        guard let url = club.imageURL else {
-            return "https://api.oylmpsis.com"
-        }
-        return GenerateImageURL(url)
     }
     
     // club's visibility
@@ -92,32 +88,32 @@ struct ClubView: View {
         return pins
     }
     
+    func timeAgo(from timestamp: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let now = Date()
+        let calendar = Calendar.current
+
+        let components = calendar.dateComponents([.year, .month, .day], from: date, to: now)
+
+        if let years = components.year, years > 0 {
+            return years == 1 ? "1 year ago" : "\(years) years ago"
+        } else if let months = components.month, months > 0 {
+            return months == 1 ? "1 month ago" : "\(months) months ago"
+        } else if let days = components.day, days > 0 {
+            return days == 1 ? "1 day ago" : "\(days) days ago"
+        } else {
+            return "Today"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     
                     // MARK: - Image
-                    AsyncImage(url: URL(string: imageURL)){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .clipped()
-                                    
-                            } else if phase.error != nil {
-                                Rectangle()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .foregroundColor(.red)
-                            } else {
-                                Rectangle()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .foregroundColor(.gray)
-                            }
-                    }.frame(height: 250, alignment: .center)
-                        .padding(.horizontal, 5)
-                    
+                    ClubBanner()
+                        .environmentObject(club)
                     
                     // MARK: Details
                     VStack(alignment: .leading) {
@@ -192,7 +188,7 @@ struct ClubView: View {
                                     .font(.callout)
                             }
                             HStack {
-                                AsyncImage(url: URL(string: GenerateImageURL(org.imageURL ?? "https://api.olympsis.com"))){ phase in
+                                AsyncImage(url: URL(string: GenerateImageURL(org.logo ?? "https://api.olympsis.com"))){ phase in
                                     if let image = phase.image {
                                             image // Displays the loaded image.
                                                 .resizable()
@@ -240,18 +236,30 @@ struct ClubView: View {
 
                     Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode: $trackingMode, annotationItems: markers) { p in
                         MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
-                    }.frame(height: 200)
-                        .padding(.bottom, 40)
-
-                }.navigationTitle(name)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-                                Image(systemName: "chevron.left")
-                            }
+                    }
+                    .frame(height: 200)
+                    .padding(.bottom)
+                    
+                    HStack {
+                        if let createdAt = club.createdAt {
+                            Text("Established ")
+                                .bold()
+                            +
+                            Text(timeAgo(from: createdAt))
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.bottom, 40)
+                }
+                .navigationTitle(name)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                            Image(systemName: "chevron.left")
+                        }
+                    }
+                }
             }
         }
     }

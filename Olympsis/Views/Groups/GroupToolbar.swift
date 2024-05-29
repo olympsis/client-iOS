@@ -116,7 +116,7 @@ struct GroupToolbar: ToolbarContent {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
-                                AsyncImage(url: URL(string: GenerateImageURL(group.club?.imageURL ?? "https://api.olympsis.com"))){ image in
+                                AsyncImage(url: URL(string: GenerateImageURL(group.club?.logo ?? "https://api.olympsis.com"))){ image in
                                     image.resizable()
                                         .clipShape(Circle())
                                         .frame(width: 40, height: 40)
@@ -166,14 +166,14 @@ struct GroupToolbar: ToolbarContent {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 45, height: 35)
                                         .foregroundStyle(Color("background"))
-                                    Image(systemName: "bubble.left.and.bubble.riht")
+                                    Image(systemName: "bubble.left.and.bubble.right")
                                         .foregroundStyle(Color("foreground"))
                                 }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
-                                AsyncImage(url: URL(string: GenerateImageURL(group.organization?.imageURL ?? "https://api.olympsis.com"))){ image in
+                                AsyncImage(url: URL(string: GenerateImageURL(group.organization?.logo ?? "https://api.olympsis.com"))){ image in
                                     image.resizable()
                                         .clipShape(Circle())
                                         .frame(width: 40, height: 40)

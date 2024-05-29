@@ -12,8 +12,8 @@ import Kingfisher
 struct MemberBlockingConfirmation: View {
 
     @State private var status: LOADING_STATE = .pending
-    @Environment(\.dismiss) private var dismiss
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var member: Member
     @EnvironmentObject private var session: SessionStore
     
@@ -129,7 +129,7 @@ struct MemberBlockingConfirmation: View {
                     
                     HStack {
                         Image(systemName: "bubble")
-                        Text("You will still see their messages in group chats")
+                        Text("You will see their text bubbles in group chats but the contents will be redacted")
                             .font(.callout)
                     }.padding(.top, 5)
                     

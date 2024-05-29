@@ -1,13 +1,13 @@
 //
-//  PostViolation.swift
+//  GroupMediaViolation.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 5/19/24.
+//  Created by Joel Joseph on 5/28/24.
 //
 
 import SwiftUI
 
-struct PostViolation: View {
+struct GroupMediaViolation: View {
     
     @Environment(\.dismiss) private var dismiss
     
@@ -28,12 +28,12 @@ struct PostViolation: View {
                     .imageScale(.large)
                     .padding(.top)
                 
-                Text("This post violates our Community Standards")
+                Text("Your Group violates our Community Standards")
                     .font(.title2)
                     .padding(.top)
                     .bold()
                 
-                Text("Your post may contain content that we consider innapropriate or harmful to others on Olympsis.")
+                Text("Your group's logo/banner may contain content that we consider innapropriate or harmful to others on Olympsis.")
                     .multilineTextAlignment(.center)
                     .padding(.top)
                 
@@ -59,5 +59,5 @@ struct PostViolation: View {
 }
 
 #Preview {
-    PostViolation()
+    GroupMediaViolation()
 }

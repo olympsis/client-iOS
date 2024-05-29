@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OrgListItemView: View {
+struct OrgListItem: View {
     
     @State var organization: Organization
     
@@ -23,13 +23,6 @@ struct OrgListItemView: View {
         return name
     }
     
-    var imageURL: String {
-        guard let img = organization.imageURL else {
-            return GenerateImageURL("")
-        }
-        return GenerateImageURL(img)
-    }
-    
     var description: String {
         guard let str = organization.description else {
             return ""
@@ -37,11 +30,11 @@ struct OrgListItemView: View {
         return str
     }
     
-    var sport: String {
-        guard let s = organization.sport else {
-            return "unknown"
+    var sports: [String] {
+        guard let sports = organization.sports else {
+            return ["unknown"]
         }
-        return s
+        return sports
     }
     
     var location: String {
@@ -78,46 +71,8 @@ struct OrgListItemView: View {
     var body: some View {
         VStack (alignment: .leading){
             HStack {
-                // IMAGE
-                if (organization.imageURL != nil) {
-                    AsyncImage(url: URL(string: imageURL)){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100, alignment: .center)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            } else if phase.error != nil {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .opacity(0.5)
-                                        .frame(width: 100, height: 100)
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .foregroundColor(.red)
-                                        .imageScale(.large)
-                                }
-                            } else {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .opacity(0.5)
-                                        .frame(width: 100, height: 100)
-                                        .accentColor(Color("foreground"))
-                                    ProgressView()
-                                }
-                            }
-                    }.frame(width: 100, height: 100, alignment: .center)
-                } else {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.gray)
-                            .opacity(0.5)
-                            .frame(width: 100, height: 100)
-                        Image(systemName: "building.fill")
-                            .foregroundStyle(Color("foreground"))
-                            .imageScale(.large)
-                    }
-                }
+                
+                OrgLogo(organization: organization)
                 
                 VStack(alignment:.leading){
                     Text(name)
@@ -129,6 +84,7 @@ struct OrgListItemView: View {
                     Text(location)
                         .foregroundColor(.gray)
                 }.padding(.leading, 5)
+                
             }.padding(.all)
             
             HStack {
@@ -140,9 +96,14 @@ struct OrgListItemView: View {
             }
             
             HStack {
-                ClubTagView(isSport: true, tagName: sport)
-            }.padding(.horizontal)
-                .padding(.top)
+                ScrollView(.horizontal) {
+                    ForEach(sports, id: \.self) { sport in
+                        ClubTag(isSport: true, tagName: sport)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top)
             
             HStack(spacing: 15) {
                 Button(action: { self.showDetails.toggle() }) {
@@ -154,10 +115,11 @@ struct OrgListItemView: View {
                         Text("Details")
                             .foregroundStyle(Color("foreground"))
                     }
-                }.contentShape(Rectangle())
-                    .frame(width: (SCREEN_WIDTH/2)-25)
+                }
+                .contentShape(Rectangle())
+                .frame(width: (SCREEN_WIDTH/2)-25)
                 
-                Button(action:{ Task{ await Apply() } }) {
+                Button(action:{ Task { await Apply() } }) {
                     LoadingButton(text: "Request", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
                 }.contentShape(Rectangle())
             }.padding(.all)
@@ -167,12 +129,12 @@ struct OrgListItemView: View {
                 .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
-//            ClubView(club: club)
+            OrgView(organization: organization)
         })
     }
 }
 
 #Preview {
-    OrgListItemView(organization: ORGANIZATIONS[1], showToast: .constant(false))
+    OrgListItem(organization: ORGANIZATIONS[1], showToast: .constant(false))
         .environmentObject(SessionStore())
 }

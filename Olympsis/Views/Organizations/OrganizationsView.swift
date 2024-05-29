@@ -67,7 +67,7 @@ struct OrganizationsView: View {
                     }
                     if filteredOrganizations.count > 0 {
                         ForEach(filteredOrganizations) { org in
-                            OrgListItemView(organization: org, showToast: .constant(false))
+                            OrgListItem(organization: org, showToast: .constant(false))
                         }
                     } else {
                         Text("No Organizations")

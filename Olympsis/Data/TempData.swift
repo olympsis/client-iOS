@@ -21,9 +21,9 @@ let COMMENTS = [
 ]
 
 let POSTS = [
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: nil, comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: 1639364779),
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: ["feed-images/038368E5-AD87-4BEF-8B3A-F6DCE0F6BBBC.jpeg", "feed-images/1B89C014-A399-4797-9A07-C2C85BE8876B.jpeg", "feed-images/2BCB42D7-EA02-4583-8D23-45B3DD167293.jpeg"], likes: nil, comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
-    Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: nil, comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: 1639364779)
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Like(id: "", uuid: "", user: nil, createdAt: 0)], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: 1639364779),
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: ["feed-images/038368E5-AD87-4BEF-8B3A-F6DCE0F6BBBC.jpeg", "feed-images/1B89C014-A399-4797-9A07-C2C85BE8876B.jpeg", "feed-images/2BCB42D7-EA02-4583-8D23-45B3DD167293.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
+    Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: 1639364779)
 ]
 
 let FIELDS = [
@@ -34,20 +34,20 @@ let FIELDS = [
 
 
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", parent: nil, type: "club", name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", imageGallery: [""], visibility: "public", members: [
+    Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/FDD36C02-7C50-4E39-867A-DCD95CB991B6.jpeg", banner: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", sports: ["soccer", "basketball", "tennis"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[1], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil),
-    Club(id: UUID().uuidString, parent: nil, type: "organization", name: "Lehi Soccer", description: "Club in salt lake for people to come together and play soccer", sport: "soccer", city: "Salt Lake City", state: "UT", country: "United States", imageURL: nil, imageGallery: [""], visibility: "public", members: [
+    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779),
+    Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: nil, banner: nil, sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPostId: POSTS[0].id, createdAt: nil)
+    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779)
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil),
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sport: "soccer", city: "Salt Lake City", state: "Utah", country: "United States", imageURL: nil, imageGallery: [""], members: nil, pinnedPostId: nil, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: nil, blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: 0),
+    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: nil, blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: nil)
 ]
 
 let ORGANIZATION_APPLICATIONS = [

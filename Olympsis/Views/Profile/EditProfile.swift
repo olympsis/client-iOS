@@ -306,7 +306,7 @@ struct EditProfile: View {
                     }.padding(.horizontal)
                         .padding(.top)
                         .fullScreenCover(isPresented: $showSportsPicker, content: {
-                            ProfileSportsPicker(selectedSports: $selectedSports)
+                            MultiSportsPicker(selectedSports: $selectedSports)
                                 .presentationDetents([.medium])
                         })
                     

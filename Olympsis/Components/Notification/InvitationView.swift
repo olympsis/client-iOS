@@ -73,7 +73,7 @@ struct InvitationView: View {
     var body: some View {
         if invitation.type == "organization" {
             HStack(alignment: .top) {
-                if let imageURL = invitation.data?.organization?.imageURL {
+                if let imageURL = invitation.data?.organization?.logo {
                     AsyncImage(url: URL(string: GenerateImageURL(imageURL))){ phase in
                         if let image = phase.image {
                                 image // Displays the loaded image.

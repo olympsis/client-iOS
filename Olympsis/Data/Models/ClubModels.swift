@@ -11,53 +11,59 @@ class Club: Codable, Identifiable, ObservableObject {
 
     let id: String?
     let parent: OrganizationDao?
-    let type: String?
     let name: String?
+    var logo: String?
+    var banner: String?
+    let sports: [String]?
     let description: String?
-    let sport: String?
     let city: String?
     let state: String?
     let country: String?
-    let imageURL: String?
-    let imageGallery: [String]?
     let visibility: String?
     var members: [Member]
+    var blackList: [String]?
     let rules: [String]?
-    var pinnedPostId: String?
-    let createdAt: Int64?
+    var tags: [String]?
+    var pinnedPosts: [String]?
+    let isVerified: Bool?
+    let createdAt: Int?
     
     init(id: String?,
          parent: OrganizationDao?,
-         type: String?,
          name: String?,
+         logo: String?,
+         banner: String?,
+         sports: [String]?,
          description: String?,
-         sport: String?,
          city: String?,
          state: String?,
          country: String?,
-         imageURL: String?,
-         imageGallery: [String]?,
          visibility: String?,
          members: [Member] = [Member](),
-         rules: [String]?,
-         pinnedPostId: String?,
-         createdAt: Int64?) {
+         blackList: [String]?=nil,
+         rules: [String]?=nil,
+         tags: [String]?=nil,
+         pinnedPosts: [String]?,
+         isVerified: Bool=false,
+         createdAt: Int?) {
         
         self.id = id
         self.parent = parent
-        self.type = type
         self.name = name
+        self.logo = logo
+        self.banner = banner
         self.description = description
-        self.sport = sport
+        self.sports = sports
         self.city = city
         self.state = state
         self.country = country
-        self.imageURL = imageURL
-        self.imageGallery = imageGallery
         self.visibility = visibility
         self.members = members
+        self.blackList = blackList
         self.rules = rules
-        self.pinnedPostId = pinnedPostId
+        self.tags = tags
+        self.pinnedPosts = pinnedPosts
+        self.isVerified = isVerified
         self.createdAt = createdAt
     }
     
@@ -72,90 +78,96 @@ class Club: Codable, Identifiable, ObservableObject {
     enum CodingKeys: String, CodingKey {
         case id
         case parent
-        case type
         case name
+        case logo
+        case banner
         case description
-        case sport
+        case sports
         case city
         case state
         case country
-        case imageURL = "image_url"
-        case imageGallery = "image_gallery"
         case visibility
         case members
+        case blackList
         case rules
-        case pinnedPostId = "pinned_post_id"
+        case tags
+        case pinnedPosts = "pinned_posts"
+        case isVerified = "is_verified"
         case createdAt = "created_at"
     }
 }
 
 class ClubDao: Codable, Identifiable {
 
-    let id: String?
-    let parentId: String?
-    let type: String?
-    let name: String?
-    let description: String?
-    let sport: String?
-    let city: String?
-    let state: String?
-    let country: String?
-    let imageURL: String?
-    let imageGallery: [String]?
-    let visibility: String?
-    let members: [Member]?
-    let rules: [String]?
-    var pinnedPostId: String?
+    var id: String?
+    var parentId: String?
+    var name: String?
+    var logo: String?
+    var banner: String?
+    var description: String?
+    var sports: [String]?
+    var city: String?
+    var state: String?
+    var country: String?
+    var visibility: String?
+    var members: [Member]?
+    var blackList: [String]?
+    var rules: [String]?
+    var tags: [String]?
+    var pinnedPosts: [String]?
     
     init(id: String?=nil,
          parentId: String?=nil,
-         type: String?=nil,
          name: String?=nil,
+         logo: String?=nil,
+         banner: String?=nil,
          description: String?=nil,
-         sport: String?=nil,
+         sports: [String]?=nil,
          city: String?=nil,
          state: String?=nil,
          country: String?=nil,
-         imageURL: String?=nil,
-         imageGallery: [String]?=nil,
          visibility: String?=nil,
          members: [Member]?=nil,
+         blackList: [String]?=nil,
          rules: [String]?=nil,
-         pinnedPostId: String?=nil) {
+         tags: [String]?=nil,
+         pinnedPosts: [String]?=nil) {
         
         self.id = id
         self.parentId = parentId
-        self.type = type
         self.name = name
+        self.logo = logo
+        self.banner = banner
         self.description = description
-        self.sport = sport
+        self.sports = sports
         self.city = city
         self.state = state
         self.country = country
-        self.imageURL = imageURL
-        self.imageGallery = imageGallery
         self.visibility = visibility
+        self.blackList = blackList
         self.members = members
         self.rules = rules
-        self.pinnedPostId = pinnedPostId
+        self.tags = tags
+        self.pinnedPosts = pinnedPosts
     }
     
     enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"
-        case type
         case name
+        case logo
+        case banner
         case description
-        case sport
+        case sports
         case city
         case state
         case country
-        case imageURL = "image_url"
-        case imageGallery = "image_gallery"
         case visibility
         case members
+        case blackList
         case rules
-        case pinnedPostId = "pinned_post_id"
+        case tags
+        case pinnedPosts = "pinned_posts"
     }
 }
 

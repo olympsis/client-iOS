@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
+class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, Codable {
     
     let id: String?
     let type: String?
@@ -16,24 +16,23 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
     let body: String
     var event: Event?
     let images: [String]?
-    var likes: [Like]?
-    var comments: [Comment]?
+    @Published var likes: [Like]
+    @Published var comments: [Comment]
     let externalLink: String?
-    var isSensitive: Bool?
+    @Published var isSensitive: Bool
     let createdAt: Int?
-    
     
     /// Complete initializer for the post class
     init(id: String?,
          type: String?,
          poster: UserSnippet?,
          body: String,
-         event: Event?=nil,
+         event: Event? = nil,
          images: [String]?,
-         likes: [Like]?,
-         comments: [Comment]?,
+         likes: [Like] = [],
+         comments: [Comment] = [],
          externalLink: String?,
-         isSensitive: Bool?,
+         isSensitive: Bool = false,
          createdAt: Int?) {
         
         self.id = id
@@ -61,6 +60,37 @@ class Post: Codable, Identifiable, RandomAccessCollection, Equatable {
         case externalLink = "external_link"
         case isSensitive = "is_sensitive"
         case createdAt = "created_at"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+        poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
+        body = try container.decode(String.self, forKey: .body)
+        event = try container.decodeIfPresent(Event.self, forKey: .event)
+        images = try container.decodeIfPresent([String].self, forKey: .images)
+        likes = try container.decodeIfPresent([Like].self, forKey: .likes) ?? [Like]()
+        comments = try container.decodeIfPresent([Comment].self, forKey: .comments) ?? [Comment]()
+        externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
+        isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
+    }
+    
+    // This is useless...
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(type, forKey: .type)
+        try container.encodeIfPresent(poster, forKey: .poster)
+        try container.encode(body, forKey: .body)
+        try container.encodeIfPresent(event, forKey: .event)
+        try container.encodeIfPresent(images, forKey: .images)
+        try container.encodeIfPresent(likes, forKey: .likes)
+        try container.encodeIfPresent(comments, forKey: .comments)
+        try container.encodeIfPresent(externalLink, forKey: .externalLink)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(isSensitive, forKey: .isSensitive)
     }
     
     // RandomAccessCollection requirements

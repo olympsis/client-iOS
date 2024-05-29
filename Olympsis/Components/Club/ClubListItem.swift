@@ -9,14 +9,14 @@ import SwiftUI
 
 
 struct ClubListItem: View {
-
+    
+    var club: Club
+    @Binding var showToast: Bool
+    
     @State private var showEULA: Bool = false
     @State private var showDetails: Bool = false
     @State private var status: LOADING_STATE = .pending
     
-    @State var club: Club
-    @Binding var showToast: Bool
-    @ObservedObject var observer: ClubObserver
     @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
@@ -26,13 +26,6 @@ struct ClubListItem: View {
         return name
     }
     
-    var imageURL: String {
-        guard let img = club.imageURL else {
-            return ""
-        }
-        return GenerateImageURL(img)
-    }
-    
     var description: String {
         guard let str = club.description else {
             return ""
@@ -40,9 +33,9 @@ struct ClubListItem: View {
         return str
     }
     
-    var sport: String {
-        guard let s = club.sport else {
-            return "unknown"
+    var sports: [String] {
+        guard let s = club.sports else {
+            return ["unknown"]
         }
         return s
     }
@@ -71,7 +64,7 @@ struct ClubListItem: View {
             }
             return
         }
-        let res = await observer.createClubApplication(clubId: id)
+        let res = await session.clubObserver.createClubApplication(clubId: id)
         if res {
             status = .success
         } else {
@@ -85,47 +78,8 @@ struct ClubListItem: View {
     var body: some View {
         VStack (alignment: .leading){
             HStack {
-                // IMAGE
-                if (club.imageURL != nil) {
-                    AsyncImage(url: URL(string: imageURL)){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100, alignment: .center)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            } else if phase.error != nil {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundStyle(.gray)
-                                        .opacity(0.5)
-                                        .frame(width: 100, height: 100)
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .foregroundColor(.red)
-                                        .imageScale(.large)
-                                }
-                            } else {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .opacity(0.5)
-                                        .frame(width: 100, height: 100)
-                                        .foregroundStyle(.gray)
-                                    ProgressView()
-                                }
-                            }
-                    }.frame(width: 100, height: 100, alignment: .center)
-                } else {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 100, height: 100)
-                            .foregroundStyle(.gray)
-                            .opacity(0.5)
-                        Image(systemName: "person.3.fill")
-                            .foregroundStyle(Color("foreground"))
-                            .imageScale(.large)
-                    }
-                }
+                
+                ClubLogo(club: club)
                 
                 VStack(alignment:.leading){
                     Text(clubName)
@@ -149,8 +103,10 @@ struct ClubListItem: View {
                                 .font(.caption)
                         }
                     }
-                }.padding(.leading, 5)
-            }.padding(.all)
+                }
+                .padding(.leading, 5)
+            }
+            .padding(.all)
             
             HStack {
                 Text(description)
@@ -160,10 +116,15 @@ struct ClubListItem: View {
                     .font(.callout)
             }
             
-            HStack {
-                ClubTagView(isSport: true, tagName: sport)
-            }.padding(.horizontal)
-                .padding(.top)
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(sports, id: \.self) { sport in
+                        ClubTag(isSport: true, tagName: sport)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top)
             
             HStack(spacing: 15) {
                 Button(action: { self.showDetails.toggle() }) {
@@ -182,7 +143,8 @@ struct ClubListItem: View {
                 Button(action:{ Task{ await Apply() } }) {
                     LoadingButton(text: "Apply", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
-            }.padding(.all)
+            }
+            .padding(.all)
         }
         .background {
             RoundedRectangle(cornerRadius: 10)
@@ -199,6 +161,6 @@ struct ClubListItem: View {
 }
 
 #Preview {
-    ClubListItem(club: CLUBS[1], showToast: .constant(false), observer: ClubObserver())
+    ClubListItem(club: CLUBS[0], showToast: .constant(false))
         .environmentObject(SessionStore())
 }

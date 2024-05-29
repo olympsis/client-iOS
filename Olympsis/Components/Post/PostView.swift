@@ -10,38 +10,36 @@ import Kingfisher
 
 struct PostView: View {
     
-    @Binding var post: Post
-    @Binding var posts: [Post]
-    
     @State private var pinned: Bool
     @State private var showMenu: Bool
-    @State private var isSensitive: Bool
     @State private var showComments: Bool
-    
     @State private var showAlert: Bool = false
-
-    @EnvironmentObject private var session: SessionStore
     
-    init(post: Binding<Post>, posts: Binding<[Post]>, pinned: Bool = false, showMenu: Bool = false, showComments: Bool = false) {
-        self._post = post
-        self._posts = posts
+    @StateObject private var post: Post
+    @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var feedModel: FeedViewModel
+    
+    init(post: Post, pinned: Bool = false, showMenu: Bool = false, showComments: Bool = false) {
+        self._post = StateObject(wrappedValue: post)
         self.pinned = pinned
         self.showMenu = showMenu
         self.showComments = showComments
-        
-        isSensitive = post.wrappedValue.isSensitive ?? false
     }
     
     var body: some View {
         VStack {
-            PostHeader(post: $post, pinned: $pinned, showMenu: $showMenu)
+            PostHeader(pinned: $pinned, showMenu: $showMenu)
+                .environmentObject(post)
             
-            PostBody(post: $post)
+            PostBody()
+                .environmentObject(post)
             
-            PostFooter(post: $post, showComments: $showComments)
+            
+            PostFooter(showComments: $showComments)
+                .environmentObject(post)
         }
         .overlay {
-            if isSensitive {
+            if post.isSensitive {
                 ZStack {
                     Rectangle()
                         .background(.ultraThinMaterial)
@@ -56,15 +54,18 @@ struct PostView: View {
         }
         .fullScreenCover(isPresented: $showComments) {
             if let club = session.selectedGroup?.club {
-                PostComments(club: club, post: $post)
+                PostComments(club: club)
+                    .environmentObject(post)
             }
         }
         .sheet(isPresented: $showMenu) {
-            PostMenu(post: post, posts: $posts, pinned: $pinned)
+            PostMenu(pinned: $pinned)
+                .environmentObject(post)
+                .environmentObject(feedModel)
                 .presentationDetents([.height(250)])
         }
         .alert("Show Sensitive Content", isPresented: $showAlert) {
-            Button(action: { isSensitive.toggle() }) {
+            Button(action: { post.isSensitive.toggle() }) {
                 Text("Yes")
             }
             
@@ -81,9 +82,10 @@ struct PostView: View {
 
 struct PostHeader: View {
     
-    @Binding var post: Post
     @Binding var pinned: Bool
     @Binding var showMenu: Bool
+    
+    @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     
     var isOrg: Bool {
@@ -105,7 +107,7 @@ struct PostHeader: View {
     var orgImageURL: String {
         guard let club = session.selectedGroup?.club,
               let org = club.parent,
-              let image = org.imageURL else {
+              let image = org.logo else {
             return GenerateImageURL("https://api.olympsis.com")
         }
         return GenerateImageURL(image)
@@ -141,16 +143,16 @@ struct PostHeader: View {
             }
             if post.type == "announcement" {
                 if let parent = club.parent {
-                    return post.id == parent.pinnedPostId
+                    return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return post.id == club.pinnedPostId
+            return club.pinnedPosts?.contains(post.id ?? "") ?? false
         } else {
             guard let org = selectedGroup.organization,
-                  let pinnedPostId = org.pinnedPostId else {
+                  let pinnedPosts = org.pinnedPosts else {
                 return false
             }
-            return post.id == pinnedPostId
+            return pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -281,8 +283,8 @@ struct PostHeader: View {
 
 struct PostBody: View {
     
-    @Binding var post: Post
     @State private var index: Int = 0
+    @EnvironmentObject private var post: Post
     
     // post images links wrapped up in a url
     var imagesURL: [URL] {
@@ -338,17 +340,14 @@ struct PostBody: View {
 
 struct PostFooter: View {
     
-    @Binding var post: Post
     @Binding var showComments: Bool
     @State private var isLiked: Bool = false
     @Environment(\.openURL) private var openURL
+    @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     
     var likeCount: Int {
-        guard let likes = post.likes else {
-            return 0
-        }
-        return likes.count
+        return post.likes.count
     }
     
     var timestamp: String {
@@ -379,23 +378,19 @@ struct PostFooter: View {
         let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
         let like = Like(id: id, uuid: uuid, user: snippet, createdAt: Int(Date.now.timeIntervalSince1970))
         isLiked = true
-        guard post.likes != nil else {
-            post.likes = [like]
-            return
-        }
-        post.likes?.append(like)
+        post.likes.append(like)
     }
     
     func removeLike() async {
-        guard let id = post.id, let likes = post.likes,
+        guard let id = post.id,
                 let user = session.user, let uuid = user.uuid,
-              let like = likes.first(where: {$0.uuid == uuid }),
+              let like = post.likes.first(where: {$0.uuid == uuid }),
               let lID = like.id else {
             return
         }
         let resp = await session.postObserver.deleteLike(id: id, likeID: lID)
         if resp {
-            post.likes?.removeAll(where: {$0.uuid == like.uuid}) // i would use id instead but this is also more sure
+            post.likes.removeAll(where: {$0.uuid == like.uuid}) // i would use id instead but this is also more sure
             isLiked = false
         }
     }
@@ -424,7 +419,8 @@ struct PostFooter: View {
                                 Image(systemName: "chevron.right")
                                     .font(.caption)
                             }
-                        }.padding(.trailing, 5)
+                        }
+                        .padding(.trailing, 5)
                     }
                 }
                 Spacer()
@@ -444,6 +440,7 @@ struct PostFooter: View {
                 if likeCount > 0 {
                     Text("\(likeCount)")
                         .font(.caption)
+                        .padding(.leading, -3)
                 }
                 Button(action:{ self.showComments.toggle() }){
                     Image(systemName: "bubble.right")
@@ -455,7 +452,7 @@ struct PostFooter: View {
             .task {
                 if let user = session.user,
                       let uuid = user.uuid,
-                      ((post.likes?.first(where: { $0.uuid == uuid })) != nil) {
+                      ((post.likes.first(where: { $0.uuid == uuid })) != nil) {
                     self.isLiked = true
                 }
             }
@@ -468,20 +465,24 @@ struct PostFooter: View {
 }
 
 #Preview("Header") {
-    PostHeader(post: .constant(POSTS[0]), pinned: .constant(false), showMenu: .constant(false))
+    PostHeader(pinned: .constant(false), showMenu: .constant(false))
+        .environmentObject(POSTS[0])
         .environmentObject(SessionStore())
 }
 
 #Preview("Body") {
-    PostBody(post: .constant(POSTS[1]))
+    PostBody()
+        .environmentObject(POSTS[0])
 }
 
 #Preview("Footer") {
-    PostFooter(post: .constant(POSTS[2]), showComments: .constant(false))
+    PostFooter(showComments: .constant(false))
+        .environmentObject(POSTS[0])
         .environmentObject(SessionStore())
 }
 
 #Preview {
-    PostView(post: .constant(POSTS[0]), posts: .constant(POSTS))
+    PostView(post: POSTS[0])
         .environmentObject(SessionStore())
+        .environmentObject(FeedViewModel())
 }

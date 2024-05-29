@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ClubTagView: View {
+struct ClubTag: View {
     
     @State var isSport: Bool
     @State var tagName: String
@@ -37,5 +37,5 @@ struct ClubTagView: View {
 }
 
 #Preview {
-    ClubTagView(isSport: true, tagName: "Soccer")
+    ClubTag(isSport: true, tagName: "Soccer")
 }

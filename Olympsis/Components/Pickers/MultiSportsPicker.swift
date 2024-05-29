@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProfileSportsPicker: View {
+struct MultiSportsPicker: View {
     
     @Binding var selectedSports: Set<String>
     @Environment(\.dismiss) private var dismiss
@@ -75,5 +75,5 @@ struct ProfileSportsPicker: View {
 }
 
 #Preview {
-    ProfileSportsPicker(selectedSports: .constant(["soccer", "tennis"]))
+    MultiSportsPicker(selectedSports: .constant(["soccer", "tennis"]))
 }

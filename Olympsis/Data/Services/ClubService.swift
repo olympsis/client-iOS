@@ -54,7 +54,7 @@ class ClubService {
         return data
     }
     
-    func createClub(club: Club) async throws -> Data {
+    func createClub(club: ClubDao) async throws -> Data {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/clubs")
         let (data, _) = try await http.Request(.POST, endpoint, body: EncodeToData(club), headers: ["Authorization": token ?? ""])

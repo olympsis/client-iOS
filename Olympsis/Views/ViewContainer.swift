@@ -15,8 +15,7 @@ struct ViewContainer: View {
     
     @State var currentTab: Tab = .home
     @State private var showBeta: Bool = false
-    @State private var accountState: ACCOUNT_STATE = .Unknown
-    @State private var authObserver = AuthObserver()
+    @State private var showOnboarding: Bool = false
     
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var notificationManager: NotificationManager
@@ -49,11 +48,27 @@ struct ViewContainer: View {
             TabBar(currentTab: $currentTab)
                 .background(Color("dark-color"))
                 .ignoresSafeArea(.keyboard)
-        }.fullScreenCover(isPresented: $showBeta) {
+        }
+        .fullScreenCover(isPresented: $showBeta) {
             BetaPage()
         }
+        .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
+            Task {
+                session.user?.hasOnboarded = true
+                _ = await session.userObserver.UpdateUserData(update: UserDao(hasOnboarded: true))
+            }
+        }, content: {
+            Onboarding()
+        })
         .task {
             await session.CheckIn()
+            guard let user = session.user,
+                  let hasOnboarded = user.hasOnboarded else {
+                return
+            }
+            if hasOnboarded {
+                showOnboarding.toggle()
+            }
         }
     }
 }

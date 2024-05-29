@@ -10,13 +10,16 @@ import SwiftUI
 
 struct OrgView: View {
     
-    @State var organization: Organization
+    @StateObject var organization: Organization
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
-    @State private var trackingMode: MapUserTrackingMode = .none
     @Environment(\.dismiss) private var dismiss
+    
+    init(organization: Organization) {
+        self._organization = StateObject(wrappedValue: organization)
+    }
     
     // organization name
     private var name: String {
@@ -28,7 +31,7 @@ struct OrgView: View {
     
     // organization imageurl
     private var imageURL: String {
-        guard let url = organization.imageURL else {
+        guard let url = organization.logo else {
             return "https://api.oylmpsis.com"
         }
         return GenerateImageURL(url)
@@ -73,31 +76,31 @@ struct OrgView: View {
         return pins
     }
     
+    func timeAgo(from timestamp: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let now = Date()
+        let calendar = Calendar.current
+
+        let components = calendar.dateComponents([.year, .month, .day], from: date, to: now)
+
+        if let years = components.year, years > 0 {
+            return years == 1 ? "1 year ago" : "\(years) years ago"
+        } else if let months = components.month, months > 0 {
+            return months == 1 ? "1 month ago" : "\(months) months ago"
+        } else if let days = components.day, days > 0 {
+            return days == 1 ? "1 day ago" : "\(days) days ago"
+        } else {
+            return "Today"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     
-                    // MARK: - Image
-                    AsyncImage(url: URL(string: imageURL)){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .clipped()
-                                    
-                            } else if phase.error != nil {
-                                Rectangle()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .foregroundColor(.red)
-                            } else {
-                                Rectangle()
-                                    .frame(width: SCREEN_WIDTH, height: 250, alignment: .center)
-                                    .foregroundColor(.gray)
-                            }
-                    }.frame(height: 250, alignment: .center)
-                        .padding(.horizontal, 5)
+                    OrgBanner()
+                        .environmentObject(organization)
                     
                     
                     // MARK: Details
@@ -133,20 +136,33 @@ struct OrgView: View {
                     }.padding(.horizontal)
                         .padding(.top)
 
-                    Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode: $trackingMode, annotationItems: markers) { p in
+                    Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode:.constant(.none), annotationItems: markers) { p in
                         MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
-                    }.frame(height: 200)
-                        .padding(.bottom, 40)
-
-                }.navigationTitle(name)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button(action: { dismiss() }) {
-                                Image(systemName: "chevron.left")
-                            }
+                    }
+                    .frame(height: 200)
+                    .padding(.bottom)
+                    
+                    HStack {
+                        if let createdAt = organization.createdAt {
+                            Text("Established ")
+                                .bold()
+                            +
+                            Text(timeAgo(from: createdAt))
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.bottom, 40)
+
+                }
+                .navigationTitle(name)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: { dismiss() }) {
+                            Image(systemName: "chevron.left")
+                        }
+                    }
+                }
             }
         }
     }

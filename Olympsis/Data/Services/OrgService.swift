@@ -49,7 +49,7 @@ class OrgService {
         return data
     }
     
-    func createOrganization(org: Organization) async throws -> Data {
+    func createOrganization(org: OrganizationDao) async throws -> Data {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/organizations")
         let (data, _) = try await http.Request(.POST, endpoint, body: EncodeToData(org), headers: [

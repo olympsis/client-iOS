@@ -12,7 +12,6 @@ struct PostCreator: View {
     
     var type: NEW_POST_TYPE
     var groupId: String
-    @Binding var posts: [Post]
     
     @FocusState private var bodyFocused: Bool
     @State private var showMediaPicker: Bool = false
@@ -20,14 +19,15 @@ struct PostCreator: View {
     @StateObject private var viewModel: NewPostViewModel
     
     @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var feedModel: FeedViewModel
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "post_creator_view")
     
-    init(type: NEW_POST_TYPE, groupId: String, posts: Binding<[Post]>) {
+    init(type: NEW_POST_TYPE, groupId: String) {
         self.type = type
         self.groupId = groupId
-        self._posts = Binding(projectedValue: posts)
         
         switch type {
         case .Post:
@@ -46,8 +46,7 @@ struct PostCreator: View {
               let post = try await viewModel.createPost(groupId: groupId, user: user) else {
             return
         }
-        
-        posts.append(post)
+        feedModel.posts.append(post)
         dismiss()
     }
     
@@ -64,9 +63,9 @@ struct PostCreator: View {
                     Task {
                         do {
                             try await createPost()
-                        } catch NewPostError.innapropriateContent {
+                        } catch MediaUploadError.innapropriateContent {
                             self.showPostViolation.toggle()
-                        } catch NewPostError.unexpected(let reason) {
+                        } catch MediaUploadError.unexpected(let reason) {
                             log.error("Failed to create post: \(reason)")
                         }
                     }
@@ -130,12 +129,14 @@ struct PostCreator: View {
                     })
                 }.padding(.horizontal)
             }.sheet(isPresented: $showPostViolation, onDismiss: { dismiss() }, content: {
-                PostViolation()
+                PostMediaViolation()
             })
         }
     }
 }
 
 #Preview {
-    PostCreator(type: .Post, groupId: "", posts: .constant([Post]()))
+    PostCreator(type: .Post, groupId: "")
+        .environmentObject(SessionStore())
+        .environmentObject(FeedViewModel())
 }

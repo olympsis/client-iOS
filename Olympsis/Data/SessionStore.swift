@@ -90,53 +90,52 @@ class SessionStore: ObservableObject {
     }
 
     
-    
+    @MainActor
     func CheckIn() async {
         do {
             guard let resp = try await userObserver.CheckIn() else {
                 return
             }
-            await MainActor.run {
-                if var usr = resp.user {
-                    let temp = cacheService.fetchUser()
-                    user = usr
-                    usr.hometown = temp?.hometown
-                    user?.hometown = temp?.hometown
-                    cacheService.cacheUser(user: usr)
-                } else {
-                    user = cacheService.fetchUser()
+            if var usr = resp.user {
+                let temp = cacheService.fetchUser()
+                user = usr
+                usr.hometown = temp?.hometown
+                user?.hometown = temp?.hometown
+                cacheService.cacheUser(user: usr)
+            } else {
+                user = cacheService.fetchUser()
+            }
+            if let c = resp.clubs {
+                self.clubs = c
+                c.forEach { c in
+                    let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
+                    self.groups.append(group)
                 }
-                if let c = resp.clubs {
-                    self.clubs = c
-                    c.forEach { c in
-                        let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
-                        self.groups.append(group)
-                    }
+                guard let g = self.groups.first else {
+                    return
+                }
+                self.selectedGroup = g
+            }
+            if let o = resp.organizations {
+                self.orgs = o
+                o.forEach { o in
+                    let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
+                    self.groups.append(group)
+                }
+                if (self.selectedGroup == nil) {
                     guard let g = self.groups.first else {
                         return
                     }
                     self.selectedGroup = g
                 }
-                if let o = resp.organizations {
-                    self.orgs = o
-                    o.forEach { o in
-                        let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
-                        self.groups.append(group)
-                    }
-                    if (self.selectedGroup == nil) {
-                        guard let g = self.groups.first else {
-                            return
-                        }
-                        self.selectedGroup = g
-                    }
-                }
-                if let i = resp.invitations {
-                    invitations = i
-                }
-                authStatus = .authenticated
             }
+            if let i = resp.invitations {
+                invitations = i
+            }
+            authStatus = .authenticated
         } catch {
             authStatus = .unauthenticated
+            log.error("Failed to check user in: \(error.localizedDescription)")
         }
     }
     

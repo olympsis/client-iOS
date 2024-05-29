@@ -8,47 +8,53 @@
 import Foundation
 
 /// A group that can be the parent of many clubs and post announcements that will be show in the clubs.
-class Organization: Codable, Identifiable {
+class Organization: Codable, Identifiable, ObservableObject {
 
     let id: String?
     let name: String?
     let description: String?
-    let sport: String?
+    let sports: [String]?
     let city: String?
     let state: String?
     let country: String?
-    let imageURL: String?
-    let imageGallery: [String]?
+    let logo: String?
+    let banner: String?
     let members: [Member]?
-    var pinnedPostId: String?
+    let blackList: [String]?
+    var pinnedPosts: [String]?
     let data: ClubData?
-    let createdAt: Int64?
+    let isVerified: Bool?
+    let createdAt: Int?
     
     init(id: String?,
          name: String?,
          description: String?,
-         sport: String?,
+         sports: [String]?,
          city: String?,
          state: String?,
          country: String?,
-         imageURL: String?,
-         imageGallery: [String]?,
+         logo: String?,
+         banner: String?,
          members: [Member]?,
-         pinnedPostId: String?,
-         createdAt: Int64?) {
+         blackList: [String]?,
+         pinnedPosts: [String]?,
+         isVerified: Bool?,
+         createdAt: Int?) {
         
         self.id = id
         self.name = name
         self.description = description
-        self.sport = sport
+        self.sports = sports
         self.city = city
         self.state = state
         self.country = country
-        self.imageURL = imageURL
-        self.imageGallery = imageGallery
+        self.logo = logo
+        self.banner = banner
         self.members = members
-        self.pinnedPostId = pinnedPostId
+        self.blackList = blackList
+        self.pinnedPosts = pinnedPosts
         self.data = nil
+        self.isVerified = isVerified
         self.createdAt = createdAt
     }
     
@@ -64,15 +70,17 @@ class Organization: Codable, Identifiable {
         case id
         case name
         case description
-        case sport
+        case sports
         case city
         case state
         case country
-        case imageURL = "image_url"
-        case imageGallery = "image_gallery"
+        case logo
+        case banner
         case members
-        case pinnedPostId = "pinned_post_id"
+        case blackList = "black_list"
+        case pinnedPosts = "pinned_posts"
         case data
+        case isVerified = "is_verified"
         case createdAt = "created_at"
     }
 }
@@ -120,53 +128,57 @@ struct OrganizationApplicationData: Codable {
 class OrganizationDao: Codable {
 
     let id: String?
-    let name: String?
-    let description: String?
-    let sport: String?
-    let city: String?
-    let state: String?
-    let country: String?
-    let imageURL: String?
-    let imageGallery: [String]?
-    let members: [MemberDao]?
-    var pinnedPostId: String?
+    var name: String?
+    var description: String?
+    var sports: [String]?
+    var city: String?
+    var state: String?
+    var country: String?
+    var logo: String?
+    var banner: String?
+    var members: [MemberDao]?
+    var blackList: [String]?
+    var pinnedPosts: [String]?
     
     init(id: String?=nil,
          name: String?=nil,
          description: String?=nil,
-         sport: String?=nil,
+         sports: [String]?=nil,
          city: String?=nil,
          state: String?=nil,
          country: String?=nil,
-         imageURL: String?=nil,
-         imageGallery: [String]?=nil,
+         logo: String?=nil,
+         banner: String?=nil,
          members: [MemberDao]?=nil,
-         pinnedPostId: String?=nil) {
+         blackList: [String]?=nil,
+         pinnedPosts: [String]?=nil) {
         
         self.id = id
         self.name = name
         self.description = description
-        self.sport = sport
+        self.sports = sports
         self.city = city
         self.state = state
         self.country = country
-        self.imageURL = imageURL
-        self.imageGallery = imageGallery
+        self.logo = logo
+        self.banner = banner
         self.members = members
-        self.pinnedPostId = pinnedPostId
+        self.blackList = blackList
+        self.pinnedPosts = pinnedPosts
     }
     
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case description
-        case sport
+        case sports
         case city
         case state
         case country
-        case imageURL = "image_url"
-        case imageGallery = "image_gallery"
+        case logo
+        case banner
         case members
-        case pinnedPostId = "pinned_post_id"
+        case blackList = "black_list"
+        case pinnedPosts = "pinned_posts"
     }
 }

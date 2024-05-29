@@ -92,8 +92,8 @@ struct ClubsList: View {
                                     .font(.caption)
                             }
                         } else {
-                            ForEach(filteredClubs, id: \.id){ c in
-                                ClubListItem(club: c, showToast: $showCompletedApplicationToast, observer: session.clubObserver)
+                            ForEach(filteredClubs, id: \.id){ club in
+                                ClubListItem(club: club, showToast: $showCompletedApplicationToast)
                                     .clipShape(Rectangle())
                             }
                         }

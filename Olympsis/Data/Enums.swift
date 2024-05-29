@@ -228,3 +228,13 @@ enum IMAGE_SIZING: String {
     case LANDSCAPE = "1080x566"
     case SQUARE = "1080x1080"
 }
+
+enum MediaUploadError: Error {
+    case innapropriateContent
+    case unexpected(_ reason: String)
+}
+
+enum CREATE_ERROR: Error {
+    case unexpected
+    case noName
+}

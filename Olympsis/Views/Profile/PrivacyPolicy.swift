@@ -12,6 +12,7 @@ struct PrivacyPolicy: View {
         ScrollView {
             Text("At Olympsis, we take your privacy seriously. This Privacy Policy outlines how we collect, use, and protect the information you provide to us.")
                 .padding(.top)
+                .padding(.horizontal)
             
             GroupBox {
                 Text("""
@@ -84,6 +85,7 @@ struct PrivacyPolicy: View {
             }
             
             Text("If you have any questions or concerns about our Privacy Policy, please contact us at [contact@olympsis.com].")
+                .padding(.horizontal)
         }
         .navigationTitle("Privacy Policy")
         .navigationBarTitleDisplayMode(.inline)

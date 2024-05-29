@@ -9,12 +9,22 @@ import SwiftUI
 
 struct GroupFeed: View {
     
-    @State var posts: [Post] = [Post]()
     @State var selectedPost: Post?
     @Binding var showNewPost: Bool
     @State private var showEvents: Bool = false
+    
     @State private var status: LOADING_STATE = .pending
+    
+    @StateObject private var viewModel: FeedViewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
+    
+//    init(posts: [Post], selectedPost: Post? = nil) {
+//        self.posts = posts
+//        self.selectedPost = selectedPost
+//        self.showNewPost = showNewPost
+//        self.showEvents = showEvents
+//        self.status = status
+//    }
     
     var groupEvents: [Event] {
         guard let selectedGroup = session.selectedGroup else {
@@ -48,16 +58,16 @@ struct GroupFeed: View {
             }
             if post.type == "announcement" {
                 if let parent = club.parent {
-                    return post.id == parent.pinnedPostId
+                    return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return post.id == club.pinnedPostId
+            return club.pinnedPosts?.contains(post.id ?? "") ?? false
         } else {
             guard let org = selectedGroup.organization,
-                  let pinnedPostId = org.pinnedPostId else {
+                  let pinnedPosts = org.pinnedPosts else {
                 return false
             }
-            return post.id == pinnedPostId
+            return pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -90,13 +100,13 @@ struct GroupFeed: View {
             var sorted = response.sorted(by: condition)
             
             if let parent = club.parent,
-                let pinnedPostId = parent.pinnedPostId {
-                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+                let pinnedPosts = parent.pinnedPosts {
+                if let resp = sorted.first(where: { val in pinnedPosts.contains(where: { val.id == $0 })}) {
                     pinned.append(resp)
                 }
             }
-            if let pinnedPostId = club.pinnedPostId {
-                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+            if let pinnedPosts = club.pinnedPosts {
+                if let resp = sorted.first(where: { pinnedPosts.contains($0.id ?? "") }) {
                     pinned.append(resp)
                 }
             }
@@ -123,8 +133,10 @@ struct GroupFeed: View {
             var sorted = response.sorted(by: condition)
             
             if let org = selectedGroup.organization,
-                let pinnedPostId = org.pinnedPostId {
-                if let resp = sorted.first(where: { $0.id == pinnedPostId }) {
+                let pinnedPosts = org.pinnedPosts {
+                if let resp = sorted.first(where: { post in
+                    return pinnedPosts.contains(where: { $0 == post.id })
+                }) {
                     pinned.append(resp)
                 }
             }
@@ -173,30 +185,31 @@ struct GroupFeed: View {
                             .padding(.vertical)
                     }
                     
-                    if posts.count > 0 {
-                        ForEach($posts) { post in
-                            PostView(post: post, posts: $posts)
+                    if viewModel.posts.count > 0 {
+                        ForEach(viewModel.posts) { post in
+                            PostView(post: post)
+                                .environmentObject(viewModel)
                         }
                     } else {
                         VStack {
                             Text("No Posts Found 😞")
-                            Button(action: { Task { self.posts = await getLatestPosts() }}) {
+                            Button(action: { Task { self.viewModel.posts = await getLatestPosts() }}) {
                                 Text("Try again")
                                     .font(.callout)
                             }
                         }.padding(.top, 50)
                     }
                 }.task{
-                    self.posts = await getLatestPosts()
+                    self.viewModel.posts = await getLatestPosts()
                 }
                 .onChange(of: session.selectedGroup, { _, _ in
                     Task {
-                        self.posts = await getLatestPosts()
+                        self.viewModel.posts = await getLatestPosts()
                     }
                 })
                 .refreshable {
                     Task {
-                        self.posts = await getLatestPosts()
+                        self.viewModel.posts = await getLatestPosts()
                     }
                 }
             case .failure:
@@ -205,23 +218,25 @@ struct GroupFeed: View {
                         Text("😣")
                             .font(.title)
                         Text("Failed to load feed")
-                        Button(action: { Task { self.posts = await getLatestPosts() }}) {
+                        Button(action: { Task { self.viewModel.posts = await getLatestPosts() }}) {
                             Text("Try again")
                                 .font(.callout)
                         }
                     }.padding(.top, 50)
                 }.refreshable {
                     Task {
-                        self.posts = await getLatestPosts()
+                        self.viewModel.posts = await getLatestPosts()
                     }
                 }
             }
         }.fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {
                 if let club = group.club {
-                    PostCreator(type: .Post, groupId: club.id ?? "", posts: $posts)
+                    PostCreator(type: .Post, groupId: club.id ?? "")
+                        .environmentObject(viewModel)
                 } else if let org = group.organization {
-                    PostCreator(type: .Post, groupId: org.id ?? "", posts: $posts)
+                    PostCreator(type: .Post, groupId: org.id ?? "")
+                        .environmentObject(viewModel)
                 }
             }
         }
@@ -229,6 +244,7 @@ struct GroupFeed: View {
 }
 
 #Preview {
-    GroupFeed(posts: POSTS, showNewPost: .constant(false))
+    GroupFeed(showNewPost: .constant(false))
         .environmentObject(SessionStore())
+        .environmentObject(FeedViewModel())
 }

@@ -43,6 +43,9 @@ struct MediaPicker: View {
         case .newEvent:
             maxSelection = 1
             maskShape = .square
+        case .other:
+            maxSelection = 1
+            maskShape = .rectangle
         }
         
         _viewModel = StateObject(wrappedValue:
@@ -77,6 +80,10 @@ struct MediaPicker: View {
                             .fontWeight(.bold)
                     case .newEvent:
                         Text(MediaPickerType.newEvent.rawValue)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                    case .other:
+                        Text("Photo")
                             .font(.subheadline)
                             .fontWeight(.bold)
                     }

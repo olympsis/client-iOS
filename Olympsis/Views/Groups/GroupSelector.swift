@@ -23,7 +23,7 @@ struct GroupSelector: View {
                 Section {
                     ForEach(groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
                         HStack {
-                            AsyncImage(url: URL(string: GenerateImageURL(c.club?.imageURL ?? "https://api.olympsis.com"))){ image in
+                            AsyncImage(url: URL(string: GenerateImageURL(c.club?.logo ?? "https://api.olympsis.com"))){ image in
                                 image.resizable()
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .frame(width: 40, height: 40)
@@ -46,7 +46,7 @@ struct GroupSelector: View {
                     Section {
                         ForEach(groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
                             HStack {
-                                AsyncImage(url: URL(string: GenerateImageURL(c.organization?.imageURL ?? "https://api.olympsis.com"))){ image in
+                                AsyncImage(url: URL(string: GenerateImageURL(c.organization?.logo ?? "https://api.olympsis.com"))){ image in
                                     image.resizable()
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
                                         .frame(width: 40, height: 40)

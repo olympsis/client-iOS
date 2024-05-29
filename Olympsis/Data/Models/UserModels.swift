@@ -53,11 +53,26 @@ struct UserDao: Codable {
     let clubs: [String]?
     var organizations: [String]?
     var acceptedEULA: Bool?
+    var hasOnboarded: Bool?
     var blockedUsers: [String]?
     var hometown: [Double]?
     let deviceToken: String?
 
-    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, sports: [String]?=nil, visibility: String?=nil, clubs: [String]?=nil, organizations: [String]?=nil, acceptedEULA: Bool?=nil, blockedUsers: [String]?=nil, hometown: [Double]?=nil, deviceToken: String? = nil) {
+    init(
+        uuid: String?=nil, 
+        username: String?=nil,
+        bio: String?=nil,
+        imageURL: String?=nil,
+        sports: [String]?=nil,
+        visibility: String?=nil,
+        clubs: [String]?=nil,
+        organizations: [String]?=nil,
+        acceptedEULA: Bool?=nil,
+        hasOnboarded: Bool?=nil,
+        blockedUsers: [String]?=nil,
+        hometown: [Double]?=nil,
+        deviceToken: String? = nil
+    ){
         self.uuid = uuid
         self.username = username
         self.bio = bio
@@ -67,6 +82,7 @@ struct UserDao: Codable {
         self.clubs = clubs
         self.organizations = organizations
         self.acceptedEULA = acceptedEULA
+        self.hasOnboarded = hasOnboarded
         self.blockedUsers = blockedUsers
         self.hometown = hometown
         self.deviceToken = deviceToken
@@ -82,6 +98,7 @@ struct UserDao: Codable {
         case organizations
         case sports
         case acceptedEULA = "accepted_eula"
+        case hasOnboarded = "has_onboarded"
         case blockedUsers = "blocked_users"
         case hometown
         case deviceToken = "device_token"
@@ -108,6 +125,7 @@ struct UserData: Codable, Hashable {
     var clubs: [String]?
     var organizations: [String]?
     var acceptedEULA: Bool?
+    var hasOnboarded: Bool?
     var blockedUsers: [String]?
     var hometown: [Double]?
     var deviceToken: String?
@@ -132,6 +150,7 @@ struct UserData: Codable, Hashable {
         case clubs
         case organizations
         case acceptedEULA = "accepted_eula"
+        case hasOnboarded = "has_onboarded"
         case blockedUsers = "blocked_users"
         case hometown
         case deviceToken = "device_token"
@@ -153,7 +172,6 @@ struct CheckIn: Codable {
     let clubs: [Club]?
     let organizations: [Organization]?
     let invitations: [Invitation]?
-    let token: String?
 }
 
 struct LocationResponse: Codable {
