@@ -13,10 +13,8 @@ import FirebaseAuth
 class FieldService {
     
     private var http: Courrier
-    private let tokenStore: SecureStore
     
     init() {
-        self.tokenStore = SecureStore()
         #if DEBUG
             self.http = Courrier(.HTTP, host: "localhost")
         #else

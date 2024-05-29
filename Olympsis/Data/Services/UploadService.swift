@@ -13,10 +13,8 @@ import FirebaseAuth
 class UploadService {
     
     private var http: Courrier
-    private let tokenStore: SecureStore
     
     init() {
-        self.tokenStore = SecureStore()
         #if DEBUG
             // Eventually we want to have a local way of testing the upload server
             let host = Bundle.main.object(forInfoDictionaryKey: "STORAGE") as? String ?? ""
