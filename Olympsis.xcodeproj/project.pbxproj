@@ -48,7 +48,6 @@
 		5D5BEF7E2BEF16E7008648C5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5BEF7D2BEF16E7008648C5 /* FirebaseAuth */; };
 		5D5BEF832BEF199E008648C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF822BEF199E008648C5 /* GoogleService-Info.plist */; };
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
-		5D5BEF882BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
 		5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A882BF664BA001EE754 /* CropViewModel.swift */; };
 		5D666A8F2BF66580001EE754 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A8E2BF66580001EE754 /* CropView.swift */; };
 		5D666A932BF69715001EE754 /* CropModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A922BF69715001EE754 /* CropModels.swift */; };
@@ -137,14 +136,6 @@
 		5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
-		5DD0E3F52AC889FA00C85B94 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */; };
-		5DD0E3F72AC889FA00C85B94 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */; };
-		5DD0E3FA2AC889FA00C85B94 /* LiveEventBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */; };
-		5DD0E3FC2AC889FA00C85B94 /* LiveEventLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */; };
-		5DD0E3FE2AC889FA00C85B94 /* LiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */; };
-		5DD0E4002AC889FA00C85B94 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */; };
-		5DD0E4022AC889FA00C85B94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DD0E4012AC889FA00C85B94 /* Assets.xcassets */; };
-		5DD0E4062AC889FA00C85B94 /* LiveEventExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DD0E3F32AC889F900C85B94 /* LiveEventExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
@@ -152,7 +143,6 @@
 		5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */; };
 		5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */; };
 		5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */; };
-		5DF8C87C2BF1AE50002FE392 /* Salt Lake City.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5DF8C87B2BF1AE50002FE392 /* Salt Lake City.gpx */; };
 		5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */; };
 		5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */; };
 		5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF945AB2BF9CCB500BE3C63 /* Kingfisher */; };
@@ -474,12 +464,6 @@
 		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEventBundle.swift; sourceTree = "<group>"; };
-		5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEventLiveActivity.swift; sourceTree = "<group>"; };
-		5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEvent.swift; sourceTree = "<group>"; };
-		5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
-		5DD0E4012AC889FA00C85B94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5DD0E4032AC889FA00C85B94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
@@ -487,7 +471,6 @@
 		5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogo.swift; sourceTree = "<group>"; };
 		5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgLogo.swift; sourceTree = "<group>"; };
 		5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRequestView.swift; sourceTree = "<group>"; };
-		5DF8C87B2BF1AE50002FE392 /* Salt Lake City.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Salt Lake City.gpx"; path = "../../../../Salt Lake City.gpx"; sourceTree = "<group>"; };
 		5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSmallListItem.swift; sourceTree = "<group>"; };
 		5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndUserLicenseAgreement.swift; sourceTree = "<group>"; };
 		5DF945AD2BFAAFAD00BE3C63 /* PostMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaViolation.swift; sourceTree = "<group>"; };
@@ -939,19 +922,6 @@
 			path = Activities;
 			sourceTree = "<group>";
 		};
-		5DD0E3F82AC889FA00C85B94 /* LiveEvent */ = {
-			isa = PBXGroup;
-			children = (
-				5DD0E3F92AC889FA00C85B94 /* LiveEventBundle.swift */,
-				5DD0E3FB2AC889FA00C85B94 /* LiveEventLiveActivity.swift */,
-				5DD0E3FD2AC889FA00C85B94 /* LiveEvent.swift */,
-				5DD0E3FF2AC889FA00C85B94 /* AppIntent.swift */,
-				5DD0E4012AC889FA00C85B94 /* Assets.xcassets */,
-				5DD0E4032AC889FA00C85B94 /* Info.plist */,
-			);
-			path = LiveEvent;
-			sourceTree = "<group>";
-		};
 		5DF8C8762BF18E92002FE392 /* System */ = {
 			isa = PBXGroup;
 			children = (
@@ -1152,7 +1122,6 @@
 		9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */ = {
 			isa = PBXGroup;
 			children = (
-				5DF8C87B2BF1AE50002FE392 /* Salt Lake City.gpx */,
 				5D7668682BF95A2C003FAD7C /* Info.plist */,
 				5D5BEF822BEF199E008648C5 /* GoogleService-Info.plist */,
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
@@ -1608,16 +1577,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5DD0E3F12AC889F900C85B94 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5DD0E4022AC889FA00C85B94 /* Assets.xcassets in Resources */,
-				5D5BEF882BEFE894008648C5 /* General.xcstrings in Resources */,
-				5D9CF1152AC8B39900172284 /* ITCAvantGardeStd-BoldObl.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9A8FF0AB28BB14BF00DE4CF8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1642,7 +1601,6 @@
 				9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */,
 				9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */,
 				9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */,
-				5DF8C87C2BF1AE50002FE392 /* Salt Lake City.gpx in Resources */,
 				5D5BEF832BEF199E008648C5 /* GoogleService-Info.plist in Resources */,
 				9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */,
 				9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */,
@@ -2008,77 +1966,6 @@
 			};
 			name = Release;
 		};
-		5DD0E4082AC889FA00C85B94 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A6H49Q85D;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LiveEvent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveEvent;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.7;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.client.live-event";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		5DD0E4092AC889FA00C85B94 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5A6H49Q85D;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LiveEvent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveEvent;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.7;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.client.live-event";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
 		9A8FF0B928BB14C100DE4CF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2203,6 +2090,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Olympsis/Olympsis.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Olympsis/Preview Content\"";
@@ -2222,6 +2110,7 @@
 				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2239,6 +2128,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Olympsis/Olympsis.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Olympsis/Preview Content\"";
@@ -2258,6 +2148,7 @@
 				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
