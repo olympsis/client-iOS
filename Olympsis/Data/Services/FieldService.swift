@@ -25,7 +25,7 @@ class FieldService {
     
     func getFields(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/fields", queryItems: [
+        let endpoint = Endpoint("/v1/fields", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius)),

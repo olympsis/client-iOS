@@ -14,12 +14,8 @@ import FirebaseAuth
 class OrgService {
     
     private var http: Courrier
-    private let tokenStore: SecureStore
-    private let cacheService: CacheService
     
     init() {
-        self.tokenStore = SecureStore()
-        self.cacheService = CacheService()
         #if DEBUG
             self.http = Courrier(.HTTP, host: "localhost")
         #else
@@ -30,7 +26,7 @@ class OrgService {
     
     func getOrganizations(c: String, s: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations", queryItems: [
+        let endpoint = Endpoint("/v1/organizations", queryItems: [
             URLQueryItem(name: "country", value: c),
             URLQueryItem(name: "state", value: s)
         ])
@@ -42,7 +38,7 @@ class OrgService {
     
     func getOrganization(id: String) async throws -> Data {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/\(id)")
+        let endpoint = Endpoint("/v1/organizations/\(id)")
         let (data, _) = try await http.Request(.GET, endpoint, headers: [
             "Authorization": token ?? ""
         ])
@@ -51,7 +47,7 @@ class OrgService {
     
     func createOrganization(org: OrganizationDao) async throws -> Data {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations")
+        let endpoint = Endpoint("/v1/organizations")
         let (data, _) = try await http.Request(.POST, endpoint, body: EncodeToData(org), headers: [
             "Authorization": token ?? ""
         ])
@@ -61,7 +57,7 @@ class OrgService {
     // TODO: FOR ADMINS
     func deleteOrganization(id: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/\(id)")
+        let endpoint = Endpoint("/v1/organizations/\(id)")
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: [
             "Authorization": token ?? ""
         ])
@@ -72,7 +68,7 @@ class OrgService {
     
     func createApplication(app: OrganizationApplication) async throws -> Bool {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/applications")
+        let endpoint = Endpoint("/v1/organizations/applications")
         
         let (_, resp) = try await http.Request(.POST, endpoint, body: EncodeToData(app), headers: [
             "Authorization": token ?? ""
@@ -85,7 +81,7 @@ class OrgService {
     
     func getApplications(id: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/\(id)/applications")
+        let endpoint = Endpoint("/v1/organizations/\(id)/applications")
         let (data, resp) = try await http.Request(.GET, endpoint, headers: [
             "Authorization": token ?? ""
         ])
@@ -94,7 +90,7 @@ class OrgService {
     
     func updateApplication(id: String, app: OrganizationApplication) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/applications/\(id)")
+        let endpoint = Endpoint("/v1/organizations/applications/\(id)")
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(app), headers: [
             "Authorization": token ?? ""
         ])
@@ -103,7 +99,7 @@ class OrgService {
     
     func deleteApplication(id: String) async throws -> Data {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/applications/\(id)")
+        let endpoint = Endpoint("/v1/organizations/applications/\(id)")
         let (data, _) = try await http.Request(.DELETE, endpoint, headers: [
             "Authorization": token ?? ""
         ])
@@ -114,7 +110,7 @@ class OrgService {
     
     func createInvitation(data: Invitation) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/invitations")
+        let endpoint = Endpoint("/v1/organizations/invitations")
         return try await http.Request(.POST, endpoint, body: EncodeToData(data), headers: [
             "Authorization": token ?? ""
         ])
@@ -122,7 +118,7 @@ class OrgService {
     
     func updateInvitation(data: Invitation) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/invitations/\(data.id ?? "")")
+        let endpoint = Endpoint("/v1/organizations/invitations/\(data.id ?? "")")
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(data), headers: [
             "Authorization": token ?? ""
         ])
@@ -131,20 +127,18 @@ class OrgService {
     
     func pinPost(id: String, postId: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/\(id)/post/\(postId)")
+        let endpoint = Endpoint("/v1/organizations/\(id)/post/\(postId)")
         let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }
     
     func unPinPost(id: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/organizations/\(id)/post")
+        let endpoint = Endpoint("/v1/organizations/\(id)/post")
         let (_, resp) = try await http.Request(.PUT, endpoint, headers: [
-            "Authorization": token ?? "",
-            "X-Admin-Token": cacheService.fetchClubAdminToken(id: id)
+            "Authorization": token ?? ""
         ])
         return resp
     }

@@ -7,24 +7,20 @@
 
 import Hermes
 import Foundation
+import FirebaseAuth
 
 /// This service is in charge of handling requests that the user may want to create that has to do with bug reporting, reporting bad actors and giving feedback.
 class ManagementService {
     
     private var http: Courrier
-    private let tokenStore: SecureStore
     
     init() {
-        var host: String
-        
-#if DEBUG
-            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+        #if DEBUG
+            self.http = Courrier(.HTTP, host: "localhost")
         #else
-            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
+            self.http = Courrier(.HTTPS, host: host)
         #endif
-        
-        self.tokenStore = SecureStore()
-        self.http = Courrier(.HTTPS, host: host)
     }
     
     /// HTTP request to create a bug report
@@ -33,8 +29,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createBugReport(dao: BugReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/bugs")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/bugs")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
 
     /// HTTP request to get bug reports
@@ -43,8 +40,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getBugReports(uuid: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/bugs", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/bugs", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to create a field report
@@ -53,8 +51,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createFieldReport(dao: FieldReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/fields")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/fields")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to get field reports
@@ -63,8 +62,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func getFieldReports(uuid: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/fields", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/fields", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to create an event report
@@ -73,8 +73,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createEventReport(dao: EventReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/events")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/events")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to get event reports
@@ -83,8 +84,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getEventReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/events", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/events", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to update an event report
@@ -93,8 +95,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func updateEventReport(id: String, dao: EventReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/events/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/events/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to create a post report
@@ -103,8 +106,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createPostReport(dao: PostReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/posts")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/posts")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to get post reports
@@ -113,8 +117,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getPostReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/posts", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/posts", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to update a post report
@@ -123,8 +128,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func updatePostReport(id: String, dao: PostReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/posts/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/posts/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to create a member report
@@ -133,8 +139,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func createMemberReport(dao: MemberReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/members")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/members")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to get member reports
@@ -143,8 +150,9 @@ class ManagementService {
     ///
     /// - Returns: the http body and the headers
     func getMemberReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/members", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/members", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
     /// HTTP request to update a member report
@@ -153,7 +161,8 @@ class ManagementService {
     ///
     /// - Returns: the http body and headers
     func updateMemberReport(id: String, dao: MemberReportDao) async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/report/members/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": tokenStore.fetchTokenFromKeyChain()])
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/report/members/\(id)")
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
 }
