@@ -46,7 +46,7 @@ class UserService {
     
     func createUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let req = User(username: userName, visibility: "public", sports: sports)
+        let req = UserDao(username: userName, sports: sports, visibility: "public", hasOnboarded: false)
         let endpoint = Endpoint("/v1/users", queryItems: [URLQueryItem]())
         return try await http.Request(.POST, endpoint, body: EncodeToData(req), headers: ["Authorization": token ?? ""])
     }

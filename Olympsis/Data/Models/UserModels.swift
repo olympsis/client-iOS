@@ -88,7 +88,7 @@ struct UserDao: Codable {
         self.deviceToken = deviceToken
     }
     
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case uuid
         case username
         case bio

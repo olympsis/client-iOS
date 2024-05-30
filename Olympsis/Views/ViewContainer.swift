@@ -64,7 +64,6 @@ struct ViewContainer: View {
             await session.CheckIn()
             guard let user = session.user,
                   let hasOnboarded = user.hasOnboarded else {
-                showOnboarding.toggle()
                 return
             }
             if !hasOnboarded {
