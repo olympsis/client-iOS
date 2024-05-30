@@ -56,10 +56,10 @@ class NewGroupViewModel: ObservableObject {
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_club_view_model")
     
     @MainActor
-    func uploadLogo() async throws {
+    func uploadLogo(_ location: String) async throws {
         if let data = logoPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: "/olympsis-club-images", fileName: id, data: data) else {
+            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -71,10 +71,10 @@ class NewGroupViewModel: ObservableObject {
     }
     
     @MainActor
-    func uploadBanner() async throws {
+    func uploadBanner(_ location: String) async throws {
         if let data = bannerPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: "/olympsis-club-images", fileName: id, data: data) else {
+            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -86,23 +86,23 @@ class NewGroupViewModel: ObservableObject {
     }
     
     @MainActor
-    func deleteLogo(image: String) async {
+    func deleteLogo(_ location: String, image: String) async {
         _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
-    func deletebanner(image: String) async {
+    func deletebanner(_ location: String, image: String) async {
         _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
-    func imagesCleanUp() async {
+    func imagesCleanUp(_ location: String) async {
         if logoURL != "" {
-            await deleteLogo(image: logoURL)
+            await deleteLogo(location, image: logoURL)
         }
         
         if bannerURL != "" {
-            await deletebanner(image: bannerURL)
+            await deletebanner(location, image: bannerURL)
         }
     }
     
@@ -133,20 +133,20 @@ class NewGroupViewModel: ObservableObject {
         do {
             // upload logo if there is one
             if logoPhotoData != nil {
-                try await uploadLogo()
+                try await uploadLogo("/olympsis-club-images")
             }
             
             // upload banner if there is one
             if bannerPhotoData != nil {
-                try await uploadBanner()
+                try await uploadBanner("/olympsis-club-images")
             }
         } catch MediaUploadError.innapropriateContent {
-            await imagesCleanUp()
+            await imagesCleanUp("/olympsis-club-images")
             self.showMediaWarning.toggle()
             log.error("Failed to upload club logo/banner. Media may contain innapropriate content.")
             return nil
         } catch {
-            await imagesCleanUp()
+            await imagesCleanUp("/olympsis-club-images")
             log.error("Failed to upload club logo/banner: \(error.localizedDescription)")
             return nil
         }
@@ -178,20 +178,20 @@ class NewGroupViewModel: ObservableObject {
         do {
             // upload logo if there is one
             if logoPhotoData != nil {
-                try await uploadLogo()
+                try await uploadLogo("/olympsis-org-images")
             }
             
             // upload banner if there is one
             if bannerPhotoData != nil {
-                try await uploadBanner()
+                try await uploadBanner("/olympsis-org-images")
             }
         } catch MediaUploadError.innapropriateContent {
-            await imagesCleanUp()
+            await imagesCleanUp("/olympsis-org-images")
             self.showMediaWarning.toggle()
             log.error("Failed to upload club logo/banner. Media may contain innapropriate content.")
             return nil
         } catch {
-            await imagesCleanUp()
+            await imagesCleanUp("/olympsis-org-images")
             log.error("Failed to upload club logo/banner: \(error.localizedDescription)")
             return nil
         }

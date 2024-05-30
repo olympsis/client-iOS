@@ -67,6 +67,7 @@
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
 		5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */; };
 		5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01442C07C8F9006A264C /* Onboarding.swift */; };
+		5D73480D2C0914C60003AB41 /* Salt Lake City.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5D73480C2C0914C60003AB41 /* Salt Lake City.gpx */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D8086062B2FF9C100EA01AC /* OlympsisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */; };
 		5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D80860D2B2FFA0F00EA01AC /* EventModel.swift */; };
@@ -405,6 +406,7 @@
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
 		5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutEvents.swift"; sourceTree = "<group>"; };
 		5D6C01442C07C8F9006A264C /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		5D73480C2C0914C60003AB41 /* Salt Lake City.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Salt Lake City.gpx"; path = "../../../../Miscelaneous/Salt Lake City.gpx"; sourceTree = "<group>"; };
 		5D7668682BF95A2C003FAD7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
 		5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1122,6 +1124,7 @@
 		9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */ = {
 			isa = PBXGroup;
 			children = (
+				5D73480C2C0914C60003AB41 /* Salt Lake City.gpx */,
 				5D7668682BF95A2C003FAD7C /* Info.plist */,
 				5DFE10162C090B7100F8233D /* GoogleService-Info.plist */,
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
@@ -1601,6 +1604,7 @@
 				9A8FF0B828BB14C100DE4CF8 /* Preview Assets.xcassets in Resources */,
 				9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */,
 				9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */,
+				5D73480D2C0914C60003AB41 /* Salt Lake City.gpx in Resources */,
 				9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */,
 				9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */,
 				9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */,
@@ -2022,7 +2026,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
