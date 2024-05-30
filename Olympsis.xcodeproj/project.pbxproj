@@ -46,7 +46,6 @@
 		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
 		5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BD2B129AC800D19188 /* GroupSelector.swift */; };
 		5D5BEF7E2BEF16E7008648C5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5BEF7D2BEF16E7008648C5 /* FirebaseAuth */; };
-		5D5BEF832BEF199E008648C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF822BEF199E008648C5 /* GoogleService-Info.plist */; };
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
 		5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A882BF664BA001EE754 /* CropViewModel.swift */; };
 		5D666A8F2BF66580001EE754 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A8E2BF66580001EE754 /* CropView.swift */; };
@@ -152,6 +151,7 @@
 		5DF945B42BFC736200BE3C63 /* BlockedUsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */; };
 		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* VenueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* VenueView.swift */; };
+		5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DFE10162C090B7100F8233D /* GoogleService-Info.plist */; };
 		5F00FEA22A4123EF0019E9F7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA12A4123EF0019E9F7 /* Notifications.swift */; };
 		5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA32A4123FB0019E9F7 /* Location.swift */; };
 		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
@@ -385,7 +385,6 @@
 		5D4499D42BABDAAA00F54D10 /* GroupReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupReports.swift; sourceTree = "<group>"; };
 		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		5D4942BD2B129AC800D19188 /* GroupSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelector.swift; sourceTree = "<group>"; };
-		5D5BEF822BEF199E008648C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D5BEF862BEFE894008648C5 /* General.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = General.xcstrings; sourceTree = "<group>"; };
 		5D666A882BF664BA001EE754 /* CropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropViewModel.swift; sourceTree = "<group>"; };
 		5D666A8E2BF66580001EE754 /* CropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropView.swift; sourceTree = "<group>"; };
@@ -479,6 +478,7 @@
 		5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersList.swift; sourceTree = "<group>"; };
 		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* VenueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueView.swift; sourceTree = "<group>"; };
+		5DFE10162C090B7100F8233D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F00FEA12A4123EF0019E9F7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		5F00FEA32A4123FB0019E9F7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
@@ -1123,7 +1123,7 @@
 			isa = PBXGroup;
 			children = (
 				5D7668682BF95A2C003FAD7C /* Info.plist */,
-				5D5BEF822BEF199E008648C5 /* GoogleService-Info.plist */,
+				5DFE10162C090B7100F8233D /* GoogleService-Info.plist */,
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
 				9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */,
 				9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */,
@@ -1583,6 +1583,7 @@
 			files = (
 				9A8FF15D28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf in Resources */,
 				9A8FF14E28BC261000DE4CF8 /* ITCAvantGardeStd-Bk.ttf in Resources */,
+				5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */,
 				9A8FF14D28BC261000DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf in Resources */,
 				9A8FF15128BC261000DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf in Resources */,
 				5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */,
@@ -1601,7 +1602,6 @@
 				9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */,
 				9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */,
 				9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */,
-				5D5BEF832BEF199E008648C5 /* GoogleService-Info.plist in Resources */,
 				9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */,
 				9A8FF0B528BB14C100DE4CF8 /* Assets.xcassets in Resources */,
 				9A8FF15C28BC261000DE4CF8 /* ITCAvantGardeStd-Demi.ttf in Resources */,
