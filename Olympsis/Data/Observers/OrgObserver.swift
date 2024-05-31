@@ -97,7 +97,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func updateApplication(id: String, app: OrganizationApplication) async -> Bool {
+    func updateApplication(id: String, app: OrganizationApplicationDao) async -> Bool {
         do {
             let res = try await orgService.updateApplication(id: id, app: app)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {

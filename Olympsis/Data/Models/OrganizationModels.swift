@@ -123,7 +123,7 @@ struct OrganizationApplicationDao: Codable {
     var status: String?
     let createdAt: Int?
     
-    init(organizationID: String?, clubID: String?, status: String? = "pending", createdAt: Int?=nil) {
+    init(organizationID: String?=nil, clubID: String?=nil, status: String? = "pending", createdAt: Int?=nil) {
         self.organizationID = organizationID
         self.clubID = clubID
         self.status = status

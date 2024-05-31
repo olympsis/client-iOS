@@ -88,7 +88,7 @@ class OrgService {
         return (data, resp)
     }
     
-    func updateApplication(id: String, app: OrganizationApplication) async throws -> URLResponse {
+    func updateApplication(id: String, app: OrganizationApplicationDao) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/organizations/applications/\(id)")
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(app), headers: [

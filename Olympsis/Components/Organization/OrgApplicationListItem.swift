@@ -55,8 +55,11 @@ struct OrgApplicationListItem: View {
     }
     
     func accept() async {
-        application.status = "accepted"
-        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
+        guard let club = application.club else {
+            return
+        }
+        let dto = OrganizationApplicationDao(clubID: "\(club.id ?? "")", status: "accepted")
+        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -66,7 +69,11 @@ struct OrgApplicationListItem: View {
     
     func deny() async {
         application.status = "denied"
-        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
+        guard let club = application.club else {
+            return
+        }
+        let dto = OrganizationApplicationDao(clubID: "\(club.id ?? "")", status: "denied")
+        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
