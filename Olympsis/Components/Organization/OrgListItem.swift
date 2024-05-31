@@ -95,8 +95,8 @@ struct OrgListItem: View {
                     .font(.callout)
             }
             
-            HStack {
-                ScrollView(.horizontal) {
+            ScrollView(.horizontal) {
+                HStack {
                     ForEach(sports, id: \.self) { sport in
                         ClubTag(isSport: true, tagName: sport)
                     }
