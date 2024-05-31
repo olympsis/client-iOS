@@ -232,18 +232,21 @@ struct ApplicationUpdateRequest: Codable {
 
 struct ClubApplication: Codable, Identifiable {
     let id: String
-    let uuid: String
-    let clubID: String
+    let applicant: UserData?
     let status: String
-    let data: UserData?
     let createdAt: Int64
+    
+    init(id: String, applicant: UserData?, status: String, createdAt: Int64) {
+        self.id = id
+        self.applicant = applicant
+        self.status = status
+        self.createdAt = createdAt
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
-        case clubID = "club_id"
+        case applicant
         case status
-        case data
         case createdAt = "created_at"
     }
 }
