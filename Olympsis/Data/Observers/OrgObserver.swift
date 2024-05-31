@@ -75,7 +75,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func createOrganizationApplication(app: OrganizationApplication) async -> Bool {
+    func createOrganizationApplication(app: OrganizationApplicationDao) async -> Bool {
         do {
             return try await orgService.createApplication(app: app)
         } catch {

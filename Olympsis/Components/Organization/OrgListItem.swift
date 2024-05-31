@@ -56,7 +56,7 @@ struct OrgListItem: View {
             }
             return
         }
-        let app = OrganizationApplication(id: "", organizationID: id, clubID: clubID, status: "pending", data: nil, createdAt: 0)
+        let app = OrganizationApplicationDao(organizationID: id, clubID: clubID, status: "pending")
         let res = await session.orgObserver.createOrganizationApplication(app: app)
         if res {
             status = .success

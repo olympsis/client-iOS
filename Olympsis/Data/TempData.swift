@@ -51,7 +51,7 @@ let ORGANIZATIONS = [
 ]
 
 let ORGANIZATION_APPLICATIONS = [
-    OrganizationApplication(id: "", organizationID: "", clubID: "", status: "pending", data: OrganizationApplicationData(club: CLUBS[0]), createdAt: 1639364780)
+    OrganizationApplication(id: UUID().uuidString, status: "pending", club: CLUBS[0], createdAt: 1639364780)
 ]
 
 let GROUP_SELECTIONS = [

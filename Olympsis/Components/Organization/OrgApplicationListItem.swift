@@ -14,7 +14,7 @@ struct OrgApplicationListItem: View {
     @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let name = club.name else {
             return "club_name"
         }
@@ -22,7 +22,7 @@ struct OrgApplicationListItem: View {
     }
     
     var clubLocation: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let city = club.city,
               let state = club.state else {
             return ""
@@ -31,7 +31,7 @@ struct OrgApplicationListItem: View {
     }
     
     var imageURL: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let url = club.logo else {
             return GenerateImageURL("")
         }
@@ -39,7 +39,7 @@ struct OrgApplicationListItem: View {
     }
     
     var clubDescription: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let description = club.description else {
             return "..."
         }
@@ -47,7 +47,7 @@ struct OrgApplicationListItem: View {
     }
     
     var dateTimeInString: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let time = club.createdAt else {
             return "Created at: unknown"
         }

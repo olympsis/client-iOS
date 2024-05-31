@@ -105,18 +105,35 @@ struct OrganizationsResponse: Codable {
 
 struct OrganizationApplication: Codable, Identifiable {
     let id: String
-    let organizationID: String
-    let clubID: String
     var status: String
-    let data: OrganizationApplicationData?
+    let club: Club?
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
         case id
+        case status
+        case club
+        case createdAt = "created_at"
+    }
+}
+
+struct OrganizationApplicationDao: Codable {
+    let organizationID: String?
+    let clubID: String?
+    var status: String?
+    let createdAt: Int?
+    
+    init(organizationID: String?, clubID: String?, status: String? = "pending", createdAt: Int?=nil) {
+        self.organizationID = organizationID
+        self.clubID = clubID
+        self.status = status
+        self.createdAt = createdAt
+    }
+    
+    enum CodingKeys: String, CodingKey {
         case organizationID = "organization_id"
         case clubID = "club_id"
         case status
-        case data
         case createdAt = "created_at"
     }
 }

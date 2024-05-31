@@ -66,7 +66,7 @@ class OrgService {
     
     // APPLICATIONS
     
-    func createApplication(app: OrganizationApplication) async throws -> Bool {
+    func createApplication(app: OrganizationApplicationDao) async throws -> Bool {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/organizations/applications")
         
