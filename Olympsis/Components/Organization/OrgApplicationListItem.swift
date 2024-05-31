@@ -55,10 +55,11 @@ struct OrgApplicationListItem: View {
     }
     
     func accept() async {
-        guard let club = application.club else {
+        guard let org = session.selectedGroup?.organization,
+            let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(clubID: "\(club.id ?? "")", status: "accepted")
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id ?? "")", status: "accepted")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
@@ -68,11 +69,11 @@ struct OrgApplicationListItem: View {
     }
     
     func deny() async {
-        application.status = "denied"
-        guard let club = application.club else {
+        guard let org = session.selectedGroup?.organization,
+            let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(clubID: "\(club.id ?? "")", status: "denied")
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id ?? "")", status: "denied")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
