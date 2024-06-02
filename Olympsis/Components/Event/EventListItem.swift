@@ -5,15 +5,33 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import SwiftUI
 
 /// A view that shows an event's data at a glance. A list item.
 struct EventListItem: View {
     
     @State var event: Event
+    @State private var venue = Venue(
+        id: UUID().uuidString,
+        name: "Placeholder",
+        owner: Ownership(name: "Placeholder", type: "placeholder"),
+        description: "Placeholder text about this great venue",
+        sports: [""],
+        images: ["", "", ""],
+        location: GeoJSON(type: "", coordinates: [Double]()),
+        city: "Placeholder",
+        state: "PH",
+        country: "PlaceHolder"
+    )
+    
     @State private var status: LOADING_STATE = .loading
+    @State private var venueState: LOADING_STATE = .pending
+    
     @State private var showDetails = false
     @EnvironmentObject private var session:SessionStore
+    
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
     private var title: String {
         guard let title = event.title else {
@@ -29,15 +47,65 @@ struct EventListItem: View {
         return img
     }
     
-    private var fieldName: String {
-        guard let field = event.fieldData else {
-            guard let field = event.field,
-                  let name = field.name else {
-                return ""
-            }
-            return name
+    /// We want to dynamically fetch the venue information to reduce the amount of data we're holding in memory
+    ///
+    /// We try to fetch the venue locally in memory if we have it stored and if it's an Olympsis vetted location.
+    /// If we do not have the venue in memory we will try to fetch it remotely.
+    /// If that fails then we will have to display an error.
+    ///
+    /// If the venue is not Olympsis vetted we will simply just open maps at the provided coordinates
+    func fetchVenue() async {
+        venueState = .loading
+        guard var venue = event.venue else {
+            log.error("Failed to verify external venue")
+            return
         }
-        return field.name
+        if (venue.isInternal()) {
+            guard let resp = await fetchVenueLocal() else {
+                guard let resp = await fetchVenueRemote() else {
+                    venueState = .failure
+                    return
+                }
+                self.venue = resp
+                venueState = .success
+                return
+            }
+            self.venue = resp
+            venueState = .success
+        } else {
+            guard let name = venue.name,
+                  let location = venue.location else {
+                log.error("Failed to verify external venue")
+                return
+            }
+            venue.name = name
+            venue.location = location
+            venueState = .success
+        }
+        return
+    }
+    
+    /// Fetch the venue from the data we have in memory
+    /// - Returns: a `Venue` optional object in case we failt to find venue
+    func fetchVenueLocal() async -> Venue? {
+        guard let venue = event.venue,
+              let venue = session.venues.first(where: { $0.id == "\(venue.id ?? "")" }) else {
+            log.error("Failed to verify venue data or venue is not stored locally")
+            return nil
+        }
+        return venue
+    }
+    
+    /// Fetch the venue from the server
+    /// - Returns: a `Venue` optinal object in case the server fails to find venue
+    func fetchVenueRemote() async -> Venue? {
+        guard let venue = event.venue,
+              let venue = await session.fieldObserver.fetchVenue(id: "\(venue.id ?? "")") else {
+            log.error("Failed to verify venue data to fetch remotely")
+            return nil
+        }
+        session.venues.append(venue)
+        return venue
     }
     
     var body: some View {
@@ -59,9 +127,10 @@ struct EventListItem: View {
                                 .padding(.top)
                                 .foregroundColor(.primary)
                             
-                            Text(fieldName)
+                            Text(venue.name)
                                 .foregroundColor(.gray)
                                 .lineLimit(1)
+                                .redacted(reason: venueState != .success ? .placeholder : [])
                             Spacer()
                             if event.type == "tournament" {
                                 Text("Tournament")
@@ -77,13 +146,16 @@ struct EventListItem: View {
             }.frame(height: 100)
         }
         .clipShape(Rectangle())
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color("background"))
-            }
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color("background"))
+        }
         .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: $event)
+            EventView(event: event)
                 .presentationDetents([.large])
+        }
+        .task {
+            await fetchVenue()
         }
     }
 }

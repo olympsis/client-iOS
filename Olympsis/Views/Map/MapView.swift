@@ -46,7 +46,7 @@ struct MapView: View {
     
     var body: some View {
         Map(position: $cameraPosition) {
-            ForEach(session.fields) { field in
+            ForEach(session.venues) { field in
                 Annotation(field.name, coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchor: .bottom) {
                     PlaceAnnotationView(field: field)
                         .onTapGesture {

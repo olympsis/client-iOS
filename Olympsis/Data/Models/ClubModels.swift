@@ -287,3 +287,25 @@ struct ClubData: Codable {
         case parent
     }
 }
+
+struct ClubSnippet: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let sports: [String]
+    let city: String
+    let state: String
+    let country: String
+    let visibility: String
+}
+
+
+struct OrgSnippet: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let sports: [String]
+    let city: String
+    let state: String
+    let country: String
+}

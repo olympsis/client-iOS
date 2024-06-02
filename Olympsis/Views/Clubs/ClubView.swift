@@ -7,6 +7,7 @@
 
 import MapKit
 import SwiftUI
+import Kingfisher
 
 /// Club details are shown in this view. When you click to see details on a club list view you will reach this view to learn more about the club
 struct ClubView: View {
@@ -66,6 +67,28 @@ struct ClubView: View {
         return city + " " + state
     }
     
+    private var hasParent: Bool {
+        guard let parent = club.parent else {
+            return false
+        }
+        return (parent.id != nil) ? true : false
+    }
+    
+    private var parentLogoURL: URL? {
+        guard let parent = club.parent,
+              let logo = parent.logo else {
+            return nil
+        }
+        return URL(string: GenerateImageURL(logo))
+    }
+    
+    private var parentName: String {
+        guard let parent = club.parent,
+              let name = parent.name else {
+            return "Organization"
+        }
+        return name
+    }
     // wrapper for map pin
     struct Pin: Identifiable {
         let id = UUID()
@@ -178,7 +201,7 @@ struct ClubView: View {
                         .padding(.vertical)
                     
                     // MARK: - Organizations
-                    if let org = club.parent {
+                    if hasParent {
                         VStack(alignment: .leading) {
                             HStack {
                                 Image(systemName: "building.fill")
@@ -188,24 +211,28 @@ struct ClubView: View {
                                     .font(.callout)
                             }
                             HStack {
-                                AsyncImage(url: URL(string: GenerateImageURL(org.logo ?? "https://api.olympsis.com"))){ phase in
-                                    if let image = phase.image {
-                                            image // Displays the loaded image.
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 50, height: 50, alignment: .center)
-                                                .clipped()
-                                                .clipShape(Circle())
-                                        } else if phase.error != nil {
-                                            Circle()
-                                                .foregroundStyle(.gray)
-                                        } else {
-                                            Circle()
-                                                .foregroundStyle(.gray)
+                                if let url = parentLogoURL {
+                                    KFImage(url)
+                                        .resizable()
+                                        .placeholder {
+                                            ZStack(alignment: .center) {
+                                                Circle()
+                                                    .foregroundStyle(.gray)
+                                                    .frame(width: 50, height: 50, alignment: .center)
+                                                ProgressView()
+                                            }
                                         }
-                                }.frame(height: 50, alignment: .center)
+                                        .scaledToFill()
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                        .clipped()
+                                        .clipShape(Circle())
+                                } else {
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(width: 50, height: 50, alignment: .center)
+                                }
                                 
-                                Text(org.name ?? "Organization")
+                                Text(parentName)
                                     .font(.callout)
                             }
                         }.padding(.horizontal)

@@ -290,7 +290,7 @@ struct NewPickUpEvent: View {
                         }.padding(.top)
                         .padding(.horizontal)
                             .fullScreenCover(isPresented: $showFieldPicker) {
-                                EventFieldPickerView(selectedField: $manager.field, fields: session.fields)
+                                EventFieldPickerView(selectedField: $manager.field, fields: session.venues)
                             }
                             .id(3)
                         

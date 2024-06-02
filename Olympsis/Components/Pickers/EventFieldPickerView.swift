@@ -15,7 +15,7 @@ struct EventFieldPickerView: View {
     
     @State private var search: String = ""
     @State private var showCustom: Bool = false
-    @State private var customField: FieldDescriptor?
+    @State private var customField: VenueDescriptor?
     @State private var selectedCustomField = SelectedCustomField(field: nil)
     
     @Environment(\.dismiss) private var dismiss

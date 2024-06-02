@@ -9,8 +9,6 @@ import SwiftUI
 
 struct EditPickUpEvent: View {
     
-    @Binding var event: Event
-    
     @State private var isEditing:               Bool = false
     @State private var eventTitle:              String = ""
     @State private var eventBody:               String = ""
@@ -35,6 +33,7 @@ struct EditPickUpEvent: View {
     @State private var showSkillLevelPicker: Bool = false
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var event: Event
     @EnvironmentObject private var session: SessionStore
     
     var startTimeString: String {
@@ -369,5 +368,6 @@ struct EditPickUpEvent: View {
 }
 
 #Preview {
-    EditPickUpEvent(event: .constant(EVENTS[0]))
+    EditPickUpEvent()
+        .environmentObject(EVENTS[0])
 }

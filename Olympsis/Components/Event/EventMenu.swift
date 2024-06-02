@@ -9,13 +9,13 @@ import SwiftUI
 
 struct EventMenu: View {
     
-    @Binding var event: Event
     @State private var loadingState: LOADING_STATE = .pending
     
     @State private var showReport: Bool = false
     @State private var showEditEvent: Bool = false
     @State private var showNotification: Bool = false
     
+    @EnvironmentObject private var event: Event
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
     
@@ -50,9 +50,11 @@ struct EventMenu: View {
             guard let userID = session.user?.uuid else {
                 return false
             }
-            return eventClubs.first { e in
-                e.members.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
-            } != nil
+            // TODO: i need this fixed asap
+//            return eventClubs.first { e in
+//                e.members.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+//            } != nil
+            return true
         }
         
         // check to see if you're an manager of an associated org
@@ -63,9 +65,11 @@ struct EventMenu: View {
             guard let userID = session.user?.uuid else {
                 return false
             }
-            return eventOrgs.first { e in
-                e.members?.contains { $0.user?.uuid == userID } ?? false
-            } != nil
+            // TODO: i need this fixed asap
+//            return eventOrgs.first { e in
+//                e.members?.contains { $0.user?.uuid == userID } ?? false
+//            } != nil
+            return true
         }
         
         return true
@@ -167,9 +171,11 @@ struct EventMenu: View {
         })
         .fullScreenCover(isPresented: $showEditEvent, content: {
             if event.type == "pickup" {
-                EditPickUpEvent(event: $event)
+                EditPickUpEvent()
+                    .environmentObject(event)
             } else {
-                EditTournamentEvent(event: $event)
+                EditTournamentEvent()
+                    .environmentObject(event)
             }
         })
         
@@ -177,6 +183,7 @@ struct EventMenu: View {
 }
 
 #Preview {
-    EventMenu(event: .constant(EVENTS[0]))
+    EventMenu()
+        .environmentObject(EVENTS[0])
         .environmentObject(SessionStore())
 }

@@ -14,8 +14,9 @@ import Charts
 /// A view that shows a quick glance of the top participants in an event
 struct EventParticipantsView: View {
     
-    @Binding var event: Event
     @State private var showParticipants: Bool = false
+    
+    @EnvironmentObject private var event: Event
     
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
@@ -49,7 +50,8 @@ struct EventParticipantsView: View {
             }.padding(.leading, 45)
         }.padding(.all)
             .sheet(isPresented: $showParticipants, content: {
-                EventParticipantsViewExt(event: $event)
+                EventParticipantsViewExt()
+                    .environmentObject(event)
             })
     }
 }
@@ -58,7 +60,7 @@ struct EventParticipantsView: View {
 /// A view that has simple chart about an event and the ratio of yes to maybe
 struct EventRSVPChart: View {
     
-    @Binding var event: Event
+    @EnvironmentObject private var event: Event
     
     var yesCount: Int {
         guard let participants = event.participants else {
@@ -101,8 +103,8 @@ struct EventRSVPChart: View {
 /// A view shows more information about the participants in an event
 struct EventParticipantsViewExt: View {
     
-    @Binding var event: Event
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var event: Event
     
     var participants: [Participant] {
         guard let ptps = event.participants else {
@@ -122,7 +124,8 @@ struct EventParticipantsViewExt: View {
                 Spacer()
             }.padding(.vertical)
             
-            EventRSVPChart(event: $event)
+            EventRSVPChart()
+                .environmentObject(event)
                 .frame(height: 250)
             
             ScrollView {
@@ -139,9 +142,11 @@ struct EventParticipantsViewExt: View {
 }
 
 #Preview {
-    EventParticipantsView(event: .constant(EVENTS[0]))
+    EventParticipantsView()
+        .environmentObject(EVENTS[0])
 }
 
 #Preview {
-    EventParticipantsViewExt(event: .constant(EVENTS[0]))
+    EventParticipantsViewExt()
+        .environmentObject(EVENTS[0])
 }

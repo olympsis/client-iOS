@@ -50,6 +50,15 @@ let ORGANIZATIONS = [
     Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: nil, blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: nil)
 ]
 
+
+let CLUB_SNIPPETS = [
+    ClubSnippet(id: CLUBS[0].id ?? UUID().uuidString, name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", visibility: "public")
+]
+
+let ORG_SNIPPETS = [
+    OrgSnippet(id: ORGANIZATIONS[0].id ?? UUID().uuidString, name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States")
+]
+
 let ORGANIZATION_APPLICATIONS = [
     OrganizationApplication(id: UUID().uuidString, status: "pending", club: CLUBS[0], createdAt: 1639364780)
 ]
@@ -60,9 +69,9 @@ let GROUP_SELECTIONS = [
 ]
 
 let EVENTS = [
-    Event(id: UUID().uuidString, type: "tournament", poster: USER_SNIPPETS[0], organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], field:  FieldDescriptor(type: "internal", id: UUID().uuidString, name: nil, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "tournament", poster: USER_SNIPPETS[0], organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], venue:  VenueDescriptor(type: "internal", id: UUID().uuidString, name: nil, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
-    ], visibility: "", createdAt: 1639364780,  clubs: CLUBS, organizations: ORGANIZATIONS, fieldData: FIELDS[0]),
+    ], visibility: "", createdAt: 1639364780,  clubs: CLUB_SNIPPETS, organizations: ORG_SNIPPETS, fieldData: FIELDS[0]),
 ]
 
 

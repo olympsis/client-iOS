@@ -75,7 +75,7 @@ struct EventReportListItem: View {
         }
         .fullScreenCover(isPresented: $showEvent, content: {
             if let e = report.event {
-                EventView(event: .constant(e))
+                EventView(event: e)
             }
         })
     }

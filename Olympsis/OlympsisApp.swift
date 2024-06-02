@@ -39,10 +39,7 @@ struct OlympsisApp: App {
             }
         }
     }
-    
-    
 }
-
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     @AppStorage("deviceToken") private var _token: String?

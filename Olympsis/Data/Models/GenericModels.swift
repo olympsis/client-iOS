@@ -116,12 +116,12 @@ struct CustomField: Identifiable {
 }
 
 struct SelectedCustomField {
-    var field: FieldDescriptor?
+    var field: VenueDescriptor?
     var administrativeArea: String
     var subAdministrativeArea: String
     var country: String
     
-    init(field: FieldDescriptor? = nil, administrativeArea: String="", subAdministrativeArea: String="", country: String="") {
+    init(field: VenueDescriptor? = nil, administrativeArea: String="", subAdministrativeArea: String="", country: String="") {
         self.field = field
         self.administrativeArea = administrativeArea
         self.subAdministrativeArea = subAdministrativeArea

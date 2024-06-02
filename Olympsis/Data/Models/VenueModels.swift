@@ -71,7 +71,7 @@ struct Ownership: Codable, Hashable {
     let type: String
 }
 
-struct FieldsResponse: Codable {
+struct VenuesResponse: Codable {
     let fields: [Venue]
     let totalFields: Int
     

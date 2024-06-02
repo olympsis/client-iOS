@@ -65,11 +65,11 @@ class NewEventManager: ObservableObject {
         }
     }
     
-    func GenerateFieldDescriptor() -> FieldDescriptor {
+    func GenerateFieldDescriptor() -> VenueDescriptor {
         if self.field?.description == "external" {
-            return FieldDescriptor(type: FIELD_TYPES.External.rawValue, id: nil, name: field?.name, location: field?.location)
+            return VenueDescriptor(type: FIELD_TYPES.External.rawValue, id: nil, name: field?.name, location: field?.location)
         } else {
-            return FieldDescriptor(type: FIELD_TYPES.Internal.rawValue, id: field?.id, name: nil, location: nil)
+            return VenueDescriptor(type: FIELD_TYPES.Internal.rawValue, id: field?.id, name: nil, location: nil)
         }
     }
     
@@ -89,7 +89,7 @@ class NewEventManager: ObservableObject {
         return EventDao(
             type: self.type.rawValue,
             organizers: self.GenerateOrganizers(),
-            field: self.GenerateFieldDescriptor(),
+            venue: self.GenerateFieldDescriptor(),
             imageURL: self.image,
             title: self.title,
             body: self.body,
@@ -107,7 +107,7 @@ class NewEventManager: ObservableObject {
     func GenerateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
         guard let type = dao.type,
               let organizers = dao.organizers,
-              let field = dao.field,
+              let venue = dao.venue,
               let imageURL = dao.imageURL,
               let title = dao.title,
               let body = dao.body,
@@ -129,16 +129,37 @@ class NewEventManager: ObservableObject {
         let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
         let participant = Participant(id: UUID().uuidString, user: snippet, status: RSVP_STATUS.Going.rawValue, createdAt: 0)
         
-        var clubs = [Club]()
-        var orgs = [Organization]()
+        var clubs = [ClubSnippet]()
+        var orgs = [OrgSnippet]()
         self.organizers.forEach {
             if $0.type == .Club {
                 if let c = $0.club {
-                    clubs.append(c)
+                    clubs.append(
+                        ClubSnippet(
+                            id: c.id ?? "",
+                            name: c.name ?? "",
+                            description: c.description ?? "",
+                            sports: c.sports ?? [String](),
+                            city: c.city ?? "",
+                            state: c.state ?? "",
+                            country: c.country ?? "",
+                            visibility: c.visibility ?? ""
+                        )
+                    )
                 }
             } else {
                 if let o = $0.organization {
-                    orgs.append(o)
+                    orgs.append(
+                        OrgSnippet(
+                            id: o.id ?? "",
+                            name: o.name ?? "",
+                            description: o.description ?? "",
+                            sports: o.sports ?? [String](),
+                            city: o.city ?? "",
+                            state: o.state ?? "",
+                            country: o.country ?? ""
+                        )
+                    )
                 }
             }
         }
@@ -148,7 +169,7 @@ class NewEventManager: ObservableObject {
             type: type,
             poster: snippet,
             organizers: organizers,
-            field: field,
+            venue: venue,
             imageURL: imageURL,
             title: title,
             body: body,

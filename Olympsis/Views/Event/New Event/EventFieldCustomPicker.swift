@@ -139,7 +139,7 @@ struct EventFieldCustomPicker: View {
                             }
                             let coordinates = loc.item.placemark.coordinate
                             let location = GeoJSON(type: "Point", coordinates: [Double(coordinates.longitude), Double(coordinates.latitude)])
-                            let desc = FieldDescriptor(type: "external", id: nil, name: name, location: location)
+                            let desc = VenueDescriptor(type: "external", id: nil, name: name, location: location)
                             
                             Task { @MainActor in
                                 selected.field = desc

@@ -28,7 +28,7 @@ struct EventSmallListItem: View {
     
     private var fieldName: String {
         guard let field = event.fieldData else {
-            guard let field = event.field,
+            guard let field = event.venue,
                   let name = field.name else {
                 return "Custom Location"
             }
@@ -97,7 +97,7 @@ struct EventSmallListItem: View {
                 self.showDetails.toggle()
             }
             .fullScreenCover(isPresented: $showDetails) {
-                EventView(event: $event)
+                EventView(event: event)
                     .presentationDetents([.large])
             }
     }

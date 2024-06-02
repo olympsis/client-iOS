@@ -298,7 +298,7 @@ struct VenueEventsView: View {
     @EnvironmentObject private var session: SessionStore
     
     var fieldEvents: [Event] {
-        return session.events.filter({ $0.field?.id == field.id })
+        return session.events.filter({ $0.venue?.id == field.id })
     }
     
     func reloadEvents() async {
@@ -310,7 +310,7 @@ struct VenueEventsView: View {
         }
         
         // remove existing events and we will append the newly requested events
-        session.events.removeAll(where: { $0.field?.id == field.id })
+        session.events.removeAll(where: { $0.venue?.id == field.id })
         session.events.append(contentsOf: events)
         handleReloadSuccess()
     }

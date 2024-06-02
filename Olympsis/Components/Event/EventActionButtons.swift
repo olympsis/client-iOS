@@ -10,21 +10,18 @@ import SwiftUI
 /// A view that contains many of the primary actions that can be taken while viewing an event
 struct EventActionButtons: View {
     
-    @Binding var event: Event
+    @Binding var venue: Venue
+    @Binding var venueState: LOADING_STATE
+    
     @State private var showMenu: Bool = false
     @State private var state: LOADING_STATE = .pending
+    
     @Environment(\.openURL) private var openURL
+    @EnvironmentObject private var event: Event
     @EnvironmentObject private var session: SessionStore
     
     private var fieldLocation: [Double] {
-        guard let field = event.fieldData else {
-            guard let field = event.field,
-                  let coordinates = field.location?.coordinates else {
-                return [0,0]
-            }
-            return coordinates
-        }
-        return field.location.coordinates
+        return venue.location.coordinates
     }
     
     private var canCreateEvent: Bool {
@@ -64,7 +61,7 @@ struct EventActionButtons: View {
             handleFailure()
             return
         }
-        event = update
+        event.update(update)
         handleSuccess()
         guard let extLink = event.externalLink,
               let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
@@ -91,7 +88,7 @@ struct EventActionButtons: View {
             handleFailure()
             return
         }
-        event = update
+        event.update(update)
         handleSuccess()
     }
     
@@ -130,10 +127,11 @@ struct EventActionButtons: View {
                                 .frame(width: 25, height: 20)
                             .imageScale(.large)
                         }.frame(height: 25)
-                        Text(event.estimatedTimeToField(session.locationManager.location))
+                        Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
+                            .redacted(reason: venueState != .success ? .placeholder : [])
                     }.foregroundStyle(Color("foreground"))
                 }
-            }
+            }.disabled(venueState != .success ? true : false)
             
             // MARK: - Event Visibility
             ZStack {
@@ -228,7 +226,8 @@ struct EventActionButtons: View {
                     }.foregroundStyle(Color("foreground"))
                 }
             }.sheet(isPresented: $showMenu) {
-                EventMenu(event: $event)
+                EventMenu()
+                    .environmentObject(event)
                     .presentationDetents([.medium])
             }
             
@@ -238,6 +237,7 @@ struct EventActionButtons: View {
 }
 
 #Preview {
-    EventActionButtons(event: .constant(EVENTS[0]))
+    EventActionButtons(venue: .constant(FIELDS[0]), venueState: .constant(.pending))
+        .environmentObject(EVENTS[0])
         .environmentObject(SessionStore())
 }

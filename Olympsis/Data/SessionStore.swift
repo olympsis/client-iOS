@@ -18,11 +18,29 @@ class SessionStore: ObservableObject {
     private let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
+    /// Global variable to keep track of the first lcation recieved when the app is opened.
+    /// We have to wait on the gps system to give us a location. Sometimes this may take longer than the startup sequence.
+    /// So we load in data from a fall back location until we get the location from the gps module.
+    @Published var locationRecieved: Bool = false {
+        didSet {
+            Task {
+                guard let location = locationManager.location else {
+                    return
+                }
+                await getNearbyData(location: location)
+            }
+        }
+    }
+    
+    /// A global state variable for the whole app.
+    /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
+    @Published var state: LOADING_STATE = .pending
+    
     @Published var user: UserData?              // User data Cache
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
     @Published var events = [Event]()           // Events Cache
-    @Published var fields = [Venue]()           // Fields Cache
+    @Published var venues = [Venue]()           // Venues Cache
     @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
@@ -96,8 +114,8 @@ class SessionStore: ObservableObject {
             guard let resp = try await userObserver.CheckIn() else {
                 return
             }
-            if var usr = resp.user {
-                let temp = cacheService.fetchUser()
+            if let usr = resp.user {
+                _ = cacheService.fetchUser()
                 user = usr
                 cacheService.cacheUser(user: usr)
             } else {
@@ -166,7 +184,7 @@ class SessionStore: ObservableObject {
         }
         
         await MainActor.run {
-            self.fields = resp.fields ?? [Venue]()
+            self.venues = resp.fields ?? [Venue]()
             self.events = resp.events ?? [Event]()
         }
     }

@@ -5,10 +5,11 @@
 //  Created by Joel Joseph on 8/27/22.
 //
 
+import MapKit
 import SwiftUI
+import Firebase
 import Security
 import SwiftToast
-import Firebase
 import AuthenticationServices
 
 struct ViewContainer: View {
@@ -61,9 +62,23 @@ struct ViewContainer: View {
             Onboarding()
         })
         .task {
+            session.state = .loading
             await session.CheckIn()
-            guard let user = session.user,
-                  let hasOnboarded = user.hasOnboarded else {
+            guard let user = session.user else {
+                return
+            }
+            
+            // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
+            if (!session.locationRecieved) {
+                if let hometown = user.hometown {
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
+                } else {
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
+                }
+            }
+            session.state = .success
+            
+            guard let hasOnboarded = user.hasOnboarded else {
                 return
             }
             if !hasOnboarded {

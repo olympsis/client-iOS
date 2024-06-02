@@ -10,8 +10,8 @@ import SwiftUI
 /// A view that shows the status and participant info about an event
 struct EventMiddleView: View {
     
-    @Binding var event: Event
     @State private var timeDifference: String = ""
+    @EnvironmentObject private var event: Event
     
     var startTime: Int {
         guard let time = event.startTime else {
@@ -146,5 +146,6 @@ struct EventMiddleView: View {
 }
 
 #Preview {
-    EventMiddleView(event: .constant(EVENTS[0]))
+    EventMiddleView()
+        .environmentObject(EVENTS[0])
 }

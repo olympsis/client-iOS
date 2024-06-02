@@ -23,7 +23,7 @@ class FieldService {
         #endif
     }
     
-    func getFields(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
+    func getVenues(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/fields", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
@@ -32,6 +32,12 @@ class FieldService {
             URLQueryItem(name: "sports", value: String(sports))
         ])
         
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+    }
+    
+    func getVenue(id: String) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/fields/\(id)")
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
 }

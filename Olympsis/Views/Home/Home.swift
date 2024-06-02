@@ -12,13 +12,14 @@ import NotificationCenter
 
 struct Home: View {
     
-    @State private var hasLoaded = false // to make sure user location is updated once
+    @State private var hasLoaded = false
+    
     @State private var showDetail = false
     @State private var showMoreFields = false
+    @State private var locationRecieved = false
     @State private var showNotifications = false
-    @State private var status: LOADING_STATE = .loading
     
-    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject private var session: SessionStore
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
     
@@ -47,13 +48,13 @@ struct Home: View {
                     //MARK: - Welcome message
                     HStack {
                         VStack(alignment: .leading){
-                            WelcomeView(name: name, status: $status)
+                            WelcomeView(name: name, status: $session.state)
                         }.padding(.top, 25)
                         Spacer()
                     }
                     
                     if let e = event {
-                        if status == .success {
+                        if session.state == .success {
                             VStack (alignment: .center){
                                 EventListItem(event: e)
                                     .padding(.horizontal)
@@ -68,7 +69,7 @@ struct Home: View {
                                 .font(.custom("Helvetica Neue", size: 17))
                                 .bold()
                                 .padding()
-                            AnnouncementsView(status: $status, announcements: $session.feedObserver.announcements)
+                            AnnouncementsView(status: $session.state, announcements: $session.feedObserver.announcements)
                         }
                     }
                     
@@ -98,60 +99,35 @@ struct Home: View {
                                     .font(.system(.headline))
                                 .padding()
                                 Spacer()
-                                Button(action:{self.showMoreFields.toggle()}){
+                                Button(action:{ self.showMoreFields.toggle() }){
                                     Text(String(localized: "View All", table: "General"))
                                        .bold()
                                     Image(systemName: "chevron.down")
                                 }.padding()
                                     .foregroundColor(Color.primary)
                             }.fullScreenCover(isPresented: $showMoreFields) {
-                                VenuesList(venues: session.fields)
+                                VenuesList(venues: session.venues)
                             }
                             
-                            Venues(venues: $session.fields, status: $status)
+                            Venues(venues: $session.venues, status: $session.state)
                         }
                     }.onReceive(session.locationManager.$location) { newLoc in
                         
                         // make sure new location is valid
-                        guard let location = newLoc else {
+                        guard newLoc != nil else {
                             return
                         }
                         // we have to wait an undetermined amount of time to hear back from the gps to get location
                         // so i used on recieve and after that info is delivered we can start fetching for fields by location
-                        guard hasLoaded == false else {
+                        guard !session.locationRecieved else {
                             return
                         }
-                        Task {
-                            await session.getNearbyData(location: location)
-                            status = .success
-                        }
+                        
                         // prevents us from doing this everytime we get new info from gps
                         // thus we only load data the first time
-                        // later i might add a button for you to reload, however, i dont see the need to
-                        // unless you are in map view.
-                        hasLoaded = true
-                    }
-                    .task {
-                        // If we don't have the user's location, we will use the fallback location
-                        if (!session.locationManager.isAuthorized) {
-                            guard hasLoaded == false else {
-                                return
-                            }
-                            guard let user = session.user,
-                                  let hometown = user.hometown else {
-                                // fall back location is apple park
-                                let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
-                                await session.getNearbyData(location: loc)
-                                status = .success
-                                return
-                            }
-                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
-                            status = .success
-                            
-                            hasLoaded = true
-                        }
-                    }
-                    .padding(.bottom, 100)
+                        session.locationRecieved = true
+                        
+                    }.padding(.bottom, 100)
                 }.fullScreenCover(isPresented: $showNotifications, content: {
                     NotificationsView()
                 })
