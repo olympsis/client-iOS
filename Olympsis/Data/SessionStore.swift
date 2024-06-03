@@ -184,11 +184,16 @@ class SessionStore: ObservableObject {
         }
         
         await MainActor.run {
-            self.venues = resp.fields ?? [Venue]()
+            self.venues = resp.venues ?? [Venue]()
             self.events = resp.events ?? [Event]()
         }
     }
     
+    /// Logout user from application
+    ///
+    /// Clears cache from all data
+    ///
+    /// Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
         
@@ -204,8 +209,16 @@ class SessionStore: ObservableObject {
         return
     }
     
+    /// Deletes the user's account from application
+    ///
+    /// Makes a call to firebase servers to delete account.
+    ///
+    /// Makes a call to Olympsis servers to delete account
+    ///
+    /// Clears cache of all data
     func deleteAccount() async -> Bool {
         do {
+            try await Auth.auth().currentUser?.delete()
             let resp = try await authObserver.deleteAccount()
             
             guard resp == true else {

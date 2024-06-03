@@ -50,7 +50,7 @@ struct NewPickUpEvent: View {
     
     private var selectedImage: String {
         guard let img = manager.image else {
-            return manager.sport.Images()[Int.random(in: 0...manager.sport.Images().count-1)]
+            return manager.sport.images()[Int.random(in: 0...manager.sport.images().count-1)]
         }
         return img
     }
@@ -186,6 +186,10 @@ struct NewPickUpEvent: View {
                         // MARK: - Top Options
                         NewEventTopView(showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventSkilLevel: $manager.skillLevel, eventVisibility: $manager.visibility)
                         
+                        // MARK: - Sport picker
+                        NewEventSportsPicker(selectedSport: $manager.sport)
+                            .padding(.horizontal)
+                        
                         // MARK: - Organizers Picker
                         VStack(alignment: .leading){
                             Text("Organizer(s)")
@@ -244,35 +248,9 @@ struct NewPickUpEvent: View {
                         .padding(.horizontal)
                         .id(2)
                         
-                        // MARK: - Sports picker
+                        // MARK: - Venue Picker
                         VStack(alignment: .leading){
-                            Text("Sport")
-                                .font(.title3)
-                                .bold()
-                            Text("The sport you're going to play")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                            
-                            Picker(selection: $manager.sport, label: Text("")) {
-                                ForEach(SPORT.allCases, id: \.rawValue) { sport in
-                                    Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
-                                }
-                            }
-                            .onChange(of: manager.sport, { _, v in
-                                manager.image = v.Images().first
-                            })
-                            .modifier(InputField())
-                                
-                        }.padding(.top)
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                titleFocus = false
-                                descriptionFocus = false
-                            }
-                        
-                        // MARK: - Field Picker
-                        VStack(alignment: .leading){
-                            Text("Field")
+                            Text("Venue")
                                 .font(.title3)
                                 .bold()
                             Text("Location of the event")
@@ -400,39 +378,9 @@ struct NewPickUpEvent: View {
                             .padding(.horizontal)
                         
                         // MARK: - Background Image picker
-                        VStack(alignment: .leading){
-                            Text("Event Image")
-                                .font(.title3)
-                                .bold()
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(manager.sport.Images(), id: \.self) { image in
-                                        Button(action:{ manager.image = image }) {
-                                            ZStack(alignment: .bottomTrailing){
-                                                Image(image)
-                                                    .resizable()
-                                                    .frame(width: 100, height: 150)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                if manager.image == image {
-                                                    Image(systemName: "circle.fill")
-                                                        .foregroundColor(Color("color-secnd"))
-                                                        .padding(.bottom, 5)
-                                                        .padding(.trailing, 5)
-                                                    
-                                                } else {
-                                                    Image(systemName: "circle")
-                                                        .foregroundColor(Color("color-secnd"))
-                                                        .padding(.bottom, 5)
-                                                        .padding(.trailing, 5)
-                                                        .fontWeight(.bold)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }.padding(.top)
-                            .padding(.horizontal)
+                        EventImagePicker()
+                            .padding([.top, .horizontal])
+                            .environmentObject(manager)
                         
                         // MARK: - Action Button
                         VStack(alignment: .center){

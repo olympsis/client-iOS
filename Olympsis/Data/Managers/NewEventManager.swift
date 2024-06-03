@@ -6,6 +6,7 @@
 //
 
 import os
+import SwiftUI
 import Foundation
 
 class NewEventManager: ObservableObject {
@@ -21,19 +22,32 @@ class NewEventManager: ObservableObject {
     @Published var startDate: Date
     @Published var endDate: Date
     
+    @Published var selectedImage: UIImage? {
+        didSet {
+            guard let image = selectedImage,
+                  let data = image.jpegData(compressionQuality: 0.5) else {
+                return
+            }
+            
+            selectedImageData = data
+        }
+    }
+    @Published var selectedImageData: Data?
+    @Published var selectedImageIndex: Int = 0
+    
     @Published var minParticipants: Double
     @Published var maxParticipants: Double
     
-    @Published var sport: SPORT
+    @Published var sport: SPORTS
     @Published var image: String?
     
     @Published var skillLevel: EVENT_SKILL_LEVELS = .All
     @Published var visibility: EVENT_VISIBILITY_TYPES = .Public
     
-    private var logger: Logger = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_manager")
+    private var log: Logger = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_manager")
     
     
-    init(type: EVENT_TYPES = .PickUp, title: String = "", body: String = "", externalLink: String = "", field: Venue? = nil, organizers: [GroupSelection] = [GroupSelection](), startDate: Date = Date(), endDate: Date = Date().addingTimeInterval(30 * 60), minParticipants: Double = 0, maxParticipants: Double = 0, sport: SPORT = .soccer, image: String? = nil, skillLevel: EVENT_SKILL_LEVELS = .All, visibility: EVENT_VISIBILITY_TYPES = .Public) {
+    init(type: EVENT_TYPES = .PickUp, title: String = "", body: String = "", externalLink: String = "", field: Venue? = nil, organizers: [GroupSelection] = [GroupSelection](), startDate: Date = Date(), endDate: Date = Date().addingTimeInterval(30 * 60), minParticipants: Double = 0, maxParticipants: Double = 0, sport: SPORTS = .soccer, image: String? = nil, skillLevel: EVENT_SKILL_LEVELS = .All, visibility: EVENT_VISIBILITY_TYPES = .Public) {
         self.type = type
         self.title = title
         self.body = body
@@ -45,13 +59,13 @@ class NewEventManager: ObservableObject {
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
         self.sport = sport
-        self.image = sport.Images().first
+        self.image = sport.images().first
         self.skillLevel = skillLevel
         self.visibility = visibility
     }
     
     convenience init(type: EVENT_TYPES = .PickUp) {
-        self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: SPORT.soccer.Images().first, skillLevel: .All, visibility: .Public)
+        self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: SPORTS.soccer.images().first, skillLevel: .All, visibility: .Public)
     }
     
     func GenerateOrganizers() -> [Organizer] {
@@ -82,7 +96,7 @@ class NewEventManager: ObservableObject {
               self.field != nil,
               self.organizers.count > 0,
               self.image != "" else {
-            logger.error("failed to generate new event: invalid data")
+            log.error("failed to generate new event: invalid data")
             return nil
         }
         
@@ -184,8 +198,7 @@ class NewEventManager: ObservableObject {
             createdAt: Int(Date().timeIntervalSinceNow),
             externalLink: dao.externalLink != "" ? dao.externalLink : nil,
             clubs: clubs,
-            organizations: orgs,
-            fieldData: self.field
+            organizations: orgs
         )
     }
 }

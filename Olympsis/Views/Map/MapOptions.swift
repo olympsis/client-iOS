@@ -10,7 +10,7 @@ import CoreLocation
 
 struct MapOptions: View {
     
-    @State var availableSports:[SPORT]
+    @State var availableSports:[SPORTS]
     @State var selectedSports: [String] = [String]()
     @State private var status: LOADING_STATE = .pending
     @State private var sliderValue = 5.0
@@ -118,6 +118,6 @@ struct MapOptions: View {
 
 struct MapOptions_Previews: PreviewProvider {
     static var previews: some View {
-        MapOptions(availableSports: [SPORT.soccer, SPORT.basketball, SPORT.golf], selectedSports: ["soccer", "basketball", "pickleball"])
+        MapOptions(availableSports: [SPORTS.soccer, SPORTS.basketball, SPORTS.golf], selectedSports: ["soccer", "basketball", "pickleball"])
     }
 }

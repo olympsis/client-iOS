@@ -13,7 +13,7 @@ struct PickSports: View {
     @Binding var currentView: AuthTab
     
     @State private var status: LOADING_STATE = .pending
-    @State private var selectedSports = [SPORT]()
+    @State private var selectedSports = [SPORTS]()
     @State private var cacheService = CacheService()
     @State private var userObserver = UserObserver()
     @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_sports_view")

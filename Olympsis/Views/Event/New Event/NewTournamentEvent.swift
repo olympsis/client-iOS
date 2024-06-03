@@ -51,7 +51,7 @@ struct NewTournamentEvent: View {
     
     private var selectedImage: String {
         guard let img = manager.image else {
-            return manager.sport.Images()[Int.random(in: 0...manager.sport.Images().count-1)]
+            return manager.sport.images()[Int.random(in: 0...manager.sport.images().count-1)]
         }
         return img
     }
@@ -253,7 +253,7 @@ struct NewTournamentEvent: View {
                                 .font(.subheadline)
                             
                             Picker(selection: $manager.sport, label: Text("")) {
-                                ForEach(SPORT.allCases, id: \.rawValue) { sport in
+                                ForEach(SPORTS.allCases, id: \.rawValue) { sport in
                                     Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
                                 }
                             }.modifier(InputField())
@@ -261,7 +261,7 @@ struct NewTournamentEvent: View {
                         }.padding(.top)
                             .padding(.horizontal)
                             .onChange(of: manager.sport, { _, newValue in
-                                manager.image = newValue.Images().first
+                                manager.image = newValue.images().first
                             })
                             .onTapGesture {
                                 titleFocus = false
@@ -404,7 +404,7 @@ struct NewTournamentEvent: View {
                                 .bold()
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
-                                    ForEach(manager.sport.Images(), id: \.self) { image in
+                                    ForEach(manager.sport.images(), id: \.self) { image in
                                         Button(action:{ manager.image = image }) {
                                             ZStack(alignment: .bottomTrailing){
                                                 Image(image)

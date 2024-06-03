@@ -27,14 +27,8 @@ struct EventSmallListItem: View {
     }
     
     private var fieldName: String {
-        guard let field = event.fieldData else {
-            guard let field = event.venue,
-                  let name = field.name else {
-                return "Custom Location"
-            }
-            return name
-        }
-        return field.name
+        
+        return ""
     }
     
     var participantsCount: Int {

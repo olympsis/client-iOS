@@ -31,7 +31,6 @@ class Event: Codable, Identifiable, ObservableObject {
     @Published var visibility: String?
     @Published var clubs: [ClubSnippet]?
     @Published var organizations: [OrgSnippet]?
-    let fieldData: Venue?
     let createdAt: Int?
     @Published var externalLink: String?
     
@@ -56,12 +55,11 @@ class Event: Codable, Identifiable, ObservableObject {
         case visibility
         case clubs = "clubs"
         case organizations = "organizations"
-        case fieldData = "field_data"
         case createdAt = "created_at"
         case externalLink = "external_link"
     }
     
-    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venue: VenueDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [ClubSnippet]?=nil, organizations: [OrgSnippet]?=nil, fieldData: Venue?=nil) {
+    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venue: VenueDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [ClubSnippet]?=nil, organizations: [OrgSnippet]?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -82,7 +80,6 @@ class Event: Codable, Identifiable, ObservableObject {
         self.visibility = visibility
         self.clubs = clubs
         self.organizations = organizations
-        self.fieldData = fieldData
         self.createdAt = createdAt
         self.externalLink = externalLink
     }
@@ -109,7 +106,6 @@ class Event: Codable, Identifiable, ObservableObject {
         self.visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
         self.clubs = try container.decodeIfPresent([ClubSnippet].self, forKey: .clubs)
         self.organizations = try container.decodeIfPresent([OrgSnippet].self, forKey: .organizations)
-        self.fieldData = try container.decodeIfPresent(Venue.self, forKey: .fieldData)
         self.createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
         self.externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
     }
@@ -136,7 +132,6 @@ class Event: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(visibility, forKey: .visibility)
         try container.encodeIfPresent(clubs, forKey: .clubs)
         try container.encodeIfPresent(organizations, forKey: .organizations)
-        try container.encodeIfPresent(fieldData, forKey: .fieldData)
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(externalLink, forKey: .externalLink)
     }

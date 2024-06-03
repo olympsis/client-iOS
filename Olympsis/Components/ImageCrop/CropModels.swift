@@ -17,7 +17,7 @@ public struct CropResolution {
 
 /// `CropMaskShape` is a an enum that helps us keep track of the desired mask shapes
 public enum CropMaskShape: CaseIterable {
-    case circle, square, rectangle
+    case circle, square, rectangle, rectangleV
 }
 
 /// `CropConfiguration` is a struct that defines the configuration for cropping behavior.

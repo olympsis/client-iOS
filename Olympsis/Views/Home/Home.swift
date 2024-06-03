@@ -12,11 +12,8 @@ import NotificationCenter
 
 struct Home: View {
     
-    @State private var hasLoaded = false
-    
     @State private var showDetail = false
     @State private var showMoreFields = false
-    @State private var locationRecieved = false
     @State private var showNotifications = false
     
     @EnvironmentObject private var session: SessionStore
@@ -131,7 +128,7 @@ struct Home: View {
                 }.fullScreenCover(isPresented: $showNotifications, content: {
                     NotificationsView()
                 })
-            }.toolbar{
+            }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
                         .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))

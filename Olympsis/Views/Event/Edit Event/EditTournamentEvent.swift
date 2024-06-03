@@ -16,7 +16,7 @@ struct EditTournamentEvent: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventStopTime:           Date = Date().addingTimeInterval(30 * 60)
     @State private var eventImageURL:           String = ""
-    @State private var eventSport:              SPORT = .soccer
+    @State private var eventSport:              SPORTS = .soccer
     @State private var eventLevel:              Int    = 0
     @State private var eventMaxParticipants:    Double = 0
     @State private var eventMinParticipants:    Double = 0
@@ -272,7 +272,7 @@ struct EditTournamentEvent: View {
                         .bold()
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(eventSport.Images(), id: \.self) { image in
+                            ForEach(eventSport.images(), id: \.self) { image in
                                 Button(action:{ self.eventImageURL = image }) {
                                     ZStack(alignment: .bottomTrailing){
                                         Image(image)

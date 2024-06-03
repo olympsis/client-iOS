@@ -9,16 +9,16 @@ import SwiftUI
 
 struct SportsPicker: View {
     
-    @Binding var selectedSports: [SPORT]
-    @State private var row1 = [SPORT.soccer, SPORT.spikeball, SPORT.tennis]
-    @State private var row2 = [SPORT.basketball, SPORT.volleyball, SPORT.golf]
-    @State private var row3 = [SPORT.pickleball, SPORT.climbing, SPORT.hiking]
+    @Binding var selectedSports: [SPORTS]
+    @State private var row1 = [SPORTS.soccer, SPORTS.spike, SPORTS.tennis]
+    @State private var row2 = [SPORTS.basketball, SPORTS.volleyball, SPORTS.golf]
+    @State private var row3 = [SPORTS.pickleball, SPORTS.climbing, SPORTS.hiking]
     
-    func addSport(_ sport: SPORT) {
+    func addSport(_ sport: SPORTS) {
         selectedSports.append(sport)
     }
     
-    func removeSport(_ sport: SPORT) {
+    func removeSport(_ sport: SPORTS) {
         selectedSports.removeAll(where: { $0.rawValue == sport.rawValue })
     }
     var body: some View {
@@ -56,8 +56,8 @@ struct SportPickerItem: View {
         case normal
         case outline
     }
-    @State var sport: SPORT = .spikeball
-    @Binding var selectedSports: [SPORT]
+    @State var sport: SPORTS = .spike
+    @Binding var selectedSports: [SPORTS]
     
     var style: STYLE {
         selectedSports.contains(where: { $0.rawValue == sport.rawValue }) == true ? .normal : .outline
@@ -74,7 +74,7 @@ struct SportPickerItem: View {
                     .stroke(Color("color-secnd"), lineWidth: 1)
             }
             VStack {
-                sport.Icon()
+                sport.icon()
                     .resizable()
                     .frame(width: 50, height: 55)
                     .foregroundStyle(.black)
@@ -94,8 +94,8 @@ struct SportPickerItem: View {
 
 struct SportsPicker_Previews: PreviewProvider {
     static var previews: some View {
-        SportsPicker(selectedSports: .constant([SPORT]()))
-        SportPickerItem(selectedSports: .constant([SPORT]()))
+        SportsPicker(selectedSports: .constant([SPORTS]()))
+        SportPickerItem(selectedSports: .constant([SPORTS]()))
     }
 }
 

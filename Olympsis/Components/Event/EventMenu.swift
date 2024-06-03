@@ -44,10 +44,10 @@ struct EventMenu: View {
         
         // check to see if you're an admin of an associated club
         if let clubs = event.clubs {
-            let eventClubs = clubs.filter { c in
+            _ = clubs.filter { c in
                 return session.clubs.contains { $0.id == c.id }
             }
-            guard let userID = session.user?.uuid else {
+            guard (session.user?.uuid) != nil else {
                 return false
             }
             // TODO: i need this fixed asap
@@ -59,10 +59,10 @@ struct EventMenu: View {
         
         // check to see if you're an manager of an associated org
         if let organizations = event.organizations {
-            let eventOrgs = organizations.filter { o in
+            _ = organizations.filter { o in
                 return session.orgs.contains { $0.id == o.id }
             }
-            guard let userID = session.user?.uuid else {
+            guard (session.user?.uuid) != nil else {
                 return false
             }
             // TODO: i need this fixed asap

@@ -45,7 +45,7 @@ struct MultiSportsPicker: View {
                 }.padding(.top)
                 
                 ScrollView {
-                    ForEach(SPORT.allCases, id: \.self){ _sport in
+                    ForEach(SPORTS.allCases, id: \.self){ _sport in
                         HStack {
                             Button(action: { selectedSports.insert(_sport.rawValue) }){
                                 Text(_sport.rawValue)
