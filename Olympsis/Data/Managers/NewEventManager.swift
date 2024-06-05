@@ -6,6 +6,7 @@
 //
 
 import os
+import MapKit
 import SwiftUI
 import Foundation
 
@@ -17,11 +18,29 @@ class NewEventManager: ObservableObject {
     @Published var externalLink: String
     
     @Published var field: Venue?
+    
+    // Organizers
     @Published var organizers: [GroupSelection]
     
+    // Timestamps
     @Published var startDate: Date
     @Published var endDate: Date
     
+    // Location
+    @Published var selectedVenues = [Venue]() {
+        didSet {
+            selectedVenueDescriptors = selectedVenues.map {
+                if $0.description == "external" {
+                    return VenueDescriptor(name: $0.name, location: $0.location)
+                } else {
+                    return VenueDescriptor(id: $0.id)
+                }
+            }
+        }
+    }
+    @Published var selectedVenueDescriptors = [VenueDescriptor]()
+    
+    // Image
     @Published var selectedImage: UIImage? {
         didSet {
             guard let image = selectedImage,
@@ -35,14 +54,19 @@ class NewEventManager: ObservableObject {
     @Published var selectedImageData: Data?
     @Published var selectedImageIndex: Int = 0
     
+    // Participants
     @Published var minParticipants: Double
     @Published var maxParticipants: Double
     
+    // Sport
     @Published var sport: SPORTS
     @Published var image: String?
     
+    // More Options
     @Published var skillLevel: EVENT_SKILL_LEVELS = .All
     @Published var visibility: EVENT_VISIBILITY_TYPES = .Public
+    
+    @Published var customVenueSearch: String = ""
     
     private var log: Logger = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_manager")
     
@@ -68,7 +92,11 @@ class NewEventManager: ObservableObject {
         self.init(type: type, title: "", body: "", externalLink: "", field: nil, organizers: [GroupSelection](), startDate: Date(), endDate: Date().addingTimeInterval(30 * 60), minParticipants: 0, maxParticipants: 0, sport: .soccer, image: SPORTS.soccer.images().first, skillLevel: .All, visibility: .Public)
     }
     
-    func GenerateOrganizers() -> [Organizer] {
+    func deleteVenues(at offsets: IndexSet) {
+        selectedVenues.remove(atOffsets: offsets)
+    }
+    
+    func generateOrganizers() -> [Organizer] {
         return self.organizers.map { o in
             switch (o.type) {
             case .Club:
@@ -79,18 +107,18 @@ class NewEventManager: ObservableObject {
         }
     }
     
-    func GenerateFieldDescriptor() -> VenueDescriptor {
+    func generateFieldDescriptor() -> VenueDescriptor {
         if self.field?.description == "external" {
-            return VenueDescriptor(type: FIELD_TYPES.External.rawValue, id: nil, name: field?.name, location: field?.location)
+            return VenueDescriptor(id: nil, name: field?.name, location: field?.location)
         } else {
-            return VenueDescriptor(type: FIELD_TYPES.Internal.rawValue, id: field?.id, name: nil, location: nil)
+            return VenueDescriptor(id: field?.id, name: nil, location: nil)
         }
     }
     
     /**
         Return a data access object of an event to send through the API
      */
-    func GenerateNewEventData() -> EventDao? {
+    func generateNewEventData() -> EventDao? {
         guard self.title != "",
               self.body != "",
               self.field != nil,
@@ -102,8 +130,8 @@ class NewEventManager: ObservableObject {
         
         return EventDao(
             type: self.type.rawValue,
-            organizers: self.GenerateOrganizers(),
-            venue: self.GenerateFieldDescriptor(),
+            organizers: self.generateOrganizers(),
+            venue: self.generateFieldDescriptor(),
             imageURL: self.image,
             title: self.title,
             body: self.body,
@@ -118,7 +146,7 @@ class NewEventManager: ObservableObject {
         )
     }
     
-    func GenerateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
+    func generateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
         guard let type = dao.type,
               let organizers = dao.organizers,
               let venue = dao.venue,

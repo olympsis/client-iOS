@@ -29,9 +29,9 @@ struct NewTournamentEvent: View {
     @FocusState private var titleFocus: Bool
     @FocusState private var descriptionFocus: Bool
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var manager: NewEventManager
-    @Environment(\.dismiss) var dismiss
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
     
@@ -90,6 +90,10 @@ struct NewTournamentEvent: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
         return dateFormatter.string(from: manager.endDate)
+    }
+    
+    private var hasSelectedVenue: Bool {
+        return !manager.selectedVenues.isEmpty
     }
     
     private func handleFailure() {
@@ -157,7 +161,7 @@ struct NewTournamentEvent: View {
         }
         status = .loading
 
-        guard let dao = manager.GenerateNewEventData() else {
+        guard let dao = manager.generateNewEventData() else {
             log.error("Failed to generate new event data")
             handleFailure()
             return
@@ -168,7 +172,7 @@ struct NewTournamentEvent: View {
         }
         
         guard let user = session.user,
-              let event = manager.GenerateNewEvent(id: id, dao: dao, user: user) else {
+              let event = manager.generateNewEvent(id: id, dao: dao, user: user) else {
             return
         }
         
@@ -268,29 +272,39 @@ struct NewTournamentEvent: View {
                                 descriptionFocus = false
                             }
                         
-                        // MARK: - Field Picker
+                        // MARK: - Venue Picker
                         VStack(alignment: .leading){
-                            Text("Field")
+                            Text("Venue(s)")
                                 .font(.title3)
                                 .bold()
-                            Text("Location of the event")
+                            Text("Location(s) of the event")
                                 .font(.subheadline)
                                 .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
-                            
-                            Button(action: {
-                                titleFocus = false
-                                descriptionFocus = false
-                                self.showFieldPicker.toggle()
-                            }) {
-                                Text(fieldName)
-                                    .modifier(InputField())
+                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environmentObject(session)) {
+                                if hasSelectedVenue {
+                                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
+                                        ForEach(manager.selectedVenueDescriptors, id: \.self) {
+                                            VenueDescriptorView(item: $0)
+                                        }
+                                    }
+                                } else {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color("background"))
+                                        .frame(height: 100)
+                                        .overlay {
+                                            Text("Pick a location")
+                                        }
+                                }
                             }
-                        }.padding(.top)
+                        }
+                        .padding(.top)
                         .padding(.horizontal)
-                            .fullScreenCover(isPresented: $showFieldPicker) {
-                                EventFieldPickerView(selectedField: $manager.field, fields: session.venues)
-                            }
-                            .id(3)
+                        .fullScreenCover(isPresented: $showFieldPicker) {
+                            EventVenuePickerView()
+                                .environmentObject(manager)
+                                .environmentObject(session)
+                        }
+                        .id(3)
                         
                         // MARK: - Start Date/Time picker
                         VStack(alignment: .leading){
@@ -398,39 +412,10 @@ struct NewTournamentEvent: View {
                             .padding(.horizontal)
                         
                         // MARK: - Background Image picker
-                        VStack(alignment: .leading){
-                            Text("Event Image")
-                                .font(.title3)
-                                .bold()
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(manager.sport.images(), id: \.self) { image in
-                                        Button(action:{ manager.image = image }) {
-                                            ZStack(alignment: .bottomTrailing){
-                                                Image(image)
-                                                    .resizable()
-                                                    .frame(width: 100, height: 150)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                if manager.image == image {
-                                                    Image(systemName: "circle.fill")
-                                                        .foregroundColor(Color("color-secnd"))
-                                                        .padding(.bottom, 5)
-                                                        .padding(.trailing, 5)
-                                                    
-                                                } else {
-                                                    Image(systemName: "circle")
-                                                        .foregroundColor(Color("color-secnd"))
-                                                        .padding(.bottom, 5)
-                                                        .padding(.trailing, 5)
-                                                        .fontWeight(.bold)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }.padding(.top)
+                        EventImagePicker()
+                            .padding(.top)
                             .padding(.horizontal)
+                            .environmentObject(manager)
                         
                         // MARK: - External Link
                         VStack(alignment: .leading){

@@ -91,6 +91,10 @@ struct NewPickUpEvent: View {
         return dateFormatter.string(from: manager.endDate)
     }
     
+    private var hasSelectedVenue: Bool {
+        return !manager.selectedVenues.isEmpty
+    }
+    
     private func handleFailure() {
         status = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -156,7 +160,7 @@ struct NewPickUpEvent: View {
         }
         status = .loading
 
-        guard let dao = manager.GenerateNewEventData() else {
+        guard let dao = manager.generateNewEventData() else {
             log.error("Failed to generate new event data")
             handleFailure()
             return
@@ -167,7 +171,7 @@ struct NewPickUpEvent: View {
         }
         
         guard let user = session.user,
-              let event = manager.GenerateNewEvent(id: id, dao: dao, user: user) else {
+              let event = manager.generateNewEvent(id: id, dao: dao, user: user) else {
             return
         }
         
@@ -222,9 +226,10 @@ struct NewPickUpEvent: View {
                                 .focused($titleFocus)
                                 .padding(.leading)
                                 .modifier(InputField())
-                        }.padding(.top)
+                        }
+                        .padding(.top)
                         .padding(.horizontal)
-                            .id(1)
+                        .id(1)
 
                         // MARK: - Description
                         VStack(alignment: .leading){
@@ -244,33 +249,44 @@ struct NewPickUpEvent: View {
                                     .scrollContentBackground(.hidden)
                                     .padding(.horizontal, 5)
                             }
-                        }.padding(.top)
+                        }
+                        .padding(.top)
                         .padding(.horizontal)
                         .id(2)
                         
                         // MARK: - Venue Picker
                         VStack(alignment: .leading){
-                            Text("Venue")
+                            Text("Venue(s)")
                                 .font(.title3)
                                 .bold()
-                            Text("Location of the event")
+                            Text("Location(s) of the event")
                                 .font(.subheadline)
                                 .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
-                            
-                            Button(action: {
-                                titleFocus = false
-                                descriptionFocus = false
-                                self.showFieldPicker.toggle()
-                            }) {
-                                Text(fieldName)
-                                    .modifier(InputField())
+                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environmentObject(session)) {
+                                if hasSelectedVenue {
+                                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
+                                        ForEach(manager.selectedVenueDescriptors, id: \.self) {
+                                            VenueDescriptorView(item: $0)
+                                        }
+                                    }
+                                } else {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color("background"))
+                                        .frame(height: 100)
+                                        .overlay {
+                                            Text("Pick a location")
+                                        }
+                                }
                             }
-                        }.padding(.top)
+                        }
+                        .padding(.top)
                         .padding(.horizontal)
-                            .fullScreenCover(isPresented: $showFieldPicker) {
-                                EventFieldPickerView(selectedField: $manager.field, fields: session.venues)
-                            }
-                            .id(3)
+                        .fullScreenCover(isPresented: $showFieldPicker) {
+                            EventVenuePickerView()
+                                .environmentObject(manager)
+                                .environmentObject(session)
+                        }
+                        .id(3)
                         
                         // MARK: - Start Date/Time picker
                         VStack(alignment: .leading){
@@ -286,12 +302,13 @@ struct NewPickUpEvent: View {
                                 Text(startTimeString)
                                     .modifier(InputField())
                             }
-                        }.padding()
-                            .sheet(isPresented: $showStartTimePicker, content: {
-                                EventDatePickerView(eventTime: $manager.startDate)
-                                    .presentationDetents([.medium])
-                            })
-                            .id(4)
+                        }
+                        .padding()
+                        .sheet(isPresented: $showStartTimePicker, content: {
+                            EventDatePickerView(eventTime: $manager.startDate)
+                                .presentationDetents([.medium])
+                        })
+                        .id(4)
                         
                         // MARK: - End Date/Time picker
                         VStack(alignment: .leading){
@@ -317,11 +334,12 @@ struct NewPickUpEvent: View {
                                         .modifier(InputField())
                                 }
                             }
-                        }.padding(.horizontal)
-                            .sheet(isPresented: $showStopTimePicker, content: {
-                                EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
-                                    .presentationDetents([.medium])
-                            })
+                        }
+                        .padding(.horizontal)
+                        .sheet(isPresented: $showStopTimePicker, content: {
+                            EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
+                                .presentationDetents([.medium])
+                        })
                         
                         // MARK: - Min Participants slider
                         VStack(alignment: .leading){
@@ -347,8 +365,9 @@ struct NewPickUpEvent: View {
                                     .padding(.trailing)
                             }.modifier(InputField())
                             
-                        }.padding(.top)
-                            .padding(.horizontal)
+                        }
+                        .padding(.top)
+                        .padding(.horizontal)
                         
                         // MARK: - Max Participants slider
                         VStack(alignment: .leading){
@@ -374,8 +393,9 @@ struct NewPickUpEvent: View {
                                     .padding(.trailing)
                             }.modifier(InputField())
                             
-                        }.padding(.top)
-                            .padding(.horizontal)
+                        }
+                        .padding(.top)
+                        .padding(.horizontal)
                         
                         // MARK: - Background Image picker
                         EventImagePicker()

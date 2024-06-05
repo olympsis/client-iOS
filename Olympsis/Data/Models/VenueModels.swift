@@ -46,6 +46,20 @@ class Venue: Codable, Identifiable, Equatable {
         self.country = country
     }
     
+    convenience init(name: String, location: GeoJSON, city: String, state: String, country: String) {
+        self.init(
+            id: UUID().uuidString, 
+            name: name,
+            owner: Ownership(name: "", type: ""),
+            description: "external", sports: [String](),
+            images: [String](),
+            location: location,
+            city: city,
+            state: state,
+            country: country
+        )
+    }
+    
     static func == (lhs: Venue, rhs: Venue) -> Bool {
         return lhs.id == rhs.id
     }

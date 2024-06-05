@@ -32,6 +32,11 @@ let FIELDS = [
     Venue(id: UUID().uuidString, name: "11th Ave Park", owner: Ownership(name: "Salt Lake City", type: "public"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Salt Lake City", state: "UT", country: "United States of America")
 ]
 
+let VENUE_DESCRIPTORS = [
+    VenueDescriptor(name: "Faultline Gardens Park", location: GeoJSON(type: "point", coordinates: [-111.861028, 40.760891])),
+    VenueDescriptor(id: FIELDS[0].id),
+    VenueDescriptor(id: FIELDS[1].id)
+]
 
 let CLUBS = [
     Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/FDD36C02-7C50-4E39-867A-DCD95CB991B6.jpeg", banner: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", sports: ["soccer", "basketball", "tennis"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
@@ -69,7 +74,7 @@ let GROUP_SELECTIONS = [
 ]
 
 let EVENTS = [
-    Event(id: UUID().uuidString, type: "tournament", poster: USER_SNIPPETS[0], organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], venue:  VenueDescriptor(type: "internal", id: UUID().uuidString, name: nil, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
+    Event(id: UUID().uuidString, type: "tournament", poster: USER_SNIPPETS[0], organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)], venue:  VenueDescriptor(id: FIELDS[0].id, name: nil, location: nil), imageURL: "soccer-0", title: "Pick Up Soccer International", body: "Lets go play boys!!!", sport: "soccer", level: 0, startTime: 1699806600, actualStartTime: 1699806600, stopTime: 1699806615, actualStopTime: 0, maxParticipants: 10, participants: [
         Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
     ], visibility: "", createdAt: 1639364780,  clubs: CLUB_SNIPPETS, organizations: ORG_SNIPPETS),
 ]

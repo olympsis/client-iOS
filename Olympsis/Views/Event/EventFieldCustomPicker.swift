@@ -34,12 +34,14 @@ struct EventFieldCustomPicker: View {
     @EnvironmentObject private var session:SessionStore
     
     func search() async {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
         request.region = session.locationManager.region
         request.resultTypes = .pointOfInterest
         
         let searchRequest = MKLocalSearch(request: request)
+        
         do {
             state = .searching
             let results = try await searchRequest.start()
@@ -139,7 +141,7 @@ struct EventFieldCustomPicker: View {
                             }
                             let coordinates = loc.item.placemark.coordinate
                             let location = GeoJSON(type: "Point", coordinates: [Double(coordinates.longitude), Double(coordinates.latitude)])
-                            let desc = VenueDescriptor(type: "external", id: nil, name: name, location: location)
+                            let desc = VenueDescriptor(name: name, location: location)
                             
                             Task { @MainActor in
                                 selected.field = desc

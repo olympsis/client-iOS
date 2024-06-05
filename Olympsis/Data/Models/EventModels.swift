@@ -16,6 +16,7 @@ class Event: Codable, Identifiable, ObservableObject {
     let poster: UserSnippet?
     @Published var organizers: [Organizer]?
     var venue: VenueDescriptor?
+    var venues: [VenueDescriptor]?
     @Published var imageURL: String?
     @Published var title: String?
     @Published var body: String?
@@ -40,6 +41,7 @@ class Event: Codable, Identifiable, ObservableObject {
         case poster
         case organizers
         case venue
+        case venues
         case imageURL = "image_url"
         case title
         case body
@@ -65,6 +67,7 @@ class Event: Codable, Identifiable, ObservableObject {
         self.poster = poster
         self.organizers = organizers
         self.venue = venue
+        self.venues = nil
         self.imageURL = imageURL
         self.title = title
         self.body = body
@@ -91,6 +94,7 @@ class Event: Codable, Identifiable, ObservableObject {
         self.poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
         self.organizers = try container.decodeIfPresent([Organizer].self, forKey: .organizers)
         self.venue = try container.decodeIfPresent(VenueDescriptor.self, forKey: .venue)
+        self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
         self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
@@ -117,6 +121,7 @@ class Event: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(poster, forKey: .poster)
         try container.encodeIfPresent(organizers, forKey: .organizers)
         try container.encodeIfPresent(venue, forKey: .venue)
+        try container.encodeIfPresent(venues, forKey: .venues)
         try container.encodeIfPresent(imageURL, forKey: .imageURL)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(body, forKey: .body)
@@ -162,21 +167,22 @@ struct Organizer: Codable, Identifiable {
     let id: String
 }
 
-struct VenueDescriptor: Codable {
-    let type: String
+struct VenueDescriptor: Codable, Hashable {
     let id: String?
     var name: String?
     var location: GeoJSON?
     
-    init(type: String, id: String?=nil, name: String?=nil, location: GeoJSON?=nil) {
-        self.type = type
+    init(id: String?=nil, name: String?=nil, location: GeoJSON?=nil) {
         self.id = id
         self.name = name
         self.location = location
     }
     
     func isInternal() -> Bool {
-        return self.type == "internal" ? true : false
+        guard self.id != nil else {
+            return false
+        }
+        return true
     }
 }
 
