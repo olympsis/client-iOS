@@ -66,7 +66,7 @@ struct SportView: View {
                     case .climbing:
                         sport.icon()
                             .resizable()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 25, height: 25)
                     case .spike:
                         sport.icon()
                             .resizable()
@@ -147,5 +147,5 @@ struct SportView: View {
 }
 
 #Preview {
-    SportView(sport: .spike, scale: .Medium)
+    SportView(sport: .climbing, scale: .Medium)
 }

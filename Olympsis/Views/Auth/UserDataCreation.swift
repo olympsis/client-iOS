@@ -8,7 +8,7 @@
 import os
 import SwiftUI
 
-struct PickUsername: View {
+struct UserDataCreation: View {
     
     enum USERNAME_STATUS {
         case pending
@@ -21,14 +21,16 @@ struct PickUsername: View {
     @Binding var currentView: AuthTab
     @FocusState private var isFocused: Bool
     @State private var username: String = ""
+    
+    @State private var selectedSports = [SPORTS]()
     @State private var status: LOADING_STATE = .pending
     @State private var uStatus: USERNAME_STATUS = .pending
     
-    @State private var cacheService = CacheService()
-    @State private var userObserver = UserObserver()
-    
     @AppStorage("auth_type") private var authType: USER_STATUS?
+    @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
+    var cacheService = CacheService()
+    var userObserver = UserObserver()
     var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_username_view")
     
     /// Validates the username input to make sure it's safe
@@ -58,6 +60,43 @@ struct PickUsername: View {
         uStatus = .unknown
     }
     
+    func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            status = .pending
+        }
+    }
+    
+    func handleSuccess() {
+        status = .success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            authType = nil
+            authStatus = .authenticated
+        }
+    }
+    
+    func createUserData() async {
+        guard uStatus == .available else {
+            handleFailure()
+            return
+        }
+        
+        status = .loading
+        let sports = selectedSports.map({ return $0.rawValue })
+        do {
+            guard let data = try await userObserver.createUserData(username: username, sports: sports) else {
+                handleFailure()
+                return
+            }
+            cacheService.cacheUser(user: data)
+            handleSuccess()
+        } catch {
+            log.error("Failed to create user: \(error.localizedDescription)")
+            handleFailure()
+            return
+        }
+    }
+    
     /// Checks the backend to see if the username is available
     func isUsernameAvailable() async -> Bool {
         do {
@@ -83,26 +122,14 @@ struct PickUsername: View {
         }
     }
     
-    /// Stores username into cache
-    func storeUsername() async {
-        let available = await isUsernameAvailable()
-        if (available) {
-            let user = UserData(username: username, firstName: "", lastName: "")
-            cacheService.cacheUser(user: user)
-            currentView = .sports
-        } else {
-            return
-        }
-    }
-    
     var body: some View {
         VStack {
             // title
             VStack {
-                Text("Pick a Username")
+                Text("Getting to know you")
                     .font(.custom("ITCAvantGardeStd-Bk", size: 25, relativeTo: .title2))
                     .fontWeight(.medium)
-                Text("What's your handle?")
+                Text("What's your handle? Favorite sports?")
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .font(.callout)
@@ -201,10 +228,41 @@ struct PickUsername: View {
                 }
             }.padding(.top, 50)
             
+            
+            VStack(alignment: .leading) {
+                Text("Favorite Sports")
+                    
+                    .font(.title3)
+                Text("The sports you like to play or sports you are learning")
+                    .font(.caption2)
+                    .foregroundStyle(.gray)
+                    .padding(.bottom)
+                
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75))], alignment: .center) {
+                        ForEach(SPORTS.allCases, id: \.self) { sport in
+                            SportView(sport: sport, scale: .Medium)
+                                .overlay {
+                                    if (selectedSports.contains(sport)) {
+                                        Circle().stroke(Color("color-prime"), lineWidth: 2)
+                                    }
+                                }
+                                .onTapGesture {
+                                    if (selectedSports.contains(sport)) {
+                                        selectedSports.removeAll(where: { $0 == sport })
+                                    } else {
+                                        self.selectedSports.append(sport)
+                                    }
+                                }
+                        }
+                    }
+                }
+            }.padding(.all)
+            
             Spacer()
             
             // action button
-            Button(action: { Task { await storeUsername() } }){
+            Button(action: { Task { await createUserData() } }){
                 SimpleButtonLabel(text: "continue")
             }
             .padding(.bottom)
@@ -215,6 +273,6 @@ struct PickUsername: View {
 
 struct PickUsername_Previews: PreviewProvider {
     static var previews: some View {
-        PickUsername(currentView: .constant(.username))
+        UserDataCreation(currentView: .constant(.username))
     }
 }

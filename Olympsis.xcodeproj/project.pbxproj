@@ -166,9 +166,8 @@
 		5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F00FEA32A4123FB0019E9F7 /* Location.swift */; };
 		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
 		5F1329BA2A282BE200B31170 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
-		5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */; };
+		5F493FA22A53FDAB00EAF5A4 /* UserDataCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA12A53FDAB00EAF5A4 /* UserDataCreation.swift */; };
 		5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */; };
-		5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA62A547D6C00EAF5A4 /* PickSports.swift */; };
 		5F493FAA2A5480C100EAF5A4 /* SportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */; };
 		5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F12A28E91800257350 /* WelcomeView.swift */; };
 		5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */; };
@@ -502,9 +501,8 @@
 		5F00FEA32A4123FB0019E9F7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
 		5F1329B92A282BE200B31170 /* EventModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModels.swift; sourceTree = "<group>"; };
-		5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickUsername.swift; sourceTree = "<group>"; };
+		5F493FA12A53FDAB00EAF5A4 /* UserDataCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataCreation.swift; sourceTree = "<group>"; };
 		5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonLabel.swift; sourceTree = "<group>"; };
-		5F493FA62A547D6C00EAF5A4 /* PickSports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSports.swift; sourceTree = "<group>"; };
 		5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsPicker.swift; sourceTree = "<group>"; };
 		5F4E53F12A28E91800257350 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		5F4E53F32A28EB5500257350 /* AnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsView.swift; sourceTree = "<group>"; };
@@ -1228,8 +1226,7 @@
 				9ABB1EBA290505440050C0F0 /* AuthContainer.swift */,
 				5F00FEA12A4123EF0019E9F7 /* Notifications.swift */,
 				5F00FEA32A4123FB0019E9F7 /* Location.swift */,
-				5F493FA12A53FDAB00EAF5A4 /* PickUsername.swift */,
-				5F493FA62A547D6C00EAF5A4 /* PickSports.swift */,
+				5F493FA12A53FDAB00EAF5A4 /* UserDataCreation.swift */,
 				5D9F69442BB86F020057D205 /* LocationUsage.swift */,
 			);
 			path = Auth;
@@ -1714,7 +1711,7 @@
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,
 				9A8162A3296685D40042F0A6 /* RoomListView.swift in Sources */,
-				5F493FA22A53FDAB00EAF5A4 /* PickUsername.swift in Sources */,
+				5F493FA22A53FDAB00EAF5A4 /* UserDataCreation.swift in Sources */,
 				9A81B6342925C0E7009CA6ED /* TrophiesView.swift in Sources */,
 				5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
@@ -1938,7 +1935,6 @@
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
 				5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */,
 				5D78BDEA2C0D48C000F170D6 /* EventImagePicker.swift in Sources */,
-				5F493FA72A547D6C00EAF5A4 /* PickSports.swift in Sources */,
 				5FC90F082A2E24B200BA3BA1 /* DeleteAccountView.swift in Sources */,
 				5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */,
 				5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */,

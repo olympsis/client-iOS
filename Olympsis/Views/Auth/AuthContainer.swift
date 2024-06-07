@@ -18,10 +18,7 @@ struct AuthContainer: View {
         VStack {
             TabView(selection: $currentView){
                 AuthView(currentView: $currentView).tag(AuthTab.auth)
-                PickUsername(currentView: $currentView).tag(AuthTab.username)
-                PickSports(currentView: $currentView).tag(AuthTab.sports)
-                Location(currentView: $currentView).tag(AuthTab.location)
-                Notifications(currentView: $currentView).tag(AuthTab.notifications)
+                UserDataCreation(currentView: $currentView).tag(AuthTab.username)
             }
         }
     }

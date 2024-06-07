@@ -89,7 +89,7 @@ struct AuthView: View {
                                             return
                                         }
                                         withAnimation {
-                                            currentView = .sports
+                                            currentView = .auth
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
