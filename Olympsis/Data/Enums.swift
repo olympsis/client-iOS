@@ -246,7 +246,7 @@ enum FIELD_TYPES: String {
 }
 
 enum RSVP_STATUS: String {
-    case Going = "going"
+    case Going = "yes"
     case Maybe = "maybe"
 }
 

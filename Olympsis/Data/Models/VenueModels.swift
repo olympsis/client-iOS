@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class Venue: Codable, Identifiable, Equatable {
     
@@ -92,5 +93,63 @@ struct VenuesResponse: Codable {
     private enum CodingKeys: String, CodingKey {
         case fields
         case totalFields = "total_fields"
+    }
+}
+
+extension [Venue] {
+    func locale() -> String {
+        guard let firstVenue = self.first else {
+            return "Location, ERR"
+        }
+
+        let allInSameCityState = self.allSatisfy { $0.city == firstVenue.city && $0.state == firstVenue.state }
+        if allInSameCityState {
+            return "\(firstVenue.city), \(firstVenue.state)"
+        }
+
+        let allInSameState = self.allSatisfy { $0.state == firstVenue.state }
+        if allInSameState {
+            return firstVenue.state
+        }
+
+        let allInSameCountry = self.allSatisfy { $0.country == firstVenue.country }
+        if allInSameCountry {
+            return firstVenue.country
+        }
+
+        return "Location, ERR"
+    }
+}
+
+struct VenueDescriptor: Codable, Hashable {
+    let id: String?
+    var name: String?
+    var location: GeoJSON?
+    
+    init(id: String?=nil, name: String?=nil, location: GeoJSON?=nil) {
+        self.id = id
+        self.name = name
+        self.location = location
+    }
+    
+    func isInternal() -> Bool {
+        guard self.id != nil else {
+            return false
+        }
+        return true
+    }
+
+    
+    func geocode() async -> [CLPlacemark]? {
+        let geocoder = CLGeocoder()
+        guard let coordinates = self.location?.coordinates else {
+            return nil
+        }
+        let coreLoc = CLLocation(latitude: coordinates[1], longitude: coordinates[0])
+        return await withCheckedContinuation { continuation in
+            geocoder.reverseGeocodeLocation(coreLoc) { placemarks, _ in
+                continuation.resume(returning: placemarks ?? [])
+            }
+        }
     }
 }

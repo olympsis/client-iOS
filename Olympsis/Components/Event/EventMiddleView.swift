@@ -10,6 +10,7 @@ import SwiftUI
 /// A view that shows the status and participant info about an event
 struct EventMiddleView: View {
     
+    @State private var isBlinking: Bool = false
     @State private var timeDifference: String = ""
     @EnvironmentObject private var event: Event
     
@@ -92,6 +93,12 @@ struct EventMiddleView: View {
                             Circle()
                                 .frame(width: 10, height: 10)
                                 .foregroundColor(.red)
+                                .opacity(isBlinking ? 0 : 1)
+                                .onAppear {
+                                    withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: true)) {
+                                        isBlinking.toggle()
+                                    }
+                                }
                             Text("Live")
                                 .bold()
                                 .foregroundColor(.red)

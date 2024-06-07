@@ -13,17 +13,16 @@ import SwiftUI
 struct EventOrganizersPickerView: View {
     
     @Binding var selectedOrganizers: [GroupSelection]
-    @State var organizers: [GroupSelection]
-    @State var clubs: [Club]
-    @State var organizations: [Organization]
+    
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
                 
                 // Sorting by selected. So when you select something it goes to the top of the list
-                ForEach(organizers.sorted(by: { a, b in
+                ForEach(session.groups.sorted(by: { a, b in
                     if ((selectedOrganizers.contains(where: { $0.id == a.id })) && !(selectedOrganizers.contains(where: { $0.id == b.id }))) {
                         return true
                     } else if (!(selectedOrganizers.contains(where: { $0.id == a.id })) && (selectedOrganizers.contains(where: { $0.id == b.id }))){
@@ -46,7 +45,7 @@ struct EventOrganizersPickerView: View {
                             }
                             Circle()
                                 .frame(height: 60)
-                            if let club = clubs.first(where: { $0.id == organizer.club?.id }) {
+                            if let club = session.clubs.first(where: { $0.id == organizer.club?.id }) {
                                 if let name = club.name {
                                     Text(name)
                                 }
@@ -67,7 +66,7 @@ struct EventOrganizersPickerView: View {
                             }
                             Circle()
                                 .frame(height: 60)
-                            if let org = organizations.first(where: { $0.id == organizer.organization?.id }) {
+                            if let org = session.orgs.first(where: { $0.id == organizer.organization?.id }) {
                                 if let name = org.name {
                                     Text(name)
                                 }
@@ -77,7 +76,8 @@ struct EventOrganizersPickerView: View {
                     }
                 }
                 Spacer()
-            }.padding(.top)
+            }
+            .padding(.top)
             .navigationTitle("Organizers")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -99,5 +99,6 @@ struct EventOrganizersPickerView: View {
 }
 
 #Preview {
-    EventOrganizersPickerView(selectedOrganizers: .constant([GroupSelection]()), organizers: GROUPS, clubs: CLUBS, organizations: ORGANIZATIONS)
+    EventOrganizersPickerView(selectedOrganizers: .constant([GroupSelection]()))
+        .environmentObject(SessionStore())
 }

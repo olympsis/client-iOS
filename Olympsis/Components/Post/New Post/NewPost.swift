@@ -54,15 +54,6 @@ struct NewPost: View {
             return
         }
         
-//        // upload image
-//        if viewModel.selectedImageData != nil {
-//            guard let img = await self.viewModel.uploadImage(data: viewModel.selectedImageData!) else {
-//                handleFailure()
-//                return
-//            }
-//            dao.images = [img]
-//        }
-        
         // create post and get the id
         guard let postId = await session.postObserver.createPost(dto: dao) else {
             if let images = dao.images {

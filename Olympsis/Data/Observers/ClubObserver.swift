@@ -49,10 +49,10 @@ class ClubObserver: ObservableObject{
         }
     }
     
-    func getClub(id: String) async -> ClubResponse? {
+    func getClub(id: String) async -> Club? {
         do {
             let res = try await clubService.getClub(id: id)
-            let object = try decoder.decode(ClubResponse.self, from: res)
+            let object = try decoder.decode(Club.self, from: res)
             return object
         } catch {
             log.error("\(error)")

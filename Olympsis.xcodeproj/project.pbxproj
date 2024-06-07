@@ -38,6 +38,7 @@
 		5D2DEFBE2B1AB1770082FE73 /* NewAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
 		5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueInfo.swift */; };
+		5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -387,6 +388,7 @@
 		5D2DEFBD2B1AB1770082FE73 /* NewAnnouncement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAnnouncement.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* VenueInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueInfo.swift; sourceTree = "<group>"; };
+		5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullImageViewer.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -1198,6 +1200,7 @@
 				9AB02F60290265B4008C07F1 /* TabBar.swift */,
 				9A81B63B2925DD07009CA6ED /* BetaPage.swift */,
 				5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */,
+				5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1752,6 +1755,7 @@
 				5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */,
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
+				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,

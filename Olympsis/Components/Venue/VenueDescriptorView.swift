@@ -110,7 +110,6 @@ struct VenueDescriptorView: View {
             Map(position: $camera, interactionModes: .pan) {
                 Marker(name ?? "Venue", coordinate: location)
             }
-            .disabled(true)
             .frame(height: 100)
             .mapStyle(.standard(elevation: .realistic))
             .cornerRadius(radius: 10, corners: .allCorners)
@@ -125,7 +124,15 @@ struct VenueDescriptorView: View {
             self.camera = MapCameraPosition.camera(MapCamera(centerCoordinate: self.location, distance: 1000))
         }
         .onTapGesture {
-            self.showVenue.toggle()
+            guard let _venue = venue else {
+                UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(location.latitude),\(location.longitude)")! as URL)
+                return
+            }
+            if _venue.description == "external" {
+                UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(_venue.location.coordinates[1]),\(_venue.location.coordinates[0])")! as URL)
+            } else {
+                self.showVenue.toggle()
+            }
         }
         .sheet(isPresented: $showVenue) {
             if let v = venue {

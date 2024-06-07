@@ -41,8 +41,8 @@ struct EventVenuePicker: View {
             state = .loading
             let results = try await searchRequest.start()
             let points = results.mapItems
-            if points.count > 100 {
-                let reduced = points.dropLast(points.count - 100)
+            if points.count > 20 {
+                let reduced = points.dropLast(points.count - 20)
                 reduced.forEach { item in
                     guard let name = item.name,
                           let state = item.placemark.administrativeArea,
@@ -126,12 +126,22 @@ struct EventVenuePicker: View {
                         VStack {
                             if venues.count > 0 {
                                 ForEach(venues, id: \.id) { venue in
-                                    VenueMediumListItem(item: venue)
-                                        .padding(.all)
-                                        .onTapGesture {
-                                            manager.selectedVenues.append(venue)
-                                            dismiss()
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(venue.name)
+                                                .font(.title2)
+                                                .lineLimit(1)
+                                            Text("\(venue.city), \(venue.state)")
+                                                .lineLimit(1)
+                                                .foregroundStyle(.gray)
                                         }
+                                        Spacer()
+                                    }
+                                    .padding(.all)
+                                    .onTapGesture {
+                                        manager.selectedVenues.append(venue)
+                                        dismiss()
+                                    }
                                 }
                             } else {
                                 Text("No venues found near you")
@@ -160,12 +170,22 @@ struct EventVenuePicker: View {
                         case .success:
                             if customVenues.count > 0 {
                                 ForEach(customVenues, id: \.id) { venue in
-                                    VenueMediumListItem(item: venue)
-                                        .padding(.all)
-                                        .onTapGesture {
-                                            manager.selectedVenues.append(venue)
-                                            dismiss()
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(venue.name)
+                                                .font(.title2)
+                                                .lineLimit(1)
+                                            Text("\(venue.city), \(venue.state)")
+                                                .lineLimit(1)
+                                                .foregroundStyle(.gray)
                                         }
+                                        Spacer()
+                                    }
+                                    .padding(.all)
+                                    .onTapGesture {
+                                        manager.selectedVenues.append(venue)
+                                        dismiss()
+                                    }
                                 }
                             }
                         case .failure:

@@ -73,7 +73,7 @@ struct VenueView: View {
                 VenueActionButtons(venue: venue)
                 
                 //MARK: - Events View
-                VenueEventsView(field: $venue)
+                VenueEventsView(venue: $venue)
                 
             }       
         }.padding(.top)
@@ -256,7 +256,7 @@ struct VenueActionButtons: View {
             }.disabled(canCreateEvent == false ? true : false)
                 .popoverTip(joinGroupTip)
             .sheet(isPresented: $showNewEvent) {
-                NewEvent(manager: NewEventManager(field: venue))
+                NewEvent(manager: NewEventManager(venues: [venue]))
             }
             
             Menu{
@@ -293,24 +293,24 @@ struct VenueActionButtons: View {
 
 struct VenueEventsView: View {
     
-    @Binding var field: Venue
+    @Binding var venue: Venue
     @State private var status: LOADING_STATE = .pending
     @EnvironmentObject private var session: SessionStore
     
     var fieldEvents: [Event] {
-        return session.events.filter({ $0.venue?.id == field.id })
+        return session.events.filter({ $0.venues?.contains(where: { $0.id == venue.id }) ?? false })
     }
     
     func reloadEvents() async {
         status = .loading
-        let resp = await session.eventObserver.fetchEventsByFieldID(field.id)
+        let resp = await session.eventObserver.fetchEventsByFieldID(venue.id)
         guard let events = resp else {
             handleReloadFailure()
             return
         }
         
         // remove existing events and we will append the newly requested events
-        session.events.removeAll(where: { $0.venue?.id == field.id })
+        session.events.removeAll(where: { $0.venues?.contains(where: { $0.id == venue.id }) ?? false })
         session.events.append(contentsOf: events)
         handleReloadSuccess()
     }

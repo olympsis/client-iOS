@@ -19,6 +19,7 @@ struct NewTournamentEvent: View {
     @State private var hasEndTime: Bool = false
     @State private var showFieldPicker: Bool = false
     @State private var showSportsPicker: Bool = false
+    @State private var showPostViolation: Bool = false
     @State private var showCompletedToast: Bool = false
     @State private var showStartTimePicker: Bool = false
     @State private var showStopTimePicker: Bool = false
@@ -34,27 +35,6 @@ struct NewTournamentEvent: View {
     @EnvironmentObject private var manager: NewEventManager
     
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
-    
-    private var fieldID: String {
-        guard let selectedField = manager.field else {
-            return ""
-        }
-        return selectedField.id
-    }
-    
-    private var fieldName: String {
-        guard let selectedField = manager.field else {
-            return ""
-        }
-        return selectedField.name
-    }
-    
-    private var selectedImage: String {
-        guard let img = manager.image else {
-            return manager.sport.images()[Int.random(in: 0...manager.sport.images().count-1)]
-        }
-        return img
-    }
     
     // filters all of the clubs and the group selections that might not have a club
     // force returns a club since it should exist from the filter operation
@@ -110,9 +90,17 @@ struct NewTournamentEvent: View {
         }
     }
     
+    /// Validates the new event view
+    ///
+    /// This function makes sure that we have the right data populated.
+    /// If we are missing some data we want to scroll the user down to where they need add more information
+    ///
+    /// - Parameter value: The scroll view proxy needed to scroll the user down to the specific location
+    ///
+    /// - Returns an optional `NEW_EVENT_ERROR` to let us know what went wrong
     func Validate(value: ScrollViewProxy) -> NEW_EVENT_ERROR? {
         // make sure we have a title
-        guard manager.title != "" else {
+        guard !manager.title.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noTitle
                 withAnimation {
@@ -121,8 +109,9 @@ struct NewTournamentEvent: View {
             }
             return .noTitle
         }
+        
         // make sure we have a description
-        guard manager.body != "" else {
+        guard !manager.body.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noDescription
                 withAnimation {
@@ -131,8 +120,9 @@ struct NewTournamentEvent: View {
             }
             return .noDescription
         }
-        // make sure we have a selected field
-        guard manager.field != nil else {
+        
+        // make sure we have selected venues
+        guard !manager.selectedVenueDescriptors.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noSelectedField
                 withAnimation {
@@ -141,6 +131,7 @@ struct NewTournamentEvent: View {
             }
             return .noSelectedField
         }
+        
         // make sure end date is greater than start
         guard manager.endDate > manager.startDate else {
             Task { @MainActor in
@@ -154,25 +145,15 @@ struct NewTournamentEvent: View {
         return nil
     }
     
-    func CreateEvent(value: ScrollViewProxy) async {
+    func createEvent(value: ScrollViewProxy) async throws {
         guard Validate(value: value) == nil else {
             handleFailure()
             return
         }
         status = .loading
 
-        guard let dao = manager.generateNewEventData() else {
-            log.error("Failed to generate new event data")
-            handleFailure()
-            return
-        }
-        guard let id = await session.eventObserver.createEvent(event: dao) else {
-            handleFailure()
-            return
-        }
-        
         guard let user = session.user,
-              let event = manager.generateNewEvent(id: id, dao: dao, user: user) else {
+              let event = try await manager.createEvent(user: user) else {
             return
         }
         
@@ -207,7 +188,8 @@ struct NewTournamentEvent: View {
                         }
                         .padding(.horizontal)
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
-                            EventOrganizersPickerView(selectedOrganizers: $manager.organizers, organizers: session.groups, clubs: session.clubs, organizations: session.orgs)
+                            EventOrganizersPickerView(selectedOrganizers: $manager.organizers)
+                                .environmentObject(SessionStore())
                         }
                         
                         // MARK: - Title
@@ -443,7 +425,15 @@ struct NewTournamentEvent: View {
                         
                         // MARK: - Action Button
                         VStack(alignment: .center){
-                            Button(action: { Task { await CreateEvent(value: value) } }) {
+                            Button(action: { Task {
+                                do {
+                                    try await createEvent(value: value)
+                                } catch MediaUploadError.innapropriateContent {
+                                    self.showPostViolation.toggle()
+                                } catch MediaUploadError.unexpected(let reason) {
+                                    log.error("Failed to create event: \(reason)")
+                                }
+                            } }) {
                                 LoadingButton(text: "Create", width: 150, status: $status)
                                     .padding(.horizontal, 40)
                             }
@@ -468,6 +458,9 @@ struct NewTournamentEvent: View {
                         }
                         manager.organizers.append(select)
                     }
+                    .sheet(isPresented: $showPostViolation, content: {
+                        PostMediaViolation()
+                    })
                 }
             }.navigationTitle("Tournament")
                 .navigationBarTitleDisplayMode(.inline)

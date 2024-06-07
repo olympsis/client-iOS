@@ -10,8 +10,11 @@ import SwiftUI
 /// A view that contains many of the primary actions that can be taken while viewing an event
 struct EventActionButtons: View {
     
-    @Binding var venue: Venue
+    @Binding var venues: [Venue]
     @Binding var venueState: LOADING_STATE
+    
+    @Binding var clubs: [Club]
+    @Binding var organizations: [Organization]
     
     @State private var showMenu: Bool = false
     @State private var state: LOADING_STATE = .pending
@@ -21,7 +24,7 @@ struct EventActionButtons: View {
     @EnvironmentObject private var session: SessionStore
     
     private var fieldLocation: [Double] {
-        return venue.location.coordinates
+        return venues[0].location.coordinates
     }
     
     private var canCreateEvent: Bool {
@@ -106,32 +109,69 @@ struct EventActionButtons: View {
         }
     }
     
-    private func leadToMaps(){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(fieldLocation[1]),\(fieldLocation[0])")! as URL)
+    private func leadToMaps(for venue: Venue){
+        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
     }
     
     var body: some View {
         HStack {
             
             // MARK: - Map Button
-            Button(action:{ leadToMaps() }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
-                    
-                    VStack {
+            if venues.count > 1 {
+                Menu {
+                    ForEach(venues) { v in
+                        Button(action: { leadToMaps(for: v) }) {
+                            Text(v.name)
+                        }
+                    }
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 80)
+                            .foregroundColor(Color("background"))
+                        
                         VStack {
-                            Image(systemName: "car.fill")
-                                .resizable()
-                                .frame(width: 25, height: 20)
-                            .imageScale(.large)
-                        }.frame(height: 25)
-                        Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
-                            .redacted(reason: venueState != .success ? .placeholder : [])
-                    }.foregroundStyle(Color("foreground"))
-                }
-            }.disabled(venueState != .success ? true : false)
+                            VStack {
+                                Image(systemName: "car.fill")
+                                    .resizable()
+                                    .frame(width: 25, height: 20)
+                                .imageScale(.large)
+                            }.frame(height: 25)
+                            
+                            Text("Route")
+                        }.foregroundStyle(Color("foreground"))
+                    }.redacted(reason: venueState != .success ? .placeholder : [])
+                }.disabled(venueState != .success ? true : false)
+
+            } else {
+                Button(action:{
+                    if let venue = venues.first {
+                        leadToMaps(for: venue)
+                    }
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 80)
+                            .foregroundColor(Color("background"))
+                        
+                        VStack {
+                            VStack {
+                                Image(systemName: "car.fill")
+                                    .resizable()
+                                    .frame(width: 25, height: 20)
+                                .imageScale(.large)
+                            }.frame(height: 25)
+                            
+                            if let venue = venues.first {
+                                Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
+                                    .redacted(reason: venueState != .success ? .placeholder : [])
+                            } else {
+                                Text("Venue")
+                            }
+                        }.foregroundStyle(Color("foreground"))
+                    }
+                }.disabled(venueState != .success ? true : false)
+            }
             
             // MARK: - Event Visibility
             ZStack {
@@ -226,7 +266,7 @@ struct EventActionButtons: View {
                     }.foregroundStyle(Color("foreground"))
                 }
             }.sheet(isPresented: $showMenu) {
-                EventMenu()
+                EventMenu(clubs: $clubs, organizations: $organizations)
                     .environmentObject(event)
                     .presentationDetents([.medium])
             }
@@ -237,7 +277,7 @@ struct EventActionButtons: View {
 }
 
 #Preview {
-    EventActionButtons(venue: .constant(FIELDS[0]), venueState: .constant(.pending))
+    EventActionButtons(venues: .constant(FIELDS), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
         .environmentObject(EVENTS[0])
         .environmentObject(SessionStore())
 }

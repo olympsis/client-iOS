@@ -12,12 +12,11 @@ import SwiftUI
 struct NewPickUpEvent: View {
     
     @State private var isEditing: Bool = false
-    @State private var status: LOADING_STATE = .pending
     @State private var validationStatus: NEW_EVENT_ERROR = .unexpected
-    
     @State private var hasEndTime: Bool = false
     @State private var showFieldPicker: Bool = false
     @State private var showSportsPicker: Bool = false
+    @State private var showPostViolation: Bool = false
     @State private var showCompletedToast: Bool = false
     @State private var showStartTimePicker: Bool = false
     @State private var showStopTimePicker: Bool = false
@@ -28,49 +27,13 @@ struct NewPickUpEvent: View {
     @FocusState private var titleFocus: Bool
     @FocusState private var descriptionFocus: Bool
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var manager: NewEventManager
-    @Environment(\.dismiss) var dismiss
     
+    private var uploadObserver = UploadObserver()
     private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
-    
-    private var fieldID: String {
-        guard let selectedField = manager.field else {
-            return ""
-        }
-        return selectedField.id
-    }
-    
-    private var fieldName: String {
-        guard let selectedField = manager.field else {
-            return ""
-        }
-        return selectedField.name
-    }
-    
-    private var selectedImage: String {
-        guard let img = manager.image else {
-            return manager.sport.images()[Int.random(in: 0...manager.sport.images().count-1)]
-        }
-        return img
-    }
-    
-    // filters all of the clubs and the group selections that might not have a club
-    // force returns a club since it should exist from the filter operation
-    private var selectedClubs: [Club] {
-        return manager.organizers.filter { $0.type == GROUP_TYPE.Club && $0.club != nil }.map {
-            return $0.club!
-        }
-    }
-    
-    // filters all of the organizations and the group selections that might not have a organization
-    // force returns a organization since it should exist from the filter operation
-    private var selectedOrganizations: [Organization] {
-        return manager.organizers.filter { $0.type == GROUP_TYPE.Organization && $0.organization != nil }.map {
-            return $0.organization!
-        }
-    }
-    
+
     private var setStartTime: Int {
         return Int(manager.startDate.timeIntervalSince1970)
     }
@@ -96,22 +59,30 @@ struct NewPickUpEvent: View {
     }
     
     private func handleFailure() {
-        status = .failure
+        manager.status = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            status = .pending
+            manager.status = .pending
         }
     }
     
     private func handleSuccess() {
-        status = .success
+        manager.status = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             dismiss()
         }
     }
     
+    /// Validates the new event view
+    ///
+    /// This function makes sure that we have the right data populated.
+    /// If we are missing some data we want to scroll the user down to where they need add more information
+    ///
+    /// - Parameter value: The scroll view proxy needed to scroll the user down to the specific location
+    ///
+    /// - Returns an optional `NEW_EVENT_ERROR` to let us know what went wrong
     func Validate(value: ScrollViewProxy) -> NEW_EVENT_ERROR? {
         // make sure we have a title
-        guard manager.title != "" else {
+        guard !manager.title.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noTitle
                 withAnimation {
@@ -120,8 +91,9 @@ struct NewPickUpEvent: View {
             }
             return .noTitle
         }
+        
         // make sure we have a description
-        guard manager.body != "" else {
+        guard !manager.body.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noDescription
                 withAnimation {
@@ -130,8 +102,9 @@ struct NewPickUpEvent: View {
             }
             return .noDescription
         }
-        // make sure we have a selected field
-        guard manager.field != nil else {
+        
+        // make sure we have selected venues
+        guard !manager.selectedVenueDescriptors.isEmpty else {
             Task { @MainActor in
                 validationStatus = .noSelectedField
                 withAnimation {
@@ -140,6 +113,7 @@ struct NewPickUpEvent: View {
             }
             return .noSelectedField
         }
+        
         // make sure end date is greater than start
         guard manager.endDate > manager.startDate else {
             Task { @MainActor in
@@ -153,30 +127,26 @@ struct NewPickUpEvent: View {
         return nil
     }
     
-    func CreateEvent(value: ScrollViewProxy) async {
+    func createEvent(value: ScrollViewProxy) async throws {
         guard Validate(value: value) == nil else {
             handleFailure()
             return
         }
-        status = .loading
+        manager.status = .loading
 
-        guard let dao = manager.generateNewEventData() else {
-            log.error("Failed to generate new event data")
-            handleFailure()
-            return
-        }
-        guard let id = await session.eventObserver.createEvent(event: dao) else {
+        guard let user = session.user else {
             handleFailure()
             return
         }
         
-        guard let user = session.user,
-              let event = manager.generateNewEvent(id: id, dao: dao, user: user) else {
+        let event = try await manager.createEvent(user: user)
+        
+        guard let e = event else {
+            handleFailure()
             return
         }
-        
         await MainActor.run {
-            session.events.append(event)
+            session.events.append(e)
             dismiss()
         }
     }
@@ -188,7 +158,12 @@ struct NewPickUpEvent: View {
                     ScrollView(showsIndicators: false) {
                         
                         // MARK: - Top Options
-                        NewEventTopView(showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventSkilLevel: $manager.skillLevel, eventVisibility: $manager.visibility)
+                        NewEventTopView(
+                            showVisibilityPicker: $showVisibilityPicker, 
+                            showSkillLevelPicker: $showSkillLevelPicker,
+                            eventSkilLevel: $manager.skillLevel,
+                            eventVisibility: $manager.visibility
+                        )
                         
                         // MARK: - Sport picker
                         NewEventSportsPicker(selectedSport: $manager.sport)
@@ -210,7 +185,9 @@ struct NewPickUpEvent: View {
                         }
                         .padding(.horizontal)
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
-                            EventOrganizersPickerView(selectedOrganizers: $manager.organizers, organizers: session.groups, clubs: session.clubs, organizations: session.orgs)
+                            EventOrganizersPickerView(
+                                selectedOrganizers: $manager.organizers
+                            ).environmentObject(session)
                         }
                         
                         // MARK: - Title
@@ -404,8 +381,16 @@ struct NewPickUpEvent: View {
                         
                         // MARK: - Action Button
                         VStack(alignment: .center){
-                            Button(action: { Task { await CreateEvent(value: value) } }) {
-                                LoadingButton(text: "Create", width: 150, status: $status)
+                            Button(action: { Task {
+                                do {
+                                    try await createEvent(value: value)
+                                } catch MediaUploadError.innapropriateContent {
+                                    self.showPostViolation.toggle()
+                                } catch MediaUploadError.unexpected(let reason) {
+                                    log.error("Failed to create event: \(reason)")
+                                }
+                            } }) {
+                                LoadingButton(text: "Create", width: 150, status: $manager.status)
                                     .padding(.horizontal, 40)
                             }
                         }.padding(.vertical, 50)
@@ -426,8 +411,13 @@ struct NewPickUpEvent: View {
                         guard let select = session.selectedGroup else {
                             return
                         }
-                        manager.organizers.append(select)
+                        if !manager.organizers.contains(where: { $0.id == select.id }) {
+                            manager.organizers.append(select)
+                        }
                     }
+                    .sheet(isPresented: $showPostViolation, content: {
+                        PostMediaViolation()
+                    })
                 }
             }.navigationTitle("Pick Up")
                 .navigationBarTitleDisplayMode(.inline)

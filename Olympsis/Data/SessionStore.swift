@@ -107,7 +107,6 @@ class SessionStore: ObservableObject {
         }
     }
 
-    
     @MainActor
     func CheckIn() async {
         do {
@@ -187,6 +186,198 @@ class SessionStore: ObservableObject {
             self.venues = resp.venues ?? [Venue]()
             self.events = resp.events ?? [Event]()
         }
+    }
+    
+    /// We want to dynamically fetch the clubs and organizations for each event
+    ///
+    /// We will fetch the data as needed. If we have it in local storage we fetch it form there.
+    /// If we don't have it in local storage we fetch it remotely.
+    /// - Parameter organizers: the event's organizers
+    /// - Returns: an array of clubs and an array of organizations
+    func fetchOrganizers(in organizers: [Organizer]) async -> ([Club], [Organization]) {
+        var clubs = [Club]()
+        var orgs = [Organization]()
+        
+        for organizer in organizers {
+            if organizer.type == "club" {
+                if let club = await fetchClub(id: organizer.id) {
+                    clubs.append(club)
+                }
+            } else {
+                if let org = await fetchOrg(id: organizer.id) {
+                    orgs.append(org)
+                }
+            }
+        }
+        
+        return (clubs, orgs)
+    }
+    
+    /// We want to dynamically fetch the venue information to reduce the amount of data we're holding in memory
+    ///
+    /// We try to fetch the venue locally in memory if we have it stored and if it's an Olympsis vetted location.
+    /// If we do not have the venue in memory we will try to fetch it remotely.
+    /// If that fails then we will have to display an error.
+    ///
+    /// If the venue is not Olympsis vetted we will simply just open maps at the provided coordinates
+    func fetchVenues(in descriptors: [VenueDescriptor]) async -> [Venue] {
+        var fetchedVenues: [Venue] = []
+        
+        for desc in descriptors {
+            if let id = desc.id {
+                if let venue = await fetchVenueLocal(id: id) {
+                    fetchedVenues.append(venue)
+                } else {
+                    if let venue = await fetchVenueRemote(id: id) {
+                        fetchedVenues.append(venue)
+                    }
+                }
+            } else {
+                // External Venue
+                if let name = desc.name,
+                   let cod = desc.location,
+                   let loc = await desc.geocode()?.first,
+                   let city = loc.locality,
+                   let state = loc.administrativeArea,
+                   let country = loc.country {
+                    fetchedVenues.append(
+                        Venue(
+                            name: name,
+                            location: cod,
+                            city: city,
+                            state: state,
+                            country: country
+                        )
+                    )
+                }
+            }
+        }
+        
+        return fetchedVenues
+    }
+    
+    /// Fetches the venue
+    ///
+    /// Wether the venue is held locally in memory or remotely on the server we try to fetch it
+    /// - Parameter id: unique identifier for the venue
+    /// - Returns an `Venue` optional
+    func fetchVenue(id: String) async -> Venue? {
+        guard let venue = await fetchVenueLocal(id: id) else {
+            guard let venue = await fetchVenueRemote(id: id) else {
+                return nil
+            }
+            return venue
+        }
+        return venue
+    }
+    
+    /// Fetch the venue from the data we have in memory
+    ///
+    /// Tries to fetch club from session store memory
+    /// - Parameter id: unique identifier for the venue
+    /// - Returns: a `Venue` optional object in case we failt to find venue
+    func fetchVenueLocal(id: String) async -> Venue? {
+        guard let venue = venues.first(where: { $0.id == id }) else {
+            log.error("Failed to find venue locally")
+            return nil
+        }
+        return venue
+    }
+    
+    /// Fetch the venue from the server
+    ///
+    /// Makes an http call to retrieve venue from the server
+    /// - Parameter id: unique identifier for the venue
+    /// - Returns: a `Venue` optinal object in case the server fails to find venue
+    func fetchVenueRemote(id: String) async -> Venue? {
+        guard let venue = await fieldObserver.fetchVenue(id: id) else {
+            log.error("Failed to fetch venue data remotely")
+            return nil
+        }
+        venues.append(venue)
+        return venue
+    }
+    
+    /// Fetches the club
+    ///
+    /// Wether the club is held locally in memory or remotely on the server we try to fetch it
+    /// - Parameter id: unique identifier for the club
+    /// - Returns an `Club` optional
+    func fetchClub(id: String) async -> Club? {
+        guard let club = await fetchClubLocal(id: id) else {
+            guard let club = await fetchClubRemote(id: id) else {
+                return nil
+            }
+            return club
+        }
+        return club
+    }
+    
+    /// Fetch the club from the data we have in memory
+    ///
+    /// Tries to fetch club from session store memory
+    /// - Parameter id: unique identifier for the club
+    /// - Returns: a `Club` optional object in case the server fails to find club
+    func fetchClubLocal(id: String) async -> Club? {
+        guard let club = clubs.first(where: { $0.id == id }) else {
+            log.error("Failed to find club locally")
+            return nil
+        }
+        return club
+    }
+    
+    /// Fetch the club from the server
+    ///
+    /// Makes an http call to retrieve club from the server
+    /// - Parameter id: unique identifier for the club
+    /// - Returns: a `Club` optinal object in case the server fails to find the org
+    func fetchClubRemote(id: String) async -> Club? {
+        guard let club = await clubObserver.getClub(id: id) else {
+            log.error("Failed to find club data remotely")
+            return nil
+        }
+        return club
+    }
+    
+    /// Fetches the organization
+    ///
+    /// Wether the organization is held locally in memory or remotely on the server we try to fetch it
+    /// - Parameter id: unique identifier for the organization
+    /// - Returns an `Organization` optional
+    func fetchOrg(id: String) async -> Organization? {
+        guard let org = await fetchOrgLocal(id: id) else {
+            guard let org = await fetchOrgRemote(id: id) else {
+                return nil
+            }
+            return org
+        }
+        return org
+    }
+    
+    /// Fetch the venue from the data we have in memory
+    ///
+    /// Tries to fetch venue from the session store memory
+    /// - Parameter id: unique identifier for the organization
+    /// - Returns: an `Organization` optional object in case the server fails to find the org
+    func fetchOrgLocal(id: String) async -> Organization? {
+        guard let org = orgs.first(where: { $0.id == id }) else {
+            log.error("Failed to find organization locally")
+            return nil
+        }
+        return org
+    }
+    
+    /// Fetch the organization from the server
+    ///
+    /// Makes http call to retrieve organization from the server
+    /// - Parameter id: unique identifier for the organization
+    /// - Returns: an`Organization` optinal object in case the server fails to find the org
+    func fetchOrgRemote(id: String) async -> Organization? {
+        guard let org = await orgObserver.getOrganization(id: id) else {
+            log.error("Failed to find organization data remotely")
+            return nil
+        }
+        return org
     }
     
     /// Logout user from application
