@@ -248,7 +248,12 @@ struct EventView: View {
                             .environmentObject(event)
                         
                         // MARK: - Action Buttons
-                        EventActionButtons(venues: $venues, venueState: $venueState, clubs: $clubs, organizations: $organizations)
+                        EventActionButtons(
+                            venues: $venues, 
+                            venueState: $venueState,
+                            clubs: $clubs,
+                            organizations: $organizations
+                        )
                             .id(5)
                             .environmentObject(event)
                         

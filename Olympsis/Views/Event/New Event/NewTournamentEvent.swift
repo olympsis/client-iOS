@@ -170,7 +170,16 @@ struct NewTournamentEvent: View {
                     ScrollView(showsIndicators: false) {
                         
                         // MARK: - Top Options
-                        NewEventTopView(showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventSkilLevel: $manager.skillLevel, eventVisibility: $manager.visibility)
+                        NewEventTopView(
+                            showVisibilityPicker: $showVisibilityPicker, 
+                            showSkillLevelPicker: $showSkillLevelPicker,
+                            eventSkilLevel: $manager.skillLevel,
+                            eventVisibility: $manager.visibility
+                        )
+                        
+                        // MARK: - Sport picker
+                        NewEventSportsPicker(selectedSport: $manager.sport)
+                            .padding(.horizontal)
                         
                         // MARK: - Organizers Picker
                         VStack(alignment: .leading){
@@ -228,31 +237,6 @@ struct NewTournamentEvent: View {
                         }.padding(.vertical)
                         .padding(.horizontal)
                         .id(2)
-                        
-                        // MARK: - Sports picker
-                        VStack(alignment: .leading){
-                            Text("Sport")
-                                .font(.title3)
-                                .bold()
-                            Text("The sport you're going to play")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                            
-                            Picker(selection: $manager.sport, label: Text("")) {
-                                ForEach(SPORTS.allCases, id: \.rawValue) { sport in
-                                    Text(sport.rawValue.prefix(1).capitalized + sport.rawValue.dropFirst()).tag(sport)
-                                }
-                            }.modifier(InputField())
-                                
-                        }.padding(.top)
-                            .padding(.horizontal)
-                            .onChange(of: manager.sport, { _, newValue in
-                                manager.image = newValue.images().first
-                            })
-                            .onTapGesture {
-                                titleFocus = false
-                                descriptionFocus = false
-                            }
                         
                         // MARK: - Venue Picker
                         VStack(alignment: .leading){
@@ -395,8 +379,7 @@ struct NewTournamentEvent: View {
                         
                         // MARK: - Background Image picker
                         EventImagePicker()
-                            .padding(.top)
-                            .padding(.horizontal)
+                            .padding([.top, .horizontal])
                             .environmentObject(manager)
                         
                         // MARK: - External Link
@@ -456,7 +439,9 @@ struct NewTournamentEvent: View {
                         guard let select = session.selectedGroup else {
                             return
                         }
-                        manager.organizers.append(select)
+                        if !manager.organizers.contains(where: { $0.id == select.id }) {
+                            manager.organizers.append(select)
+                        }
                     }
                     .sheet(isPresented: $showPostViolation, content: {
                         PostMediaViolation()
