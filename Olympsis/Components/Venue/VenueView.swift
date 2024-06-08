@@ -7,6 +7,7 @@
 
 import TipKit
 import SwiftUI
+import Kingfisher
 import CoreLocation
 
 struct VenueView: View {
@@ -84,38 +85,29 @@ struct VenueView: View {
 struct VenueImages: View {
     
     @State var venue: Venue
-    
+    var images: [URL] {
+        var arr = [URL]()
+        venue.images.forEach { img in
+            if let url = generateImageURL(img) {
+                arr.append(url)
+            }
+        }
+        return arr
+    }
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(venue.images, id: \.self) { i in
-                    AsyncImage(url: URL(string:  GenerateImageURL(i))){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .frame(width: 220, height: 300, alignment: .center)
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            
-                            } else if phase.error != nil {
-                                ZStack {
-                                    Color(.gray) // Indicates an error.
-                                    .frame(width: 220, height: 300, alignment: .center)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    Image(systemName: "exclamationmark.circle")
-                                        .foregroundColor(.white)
-                                }
-                            } else {
-                                ZStack {
-                                    Color(.gray) // Indicates an error.
-                                        .opacity(0.8)
-                                    .frame(width: 220, height: 300, alignment: .center)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    ProgressView()
-                                }
-                            }
-                    }.padding(.leading)
+                ForEach(images, id: \.self) { i in
+                    KFImage(i)
+                        .placeholder({
+                            ImageLoadingView()
+                        })
+                        .resizable()
+                        .frame(width: 220, height: 300, alignment: .center)
+                        .aspectRatio(contentMode: .fill)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding(.leading)
                 }
             }
         }

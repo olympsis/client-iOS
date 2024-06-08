@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-
-import SwiftUI
+import Kingfisher
 
 struct VenueListItem: View {
     
@@ -28,26 +27,19 @@ struct VenueListItem: View {
         VStack {
             //MARK: - ASYNC Image
             VStack {
-                AsyncImage(url: URL(string: GenerateImageURL(venue.images[0]))){ phase in
-                    if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                    } else if phase.error != nil {
-                        ZStack {
-                            Color.gray // Indicates an error.
-                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                            Image(systemName: "exclamationmark.circle")
-                        }
-                    } else {
-                        ZStack {
-                            Color.gray // Acts as a placeholder.
-                                .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
-                            ProgressView()
-                        }
-                    }
+                if let img = venue.images.first,
+                   let url = generateImageURL(img) {
+                    KFImage(url)
+                        .placeholder({
+                            ImageLoadingView()
+                        })
+                        .resizable()
+                        .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                        .aspectRatio(contentMode: .fill)
+                        .clipped()
+                } else {
+                    ImageLoadingFailedView()
+                        .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
                 }
             }.frame(width: SCREEN_WIDTH, height: 300, alignment: .center)
             
