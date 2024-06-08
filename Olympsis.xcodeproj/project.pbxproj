@@ -39,6 +39,8 @@
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
 		5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueInfo.swift */; };
 		5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */; };
+		5D2F19A12C13E38B00D98222 /* ImageLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */; };
+		5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -388,6 +390,8 @@
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* VenueInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueInfo.swift; sourceTree = "<group>"; };
 		5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullImageViewer.swift; sourceTree = "<group>"; };
+		5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingView.swift; sourceTree = "<group>"; };
+		5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingFailedView.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -727,6 +731,15 @@
 			path = Groups;
 			sourceTree = "<group>";
 		};
+		5D2F199F2C13E37300D98222 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */,
+				5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 		5D3FFAA12BAD01C100B54E02 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -994,6 +1007,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5D2F199F2C13E37300D98222 /* Image */,
 				5D666A972BF7C832001EE754 /* MediaPicker */,
 				5D666A872BF66477001EE754 /* ImageCrop */,
 				5D9F693B2BB663F60057D205 /* Profile */,
@@ -1782,6 +1796,7 @@
 				5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */,
 				9A35370429289396005EC806 /* ParticipantView.swift in Sources */,
 				5D2062582B142CCF00A9D408 /* OrgManagersView.swift in Sources */,
+				5D2F19A12C13E38B00D98222 /* ImageLoadingView.swift in Sources */,
 				BE9C45FF29E36DB0008EA591 /* SecureStore.swift in Sources */,
 				5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */,
 				5DC468C42B9E1A4C0023353D /* BugReportView.swift in Sources */,
@@ -1902,6 +1917,7 @@
 				5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */,
 				5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */,
 				5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */,
+				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
 				5D6C013A2C05B886006A264C /* LocationPicker.swift in Sources */,

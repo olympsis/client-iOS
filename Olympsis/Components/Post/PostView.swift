@@ -274,7 +274,7 @@ struct PostHeader: View {
             }
         }
         .frame(height: 35)
-        .padding(.horizontal, 5)
+        .padding(.horizontal, 10)
         .task {
             self.pinned = isPinned()
         }
@@ -309,12 +309,7 @@ struct PostBody: View {
                     ForEach(imagesURL.indices, id: \.self){ i in
                         KFImage(imagesURL[i])
                             .placeholder({
-                                ZStack {
-                                    Rectangle()
-                                        .foregroundColor(.gray)
-                                        .opacity(0.3)
-                                    ProgressView()
-                                }
+                                ImageLoadingView()
                             })
                             .resizable(resizingMode: .stretch)
                             .scaledToFill()
@@ -322,9 +317,22 @@ struct PostBody: View {
                             .tag(i)
                     }
                 }
-                .indexViewStyle(.page(backgroundDisplayMode: .interactive))
-                .tabViewStyle(.page(indexDisplayMode: .always))
+                .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: SCREEN_WIDTH)
+                
+                HStack {
+                    Spacer()
+                    ForEach(0..<imagesURL.count, id: \.self) { index in
+                        Circle()
+                            .frame(width: index == index ? 5 : 8,
+                                   height: index == index ? 5 : 8)
+                            .foregroundColor(index == self.index ? .blue : .gray)
+                            .scaleEffect(index == index ? 1.2 : 1.0)
+                            .animation(.easeInOut, value: index)
+                    }
+                    Spacer()
+                }
+                
             }
             
             HStack {
@@ -466,23 +474,23 @@ struct PostFooter: View {
 
 #Preview("Header") {
     PostHeader(pinned: .constant(false), showMenu: .constant(false))
-        .environmentObject(POSTS[0])
+        .environmentObject(POSTS[1])
         .environmentObject(SessionStore())
 }
 
 #Preview("Body") {
     PostBody()
-        .environmentObject(POSTS[0])
+        .environmentObject(POSTS[1])
 }
 
 #Preview("Footer") {
     PostFooter(showComments: .constant(false))
-        .environmentObject(POSTS[0])
+        .environmentObject(POSTS[1])
         .environmentObject(SessionStore())
 }
 
 #Preview {
-    PostView(post: POSTS[0])
+    PostView(post: POSTS[1])
         .environmentObject(SessionStore())
         .environmentObject(FeedViewModel())
 }
