@@ -21,7 +21,6 @@ struct UserDataCreation: View {
     
     @Binding var currentView: AuthTab
     @FocusState private var isFocused: Bool
-    @State private var username: String = ""
     
     @State private var selectedSports = [SPORTS]()
     @State private var status: LOADING_STATE = .pending
@@ -88,7 +87,7 @@ struct UserDataCreation: View {
         continueStatus = .loading
         let sports = selectedSports.map({ return $0.rawValue })
         do {
-            guard let data = try await userObserver.createUserData(username: username, sports: sports) else {
+            guard let data = try await userObserver.createUserData(username: viewModel.debouncedSearchText, sports: sports) else {
                 handleFailure()
                 return
             }
@@ -104,14 +103,14 @@ struct UserDataCreation: View {
     /// Checks the backend to see if the username is available
     func isUsernameAvailable() async -> Bool {
         do {
-            guard validateInput(username) else {
+            guard validateInput(viewModel.debouncedSearchText) else {
                 handleInvalidError()
                 return false
             }
             
             status = .loading
             
-            let available = try await self.userObserver.UsernameAvailability(name: username)
+            let available = try await self.userObserver.UsernameAvailability(name: viewModel.debouncedSearchText)
             guard available == true else {
                 handleUnavailableError()
                 return false
@@ -161,12 +160,14 @@ struct UserDataCreation: View {
                             .padding(.horizontal)
                             .autocorrectionDisabled(true)
                             .textInputAutocapitalization(.never)
-                            .onChange(of: viewModel.debouncedSearchText) { _, _ in
-                                Task {
-                                    status = .pending
-                                    uStatus = .pending
-                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                    _ = await isUsernameAvailable()
+                            .onChange(of: viewModel.debouncedSearchText) { _, newValue in
+                                if !newValue.isEmpty {
+                                    Task {
+                                        status = .pending
+                                        uStatus = .pending
+                                        _ = await isUsernameAvailable()
+                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                    }
                                 }
                             }
                             
@@ -289,7 +290,7 @@ class UsernameSearchViewModel: ObservableObject {
 
    init() {
        $searchText
-           .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+           .debounce(for: .milliseconds(1000), scheduler: RunLoop.main)
            .removeDuplicates()
            .assign(to: \.debouncedSearchText, on: self)
            .store(in: &cancellables)
