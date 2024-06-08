@@ -7,6 +7,7 @@
 
 import os
 import SwiftUI
+import Combine
 
 struct UserDataCreation: View {
     
@@ -24,7 +25,10 @@ struct UserDataCreation: View {
     
     @State private var selectedSports = [SPORTS]()
     @State private var status: LOADING_STATE = .pending
+    @State private var continueStatus: LOADING_STATE = .pending
     @State private var uStatus: USERNAME_STATUS = .pending
+    
+    @StateObject private var viewModel = UsernameSearchViewModel()
     
     @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
@@ -61,14 +65,14 @@ struct UserDataCreation: View {
     }
     
     func handleFailure() {
-        status = .failure
+        continueStatus = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            status = .pending
+            continueStatus = .pending
         }
     }
     
     func handleSuccess() {
-        status = .success
+        continueStatus = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             authType = nil
             authStatus = .authenticated
@@ -81,7 +85,7 @@ struct UserDataCreation: View {
             return
         }
         
-        status = .loading
+        continueStatus = .loading
         let sports = selectedSports.map({ return $0.rawValue })
         do {
             guard let data = try await userObserver.createUserData(username: username, sports: sports) else {
@@ -152,20 +156,18 @@ struct UserDataCreation: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(Color("background"))
-                        TextField("", text: $username)
+                        TextField("", text: $viewModel.searchText)
                             .focused($isFocused)
                             .padding(.horizontal)
                             .autocorrectionDisabled(true)
                             .textInputAutocapitalization(.never)
-                            .submitLabel(.search)
-                            .onSubmit {
-                                Task(priority: .high) {
-                                    await isUsernameAvailable()
+                            .onChange(of: viewModel.debouncedSearchText) { _, _ in
+                                Task {
+                                    status = .pending
+                                    uStatus = .pending
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                    _ = await isUsernameAvailable()
                                 }
-                            }
-                            .onChange(of: username) { _, _ in
-                                status = .pending
-                                uStatus = .pending
                             }
                             
                     }.frame(height: 45)
@@ -263,7 +265,7 @@ struct UserDataCreation: View {
             
             // action button
             Button(action: { Task { await createUserData() } }){
-                LoadingButton(text: "Continue", status: $status)
+                LoadingButton(text: "Continue", status: $continueStatus)
             }
             .padding(.bottom)
             .disabled(!(status == .success && uStatus == .available))
@@ -275,4 +277,21 @@ struct PickUsername_Previews: PreviewProvider {
     static var previews: some View {
         UserDataCreation(currentView: .constant(.username))
     }
+}
+
+
+class UsernameSearchViewModel: ObservableObject {
+    
+    @Published var searchText: String = ""
+    @Published var debouncedSearchText: String = ""
+
+   private var cancellables = Set<AnyCancellable>()
+
+   init() {
+       $searchText
+           .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+           .removeDuplicates()
+           .assign(to: \.debouncedSearchText, on: self)
+           .store(in: &cancellables)
+   }
 }
