@@ -5,6 +5,7 @@
 //  Created by Joel on 11/25/23.
 //
 
+import os
 import SwiftUI
 
 struct GroupView: View {
@@ -18,6 +19,9 @@ struct GroupView: View {
     @State private var groupState: LOADING_STATE = .pending
     
     @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var notificationManager: NotificationManager
+    
+    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
     
     func retryFetchingClubData() {
         groupState = .loading
@@ -33,6 +37,9 @@ struct GroupView: View {
                     VStack {
                         if session.selectedGroup != nil {
                             GroupFeed(showNewPost: $showNewPost)
+                                .task {
+                                    await notificationManager.requestAuthorization()
+                                }
                         } else {
                             ClubsList()
                         }

@@ -5,6 +5,8 @@
 //  Created by Joel Joseph on 10/20/22.
 //
 
+import os
+import SwiftUI
 import Foundation
 import SwiftToast
 import NotificationCenter
@@ -17,22 +19,41 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     @Published var inMessageView: Bool = false
     @Published var toastContent: Toast = Toast(style: .newEvent, actor: "", title: "", message: "")
     
+    @AppStorage("deviceToken") private var token: String?
+    private var userObserver = UserObserver()
+    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
+    
     override init() {
         super.init()
         center.delegate = self
     }
     
     // Request alert sound and badge notifications
-    func requestAuthorization() async throws {
-        await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
-        _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay]) // 
+    func requestAuthorization() async {
+        do {
+            guard !(try await checkAuthorizationStatus()) else {
+                return
+            }
+            await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
+            _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay])
+            
+            guard try await checkAuthorizationStatus(),
+                let t = token else {
+                return
+            }
+            _ = await userObserver.UpdateUserData(update: UserDao(deviceToken: t))
+        } catch {
+            log.error("Failed to request authorization: \(error.localizedDescription)")
+        }
     }
 
     
     // checks and makes sure all the notification authorizations are there
     func checkAuthorizationStatus() async throws -> Bool {
         let status =  await center.notificationSettings()
-        guard (status.authorizationStatus == .authorized) || (status.authorizationStatus == .provisional) else { return false }
+        guard (status.authorizationStatus == .authorized) ||
+                (status.authorizationStatus == .provisional) ||
+                (status.authorizationStatus == .denied) else { return false }
         return true
     }
     
@@ -62,11 +83,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Handle the notification when the app is in the foreground.
-        // You can customize the behavior here, like showing an alert or playing a sound.
-        
-        // By default, no visual or audible alert is shown to the user for the notification.
-        // You can change this behavior by specifying appropriate options in the completionHandler.
         
         let userInfo = notification.request.content.userInfo
         guard let type = userInfo["type"] as? String else {

@@ -24,7 +24,7 @@ struct Notifications: View {
     @EnvironmentObject private var sessionStore: SessionStore
     func handleAllow() async {
         do {
-            try await notifications.requestAuthorization()
+            await notifications.requestAuthorization()
             guard let tk = deviceToken else {
                 status = .failure
                 return

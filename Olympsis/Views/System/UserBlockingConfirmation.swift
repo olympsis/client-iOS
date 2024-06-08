@@ -83,6 +83,9 @@ struct UserBlockingConfirmation: View {
                 Group {
                     if let url = imageURL {
                         KFImage(url)
+                            .placeholder({
+                                ImageLoadingView()
+                            })
                             .resizable()
                             .clipShape(Circle())
                             .scaledToFill()

@@ -45,6 +45,7 @@
 		5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A62C14173A00D98222 /* ClubDefaultBadge.swift */; };
 		5D2F19A92C14174400D98222 /* OrgDefaultBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */; };
 		5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */; };
+		5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -397,6 +398,7 @@
 		5D2F19A62C14173A00D98222 /* ClubDefaultBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDefaultBadge.swift; sourceTree = "<group>"; };
 		5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgDefaultBadge.swift; sourceTree = "<group>"; };
 		5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBadgeLoadingView.swift; sourceTree = "<group>"; };
+		5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMediaViolation.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -982,6 +984,7 @@
 				5DF945AD2BFAAFAD00BE3C63 /* PostMediaViolation.swift */,
 				5DF945B12BFC706100BE3C63 /* UserBlockingConfirmation.swift */,
 				5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */,
+				5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1783,6 +1786,7 @@
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */,
 				5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */,
+				5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,

@@ -15,9 +15,6 @@ import CoreLocation
 /// App session data, fetched every session, stored in memory until app is closed
 class SessionStore: ObservableObject {
     
-    private let secureStore = SecureStore()
-    private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
-    
     /// Global variable to keep track of the first lcation recieved when the app is opened.
     /// We have to wait on the gps system to give us a location. Sometimes this may take longer than the startup sequence.
     /// So we load in data from a fall back location until we get the location from the gps module.
@@ -73,7 +70,7 @@ class SessionStore: ObservableObject {
     @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
-    var isRegisterComplete: Bool {
+    private var isRegisterComplete: Bool {
         
         let user = cacheService.fetchUser()
         guard user?.username != nil,
@@ -83,6 +80,8 @@ class SessionStore: ObservableObject {
         }
         return true
     }
+    private let secureStore = SecureStore()
+    private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     init() {
         let notificationCenter = UNUserNotificationCenter.current()
@@ -106,7 +105,7 @@ class SessionStore: ObservableObject {
             }
         }
     }
-
+    
     @MainActor
     func CheckIn() async {
         do {
