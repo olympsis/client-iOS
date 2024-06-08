@@ -160,8 +160,17 @@ struct UserDataCreation: View {
                             .padding(.horizontal)
                             .autocorrectionDisabled(true)
                             .textInputAutocapitalization(.never)
+                            .submitLabel(.search)
+                            .onSubmit {
+                                Task {
+                                    status = .pending
+                                    uStatus = .pending
+                                    _ = await isUsernameAvailable()
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                }
+                            }
                             .onChange(of: viewModel.debouncedSearchText) { _, newValue in
-                                if !newValue.isEmpty {
+                                if !newValue.isEmpty && continueStatus != .loading {
                                     Task {
                                         status = .pending
                                         uStatus = .pending
@@ -170,9 +179,11 @@ struct UserDataCreation: View {
                                     }
                                 }
                             }
+                            .disabled(status == .loading || continueStatus == .loading)
                             
-                    }.frame(height: 45)
-                        .padding(.horizontal)
+                    }
+                    .frame(height: 45)
+                    .padding(.horizontal)
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -269,7 +280,7 @@ struct UserDataCreation: View {
                 LoadingButton(text: "Continue", status: $continueStatus)
             }
             .padding(.bottom)
-            .disabled(!(status == .success && uStatus == .available))
+            .disabled(!(status == .success && uStatus == .available) || continueStatus == .loading)
         }
     }
 }
