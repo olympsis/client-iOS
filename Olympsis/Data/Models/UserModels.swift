@@ -7,42 +7,6 @@
 
 import Foundation
 
-struct User: Codable {
-    let uuid: String?
-    let username: String?
-    let bio: String?
-    let imageURL: String?
-    let visibility: String?
-    let clubs: [String]?
-    var organizations: [String]?
-    let sports: [String]?
-    let deviceToken: String?
-
-    init(uuid: String?=nil, username: String?=nil, bio: String?=nil, imageURL: String?=nil, visibility: String?=nil, clubs: [String]?=nil, organizations: [String]?=nil, sports: [String]?=nil, deviceToken: String? = nil) {
-        self.uuid = uuid
-        self.username = username
-        self.bio = bio
-        self.imageURL = imageURL
-        self.visibility = visibility
-        self.clubs = clubs
-        self.organizations = organizations
-        self.sports = sports
-        self.deviceToken = deviceToken
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case uuid
-        case username
-        case bio
-        case imageURL = "image_url"
-        case visibility
-        case clubs
-        case organizations
-        case sports
-        case deviceToken = "device_token"
-    }
-}
-
 struct UserDao: Codable {
     let uuid: String?
     let username: String?
@@ -55,6 +19,8 @@ struct UserDao: Codable {
     var acceptedEULA: Bool?
     var hasOnboarded: Bool?
     var blockedUsers: [String]?
+    var reportedPosts: [String]?
+    var reportedEvents: [String]?
     var hometown: [Double]?
     let deviceToken: String?
 
@@ -70,6 +36,8 @@ struct UserDao: Codable {
         acceptedEULA: Bool?=nil,
         hasOnboarded: Bool?=nil,
         blockedUsers: [String]?=nil,
+        reportedPosts: [String]?=nil,
+        reportedEvents: [String]?=nil,
         hometown: [Double]?=nil,
         deviceToken: String? = nil
     ){
@@ -84,6 +52,8 @@ struct UserDao: Codable {
         self.acceptedEULA = acceptedEULA
         self.hasOnboarded = hasOnboarded
         self.blockedUsers = blockedUsers
+        self.reportedPosts = reportedPosts
+        self.reportedEvents = reportedEvents
         self.hometown = hometown
         self.deviceToken = deviceToken
     }
@@ -100,6 +70,8 @@ struct UserDao: Codable {
         case acceptedEULA = "accepted_eula"
         case hasOnboarded = "has_onboarded"
         case blockedUsers = "blocked_users"
+        case reportedPosts = "report_posts"
+        case reportedEvents = "reported_events"
         case hometown
         case deviceToken = "device_token"
     }
@@ -127,6 +99,8 @@ struct UserData: Codable, Hashable {
     var acceptedEULA: Bool?
     var hasOnboarded: Bool?
     var blockedUsers: [String]?
+    var reportedPosts: [String]?
+    var reportedEvents: [String]?
     var hometown: [Double]?
     var deviceToken: String?
     
@@ -152,6 +126,8 @@ struct UserData: Codable, Hashable {
         case acceptedEULA = "accepted_eula"
         case hasOnboarded = "has_onboarded"
         case blockedUsers = "blocked_users"
+        case reportedPosts = "report_posts"
+        case reportedEvents = "reported_events"
         case hometown
         case deviceToken = "device_token"
     }

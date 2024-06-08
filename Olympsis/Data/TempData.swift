@@ -133,10 +133,6 @@ let USERS_DATA = [
     UserData(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil, deviceToken: nil)
 ]
 
-let USERS = [
-    User(uuid: "", username: "", bio: "", imageURL: "", visibility: "", sports: nil, deviceToken: "")
-]
-
 let ANNOUCEMENTS = [
     Announcement(id: "0", image: "https://storage.googleapis.com/olympsis-feed-images/89b037d3-e4d6-4e65-86a4-27ef09983489.jpg"),
     Announcement(id: "1", image: "https://storage.googleapis.com/olympsis-feed-images/072bb74c-bebe-449d-9d1f-efe26b974081.jpg")
