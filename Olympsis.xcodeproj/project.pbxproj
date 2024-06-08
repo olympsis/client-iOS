@@ -42,6 +42,9 @@
 		5D2F19A12C13E38B00D98222 /* ImageLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */; };
 		5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */; };
 		5D2F19A52C13F4E600D98222 /* AccountDeleteSignin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A42C13F4E600D98222 /* AccountDeleteSignin.swift */; };
+		5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A62C14173A00D98222 /* ClubDefaultBadge.swift */; };
+		5D2F19A92C14174400D98222 /* OrgDefaultBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */; };
+		5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -391,6 +394,9 @@
 		5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingView.swift; sourceTree = "<group>"; };
 		5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingFailedView.swift; sourceTree = "<group>"; };
 		5D2F19A42C13F4E600D98222 /* AccountDeleteSignin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeleteSignin.swift; sourceTree = "<group>"; };
+		5D2F19A62C14173A00D98222 /* ClubDefaultBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDefaultBadge.swift; sourceTree = "<group>"; };
+		5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgDefaultBadge.swift; sourceTree = "<group>"; };
+		5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBadgeLoadingView.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -732,6 +738,9 @@
 			children = (
 				5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */,
 				5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */,
+				5D2F19A62C14173A00D98222 /* ClubDefaultBadge.swift */,
+				5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */,
+				5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1685,6 +1694,7 @@
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
+				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
@@ -1727,6 +1737,7 @@
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
+				5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */,
 				5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
@@ -1786,6 +1797,7 @@
 				5F00FEA42A4123FB0019E9F7 /* Location.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
+				5D2F19A92C14174400D98222 /* OrgDefaultBadge.swift in Sources */,
 				5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */,
 				9A35370429289396005EC806 /* ParticipantView.swift in Sources */,
 				5D2062582B142CCF00A9D408 /* OrgManagersView.swift in Sources */,

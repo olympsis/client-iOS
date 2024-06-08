@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 /// A toolbar content generator to generate different toolbars based on wether the user has any clubs and organizations.
 /// Helps manages how to transition between these states and keep track of them all.
@@ -100,6 +101,7 @@ struct GroupToolbar: ToolbarContent {
                                         .foregroundStyle(Color("background"))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
+                                        .imageScale(.medium)
                                 }
                             }
                         }
@@ -111,23 +113,24 @@ struct GroupToolbar: ToolbarContent {
                                         .foregroundStyle(Color("background"))
                                     Image(systemName: "bubble.left.and.bubble.right")
                                         .foregroundStyle(Color("foreground"))
+                                        .imageScale(.medium)
                                 }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
-                                AsyncImage(url: URL(string: GenerateImageURL(group.club?.logo ?? "https://api.olympsis.com"))){ image in
-                                    image.resizable()
-                                        .clipShape(Circle())
+                                if let logo = group.club?.logo,
+                                   let url = generateImageURL(logo) {
+                                    KFImage(url)
+                                        .placeholder({
+                                            GroupBadgeLoadingView()
+                                        })
+                                        .resizable()
                                         .frame(width: 40, height: 40)
-                                        .aspectRatio(contentMode: .fill)
+                                        .scaledToFill()
                                         .clipped()
-                                        
-                                } placeholder: {
-                                    Circle()
-                                        .foregroundColor(.gray)
-                                        .opacity(0.3)
-                                        .frame(width: 40)
+                                } else {
+                                    ClubDefaultBadge()
                                 }
                             }
                         }
@@ -157,6 +160,7 @@ struct GroupToolbar: ToolbarContent {
                                         .foregroundStyle(Color("background"))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
+                                        .imageScale(.medium)
                                 }
                             }
                         }
@@ -168,23 +172,24 @@ struct GroupToolbar: ToolbarContent {
                                         .foregroundStyle(Color("background"))
                                     Image(systemName: "bubble.left.and.bubble.right")
                                         .foregroundStyle(Color("foreground"))
+                                        .imageScale(.medium)
                                 }
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
-                                AsyncImage(url: URL(string: GenerateImageURL(group.organization?.logo ?? "https://api.olympsis.com"))){ image in
-                                    image.resizable()
-                                        .clipShape(Circle())
+                                if let logo = group.organization?.logo,
+                                   let url = generateImageURL(logo) {
+                                    KFImage(url)
+                                        .placeholder({
+                                            GroupBadgeLoadingView()
+                                        })
+                                        .resizable()
                                         .frame(width: 40, height: 40)
-                                        .aspectRatio(contentMode: .fill)
+                                        .scaledToFill()
                                         .clipped()
-                                        
-                                } placeholder: {
-                                    Circle()
-                                        .foregroundColor(.gray)
-                                        .opacity(0.3)
-                                        .frame(width: 40)
+                                } else {
+                                    OrgDefaultBadge()
                                 }
                             }
                         }
