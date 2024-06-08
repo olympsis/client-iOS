@@ -263,7 +263,7 @@ struct UserDataCreation: View {
             
             // action button
             Button(action: { Task { await createUserData() } }){
-                SimpleButtonLabel(text: "continue")
+                LoadingButton(text: "Continue", status: $status)
             }
             .padding(.bottom)
             .disabled(!(status == .success && uStatus == .available))

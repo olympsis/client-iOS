@@ -65,7 +65,7 @@ struct ProfileMenu: View {
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
                 .fullScreenCover(isPresented: $showDeleteView, onDismiss: { dismiss() }) {
-                    DeleteAccountView()
+                    AccountDeleteSignin()
                 }
             }
         }
