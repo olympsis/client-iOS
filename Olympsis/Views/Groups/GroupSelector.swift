@@ -30,6 +30,7 @@ struct GroupSelector: View {
                                     .placeholder({
                                         ImageLoadingView()
                                     })
+                                    .resizable()
                                     .frame(width: 40, height: 40)
                                     .aspectRatio(contentMode: .fill)
                                     .clipped()
@@ -59,6 +60,7 @@ struct GroupSelector: View {
                                         .placeholder({
                                             ImageLoadingView()
                                         })
+                                        .resizable()
                                         .frame(width: 40, height: 40)
                                         .aspectRatio(contentMode: .fill)
                                         .clipped()
