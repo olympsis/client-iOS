@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct GroupSelector: View {
     
@@ -23,18 +24,24 @@ struct GroupSelector: View {
                 Section {
                     ForEach(groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
                         HStack {
-                            AsyncImage(url: URL(string: GenerateImageURL(c.club?.logo ?? "https://api.olympsis.com"))){ image in
-                                image.resizable()
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            if let logo = c.club?.logo,
+                               let url = generateImageURL(logo) {
+                                KFImage(url)
+                                    .placeholder({
+                                        ImageLoadingView()
+                                    })
                                     .frame(width: 40, height: 40)
                                     .aspectRatio(contentMode: .fill)
                                     .clipped()
-                                    
-                            } placeholder: {
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.gray)
+                                    .foregroundStyle(Color("background"))
                                     .opacity(0.3)
                                     .frame(width: 40, height: 40)
+                                    .overlay {
+                                        Image(systemName: "person.2")
+                                    }
                             }
                             Text(c.club?.name ?? "club_name")
                         }
@@ -46,18 +53,24 @@ struct GroupSelector: View {
                     Section {
                         ForEach(groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
                             HStack {
-                                AsyncImage(url: URL(string: GenerateImageURL(c.organization?.logo ?? "https://api.olympsis.com"))){ image in
-                                    image.resizable()
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                if let logo = c.organization?.logo,
+                                   let url = generateImageURL(logo) {
+                                    KFImage(url)
+                                        .placeholder({
+                                            ImageLoadingView()
+                                        })
                                         .frame(width: 40, height: 40)
                                         .aspectRatio(contentMode: .fill)
                                         .clipped()
-                                        
-                                } placeholder: {
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                } else {
                                     RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(.gray)
+                                        .foregroundStyle(Color("background"))
                                         .opacity(0.3)
                                         .frame(width: 40, height: 40)
+                                        .overlay {
+                                            Image(systemName: "building")
+                                        }
                                 }
                                 Text(c.organization?.name ?? "club_name")
                             }

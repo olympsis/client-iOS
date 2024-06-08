@@ -129,6 +129,7 @@ struct GroupToolbar: ToolbarContent {
                                         .frame(width: 40, height: 40)
                                         .scaledToFill()
                                         .clipped()
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
                                 } else {
                                     ClubDefaultBadge()
                                 }
@@ -188,6 +189,7 @@ struct GroupToolbar: ToolbarContent {
                                         .frame(width: 40, height: 40)
                                         .scaledToFill()
                                         .clipped()
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
                                 } else {
                                     OrgDefaultBadge()
                                 }
