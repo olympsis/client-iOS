@@ -439,10 +439,10 @@ struct PostFooter: View {
                 }){
                     self.isLiked == true ?
                     Image(systemName: "heart.fill")
-                        .imageScale(.medium)
+                        .imageScale(.large)
                         .foregroundColor(.red)
                     : Image(systemName: "heart")
-                        .imageScale(.medium)
+                        .imageScale(.large)
                         .foregroundColor(.primary)
                 }.padding(.leading)
                 if likeCount > 0 {
@@ -452,7 +452,7 @@ struct PostFooter: View {
                 }
                 Button(action:{ self.showComments.toggle() }){
                     Image(systemName: "bubble.right")
-                        .imageScale(.medium)
+                        .imageScale(.large)
                         .foregroundColor(.primary)
                 }
             }

@@ -13,15 +13,31 @@ import Kingfisher
 struct ClubView: View {
     
     @StateObject var club: Club
-    @Environment(\.presentationMode) var presentationMode
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    @State private var camera = MapCameraPosition.camera(
+        MapCamera(centerCoordinate: CLLocationCoordinate2D(
+            latitude: 37.3347302, longitude: -122.0089189
+        ), distance: 1000 )
     )
-    @State private var trackingMode: MapUserTrackingMode = .none
+    @Environment(\.dismiss) private var dismiss
     
     init(club: Club) {
         self._club = StateObject(wrappedValue: club)
+    }
+    
+    func updatePosition() {
+        let geocoder = CLGeocoder()
+        
+        if let city = club.city,
+           let state = club.state,
+           let country = club.country {
+            geocoder.geocodeAddressString("\(city), \(state) \(country)") { (placemarks, error) in
+                if let placemark = placemarks?.first, let location = placemark.location {
+                    self.camera = MapCameraPosition.camera(
+                        MapCamera(centerCoordinate: location.coordinate, distance: 10000)
+                    )
+                }
+            }
+        }
     }
     
     // club name
@@ -89,27 +105,6 @@ struct ClubView: View {
         }
         return name
     }
-    // wrapper for map pin
-    struct Pin: Identifiable {
-        let id = UUID()
-        let lon: Double
-        let lat: Double
-    }
-    
-    // pin to mark location on map
-    var markers: [Pin] {
-        let geocoder = CLGeocoder()
-        var pins = [Pin]()
-
-        geocoder.geocodeAddressString(location) { (placemarks, error) in
-            if let placemark = placemarks?.first, let location = placemark.location {
-                let p = Pin(lon: location.coordinate.longitude, lat: location.coordinate.latitude)
-                pins.append(p)
-                region.center = location.coordinate
-            }
-        }
-        return pins
-    }
     
     func timeAgo(from timestamp: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
@@ -171,29 +166,29 @@ struct ClubView: View {
                             ForEach(members, id: \.id) { m in
                                 AsyncImage(url: URL(string: GenerateImageURL(m.user?.imageURL ?? "https://api.olympsis.com"))){ phase in
                                     if let image = phase.image {
-                                            image // Displays the loaded image.
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 50, height: 50, alignment: .center)
-                                                .clipped()
-                                                .clipShape(Circle())
-                                        } else if phase.error != nil {
-                                            ZStack {
-                                                Circle()
-                                                    .foregroundStyle(.gray)
-                                                Image(systemName: "person.fill")
-                                                    .imageScale(.large)
-                                                    .foregroundStyle(.white)
-                                            }
-                                        } else {
-                                            ZStack {
-                                                Circle()
-                                                    .foregroundStyle(.gray)
-                                                Image(systemName: "person.fill")
-                                                    .imageScale(.large)
-                                                    .foregroundStyle(.primary)
-                                            }
+                                        image // Displays the loaded image.
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 50, height: 50, alignment: .center)
+                                            .clipped()
+                                            .clipShape(Circle())
+                                    } else if phase.error != nil {
+                                        ZStack {
+                                            Circle()
+                                                .foregroundStyle(.gray)
+                                            Image(systemName: "person.fill")
+                                                .imageScale(.large)
+                                                .foregroundStyle(.white)
                                         }
+                                    } else {
+                                        ZStack {
+                                            Circle()
+                                                .foregroundStyle(.gray)
+                                            Image(systemName: "person.fill")
+                                                .imageScale(.large)
+                                                .foregroundStyle(.primary)
+                                        }
+                                    }
                                 }.frame(height: 50, alignment: .center)
                             }
                         }
@@ -260,12 +255,10 @@ struct ClubView: View {
                         }
                     }.padding(.horizontal)
                         .padding(.top)
-
-                    Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode: $trackingMode, annotationItems: markers) { p in
-                        MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
-                    }
-                    .frame(height: 200)
-                    .padding(.bottom)
+                    
+                    Map(position: $camera, interactionModes: .pan)
+                        .frame(height: 200)
+                        .padding(.bottom)
                     
                     HStack {
                         if let createdAt = club.createdAt {
@@ -282,11 +275,13 @@ struct ClubView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                        Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
                         }
                     }
                 }
+            }.onAppear {
+                updatePosition()
             }
         }
     }

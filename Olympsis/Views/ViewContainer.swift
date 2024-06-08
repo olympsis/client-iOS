@@ -15,7 +15,6 @@ import AuthenticationServices
 struct ViewContainer: View {
     
     @State var currentTab: Tab = .home
-    @State private var showBeta: Bool = false
     @State private var showOnboarding: Bool = false
     
     @EnvironmentObject private var session: SessionStore
@@ -49,9 +48,6 @@ struct ViewContainer: View {
             TabBar(currentTab: $currentTab)
                 .background(Color("dark-color"))
                 .ignoresSafeArea(.keyboard)
-        }
-        .fullScreenCover(isPresented: $showBeta) {
-            BetaPage()
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {

@@ -11,9 +11,10 @@ import SwiftUI
 struct OrgView: View {
     
     @StateObject var organization: Organization
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    @State private var camera = MapCameraPosition.camera(
+        MapCamera(centerCoordinate: CLLocationCoordinate2D(
+            latitude: 37.3347302, longitude: -122.0089189
+        ), distance: 1000 )
     )
     @Environment(\.dismiss) private var dismiss
     
@@ -54,26 +55,20 @@ struct OrgView: View {
         return city + " " + state
     }
     
-    // wrapper for map pin
-    struct Pin: Identifiable {
-        let id = UUID()
-        let lon: Double
-        let lat: Double
-    }
-    
-    // pin to mark location on map
-    var markers: [Pin] {
+    func updatePosition() {
         let geocoder = CLGeocoder()
-        var pins = [Pin]()
-
-        geocoder.geocodeAddressString(location) { (placemarks, error) in
-            if let placemark = placemarks?.first, let location = placemark.location {
-                let p = Pin(lon: location.coordinate.longitude, lat: location.coordinate.latitude)
-                pins.append(p)
-                region.center = location.coordinate
+        
+        if let city = organization.city,
+           let state = organization.state,
+           let country = organization.country {
+            geocoder.geocodeAddressString("\(city), \(state) \(country)") { (placemarks, error) in
+                if let placemark = placemarks?.first, let location = placemark.location {
+                    self.camera = MapCameraPosition.camera(
+                        MapCamera(centerCoordinate: location.coordinate, distance: 10000)
+                    )
+                }
             }
         }
-        return pins
     }
     
     func timeAgo(from timestamp: Int) -> String {
@@ -136,11 +131,9 @@ struct OrgView: View {
                     }.padding(.horizontal)
                         .padding(.top)
 
-                    Map(coordinateRegion: $region, interactionModes: .zoom, showsUserLocation: false, userTrackingMode:.constant(.none), annotationItems: markers) { p in
-                        MapPin(coordinate: CLLocationCoordinate2D(latitude: p.lat, longitude: p.lon), tint: .red)
-                    }
-                    .frame(height: 200)
-                    .padding(.bottom)
+                    Map(position: $camera, interactionModes: .pan)
+                        .frame(height: 200)
+                        .padding(.bottom)
                     
                     HStack {
                         if let createdAt = organization.createdAt {
@@ -164,6 +157,8 @@ struct OrgView: View {
                     }
                 }
             }
+        }.onAppear {
+            updatePosition()
         }
     }
 }
