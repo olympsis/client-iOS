@@ -46,6 +46,11 @@
 		5D2F19A92C14174400D98222 /* OrgDefaultBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */; };
 		5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */; };
 		5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */; };
+		5D38BD912C1502B6003EEF90 /* NewEventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */; };
+		5D38BD932C150963003EEF90 /* UserNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD922C150963003EEF90 /* UserNotificationToast.swift */; };
+		5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */; };
+		5D38BD992C150FEE003EEF90 /* WarningNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */; };
+		5D38BD9B2C150FFA003EEF90 /* ErrorNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
@@ -399,6 +404,11 @@
 		5D2F19A82C14174400D98222 /* OrgDefaultBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgDefaultBadge.swift; sourceTree = "<group>"; };
 		5D2F19AA2C1417A700D98222 /* GroupBadgeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBadgeLoadingView.swift; sourceTree = "<group>"; };
 		5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMediaViolation.swift; sourceTree = "<group>"; };
+		5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventNotificationToast.swift; sourceTree = "<group>"; };
+		5D38BD922C150963003EEF90 /* UserNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationToast.swift; sourceTree = "<group>"; };
+		5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotificationToast.swift; sourceTree = "<group>"; };
+		5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningNotificationToast.swift; sourceTree = "<group>"; };
+		5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorNotificationToast.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
@@ -747,6 +757,18 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
+		5D38BD8F2C15029E003EEF90 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */,
+				5D38BD922C150963003EEF90 /* UserNotificationToast.swift */,
+				5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */,
+				5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */,
+				5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		5D3FFAA12BAD01C100B54E02 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -1014,6 +1036,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5D38BD8F2C15029E003EEF90 /* Notifications */,
 				5D2F199F2C13E37300D98222 /* Image */,
 				5D666A972BF7C832001EE754 /* MediaPicker */,
 				5D666A872BF66477001EE754 /* ImageCrop */,
@@ -1695,6 +1718,7 @@
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				9AD208F22933F4F8007A62C4 /* Messages.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
+				5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
@@ -1728,6 +1752,7 @@
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
+				5D38BD992C150FEE003EEF90 /* WarningNotificationToast.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,
@@ -1757,6 +1782,7 @@
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
 				5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */,
+				5D38BD9B2C150FFA003EEF90 /* ErrorNotificationToast.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				5D666A952BF6AD29001EE754 /* PhotosPickerViewModel.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
@@ -1775,6 +1801,7 @@
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
+				5D38BD932C150963003EEF90 /* UserNotificationToast.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
@@ -1847,6 +1874,7 @@
 				5F4E53F22A28E91800257350 /* WelcomeView.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
+				5D38BD912C1502B6003EEF90 /* NewEventNotificationToast.swift in Sources */,
 				5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
 				9A81B627292485A3009CA6ED /* ClubView.swift in Sources */,
@@ -2279,8 +2307,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/NokoAnubis/Swift-Toast.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.0;
 			};
 		};
 		5DF945AA2BF9CBB400BE3C63 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {

@@ -42,8 +42,13 @@ struct ViewContainer: View {
                 Profile()
                     .tag(Tab.profile)
                 
-            }.toast(isPresented: $notificationManager.showToast, toast: $notificationManager.toastContent)
-                .padding(.bottom, -10)
+            }
+            .toast(
+                isPresented: $notificationManager.showToast,
+                position: $notificationManager.toastPosition,
+                content: $notificationManager.toastContent
+            )
+            .padding(.bottom, -10)
             
             TabBar(currentTab: $currentTab)
                 .background(Color("dark-color"))

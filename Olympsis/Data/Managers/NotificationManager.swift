@@ -15,9 +15,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
 
     let center = UNUserNotificationCenter.current()
     
-    @Published var showToast: Bool = false
+    @Published var showToast: Bool = false {
+        didSet {
+            
+        }
+    }
     @Published var inMessageView: Bool = false
-    @Published var toastContent: Toast = Toast(style: .newEvent, actor: "", title: "", message: "")
+    @Published var toastPosition: DisplayPosition = .bottom
+    @Published var toastContent: () -> any View = { EmptyView() }
     
     @AppStorage("deviceToken") private var token: String?
     private var userObserver = UserObserver()
@@ -90,27 +95,39 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
         switch type {
             // NEW EVENT
-        case ToastStyle.newEvent.rawValue:
+        case "new_event":
             guard let title = userInfo["title"] as? String,
                   let actor = userInfo["actor"] as? String,
                   let message = userInfo["message"] as? String else {
                 return
             }
-            self.toastContent = Toast(style: ToastStyle.newEvent, actor: actor, title: title, message: message)
+            if let user = userInfo["user_img"] as? String,
+               let event = userInfo["event_img"] as? String {
+                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message, profileImg: user, eventImg: event ) }
+            } else {
+                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message) }
+            }
             self.showToast = true
+            self.toastPosition = .top
             
             // NEW POST
-        case ToastStyle.newPost.rawValue:
+        case "new_post":
             guard let title = userInfo["title"] as? String,
                   let actor = userInfo["actor"] as? String,
                   let message = userInfo["message"] as? String else {
                 return
             }
-            self.toastContent = Toast(style: ToastStyle.newPost, actor: actor, title: title, message: message)
+            
+            if let user = userInfo["user_img"] as? String {
+                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
+            } else {
+                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
+            }
             self.showToast = true
+            self.toastPosition = .top
             
             // MESSAGE
-        case ToastStyle.message.rawValue:
+        case "message":
             guard !inMessageView else { // dont want to show toasts if you are in a message view
                 break
             }
@@ -119,24 +136,35 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
                   let message = userInfo["message"] as? String else {
                 return
             }
-            self.toastContent = Toast(style: ToastStyle.message, actor: actor, title: title, message: message)
+            
+            if let user = userInfo["user_img"] as? String {
+                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
+            } else {
+                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
+            }
             self.showToast = true
+            self.toastPosition = .top
             
             // EVENT STATUS
-        case ToastStyle.eventStatus.rawValue:
+        case "event_status":
             guard let title = userInfo["title"] as? String,
                   let message = userInfo["message"] as? String else {
                 return
             }
-            self.toastContent = Toast(style: ToastStyle.newEvent, title: title, message: message)
+            
+            if let event = userInfo["event_img"] as? String {
+                self.toastContent = { EventNotificationToast(title: title, content: message, eventImg: event) }
+            } else {
+                self.toastContent = { EventNotificationToast(title: title, content: message) }
+            }
             self.showToast = true
+            self.toastPosition = .top
+            
         default:
-            guard let title = userInfo["title"] as? String,
-                  let message = userInfo["message"] as? String else {
+            guard let _ = userInfo["title"] as? String,
+                  let _ = userInfo["message"] as? String else {
                 return
             }
-            self.toastContent = Toast(style: ToastStyle.info, title: title, message: message)
-            self.showToast = true
         }
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
