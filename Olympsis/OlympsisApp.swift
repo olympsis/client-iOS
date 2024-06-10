@@ -11,7 +11,6 @@ import SwiftUI
 import Foundation
 import FirebaseCore
 import FirebaseAuth
-import FirebaseMessaging
 import UserNotifications
 import AuthenticationServices
 
@@ -40,9 +39,25 @@ struct OlympsisApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    @AppStorage("deviceToken") private var _token: String?
+    let log = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         application.registerForRemoteNotifications()
         return true
+    }
+}
+
+extension AppDelegate : UNUserNotificationCenterDelegate {
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        _token = token;
+        log.info("Registering for remote notifications successfull")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        log.error("Failed to register for remote notifications")
     }
 }
