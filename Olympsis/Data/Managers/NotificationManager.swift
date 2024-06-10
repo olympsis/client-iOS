@@ -24,7 +24,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     @Published var toastPosition: DisplayPosition = .bottom
     @Published var toastContent: () -> any View = { EmptyView() }
     
-    @AppStorage("deviceToken") private var token: String?
     private var userObserver = UserObserver()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
     
@@ -36,11 +35,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     // Request alert sound and badge notifications
     func requestAuthorization() async {
         do {
-            guard !(try await checkAuthorizationStatus()) else {
-                return
-            }
             await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
             _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay])
+            
         } catch {
             log.error("Failed to request authorization: \(error.localizedDescription)")
         }

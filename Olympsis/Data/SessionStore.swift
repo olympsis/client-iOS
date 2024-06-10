@@ -108,16 +108,23 @@ class SessionStore: ObservableObject {
     }
     
     func updateNotifications() async {
-        await notificationsManager.requestAuthorization()
-        guard let user = user,
-            let token = _token else {
-            return
-        }
-        if var tokens = user.deviceTokens {
-            tokens.append(token)
-            _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: tokens))
-        } else {
-            _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: [token]))
+        do {
+            guard !(try await notificationsManager.checkAuthorizationStatus()) else {
+                return
+            }
+            await notificationsManager.requestAuthorization()
+            guard let user = user,
+                let token = _token else {
+                return
+            }
+            if var tokens = user.deviceTokens {
+                tokens.append(token)
+                _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: tokens))
+            } else {
+                _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: [token]))
+            }
+        } catch {
+            log.error("Failed to update notifications: \(error.localizedDescription)")
         }
     }
     
