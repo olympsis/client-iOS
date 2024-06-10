@@ -12,7 +12,7 @@ import Foundation
 class EventObserver: ObservableObject{
     private let decoder = JSONDecoder()
     private let eventService = EventService()
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "event_observer")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "event_observer")
     
     /// Calls the field service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude

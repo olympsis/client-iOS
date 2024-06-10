@@ -12,7 +12,7 @@ import Foundation
 class PostObserver: ObservableObject{
     private let decoder = JSONDecoder()
     private let postService = PostService()
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "post_observer")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "post_observer")
     
     func getPosts(clubId: String, parentId: String?) async -> [Post]? {
         do {

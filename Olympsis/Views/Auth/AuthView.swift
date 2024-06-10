@@ -21,7 +21,7 @@ struct AuthView: View {
     @EnvironmentObject var sessionStore: SessionStore
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
-    var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
+    var log = Logger(subsystem: "com.olympsis.client", category: "auth_view")
     
     var usernameCompleted: Bool {
         let user = cacheService.fetchUser()

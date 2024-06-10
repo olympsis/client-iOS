@@ -16,7 +16,7 @@ struct NewOrganization: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_new_club_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "create_new_club_view")
     
     @MainActor
     func createOrganization() async {

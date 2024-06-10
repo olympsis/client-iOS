@@ -32,7 +32,7 @@ struct NewPickUpEvent: View {
     @EnvironmentObject private var manager: NewEventManager
     
     private var uploadObserver = UploadObserver()
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
 
     private var setStartTime: Int {
         return Int(manager.startDate.timeIntervalSince1970)

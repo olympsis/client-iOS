@@ -68,7 +68,7 @@ class NewEventManager: ObservableObject {
     
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
-    private var log: Logger = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_manager")
+    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
     
     init(

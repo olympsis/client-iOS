@@ -22,7 +22,7 @@ class PhotoPickerViewModel: ObservableObject {
         }
     }
     
-    var log = Logger(subsystem: "com.photos_picker.package", category: "viewModel")
+    var log = Logger(subsystem: "com.olympsis.client", category: "viewModel")
     
     func loadImage(from item: PhotosPickerItem) {
         item.loadTransferable(type: Data.self) { result in

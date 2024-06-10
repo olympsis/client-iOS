@@ -18,7 +18,7 @@ struct Home: View {
     
     @EnvironmentObject private var session: SessionStore
     
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     private var name: String {
         guard let user = session.user, let name = user.firstName else {

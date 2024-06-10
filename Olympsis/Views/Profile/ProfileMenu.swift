@@ -42,6 +42,10 @@ struct ProfileMenu: View {
                         MenuLabel(icon: Image(systemName: "info.circle.fill"), text: "About Us")
                     }
                     
+                    NavigationLink(destination: LogViewer()) {
+                        MenuLabel(icon: Image(systemName: "text.word.spacing"), text: "Logs")
+                    }
+                    
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
                         Task {
                             await session.logout()

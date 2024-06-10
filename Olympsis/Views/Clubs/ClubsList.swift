@@ -21,7 +21,7 @@ struct ClubsList: View {
     @EnvironmentObject var session: SessionStore
     
     private var geoCoder = CLGeocoder()
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "clubs_list_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
     
     private var fallbackLocation: CLLocation {
         guard let user = session.user, let hometown = user.hometown else {

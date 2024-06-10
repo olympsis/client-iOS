@@ -13,7 +13,7 @@ struct OrgManagerInvite: View {
     
     @State private var text = ""
     @State private var users: [UserData] = [UserData]()
-    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "org_manager_invite_view")
+    @State private var log = Logger(subsystem: "com.olympsis.client", category: "org_manager_invite_view")
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore

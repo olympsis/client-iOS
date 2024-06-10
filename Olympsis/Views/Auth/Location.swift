@@ -17,7 +17,7 @@ struct Location: View {
     @State private var showExplination: Bool = false
     @State private var status: LOADING_STATE = .pending
     @State private var location = LocationManager()
-    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "location_permission_view")
+    @State private var log = Logger(subsystem: "com.olympsis.client", category: "location_permission_view")
     
     
     func handleAllow() async {

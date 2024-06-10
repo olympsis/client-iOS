@@ -21,7 +21,7 @@ struct EventReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    private let log = Logger(subsystem: "com.olympsis.ui", category: "event_report_view")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "event_report_view")
     
     func createReport() async {
         guard issue != "",

@@ -43,7 +43,7 @@ struct OlympsisApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     @AppStorage("deviceToken") private var _token: String?
-    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "app_delegate")
+    let log = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()

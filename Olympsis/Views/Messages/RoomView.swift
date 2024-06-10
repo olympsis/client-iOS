@@ -27,7 +27,7 @@ struct RoomView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var notificationManager: NotificationManager
     
-    var log = Logger(subsystem: "com.coronislabs.olympsis", category: "room_view")
+    var log = Logger(subsystem: "com.olympsis.client", category: "room_view")
     
     func SendMessage() {
         guard text.count > 0 else {

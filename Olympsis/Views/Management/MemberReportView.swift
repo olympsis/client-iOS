@@ -21,7 +21,7 @@ struct MemberReportView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
-    private let log = Logger(subsystem: "com.olympsis.ui", category: "member_report_view")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "member_report_view")
     
     func createReport() async {
         guard issue != "",

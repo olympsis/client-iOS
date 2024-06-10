@@ -34,7 +34,7 @@ struct NewTournamentEvent: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var manager: NewEventManager
     
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "new_event_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
     
     // filters all of the clubs and the group selections that might not have a club
     // force returns a club since it should exist from the filter operation

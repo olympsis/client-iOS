@@ -16,7 +16,7 @@ struct Notifications: View {
     @State private var userObserver = UserObserver()
     @State private var cacheService = CacheService()
     @State private var notifications = NotificationManager()
-    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "notification_permission_view")
+    @State private var log = Logger(subsystem: "com.olympsis.client", category: "notification_permission_view")
     
     @AppStorage("deviceToken") private var deviceToken: String?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?

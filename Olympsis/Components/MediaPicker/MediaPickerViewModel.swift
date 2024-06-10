@@ -38,7 +38,7 @@ class MediaPickerViewModel: ObservableObject {
 
     @Published var selectedImages: [UIImage] = []
     
-    var log = Logger(subsystem: "com.media_picker.package", category: "media_picker_view_model")
+    var log = Logger(subsystem: "com.olympsis.client", category: "media_picker_view_model")
     
     init (
         maxSelection: Int

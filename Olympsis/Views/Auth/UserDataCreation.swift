@@ -34,7 +34,7 @@ struct UserDataCreation: View {
     
     var cacheService = CacheService()
     var userObserver = UserObserver()
-    var log = Logger(subsystem: "com.josephlabs.olympsis", category: "pick_username_view")
+    var log = Logger(subsystem: "com.olympsis.client", category: "pick_username_view")
     
     /// Validates the username input to make sure it's safe
     func validateInput(_ input: String) -> Bool {

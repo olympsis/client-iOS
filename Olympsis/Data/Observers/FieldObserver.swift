@@ -13,7 +13,7 @@ import Foundation
 class FieldObserver: ObservableObject{
     private let decoder = JSONDecoder()
     private let fieldService = FieldService()
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "field_observer")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "field_observer")
     
     /// Calls the venue service to get venues based on certain params
     /// - Parameter longitude: `Double` longitudonal meters of location

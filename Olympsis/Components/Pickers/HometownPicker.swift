@@ -22,7 +22,7 @@ struct HometownPicker: View {
     @GestureState private var isLongPressing = false
     @Environment(\.dismiss) private var dismiss
     
-    var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_picker_view")
+    var log = Logger(subsystem: "com.olympsis.client", category: "home_picker_view")
     
     /// Stores username into cache
     func storeHometown() {

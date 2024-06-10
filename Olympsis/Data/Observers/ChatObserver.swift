@@ -20,7 +20,7 @@ class ChatObserver: ObservableObject {
     private let tokenStore = SecureStore()
     private var request: URLRequest? = nil
     private var webSocketTask: URLSessionWebSocketTask? = nil
-    private let log = Logger(subsystem: "com.coronislabs.olympsis", category: "chat_observer")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "chat_observer")
     
     init() {
         host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""

@@ -10,7 +10,7 @@ import Foundation
 
 class ManagementObserver: ObservableObject {
     
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "management_observer")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "management_observer")
     private let decoder = JSONDecoder()
     private let service = ManagementService()
     private let cacheService = CacheService()
