@@ -22,7 +22,7 @@ struct AnnouncementsView: View {
                         AnnouncementView(announcement: announcement).tag(announcement.id)
                     }
                 }.tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
+                    .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0), alignment: .center)
                 
                 HStack(spacing: 2) {
                     ForEach(feedObserver.announcements, id: \.id) { index in
@@ -41,7 +41,7 @@ struct AnnouncementsView: View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.gray)
                 .opacity(0.3)
-                .frame(width: SCREEN_WIDTH, height: 500, alignment: .center)
+                .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0), alignment: .center)
         }
     }
 }

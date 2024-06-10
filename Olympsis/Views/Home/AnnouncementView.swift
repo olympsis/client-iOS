@@ -6,32 +6,29 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct AnnouncementView: View {
+    
     @State var announcement: Announcement
+    var url: URL? {
+        return generateImageURL(announcement.imageURL)
+    }
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: GenerateImageURL(announcement.imageURL))){ phase in
-                if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .frame(width: SCREEN_WIDTH, height: 500)
-                            .scaledToFit()
-                            .clipped()
-                    } else if phase.error != nil {
-                        ZStack {
-                            Color.gray // Indicates an error.
-                                .frame(width: SCREEN_WIDTH, height: 500)
-                            Image(systemName: "exclamationmark.circle")
-                        }
-                    } else {
-                        ZStack {
-                            Color.gray // Acts as a placeholder.
-                                .frame(width: SCREEN_WIDTH, height: 500)
-                            ProgressView()
-                        }
-                    }
+            if let link = url {
+                KFImage(link)
+                    .placeholder({
+                        ImageLoadingView()
+                    })
+                    .resizable()
+                    .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0))
+                    .scaledToFit()
+                    .clipped()
+            } else {
+                ImageLoadingFailedView()
+                    .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0))
             }
         }
     }
@@ -39,6 +36,6 @@ struct AnnouncementView: View {
 
 struct AnnouncementView_Previews: PreviewProvider {
     static var previews: some View {
-        AnnouncementView(announcement: Announcement(id: "0", image: "https://olympsis.s3.us-west-2.amazonaws.com/annoucements/Welcome+Image+-+Soccer.jpg"))
+        AnnouncementView(announcement: ANNOUCEMENTS[0])
     }
 }

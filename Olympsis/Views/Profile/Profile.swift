@@ -21,7 +21,7 @@ struct Profile: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
                     ProfileModel(userData: $session.user)
@@ -70,8 +70,7 @@ struct Profile: View {
     }
 }
 
-struct Settings_Previews: PreviewProvider {
-    static var previews: some View {
-        Profile().environmentObject(SessionStore())
-    }
+#Preview {
+    Profile()
+        .environmentObject(SessionStore())
 }

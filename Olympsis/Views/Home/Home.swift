@@ -38,7 +38,7 @@ struct Home: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     
@@ -129,6 +129,7 @@ struct Home: View {
                 }.fullScreenCover(isPresented: $showNotifications, content: {
                     NotificationsView()
                 })
+                
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
@@ -150,7 +151,7 @@ struct Home: View {
                         }
                     }
                 }
-            }
+        }
         }
     }
 }
