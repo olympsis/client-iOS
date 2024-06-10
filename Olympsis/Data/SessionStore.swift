@@ -67,6 +67,7 @@ class SessionStore: ObservableObject {
      Whenever set, this is cached in app until changed or app is removed
      */
     @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    @AppStorage("deviceToken") private var _token: String?
     @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
@@ -104,6 +105,17 @@ class SessionStore: ObservableObject {
                 self.authStatus = .unauthenticated
             }
         }
+    }
+    
+    func updateNotifications() async {
+        await notificationsManager.requestAuthorization()
+        guard let user = self.user,
+              let token = _token,
+              var tokens = user.deviceTokens else {
+                  return
+        }
+        tokens.append(token)
+        _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: tokens))
     }
     
     @MainActor

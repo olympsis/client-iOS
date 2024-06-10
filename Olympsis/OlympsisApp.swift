@@ -20,7 +20,6 @@ struct OlympsisApp: App {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @StateObject private var sessionStore = SessionStore()
-    @StateObject private var notificationManager = NotificationManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
@@ -31,11 +30,9 @@ struct OlympsisApp: App {
             case .authenticated:
                 ViewContainer()
                     .environmentObject(sessionStore)
-                    .environmentObject(notificationManager)
             case .unauthenticated, .not_finished:
                 AuthContainer()
                     .environmentObject(sessionStore)
-                    .environmentObject(notificationManager)
             }
         }
     }

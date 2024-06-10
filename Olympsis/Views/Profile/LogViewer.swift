@@ -17,6 +17,24 @@ struct LogViewer: View {
     private var manager = LoggingManagement()
     private var log = Logger(subsystem: "com.olympsis.client", category: "log_viewer")
     
+    func fetchLogs() async {
+        status = .loading
+        let predicate = NSPredicate(format: "subsystem IN %@", [
+            "com.olympsis.client",
+            "com.josephlabs.hermes"
+        ])
+        do {
+            guard let time = Calendar.current.date(byAdding: .hour, value: -30, to: Date.now),
+                  let entries = try await manager.fetchLogs(since: time, predicateFormat: predicate.predicateFormat) else {
+                return
+            }
+            logs = entries
+        } catch {
+            log.error("Failed to fetch logs: \(error.localizedDescription)")
+        }
+        status = .success
+    }
+    
     var body: some View {
         Group {
             if status == .loading {
@@ -26,7 +44,7 @@ struct LogViewer: View {
             } else {
                 ScrollView {
                     if !logs.isEmpty {
-                        ForEach(logs) {
+                        ForEach(logs.reversed()) {
                             LogListItem(entry: $0)
                         }
                     } else {
@@ -38,22 +56,11 @@ struct LogViewer: View {
         .navigationTitle("Logs")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(false)
+        .refreshable {
+            await fetchLogs()
+        }
         .task {
-            status = .loading
-            let predicate = NSPredicate(format: "subsystem IN %@", [
-                "com.olympsis.client",
-                "com.josephlabs.hermes"
-            ])
-            do {
-                guard let time = Calendar.current.date(byAdding: .hour, value: -30, to: Date.now),
-                      let entries = try await manager.fetchLogs(since: time, predicateFormat: predicate.predicateFormat) else {
-                    return
-                }
-                logs = entries
-            } catch {
-                log.error("Failed to fetch logs: \(error.localizedDescription)")
-            }
-            status = .success
+            await fetchLogs()
         }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {

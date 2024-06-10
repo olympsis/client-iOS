@@ -18,7 +18,6 @@ struct ViewContainer: View {
     @State private var showOnboarding: Bool = false
     
     @EnvironmentObject private var session: SessionStore
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -44,9 +43,9 @@ struct ViewContainer: View {
                 
             }
             .toast(
-                isPresented: $notificationManager.showToast,
-                position: $notificationManager.toastPosition,
-                content: $notificationManager.toastContent
+                isPresented: session.$notificationsManager.showToast,
+                position: session.$notificationsManager.toastPosition,
+                content: session.$notificationsManager.toastContent
             )
             .padding(.bottom, -10)
             
@@ -93,6 +92,5 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ViewContainer()
             .environmentObject(SessionStore())
-            .environmentObject(NotificationManager())
     }
 }

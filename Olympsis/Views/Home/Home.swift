@@ -66,7 +66,8 @@ struct Home: View {
                                 .font(.custom("Helvetica Neue", size: 17))
                                 .bold()
                                 .padding()
-                            AnnouncementsView(status: $session.state, announcements: $session.feedObserver.announcements)
+                            AnnouncementsView(status: $session.state)
+                                .environmentObject(session.feedObserver)
                         }
                     }
                     

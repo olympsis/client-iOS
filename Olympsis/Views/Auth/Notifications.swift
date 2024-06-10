@@ -23,23 +23,6 @@ struct Notifications: View {
     
     @EnvironmentObject private var sessionStore: SessionStore
     func handleAllow() async {
-        do {
-            await notifications.requestAuthorization()
-            guard let tk = deviceToken else {
-                status = .failure
-                return
-            }
-            _ = await userObserver.UpdateUserData(update: UserDao(deviceToken: tk))
-            let user = try await userObserver.GetUserData()
-            cacheService.cacheUser(user: user)
-            status = .success
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                authStatus = .authenticated
-            }
-        } catch {
-            status = .failure
-            log.error("failed to allow notifications: \(error.localizedDescription)")
-        }
     }
     
     func handleNoThanks() {

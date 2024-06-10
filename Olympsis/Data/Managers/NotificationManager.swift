@@ -41,12 +41,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             }
             await UIApplication.shared.registerForRemoteNotifications() // register for remote notifications
             _ = try await center.requestAuthorization(options: [.alert, .sound, .badge, .criticalAlert, .carPlay])
-            
-            guard try await checkAuthorizationStatus(),
-                let t = token else {
-                return
-            }
-            _ = await userObserver.UpdateUserData(update: UserDao(deviceToken: t))
         } catch {
             log.error("Failed to request authorization: \(error.localizedDescription)")
         }

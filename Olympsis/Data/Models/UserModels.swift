@@ -22,7 +22,7 @@ struct UserDao: Codable {
     var reportedPosts: [String]?
     var reportedEvents: [String]?
     var hometown: [Double]?
-    let deviceToken: String?
+    let deviceTokens: [String]?
 
     init(
         uuid: String?=nil, 
@@ -39,7 +39,7 @@ struct UserDao: Codable {
         reportedPosts: [String]?=nil,
         reportedEvents: [String]?=nil,
         hometown: [Double]?=nil,
-        deviceToken: String? = nil
+        deviceTokens: [String]? = nil
     ){
         self.uuid = uuid
         self.username = username
@@ -55,7 +55,7 @@ struct UserDao: Codable {
         self.reportedPosts = reportedPosts
         self.reportedEvents = reportedEvents
         self.hometown = hometown
-        self.deviceToken = deviceToken
+        self.deviceTokens = deviceTokens
     }
     
     enum CodingKeys: String, CodingKey {
@@ -73,7 +73,7 @@ struct UserDao: Codable {
         case reportedPosts = "report_posts"
         case reportedEvents = "reported_events"
         case hometown
-        case deviceToken = "device_token"
+        case deviceTokens = "device_tokens"
     }
 }
 
@@ -102,7 +102,7 @@ struct UserData: Codable, Hashable {
     var reportedPosts: [String]?
     var reportedEvents: [String]?
     var hometown: [Double]?
-    var deviceToken: String?
+    var deviceTokens: [String]?
     
     static func == (lhs: UserData, rhs: UserData) -> Bool {
         guard let lhsID = lhs.uuid,
@@ -129,7 +129,7 @@ struct UserData: Codable, Hashable {
         case reportedPosts = "report_posts"
         case reportedEvents = "reported_events"
         case hometown
-        case deviceToken = "device_token"
+        case deviceTokens = "device_tokens"
     }
 }
 

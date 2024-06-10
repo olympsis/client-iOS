@@ -18,6 +18,8 @@ struct GroupView: View {
     @State private var showNewGroup: Bool = false
     @State private var groupState: LOADING_STATE = .pending
     
+    
+    
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var notificationManager: NotificationManager
     
@@ -38,7 +40,7 @@ struct GroupView: View {
                         if session.selectedGroup != nil {
                             GroupFeed(showNewPost: $showNewPost)
                                 .task {
-                                    await notificationManager.requestAuthorization()
+                                    await session.updateNotifications()
                                 }
                         } else {
                             ClubsList()
