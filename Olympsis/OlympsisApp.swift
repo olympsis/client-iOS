@@ -11,7 +11,6 @@ import SwiftUI
 import Foundation
 import FirebaseCore
 import FirebaseAuth
-import FirebaseMessaging
 import UserNotifications
 import AuthenticationServices
 
@@ -55,7 +54,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         _token = token;
-        Messaging.messaging().apnsToken = deviceToken
         log.info("Registering for remote notifications successfull")
     }
     
