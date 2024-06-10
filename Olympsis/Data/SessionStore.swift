@@ -109,13 +109,6 @@ class SessionStore: ObservableObject {
     
     func updateNotifications() async {
         await notificationsManager.requestAuthorization()
-        guard let user = self.user,
-              let token = _token,
-              var tokens = user.deviceTokens else {
-                  return
-        }
-        tokens.append(token)
-        _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: tokens))
     }
     
     @MainActor
