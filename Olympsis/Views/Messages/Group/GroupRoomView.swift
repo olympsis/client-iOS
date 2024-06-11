@@ -25,7 +25,6 @@ struct GroupRoomView: View {
     
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     var log = Logger(subsystem: "com.olympsis.client", category: "room_view")
     
@@ -104,6 +103,9 @@ struct GroupRoomView: View {
                     await observer.InitiateSocketConnection(id: id)
                     observer.Ping()
                     while true {
+                        guard session.notificationsManager.inMessageView == true else {
+                            return
+                        }
                         let msg = await observer.ReceiveMessage()
                         if let m = msg {
                             messages.append(m)
@@ -160,7 +162,7 @@ struct GroupRoomView: View {
                 }
             }
             .task {
-                notificationManager.inMessageView = true
+                session.notificationsManager.inMessageView = true
                 state = .loading
                 guard let id = room.id else {
                     return
@@ -179,6 +181,9 @@ struct GroupRoomView: View {
                 await observer.InitiateSocketConnection(id: id)
                 observer.Ping()
                 while true {
+                    guard session.notificationsManager.inMessageView == true else {
+                        return
+                    }
                     let msg = await observer.ReceiveMessage()
                     if let m = msg {
                         messages.append(m)
@@ -190,7 +195,7 @@ struct GroupRoomView: View {
                 }
             }
             .onDisappear() {
-                notificationManager.inMessageView = false
+                session.notificationsManager.inMessageView = false
                 Task {
                     await observer.CloseSocketConnection()
                 }
@@ -202,5 +207,4 @@ struct GroupRoomView: View {
 #Preview {
     GroupRoomView(org: ORGANIZATIONS[0], room: ROOMS[0], rooms: .constant(ROOMS), observer: ChatObserver())
         .environmentObject(SessionStore())
-        .environmentObject(NotificationManager())
 }

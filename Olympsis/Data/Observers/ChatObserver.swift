@@ -7,6 +7,7 @@
 
 import os
 import Foundation
+import FirebaseAuth
 
 class ChatObserver: ObservableObject {
     
@@ -23,7 +24,11 @@ class ChatObserver: ObservableObject {
     private let log = Logger(subsystem: "com.olympsis.client", category: "chat_observer")
     
     init() {
-        host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+        #if DEBUG
+            host = "localhost:8082"
+        #else
+            host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+        #endif
     }
     
     func CreateRoom(group: String, groupType: String, name: String, type: String, uuid: String) async -> Room? {
@@ -35,8 +40,8 @@ class ChatObserver: ObservableObject {
             }
             let obj = try decoder.decode(Room.self, from: data)
             return obj
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to create room: \(error.localizedDescription)")
         }
         return nil
     }
@@ -49,8 +54,8 @@ class ChatObserver: ObservableObject {
             }
             let obj = try decoder.decode(RoomsResponse.self, from: data)
             return obj
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to get rooms: \(error.localizedDescription)")
         }
         return nil
     }
@@ -63,8 +68,8 @@ class ChatObserver: ObservableObject {
             }
             let obj = try decoder.decode(Room.self, from: data)
             return obj
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to get room: \(error.localizedDescription)")
         }
         return nil
     }
@@ -78,8 +83,8 @@ class ChatObserver: ObservableObject {
             }
             let obj = try decoder.decode(Room.self, from: data)
             return obj
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to update room: \(error.localizedDescription)")
         }
         return nil
     }
@@ -91,8 +96,8 @@ class ChatObserver: ObservableObject {
                 return false
             }
             return true
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to delete room: \(error.localizedDescription)")
         }
         return false
     }
@@ -105,8 +110,8 @@ class ChatObserver: ObservableObject {
             }
             let obj = try decoder.decode(Room.self, from: data)
             return obj
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to join room: \(error.localizedDescription)")
         }
         return nil
     }
@@ -118,27 +123,37 @@ class ChatObserver: ObservableObject {
                 return false
             }
             return true
-        } catch (let err) {
-            print(err)
+        } catch {
+            log.error("Failed to leave room: \(error.localizedDescription)")
         }
         return false
     }
     
     func InitiateSocketConnection(id: String) async {
-        let token = tokenStore.fetchTokenFromKeyChain()
-        self.request = URLRequest(url: URL(string: "wss://\(host)/chats/\(id)/ws")!)
-        guard var request = request else {
-            return
+        do {
+            let token = try await Auth.auth().currentUser?.getIDToken()
+            
+            #if DEBUG
+                self.request = URLRequest(url: URL(string: "ws://\(host)/v1/chats/\(id)/ws")!)
+            #else
+                self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
+            #endif
+            
+            guard var request = request else {
+                return
+            }
+            request.setValue("\(token ?? "")", forHTTPHeaderField: "Authorization")
+            request.setValue("Upgrade", forHTTPHeaderField: "Connection")
+            request.setValue("websocket", forHTTPHeaderField: "Upgrade")
+            request.setValue(host, forHTTPHeaderField: "Host")
+            request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
+            request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
+            self.webSocketTask = session.webSocketTask(with: request)
+            webSocketTask?.resume()
+            log.info("Socket Connection Initiated")
+        } catch {
+            log.error("Failed to initiate socket connection: \(error.localizedDescription)")
         }
-        request.setValue("\(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("Upgrade", forHTTPHeaderField: "Connection")
-        request.setValue("websocket", forHTTPHeaderField: "Upgrade")
-        request.setValue(host, forHTTPHeaderField: "Host")
-        request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
-        request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
-        self.webSocketTask = session.webSocketTask(with: request)
-        webSocketTask?.resume()
-        log.log("Socket Connection Initiated")
     }
     
     func Ping() {
@@ -157,7 +172,7 @@ class ChatObserver: ObservableObject {
     func CloseSocketConnection() async {
         timer.invalidate()
         webSocketTask?.cancel(with: .goingAway, reason: nil)
-        log.log("Socket Connection Closed")
+        log.info("Socket Connection Closed")
     }
     
     func SendMessage(msg: Message) async -> Bool {

@@ -58,6 +58,7 @@ struct LogListItem: View {
                 Text(entry.message)
                     .font(.callout)
             }
+            Spacer()
         }.padding(.horizontal, 5)
     }
 }

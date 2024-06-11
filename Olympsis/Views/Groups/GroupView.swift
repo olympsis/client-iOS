@@ -18,14 +18,11 @@ struct GroupView: View {
     @State private var showNewGroup: Bool = false
     @State private var groupState: LOADING_STATE = .pending
     
-    
-    
     @EnvironmentObject private var session: SessionStore
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
     
-    func retryFetchingClubData() {
+    private func retryFetchingClubData() {
         groupState = .loading
     }
     

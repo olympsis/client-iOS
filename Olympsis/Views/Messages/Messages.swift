@@ -22,9 +22,9 @@ struct Messages: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var chatObserver = ChatObserver()
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -145,7 +145,7 @@ struct Messages: View {
                 
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                    Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
                             .imageScale(.large)
                     }
@@ -161,7 +161,7 @@ struct Messages: View {
                 }
             }
             .task {
-                notificationManager.inMessageView = true
+                session.notificationsManager.inMessageView = true
                 state = .loading
                 let resp = await chatObserver.GetRooms(id: club.id!)
                 if let r = resp {
@@ -175,7 +175,7 @@ struct Messages: View {
                 await chatObserver.CloseSocketConnection()
             }
             .onDisappear {
-                notificationManager.inMessageView = false
+                session.notificationsManager.inMessageView = false
                 Task {
                     await chatObserver.CloseSocketConnection()
                 }
@@ -195,6 +195,7 @@ struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
         let room2 = Room(id: UUID().uuidString, name: "Region Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember(id: "", uuid: "", status: "")], history: [Message]())
-        Messages(club: CLUBS[0], rooms: [room, room2]).environmentObject(SessionStore()).environmentObject(NotificationManager())
+        Messages(club: CLUBS[0], rooms: [room, room2])
+            .environmentObject(SessionStore())
     }
 }

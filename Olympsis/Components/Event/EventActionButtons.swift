@@ -22,7 +22,6 @@ struct EventActionButtons: View {
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var event: Event
     @EnvironmentObject private var session: SessionStore
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
@@ -69,7 +68,7 @@ struct EventActionButtons: View {
         handleSuccess()
         guard let extLink = event.externalLink,
               let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-            await notificationManager.requestAuthorization()
+            await session.notificationsManager.requestAuthorization()
             return
         }
         openURL(url)

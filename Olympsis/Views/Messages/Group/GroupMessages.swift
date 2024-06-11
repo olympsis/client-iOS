@@ -23,7 +23,6 @@ struct GroupMessages: View {
     @StateObject private var chatObserver = ChatObserver()
     @EnvironmentObject private var session: SessionStore
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -147,7 +146,7 @@ struct GroupMessages: View {
                 }
             }
             .task {
-                notificationManager.inMessageView = true
+                session.notificationsManager.inMessageView = true
                 state = .loading
                 let resp = await chatObserver.GetRooms(id: org.id!)
                 if let r = resp {
@@ -160,7 +159,7 @@ struct GroupMessages: View {
                 }
             }
             .onDisappear {
-                notificationManager.inMessageView = false
+                session.notificationsManager.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 GroupNewRoom(org: $org, rooms: $rooms)
@@ -176,5 +175,4 @@ struct GroupMessages: View {
 #Preview {
     GroupMessages(org: ORGANIZATIONS[0], rooms: ROOMS)
         .environmentObject(SessionStore())
-        .environmentObject(NotificationManager())
 }
