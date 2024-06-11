@@ -16,7 +16,7 @@ struct ClubApplications: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if applications.filter({$0.status != "accepted"}).count > 0 {

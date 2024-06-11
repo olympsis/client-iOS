@@ -77,7 +77,7 @@ struct NewPost: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     VStack(alignment: .leading){

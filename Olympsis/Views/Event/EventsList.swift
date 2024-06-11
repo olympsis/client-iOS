@@ -65,7 +65,7 @@ struct EventsList: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
                     ForEach(eventsGrouped, id: \.id) { group in

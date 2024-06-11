@@ -140,7 +140,7 @@ struct WorkoutView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         WorkoutView(activityName: Text("Friday Evening Run"), workout: Workout(id: UUID(), type: .running, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
     }
 }

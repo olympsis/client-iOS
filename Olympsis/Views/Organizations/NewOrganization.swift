@@ -145,7 +145,7 @@ struct NewOrganization: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(showsIndicators: false){
                 VStack (alignment: .leading){
                     

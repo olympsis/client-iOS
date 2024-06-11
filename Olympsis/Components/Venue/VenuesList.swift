@@ -20,7 +20,7 @@ struct VenuesList: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 if (venues.count > 0) {
                     ForEach(venues, id: \.name){ field in

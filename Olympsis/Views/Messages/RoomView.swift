@@ -62,7 +62,7 @@ struct RoomView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollViewReader { scrollView in
                     ScrollView(showsIndicators: false) {
@@ -86,38 +86,38 @@ struct RoomView: View {
                         RoomSettingsView(room: room, hasDeleted: $hasDeleted, observer: observer)
                             .presentationDetents([.height(250)])
                     }
-                    .refreshable {
-                        state = .loading
-                        guard let id = room.id else {
-                            return
-                        }
-                        let resp = await observer.GetRoom(id: id)
-                        if let r = resp {
-                            await MainActor.run {
-                                guard let history = r.history else {
-                                    state = .success
-                                    return
-                                }
-                                messages = history
-                                state = .success
-                            }
-                        }
-                        await observer.InitiateSocketConnection(id: id)
-                        observer.Ping()
-                        while true {
-                            guard session.notificationsManager.inMessageView == true else {
-                                return
-                            }
-                            let msg = await observer.ReceiveMessage()
-                            if let m = msg {
-                                messages.append(m)
-                            } else {
-                                log.error("Failed to get message")
-                                await observer.InitiateSocketConnection(id: id)
-                                observer.Ping()
-                            }
-                        }
-                    }
+//                    .refreshable {
+//                        state = .loading
+//                        guard let id = room.id else {
+//                            return
+//                        }
+//                        let resp = await observer.GetRoom(id: id)
+//                        if let r = resp {
+//                            await MainActor.run {
+//                                guard let history = r.history else {
+//                                    state = .success
+//                                    return
+//                                }
+//                                messages = history
+//                                state = .success
+//                            }
+//                        }
+//                        await observer.InitiateSocketConnection(id: id)
+//                        observer.Ping()
+//                        while true {
+//                            guard session.notificationsManager.inMessageView == true else {
+//                                return
+//                            }
+//                            let msg = await observer.ReceiveMessage()
+//                            if let m = msg {
+//                                messages.append(m)
+//                            } else {
+//                                log.error("Failed to get message")
+//                                await observer.InitiateSocketConnection(id: id)
+//                                observer.Ping()
+//                            }
+//                        }
+//                    }
                     .onChange(of: messages) { _, newValue in
                         withAnimation {
                             scrollView.scrollTo(newValue.last?.id, anchor: .bottom)
@@ -191,7 +191,7 @@ struct RoomView: View {
                         state = .success
                     }
                 }
-                await observer.InitiateSocketConnection(id: id)
+                await observer.initiateSocketConnection(id: id)
                 observer.Ping()
                 while true {
                     guard session.notificationsManager.inMessageView == true else {
@@ -202,7 +202,7 @@ struct RoomView: View {
                         messages.append(m)
                     } else {
                         log.error("Failed to get message")
-                        await observer.InitiateSocketConnection(id: id)
+                        await observer.initiateSocketConnection(id: id)
                         observer.Ping()
                     }
                 }

@@ -129,7 +129,7 @@ class ChatObserver: ObservableObject {
         return false
     }
     
-    func InitiateSocketConnection(id: String) async {
+    func initiateSocketConnection(id: String) async {
         do {
             let token = try await Auth.auth().currentUser?.getIDToken()
             
@@ -142,7 +142,7 @@ class ChatObserver: ObservableObject {
             guard var request = request else {
                 return
             }
-            request.setValue("\(token ?? "")", forHTTPHeaderField: "Authorization")
+            request.setValue(token ?? "", forHTTPHeaderField: "Authorization")
             request.setValue("Upgrade", forHTTPHeaderField: "Connection")
             request.setValue("websocket", forHTTPHeaderField: "Upgrade")
             request.setValue(host, forHTTPHeaderField: "Host")

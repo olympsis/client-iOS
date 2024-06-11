@@ -23,7 +23,7 @@ struct OrgApplications: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if applications.filter({$0.status != "accepted"}).count > 0 {

@@ -14,7 +14,7 @@ struct NotificationsView: View {
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if notifications.count > 0 {
                     ScrollView(showsIndicators: false) {

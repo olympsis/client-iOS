@@ -49,7 +49,7 @@ struct NewRoom: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack (alignment: .leading){
                 Text("New Chat Room")
                     .font(.largeTitle)

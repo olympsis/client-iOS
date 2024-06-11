@@ -5,6 +5,7 @@
 //  Created by Joel on 12/20/23.
 //
 
+import os
 import SwiftUI
 
 struct GroupMessages: View {
@@ -17,12 +18,13 @@ struct GroupMessages: View {
     @State private var showDetail = false
     @State private var selectedRoom: Room?
     @State private var showNewRoom = false
-    
     @State private var state: LOADING_STATE = .pending
-    
+
     @StateObject private var chatObserver = ChatObserver()
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
@@ -40,8 +42,10 @@ struct GroupMessages: View {
         return rooms.filter({ !($0.members.contains(where: { $0.uuid == uuid })) })
     }
     
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_messages_view")
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if state == .loading {
                     ProgressView()
@@ -128,9 +132,10 @@ struct GroupMessages: View {
                         .padding(.top)
                 }
                 
-            }.toolbar {
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                    Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
                             .imageScale(.large)
                     }
@@ -155,6 +160,7 @@ struct GroupMessages: View {
                         state = .success
                     }
                 } else {
+                    log.info("No chat rooms found")
                     state = .success
                 }
             }

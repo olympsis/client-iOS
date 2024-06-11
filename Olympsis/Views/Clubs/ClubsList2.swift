@@ -10,7 +10,7 @@ import SwiftUI
 struct ClubsList2: View {
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ClubsList()
             }.toolbar {

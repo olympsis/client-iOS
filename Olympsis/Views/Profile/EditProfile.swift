@@ -137,7 +137,7 @@ struct EditProfile: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack {
                     VStack {

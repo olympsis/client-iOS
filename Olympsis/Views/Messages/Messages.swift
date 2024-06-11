@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 11/27/22.
 //
 
+import os
 import SwiftUI
 
 struct Messages: View {
@@ -42,8 +43,10 @@ struct Messages: View {
         return rooms.sorted(by: { $0.name < $1.name })
     }
     
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "messages_view")
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if state == .loading {
                     ProgressView()
@@ -108,16 +111,17 @@ struct Messages: View {
                                         }
                                 }
                             }
-                        }.tag(0)
-                            .refreshable {
-                                let resp = await chatObserver.GetRooms(id: club.id!)
-                                guard let r = resp  else {
-                                    return
-                                }
-                                await MainActor.run {
-                                    rooms = r.rooms
-                                }
+                        }
+                        .tag(0)
+                        .refreshable {
+                            let resp = await chatObserver.GetRooms(id: club.id!)
+                            guard let r = resp  else {
+                                return
                             }
+                            await MainActor.run {
+                                rooms = r.rooms
+                            }
+                        }
                         
                         ScrollView() {
                             ForEach(allRooms) { room in
@@ -128,22 +132,25 @@ struct Messages: View {
                                     RoomView(club: club, room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
-                        }.tag(1)
-                            .refreshable {
-                                let resp = await chatObserver.GetRooms(id: club.id!)
-                                guard let r = resp  else {
-                                    return
-                                }
-                                await MainActor.run {
-                                    rooms = r.rooms
-                                }
+                        }
+                        .tag(1)
+                        .refreshable {
+                            let resp = await chatObserver.GetRooms(id: club.id!)
+                            guard let r = resp  else {
+                                return
                             }
+                            await MainActor.run {
+                                rooms = r.rooms
+                            }
+                        }
                         
-                    }.tabViewStyle(.page)
-                        .padding(.top)
+                    }
+                    .tabViewStyle(.page)
+                    .padding(.top)
                 }
                 
-            }.toolbar {
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
@@ -170,15 +177,12 @@ struct Messages: View {
                         state = .success
                     }
                 } else {
+                    log.info("No chat rooms found")
                     state = .success
                 }
-                await chatObserver.CloseSocketConnection()
             }
             .onDisappear {
                 session.notificationsManager.inMessageView = false
-                Task {
-                    await chatObserver.CloseSocketConnection()
-                }
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 NewRoom(club: $club, rooms: $rooms)

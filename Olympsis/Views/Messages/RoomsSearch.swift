@@ -17,7 +17,7 @@ struct RoomsSearch: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     if rooms.count > 0 {

@@ -38,7 +38,7 @@ struct OrganizationsView: View {
     private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     HStack {

@@ -62,7 +62,7 @@ struct GroupRoomView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if state == .loading {
@@ -100,7 +100,7 @@ struct GroupRoomView: View {
                             state = .success
                         }
                     }
-                    await observer.InitiateSocketConnection(id: id)
+                    await observer.initiateSocketConnection(id: id)
                     observer.Ping()
                     while true {
                         guard session.notificationsManager.inMessageView == true else {
@@ -111,7 +111,7 @@ struct GroupRoomView: View {
                             messages.append(m)
                         } else {
                             log.error("Failed to get message")
-                            await observer.InitiateSocketConnection(id: id)
+                            await observer.initiateSocketConnection(id: id)
                             observer.Ping()
                         }
                     }
@@ -178,7 +178,7 @@ struct GroupRoomView: View {
                         state = .success
                     }
                 }
-                await observer.InitiateSocketConnection(id: id)
+                await observer.initiateSocketConnection(id: id)
                 observer.Ping()
                 while true {
                     guard session.notificationsManager.inMessageView == true else {
@@ -189,7 +189,7 @@ struct GroupRoomView: View {
                         messages.append(m)
                     } else {
                         log.error("Failed to get message")
-                        await observer.InitiateSocketConnection(id: id)
+                        await observer.initiateSocketConnection(id: id)
                         observer.Ping()
                     }
                 }
