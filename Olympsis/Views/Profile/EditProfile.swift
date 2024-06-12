@@ -321,7 +321,7 @@ struct EditProfile: View {
                             }.foregroundStyle(.gray)
                         }
                         Button(action: { self.showHometownPicker.toggle() }) {
-                            if (latitude == 0 && longitude == 0 && session.user?.hometown == nil) {
+                            if (latitude == 0 && longitude == 0 || session.user?.hometown == nil) {
                                 Text("N/A")
                             } else {
                                 Text("\(city), \(state) (\(country))")
