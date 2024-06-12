@@ -11,6 +11,8 @@ import PhotosUI
 
 struct NewClub: View {
     
+    @State private var showLocationPicker = false
+    
     @StateObject private var viewModel = NewGroupViewModel()
     
     @EnvironmentObject private var session: SessionStore
@@ -25,112 +27,49 @@ struct NewClub: View {
             return
         }
         
-        // grab current location and create club
-        let geoCoder = CLGeocoder()
-        if let location = session.locationManager.location {
-            let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            do {
-                let pk = try await geoCoder.reverseGeocodeLocation(l)
-                guard let country = pk.first?.country,
-                      let state = pk.first?.administrativeArea,
-                      let city = pk.first?.locality else {
-                    return
-                }
-                dto.city = city
-                dto.state = state
-                dto.country = country
-                
-                // create new club
-                guard let user = session.user,
-                    let id = try await session.clubObserver.createClub(club: dto) else {
-                    viewModel.state = .failure
-                    log.error("Failed to create club")
-                    return
-                }
-                
-                let club = Club(
-                    id: id, parent: nil,
-                    name: dto.name,
-                    logo: dto.logo,
-                    banner: dto.banner,
-                    sports: dto.sports,
-                    description: dto.description,
-                    city: dto.city,
-                    state: dto.state,
-                    country: dto.country,
-                    visibility: dto.visibility,
-                    members: [
-                        Member(
-                            id: UUID().uuidString, 
-                            role: "owner",
-                            user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
-                            joinedAt: Int64(Date().timeIntervalSince1970)
-                        )
-                    ],
-                    pinnedPosts: nil,
-                    isVerified: false,
-                    createdAt: Int(Date().timeIntervalSince1970)
-                )
-                
-                let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
-                session.groups.append(group)
-                session.selectedGroup = group
-
-                viewModel.showToast = true
-                viewModel.state = .success
-                dismiss()
-            } catch {
-                viewModel.state = .failure
-                log.error("Failed to create club: \(error)")
+        do {
+            // create new club
+            guard let user = session.user,
+                let id = try await session.clubObserver.createClub(club: dto) else {
+                viewModel.status = .failure
+                log.error("Failed to create club")
+                return
             }
-        } else {
-            if let hometown = session.user?.hometown {
-                let l = CLLocation(latitude: hometown[0], longitude: hometown[1])
-                do {
-                    let pk = try await geoCoder.reverseGeocodeLocation(l)
-                    guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea,
-                          let city = pk.first?.locality else {
-                        return
-                    }
-                    dto.city = city
-                    dto.state = state
-                    dto.country = country
-                    
-                    // create new club
-                    guard let id = try await session.clubObserver.createClub(club: dto) else {
-                        viewModel.state = .failure
-                        log.error("Failed to create club")
-                        return
-                    }
-                    
-                    let club = Club(
-                        id: id, parent: nil,
-                        name: dto.name,
-                        logo: dto.logo,
-                        banner: dto.banner,
-                        sports: dto.sports,
-                        description: dto.description,
-                        city: dto.city,
-                        state: dto.state,
-                        country: dto.country,
-                        visibility: dto.visibility,
-                        pinnedPosts: nil,
-                        createdAt: Int(Date().timeIntervalSince1970)
+            
+            let club = Club(
+                id: id, parent: nil,
+                name: dto.name,
+                logo: dto.logo,
+                banner: dto.banner,
+                sports: dto.sports,
+                description: dto.description,
+                city: dto.city,
+                state: dto.state,
+                country: dto.country,
+                visibility: dto.visibility,
+                members: [
+                    Member(
+                        id: UUID().uuidString,
+                        role: "owner",
+                        user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
+                        joinedAt: Int64(Date().timeIntervalSince1970)
                     )
-                    
-                    let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
-                    session.groups.append(group)
-                    session.selectedGroup = group
+                ],
+                pinnedPosts: nil,
+                isVerified: false,
+                createdAt: Int(Date().timeIntervalSince1970)
+            )
+            
+            let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
+            session.groups.append(group)
+            session.selectedGroup = group
 
-                    viewModel.showToast = true
-                    viewModel.state = .success
-                    dismiss()
-                } catch {
-                    viewModel.state = .failure
-                    log.error("Failed to create club: \(error)")
-                }
-            }
+            viewModel.showToast = true
+            viewModel.status = .success
+            dismiss()
+        } catch {
+            viewModel.status = .failure
+            log.error("Failed to create club: \(error)")
         }
     }
     
@@ -226,8 +165,7 @@ struct NewClub: View {
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.primary)
-                        .opacity(0.1)
+                        .foregroundStyle(Color("background"))
                     TextField("", text: $viewModel.clubName)
                         .padding(.leading)
                 }.frame(height: 40)
@@ -243,8 +181,7 @@ struct NewClub: View {
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.primary)
-                        .opacity(0.1)
+                        .foregroundStyle(Color("background"))
                     TextEditor(text: $viewModel.description)
                         .scrollContentBackground(.hidden)
                     .frame(height: 200)
@@ -263,8 +200,7 @@ struct NewClub: View {
 
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.primary)
-                            .opacity(0.1)
+                            .foregroundStyle(Color("background"))
                             .frame(height: 40)
                         Button(action: {
                             viewModel.showSportsPicker.toggle()
@@ -296,11 +232,38 @@ struct NewClub: View {
                     MultiSportsPicker(selectedSports: $viewModel.selectedSports)
                 })
                 
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text("Hometown")
+                        HStack(alignment: .top) {
+                            Text("Where does this club call home?")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                        }.foregroundStyle(.gray)
+                    }
+                    Button(action: { self.showLocationPicker.toggle() }) {
+                        if (viewModel.latitude == 0 && viewModel.longitude == 0 || viewModel.city == "") {
+                            Text("N/A")
+                        } else {
+                            Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                        }
+                    }.frame(maxWidth: .infinity, idealHeight: 40)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 40)
+                            .foregroundColor(Color("background"))
+                    }
+                }
+                .padding(.top)
+                .fullScreenCover(isPresented: $showLocationPicker, content: {
+                    ProfileHometownPicker(city: $viewModel.city, state: $viewModel.state, country: $viewModel.country, latitude: $viewModel.latitude, longitude: $viewModel.longitude)
+                })
+                
                 VStack(alignment: .leading){
                     VStack(alignment: .center){
                         Button(action: { Task { await CreateClub() } }) {
-                            LoadingButton(text: "Create", width: 150, status: $viewModel.state)
-                        }.disabled(viewModel.state == .pending ? false : true)
+                            LoadingButton(text: "Create", width: 150, status: $viewModel.status)
+                        }.disabled(viewModel.status == .pending ? false : true)
                     }
                     .frame(width: SCREEN_WIDTH-25)
                     .padding(.top, 50)
@@ -314,7 +277,7 @@ struct NewClub: View {
         .frame(width: SCREEN_WIDTH-25)
         .navigationTitle("Create Club")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.state = .pending }, content: {
+        .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {
             GroupMediaViolation()
         })
     }

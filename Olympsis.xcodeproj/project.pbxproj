@@ -78,7 +78,6 @@
 		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
 		5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01352C04EA75006A264C /* OrgBanner.swift */; };
 		5D6C01382C054D6A006A264C /* NewGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* NewGroupViewModel.swift */; };
-		5D6C013A2C05B886006A264C /* LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01392C05B886006A264C /* LocationPicker.swift */; };
 		5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */; };
 		5D6C013F2C07BB45006A264C /* Onboard-AboutOlympsis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013E2C07BB45006A264C /* Onboard-AboutOlympsis.swift */; };
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
@@ -437,7 +436,6 @@
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D6C01352C04EA75006A264C /* OrgBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgBanner.swift; sourceTree = "<group>"; };
 		5D6C01372C054D6A006A264C /* NewGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupViewModel.swift; sourceTree = "<group>"; };
-		5D6C01392C05B886006A264C /* LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPicker.swift; sourceTree = "<group>"; };
 		5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMediaViolation.swift; sourceTree = "<group>"; };
 		5D6C013E2C07BB45006A264C /* Onboard-AboutOlympsis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutOlympsis.swift"; sourceTree = "<group>"; };
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
@@ -1074,7 +1072,6 @@
 				9A35370029289344005EC806 /* Event */,
 				9A81B6312925C038009CA6ED /* BadgesView.swift */,
 				9A81B6332925C0E7009CA6ED /* TrophiesView.swift */,
-				5D6C01392C05B886006A264C /* LocationPicker.swift */,
 				5D78BDE72C0D387500F170D6 /* SportView.swift */,
 			);
 			path = Components;
@@ -1981,7 +1978,6 @@
 				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
-				5D6C013A2C05B886006A264C /* LocationPicker.swift in Sources */,
 				5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */,
 				5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */,
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,

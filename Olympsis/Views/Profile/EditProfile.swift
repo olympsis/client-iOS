@@ -341,55 +341,55 @@ struct EditProfile: View {
                     
                     Spacer()
                     
-                }.navigationTitle("Edit Profile")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action:{ dismiss() }){
-                                Text("Cancel")
-                                    .foregroundColor(.primary)
-                            }
-                        }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action:{
-                                Task {
-                                    await UpdateProfile()
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        dismiss()
-                                    }
-                                }
-                            }){
-                                LoadingButton(text: "Save", width: 50, status: $status)
-                            }
+                }
+                .navigationTitle("Edit Profile")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action:{ dismiss() }){
+                            Text("Cancel")
+                                .foregroundColor(.primary)
                         }
                     }
-                    .task {
-                        if let usr = session.user {
-                            if let sports = usr.sports {
-                                for sport in sports {
-                                    selectedSports.insert(sport)
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action:{
+                            Task {
+                                await UpdateProfile()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    dismiss()
                                 }
                             }
-                            
-                            if let home = usr.hometown {
-                                hometown = CLLocationCoordinate2D(latitude: home[0], longitude: home[1])
-                                getPlacemark(from: CLLocationCoordinate2D(latitude: home[0], longitude: home[1])) { placemark in
-                                    if let placemark = placemark {
-                                        let city = placemark.locality ?? ""
-                                        let state = placemark.administrativeArea ?? ""
-                                        let country = placemark.country ?? ""
-                                        
-                                        self.city = city
-                                        self.state = state
-                                        self.country = country
-                                    } else {
-                                        print("Unable to get placemark information")
-                                    }
-                                }
+                        }){
+                            LoadingButton(text: "Save", width: 50, status: $status)
+                        }
+                    }
+                }
+                .task {
+                    if let usr = session.user {
+                        if let sports = usr.sports {
+                            for sport in sports {
+                                selectedSports.insert(sport)
                             }
                         }
                         
+                        if let home = usr.hometown {
+                            hometown = CLLocationCoordinate2D(latitude: home[0], longitude: home[1])
+                            getPlacemark(from: CLLocationCoordinate2D(latitude: home[0], longitude: home[1])) { placemark in
+                                if let placemark = placemark {
+                                    let city = placemark.locality ?? ""
+                                    let state = placemark.administrativeArea ?? ""
+                                    let country = placemark.country ?? ""
+                                    
+                                    self.city = city
+                                    self.state = state
+                                    self.country = country
+                                } else {
+                                    print("Unable to get placemark information")
+                                }
+                            }
+                        }
                     }
+                }
             }
         }
     }

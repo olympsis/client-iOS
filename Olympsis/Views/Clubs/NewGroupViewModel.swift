@@ -18,6 +18,12 @@ class NewGroupViewModel: ObservableObject {
         case noSport
     }
     
+    @Published var city: String = ""
+    @Published var state: String = ""
+    @Published var country: String = ""
+    @Published var latitude: Double = 0
+    @Published var longitude: Double = 0
+    
     @Published var logoPhoto: UIImage? {
         didSet {
             DispatchQueue.main.async {
@@ -42,7 +48,7 @@ class NewGroupViewModel: ObservableObject {
     
     @Published var clubName: String = ""
     @Published var description: String = ""
-    @Published var state: LOADING_STATE = .pending
+    @Published var status: LOADING_STATE = .pending
     @Published var selectedSports: Set<String> = []
     
     @Published var showToast = false
@@ -108,11 +114,18 @@ class NewGroupViewModel: ObservableObject {
     
     func validate() -> GROUP_CREATION_ERROR? {
         if clubName == "" || clubName.count < 3  || clubName.count > 25 {
+            log.error("Failed to validate new group. Bad group name.")
             return .noName
         }
         if selectedSports.isEmpty {
+            log.error("Failed to validate new group. No sports selection selected.")
             return .noSport
         }
+        if state == "" || country == "" {
+            log.error("Failed to validate new group. No loca")
+            return .unexpected
+        }
+        log.info("Group validated successfully")
         return nil
     }
     
@@ -121,14 +134,14 @@ class NewGroupViewModel: ObservableObject {
         // validate view
         guard validate() == nil else {
             log.error("Failed to validate club create view before creating club")
-            state = .failure
+            status = .failure
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.state = .pending
+                self.status = .pending
             }
             return nil
         }
         
-        state = .loading
+        status = .loading
         
         do {
             // upload logo if there is one
@@ -156,7 +169,10 @@ class NewGroupViewModel: ObservableObject {
             logo: logoURL != "" ? logoURL : nil,
             banner: bannerURL != "" ? bannerURL : nil,
             description: description,
-            sports: Array(selectedSports),
+            sports: Array(selectedSports), 
+            city: city,
+            state: state,
+            country: country,
             visibility: "public"
         )
     }
@@ -165,15 +181,15 @@ class NewGroupViewModel: ObservableObject {
     func createOrganizationDTO() async -> OrganizationDao? {
         // validate view
         guard validate() == nil else {
-            log.error("Failed to validate club create view before creating club")
-            state = .failure
+            log.error("Failed to validate organization create view before creating organization")
+            status = .failure
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.state = .pending
+                self.status = .pending
             }
             return nil
         }
         
-        state = .loading
+        status = .loading
         
         do {
             // upload logo if there is one
@@ -200,6 +216,8 @@ class NewGroupViewModel: ObservableObject {
             name: clubName,
             description: description, 
             sports: Array(selectedSports), 
+            state: state,
+            country: country,
             logo: logoURL != "" ? logoURL : nil,
             banner: bannerURL != "" ? bannerURL : nil
         )
