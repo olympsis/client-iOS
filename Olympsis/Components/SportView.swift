@@ -71,6 +71,10 @@ struct SportView: View {
                         sport.icon()
                             .resizable()
                             .frame(width: 25, height: 25)
+                    case .football:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 25, height: 25)
                     }
                     
                     Text(sport.getName())
@@ -135,6 +139,10 @@ struct SportView: View {
                         sport.icon()
                             .resizable()
                             .frame(width: 40, height: 40)
+                    case .football:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
                     }
                     
                     Text(sport.getName())
@@ -147,5 +155,5 @@ struct SportView: View {
 }
 
 #Preview {
-    SportView(sport: .climbing, scale: .Medium)
+    SportView(sport: .football, scale: .Medium)
 }
