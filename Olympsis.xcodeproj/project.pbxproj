@@ -104,6 +104,7 @@
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
 		5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */; };
 		5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */; };
+		5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
@@ -456,6 +457,7 @@
 		5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueMediumListItem.swift; sourceTree = "<group>"; };
 		5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueSearchViewModel.swift; sourceTree = "<group>"; };
 		5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDescriptorView.swift; sourceTree = "<group>"; };
+		5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessors.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
@@ -890,6 +892,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5D8B4A942C1CF1D90030FF3E /* Venue */ = {
+			isa = PBXGroup;
+			children = (
+				5DFB8A052A720B560002A560 /* VenueView.swift */,
+				9A69FE5629725A1300EBC5F9 /* VenuesList.swift */,
+				5F4E53F52A2918B900257350 /* Venues.swift */,
+				5DA38B352BF39856008C5C74 /* VenueTips.swift */,
+			);
+			path = Venue;
+			sourceTree = "<group>";
+		};
 		5D9557A22A6C5E19006A1EF8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -1099,10 +1112,6 @@
 			children = (
 				9A81B61129242EBA009CA6ED /* VenueListItem.swift */,
 				9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */,
-				9A69FE5629725A1300EBC5F9 /* VenuesList.swift */,
-				5F4E53F52A2918B900257350 /* Venues.swift */,
-				5DFB8A052A720B560002A560 /* VenueView.swift */,
-				5DA38B352BF39856008C5C74 /* VenueTips.swift */,
 				5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */,
 				5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */,
 			);
@@ -1237,6 +1246,7 @@
 		9A8FF0BE28BB18B800DE4CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5D8B4A942C1CF1D90030FF3E /* Venue */,
 				5D73480E2C0A4AE30003AB41 /* Event */,
 				5D6C013D2C07BB12006A264C /* Onboarding */,
 				5DF8C8762BF18E92002FE392 /* System */,
@@ -1565,6 +1575,7 @@
 				5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */,
 				5D18BD252B3BC1CF00F90777 /* Generic.swift */,
 				5D9F69402BB7653F0057D205 /* MapFunctions.swift */,
+				5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1738,6 +1749,7 @@
 				5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
+				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
 				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,

@@ -131,9 +131,12 @@ struct TabBar: View {
                             .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
                     }
                 }
-            }.frame(maxWidth: .infinity)
-                .frame(height: 25)
-        }.frame(height: 25)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 25)
+            
+        }
+        .frame(height: 25)
         .padding([.horizontal, .vertical])
     }
 }

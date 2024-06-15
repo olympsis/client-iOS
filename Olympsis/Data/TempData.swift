@@ -22,12 +22,17 @@ let COMMENTS = [
 
 let POSTS = [
     Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Like(id: "", uuid: "", user: nil, createdAt: 0)], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: 1639364779),
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: ["feed-images/072bb74c-bebe-449d-9d1f-efe26b974081.jpg", "feed-images/89b037d3-e4d6-4e65-86a4-27ef09983489.jpg", "feed-images/2BCB42D7-EA02-4583-8D23-45B3DD167293.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: [
+        "feed-images/9DC9A5CE-073E-4859-949C-9135D740DB85.jpeg",
+        "feed-images/E9650FF7-5DE7-4D76-B886-7C3EC422A05E.jpeg",
+        "feed-images/5D710804-0CAF-4371-8C88-0879B9FEF9F4.jpeg"
+
+        ], likes: [Like](), comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
     Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: 1639364779)
 ]
 
 let FIELDS = [
-    Venue(id: UUID().uuidString, name: "Richard Building Fields", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The Richard Building fields is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
+    Venue(id: UUID().uuidString, name: "Richard Building Fields", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The Richard Building fields is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["field-images/22aa23f7-5fb5-4c2e-b4fb-3a2943d492fc.jpg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
     Venue(id: UUID().uuidString, name: "Indoor Practice Facility", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
     Venue(id: UUID().uuidString, name: "11th Ave Park", owner: Ownership(name: "Salt Lake City", type: "public"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Salt Lake City", state: "UT", country: "United States of America")
 ]

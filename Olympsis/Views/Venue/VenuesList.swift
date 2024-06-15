@@ -23,8 +23,10 @@ struct VenuesList: View {
         NavigationStack {
             ScrollView {
                 if (venues.count > 0) {
-                    ForEach(venues, id: \.name){ field in
-                        VenueListItem(venue: field)
+                    LazyVStack {
+                        ForEach(venues, id: \.name){ field in
+                            VenueListItem(venue: field)
+                        }
                     }
                 } else {
                     if hasLocation {
@@ -48,10 +50,11 @@ struct VenuesList: View {
                                 Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
                                     .font(.caption2)
                             }.foregroundStyle(.gray)
-                        }.padding(.all)
-                            .fullScreenCover(isPresented: $showRequestLocation, content: {
-                                LocationRequestView()
-                            })
+                        }
+                        .padding(.all)
+                        .fullScreenCover(isPresented: $showRequestLocation, content: {
+                            LocationRequestView()
+                        })
                     }
                 }
             }.toolbar {

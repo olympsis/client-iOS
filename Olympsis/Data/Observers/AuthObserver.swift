@@ -88,6 +88,8 @@ class AuthObserver: ObservableObject {
                         }
                         
                         try await Register(firstName: firstName, lastName: lastName, email: email, token: token)
+                        cacheService.cacheUser(user: UserData(firstName: firstName, lastName: lastName))
+                        
                         return USER_STATUS.new
                     } catch {
                         log.error("Authentication Failed: \(error.localizedDescription)")

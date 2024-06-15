@@ -85,6 +85,8 @@ struct VenueView: View {
 struct VenueImages: View {
     
     @State var venue: Venue
+    @State private var showFullImage: Bool = false
+    
     var images: [URL] {
         var arr = [URL]()
         venue.images.forEach { img in
@@ -94,6 +96,7 @@ struct VenueImages: View {
         }
         return arr
     }
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
@@ -103,11 +106,15 @@ struct VenueImages: View {
                             ImageLoadingView()
                         })
                         .resizable()
+                        .setProcessor(venueImageProcessor(size: CGSize(width: 220, height: 300)))
                         .frame(width: 220, height: 300, alignment: .center)
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding(.leading)
+                        .onTapGesture {
+                            self.showFullImage.toggle()
+                        }
+                        .fullScreenCover(isPresented: $showFullImage, content: {
+                            FullImageViewer(imageURL: i)
+                        })
                 }
             }
         }
@@ -387,6 +394,6 @@ struct VenueEventsView: View {
 
 struct FieldViewExt_Previews: PreviewProvider {
     static var previews: some View {
-        VenueView(venue: FIELDS[2]).environmentObject(SessionStore())
+        VenueView(venue: FIELDS[0]).environmentObject(SessionStore())
     }
 }

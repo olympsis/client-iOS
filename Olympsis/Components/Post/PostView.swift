@@ -311,9 +311,7 @@ struct PostBody: View {
                             .placeholder({
                                 ImageLoadingView()
                             })
-                            .resizable(resizingMode: .stretch)
-                            .scaledToFill()
-                            .clipped()
+                            .setProcessor(postImageProcessor(size: CGSize(width: SCREEN_WIDTH, height: SCREEN_WIDTH)))
                             .tag(i)
                     }
                 }
