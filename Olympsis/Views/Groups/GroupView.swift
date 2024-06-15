@@ -48,7 +48,8 @@ struct GroupView: View {
                         Text("Failed to get clubs data 😞")
                     }
                 }
-            }.toolbar {
+            }
+            .toolbar {
                 GroupToolbar(showEULA: $showEULA, showMenu: $showMenu, showNewPost: $showNewPost, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
             }
             .sheet(isPresented: $showSelector) {

@@ -11,6 +11,7 @@ import SwiftUI
 struct NoClubMenu: View {
     
     @Binding var status: LOADING_STATE
+    @State private var showEula: Bool = false
     @State private var showNewClub: Bool = false
     @State private var showInvites: Bool = false
     
@@ -19,6 +20,14 @@ struct NoClubMenu: View {
     
     @EnvironmentObject var session:SessionStore
     @Environment(\.presentationMode) var presentationMode
+    
+    var acceptedEULA: Bool {
+        guard let user = session.user,
+              let hasAccepted = user.acceptedEULA else {
+            return false
+        }
+        return hasAccepted
+    }
     
     func fetchLocaleInformation() async {
         let geoCoder = CLGeocoder()
@@ -41,7 +50,13 @@ struct NoClubMenu: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    Button(action:{self.showNewClub.toggle()}) {
+                    Button(action:{
+                        guard acceptedEULA else {
+                            self.showEula.toggle()
+                            return
+                        }
+                        self.showNewClub.toggle()
+                    }) {
                         HStack {
                             Image(systemName: "plus")
                                 .imageScale(.large)
@@ -59,7 +74,11 @@ struct NoClubMenu: View {
                     }.fullScreenCover(isPresented: $showNewClub) {
                         NewGroup()
                     }
-                }.toolbar {
+                }
+                .fullScreenCover(isPresented: $showEula, content: {
+                    EndUserLicenseAgreement()
+                })
+                .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                             Image(systemName: "chevron.left")

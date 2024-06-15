@@ -154,7 +154,13 @@ struct GroupToolbar: ToolbarContent {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: { self.showNewPost.toggle() }) {
+                            Button(action: {
+                                guard acceptedEULA else {
+                                    self.showEULA.toggle()
+                                    return
+                                }
+                                self.showNewPost.toggle()
+                            }) {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)

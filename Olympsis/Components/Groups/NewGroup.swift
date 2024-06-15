@@ -22,7 +22,7 @@ struct NewGroup: View {
                 
                 NavigationLink(destination: NewClub()) {
                     ZStack {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color("background"))
                         VStack {
                             Image(systemName: "person.3.fill")
@@ -31,20 +31,21 @@ struct NewGroup: View {
                             Text("Club")
                                 .font(.title3)
                                 .bold()
-                            Text("A club is a social circle uniting individuals who share a common interest in a sport or fitness goal, providing a platform to create group chats and organize events related to those shared interests.")
+                            Text("A club is a social circle uniting individuals who share a common interest in a sport or fitness goal.")
                                 .padding(.horizontal)
-                                .font(.caption)
+                                .font(.callout)
                         }
                     }
-                }.frame(height: 250)
-                    .padding(.horizontal)
-                    .foregroundStyle(.primary)
+                }
+                .frame(height: 250)
+                .padding(.horizontal)
+                .foregroundStyle(.primary)
                 
                 Spacer()
                 
                 NavigationLink(destination: NewOrganization()) {
                     ZStack {
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color("background"))
                         VStack {
                             Image(systemName: "globe.americas.fill")
@@ -53,26 +54,28 @@ struct NewGroup: View {
                             Text("Organization")
                                 .font(.title3)
                                 .bold()
-                            Text("An organization is typically limited in terms of its feature set, offering a standardized structure for various clubs or groups within it. It often provides the ability to broadcast messages or information to its affiliated clubs.")
+                            Text("An organization is typically limited in terms of its feature set, offering a standardized structure for various clubs or groups within it.")
                                 .padding(.horizontal)
-                                .font(.caption)
-                        }
-                    }
-                }.frame(height: 250)
-                    .padding(.horizontal)
-                    .foregroundStyle(.primary)
-                
-                Spacer()
-            }.padding(.horizontal)
-                .navigationTitle("New Group")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-                            Image(systemName: "chevron.left")
+                                .font(.callout)
                         }
                     }
                 }
+                .frame(height: 250)
+                .padding(.horizontal)
+                .foregroundStyle(.primary)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            .navigationTitle("New Group")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
         }
     }
 }
