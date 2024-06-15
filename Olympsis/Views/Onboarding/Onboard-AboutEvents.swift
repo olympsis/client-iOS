@@ -19,7 +19,7 @@ struct Onboard_AboutEvents: View {
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
             
-            Text("Create & Share events near you to find and help other athletes reach their fitness goals")
+            Text("Host events for your group and or share it publicly to others to help them reach their goals. ")
                 .font(.title2)
                 .multilineTextAlignment(.center)
                 .padding([.horizontal, .vertical])

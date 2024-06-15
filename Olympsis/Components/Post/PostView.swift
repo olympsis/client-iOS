@@ -311,7 +311,8 @@ struct PostBody: View {
                             .placeholder({
                                 ImageLoadingView()
                             })
-                            .setProcessor(postImageProcessor(size: CGSize(width: SCREEN_WIDTH, height: SCREEN_WIDTH)))
+                            .resizable()
+                            .setProcessor(postImageProcessor(size: CGSize(width: SCREEN_WIDTH*1.5, height: SCREEN_WIDTH*1.5)))
                             .tag(i)
                     }
                 }

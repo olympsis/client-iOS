@@ -19,7 +19,7 @@ struct Onboard_AboutOlympsis: View {
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
             
-            Text("A new social platform for athletes(everyone) to create communities around the sports they love.")
+            Text("A new social platform for everyone to create communities around the sports they love.")
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)

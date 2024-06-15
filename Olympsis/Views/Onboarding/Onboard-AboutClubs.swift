@@ -13,13 +13,13 @@ struct Onboard_AboutClubs: View {
     
     var body: some View {
         VStack {
-            Text("Get into clubs with friends")
+            Text("Get into groups with friends")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
             
-            Text("Create clubs with friends and make new friends and reach new heights together")
+            Text("Create groups with your friends and make new friends to reach new heights together")
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)
