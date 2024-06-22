@@ -94,6 +94,7 @@ enum SPORTS: String, CaseIterable {
     case climbing = "climbing"
     case spike = "spike"
     case football = "football"
+    case weights = "weights"
     
     func icon() -> Image {
         switch self {
@@ -123,6 +124,8 @@ enum SPORTS: String, CaseIterable {
             return Image("logo-spikeball")
         case .football:
             return Image(systemName: "figure.american.football")
+        case .weights:
+            return Image(systemName: "figure.strengthtraining.traditional")
         }
     }
     
@@ -154,6 +157,8 @@ enum SPORTS: String, CaseIterable {
             return ["event-images/racquetball-0.jpg"]
         case .football:
             return ["event-images/football-0.jpg"]
+        case .weights:
+            return ["event-images/weights-0.jpg", "event-images/weights-1.jpg"]
         }
     }
     
@@ -185,6 +190,8 @@ enum SPORTS: String, CaseIterable {
             return "Spike"
         case .football:
             return "Football"
+        case .weights:
+            return "Weights"
         }
     }
 }

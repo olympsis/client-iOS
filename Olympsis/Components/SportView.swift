@@ -75,6 +75,10 @@ struct SportView: View {
                         sport.icon()
                             .resizable()
                             .frame(width: 25, height: 25)
+                    case .weights:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 25, height: 25)
                     }
                     
                     Text(sport.getName())
@@ -143,6 +147,10 @@ struct SportView: View {
                         sport.icon()
                             .resizable()
                             .frame(width: 40, height: 40)
+                    case .weights:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
                     }
                     
                     Text(sport.getName())
@@ -155,5 +163,5 @@ struct SportView: View {
 }
 
 #Preview {
-    SportView(sport: .football, scale: .Medium)
+    SportView(sport: .weights, scale: .Medium)
 }
