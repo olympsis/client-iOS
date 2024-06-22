@@ -150,9 +150,9 @@ enum SPORTS: String, CaseIterable {
         case .spike:
             return ["event-images/spikeball-0.jpg"]
         case .running:
-            return ["event-images/running-0.jpg"]
+            return ["event-images/running-0.jpg", "event-images/running-1.jpg"]
         case .cycling:
-            return ["event-images/cycling-0.jpg"]
+            return ["event-images/cycling-0.jpg", "event-images/cycling-1.jpg"]
         case .racquetball:
             return ["event-images/racquetball-0.jpg"]
         case .football:
