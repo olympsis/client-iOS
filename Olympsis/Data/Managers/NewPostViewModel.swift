@@ -52,7 +52,7 @@ class NewPostViewModel: ObservableObject {
      */
     func createPost(groupId: String, user: UserData) async throws -> Post? {
         
-        DispatchQueue.main.async {
+        await MainActor.run {
             self.status = .loading
         }
         

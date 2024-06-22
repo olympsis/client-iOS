@@ -10,7 +10,6 @@ import Foundation
 
 func venueImageProcessor(size: CGSize) -> ImageProcessor {
     return DownsamplingImageProcessor(size: size)
-    |> RoundCornerImageProcessor(cornerRadius: 10)
 }
 
 func announcementImageProcessor(size: CGSize) -> ImageProcessor {

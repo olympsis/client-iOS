@@ -106,8 +106,9 @@ struct VenueImages: View {
                             ImageLoadingView()
                         })
                         .resizable()
-                        .setProcessor(venueImageProcessor(size: CGSize(width: 220, height: 300)))
+                        .setProcessor(venueImageProcessor(size: CGSize(width: 220*2, height: 300*2)))
                         .frame(width: 220, height: 300, alignment: .center)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding(.leading)
                         .onTapGesture {
                             self.showFullImage.toggle()

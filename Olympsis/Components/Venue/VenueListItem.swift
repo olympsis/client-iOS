@@ -37,8 +37,9 @@ struct VenueListItem: View {
                                     })
                                     .resizable()
                                     .cacheOriginalImage()
-                                    .setProcessor(venueImageProcessor(size: CGSize(width: 500, height: 300)))
+                                    .setProcessor(venueImageProcessor(size: CGSize(width: 500*2, height: 300*2)))
                                     .frame(width: 500, height: 300, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             } else {
                                 ImageLoadingFailedView()
                                     .frame(width: 500, height: 300, alignment: .center)
@@ -52,8 +53,9 @@ struct VenueListItem: View {
                                     })
                                     .resizable()
                                     .cacheOriginalImage()
-                                    .setProcessor(venueImageProcessor(size: CGSize(width: 500, height: 300)))
+                                    .setProcessor(venueImageProcessor(size: CGSize(width: 500*2, height: 300*2)))
                                     .frame(width: 500, height: 300, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             } else {
                                 ImageLoadingFailedView()
                                     .frame(width: 500, height: 300, alignment: .center)
@@ -109,8 +111,9 @@ struct VenueListItem: View {
                                     })
                                     .resizable()
                                     .cacheOriginalImage()
-                                    .setProcessor(venueImageProcessor(size: CGSize(width: SCREEN_WIDTH-20, height: 300)))
+                                    .setProcessor(venueImageProcessor(size: CGSize(width: SCREEN_WIDTH-20*2, height: 300*2)))
                                     .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             } else {
                                 ImageLoadingFailedView()
                                     .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
@@ -124,11 +127,13 @@ struct VenueListItem: View {
                                     })
                                     .resizable()
                                     .cacheOriginalImage()
-                                    .setProcessor(venueImageProcessor(size: CGSize(width: SCREEN_WIDTH-20, height: 300)))
+                                    .setProcessor(venueImageProcessor(size: CGSize(width: SCREEN_WIDTH-20*2, height: 300*2)))
                                     .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             } else {
                                 ImageLoadingFailedView()
                                     .frame(width: SCREEN_WIDTH-20, height: 300, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                         }
                     }

@@ -15,6 +15,7 @@ struct GroupToolbar: ToolbarContent {
     @Binding var showEULA: Bool
     @Binding var showMenu: Bool
     @Binding var showNewPost: Bool
+    @Binding var showNewEvent: Bool
     @Binding var showSelector: Bool
     @Binding var showMessages: Bool
     @Binding var groupState: LOADING_STATE
@@ -50,7 +51,7 @@ struct GroupToolbar: ToolbarContent {
         case .success, .pending:
             if session.selectedGroup == nil {
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("Clubs")
+                    Text("Groups")
                         .font(.title)
                         .bold()
                 }
@@ -87,14 +88,23 @@ struct GroupToolbar: ToolbarContent {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: {
-                                // You need to have accepted EULA before being able to make a post
-                                guard acceptedEULA else {
-                                    self.showEULA.toggle()
-                                    return
+                            Menu {
+                                Button(action: {
+                                    // You need to have accepted EULA before being able to make a post
+                                    guard acceptedEULA else {
+                                        self.showEULA.toggle()
+                                        return
+                                    }
+                                    self.showNewPost.toggle()
+                                }) {
+                                    Text("New Post")
                                 }
-                                self.showNewPost.toggle()
-                            }) {
+                                Button(action: {
+                                    self.showNewEvent.toggle()
+                                }) {
+                                    Text("New Event")
+                                }
+                            } label: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
@@ -154,13 +164,23 @@ struct GroupToolbar: ToolbarContent {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: {
-                                guard acceptedEULA else {
-                                    self.showEULA.toggle()
-                                    return
+                            Menu {
+                                Button(action: {
+                                    // You need to have accepted EULA before being able to make a post
+                                    guard acceptedEULA else {
+                                        self.showEULA.toggle()
+                                        return
+                                    }
+                                    self.showNewPost.toggle()
+                                }) {
+                                    Text("New Post")
                                 }
-                                self.showNewPost.toggle()
-                            }) {
+                                Button(action: {
+                                    self.showNewEvent.toggle()
+                                }) {
+                                    Text("New Event")
+                                }
+                            } label: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
@@ -206,7 +226,7 @@ struct GroupToolbar: ToolbarContent {
             }
         case .failure:
             ToolbarItem(placement: .topBarLeading) {
-                Text("Clubs")
+                Text("Groups")
                     .font(.title)
                     .bold()
             }
@@ -233,7 +253,7 @@ struct GroupToolbar: ToolbarContent {
 #Preview {
     NavigationStack {
         VStack {}.toolbar {
-            GroupToolbar(showEULA: .constant(false), showMenu: .constant(false), showNewPost: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
+            GroupToolbar(showEULA: .constant(false), showMenu: .constant(false), showNewPost: .constant(false), showNewEvent: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
         }
         .environmentObject(SessionStore())
     }

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GroupFeed: View {
     
-    @State var selectedPost: Post?
     @Binding var showNewPost: Bool
+    @Binding var showNewEvent: Bool
     @State private var showEvents: Bool = false
     
     @State private var status: LOADING_STATE = .pending
@@ -193,13 +193,18 @@ struct GroupFeed: View {
                     } else {
                         VStack {
                             Text("No Posts Found 😞")
-                            Button(action: { Task { self.viewModel.posts = await getLatestPosts() }}) {
+                            Button(action: {
+                                Task { 
+                                    self.viewModel.posts = await getLatestPosts()
+                                }
+                            }) {
                                 Text("Try again")
                                     .font(.callout)
                             }
                         }.padding(.top, 50)
                     }
-                }.task{
+                }
+                .task{
                     self.viewModel.posts = await getLatestPosts()
                 }
                 .onChange(of: session.selectedGroup, { _, _ in
@@ -229,7 +234,8 @@ struct GroupFeed: View {
                     }
                 }
             }
-        }.fullScreenCover(isPresented: $showNewPost) {
+        }
+        .fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {
                 if let club = group.club {
                     PostCreator(type: .Post, groupId: club.id ?? "")
@@ -240,11 +246,14 @@ struct GroupFeed: View {
                 }
             }
         }
+        .fullScreenCover(isPresented: $showNewEvent, content: {
+            NewEvent(manager: NewEventManager())
+        })
     }
 }
 
 #Preview {
-    GroupFeed(showNewPost: .constant(false))
+    GroupFeed(showNewPost: .constant(false), showNewEvent: .constant(false))
         .environmentObject(SessionStore())
         .environmentObject(FeedViewModel())
 }

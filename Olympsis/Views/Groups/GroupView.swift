@@ -13,6 +13,7 @@ struct GroupView: View {
     @State private var showEULA: Bool = false
     @State private var showMenu: Bool = false
     @State private var showNewPost: Bool = false
+    @State private var showNewEvent: Bool = false
     @State private var showSelector: Bool = false
     @State private var showMessages: Bool = false
     @State private var showNewGroup: Bool = false
@@ -35,7 +36,7 @@ struct GroupView: View {
                 case .success, .pending:
                     VStack {
                         if session.selectedGroup != nil {
-                            GroupFeed(showNewPost: $showNewPost)
+                            GroupFeed(showNewPost: $showNewPost, showNewEvent: $showNewEvent)
                                 .task {
                                     await session.updateNotifications()
                                 }
@@ -50,7 +51,7 @@ struct GroupView: View {
                 }
             }
             .toolbar {
-                GroupToolbar(showEULA: $showEULA, showMenu: $showMenu, showNewPost: $showNewPost, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
+                GroupToolbar(showEULA: $showEULA, showMenu: $showMenu, showNewPost: $showNewPost, showNewEvent: $showNewEvent, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
             }
             .sheet(isPresented: $showSelector) {
                 GroupSelector(showNewGroup: $showNewGroup, groups: session.groups)
