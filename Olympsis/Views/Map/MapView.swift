@@ -46,13 +46,14 @@ struct MapView: View {
     
     var body: some View {
         Map(position: $cameraPosition) {
-            ForEach(session.venues) { field in
-                Annotation(field.name, coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchor: .bottom) {
-                    PlaceAnnotationView(field: field)
+            ForEach(session.venues) { venue in
+                Annotation(venue.name, coordinate: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), anchor: .bottom) {
+                    VenueAnnotation(venue: venue)
+                        .environmentObject(session)
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                selectedField = field
-                                cameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500))
+                                selectedField = venue
+                                cameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500))
                             }
                         }
                 }
