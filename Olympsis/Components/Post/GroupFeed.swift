@@ -13,7 +13,7 @@ struct GroupFeed: View {
     @Binding var showNewEvent: Bool
     @State private var showEvents: Bool = false
     
-    @State private var status: LOADING_STATE = .success
+    @State private var status: LOADING_STATE = .failure
     
     @StateObject private var viewModel: FeedViewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
@@ -191,8 +191,9 @@ struct GroupFeed: View {
                             if let event = groupEvents.first {
                                 EventListItem(event: event)
                             }
-                        }.padding(.horizontal)
-                            .padding(.vertical)
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical)
                     }
                     
                     if viewModel.posts.count > 0 {
@@ -219,7 +220,7 @@ struct GroupFeed: View {
                                         }
                                     }
                                 }
-                        }.padding(.top, 50)
+                        }.padding(.vertical)
                     }
                 }
                 .task{
@@ -260,7 +261,7 @@ struct GroupFeed: View {
                                 }
                             }
                         
-                    }.padding(.top, 50)
+                    }.padding(.vertical)
                 }.refreshable {
                     Task {
                         self.viewModel.posts = await getLatestPosts()
