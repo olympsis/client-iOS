@@ -39,6 +39,13 @@ struct VenueAnnotation: View {
                 .foregroundStyle(.colorPrime)
             if let link = imageURL {
                 KFImage(link)
+                    .placeholder({
+                        Circle()
+                            .foregroundStyle(.colorPrime)
+                            .overlay {
+                                ProgressView()
+                            }
+                    })
                     .resizable()
                     .cacheOriginalImage()
                     .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100)))

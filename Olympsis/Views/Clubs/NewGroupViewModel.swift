@@ -59,7 +59,7 @@ class NewGroupViewModel: ObservableObject {
     @Published var showBannerMediaPicker: Bool = false
     
     var uploadObserver = UploadObserver()
-    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_club_view_model")
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_group_view_model")
     
     @MainActor
     func uploadLogo(_ location: String) async throws {

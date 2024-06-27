@@ -31,6 +31,7 @@ struct ClubBanner: View {
             if let bannerURL = banner {
                 KFImage(bannerURL)
                     .resizable()
+                    .setProcessor(DownsamplingImageProcessor(size: CGSize(width: SCREEN_WIDTH*2, height: 250*2)))
                     .frame(width: SCREEN_WIDTH, height: 250)
             } else {
                 Rectangle()
@@ -49,6 +50,7 @@ struct ClubBanner: View {
                     if let logoURL = logo {
                         KFImage(logoURL)
                             .resizable()
+                            .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
                             .frame(width: 100, height: 100)
                             .border(Color("background"), width: 3)
                     } else {

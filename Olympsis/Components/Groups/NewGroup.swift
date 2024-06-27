@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewGroup: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -71,7 +71,7 @@ struct NewGroup: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                    Button(action: { dismiss() }) {
                         Image(systemName: "chevron.left")
                     }
                 }

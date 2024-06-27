@@ -14,7 +14,7 @@ import CoreLocationUI
 struct MapView: View {
     
     @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = true
+    @State private var showBottomSheet: Bool = false
     @State private var showFieldDetail: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false

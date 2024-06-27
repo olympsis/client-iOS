@@ -158,9 +158,19 @@ struct GroupFeed: View {
         VStack {
             switch status {
             case .loading:
-                ProgressView()
+                ScrollView {
+                    VStack {
+                        PostTemplateView(type: "")
+                            .padding(.vertical)
+                        PostTemplateView(type: "")
+                            .padding(.vertical)
+                        PostTemplateView(type: "")
+                            .padding(.vertical)
+                        PostTemplateView(type: "")
+                    }
+                }
             case .pending, .success:
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     if groupEvents.count > 0  {
                         VStack{
                             HStack {

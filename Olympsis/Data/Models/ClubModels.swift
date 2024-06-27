@@ -11,11 +11,11 @@ class Club: Codable, Identifiable, ObservableObject {
 
     let id: String?
     let parent: OrganizationDao?
-    let name: String?
+    var name: String?
     var logo: String?
     var banner: String?
-    let sports: [String]?
-    let description: String?
+    var sports: [String]?
+    var description: String?
     let city: String?
     let state: String?
     let country: String?

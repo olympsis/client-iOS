@@ -128,6 +128,19 @@ class ClubObserver: ObservableObject{
         return false
     }
     
+    func updateClub(id: String, dto: ClubDao) async -> Bool {
+        do {
+            let res = try await clubService.updateClub(id: id, club: dto)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("Failed to update club: \(error.localizedDescription)")
+        }
+        return false
+    }
+    
     func deleteClub(id: String) async -> Bool {
         do {
             let res = try await clubService.deleteClub(id: id)

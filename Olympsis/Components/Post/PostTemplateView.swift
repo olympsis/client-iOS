@@ -26,10 +26,22 @@ struct PostTemplateView: View {
                         .padding(.trailing)
                 }.padding(.leading)
                 HStack {
+                    VStack {
+                        Rectangle()
+                            .foregroundColor(.gray)
+                            .frame( height: 15)
+                        Rectangle()
+                            .foregroundColor(.gray)
+                            .frame(height: 15)
+                        
+                    }.padding(.horizontal)
+                }
+                
+                HStack {
                     Rectangle()
                         .foregroundColor(.gray)
                         .frame(width: SCREEN_WIDTH/2, height: 15)
-                    .padding(.leading)
+                        .padding(.leading)
                     Spacer()
                     Rectangle()
                         .foregroundColor(.gray)
@@ -73,6 +85,6 @@ struct PostTemplateView: View {
 
 struct PostTemplateView_Previews: PreviewProvider {
     static var previews: some View {
-        PostTemplateView(type: "N IMAGE")
+        PostTemplateView(type: "NO IMAGE")
     }
 }

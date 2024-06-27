@@ -57,6 +57,13 @@ class ClubService {
         return data
     }
     
+    func updateClub(id: String, club: ClubDao) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/clubs/\(id)")
+        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(club), headers: ["Authorization": token ?? ""])
+        return resp
+    }
+    
     func leaveClub(id: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/clubs/\(id)/leave")

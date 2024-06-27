@@ -19,6 +19,7 @@ struct ClubMenu: View {
     @State private var showClubs = false
     @State private var showReports = false
     @State private var showNewClub = false
+    @State private var showEditClub = false
     @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false
@@ -88,6 +89,12 @@ struct ClubMenu: View {
                     .padding(.horizontal)
                 
                 VStack {
+                    if true/*role != "member"*/ {
+                        MenuButton(icon: Image(systemName: "pencil"), text: "Edit Club", action: {
+                            self.showEditClub.toggle()
+                        })
+                    }
+                    
                     if role != "member" {
                         MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
                             self.showApplications.toggle()
