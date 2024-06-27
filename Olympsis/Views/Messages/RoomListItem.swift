@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RoomListView: View {
+struct RoomListItem: View {
     
     @State var room: Room
     @Binding var rooms: [Room]
@@ -28,12 +28,18 @@ struct RoomListView: View {
         HStack {
             Circle()
                 .frame(width: 50)
-                .padding(.leading)
-                .foregroundColor(.primary)
+                .foregroundColor(Color.background)
+                .overlay(alignment: .center) {
+                    Image(systemName: "rectangle.3.group.fill")
+                        .foregroundStyle(Color.foreground)
+                }
+                .padding(.horizontal)
+            
             Text(room.name)
                 .font(.body)
-                .padding(.leading, 10)
-                .foregroundColor(.primary)
+                .lineLimit(1)
+                .foregroundColor(Color.foreground)
+            
             Spacer()
             if !isJoined {
                 Button(action:{
@@ -71,10 +77,7 @@ struct RoomListView: View {
     }
 }
 
-struct RoomListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
-        RoomListView(room: room, rooms: .constant([Room]()), observer: ChatObserver())
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    RoomListItem(room: ROOMS[0], rooms: .constant([Room]()), observer: ChatObserver())
+        .environmentObject(SessionStore())
 }

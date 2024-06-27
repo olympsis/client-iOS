@@ -10,7 +10,6 @@ import SwiftUI
 
 struct GroupRoomView: View {
     
-    @State var org: Organization
     @State var room: Room
     @Binding var rooms: [Room]
     @State var messages = [Message]()
@@ -55,10 +54,25 @@ struct GroupRoomView: View {
     }
     
     func GetData(uuid: String) -> UserSnippet? {
-        guard let user = org.members!.first(where: {$0.user?.uuid == uuid}) else {
+        guard let selectedGroup = session.selectedGroup else {
+            log.error("Failed to find the selected group!")
             return nil
         }
-        return user.user
+        if selectedGroup.type == .Club {
+            guard let members = selectedGroup.club?.members,
+                  let user = members.first(where: {$0.user?.uuid == uuid}) else {
+                log.error("Failed to find club's members")
+                return nil
+            }
+            return user.user
+        } else {
+            guard let members = selectedGroup.organization?.members,
+                  let user = members.first(where: {$0.user?.uuid == uuid}) else {
+                log.error("Failed to find club's members")
+                return nil
+            }
+            return user.user
+        }
     }
     
     var body: some View {
@@ -205,6 +219,6 @@ struct GroupRoomView: View {
 }
 
 #Preview {
-    GroupRoomView(org: ORGANIZATIONS[0], room: ROOMS[0], rooms: .constant(ROOMS), observer: ChatObserver())
+    GroupRoomView(room: ROOMS[0], rooms: .constant(ROOMS), observer: ChatObserver())
         .environmentObject(SessionStore())
 }

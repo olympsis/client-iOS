@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GroupNewRoom: View {
     
-    @Binding var org: Organization
     @Binding var rooms: [Room]
     @State private var text = ""
     @State private var state: LOADING_STATE = .pending
@@ -25,17 +24,35 @@ struct GroupNewRoom: View {
             }
             guard let user = session.user,
                   let uuid = user.uuid,
-                  let groupID = org.id else {
+                  let selectedGroup = session.selectedGroup else {
                 return
             }
-            let res = await chatObserver.CreateRoom(group: groupID, groupType: "organization", name: text, type: "group", uuid: uuid)
-            if let r = res {
-                rooms.append(r)
+            
+            if selectedGroup.type == .Club {
+                guard let id = selectedGroup.club?.id else {
+                    return
+                }
+                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", uuid: uuid)
+                if let r = res {
+                    rooms.append(r)
+                }
+                withAnimation(.easeOut){
+                    state = .success
+                }
+                self.presentationMode.wrappedValue.dismiss()
+            } else {
+                guard let id = selectedGroup.organization?.id else {
+                    return
+                }
+                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", uuid: uuid)
+                if let r = res {
+                    rooms.append(r)
+                }
+                withAnimation(.easeOut){
+                    state = .success
+                }
+                self.presentationMode.wrappedValue.dismiss()
             }
-            withAnimation(.easeOut){
-                state = .success
-            }
-            self.presentationMode.wrappedValue.dismiss()
         } else {
             withAnimation(.easeOut){
                 state = .failure
@@ -92,5 +109,5 @@ struct GroupNewRoom: View {
 
 
 #Preview {
-    GroupNewRoom(org: .constant(ORGANIZATIONS[0]), rooms: .constant(ROOMS))
+    GroupNewRoom(rooms: .constant(ROOMS))
 }

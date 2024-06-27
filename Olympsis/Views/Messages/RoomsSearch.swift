@@ -23,7 +23,7 @@ struct RoomsSearch: View {
                     if rooms.count > 0 {
                         ScrollView(showsIndicators: false) {
                             ForEach(rooms) { room in
-                                RoomListView(room: room, rooms: $rooms, observer: observer)
+                                RoomListItem(room: room, rooms: $rooms, observer: observer)
                                     .padding(.top)
                             }
                         }.refreshable {

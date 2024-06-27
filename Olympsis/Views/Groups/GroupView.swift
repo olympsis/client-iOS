@@ -58,13 +58,7 @@ struct GroupView: View {
                     .presentationDetents([.medium])
             }
             .fullScreenCover(isPresented: $showMessages) {
-                if let group = session.selectedGroup {
-                    if let club = group.club {
-                        Messages(club: club)
-                    } else if let org = group.organization {
-                        GroupMessages(org: org)
-                    }
-                }
+                GroupMessages()
             }
             .fullScreenCover(isPresented: $showMenu) {
                 if let group = session.selectedGroup {

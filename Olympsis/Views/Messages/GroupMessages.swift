@@ -10,7 +10,6 @@ import SwiftUI
 
 struct GroupMessages: View {
     
-    @State var org: Organization
     @State var rooms = [Room]()
     @State private var selectedView = 0
     @State private var showRooms = false
@@ -18,7 +17,7 @@ struct GroupMessages: View {
     @State private var showDetail = false
     @State private var selectedRoom: Room?
     @State private var showNewRoom = false
-    @State private var state: LOADING_STATE = .pending
+    @State private var state: LOADING_STATE = .failure
 
     @StateObject private var chatObserver = ChatObserver()
     
@@ -44,30 +43,87 @@ struct GroupMessages: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_messages_view")
     
+    func fetchChatRooms() async {
+        guard let selectedGroup = session.selectedGroup else {
+            log.error("Failed to find the selected group!")
+            return
+        }
+        
+        if selectedGroup.type == .Club {
+            guard let id = selectedGroup.club?.id,
+                let resp = await chatObserver.GetRooms(id: id) else {
+                log.info("No chat rooms found")
+                state = .failure
+                return
+            }
+            await MainActor.run {
+                rooms = resp.rooms
+                state = .success
+            }
+        } else {
+            guard let id = selectedGroup.organization?.id,
+                let resp = await chatObserver.GetRooms(id: id) else {
+                log.info("No chat rooms found")
+                state = .failure
+                return
+            }
+            await MainActor.run {
+                rooms = resp.rooms
+                state = .success
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 if state == .loading {
-                    ProgressView()
+                    ScrollView {
+                        ForEach(0..<15, id: \.self){ _ in
+                            RoomListItemTemplate()
+                        }
+                    }
                 } else if state == .failure {
-                    Text("Failed to load messages")
+                    ScrollView {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 100)
+                            .padding(.horizontal)
+                            .foregroundStyle(Color.background)
+                            .overlay(alignment: .center) {
+                                VStack {
+                                    Text("😞")
+                                    Text("Failed to load rooms")
+                                        .foregroundStyle(Color.foreground)
+                                    
+                                    Button(action: {
+                                        Task {
+                                            
+                                        }
+                                    }){
+                                        Text("Try again")
+                                    }
+                                }
+                            }
+                            .padding(.top)
+                            
+                    }
                 } else {
                     HStack {
                         Spacer()
                         Button(action: { selectedView = 0 }) {
                             ZStack {
                                 if selectedView == 0 {
-                                    Rectangle()
-                                        .foregroundColor(Color("color-prime"))
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color.colorPrime)
                                     Text("Joined")
                                         .foregroundColor(.white)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 } else {
-                                    Rectangle()
+                                    RoundedRectangle(cornerRadius: 10)
                                         .stroke(lineWidth: 1)
                                     Text("Joined")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(Color.foreground)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 }
@@ -81,20 +137,23 @@ struct GroupMessages: View {
                         Button(action: { selectedView = 1 }) {
                             ZStack {
                                 if selectedView == 1 {
-                                    Rectangle().foregroundStyle(Color("color-prime"))
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color.colorPrime)
                                     Text("All Chats")
                                         .foregroundColor(.white)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 } else {
-                                    Rectangle().stroke(lineWidth: 1)
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(lineWidth: 1)
                                     Text("All Chats")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(Color.foreground)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 }
-                            }.padding(.horizontal)
-                                .frame(height: 35)
+                            }
+                            .padding(.horizontal)
+                            .frame(height: 35)
                         }
                         Spacer()
                     }.padding(.top)
@@ -103,14 +162,15 @@ struct GroupMessages: View {
                         ScrollView() {
                             ForEach(joinedRooms) { room in
                                 Button(action:{ self.showDetail.toggle() }){
-                                    RoomListView(room: room, rooms: $rooms, observer: chatObserver)
+                                    RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
                                         .padding(.bottom)
                                         .onTapGesture {
                                             selectedRoom = room
                                         }
                                 }
                             }
-                        }.tabItem {
+                        }
+                        .tabItem {
                             Text("Joined")
                         }
                         .tag(0)
@@ -118,20 +178,22 @@ struct GroupMessages: View {
                         ScrollView() {
                             ForEach(notJoinedRooms) { room in
                                 Button(action:{ self.showDetail.toggle() }){
-                                    RoomListView(room: room, rooms: $rooms, observer: chatObserver)
+                                    RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
                                         .padding(.bottom)
-                                }.fullScreenCover(isPresented: $showDetail) {
-                                    GroupRoomView(org: org, room: room, rooms: $rooms, observer: chatObserver)
+                                }
+                                .fullScreenCover(isPresented: $showDetail) {
+                                    GroupRoomView(room: room, rooms: $rooms, observer: chatObserver)
                                 }
                             }
-                        }.tabItem {
+                        }
+                        .tabItem {
                             Text("Not Joined")
                         }
                         .tag(1)
-                    }.tabViewStyle(.page)
-                        .padding(.top)
+                    }
+                    .tabViewStyle(.page)
+                    .padding(.top)
                 }
-                
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -145,40 +207,29 @@ struct GroupMessages: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{self.showNewRoom.toggle()}){
-                        Image(systemName: "plus.square.dashed")
+                        Image(systemName: "plus")
                             .imageScale(.large)
                     }
                 }
             }
             .task {
                 session.notificationsManager.inMessageView = true
-                state = .loading
-                let resp = await chatObserver.GetRooms(id: org.id!)
-                if let r = resp {
-                    await MainActor.run {
-                        rooms = r.rooms
-                        state = .success
-                    }
-                } else {
-                    log.info("No chat rooms found")
-                    state = .success
-                }
+                await fetchChatRooms()
             }
             .onDisappear {
                 session.notificationsManager.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
-                GroupNewRoom(org: $org, rooms: $rooms)
+                GroupNewRoom(rooms: $rooms)
             }
             .fullScreenCover(item: $selectedRoom, content: { r in
-                GroupRoomView(org: org, room: r, rooms: $rooms, observer: chatObserver)
+                GroupRoomView(room: r, rooms: $rooms, observer: chatObserver)
             })
-            .tint(Color("color-prime"))
         }
     }
 }
 
 #Preview {
-    GroupMessages(org: ORGANIZATIONS[0], rooms: ROOMS)
+    GroupMessages(rooms: ROOMS)
         .environmentObject(SessionStore())
 }
