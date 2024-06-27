@@ -13,7 +13,7 @@ struct GroupFeed: View {
     @Binding var showNewEvent: Bool
     @State private var showEvents: Bool = false
     
-    @State private var status: LOADING_STATE = .pending
+    @State private var status: LOADING_STATE = .success
     
     @StateObject private var viewModel: FeedViewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
@@ -202,15 +202,23 @@ struct GroupFeed: View {
                         }
                     } else {
                         VStack {
-                            Text("No Posts Found 😞")
-                            Button(action: {
-                                Task { 
-                                    self.viewModel.posts = await getLatestPosts()
+                            Rectangle()
+                                .frame(height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding(.horizontal)
+                                .foregroundStyle(Color.background)
+                                .overlay {
+                                    VStack {
+                                        Text("No posts found")
+                                            .foregroundStyle(Color.foreground)
+                                        
+                                        Button(action: { self.showNewPost.toggle() }) {
+                                            Text("Create One")
+                                                .font(.callout)
+                                                .padding(.vertical, 5)
+                                        }
+                                    }
                                 }
-                            }) {
-                                Text("Try again")
-                                    .font(.callout)
-                            }
                         }.padding(.top, 50)
                     }
                 }
@@ -230,13 +238,28 @@ struct GroupFeed: View {
             case .failure:
                 ScrollView(showsIndicators: false) {
                     VStack {
-                        Text("😣")
-                            .font(.title)
-                        Text("Failed to load feed")
-                        Button(action: { Task { self.viewModel.posts = await getLatestPosts() }}) {
-                            Text("Try again")
-                                .font(.callout)
-                        }
+                        Rectangle()
+                            .frame(height: 150)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.horizontal)
+                            .foregroundStyle(Color.background)
+                            .overlay {
+                                VStack {
+                                    Text("😣")
+                                        .font(.title)
+                                    Text("Failed to load posts")
+                                        .foregroundStyle(Color.foreground)
+                                    Button(action: {
+                                        Task { 
+                                            self.viewModel.posts = await getLatestPosts()
+                                        }
+                                    }) {
+                                        Text("Try again")
+                                            .font(.callout)
+                                    }
+                                }
+                            }
+                        
                     }.padding(.top, 50)
                 }.refreshable {
                     Task {
