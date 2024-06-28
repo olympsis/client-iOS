@@ -13,7 +13,7 @@ struct GroupFeed: View {
     @Binding var showNewEvent: Bool
     @State private var showEvents: Bool = false
     
-    @State private var status: LOADING_STATE = .failure
+    @State private var status: LOADING_STATE = .loading
     
     @StateObject private var viewModel: FeedViewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
@@ -71,7 +71,9 @@ struct GroupFeed: View {
         }
     }
     
+    @MainActor
     func getLatestPosts() async -> [Post] {
+        status = .loading
         // this error should never happen but you never know :)
         guard let selectedGroup = session.selectedGroup else {
             status = .failure
@@ -88,7 +90,6 @@ struct GroupFeed: View {
         
         // make query to backend for posts
         if selectedGroup.type == GROUP_TYPE.Club {
-            status = .success
             guard let club = selectedGroup.club else {
                 return [Post]()
             }
@@ -118,10 +119,9 @@ struct GroupFeed: View {
             for (index, element) in pinned.enumerated() {
                 sorted.insert(element, at: index)
             }
-            
+            status = .success
             return sorted
         } else {
-            status = .success
             guard let org = selectedGroup.organization else {
                 return [Post]()
             }
@@ -148,7 +148,7 @@ struct GroupFeed: View {
             for (index, element) in pinned.enumerated() {
                 sorted.insert(element, at: index)
             }
-            
+            status = .success
             return sorted
         }
     }
@@ -223,9 +223,6 @@ struct GroupFeed: View {
                         }.padding(.vertical)
                     }
                 }
-                .task{
-                    self.viewModel.posts = await getLatestPosts()
-                }
                 .onChange(of: session.selectedGroup, { _, _ in
                     Task {
                         self.viewModel.posts = await getLatestPosts()
@@ -262,12 +259,16 @@ struct GroupFeed: View {
                             }
                         
                     }.padding(.vertical)
-                }.refreshable {
+                }
+                .refreshable {
                     Task {
                         self.viewModel.posts = await getLatestPosts()
                     }
                 }
             }
+        }
+        .task {
+            self.viewModel.posts = await getLatestPosts()
         }
         .fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {

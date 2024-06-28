@@ -17,7 +17,7 @@ struct GroupMessages: View {
     @State private var showDetail = false
     @State private var selectedRoom: Room?
     @State private var showNewRoom = false
-    @State private var state: LOADING_STATE = .failure
+    @State private var state: LOADING_STATE = .loading
 
     @StateObject private var chatObserver = ChatObserver()
     
@@ -43,7 +43,9 @@ struct GroupMessages: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_messages_view")
     
+    @MainActor
     func fetchChatRooms() async {
+        state = .loading
         guard let selectedGroup = session.selectedGroup else {
             log.error("Failed to find the selected group!")
             return
@@ -56,10 +58,8 @@ struct GroupMessages: View {
                 state = .failure
                 return
             }
-            await MainActor.run {
-                rooms = resp.rooms
-                state = .success
-            }
+            rooms = resp.rooms
+            state = .success
         } else {
             guard let id = selectedGroup.organization?.id,
                 let resp = await chatObserver.GetRooms(id: id) else {
@@ -67,47 +67,23 @@ struct GroupMessages: View {
                 state = .failure
                 return
             }
-            await MainActor.run {
-                rooms = resp.rooms
-                state = .success
-            }
+            rooms = resp.rooms
+            state = .success
         }
     }
     
     var body: some View {
         NavigationStack {
             VStack {
-                if state == .loading {
+                
+                switch state {
+                case .loading:
                     ScrollView {
                         ForEach(0..<15, id: \.self){ _ in
                             RoomListItemTemplate()
                         }
                     }
-                } else if state == .failure {
-                    ScrollView {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 100)
-                            .padding(.horizontal)
-                            .foregroundStyle(Color.background)
-                            .overlay(alignment: .center) {
-                                VStack {
-                                    Text("😞")
-                                    Text("Failed to load rooms")
-                                        .foregroundStyle(Color.foreground)
-                                    
-                                    Button(action: {
-                                        Task {
-                                            
-                                        }
-                                    }){
-                                        Text("Try again")
-                                    }
-                                }
-                            }
-                            .padding(.top)
-                            
-                    }
-                } else {
+                case .success, .pending:
                     HStack {
                         Spacer()
                         Button(action: { selectedView = 0 }) {
@@ -193,6 +169,29 @@ struct GroupMessages: View {
                     }
                     .tabViewStyle(.page)
                     .padding(.top)
+                case .failure:
+                    ScrollView {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 100)
+                            .padding(.horizontal)
+                            .foregroundStyle(Color.background)
+                            .overlay(alignment: .center) {
+                                VStack {
+                                    Text("😞")
+                                    Text("Failed to load rooms")
+                                        .foregroundStyle(Color.foreground)
+                                    
+                                    Button(action: {
+                                        Task {
+                                            
+                                        }
+                                    }){
+                                        Text("Try again")
+                                    }
+                                }
+                            }
+                            .padding(.top)
+                    }
                 }
             }
             .toolbar {
