@@ -116,14 +116,14 @@ struct GroupMessages: View {
                                 if selectedView == 1 {
                                     RoundedRectangle(cornerRadius: 10)
                                         .foregroundStyle(Color.colorPrime)
-                                    Text("All Chats")
+                                    Text("Not Joined")
                                         .foregroundColor(.white)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 } else {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(lineWidth: 1)
-                                    Text("All Chats")
+                                    Text("Not Joined")
                                         .foregroundColor(Color.foreground)
                                         .font(.caption)
                                         .textCase(.uppercase)
@@ -167,10 +167,14 @@ struct GroupMessages: View {
                                 }
                             }
                         }
+                        .refreshable {
+                            await fetchChatRooms()
+                        }
                         .tabItem {
                             Text("Joined")
                         }
                         .tag(0)
+
                         
                         ScrollView() {
                             if notJoinedRooms.count == 0 {
@@ -203,10 +207,14 @@ struct GroupMessages: View {
                                 }
                             }
                         }
+                        .refreshable {
+                            await fetchChatRooms()
+                        }
                         .tabItem {
                             Text("Not Joined")
                         }
                         .tag(1)
+
                     }
                     .tabViewStyle(.page)
                     .padding(.top)
