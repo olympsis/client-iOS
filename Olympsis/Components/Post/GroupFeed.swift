@@ -13,7 +13,6 @@ struct GroupFeed: View {
     @Binding var showNewPost: Bool
     @Binding var showNewEvent: Bool
     @State private var showEvents: Bool = false
-    @State private var status: LOADING_STATE = .loading
     
     @StateObject private var viewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
@@ -67,7 +66,7 @@ struct GroupFeed: View {
     
     var body: some View {
         VStack {
-            switch status {
+            switch viewModel.status {
             case .loading:
                 ScrollView {
                     VStack {
@@ -179,7 +178,9 @@ struct GroupFeed: View {
             }
         })
         .task {
-            await self.viewModel.getLatestPosts(session: session)
+            if viewModel.posts.isEmpty {
+                await self.viewModel.getLatestPosts(session: session)
+            }
         }
         .fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {
