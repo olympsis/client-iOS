@@ -17,7 +17,7 @@ struct GroupMessages: View {
     @State private var showDetail = false
     @State private var selectedRoom: Room?
     @State private var showNewRoom = false
-    @State private var state: LOADING_STATE = .loading
+    @State private var state: LOADING_STATE = .success
 
     @StateObject private var chatObserver = ChatObserver()
     
@@ -48,6 +48,7 @@ struct GroupMessages: View {
         state = .loading
         guard let selectedGroup = session.selectedGroup else {
             log.error("Failed to find the selected group!")
+            state = .failure
             return
         }
         
@@ -55,7 +56,7 @@ struct GroupMessages: View {
             guard let id = selectedGroup.club?.id,
                 let resp = await chatObserver.GetRooms(id: id) else {
                 log.info("No chat rooms found")
-                state = .failure
+                state = .success
                 return
             }
             rooms = resp.rooms
@@ -64,7 +65,7 @@ struct GroupMessages: View {
             guard let id = selectedGroup.organization?.id,
                 let resp = await chatObserver.GetRooms(id: id) else {
                 log.info("No chat rooms found")
-                state = .failure
+                state = .success
                 return
             }
             rooms = resp.rooms
@@ -136,13 +137,33 @@ struct GroupMessages: View {
                     
                     TabView(selection: $selectedView) {
                         ScrollView() {
-                            ForEach(joinedRooms) { room in
-                                Button(action:{ self.showDetail.toggle() }){
-                                    RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
-                                        .padding(.bottom)
-                                        .onTapGesture {
-                                            selectedRoom = room
+                            if joinedRooms.count == 0 {
+                                Rectangle()
+                                    .frame(height: 100)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        VStack {
+                                            Text("No rooms found")
+                                                .foregroundStyle(Color.foreground)
+                                            
+                                            Button(action: { selectedView = 1 }) {
+                                                Text("Check Rooms")
+                                                    .font(.callout)
+                                                    .padding(.vertical, 5)
+                                            }
                                         }
+                                    }
+                            } else {
+                                ForEach(joinedRooms) { room in
+                                    Button(action:{ self.showDetail.toggle() }){
+                                        RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
+                                            .padding(.bottom)
+                                            .onTapGesture {
+                                                selectedRoom = room
+                                            }
+                                    }
                                 }
                             }
                         }
@@ -152,13 +173,33 @@ struct GroupMessages: View {
                         .tag(0)
                         
                         ScrollView() {
-                            ForEach(notJoinedRooms) { room in
-                                Button(action:{ self.showDetail.toggle() }){
-                                    RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
-                                        .padding(.bottom)
-                                }
-                                .fullScreenCover(isPresented: $showDetail) {
-                                    GroupRoomView(room: room, rooms: $rooms, observer: chatObserver)
+                            if notJoinedRooms.count == 0 {
+                                Rectangle()
+                                    .frame(height: 100)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        VStack {
+                                            Text("No rooms found")
+                                                .foregroundStyle(Color.foreground)
+                                            
+                                            Button(action: { self.showNewRoom.toggle() }) {
+                                                Text("Create One")
+                                                    .font(.callout)
+                                                    .padding(.vertical, 5)
+                                            }
+                                        }
+                                    }
+                            } else {
+                                ForEach(notJoinedRooms) { room in
+                                    Button(action:{ self.showDetail.toggle() }){
+                                        RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
+                                            .padding(.bottom)
+                                    }
+                                    .fullScreenCover(isPresented: $showDetail) {
+                                        GroupRoomView(room: room, rooms: $rooms, observer: chatObserver)
+                                    }
                                 }
                             }
                         }
