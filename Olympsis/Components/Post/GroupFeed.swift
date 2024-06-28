@@ -19,6 +19,18 @@ struct GroupFeed: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
+    var groupID: String? {
+        guard let selectedGroup = session.selectedGroup else {
+            return nil
+        }
+        switch selectedGroup.type {
+        case .Club:
+            return selectedGroup.club?.id
+        case .Organization:
+            return selectedGroup.club?.id
+        }
+    }
+    
     var groupEvents: [Event] {
         guard let selectedGroup = session.selectedGroup else {
             return [Event]()
@@ -107,9 +119,11 @@ struct GroupFeed: View {
                     }
                     
                     if viewModel.posts.count > 0 {
-                        ForEach(viewModel.posts) { post in
-                            PostView(post: post)
-                                .environmentObject(viewModel)
+                        if let id = groupID {
+                            ForEach(viewModel.posts[id] ?? [Post]()) { post in
+                                PostView(post: post)
+                                    .environmentObject(viewModel)
+                            }
                         }
                     } else {
                         VStack {
@@ -135,7 +149,7 @@ struct GroupFeed: View {
                 }
                 .refreshable {
                     Task {
-                        await self.viewModel.getLatestPosts(session: session)
+                        await self.viewModel.getLatestPosts(session: session, refresh: true)
                     }
                 }
             case .failure:
@@ -167,7 +181,7 @@ struct GroupFeed: View {
                 }
                 .refreshable {
                     Task {
-                        await self.viewModel.getLatestPosts(session: session)
+                        await self.viewModel.getLatestPosts(session: session, refresh: true)
                     }
                 }
             }

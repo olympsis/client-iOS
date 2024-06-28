@@ -10,17 +10,21 @@ import Foundation
 
 class FeedViewModel: ObservableObject {
     
-    @Published var posts: [Post] = []
+    @Published var posts: [String : [Post]] = [:]
     @Published var status: LOADING_STATE = .pending
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "feed_view_model")
     
     @MainActor
-    func getLatestPosts(session: SessionStore) async {
-        status = .loading
+    func getLatestPosts(session: SessionStore, refresh: Bool = false) async {
+        if !refresh {
+            status = .loading
+        }
         // this error should never happen but you never know :)
         guard let selectedGroup = session.selectedGroup else {
-            status = .failure
+            if !refresh {
+                status = .failure
+            }
             return
         }
         
@@ -34,13 +38,18 @@ class FeedViewModel: ObservableObject {
         
         // make query to backend for posts
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club else {
-                status = .failure
+            guard let club = selectedGroup.club,
+                let id = club.id else {
+                if !refresh {
+                    status = .failure
+                }
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id ?? "", parentId: club.parent?.id) else {
-                status = .failure
+            guard let response: [Post] = await session.postObserver.getPosts(clubId: id, parentId: club.parent?.id) else {
+                if !refresh {
+                    status = .failure
+                }
                 log.error("Failed to get response from posts query")
                 return
             }
@@ -67,16 +76,23 @@ class FeedViewModel: ObservableObject {
             for (index, element) in pinned.enumerated() {
                 sorted.insert(element, at: index)
             }
-            status = .success
-            self.posts.append(contentsOf: sorted)
+            if !refresh {
+                status = .success
+            }
+            self.posts[id] = sorted
         } else {
-            guard let org = selectedGroup.organization else {
-                status = .failure
+            guard let org = selectedGroup.organization,
+                let id = org.id else {
+                if !refresh {
+                    status = .failure
+                }
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver.getPosts(clubId: org.id ?? "", parentId: nil) else {
-                status = .failure
+            guard let response: [Post] = await session.postObserver.getPosts(clubId: id, parentId: nil) else {
+                if !refresh {
+                    status = .failure
+                }
                 log.error("Failed to get response from posts query")
                 return
             }
@@ -100,8 +116,17 @@ class FeedViewModel: ObservableObject {
             for (index, element) in pinned.enumerated() {
                 sorted.insert(element, at: index)
             }
-            status = .success
-            self.posts.append(contentsOf: sorted)
+            if !refresh {
+                status = .success
+            }
+            self.posts[id] = sorted
+        }
+    }
+    
+    @MainActor
+    func loadMorePosts(session: SessionStore, batch: Int=20) async {
+        guard let selectedGroup = session.selectedGroup else {
+            return
         }
     }
 }

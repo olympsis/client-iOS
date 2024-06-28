@@ -132,26 +132,44 @@ struct PostMenu: View {
     }
     
     func deletePost() async {
-        guard let id = post.id else {
+        guard let selectedGroup = session.selectedGroup,
+            let id = post.id else {
             return
         }
         
-        let res = await session.postObserver.deletePost(postID: id)
-        guard res == true,
-            let images = post.images else {
-            feedModel.posts.removeAll(where: { $0.id == post.id })
+        if selectedGroup.type == .Club {
+            guard let id = selectedGroup.club?.id,
+                  await session.postObserver.deletePost(postID: id) else {
+                return
+            }
+
+            if let images = post.images {
+                // delete images
+                for image in images {
+                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                }
+            }
+            
+            // remove post
+            feedModel.posts[id]?.removeAll(where: { $0.id == post.id })
             dismiss()
-            return
+        } else {
+            guard let id = selectedGroup.organization?.id,
+                  await session.postObserver.deletePost(postID: id) else {
+                return
+            }
+            
+            if let images = post.images {
+                // delete images
+                for image in images {
+                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                }
+            }
+            
+            // remove post
+            feedModel.posts[id]?.removeAll(where: { $0.id == post.id })
+            dismiss()
         }
-        
-        // delete images
-        for image in images {
-            let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
-        }
-        
-        // remove post
-        feedModel.posts.removeAll(where: { $0.id == post.id })
-        dismiss()
     }
     
     var body: some View {
