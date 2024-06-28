@@ -5,6 +5,7 @@
 //  Created by Joel on 12/29/23.
 //
 
+import os
 import SwiftUI
 
 struct GroupFeed: View {
@@ -18,13 +19,7 @@ struct GroupFeed: View {
     @StateObject private var viewModel: FeedViewModel = FeedViewModel()
     @EnvironmentObject private var session: SessionStore
     
-//    init(posts: [Post], selectedPost: Post? = nil) {
-//        self.posts = posts
-//        self.selectedPost = selectedPost
-//        self.showNewPost = showNewPost
-//        self.showEvents = showEvents
-//        self.status = status
-//    }
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
     var groupEvents: [Event] {
         guard let selectedGroup = session.selectedGroup else {
@@ -91,9 +86,13 @@ struct GroupFeed: View {
         // make query to backend for posts
         if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club else {
+                status = .failure
+                log.error("Failed to get selected group")
                 return [Post]()
             }
             guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id ?? "", parentId: club.parent?.id) else {
+                status = .failure
+                log.error("Failed to get response from posts query")
                 return [Post]()
             }
             
@@ -123,9 +122,13 @@ struct GroupFeed: View {
             return sorted
         } else {
             guard let org = selectedGroup.organization else {
+                status = .failure
+                log.error("Failed to get selected group")
                 return [Post]()
             }
             guard let response: [Post] = await session.postObserver.getPosts(clubId: org.id ?? "", parentId: nil) else {
+                status = .failure
+                log.error("Failed to get response from posts query")
                 return [Post]()
             }
             
