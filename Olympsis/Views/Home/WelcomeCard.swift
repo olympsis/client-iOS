@@ -4,15 +4,30 @@
 //
 //  Created by Joel Joseph on 6/1/23.
 //
+// This could be a cool idea where we could edit the welcome back message to be more custom.
+// Such as if a user just did something cool. Or they've been on a good streak.
+// Or scold them if they've been away for too long without any activities.
 
+import os
 import SwiftUI
 
-struct WelcomeView: View {
-    @State var name: String
-    @Binding var status: LOADING_STATE
+struct WelcomeCard: View {
+    
+    @EnvironmentObject private var session: SessionStore
+    
+    private var name: String {
+        guard let user = session.user, let name = user.firstName else {
+            log.error("Failed to get user's name")
+            return ""
+        }
+        return name
+    }
+    
+    private var log = Logger(subsystem: "com.olympsis.client", category: "welcome_view")
+    
     var body: some View {
-        VStack(alignment: .leading){
-            if status == .success {
+        HStack {
+            VStack(alignment: .leading){
                 if name == "" {
                     Text(String(localized: "Welcome!", table: "General"))
                         .font(.custom("Helvetica Neue", size: 25))
@@ -30,23 +45,16 @@ struct WelcomeView: View {
                         .fontWeight(.light)
                         .foregroundColor(.gray)
                 }
-            } else {
-                Rectangle()
-                    .frame(width: SCREEN_WIDTH/1.3, height: 30)
-                    .foregroundColor(.gray)
-                    .opacity(0.3)
-
-                Rectangle()
-                    .frame(width: 150, height: 20)
-                    .foregroundColor(.gray)
-                    .opacity(0.3)
             }
-        }.padding(.leading)
+            .padding(.leading)
+            .redacted(reason: session.state != .success ? .placeholder : [])
+            
+            Spacer()
+        }
     }
 }
 
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeView(name: "Joel", status: .constant(.success))
-    }
+#Preview {
+    WelcomeCard()
+        .environmentObject(SessionStore())
 }

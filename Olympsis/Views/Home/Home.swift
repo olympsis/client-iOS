@@ -20,120 +20,59 @@ struct Home: View {
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
-    private var name: String {
-        guard let user = session.user, let name = user.firstName else {
-            log.error("Failed to get user's name")
-            return ""
-        }
-        return name
-    }
-    
-    private var event: Event? {
-        guard let user = session.user,
-              let uuid = user.uuid else {
-            return nil
-        }
-        
-        return session.events.mostRecentForUser(uuid: uuid)
-    }
-    
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack {
-                    
-                    //MARK: - Welcome message
-                    HStack {
-                        VStack(alignment: .leading){
-                            WelcomeView(name: name, status: $session.state)
-                        }.padding(.top, 25)
-                        Spacer()
-                    }
-                    
-                    if let e = event {
-                        if session.state == .success {
-                            VStack (alignment: .center){
-                                EventListItem(event: e)
-                                    .padding(.horizontal)
-                            }
-                        }
-                    }
-                    
-                    // MARK: - Announcements
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(String(localized: "Announcements", table: "General"))
-                                .font(.custom("Helvetica Neue", size: 17))
-                                .bold()
-                                .padding()
-                            AnnouncementsView(status: $session.state)
-                                .environmentObject(session.feedObserver)
-                        }
-                    }
-                    
-                    // MARK: - Hot Events
-                    if (session.hotEvents.count > 0) {
-                        HStack {
-                            VStack(alignment: .leading){
-                                HStack {
-                                    Text(String(localized: "Hot Events", table: "General"))
-                                        .font(.system(.headline))
-                                    .padding()
-                                    Spacer()
-                                }
-                                
-                                ForEach(session.hotEvents) { event in
-                                    EventSmallListItem(event: event)
-                                }
-                            }
-                        }
-                    }
-                    
-                    // MARK: - Nearby Venues
-                    HStack {
-                        VStack(alignment: .leading){
-                            HStack {
-                                Text(String(localized: "Nearby Venues", table: "General"))
-                                    .font(.system(.headline))
-                                .padding()
-                                Spacer()
-                                Button(action:{ self.showMoreFields.toggle() }){
-                                    Text(String(localized: "View All", table: "General"))
-                                       .bold()
-                                    Image(systemName: "chevron.down")
-                                }.padding()
-                                    .foregroundColor(Color.primary)
-                            }.fullScreenCover(isPresented: $showMoreFields) {
-                                VenuesList(venues: session.venues)
-                            }
-                            
-                            Venues(venues: $session.venues, status: $session.state)
-                        }
-                    }.onReceive(session.locationManager.$location) { newLoc in
-                        
-                        // make sure new location is valid
-                        guard newLoc != nil else {
-                            return
-                        }
-                        // we have to wait an undetermined amount of time to hear back from the gps to get location
-                        // so i used on recieve and after that info is delivered we can start fetching for fields by location
-                        guard !session.locationRecieved else {
-                            return
-                        }
-                        
-                        // prevents us from doing this everytime we get new info from gps
-                        // thus we only load data the first time
-                        session.locationRecieved = true
-                        
-                    }.padding(.bottom, 100)
-                }.fullScreenCover(isPresented: $showNotifications, content: {
-                    NotificationsView()
-                })
+            ScrollView(.vertical) {
                 
-            }.toolbar {
+                //MARK: - Welcome message
+                WelcomeCard()
+                    .padding(.top, 25)
+                    .environmentObject(session)
+                
+                // MARK: - Announcements
+                AnnouncementsView()
+                    .environmentObject(session)
+                
+                // MARK: - Next Events
+                NextEvents()
+                    .environmentObject(session)
+                
+                // MARK: - Hot Events
+                HotEvents()
+                    .environmentObject(session)
+                
+                // MARK: - Nearby Venues
+                NearbyVenues()
+                    .environmentObject(session)
+                
+                Spacer(minLength: 100)
+                
+            }
+            .onReceive(session.locationManager.$location) { newLoc in
+                
+                // make sure new location is valid
+                guard newLoc != nil else {
+                    return
+                }
+                // we have to wait an undetermined amount of time to hear back from the gps to get location
+                // so i used on recieve and after that info is delivered we can start fetching for fields by location
+                guard !session.locationRecieved else {
+                    return
+                }
+                
+                // prevents us from doing this everytime we get new info from gps
+                // thus we only load data the first time
+                session.locationRecieved = true
+                
+            }
+            .fullScreenCover(isPresented: $showNotifications, content: {
+                NotificationsView()
+            })
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
-                        .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{ self.showNotifications.toggle() }) {
@@ -151,14 +90,12 @@ struct Home: View {
                         }
                     }
                 }
-        }
+            }
         }
     }
 }
 
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    Home()
+        .environmentObject(SessionStore())
 }

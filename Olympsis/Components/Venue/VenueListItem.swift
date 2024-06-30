@@ -100,6 +100,7 @@ struct VenueListItem: View {
                 }.frame(width: 500, alignment: .center)
                 
             } else {
+                
                 VStack {
                     VStack {
                         if UIDevice.current.userInterfaceIdiom == .pad {
