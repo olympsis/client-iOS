@@ -138,7 +138,7 @@ struct PostMenu: View {
         }
         
         if selectedGroup.type == .Club {
-            guard let id = selectedGroup.club?.id,
+            guard let clubID = selectedGroup.club?.id,
                   await session.postObserver.deletePost(postID: id) else {
                 return
             }
@@ -151,10 +151,10 @@ struct PostMenu: View {
             }
             
             // remove post
-            feedModel.posts[id]?.removeAll(where: { $0.id == post.id })
+            feedModel.posts[clubID]?.removeAll(where: { $0.id == post.id })
             dismiss()
         } else {
-            guard let id = selectedGroup.organization?.id,
+            guard let orgID = selectedGroup.organization?.id,
                   await session.postObserver.deletePost(postID: id) else {
                 return
             }
@@ -167,7 +167,7 @@ struct PostMenu: View {
             }
             
             // remove post
-            feedModel.posts[id]?.removeAll(where: { $0.id == post.id })
+            feedModel.posts[orgID]?.removeAll(where: { $0.id == post.id })
             dismiss()
         }
     }

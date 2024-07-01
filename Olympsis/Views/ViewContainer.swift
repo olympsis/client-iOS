@@ -40,7 +40,6 @@ struct ViewContainer: View {
                 
                 Profile()
                     .tag(Tab.profile)
-                
             }
             .toast(
                 isPresented: session.$notificationsManager.showToast,

@@ -125,7 +125,7 @@ class FeedViewModel: ObservableObject {
     
     @MainActor
     func loadMorePosts(session: SessionStore, batch: Int=20) async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard session.selectedGroup != nil else {
             return
         }
     }
