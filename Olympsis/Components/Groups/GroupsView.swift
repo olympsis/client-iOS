@@ -24,6 +24,11 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        Image(systemName: "person.3.fill")
+                                            .foregroundStyle(Color.foreground)
+                                    }
                                 VStack {
                                     if let club = clubs.first(where: { $0.id == organizer.id }),
                                        let name = club.name {
@@ -42,6 +47,11 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        Image(systemName: "building.fill")
+                                            .foregroundStyle(Color.foreground)
+                                    }
                                 VStack {
                                     if let org = organizations.first(where: { $0.id == organizer.id }),
                                        let name = org.name {
