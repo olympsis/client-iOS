@@ -82,13 +82,13 @@ struct GroupFeed: View {
             case .loading:
                 ScrollView {
                     VStack {
-                        PostTemplateView(type: "")
+                        PostTemplateView()
                             .padding(.vertical)
-                        PostTemplateView(type: "")
+                        PostTemplateView()
                             .padding(.vertical)
-                        PostTemplateView(type: "")
+                        PostTemplateView()
                             .padding(.vertical)
-                        PostTemplateView(type: "")
+                        PostTemplateView()
                     }
                 }
             case .pending, .success:

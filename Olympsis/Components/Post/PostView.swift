@@ -75,7 +75,6 @@ struct PostView: View {
         } message: {
             Text("This post may contain sensitive content. Are you sure?")
         }
-
     }
 }
 

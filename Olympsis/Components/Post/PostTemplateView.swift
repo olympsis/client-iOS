@@ -8,83 +8,39 @@
 import SwiftUI
 
 struct PostTemplateView: View {
-    @State var type: String
+    
+    @State private var pinned: Bool = false
+    @State private var showMenu: Bool = false
+    @State private var showComments: Bool = false
+    
+    @StateObject private var post: Post
+    @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var feedModel: FeedViewModel
+    
+    init() {
+        self._post = StateObject(wrappedValue: POSTS[0])
+    }
+    
     var body: some View {
-        if type == "NO IMAGE" {
-            VStack(alignment: .leading){
-                HStack {
-                   Circle()
-                        .foregroundColor(.gray)
-                        .frame(width: 35)
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 15)
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 40, height: 15)
-                        .padding(.trailing)
-                }.padding(.leading)
-                HStack {
-                    VStack {
-                        Rectangle()
-                            .foregroundColor(.gray)
-                            .frame( height: 15)
-                        Rectangle()
-                            .foregroundColor(.gray)
-                            .frame(height: 15)
-                        
-                    }.padding(.horizontal)
-                }
-                
-                HStack {
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: SCREEN_WIDTH/2, height: 15)
-                        .padding(.leading)
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 25)
-                        .padding(.trailing)
-                }
-            }.frame(width: SCREEN_WIDTH, alignment: .leading)
-        } else {
-            VStack(alignment: .leading){
-                HStack {
-                   Circle()
-                        .foregroundColor(.gray)
-                        .frame(width: 35)
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 15)
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 40, height: 15)
-                        .padding(.trailing)
-                }.padding(.leading)
-                Rectangle()
-                    .frame(width: SCREEN_WIDTH, height: 500)
-                    .foregroundColor(.gray)
-                HStack {
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: SCREEN_WIDTH/2, height: 15)
-                    .padding(.leading)
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 100, height: 25)
-                        .padding(.trailing)
-                }
-            }.frame(width: SCREEN_WIDTH, alignment: .leading)
-        }
+        VStack {
+            PostHeader(pinned: $pinned, showMenu: $showMenu)
+                .environmentObject(post)
+            
+            Rectangle()
+                .foregroundStyle(.gray)
+                .opacity(0.7)
+                .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH)
+            
+            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+            
+            PostFooter(showComments: $showComments)
+                .environmentObject(post)
+            
+        }.redacted(reason: .placeholder)
     }
 }
 
-struct PostTemplateView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostTemplateView(type: "NO IMAGE")
-    }
+#Preview {
+    PostTemplateView()
+        .environmentObject(SessionStore())
 }
