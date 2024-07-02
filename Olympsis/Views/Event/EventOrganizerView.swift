@@ -16,18 +16,16 @@ struct EventOrganizerView: View {
             if organizers.count == 1 {
                 if let o = organizers.first {
                     if o.type == GROUP_TYPE.Club {
-                        if let club = o.club,
-                           let name = club.name {
-                            Text(name)
+                        if let club = o.club {
+                            Text(club.name)
                         }
                     }
                 }
             } else {
                 if let o = organizers.first {
                     if o.type == GROUP_TYPE.Club {
-                        if let club = o.club,
-                           let name = club.name {
-                            Text(name + " ...")
+                        if let club = o.club {
+                            Text(club.name + " ...")
                         }
                     }
                 }

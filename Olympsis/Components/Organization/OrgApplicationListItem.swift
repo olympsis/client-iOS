@@ -14,20 +14,17 @@ struct OrgApplicationListItem: View {
     @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
-        guard let club = application.club,
-              let name = club.name else {
+        guard let club = application.club else {
             return "club_name"
         }
-        return name
+        return club.name
     }
     
     var clubLocation: String {
-        guard let club = application.club,
-              let city = club.city,
-              let state = club.state else {
+        guard let club = application.club else {
             return ""
         }
-        return "\(city), \(state)"
+        return "\(club.city), \(club.state)"
     }
     
     var imageURL: String {
@@ -47,11 +44,10 @@ struct OrgApplicationListItem: View {
     }
     
     var dateTimeInString: String {
-        guard let club = application.club,
-              let time = club.createdAt else {
+        guard let club = application.club else {
             return "Created at: unknown"
         }
-        return Date(timeIntervalSince1970: TimeInterval(time)).formatted(.dateTime.day().month().year());
+        return Date(timeIntervalSince1970: TimeInterval(club.createdAt)).formatted(.dateTime.day().month().year());
     }
     
     func accept() async {
@@ -59,7 +55,7 @@ struct OrgApplicationListItem: View {
             let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id ?? "")", status: "accepted")
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "accepted")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
@@ -73,7 +69,7 @@ struct OrgApplicationListItem: View {
             let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id ?? "")", status: "denied")
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "denied")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){

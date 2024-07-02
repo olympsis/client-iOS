@@ -129,7 +129,7 @@ struct OrgListItem: View {
                 .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
-            OrgView(organization: organization)
+            OrgDetailView(organization: organization)
         })
     }
 }

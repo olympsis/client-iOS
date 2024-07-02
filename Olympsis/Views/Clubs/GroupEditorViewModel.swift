@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreLocation
 
-class NewGroupViewModel: ObservableObject {
+class GroupEditorViewModel: ObservableObject {
     
     enum GROUP_CREATION_ERROR: Error {
         case unexpected
@@ -60,6 +60,13 @@ class NewGroupViewModel: ObservableObject {
     
     var uploadObserver = UploadObserver()
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_group_view_model")
+    
+    func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.status = .pending
+        }
+    }
     
     @MainActor
     func uploadLogo(_ location: String) async throws {
@@ -159,6 +166,7 @@ class NewGroupViewModel: ObservableObject {
             log.error("Failed to upload club logo/banner. Media may contain innapropriate content.")
             return nil
         } catch {
+            status = .failure
             await imagesCleanUp("/olympsis-club-images")
             log.error("Failed to upload club logo/banner: \(error.localizedDescription)")
             return nil
@@ -169,10 +177,10 @@ class NewGroupViewModel: ObservableObject {
             logo: logoURL != "" ? logoURL : nil,
             banner: bannerURL != "" ? bannerURL : nil,
             description: description,
-            sports: Array(selectedSports), 
-            city: city,
-            state: state,
-            country: country,
+            sports: Array(selectedSports),
+            city: city != "" ? city : nil,
+            state: state != "" ? state : nil,
+            country: country != "" ? country : nil,
             visibility: "public"
         )
     }
@@ -214,12 +222,178 @@ class NewGroupViewModel: ObservableObject {
         
         return OrganizationDao(
             name: clubName,
-            description: description, 
-            sports: Array(selectedSports), 
+            description: description,
+            sports: Array(selectedSports),
             state: state,
             country: country,
             logo: logoURL != "" ? logoURL : nil,
             banner: bannerURL != "" ? bannerURL : nil
         )
+    }
+    
+    @MainActor
+    func updateClubDTO() async -> ClubDao? {
+        status = .loading
+        
+        do {
+            // upload logo if there is one
+            if logoPhotoData != nil {
+                try await uploadLogo("/olympsis-club-images")
+            }
+            
+            // upload banner if there is one
+            if bannerPhotoData != nil {
+                try await uploadBanner("/olympsis-club-images")
+            }
+        } catch MediaUploadError.innapropriateContent {
+            await imagesCleanUp("/olympsis-club-images")
+            self.showMediaWarning.toggle()
+            log.error("Failed to upload club logo/banner. Media may contain innapropriate content.")
+            return nil
+        } catch {
+            status = .failure
+            await imagesCleanUp("/olympsis-club-images")
+            log.error("Failed to upload club logo/banner: \(error.localizedDescription)")
+            return nil
+        }
+        
+        return ClubDao(
+            name: clubName,
+            logo: logoURL != "" ? logoURL : nil,
+            banner: bannerURL != "" ? bannerURL : nil,
+            description: description,
+            sports: Array(selectedSports)
+        )
+    }
+    
+    @MainActor
+    func updateOrganizationDTO() async -> OrganizationDao? {
+        status = .loading
+        
+        do {
+            // upload logo if there is one
+            if logoPhotoData != nil {
+                try await uploadLogo("/olympsis-org-images")
+            }
+            
+            // upload banner if there is one
+            if bannerPhotoData != nil {
+                try await uploadBanner("/olympsis-org-images")
+            }
+        } catch MediaUploadError.innapropriateContent {
+            await imagesCleanUp("/olympsis-org-images")
+            self.showMediaWarning.toggle()
+            log.error("Failed to upload club logo/banner. Media may contain innapropriate content.")
+            return nil
+        } catch {
+            await imagesCleanUp("/olympsis-org-images")
+            log.error("Failed to upload club logo/banner: \(error.localizedDescription)")
+            return nil
+        }
+        
+        return OrganizationDao(
+            name: clubName,
+            description: description,
+            sports: Array(selectedSports),
+            logo: logoURL != "" ? logoURL : nil,
+            banner: bannerURL != "" ? bannerURL : nil
+        )
+    }
+    
+    func loadClub(_ club: Club) {
+        guard let description = club.description else {
+            return
+        }
+        
+        if let logo = club.logo {
+            self.logoURL = logo
+        }
+        
+        if let banner = club.banner {
+            self.bannerURL = banner
+        }
+        
+        self.clubName = club.name
+        self.description = description
+        self.selectedSports.formUnion(club.sports)
+    }
+    
+    func loadOrganization(_ org: Organization) {
+        guard let name = org.name,
+              let description = org.description,
+              let sports = org.sports else {
+            return
+        }
+        
+        if let logo = org.logo {
+            self.logoURL = logo
+        }
+        
+        if let banner = org.banner {
+            self.bannerURL = banner
+        }
+        
+        self.clubName = name
+        self.description = description
+        self.selectedSports.formUnion(sports)
+        
+    }
+    
+    @MainActor
+    func updateClub(_ club: Club) async -> Bool {
+        guard let dto = await self.updateClubDTO()else {
+            handleFailure()
+            log.error("Failed to create club DTO")
+            return false
+        }
+        
+        dto.visibility = nil
+        guard await ClubObserver.shared.updateClub(id: club.id, dto: dto) else {
+            handleFailure()
+            log.error("Failed to update club")
+            return false
+        }
+        
+        status = .success
+        
+        if let name = dto.name {
+            club.name = name
+        }
+        
+        club.logo = dto.logo
+        club.banner = dto.banner
+        club.description = dto.description
+        
+        if let sports = dto.sports {
+            club.sports = sports
+        }
+        
+        return true
+    }
+    
+    @MainActor
+    func updateOrganization(_ org: Organization) async -> Bool {
+        guard let dto = await self.updateOrganizationDTO(),
+              let id = org.id else {
+            handleFailure()
+            log.error("Failed to create org DTO")
+            return false
+        }
+        
+        guard await OrgObserver.shared.updateOrganization(id: id, dto: dto) else {
+            handleFailure()
+            log.error("Failed to update club")
+            return false
+        }
+        
+        status = .success
+        
+        org.name = dto.name
+        org.logo = dto.logo
+        org.banner = dto.banner
+        org.description = dto.description
+        org.sports = dto.sports
+        
+        return true
     }
 }

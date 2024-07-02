@@ -32,11 +32,10 @@ struct EventOrganizersView: View {
             return "organizer"
         }
         if o.type == GROUP_TYPE.Club.rawValue {
-            guard let club = clubs.first(where: { $0.id == o.id }),
-                  let name = club.name else {
+            guard let club = clubs.first(where: { $0.id == o.id }) else {
                 return "organizer"
             }
-            return name
+            return club.name
         } else {
             guard let org = organizations.first(where: { $0.id == o.id }),
                   let name = org.name else {
@@ -50,11 +49,10 @@ struct EventOrganizersView: View {
     private var coHost: String {
         if organizers.count == 2 {
             if organizers[1].type == GROUP_TYPE.Club.rawValue {
-                guard let club = clubs.first(where: { $0.id == organizers[1].id }),
-                      let name = club.name else {
+                guard let club = clubs.first(where: { $0.id == organizers[1].id }) else {
                     return "organizer"
                 }
-                return name
+                return club.name
             } else {
                 guard let org = organizations.first(where: { $0.id == organizers[1].id }),
                       let name = org.name else {
@@ -79,11 +77,11 @@ struct EventOrganizersView: View {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
-                                    ClubView(club: club)
+                                    ClubDetailView(club: club)
                                 }
                             } else {
                                 if let org = organizations.first(where: { $0.id == org.id }) {
-                                    OrgView(organization: org)
+                                    OrgDetailView(organization: org)
                                 }
                             }
                             
@@ -100,11 +98,11 @@ struct EventOrganizersView: View {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
-                                    ClubView(club: club)
+                                    ClubDetailView(club: club)
                                 }
                             } else {
                                 if let org = organizations.first(where: { $0.id == org.id }) {
-                                    OrgView(organization: org)
+                                    OrgDetailView(organization: org)
                                 }
                             }
                             
@@ -121,11 +119,11 @@ struct EventOrganizersView: View {
                     .fullScreenCover(isPresented: $showSecond, content: {
                         if organizers[1].type == GROUP_TYPE.Club.rawValue {
                             if let club = clubs.first(where: { $0.id == organizers[1].id }) {
-                                ClubView(club: club)
+                                ClubDetailView(club: club)
                             }
                         } else {
                             if let org = organizations.first(where: { $0.id == organizers[1].id }) {
-                                OrgView(organization: org)
+                                OrgDetailView(organization: org)
                             }
                         }
                     })
@@ -140,11 +138,11 @@ struct EventOrganizersView: View {
                         if let org = organizers.first {
                             if org.type == GROUP_TYPE.Club.rawValue {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
-                                    ClubView(club: club)
+                                    ClubDetailView(club: club)
                                 }
                             } else {
                                 if let org = organizations.first(where: { $0.id == org.id }) {
-                                    OrgView(organization: org)
+                                    OrgDetailView(organization: org)
                                 }
                             }
                             

@@ -27,7 +27,7 @@ struct RoomsSearch: View {
                                     .padding(.top)
                             }
                         }.refreshable {
-                            let resp = await observer.GetRooms(id: club.id!)
+                            let resp = await observer.GetRooms(id: club.id)
                             await MainActor.run {
                                 if let r = resp {
                                     self.rooms = r.rooms
@@ -57,7 +57,7 @@ struct RoomsSearch: View {
                 }
             }.refreshable {
                 state = .loading
-                let resp = await observer.GetRooms(id: club.id!)
+                let resp = await observer.GetRooms(id: club.id)
                 if let r = resp {
                     await MainActor.run {
                         rooms = r.rooms

@@ -11,6 +11,8 @@ import Foundation
 /// Org Observer is a class object that keeps tracks of and fetches organizations
 class OrgObserver: ObservableObject{
     
+    static let shared = OrgObserver()
+    
     private let log = Logger(subsystem: "com.olympsis.client", category: "club_observer")
     private let decoder = JSONDecoder()
     private let orgService = OrgService()
@@ -59,6 +61,19 @@ class OrgObserver: ObservableObject{
         } catch {
             log.error("\(error)")
             return nil
+        }
+    }
+
+    func updateOrganization(id: String, dto: OrganizationDao) async -> Bool {
+        do {
+            let res = try await orgService.updateOrganization(id: id, dto: dto)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+            return false
         }
     }
     
@@ -110,7 +125,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func createInvitation(data: Invitation) async -> Invitation? {
+    func createInvitation(data: InvitationDTO) async -> Invitation? {
         do {
             let (data, res) = try await orgService.createInvitation(data: data)
             guard (res as? HTTPURLResponse)?.statusCode == 201 || (res as? HTTPURLResponse)?.statusCode == 200 else {
@@ -123,7 +138,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func updateInvitation(data: Invitation) async -> Bool {
+    func updateInvitation(data: InvitationDTO) async -> Bool {
         do {
             let resp = try await orgService.updateInvitation(data: data)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {

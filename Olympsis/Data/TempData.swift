@@ -44,13 +44,13 @@ let VENUE_DESCRIPTORS = [
 ]
 
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/FDD36C02-7C50-4E39-867A-DCD95CB991B6.jpeg", banner: "club-images/9515239B-C8B3-4C30-8E8B-8FD001EC5456.jpeg", sports: ["soccer", "basketball", "tennis"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
+    Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/2660b86a-47ef-4c9e-83ee-58824f7b77ce.jpeg", banner: "club-images/02f070c5-3b49-4f0c-9719-e005aae895db.jpeg", sports: ["soccer", "basketball", "tennis"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[1], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
     ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779),
-    Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: nil, banner: nil, sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
+    Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: "", banner: "", sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
     ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779)
 ]

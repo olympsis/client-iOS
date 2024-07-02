@@ -10,19 +10,16 @@ import Kingfisher
 
 struct GroupSelector: View {
     
-    @Binding var showNewGroup: Bool
-    
     @State private var selection: UUID?
+    @State private var showNewGroup = false
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var groups: [GroupSelection] = []
     
     var body: some View {
         VStack {
             List(selection: $selection) {
                 Section {
-                    ForEach(groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
+                    ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
                         HStack {
                             if let logo = c.club?.logo,
                                let url = generateImageURL(logo) {
@@ -50,9 +47,9 @@ struct GroupSelector: View {
                 } header: {
                     Text("Clubs")
                 }
-                if (groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
+                if (session.groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
                     Section {
-                        ForEach(groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
+                        ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
                             HStack {
                                 if let logo = c.organization?.logo,
                                    let url = generateImageURL(logo) {
@@ -82,10 +79,7 @@ struct GroupSelector: View {
                     }
                 }
             }.listStyle(.plain)
-            Button(action:{
-                self.presentationMode.wrappedValue.dismiss()
-                self.showNewGroup.toggle()
-            }) {
+            Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                     HStack {
@@ -96,17 +90,23 @@ struct GroupSelector: View {
             }.frame(height: 50)
                 .padding(.all)
         }
+        .fullScreenCover(isPresented: $showNewGroup, content: {
+            NewGroup()
+        })
         .onChange(of: selection) { _, _ in
-            guard let select = groups.first(where: { $0.id == selection }) else {
-                self.presentationMode.wrappedValue.dismiss()
+            guard let select = session.groups.first(where: { $0.id == selection }) else {
+                dismiss()
                 return
             }
             session.selectedGroup = select
-            self.presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
     }
 }
 
 #Preview {
-    GroupSelector(showNewGroup: .constant(false), groups: GROUP_SELECTIONS)
+    let session = SessionStore()
+    session.groups = GROUP_SELECTIONS
+    return GroupSelector()
+        .environmentObject(session)
 }

@@ -243,6 +243,7 @@ struct GroupMessages: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
@@ -250,7 +251,7 @@ struct GroupMessages: View {
                             .imageScale(.large)
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .navigation) {
                     Text("Messages")
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {

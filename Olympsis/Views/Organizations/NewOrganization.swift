@@ -12,8 +12,7 @@ import PhotosUI
 struct NewOrganization: View {
     
     @State private var showLocationPicker = false
-    
-    @StateObject private var viewModel = NewGroupViewModel()
+    @StateObject private var viewModel = GroupEditorViewModel()
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore

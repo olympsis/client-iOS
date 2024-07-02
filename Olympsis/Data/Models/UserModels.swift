@@ -143,7 +143,7 @@ struct UsersDataResponse: Codable {
     }
 }
 
-struct CheckIn: Codable {
+struct CheckIn: Decodable {
     let user: UserData?
     let clubs: [Club]?
     let organizations: [Organization]?

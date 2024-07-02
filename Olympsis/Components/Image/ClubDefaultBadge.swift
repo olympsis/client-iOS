@@ -11,11 +11,11 @@ struct ClubDefaultBadge: View {
     var body: some View {
         Circle()
             .foregroundStyle(Color("background"))
-            .frame(width: 40, height: 40)
+            .frame(width: 35, height: 35)
             .overlay {
-                Image(systemName: "person.2")
-                    .foregroundStyle(Color("foreground"))
-                    .imageScale(.medium)
+                Image(systemName: "person.2.fill")
+                    .foregroundStyle(Color.foreground)
+                    .imageScale(.small)
             }
     }
 }

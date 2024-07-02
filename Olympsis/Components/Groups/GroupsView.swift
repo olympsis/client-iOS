@@ -30,11 +30,10 @@ struct GroupsView: View {
                                             .foregroundStyle(Color.foreground)
                                     }
                                 VStack {
-                                    if let club = clubs.first(where: { $0.id == organizer.id }),
-                                       let name = club.name {
-                                        Text(name)
+                                    if let club = clubs.first(where: { $0.id == organizer.id }) {
+                                        Text(club.name)
                                             .fullScreenCover(isPresented: $showClub, content: {
-                                                ClubView(club: club)
+                                                ClubDetailView(club: club)
                                             })
                                     }
                                 }
@@ -57,7 +56,7 @@ struct GroupsView: View {
                                        let name = org.name {
                                         Text(name)
                                             .fullScreenCover(isPresented: $showOrg, content: {
-                                                OrgView(organization: org)
+                                                OrgDetailView(organization: org)
                                             })
                                     }
                                 }

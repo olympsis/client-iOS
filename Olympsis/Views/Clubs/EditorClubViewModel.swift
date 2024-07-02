@@ -119,12 +119,8 @@ class EditorClubViewModel: ObservableObject {
         }
         
         let dto = createClubDTO()
-        guard let id = club.id else {
-            status = .failure
-            return
-        }
         
-        let resp = await clubObserver.updateClub(id: id, dto: dto)
+        let resp = await clubObserver.updateClub(id: club.id, dto: dto)
         guard resp else {
             status = .failure
             return

@@ -38,15 +38,14 @@ class FeedViewModel: ObservableObject {
         
         // make query to backend for posts
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club,
-                let id = club.id else {
+            guard let club = selectedGroup.club else {
                 if !refresh {
                     status = .failure
                 }
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver.getPosts(clubId: id, parentId: club.parent?.id) else {
+            guard let response: [Post] = await session.postObserver.getPosts(clubId: club.id, parentId: club.parent?.id) else {
                 if !refresh {
                     status = .failure
                 }
@@ -79,7 +78,7 @@ class FeedViewModel: ObservableObject {
             if !refresh {
                 status = .success
             }
-            self.posts[id] = sorted
+            self.posts[club.id] = sorted
         } else {
             guard let org = selectedGroup.organization,
                 let id = org.id else {

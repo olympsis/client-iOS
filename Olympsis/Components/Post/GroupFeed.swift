@@ -19,15 +19,15 @@ struct GroupFeed: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
-    var groupID: String? {
+    var groupID: String {
         guard let selectedGroup = session.selectedGroup else {
-            return nil
+            return ""
         }
         switch selectedGroup.type {
         case .Club:
-            return selectedGroup.club?.id
+            return selectedGroup.club?.id.lowercased() ?? ""
         case .Organization:
-            return selectedGroup.club?.id
+            return selectedGroup.club?.id.lowercased() ?? ""
         }
     }
     
@@ -118,12 +118,10 @@ struct GroupFeed: View {
                         .padding(.vertical)
                     }
                     
-                    if viewModel.posts.count > 0 {
-                        if let id = groupID {
-                            ForEach(viewModel.posts[id] ?? [Post]()) { post in
-                                PostView(post: post)
-                                    .environmentObject(viewModel)
-                            }
+                    if viewModel.posts[groupID]?.count ?? 0 > 0 {
+                        ForEach(viewModel.posts[groupID] ?? [Post]()) { post in
+                            PostView(post: post)
+                                .environmentObject(viewModel)
                         }
                     } else {
                         VStack {
@@ -199,7 +197,7 @@ struct GroupFeed: View {
         .fullScreenCover(isPresented: $showNewPost) {
             if let group = session.selectedGroup {
                 if let club = group.club {
-                    PostCreator(type: .Post, groupId: club.id ?? "")
+                    PostCreator(type: .Post, groupId: club.id)
                         .environmentObject(viewModel)
                 } else if let org = group.organization {
                     PostCreator(type: .Post, groupId: org.id ?? "")

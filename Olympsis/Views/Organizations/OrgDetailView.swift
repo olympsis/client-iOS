@@ -8,7 +8,7 @@
 import MapKit
 import SwiftUI
 
-struct OrgView: View {
+struct OrgDetailView: View {
     
     @StateObject var organization: Organization
     @State private var camera = MapCameraPosition.camera(
@@ -164,5 +164,5 @@ struct OrgView: View {
 }
 
 #Preview {
-    OrgView(organization: ORGANIZATIONS[0])
+    OrgDetailView(organization: ORGANIZATIONS[0])
 }

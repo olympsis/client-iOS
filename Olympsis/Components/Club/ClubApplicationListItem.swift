@@ -52,11 +52,8 @@ struct ClubApplicationListItem: View {
     }
     
     func accept() async {
-        guard let id = club.id else {
-            return
-        }
         let req = ApplicationUpdateRequest(status: "accepted")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -65,11 +62,8 @@ struct ClubApplicationListItem: View {
     }
     
     func deny() async {
-        guard let id = club.id else {
-            return
-        }
         let req = ApplicationUpdateRequest(status: "denied")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})

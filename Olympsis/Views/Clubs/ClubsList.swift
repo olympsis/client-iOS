@@ -13,8 +13,10 @@ struct ClubsList: View {
     
     @State private var text: String = ""
     @State var clubs = [Club]()
+    @State private var showMenu = false
+    @State private var showEULA: Bool = false
     @State private var showCancel: Bool = false
-    @State private var showNewClubCover: Bool = false
+    @State private var showNewClub: Bool = false
     @State private var status: LOADING_STATE = .pending
     @State private var showCompletedApplicationToast:Bool = false
     
@@ -47,115 +49,102 @@ struct ClubsList: View {
             let newClubs = clubs.filter { club in
                 !userClubs.contains(where: { club.id == $0 })
             }
-            return newClubs.filter{ $0.name!.lowercased().contains(text.lowercased()) }
+            return newClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }
         }
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                SearchBar(text: $text, onCommit: {
-                    showCancel = false
-                }).onTapGesture {
-                        if !showCancel {
-                            showCancel = true
-                        }
-                    }
-                .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                .padding(.leading, 5)
-                .padding(.trailing, 5)
-                .padding(.top)
-                if showCancel {
-                    Button(action:{
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+        NavigationStack {
+            VStack {
+                HStack {
+                    SearchBar(text: $text, onCommit: {
                         showCancel = false
-                    }){
-                        Text("Cancel")
-                            .foregroundColor(.gray)
-                            .frame(height: 40)
-                            .padding(.top)
-                    }.padding(.trailing)
-                }
-            }
-            ScrollView(.vertical, showsIndicators: false){
-                if self.status == .pending {
-                    ProgressView()
-                        .padding(.top)
-                } else {
-                    VStack{
-                        if filteredClubs.isEmpty {
-                            Text("No clubs found. Broaden your search or...")
-                                .font(.caption)
-                                .padding(.top, 50)
-                            Button(action:{ showNewClubCover.toggle() }){
-                                Text("Create One?")
-                                    .font(.caption)
+                    }).onTapGesture {
+                            if !showCancel {
+                                showCancel = true
                             }
-                        } else {
-                            ForEach(filteredClubs, id: \.id){ club in
-                                ClubListItem(club: club, showToast: $showCompletedApplicationToast)
-                                    .clipShape(Rectangle())
+                        }
+                    .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
+                    .padding(.horizontal)
+                    .padding(.top)
+                    if showCancel {
+                        Button(action:{
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                            showCancel = false
+                        }){
+                            Text("Cancel")
+                                .foregroundColor(.gray)
+                                .frame(height: 40)
+                                .padding(.top)
+                        }.padding(.trailing)
+                    }
+                }
+                ScrollView(.vertical, showsIndicators: false){
+                    if self.status == .pending {
+                        ProgressView()
+                            .padding(.top)
+                    } else {
+                        VStack{
+                            if filteredClubs.isEmpty {
+                                Text("No clubs found. Broaden your search or...")
+                                    .font(.caption)
+                                    .padding(.top, 50)
+                                Button(action:{ self.showNewClub.toggle() }){
+                                    Text("Create One?")
+                                        .font(.caption)
+                                }
+                            } else {
+                                ForEach(filteredClubs, id: \.id){ club in
+                                    ClubListItem(club: club, showToast: $showCompletedApplicationToast)
+                                        .clipShape(Rectangle())
+                                }
                             }
                         }
                     }
                 }
-            }
-            .refreshable {
-                guard let location = session.locationManager.location else {
-                    return
-                }
-                
-                let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
-                
-                do {
-                    let locale = Locale(identifier: "en_US")
-                    let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
-                    guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea,
-                          let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                .refreshable {
+                    guard let location = session.locationManager.location else {
                         return
                     }
-                    await MainActor.run {
-                        self.clubs = resp
-                    }
-                } catch {
-                    log.error("\(error)")
-                }
-            }
-        }
-        .task {
-            if clubs.isEmpty {
-                
-                // If we are not authorized to have the user's location we rely on the fallback location
-                if (!session.locationManager.isAuthorized) {
+                    
+                    let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                    
                     do {
                         let locale = Locale(identifier: "en_US")
-                        let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
                         let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
                         guard let country = pk.first?.country,
                               let state = pk.first?.administrativeArea,
                               let resp = await session.clubObserver.getClubs(country: country, state: state) else {
-                            status = .failure
                             return
                         }
                         await MainActor.run {
                             self.clubs = resp
-                            status = .success
                         }
                     } catch {
                         log.error("\(error)")
-                        status = .failure
-                        return
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Groups")
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink(destination: NoClubMenu()) {
+                        Image(systemName: "slider.horizontal.3")
+                            .foregroundStyle(Color.foreground)
+                            .imageScale(.large)
+                    }
+                }
+            }
+            .task {
+                if clubs.isEmpty {
                     
-                    status = .success
-                    return
-                    
-                } else {
-                    
-                    // Check and see if we have the user's actual location
-                    // If we don't then we use the location fall back
-                    guard let location = session.locationManager.location else {
+                    // If we are not authorized to have the user's location we rely on the fallback location
+                    if (!session.locationManager.isAuthorized) {
                         do {
                             let locale = Locale(identifier: "en_US")
                             let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
@@ -172,43 +161,74 @@ struct ClubsList: View {
                             }
                         } catch {
                             log.error("\(error)")
-                        }
-                        status = .success
-                        return
-                    }
-                    
-                    // We do have the user's location, then continue with query
-                    let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
-                    do {
-                        let locale = Locale(identifier: "en_US")
-                        let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
-                        guard let country = pk.first?.country,
-                              let state = pk.first?.administrativeArea,
-                              let resp = await session.clubObserver.getClubs(country: country, state: state) else {
                             status = .failure
                             return
                         }
-                        await MainActor.run {
-                            self.clubs = resp
+                        
+                        status = .success
+                        return
+                        
+                    } else {
+                        
+                        // Check and see if we have the user's actual location
+                        // If we don't then we use the location fall back
+                        guard let location = session.locationManager.location else {
+                            do {
+                                let locale = Locale(identifier: "en_US")
+                                let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
+                                let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+                                guard let country = pk.first?.country,
+                                      let state = pk.first?.administrativeArea,
+                                      let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                                    status = .failure
+                                    return
+                                }
+                                await MainActor.run {
+                                    self.clubs = resp
+                                    status = .success
+                                }
+                            } catch {
+                                log.error("\(error)")
+                            }
                             status = .success
                             return
                         }
-                    } catch {
-                        log.error("\(error)")
-                        status = .failure
-                        return
+                        
+                        // We do have the user's location, then continue with query
+                        let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                        do {
+                            let locale = Locale(identifier: "en_US")
+                            let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+                            guard let country = pk.first?.country,
+                                  let state = pk.first?.administrativeArea,
+                                  let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                                status = .failure
+                                return
+                            }
+                            await MainActor.run {
+                                self.clubs = resp
+                                status = .success
+                                return
+                            }
+                        } catch {
+                            log.error("\(error)")
+                            status = .failure
+                            return
+                        }
                     }
                 }
             }
-        }
-        .fullScreenCover(isPresented: $showNewClubCover) {
-            NewGroup()
+            .sheet(isPresented: $showEULA, content: {
+                EndUserLicenseAgreement()
+            })
+            .fullScreenCover(isPresented: $showNewClub) {
+                NewGroup()
+            }
         }
     }
 }
 
-struct NoClubView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubsList().environmentObject(SessionStore())
-    }
+#Preview {
+    ClubsList()
+        .environmentObject(SessionStore())
 }

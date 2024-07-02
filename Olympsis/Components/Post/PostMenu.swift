@@ -78,11 +78,10 @@ struct PostMenu: View {
         }
         if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club,
-                  let id = club.id,
                   let postId = post.id else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: id, postId: postId)
+            let resp = await session.clubObserver.pinPost(id: club.id, postId: postId)
             if resp {
                 club.pinnedPosts?.append(postId)
                 pinned = true
@@ -108,13 +107,12 @@ struct PostMenu: View {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club,
-                  let id = club.id else {
+            guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.unPinPost(id: id)
+            let resp = await session.clubObserver.unPinPost(id: club.id)
             if resp {
-                club.pinnedPosts?.removeAll(where: { $0 == id})
+                club.pinnedPosts?.removeAll(where: { $0 == club.id})
                 pinned = false
             }
             return

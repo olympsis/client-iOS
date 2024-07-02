@@ -175,7 +175,7 @@ struct Participant: Codable, Identifiable, Hashable {
     }
 }
 
-struct EventData: Codable {
+struct EventData: Decodable {
     let poster: UserData?
     let field: Venue?
     let clubs: [Club]?

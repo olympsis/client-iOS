@@ -53,6 +53,15 @@ class OrgService {
         ])
         return data
     }
+
+    func updateOrganization(id: String, dto: OrganizationDao) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/organizations/\(id)")
+        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(dto), headers: [
+            "Authorization": token ?? ""
+        ])
+        return resp
+    }
     
     // TODO: FOR ADMINS
     func deleteOrganization(id: String) async throws -> URLResponse {
@@ -108,7 +117,7 @@ class OrgService {
     
     // INVITATIONS
     
-    func createInvitation(data: Invitation) async throws -> (Data, URLResponse) {
+    func createInvitation(data: InvitationDTO) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/organizations/invitations")
         return try await http.Request(.POST, endpoint, body: EncodeToData(data), headers: [
@@ -116,7 +125,7 @@ class OrgService {
         ])
     }
     
-    func updateInvitation(data: Invitation) async throws -> URLResponse {
+    func updateInvitation(data: InvitationDTO) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/organizations/invitations/\(data.id ?? "")")
         let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(data), headers: [

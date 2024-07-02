@@ -17,9 +17,14 @@ class PostObserver: ObservableObject{
     func getPosts(clubId: String, parentId: String?) async -> [Post]? {
         do {
             let (data, res) = try await postService.getPosts(id: clubId, parentId: parentId ?? "")
-            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+            guard (res as? HTTPURLResponse)?.statusCode ?? 0 < 300 else {
                 return nil
             }
+            
+            if ((res as? HTTPURLResponse)?.statusCode == 204) {
+                return [Post]()
+            }
+            
             let object = try decoder.decode(PostsResponse.self, from: data)
             return object.posts
         } catch {

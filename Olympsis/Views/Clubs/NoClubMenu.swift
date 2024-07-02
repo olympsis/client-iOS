@@ -10,7 +10,6 @@ import SwiftUI
 
 struct NoClubMenu: View {
     
-    @Binding var status: LOADING_STATE
     @State private var showEula: Bool = false
     @State private var showNewClub: Bool = false
     @State private var showInvites: Bool = false
@@ -18,8 +17,8 @@ struct NoClubMenu: View {
     @State private var area: String = "Unknown"
     @State private var region : MKCoordinateRegion = .init()
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var session:SessionStore
-    @Environment(\.presentationMode) var presentationMode
     
     var acceptedEULA: Bool {
         guard let user = session.user,
@@ -80,14 +79,16 @@ struct NoClubMenu: View {
                 })
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                        Button(action:{ dismiss() }){
                             Image(systemName: "chevron.left")
                                 .foregroundColor(Color("color-prime"))
                         }
                     }
                 }
                 .navigationTitle("Settings")
+                .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
+
             }
         }
     }
@@ -95,7 +96,7 @@ struct NoClubMenu: View {
 
 struct NoClubMenu_Previews: PreviewProvider {
     static var previews: some View {
-        NoClubMenu(status: .constant(.failure))
+        NoClubMenu()
             .environmentObject(SessionStore())
     }
 }

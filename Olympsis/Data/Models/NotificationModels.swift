@@ -12,7 +12,7 @@ struct Notification: Codable {
     var body: String
 }
 
-struct NotificationModel: Codable {
+struct NotificationModel: Decodable {
     var id: String
     var type: String
     var club: Club?

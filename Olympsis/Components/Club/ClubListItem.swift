@@ -20,10 +20,7 @@ struct ClubListItem: View {
     @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
-        guard let name = club.name else {
-            return ""
-        }
-        return name
+        return club.name
     }
     
     var description: String {
@@ -34,10 +31,7 @@ struct ClubListItem: View {
     }
     
     var sports: [String] {
-        guard let s = club.sports else {
-            return ["unknown"]
-        }
-        return s
+        return club.sports
     }
     
     var acceptedEULA: Bool {
@@ -57,14 +51,7 @@ struct ClubListItem: View {
         }
         
         status = .loading
-        guard let id = club.id else {
-            status = .failure
-            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-                status = .pending
-            }
-            return
-        }
-        let res = await session.clubObserver.createClubApplication(clubId: id)
+        let res = await session.clubObserver.createClubApplication(clubId: club.id)
         if res {
             status = .success
         } else {
@@ -88,9 +75,9 @@ struct ClubListItem: View {
                         .foregroundColor(Color("foreground"))
                         .minimumScaleFactor(0.8)
                         .lineLimit(1)
-                    Text("\(club.city!), ").foregroundColor(.gray)
+                    Text("\(club.city), ").foregroundColor(.gray)
                     +
-                    Text(club.state!)
+                    Text(club.state)
                         .foregroundColor(.gray)
                     HStack {
                         if club.members.count > 1 {
@@ -152,7 +139,7 @@ struct ClubListItem: View {
                 .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
-            ClubView(club: club)
+            ClubDetailView(club: club)
         })
         .sheet(isPresented: $showEULA, content: {
             EndUserLicenseAgreement()

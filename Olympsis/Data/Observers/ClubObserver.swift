@@ -11,6 +11,8 @@ import Foundation
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class ClubObserver: ObservableObject{
     
+    static let shared = ClubObserver()
+    
     private let log = Logger(subsystem: "com.olympsis.client", category: "club_observer")
     private let decoder = JSONDecoder()
     private let clubService = ClubService()

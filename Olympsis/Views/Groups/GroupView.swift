@@ -10,13 +10,7 @@ import SwiftUI
 
 struct GroupView: View {
     
-    @State private var showEULA: Bool = false
     @State private var showMenu: Bool = false
-    @State private var showNewPost: Bool = false
-    @State private var showNewEvent: Bool = false
-    @State private var showSelector: Bool = false
-    @State private var showMessages: Bool = false
-    @State private var showNewGroup: Bool = false
     @State private var groupState: LOADING_STATE = .pending
     
     @EnvironmentObject private var session: SessionStore
@@ -35,48 +29,34 @@ struct GroupView: View {
                     ProgressView()
                 case .success, .pending:
                     VStack {
-                        if session.selectedGroup != nil {
-                            GroupFeed(showNewPost: $showNewPost, showNewEvent: $showNewEvent)
-                                .task {
-                                    await session.updateNotifications()
+                        if let selectedGroup = session.selectedGroup {
+                            switch selectedGroup.type {
+                            case .Club:
+                                if let club = selectedGroup.club {
+                                    ClubView(club: club)
+                                        .task {
+                                            await session.updateNotifications()
+                                        }
                                 }
+                            case .Organization:
+                                if let org = selectedGroup.organization {
+                                    OrganizationView(org: org)
+                                        .task {
+                                            await session.updateNotifications()
+                                        }
+                                }
+                            }
                         } else {
                             ClubsList()
                         }
                     }
                 case .failure:
-                    VStack {
-                        Text("Failed to get clubs data 😞")
+                    VStack(alignment: .center) {
+                        Text("😞")
+                        Text("Failed to get clubs data")
                     }
                 }
             }
-            .toolbar {
-                GroupToolbar(showEULA: $showEULA, showMenu: $showMenu, showNewPost: $showNewPost, showNewEvent: $showNewEvent, showSelector: $showSelector, showMessages: $showMessages ,groupState: $groupState)
-            }
-            .sheet(isPresented: $showSelector) {
-                GroupSelector(showNewGroup: $showNewGroup, groups: session.groups)
-                    .presentationDetents([.medium])
-            }
-            .fullScreenCover(isPresented: $showMessages) {
-                GroupMessages()
-            }
-            .fullScreenCover(isPresented: $showMenu) {
-                if let group = session.selectedGroup {
-                    if let club = group.club {
-                        ClubMenu(club: club)
-                    } else if let org = group.organization {
-                        OrgMenu(organization: org)
-                    }
-                } else {
-                    NoClubMenu(status: $groupState)
-                }
-            }
-            .fullScreenCover(isPresented: $showNewGroup) {
-                NewGroup()
-            }
-            .sheet(isPresented: $showEULA, content: {
-                EndUserLicenseAgreement()
-            })
         }
     }
     

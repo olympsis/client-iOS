@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-struct Invitation: Codable {
+struct Invitation: Decodable {
     var id: String?
     var type: String
     let sender: String
@@ -30,13 +30,33 @@ struct Invitation: Codable {
     }
 }
 
-struct InvitationData: Codable {
+struct InvitationDTO: Codable {
+    var id: String?
+    var type: String
+    let sender: String
+    let recipient: String
+    let subjectID: String
+    var status: String
+    let createdAt: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case sender
+        case recipient
+        case subjectID = "subject_id"
+        case status
+        case createdAt = "created_at"
+    }
+}
+
+struct InvitationData: Decodable {
     let club: Club?
     let event: Event?
     let organization: Organization?
 }
 
-struct InvitationsResponse: Codable {
+struct InvitationsResponse: Decodable {
     let totalInvitations: Int
     let invitations: [Invitation]
     

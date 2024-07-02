@@ -1,14 +1,16 @@
 //
-//  ClubView.swift
+//  OrganizationView.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 7/1/24.
 //
 
 import SwiftUI
+
+import SwiftUI
 import Kingfisher
 
-struct ClubView: View {
+struct OrganizationView: View {
     
     @State private var showMenu = false
     @State private var showEULA = false
@@ -17,11 +19,11 @@ struct ClubView: View {
     @State private var showSelector = false
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var club: Club
+    @StateObject private var org: Organization
     @EnvironmentObject private var session: SessionStore
     
-    init(club: Club) {
-        self._club = StateObject(wrappedValue: club)
+    init(org: Organization) {
+        self._org = StateObject(wrappedValue: org)
     }
     
     var acceptedEULA: Bool {
@@ -44,14 +46,15 @@ struct ClubView: View {
                 })
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        HStack(alignment: .center) {
-                            Text(club.name)
+                        HStack {
+                            Text(org.name ?? "")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.6)
-                           Image(systemName: "chevron.down")
-                                .imageScale(.small)
+                                
+                            Image(systemName: "chevron.down")
+                                 .imageScale(.small)
                             Spacer()
                         }
                         .frame(width: SCREEN_WIDTH/2, alignment: .leading)
@@ -92,11 +95,11 @@ struct ClubView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
-                            ClubMenu()
-                                .environmentObject(club)
+                            OrgMenu()
+                                .environmentObject(org)
                                 .environmentObject(session)
                         } label: {
-                            if let logo = club.logo,
+                            if let logo = org.logo,
                                let url = generateImageURL(logo) {
                                 KFImage(url)
                                     .placeholder({
@@ -120,6 +123,7 @@ struct ClubView: View {
 }
 
 #Preview {
-    ClubView(club: CLUBS[0])
+    OrganizationView(org: ORGANIZATIONS[0])
         .environmentObject(SessionStore())
 }
+

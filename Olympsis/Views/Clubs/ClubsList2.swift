@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct ClubsList2: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
-            VStack {
-                ClubsList()
-            }.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
+            ClubsList()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action:{ dismiss() }){
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(Color("color-prime"))
+                        }
                     }
                 }
-            }
-            .navigationTitle("Clubs")
-            .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden()
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

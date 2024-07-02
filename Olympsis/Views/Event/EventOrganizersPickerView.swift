@@ -46,9 +46,7 @@ struct EventOrganizersPickerView: View {
                             Circle()
                                 .frame(height: 60)
                             if let club = session.clubs.first(where: { $0.id == organizer.club?.id }) {
-                                if let name = club.name {
-                                    Text(name)
-                                }
+                                Text(club.name)
                             }
                             Spacer()
                         }.padding(.horizontal)
