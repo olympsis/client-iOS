@@ -238,6 +238,9 @@ struct ClubEditor: View {
                     }.frame(width: SCREEN_WIDTH-25)
                         .padding(.top, 50)
                 }
+                
+                Spacer(minLength: 20)
+                
             }.padding(.horizontal)
         }
         .navigationTitle("Edit Group")
