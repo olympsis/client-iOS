@@ -33,7 +33,7 @@ struct MemberReportView: View {
             return
         }
         if let club = selectedGroup.club {
-            groupID = club.id ?? ""
+            groupID = club.id
         }
         if let org = selectedGroup.organization {
             groupID = org.id ?? ""

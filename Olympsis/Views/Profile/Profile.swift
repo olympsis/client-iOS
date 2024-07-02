@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Profile: View {
 
+    @State private var showMenu = false
     @EnvironmentObject private var session: SessionStore
     
     var username: String {
@@ -38,6 +39,9 @@ struct Profile: View {
                     TrophiesView()
                     
                 }
+                .fullScreenCover(isPresented: $showMenu, content: {
+                    ProfileMenu()
+                })
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Text(username)
@@ -46,9 +50,7 @@ struct Profile: View {
                             .fontWeight(.regular)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink {
-                            ProfileMenu()
-                        } label: {
+                        Button(action:{ self.showMenu.toggle() }){
                             Image(systemName: "slider.horizontal.3")
                                 .foregroundStyle(Color("foreground"))
                                 .overlay {

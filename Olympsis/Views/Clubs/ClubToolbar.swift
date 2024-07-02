@@ -59,7 +59,7 @@ struct ClubToolbar: ToolbarContent {
                                 }
                             }
                             ){
-                                Text(club.name ?? "Club")
+                                Text(club.name)
                             }
                         }
                     } label: {

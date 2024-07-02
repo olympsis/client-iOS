@@ -62,7 +62,7 @@ let ORGANIZATIONS = [
 
 
 let CLUB_SNIPPETS = [
-    ClubSnippet(id: CLUBS[0].id ?? UUID().uuidString, name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", visibility: "public")
+    ClubSnippet(id: CLUBS[0].id, name: "International Soccer Club", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", visibility: "public")
 ]
 
 let ORG_SNIPPETS = [
@@ -83,7 +83,7 @@ let EVENTS = [
         id: UUID().uuidString,
         type: "tournament",
         poster: USER_SNIPPETS[0],
-        organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id ?? UUID().uuidString)],
+        organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id)],
         venues: VENUE_DESCRIPTORS,
         imageURL: "event-images/soccer-0.jpg",
         title: "Pick Up Soccer International",
@@ -109,7 +109,7 @@ let EVENTS = [
         organizers: [
             Organizer(
                 type: GROUP_TYPE.Club.rawValue, 
-                id: CLUBS[0].id ?? UUID().uuidString
+                id: CLUBS[0].id
             )
         ],
         venues: VENUE_DESCRIPTORS,
