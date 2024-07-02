@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Profile: View {
 
-    @State private var showMenu = false
     @EnvironmentObject private var session: SessionStore
     
     var username: String {
@@ -38,9 +37,7 @@ struct Profile: View {
                     // Trophies View
                     TrophiesView()
                     
-                }.fullScreenCover(isPresented: $showMenu, content: {
-                    ProfileMenu()
-                })
+                }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Text(username)
@@ -49,19 +46,16 @@ struct Profile: View {
                             .fontWeight(.regular)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action:{ self.showMenu.toggle() }){
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 45, height: 35)
-                                    .foregroundStyle(Color("background"))
-                                Image(systemName: "slider.horizontal.3")
-                                    .foregroundStyle(Color("foreground"))
-                                    .overlay {
-                                        if session.invitations.count > 0 {
-                                            NotificationCountView(value: $session.invitations.count)
-                                        }
+                        NavigationLink {
+                            ProfileMenu()
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundStyle(Color("foreground"))
+                                .overlay {
+                                    if session.invitations.count > 0 {
+                                        NotificationCountView(value: $session.invitations.count)
                                     }
-                            }
+                                }
                         }
                     }
                 }

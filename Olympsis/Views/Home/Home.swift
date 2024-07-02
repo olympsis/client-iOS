@@ -14,7 +14,6 @@ struct Home: View {
     
     @State private var showDetail = false
     @State private var showMoreFields = false
-    @State private var showNotifications = false
     
     @EnvironmentObject private var session: SessionStore
     
@@ -65,9 +64,6 @@ struct Home: View {
                 session.locationRecieved = true
                 
             }
-            .fullScreenCover(isPresented: $showNotifications, content: {
-                NotificationsView()
-            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
@@ -75,19 +71,17 @@ struct Home: View {
                         .fontWeight(.bold)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{ self.showNotifications.toggle() }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 45, height: 35)
-                                .foregroundStyle(Color("background"))
-                            Image(systemName: "bell")
-                                .foregroundStyle(Color("foreground"))
-                                .overlay {
-                                    if session.invitations.count > 0 {
-                                        NotificationCountView(value: $session.invitations.count)
-                                    }
+                    NavigationLink {
+                        NotificationsView()
+                            .environmentObject(session)
+                    } label: {
+                        Image(systemName: "bell")
+                            .foregroundStyle(Color("foreground"))
+                            .overlay {
+                                if session.invitations.count > 0 {
+                                    NotificationCountView(value: $session.invitations.count)
                                 }
-                        }
+                            }
                     }
                 }
             }
