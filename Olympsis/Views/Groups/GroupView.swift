@@ -45,6 +45,11 @@ struct GroupView: View {
                     ClubsList()
                 }
             }
+            .task {
+                if session.groups.isEmpty {
+                    await session.CheckIn()
+                }
+            }
         }
     }
     
