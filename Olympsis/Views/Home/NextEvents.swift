@@ -26,6 +26,7 @@ struct NextEvents: View {
                 VStack (alignment: .center){
                     EventListItem(event: e)
                         .padding(.horizontal)
+                        .padding(.bottom, 10)
                 }
             }
         }

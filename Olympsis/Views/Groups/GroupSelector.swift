@@ -79,6 +79,7 @@ struct GroupSelector: View {
                     }
                 }
             }.listStyle(.plain)
+            
             Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
@@ -87,19 +88,29 @@ struct GroupSelector: View {
                         Text("Create a new Group")
                     }.foregroundStyle(.white)
                 }
-            }.frame(height: 50)
-                .padding(.all)
+            }
+            .frame(height: 50)
+            .padding(.all)
         }
         .fullScreenCover(isPresented: $showNewGroup, content: {
             NewGroup()
         })
         .onChange(of: selection) { _, _ in
-            guard let select = session.groups.first(where: { $0.id == selection }) else {
-                dismiss()
-                return
+            Task {
+                guard let selection = session.groups.first(where: { $0.id == selection }) else {
+                    dismiss()
+                    return
+                }
+                await MainActor.run {
+                    session.clubsState = .loading
+                    session.selectedGroup = selection
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        session.clubsState = .success
+                        dismiss()
+                    }
+                }
             }
-            session.selectedGroup = select
-            dismiss()
         }
     }
 }

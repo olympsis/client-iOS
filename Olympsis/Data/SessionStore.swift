@@ -33,6 +33,8 @@ class SessionStore: ObservableObject {
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
     @Published var state: LOADING_STATE = .pending
     
+    @Published var clubsState: LOADING_STATE = .pending
+    
     @Published var user: UserData?              // User data Cache
     @Published var clubs = [Club]()             // Clubs Cache
     @Published var orgs = [Organization]()      // Organizations Cache
@@ -41,12 +43,8 @@ class SessionStore: ObservableObject {
     @Published var hotEvents = [Event]()        // Hot Events Cache
     @Published var invitations = [Invitation]() // Invitations Cache
     
-    @Published var clubsState: LOADING_STATE = .pending
-    
     // groups & posts
     @Published var selectedGroup: GroupSelection?
-    @Published var posts: [Post] = [Post]()
-    @Published var cachedPosts: [UUID: [Post]] = [:]
     @Published var groups: [GroupSelection] = [GroupSelection]()
     
     // Observers
