@@ -19,7 +19,7 @@ struct GroupView: View {
             VStack {
                 switch session.clubsState {
                 case .loading:
-                    ProgressView()
+                    ClubLoadingView()
                 case .success, .pending:
                     VStack {
                         switch session.selectedGroup?.type {

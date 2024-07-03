@@ -13,6 +13,7 @@ struct LogViewer: View {
     @State private var filter: String = ""
     @State private var logs = [LogEntry]()
     @State private var status: LOADING_STATE = .pending
+    @Environment(\.dismiss) private var dismiss
     
     private var manager = LoggingManagement()
     private var log = Logger(subsystem: "com.olympsis.client", category: "log_viewer")
@@ -62,7 +63,13 @@ struct LogViewer: View {
         .task {
             await fetchLogs()
         }
+        .navigationBarBackButtonHidden()
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Menu {
                     Button(action: { filter = "com.olympsis.client" }) {

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HelpGuide: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ScrollView {
             HStack {
@@ -60,7 +63,14 @@ struct HelpGuide: View {
         }
         .navigationTitle("Help")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
     }
 }
 
