@@ -692,6 +692,15 @@
 		BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C460029E38936008EA591 /* GenerateImageURL.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5D8086072B2FF9C100EA01AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
+			remoteInfo = Olympsis;
+		};
+/* End PBXContainerItemProxy section */
 /* Begin PBXCopyFilesBuildPhase section */
 		5D17F9C22ADB920400E8B15C /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -1737,6 +1746,28 @@
 				5DB0961B2E07437900BB924A /* ActivitiesList.swift */,
 			);
 			path = Activities;
+			sourceTree = "<group>";
+		};
+		5DD834002C3A611900DD4691 /* Running */ = {
+			isa = PBXGroup;
+			children = (
+				5DD834012C3A612F00DD4691 /* RunningMetrics.swift */,
+				5DD834032C3A614100DD4691 /* RunningActions.swift */,
+				5DD834052C3A617600DD4691 /* RunningMap.swift */,
+				5DD834072C3A618400DD4691 /* RunningSplits.swift */,
+			);
+			path = Running;
+			sourceTree = "<group>";
+		};
+		5DDD5E4F2C3AF57200793FEB /* Running */ = {
+			isa = PBXGroup;
+			children = (
+				5DDD5E502C3AF58000793FEB /* RunningMetricsView.swift */,
+				5DDD5E522C3AF64900793FEB /* RunningSettingsView.swift */,
+				5DDD5E542C3AF65400793FEB /* RunningAdvancedMetricsView.swift */,
+				5DDD5E582C3B3A3300793FEB /* RunningActivityView.swift */,
+			);
+			path = Running;
 			sourceTree = "<group>";
 		};
 		5DF8C8762BF18E92002FE392 /* System */ = {
@@ -2931,6 +2962,7 @@
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
+				5DD834022C3A612F00DD4691 /* RunningMetrics.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
 				5D0CCB242E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */,
 				5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */,
@@ -2973,6 +3005,7 @@
 				5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */,
+				5DDD5E5D2C3B726E00793FEB /* WorkoutsList.swift in Sources */,
 				5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */,
 				5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */,
 				5DC8B4512E05C72D008C9052 /* BadgesView.swift in Sources */,
@@ -3022,6 +3055,7 @@
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
+				5DD833EC2C36720C00DD4691 /* ActivityPresenter.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */,
 				5DC8B4412E05BF09008C9052 /* WorkoutManager+Location.swift in Sources */,
@@ -3058,6 +3092,7 @@
 				5D6C013F2C07BB45006A264C /* Onboard-AboutOlympsis.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
 				5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */,
+				5DDD5E5B2C3B647100793FEB /* WorkoutListItemTemplate.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
@@ -3088,6 +3123,7 @@
 				9A8162A729669A370042F0A6 /* MessageView.swift in Sources */,
 				5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
+				5DDD5E532C3AF64900793FEB /* RunningSettingsView.swift in Sources */,
 				5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */,
 				5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
@@ -3193,6 +3229,7 @@
 				5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
+				5DB36C022C35F18400DB2912 /* ActivityPicker.swift in Sources */,
 				9A5CA4DD296F7DA300C63A32 /* ClubMemberMenu.swift in Sources */,
 				9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */,
 				5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */,
@@ -3226,6 +3263,7 @@
 				5D78BDEA2C0D48C000F170D6 /* NewEventImagePicker.swift in Sources */,
 				5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */,
 				5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */,
+				5DDD5E512C3AF58000793FEB /* RunningMetricsView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
