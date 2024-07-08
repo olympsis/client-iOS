@@ -176,9 +176,11 @@ enum EVENT_STATUS: String {
 // MARK: - Sports
 
 enum SPORTS: String, CaseIterable {
-    case soccer = "soccer"
+    
     case running = "running"
     case cycling = "cycling"
+    case weights = "weights"
+    case soccer = "soccer"
     case volleyball = "volleyball"
     case basketball = "basketball"
     case pickleball = "pickleball"
@@ -189,7 +191,7 @@ enum SPORTS: String, CaseIterable {
     case climbing = "climbing"
     case spike = "spike"
     case football = "football"
-    case weights = "weights"
+    
     
     func icon() -> Image {
         switch self {
@@ -494,6 +496,18 @@ enum SCALE {
     case Medium
     case Large
 	case XLarge
+}
+enum WORKOUT_STATES {
+    case pending
+    case active
+    case paused
+    case ended
+}
+
+enum WORKOUT_TABS {
+    case settings
+    case metrics
+    case advanced_metrics
 }
 
 // MARK: - Event Sharing

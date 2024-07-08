@@ -101,6 +101,9 @@ struct ViewContainer: View {
             handleRoute(route)
         })
         .task {
+            await session.workoutManager.requestHealthStoreAuthorization()
+            session.workoutManager.loadWeeklyRunHistory()
+            
             session.state = .loading
             await session.CheckIn()
             guard let user = session.user else {

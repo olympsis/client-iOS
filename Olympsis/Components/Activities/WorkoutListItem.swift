@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SmallWorkoutView: View {
+struct WorkoutListItem: View {
     
     @State var workout: Workout
     @State var event: Event?
@@ -163,5 +163,5 @@ struct SmallWorkoutView: View {
 }
 
 #Preview {
-    SmallWorkoutView(workout: Workout(id: UUID(), type: .running, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
+    WorkoutListItem(workout: Workout(id: UUID(), type: .running, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
 }

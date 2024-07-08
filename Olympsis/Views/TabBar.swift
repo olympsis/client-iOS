@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct TabBar: View {
     
@@ -51,6 +52,24 @@ struct TabBar: View {
                             .foregroundColor(.foreground)
                     }
                 }
+                
+                Button() {
+                    withAnimation(.easeInOut(duration: 0.2)){
+                        currentTab = .activity
+                    }
+                } label: {
+                    VStack {
+                        Image(systemName: "figure.run.circle.fill")
+                            .imageScale(.large)
+                            .frame(width: 20, height: 20)
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
+                        Text("RECORD")
+                            .font(.caption2)
+                            .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
+                    }
+                }
+                
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .events
@@ -66,17 +85,7 @@ struct TabBar: View {
                             .foregroundColor(.foreground)
                     }
                 }
-//                Button() {
-//                    withAnimation(.easeInOut(duration: 0.2)){
-//                        currentTab = .activity
-//                    }
-//                } label: {
-//                    Image(systemName: currentTab == .activity ? "chart.bar.fill" : "chart.bar")
-//                        .imageScale(.large)
-//                        .frame(width: 28, height: 28)
-//                        .frame(maxWidth: .infinity)
-//                        .foregroundColor(currentTab == .activity ? Color("color-secnd") : .white )
-//                }
+                
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .profile
@@ -101,7 +110,7 @@ struct TabBar: View {
             
         }
         .frame(height: 25)
-        .padding([.horizontal, .vertical])
+        .padding(.vertical)
     }
 }
 
