@@ -63,7 +63,6 @@
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
 		5D4499D32BAB7F4100F54D10 /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 5D4499D22BAB7F4100F54D10 /* Hermes */; };
 		5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4499D42BABDAAA00F54D10 /* GroupReports.swift */; };
-		5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BB2B1299F000D19188 /* GroupViewModel.swift */; };
 		5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4942BD2B129AC800D19188 /* GroupSelector.swift */; };
 		5D5170E12C27270F0035C1F1 /* VenueAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */; };
 		5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E22C2749D10035C1F1 /* EditClub.swift */; };
@@ -440,7 +439,6 @@
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
 		5D4499D42BABDAAA00F54D10 /* GroupReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupReports.swift; sourceTree = "<group>"; };
-		5D4942BB2B1299F000D19188 /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		5D4942BD2B129AC800D19188 /* GroupSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelector.swift; sourceTree = "<group>"; };
 		5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAnnotation.swift; sourceTree = "<group>"; };
 		5D5170E22C2749D10035C1F1 /* EditClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClub.swift; sourceTree = "<group>"; };
@@ -822,7 +820,6 @@
 		5D4942BA2B1299D800D19188 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				5D4942BB2B1299F000D19188 /* GroupViewModel.swift */,
 				5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */,
 			);
 			path = ViewModels;
@@ -1870,7 +1867,6 @@
 				5D666A952BF6AD29001EE754 /* PhotosPickerViewModel.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
 				5FA350582A6737AF00669B2C /* Enums.swift in Sources */,
-				5D4942BC2B1299F000D19188 /* GroupViewModel.swift in Sources */,
 				5DF945AE2BFAAFAD00BE3C63 /* PostMediaViolation.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */,
