@@ -394,3 +394,10 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.externalLink = externalLink
     }
 }
+
+
+struct EventSharingTemplate {
+    var titlePosition: SHARING_TITLE_POSITION
+    var timePosition: SHARING_TIME_POSITION
+    var venuePosition: SHARING_VENUE_POSITION
+}

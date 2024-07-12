@@ -302,3 +302,33 @@ enum SCALE {
     case Medium
     case Large
 }
+
+enum SHARING_TITLE_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}
+
+enum SHARING_TIME_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}
+
+enum SHARING_VENUE_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}

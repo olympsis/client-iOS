@@ -90,7 +90,7 @@ let EVENTS = [
         body: "Lets go play boys!!!", 
         sport: "soccer",
         level: 0,
-        startTime: 1699806600,
+        startTime: 1720696495,
         actualStartTime: 1699806600,
         stopTime: 1699806615,
         actualStopTime: 0,
@@ -174,3 +174,28 @@ let MEMBER_REPORTS = [
     MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
 ]
 
+let SHARING_TEMPLATES = [
+    EventSharingTemplate(
+        titlePosition: .top_leading,
+        timePosition: .bottom_leading,
+        venuePosition: .bottom_leading
+    ),
+    
+    EventSharingTemplate(
+        titlePosition: .bottom_leading,
+        timePosition: .center,
+        venuePosition: .bottom_leading
+    ),
+    
+    EventSharingTemplate(
+        titlePosition: .center,
+        timePosition: .center,
+        venuePosition: .center
+    ),
+    
+    EventSharingTemplate(
+        titlePosition: .bottom_center,
+        timePosition: .center,
+        venuePosition: .bottom_center
+    )
+]
