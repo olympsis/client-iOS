@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PostReportView: View {
     
-    @State var post: Post
     @State private var issue: String = ""
     @State private var notes: String = ""
     @State private var showProblems: Bool = false
@@ -18,6 +17,7 @@ struct PostReportView: View {
     @StateObject private var managementObserver = ManagementObserver()
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "post_report_view")
@@ -62,6 +62,7 @@ struct PostReportView: View {
     private func handleSuccess() {
         state = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            post.isSensitive = true
             dismiss()
         }
     }
@@ -168,5 +169,6 @@ struct PostReportView: View {
 }
 
 #Preview {
-    PostReportView(post: POSTS[0])
+    PostReportView()
+        .environmentObject(POSTS[0])
 }

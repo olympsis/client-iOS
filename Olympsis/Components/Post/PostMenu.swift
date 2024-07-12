@@ -22,7 +22,7 @@ struct PostMenu: View {
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
-    var isPosterOrAdmin: Bool {
+    private var isPosterOrAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
               let group = session.selectedGroup else {
@@ -49,7 +49,7 @@ struct PostMenu: View {
         }
     }
     
-    var isPinned: Bool {
+    private var isPinned: Bool {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
@@ -72,7 +72,7 @@ struct PostMenu: View {
         }
     }
     
-    func pinPost() async {
+    private func pinPost() async {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
@@ -102,7 +102,7 @@ struct PostMenu: View {
         }
     }
     
-    func unPinPost() async {
+    private func unPinPost() async {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
@@ -129,7 +129,7 @@ struct PostMenu: View {
         }
     }
     
-    func deletePost() async {
+    private func deletePost() async {
         guard let selectedGroup = session.selectedGroup,
             let id = post.id else {
             return
@@ -198,7 +198,8 @@ struct PostMenu: View {
             MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post") {
                 showReport.toggle()
             }.fullScreenCover(isPresented: $showReport, content: {
-                PostReportView(post: post)
+                PostReportView()
+                    .environmentObject(post)
             })
             
             if !isBlocked {

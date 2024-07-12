@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-struct PostView: View {
+struct PostListItem: View {
     
     @State private var pinned: Bool
     @State private var showMenu: Bool
@@ -33,7 +33,6 @@ struct PostView: View {
             
             PostBody()
                 .environmentObject(post)
-            
             
             PostFooter(showComments: $showComments)
                 .environmentObject(post)
@@ -77,7 +76,6 @@ struct PostView: View {
         }
     }
 }
-
 
 struct PostHeader: View {
     
@@ -487,7 +485,7 @@ struct PostFooter: View {
 }
 
 #Preview {
-    PostView(post: POSTS[1])
+    PostListItem(post: POSTS[1])
         .environmentObject(SessionStore())
         .environmentObject(FeedViewModel())
 }
