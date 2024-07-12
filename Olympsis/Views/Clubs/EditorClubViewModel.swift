@@ -107,7 +107,7 @@ class EditorClubViewModel: ObservableObject {
         )
     }
     
-    #warning("Finish this for club/org editing functionality")
+    @MainActor
     func updateClub() async {
         status = .loading
         

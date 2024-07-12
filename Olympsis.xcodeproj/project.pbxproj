@@ -174,6 +174,12 @@
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
+		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
+		5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6F2C41095600793FEB /* Events.xcstrings */; };
+		5DDD5E722C41095F00793FEB /* Groups.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E712C41095F00793FEB /* Groups.xcstrings */; };
+		5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E732C41099B00793FEB /* Profile.xcstrings */; };
+		5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E752C4109AF00793FEB /* Home.xcstrings */; };
+		5DDD5E782C4109EC00793FEB /* System.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E772C4109EC00793FEB /* System.xcstrings */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
@@ -534,6 +540,12 @@
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
+		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
+		5DDD5E6F2C41095600793FEB /* Events.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Events.xcstrings; sourceTree = "<group>"; };
+		5DDD5E712C41095F00793FEB /* Groups.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Groups.xcstrings; sourceTree = "<group>"; };
+		5DDD5E732C41099B00793FEB /* Profile.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Profile.xcstrings; sourceTree = "<group>"; };
+		5DDD5E752C4109AF00793FEB /* Home.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Home.xcstrings; sourceTree = "<group>"; };
+		5DDD5E772C4109EC00793FEB /* System.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = System.xcstrings; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
@@ -828,6 +840,12 @@
 			isa = PBXGroup;
 			children = (
 				5D5BEF862BEFE894008648C5 /* General.xcstrings */,
+				5DDD5E6D2C41094400793FEB /* Activities.xcstrings */,
+				5DDD5E6F2C41095600793FEB /* Events.xcstrings */,
+				5DDD5E712C41095F00793FEB /* Groups.xcstrings */,
+				5DDD5E732C41099B00793FEB /* Profile.xcstrings */,
+				5DDD5E752C4109AF00793FEB /* Home.xcstrings */,
+				5DDD5E772C4109EC00793FEB /* System.xcstrings */,
 			);
 			path = Catalogues;
 			sourceTree = "<group>";
@@ -1712,10 +1730,12 @@
 				9A8FF15D28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCn.ttf in Resources */,
 				9A8FF14E28BC261000DE4CF8 /* ITCAvantGardeStd-Bk.ttf in Resources */,
 				5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */,
+				5DDD5E722C41095F00793FEB /* Groups.xcstrings in Resources */,
 				9A8FF14D28BC261000DE4CF8 /* ITCAvantGardeStd-BoldCnObl.ttf in Resources */,
 				9A8FF15128BC261000DE4CF8 /* ITCAvantGardeStd-BoldCn.ttf in Resources */,
 				5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */,
 				9A8FF14A28BC261000DE4CF8 /* ITCAvantGardeStd-BkObl.ttf in Resources */,
+				5DDD5E782C4109EC00793FEB /* System.xcstrings in Resources */,
 				9A8FF15A28BC261000DE4CF8 /* ITCAvantGardeStd-XLt.ttf in Resources */,
 				9A8FF15228BC261000DE4CF8 /* ITCAvantGardeStd-BkCnObl.ttf in Resources */,
 				9A8FF15428BC261000DE4CF8 /* ITCAvantGardeStd-Md.ttf in Resources */,
@@ -1723,12 +1743,16 @@
 				9A8FF14B28BC261000DE4CF8 /* ITCAvantGardeStd-MdObl.ttf in Resources */,
 				9A8FF15728BC261000DE4CF8 /* ITCAvantGardeStd-BkCn.ttf in Resources */,
 				9A8FF15328BC261000DE4CF8 /* ITCAvantGardeStd-BoldObl.ttf in Resources */,
+				5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */,
 				9A8FF15628BC261000DE4CF8 /* ITCAvantGardeStd-XLtCnObl.ttf in Resources */,
+				5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */,
 				9A8FF14C28BC261000DE4CF8 /* ITCAvantGardeStd-DemiCnObl.ttf in Resources */,
 				9A8FF15528BC261000DE4CF8 /* ITCAvantGardeStd-MdCn.ttf in Resources */,
+				5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */,
 				9A8FF0B828BB14C100DE4CF8 /* Preview Assets.xcassets in Resources */,
 				9A8FF15928BC261000DE4CF8 /* ITCAvantGardeStd-MdCnObl.ttf in Resources */,
 				9A8FF15028BC261000DE4CF8 /* ITCAvantGardeStd-DemiObl.ttf in Resources */,
+				5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */,
 				5D78BDE22C0BB17F00F170D6 /* Salt Lake City.gpx in Resources */,
 				9A8FF15B28BC261000DE4CF8 /* ITCAvantGardeStd-XLtObl.ttf in Resources */,
 				9A8FF15828BC261000DE4CF8 /* ITCAvantGardeStd-XLtCn.ttf in Resources */,

@@ -87,7 +87,7 @@ struct PostHeader: View {
     @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     
-    var isOrg: Bool {
+    private var isOrg: Bool {
         guard let selectedGroup = session.selectedGroup,
               selectedGroup.organization != nil else {
             return false
@@ -95,7 +95,7 @@ struct PostHeader: View {
         return true
     }
     
-    var userImageURL: String {
+    private var userImageURL: String {
         guard let user = post.poster,
                 let image = user.imageURL else {
             return "https://api.olympsis.com"
@@ -103,7 +103,7 @@ struct PostHeader: View {
         return GenerateImageURL(image)
     }
     
-    var orgImageURL: String {
+    private var orgImageURL: String {
         guard let club = session.selectedGroup?.club,
               let org = club.parent,
               let image = org.logo else {
@@ -112,7 +112,7 @@ struct PostHeader: View {
         return GenerateImageURL(image)
     }
     
-    var username: String {
+    private var username: String {
         guard let user = post.poster,
               let username = user.username,
               username != "" else {
@@ -122,7 +122,7 @@ struct PostHeader: View {
         return username
     }
     
-    var orgName: String {
+    private var orgName: String {
         guard let club = session.selectedGroup?.club,
               let org = club.parent,
               let name = org.name,
@@ -132,7 +132,7 @@ struct PostHeader: View {
         return name
     }
     
-    func isPinned() -> Bool {
+    private func isPinned() -> Bool {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
@@ -286,7 +286,7 @@ struct PostBody: View {
     @EnvironmentObject private var post: Post
     
     // post images links wrapped up in a url
-    var imagesURL: [URL] {
+    private var imagesURL: [URL] {
         var urls = [URL]()
         guard let imgs = post.images else {
             return [URL]()
@@ -348,15 +348,16 @@ struct PostFooter: View {
     
     @Binding var showComments: Bool
     @State private var isLiked: Bool = false
+    
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var post: Post
     @EnvironmentObject private var session: SessionStore
     
-    var likeCount: Int {
+    private var likeCount: Int {
         return post.likes.count
     }
     
-    var timestamp: String {
+    private var timestamp: String {
         guard let time = post.createdAt else {
             return "0 seconds ago"
         }
@@ -371,7 +372,7 @@ struct PostFooter: View {
         return true
     }
     
-    func like() async {
+    private func like() async {
         guard let id = post.id,
             let user = session.user,
             let uuid = user.uuid else {
@@ -387,18 +388,16 @@ struct PostFooter: View {
         post.likes.append(like)
     }
     
-    func removeLike() async {
+    private func removeLike() async {
         guard let id = post.id,
                 let user = session.user, let uuid = user.uuid,
               let like = post.likes.first(where: {$0.uuid == uuid }),
-              let lID = like.id else {
+              let likeID = like.id,
+              await session.postObserver.deleteLike(id: id, likeID: likeID) else {
             return
         }
-        let resp = await session.postObserver.deleteLike(id: id, likeID: lID)
-        if resp {
-            post.likes.removeAll(where: {$0.uuid == like.uuid}) // i would use id instead but this is also more sure
-            isLiked = false
-        }
+        post.likes.removeAll(where: {$0.uuid == like.uuid})
+        isLiked = false
     }
     
     var body: some View {
@@ -465,7 +464,7 @@ struct PostFooter: View {
             
             Rectangle()
                 .frame(height: 1)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color.background)
         }
     }
 }
