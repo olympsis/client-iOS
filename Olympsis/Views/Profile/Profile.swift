@@ -24,18 +24,21 @@ struct Profile: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    ProfileModel(userData: $session.user)
-                        .padding(.top, 20)
-                        .padding(.leading)
                     
-                    // Edit profile button
+                    // MARK: - Profile View
+                    ProfileModel()
+                        .padding(.top, 20)
+                        .padding(.horizontal)
+                        .environmentObject(session)
+                    
+                    // MARK: - Profile Button
                     EditProfileButton()
                         .padding(.bottom, 30)
                     
-                    // Badges View
+                    // MARK: - Badges View
                     BadgesView()
                     
-                    // Trophies View
+                    // MARK: - Trophies View
                     TrophiesView()
                     
                 }
@@ -52,12 +55,7 @@ struct Profile: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
                             Image(systemName: "slider.horizontal.3")
-                                .foregroundStyle(Color("foreground"))
-                                .overlay {
-                                    if session.invitations.count > 0 {
-                                        NotificationCountView(value: $session.invitations.count)
-                                    }
-                                }
+                                .foregroundStyle(Color.foreground)
                         }
                     }
                 }

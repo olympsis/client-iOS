@@ -6,21 +6,22 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ProfileModel: View {
     
-    @Binding var userData: UserData?
+    @EnvironmentObject private var session: SessionStore
     
-    var imageURL: String {
-        guard let user = userData,
+    var imageURL: URL? {
+        guard let user = session.user,
               let image = user.imageURL else {
-            return ""
+            return nil
         }
-        return image
+        return generateImageURL(image)
     }
     
     var firstName: String {
-        guard let user = userData,
+        guard let user = session.user,
               let name = user.firstName else {
             return "Olympsis"
         }
@@ -28,7 +29,7 @@ struct ProfileModel: View {
     }
     
     var lastName: String {
-        guard let user = userData,
+        guard let user = session.user,
               let name = user.lastName else {
             return "User"
         }
@@ -36,7 +37,7 @@ struct ProfileModel: View {
     }
     
     var bio: String {
-        guard let user = userData,
+        guard let user = session.user,
               let bio = user.bio else {
             return ""
         }
@@ -46,46 +47,38 @@ struct ProfileModel: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                if imageURL != "" {
-                    AsyncImage(url: URL(string: GenerateImageURL(imageURL))){ phase in
-                        if let image = phase.image {
-                                image // Displays the loaded image.
-                                    .resizable()
-                                    .clipShape(Circle())
-                                    .scaledToFill()
-                                    .clipped()
-                            } else if phase.error != nil {
-                                ZStack {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .frame(width: 35, height: 35)
-                                        .foregroundColor(.red)
-                                    Color("background") // Acts as a placeholder.
-                                        .clipShape(Circle())
-                                        .opacity(0.3)
+                if let imageURL {
+                    KFImage(imageURL)
+                        .placeholder({
+                            Circle()
+                                .foregroundStyle(Color.background)
+                                .overlay {
+                                    ProgressView()
                                 }
-                            }
-                    }.frame(width: 100, height: 100)
+                        })
+                        .resizable()
+                        .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
+                        .frame(width: 100, height: 100)
                 } else {
-                    ZStack {
-                        Circle() // Acts as a placeholder.
-                            .foregroundStyle(Color("background"))
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .frame(width: 35, height: 35)
-                            .foregroundStyle(Color("foreground"))
-                    }.frame(width: 100, height: 100)
+                    Circle()
+                        .foregroundStyle(Color.background)
+                        .overlay {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .foregroundStyle(Color.foreground)
+                        }
+                        .frame(width: 100, height: 100)
                 }
                 
                 VStack(alignment: .leading){
                     HStack(){
                         Text(firstName)
-                            .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
-                            .bold()
-                        
+                            .font(.system(size: 30))
+                            .fontWeight(.black)
                         Text(lastName)
-                            .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
-                            .bold()
+                            .font(.system(size: 30))
+                            .fontWeight(.black)
                     }.frame(height: 30)
                 }.padding(.leading)
             }
@@ -96,8 +89,7 @@ struct ProfileModel: View {
     }
 }
 
-struct ProfileModel_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileModel(userData: .constant(UserData(firstName: "John", lastName: "Doe")))
-    }
+#Preview {
+    ProfileModel()
+        .environmentObject(SessionStore())
 }
