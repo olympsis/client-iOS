@@ -105,7 +105,8 @@ struct NewClub: View {
                                 }
                                 
                         }
-                    }.overlay(alignment: .topTrailing) {
+                    }
+                    .overlay(alignment: .topTrailing) {
                         Image(systemName: "pencil.circle.fill")
                             .padding(.all, 5)
                             .foregroundStyle(Color("background"))
@@ -167,37 +168,56 @@ struct NewClub: View {
                     }
                 }.frame(height: 250)
                 
-                VStack (alignment: .leading){
-                    Text("Club Name:")
-                        .font(.title3)
-                        .bold()
-                    Text("What your club will be known by")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color("background"))
-                    TextField("", text: $viewModel.clubName)
-                        .padding(.leading)
-                }.frame(height: 40)
-                VStack(alignment: .leading){
-                    Text("Description:")
-                        .font(.title3)
-                        .bold()
-                        .padding(.top)
-                    Text("What your club is about?")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                // MARK: - Name
+                Group {
+                    VStack (alignment: .leading){
+                        Text("Club Name:")
+                            .font(.title3)
+                            .bold()
+                        Text("What your club will be known by")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        TextField("", text: $viewModel.clubName)
+                            .padding(.leading)
+                            .frame(height: 40)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color("background"))
+                            }
+                        Text("*required")
+                            .foregroundStyle(.gray)
+                    }
                 }
                 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color("background"))
-                    TextEditor(text: $viewModel.description)
-                        .scrollContentBackground(.hidden)
-                    .frame(height: 200)
+                // MARK: - Description
+                Group {
+                    VStack(alignment: .leading){
+                        Text("Description:")
+                            .font(.title3)
+                            .bold()
+                            .padding(.top)
+                        Text("What your club is about?")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        TextEditor(text: $viewModel.description)
+                            .scrollContentBackground(.hidden)
+                            .frame(height: 200)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color("background"))
+                            }
+                        
+                        Text("*required")
+                            .foregroundStyle(.gray)
+                    }
                 }
+                
                 
                 // MARK: - Sports picker
                 VStack(alignment: .leading){
@@ -210,32 +230,36 @@ struct NewClub: View {
                             .foregroundColor(.gray)
                     }
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
-                            .frame(height: 40)
-                        Button(action: {
-                            viewModel.showSportsPicker.toggle()
-                        }) {
-                            if !viewModel.selectedSports.isEmpty {
-                                ScrollView(.horizontal) {
-                                    HStack(alignment: .center) {
-                                        ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
-                                            Text(sport)
-                                                .foregroundStyle(.white)
-                                                .padding(.horizontal, 10)
-                                                .padding(.vertical, 5)
-                                                .background {
-                                                    RoundedRectangle(cornerRadius: 10)
-                                                        .foregroundStyle(Color("color-prime"))
-                                                }
+                    VStack(alignment: .leading) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color("background"))
+                                .frame(height: 40)
+                            Button(action: {
+                                viewModel.showSportsPicker.toggle()
+                            }) {
+                                if !viewModel.selectedSports.isEmpty {
+                                    ScrollView(.horizontal) {
+                                        HStack(alignment: .center) {
+                                            ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
+                                                Text(sport)
+                                                    .foregroundStyle(.white)
+                                                    .padding(.horizontal, 10)
+                                                    .padding(.vertical, 5)
+                                                    .background {
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(Color("color-prime"))
+                                                    }
+                                            }
                                         }
-                                    }
-                                }.scrollIndicators(.never)
-                            } else {
-                                Text("N/A")
+                                    }.scrollIndicators(.never)
+                                } else {
+                                    Text("N/A")
+                                }
                             }
                         }
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                 }
                 .padding(.top)
@@ -244,6 +268,7 @@ struct NewClub: View {
                     MultiSportsPicker(selectedSports: $viewModel.selectedSports)
                 })
                 
+                // MARK: - Hometown picker
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         Text("Hometown")
@@ -253,17 +278,23 @@ struct NewClub: View {
                                 .foregroundStyle(.gray)
                         }.foregroundStyle(.gray)
                     }
-                    Button(action: { self.showLocationPicker.toggle() }) {
-                        if (viewModel.latitude == 0 && viewModel.longitude == 0 || viewModel.city == "") {
-                            Text("N/A")
-                        } else {
-                            Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                    
+                    VStack(alignment: .leading) {
+                        Button(action: { self.showLocationPicker.toggle() }) {
+                            if (viewModel.latitude == 0 && viewModel.longitude == 0 || viewModel.city == "") {
+                                Text("N/A")
+                            } else {
+                                Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                            }
                         }
-                    }.frame(maxWidth: .infinity, idealHeight: 40)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 40)
-                            .foregroundColor(Color("background"))
+                        .frame(maxWidth: .infinity, idealHeight: 40)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 40)
+                                .foregroundColor(Color("background"))
+                        }
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                 }
                 .padding(.top)

@@ -182,6 +182,9 @@ struct NewPickUpEvent: View {
                                 EventOrganizerView(organizers: $manager.organizers)
                                     .modifier(InputField())
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
                         .padding(.horizontal)
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
@@ -203,6 +206,9 @@ struct NewPickUpEvent: View {
                                 .focused($titleFocus)
                                 .padding(.leading)
                                 .modifier(InputField())
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
                         .padding(.top)
                         .padding(.horizontal)
@@ -226,6 +232,9 @@ struct NewPickUpEvent: View {
                                     .scrollContentBackground(.hidden)
                                     .padding(.horizontal, 5)
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
                         .padding(.top)
                         .padding(.horizontal)
@@ -255,6 +264,9 @@ struct NewPickUpEvent: View {
                                         }
                                 }
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
                         .padding(.top)
                         .padding(.horizontal)

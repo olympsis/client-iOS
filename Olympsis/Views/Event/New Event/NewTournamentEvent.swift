@@ -194,7 +194,11 @@ struct NewTournamentEvent: View {
                                 EventOrganizerView(organizers: $manager.organizers)
                                     .modifier(InputField())
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
+                        .padding(.bottom)
                         .padding(.horizontal)
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
                             EventOrganizersPickerView(selectedOrganizers: $manager.organizers)
@@ -213,8 +217,12 @@ struct NewTournamentEvent: View {
                             TextField("", text: $manager.title)
                                 .padding(.leading)
                                 .modifier(InputField())
-                        }.padding(.horizontal)
-                            .id(1)
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
+                        }
+                        .padding(.horizontal)
+                        .id(1)
 
                         // MARK: - Description
                         VStack(alignment: .leading){
@@ -234,6 +242,9 @@ struct NewTournamentEvent: View {
                                     .scrollContentBackground(.hidden)
                                     .padding(.horizontal, 5)
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }.padding(.vertical)
                         .padding(.horizontal)
                         .id(2)
@@ -262,6 +273,9 @@ struct NewTournamentEvent: View {
                                         }
                                 }
                             }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
                         }
                         .padding(.top)
                         .padding(.horizontal)

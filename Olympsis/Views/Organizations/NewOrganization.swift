@@ -156,33 +156,50 @@ struct NewOrganization: View {
                         }
                     }.frame(height: 250)
                     
-                    VStack (alignment: .leading){
-                        Text("Organization Name:")
-                            .font(.title3)
-                            .bold()
-                    }
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
-                        TextField("", text: $viewModel.clubName)
-                            .padding(.leading)
-                    }.frame(height: 40)
-                    VStack(alignment: .leading){
-                        Text("Description:")
-                            .font(.title3)
-                            .bold()
-                        .padding(.top)
-                        Text("What is this organization about?")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                    // MARK: - Name
+                    Group {
+                        VStack (alignment: .leading){
+                            Text("Organization Name:")
+                                .font(.title3)
+                                .bold()
+                        }
+                        VStack(alignment: .leading) {
+                            TextField("", text: $viewModel.clubName)
+                                .padding(.leading)
+                                .frame(height: 40)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color("background"))
+                                }
+                            
+                            Text("*required")
+                                .foregroundStyle(.gray)
+                        }
                     }
                     
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
-                        TextEditor(text: $viewModel.description)
-                            .scrollContentBackground(.hidden)
-                        .frame(height: 200)
+                    // MARK: - Description
+                    Group {
+                        VStack(alignment: .leading){
+                            Text("Description:")
+                                .font(.title3)
+                                .bold()
+                            .padding(.top)
+                            Text("What is this organization about?")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            TextEditor(text: $viewModel.description)
+                                .scrollContentBackground(.hidden)
+                                .frame(height: 200)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color("background"))
+                                }
+                            Text("*required")
+                                .foregroundStyle(.gray)
+                        }
                     }
                     
                     // MARK: - Sports picker
@@ -223,6 +240,9 @@ struct NewOrganization: View {
                                 }
                             }
                         }
+                        
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                     .padding(.top)
                     .frame(width: SCREEN_WIDTH-25)
@@ -230,6 +250,7 @@ struct NewOrganization: View {
                         MultiSportsPicker(selectedSports: $viewModel.selectedSports)
                     })
                     
+                    // MARK: - Hometown picker
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
                             Text("Hometown")
@@ -251,6 +272,9 @@ struct NewOrganization: View {
                                 .frame(height: 40)
                                 .foregroundColor(Color("background"))
                         }
+                        
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                     .padding(.top)
                     .fullScreenCover(isPresented: $showLocationPicker, content: {
