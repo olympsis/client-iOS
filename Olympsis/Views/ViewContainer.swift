@@ -64,6 +64,7 @@ struct ViewContainer: View {
             session.state = .loading
             await session.CheckIn()
             guard let user = session.user else {
+                await session.logout()
                 return
             }
             
