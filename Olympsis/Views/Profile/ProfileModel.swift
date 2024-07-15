@@ -10,6 +10,7 @@ import Kingfisher
 
 struct ProfileModel: View {
     
+    @State private var imageFailed: Bool = false
     @EnvironmentObject private var session: SessionStore
     
     var imageURL: URL? {
@@ -47,30 +48,34 @@ struct ProfileModel: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                if let imageURL {
-                    KFImage(imageURL)
-                        .placeholder({
+                KFImage(imageURL)
+                    .placeholder({
+                        Circle()
+                            .foregroundStyle(Color.background)
+                            .overlay {
+                                ProgressView()
+                            }
+                    })
+                    .onFailure({ _ in
+                        imageFailed = true
+                    })
+                    .resizable()
+                    .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
+                    .overlay {
+                        if imageFailed {
                             Circle()
+                                .frame(width: 100, height: 100)
                                 .foregroundStyle(Color.background)
                                 .overlay {
-                                    ProgressView()
+                                    Image(systemName: "person.fill")
+                                        .resizable()
+                                        .frame(width: 35, height: 35)
+                                        .foregroundStyle(Color.foreground)
                                 }
-                        })
-                        .resizable()
-                        .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                } else {
-                    Circle()
-                        .foregroundStyle(Color.background)
-                        .overlay {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .frame(width: 35, height: 35)
-                                .foregroundStyle(Color.foreground)
                         }
-                        .frame(width: 100, height: 100)
-                }
+                    }
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
                 
                 VStack(alignment: .leading){
                     HStack(){

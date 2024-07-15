@@ -64,10 +64,20 @@ class SessionStore: ObservableObject {
      App lifetime data
      Whenever set, this is cached in app until changed or app is removed
      */
-    @AppStorage("searchRadius") var radius: Double? // search radius for fields/events in meters
+    
+    /// App mode to keep track on wether the user is paid/free
+    @AppStorage("app_mode") var appMode: APP_MODE = .free
+    
+    /// App state to keep track of normal/developer mode
+    @AppStorage("app_state") var appState: APP_STATE = .normal
+    
+    /// Keeps track of the user's search radius for venues and events
+    @AppStorage("searchRadius") var radius: Double?
+    
     @AppStorage("deviceToken") private var _token: String?
     @AppStorage("auth_type") private var authType: USER_STATUS?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
+
     
     private var isRegisterComplete: Bool {
         

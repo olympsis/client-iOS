@@ -332,3 +332,14 @@ enum SHARING_VENUE_POSITION {
     case bottom_leading
     case bottom_trailing
 }
+
+enum APP_MODE: Int, CaseIterable {
+    case free = 0
+    case premium = 1
+}
+
+enum APP_STATE: Int, CaseIterable {
+    case normal = 0
+    case developer = 1
+    case suspended = 2
+}

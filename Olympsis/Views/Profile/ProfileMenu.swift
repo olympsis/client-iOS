@@ -10,9 +10,22 @@ import FirebaseAuth
 
 struct ProfileMenu: View {
     
+    @State private var tapCount: Int = 0
     @State private var showDeleteView: Bool = false
-    @EnvironmentObject var session:SessionStore
+    
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session:SessionStore
+    
+    @AppStorage("app_mode") private var appMode: APP_MODE?
+    @AppStorage("app_state") private var appState: APP_STATE?
+    
+    private var appVersion: String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return "0.0"
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -42,8 +55,10 @@ struct ProfileMenu: View {
                         MenuLabel(icon: Image(systemName: "info.circle.fill"), text: "About Us")
                     }
                     
-                    NavigationLink(destination: LogViewer()) {
-                        MenuLabel(icon: Image(systemName: "text.word.spacing"), text: "Logs")
+                    if (appState != nil) && appState == .developer {
+                        NavigationLink(destination: LogViewer()) {
+                            MenuLabel(icon: Image(systemName: "text.word.spacing"), text: "Logs")
+                        }
                     }
                     
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
@@ -56,7 +71,24 @@ struct ProfileMenu: View {
                     MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
                         self.showDeleteView.toggle()
                     }, type: .destructive)
+                 
+                    Spacer(minLength: 80)
                     
+                    VStack {
+                        Text("version")
+                        Text(appVersion)
+                    }
+                    .font(.callout)
+                    .foregroundStyle(.gray)
+                    .onTapGesture {
+                        tapCount += 1
+                        if tapCount == 7 {
+                            withAnimation {
+                                appState = .developer
+                                tapCount = 0
+                            }
+                        }
+                    }
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {

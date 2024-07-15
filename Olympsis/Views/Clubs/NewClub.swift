@@ -15,8 +15,9 @@ struct NewClub: View {
     
     @StateObject private var viewModel = GroupEditorViewModel()
     
-    @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
+    
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "create_new_club_view")
     
@@ -24,6 +25,7 @@ struct NewClub: View {
     func CreateClub() async {
         // generate DTO
         guard let dto = await viewModel.createClubDTO() else {
+            log.error("Failed to create club dto")
             return
         }
         
