@@ -47,6 +47,10 @@ struct ProfileMenu: View {
                         MenuLabel(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
                     }
 
+                    NavigationLink(destination: TermsOfUse()) {
+                        MenuLabel(icon: Image(systemName: "text.viewfinder"), text: "Terms of Use")
+                    }
+                    
                     NavigationLink(destination: PrivacyPolicy()) {
                         MenuLabel(icon: Image(systemName: "lock.fill"), text: "Privacy Policy")
                     }
