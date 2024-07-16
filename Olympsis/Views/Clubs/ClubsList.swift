@@ -25,6 +25,14 @@ struct ClubsList: View {
     private var geoCoder = CLGeocoder()
     private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
     
+    var acceptedEULA: Bool {
+        guard let user = session.user,
+              let hasAccepted = user.acceptedEULA else {
+            return false
+        }
+        return hasAccepted
+    }
+    
     private var fallbackLocation: CLLocation {
         guard let user = session.user, let hometown = user.hometown else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
@@ -89,7 +97,13 @@ struct ClubsList: View {
                                 Text("No clubs found. Broaden your search or...")
                                     .font(.caption)
                                     .padding(.top, 50)
-                                Button(action:{ self.showNewClub.toggle() }){
+                                Button(action:{
+                                    guard acceptedEULA else {
+                                        self.showEULA.toggle()
+                                        return
+                                    }
+                                    self.showNewClub.toggle()
+                                }){
                                     Text("Create One?")
                                         .font(.caption)
                                 }
