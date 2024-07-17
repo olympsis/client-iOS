@@ -29,11 +29,11 @@ struct BlockedUsersList: View {
             blockedList.removeAll(where: { $0 == uuid })
             let dto = UserDao(blockedUsers: blockedList)
             
-            let resp = await session.userObserver.UpdateUserData(update: dto)
-            if resp {
-                session.user?.blockedUsers = blockedList
-                blockedUsers.removeAll(where: { $0.uuid == uuid })
+            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+                return
             }
+            session.user = resp
+            blockedUsers.removeAll(where: { $0.uuid == uuid })
         }
     }
     

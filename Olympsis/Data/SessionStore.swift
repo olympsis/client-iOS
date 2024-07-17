@@ -429,6 +429,7 @@ class SessionStore: ObservableObject {
         return
     }
     
+    
     /// Deletes the user's account from application
     ///
     /// Makes a call to firebase servers to delete account.
@@ -438,17 +439,39 @@ class SessionStore: ObservableObject {
     /// Clears cache of all data
     func deleteAccount() async -> Bool {
         do {
-            try await Auth.auth().currentUser?.delete()
-            let resp = try await authObserver.deleteAccount()
-            
-            guard resp == true else {
+            guard let user = Auth.auth().currentUser else { return false }
+            let signInWithApple = SignInWithApple()
+            let appleIDCredential = try await signInWithApple()
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                log.error("Unable to fetdch identify token.")
                 return false
             }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                log.error("Unable to serialise token string from data: \(appleIDToken.debugDescription)")
+                return false
+            }
+            
+            let nonce = randomNonceString()
+                    let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                              idToken: idTokenString,
+                                                              rawNonce: nonce)
+            try await user.reauthenticate(with: credential)
+            
+            guard let authorizationCode = appleIDCredential.authorizationCode else { return false }
+            guard let authCodeString = String(data: authorizationCode, encoding: .utf8) else { return false }
+
+            guard try await authObserver.deleteAccount() else { return false }
+            
+            try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
+            
+            try await user.delete()
+
+            authStatus = .unauthenticated
+            
             // clear cached app data
             cacheService.clearCache()
-            
-            // clear secure store
             secureStore.clearKeyChain()
+            
             return true
         } catch {
             log.error("Failed to delete user account: \(error)")

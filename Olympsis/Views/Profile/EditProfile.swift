@@ -73,22 +73,13 @@ struct EditProfile: View {
             }
             
             let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
-            let res = await userObserver.UpdateUserData(update: update)
-            
-            guard res == true else {
+            guard let res = await userObserver.UpdateUserData(update: update) else {
                 status = .failure
                 return
             }
             
-            session.user?.bio = bio
-            session.user?.visibility = visibility
-            session.user?.sports = Array(selectedSports)
-            session.user?.hometown = [latitude, longitude]
-            guard let usr = session.user else {
-                status = .success
-                return
-            }
-            cacheService.cacheUser(user: usr)
+            session.user = res
+            cacheService.cacheUser(user: res)
             status = .success
             return
         }
@@ -116,23 +107,13 @@ struct EditProfile: View {
         
         // update user data
         let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
-        let resp = await userObserver.UpdateUserData(update: update)
-        
-        guard resp == true else {
+        guard let resp = await userObserver.UpdateUserData(update: update) else {
             status = .failure
             return
         }
         
-        session.user?.bio = bio
-        session.user?.visibility = visibility
-        session.user?.sports = Array(selectedSports)
-        session.user?.imageURL = imageURL
-        session.user?.hometown = [latitude, longitude]
-        guard let usr = session.user else {
-            status = .success
-            return
-        }
-        cacheService.cacheUser(user: usr)
+        session.user = resp
+        cacheService.cacheUser(user: resp)
         status = .success
     }
     

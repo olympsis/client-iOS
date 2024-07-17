@@ -204,8 +204,17 @@ struct ClubMenu: View {
                                 Task { // Perform delete operation
                                     _ = await session.clubObserver.leaveClub(id: club.id)
                                     session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                    session.selectedGroup = session.groups.first
-                                    dismiss()
+                                    
+                                    session.clubsState = .loading
+                                    session.selectedGroup = nil
+                                    if let next = session.groups.first {
+                                        session.selectedGroup = next
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        session.clubsState = .success
+                                        dismiss()
+                                    }
                                 }
                             })
                         );
@@ -219,8 +228,17 @@ struct ClubMenu: View {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.deleteClub(id: club.id)
                                 session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                session.selectedGroup = session.groups.first
-                                dismiss()
+                                
+                                session.clubsState = .loading
+                                session.selectedGroup = nil
+                                if let next = session.groups.first {
+                                    session.selectedGroup = next
+                                }
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    session.clubsState = .success
+                                    dismiss()
+                                }
                             }
                         })
                     );

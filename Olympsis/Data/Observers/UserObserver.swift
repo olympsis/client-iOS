@@ -56,14 +56,17 @@ class UserObserver: ObservableObject {
     }
     
     // have this return a bool if status 200
-    func UpdateUserData(update: UserDao) async -> Bool {
+    func UpdateUserData(update: UserDao) async -> UserData? {
         do {
-            _ = try await userService.UpdateUserData(update: update)
-            return true
+            let (data, resp) = try await userService.UpdateUserData(update: update)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return nil
+            }
+            let object = try decoder.decode(UserData.self, from: data)
+            return object
         } catch {
-            print(error)
+            return nil
         }
-        return false
     }
     
     func SearchUsersByUsername(username: String) async throws -> [UserData] {

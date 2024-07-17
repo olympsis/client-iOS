@@ -78,7 +78,7 @@ struct UserDataCreation: View {
         }
     }
     
-    func createUserData() async {
+    func updateUserData() async {
         guard uStatus == .available else {
             handleFailure()
             return
@@ -86,18 +86,14 @@ struct UserDataCreation: View {
         
         continueStatus = .loading
         let sports = selectedSports.map({ return $0.rawValue })
-        do {
-            guard let data = try await userObserver.createUserData(username: viewModel.debouncedSearchText, sports: sports) else {
-                handleFailure()
-                return
-            }
-            cacheService.cacheUser(user: data)
-            handleSuccess()
-        } catch {
-            log.error("Failed to create user: \(error.localizedDescription)")
+        let dto = UserDao(username: viewModel.debouncedSearchText, sports: sports)
+        guard let data = await userObserver.UpdateUserData(update: dto) else {
+            log.error("Failed to update user")
             handleFailure()
             return
         }
+        cacheService.cacheUser(user: data)
+        handleSuccess()
     }
     
     /// Checks the backend to see if the username is available
@@ -276,7 +272,7 @@ struct UserDataCreation: View {
             Spacer()
             
             // action button
-            Button(action: { Task { await createUserData() } }){
+            Button(action: { Task { await updateUserData() } }){
                 LoadingButton(text: "Continue", status: $continueStatus)
             }
             .padding(.bottom)

@@ -10,8 +10,15 @@ import FirebaseAuth
 
 struct ProfileMenu: View {
     
+    enum AlertType {
+        case logout
+        case deletion
+    }
+    
     @State private var tapCount: Int = 0
+    @State private var showAlert: Bool = false
     @State private var showDeleteView: Bool = false
+    @State private var alertType: AlertType = .logout
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session:SessionStore
@@ -66,14 +73,13 @@ struct ProfileMenu: View {
                     }
                     
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
-                        Task {
-                            await session.logout()
-                            dismiss()
-                        }
+                        alertType = .logout
+                        self.showAlert.toggle()
                     }, type: .destructive)
                     
                     MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
-                        self.showDeleteView.toggle()
+                        alertType = .deletion
+                        self.showAlert.toggle()
                     }, type: .destructive)
                  
                     Spacer(minLength: 80)
@@ -105,8 +111,31 @@ struct ProfileMenu: View {
                 .navigationTitle("Settings")
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
-                .fullScreenCover(isPresented: $showDeleteView, onDismiss: { dismiss() }) {
-                    AccountDeleteSignin()
+            }
+            .alert(isPresented: $showAlert) {
+                switch alertType {
+                case .logout:
+                    return Alert(
+                        title: Text("Logging out?"),
+                        message: Text("Are you sure you want to logout?"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text("Logout"), action: {
+                            Task {
+                                await session.logout()
+                            }
+                        })
+                    );
+                case .deletion:
+                    return Alert(
+                        title: Text("Are you sure?"),
+                        message: Text("Deletin your account means that you will loose all of your info on Olympsis"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text("Delete"), action: {
+                            Task {
+                                await session.deleteAccount()
+                            }
+                        })
+                    );
                 }
             }
         }

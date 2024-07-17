@@ -57,11 +57,10 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
-    func UpdateUserData(update: UserDao) async throws -> URLResponse {
+    func UpdateUserData(update: UserDao) async throws -> (Data,URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/users/user", queryItems: [URLQueryItem]())
-        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: ["Authorization": token ?? ""])
-        return resp
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: ["Authorization": token ?? ""])
     }
     
     func SearchUsersByUsername(username: String) async throws -> (Data, URLResponse) {
