@@ -13,7 +13,7 @@ struct LaunchScreen: View {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
         } else {
-            return "Version not available"
+            return "0.0"
         }
     }
     
