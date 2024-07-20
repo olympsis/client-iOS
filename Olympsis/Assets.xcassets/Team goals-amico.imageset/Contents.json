@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "Team goals-amico.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Team goals-amico.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
