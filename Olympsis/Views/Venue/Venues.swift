@@ -38,8 +38,13 @@ struct Venues: View {
                             HStack {
                                 Spacer()
                                 Button(action: { self.showRequestLocation.toggle() }) {
-                                    Image(systemName: "location.slash")
-                                        .foregroundStyle(.gray)
+                                    VStack(alignment: .center) {
+                                        Image(systemName: "location.slash")
+                                            .foregroundStyle(.gray)
+                                        Text("Click to share location")
+                                            .font(.caption)
+                                            .foregroundStyle(.gray)
+                                    }
                                 }
                                 Spacer()
                             }.padding(.top)
