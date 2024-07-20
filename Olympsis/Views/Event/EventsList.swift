@@ -74,6 +74,7 @@ struct EventsList: View {
                                 EventListItem(event: event)
                             }
                         }
+                        .id(group.timestamp)
                     }
                 }.listStyle(.plain)
             }.toolbar {
@@ -85,7 +86,8 @@ struct EventsList: View {
                 }
 //  Tempoarily turned off need better UX
 //                ToolbarItem(placement: .navigationBarTrailing) {
-//                    DatePicker("", selection: $selectedDate, in: Date()..., displayedComponents: .date).datePickerStyle(.compact)
+//                    DatePicker("", selection: $selectedDate, in: Date()..., displayedComponents: .date)
+//                        .datePickerStyle(.compact)
 //                }
             }
             .navigationTitle("Events")
@@ -94,9 +96,7 @@ struct EventsList: View {
     }
 }
 
-struct EventsList_Previews: PreviewProvider {
-    static var previews: some View {
-        EventsList(events: EVENTS)
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    EventsList(events: EVENTS)
+        .environmentObject(SessionStore())
 }

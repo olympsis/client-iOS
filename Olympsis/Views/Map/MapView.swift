@@ -10,6 +10,8 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
+
+
 /// Map view to see fields
 struct MapView: View {
     
@@ -58,9 +60,7 @@ struct MapView: View {
                         }
                 }
             }
-            
             UserAnnotation()
-            
         }
         .ignoresSafeArea(edges: .all)
         .mapStyle(.standard(elevation: .realistic))
@@ -110,18 +110,28 @@ struct MapView: View {
                     }.frame(width: 41)
                     
                     Button(action:{ self.showBottomSheet.toggle() }){
-                        ZStack {
-                            Circle()
-                                .tint(Color("color-secnd"))
-                            Image(systemName: "line.3.horizontal.decrease")
-                                .imageScale(.large)
-                                .symbolRenderingMode(.palette)
-                                .foregroundColor(.white)
-                        }
-                    }.frame(width: 41)
-                        .padding(.top, 2)
-                }.padding(.horizontal)
-                    .padding(.top, -12)
+                        Circle()
+                            .tint(Color("color-secnd"))
+                            .overlay {
+                                Image(systemName: "line.3.horizontal.decrease")
+                                    .imageScale(.large)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundColor(.white)
+                                    
+                            }
+                            .overlay(alignment: .topTrailing) {
+                                if session.events.count > 0 {
+                                    Circle()
+                                        .foregroundStyle(.red)
+                                        .frame(width: 15, height: 15)
+                                }
+                            }
+                    }
+                    .frame(width: 41)
+                    .padding(.top, 2)
+                }
+                .padding(.horizontal)
+                .padding(.top, -12)
             }
         }.sheet(item: $selectedField) { field in
             VenueView(venue: field)
@@ -149,8 +159,8 @@ struct MapView: View {
     }
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView().environmentObject(SessionStore())
-    }
+#Preview {
+    let session = SessionStore()
+    return MapView()
+        .environmentObject(session)
 }

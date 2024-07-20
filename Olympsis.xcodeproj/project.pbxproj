@@ -172,6 +172,7 @@
 		5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
+		5DDCB9702C4C063F00AE6C7A /* EventsAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
 		5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6F2C41095600793FEB /* Events.xcstrings */; };
@@ -343,7 +344,6 @@
 		9AECDA4829545242007956FB /* LookUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4729545242007956FB /* LookUp.swift */; };
 		9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA492954528A007956FB /* FriendRequestsView.swift */; };
 		9AECDA4C295452BB007956FB /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4B295452BB007956FB /* People.swift */; };
-		9AF0A1B7293091D80055D1F6 /* PlaceAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1B6293091D80055D1F6 /* PlaceAnnotationView.swift */; };
 		9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1B829313D430055D1F6 /* PostService.swift */; };
 		9AF0A1BB29313E350055D1F6 /* PostObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0A1BA29313E350055D1F6 /* PostObserver.swift */; };
 		BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FC29E279C9008EA591 /* EncodeToData.swift */; };
@@ -537,6 +537,7 @@
 		5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
 		5DDD5E6F2C41095600793FEB /* Events.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Events.xcstrings; sourceTree = "<group>"; };
@@ -709,7 +710,6 @@
 		9AECDA4729545242007956FB /* LookUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUp.swift; sourceTree = "<group>"; };
 		9AECDA492954528A007956FB /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		9AECDA4B295452BB007956FB /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
-		9AF0A1B6293091D80055D1F6 /* PlaceAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotationView.swift; sourceTree = "<group>"; };
 		9AF0A1B829313D430055D1F6 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		9AF0A1BA29313E350055D1F6 /* PostObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostObserver.swift; sourceTree = "<group>"; };
 		BE9C45FC29E279C9008EA591 /* EncodeToData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeToData.swift; sourceTree = "<group>"; };
@@ -1134,6 +1134,7 @@
 				5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */,
 				5D2DEFC72B280E850082FE73 /* VenueInfo.swift */,
 				5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */,
+				5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -1494,7 +1495,6 @@
 			isa = PBXGroup;
 			children = (
 				9AB02F5829024D24008C07F1 /* MapView.swift */,
-				9AF0A1B6293091D80055D1F6 /* PlaceAnnotationView.swift */,
 				9AA5F618294DCBF700219B95 /* MapOptions.swift */,
 			);
 			path = Map;
@@ -1996,6 +1996,7 @@
 				5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
 				5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */,
+				5DDCB9702C4C063F00AE6C7A /* EventsAnnotation.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
 				5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */,
@@ -2031,7 +2032,6 @@
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,
 				5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */,
 				5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */,
-				9AF0A1B7293091D80055D1F6 /* PlaceAnnotationView.swift in Sources */,
 				5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */,
 				5D18BD182B391D9000F90777 /* GenericModels.swift in Sources */,
 				5D18BD142B38E66A00F90777 /* OrgManagerInvite.swift in Sources */,

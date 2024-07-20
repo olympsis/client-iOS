@@ -68,15 +68,16 @@ struct EventsModalView: View {
                     .font(.system(.headline))
                 
                 Spacer()
-//  Turned off tempoarily for better UX
-//                Button(action:{ self.showMore.toggle() }){
-//                    HStack {
-//                        Text("More")
-//                            .bold()
-//                        Image(systemName: "chevron.down")
-//                    }.padding(.trailing)
-//                }.foregroundColor(.primary)
+
+                Button(action:{ self.showMore.toggle() }){
+                    HStack {
+                        Text("More")
+                            .bold()
+                        Image(systemName: "chevron.down")
+                    }.padding(.trailing)
+                }.foregroundColor(.primary)
             }.padding()
+            
             List {
                 ForEach(eventsGrouped, id: \.id) { group in
                     Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
@@ -85,17 +86,19 @@ struct EventsModalView: View {
                         }
                     }
                 }
-            }.listStyle(.plain)
-                .padding(.top, -20)
+            }
+            .listStyle(.plain)
+            .padding(.top, -20)
             .fullScreenCover(isPresented: $showMore) {
                 EventsList(events: session.events)
             }
-        }
+        }.presentationDragIndicator(.visible)
     }
 }
 
-struct EventsModalView_Previews: PreviewProvider {
-    static var previews: some View {
-        EventsModalView(events: .constant(EVENTS)).environmentObject(SessionStore())
-    }
+#Preview {
+    let session = SessionStore()
+    session.events = EVENTS
+    return EventsModalView(events: .constant(EVENTS))
+        .environmentObject(session)
 }
