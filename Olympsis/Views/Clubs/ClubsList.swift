@@ -108,7 +108,7 @@ struct ClubsList: View {
                                         .font(.caption)
                                 }
                             } else {
-                                ForEach(filteredClubs, id: \.id){ club in
+                                ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.contains(text) }, id: \.id){ club in
                                     ClubListItem(club: club, showToast: $showCompletedApplicationToast)
                                         .clipShape(Rectangle())
                                 }
