@@ -167,12 +167,8 @@ struct Activity: View {
                     .padding(.vertical)
                     .padding(.horizontal, 20)
                     
-                    Button(action: {}) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 100)
-                            .overlay {
-                                
-                            }
+                    StartActivityButton(.running) {
+                        
                     }
                     
                     HStack {
@@ -209,6 +205,7 @@ struct Activity: View {
                             .padding(.all)
                             .foregroundStyle(.gray)
                         
+                        StartActivityButton(.running) {}
                         
                         HStack {
                             Text("Activities")
@@ -232,7 +229,9 @@ struct Activity: View {
                         ForEach(0..<5, id: \.self) { _ in
                             WorkoutListItemTemplate()
                         }
-                    }.redacted(reason: .placeholder)
+                    }
+                    .disabled(true)
+                    .redacted(reason: .placeholder)
                 case .failure:
                     Text("😭")
                     Text("Failed to get workouts")
