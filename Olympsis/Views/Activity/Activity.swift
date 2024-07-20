@@ -167,6 +167,14 @@ struct Activity: View {
                     .padding(.vertical)
                     .padding(.horizontal, 20)
                     
+                    Button(action: {}) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 100)
+                            .overlay {
+                                
+                            }
+                    }
+                    
                     HStack {
                         Text("Activities")
                             .font(.system(.headline))
@@ -178,7 +186,7 @@ struct Activity: View {
                             WorkoutsList(title: "Workouts")
                         } label: {
                             Text("View All")
-                               .bold()
+                                .bold()
                             Image(systemName: "chevron.down")
                         }
                         .padding()
@@ -212,13 +220,13 @@ struct Activity: View {
                                 WorkoutsList(title: "Workouts")
                             } label: {
                                 Text("View All")
-                                   .bold()
+                                    .bold()
                                 Image(systemName: "chevron.down")
                             }
                             .padding()
                             .disabled(true)
                             .foregroundColor(Color.primary)
-
+                            
                         }
                         
                         ForEach(0..<5, id: \.self) { _ in
