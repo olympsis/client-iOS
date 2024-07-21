@@ -1529,6 +1529,30 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		5DB63DA22C4DADB100F815DE /* Soccer */ = {
+			isa = PBXGroup;
+			children = (
+				5DB63DA32C4DADBC00F815DE /* SoccerMetrics.swift */,
+			);
+			path = Soccer;
+			sourceTree = "<group>";
+		};
+		5DB63DBB2C4DB71400F815DE /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5FA350572A6737AF00669B2C /* Enums.swift */,
+				5DB63DBC2C4DB72700F815DE /* Components */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5DB63DBC2C4DB72700F815DE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		5DBA3AEF2B9404AC00B67CFB /* Management */ = {
 			isa = PBXGroup;
 			children = (
@@ -1811,6 +1835,8 @@
 				5DDCB9A72C4C4C5D00AE6C7A /* Components */,
 				5DDCB97A2C4C487500AE6C7A /* Olympsis_WatchkitApp.swift */,
 				5DDCB97E2C4C487600AE6C7A /* Assets.xcassets */,
+				5DE988F02C4CCBD900C594F8 /* OlympsisWatchkit.entitlements */,
+				5DE988F12C4CCBEB00C594F8 /* OlympsisWatchkit-Info.plist */,
 				5DDCB9802C4C487600AE6C7A /* Preview Content */,
 			);
 			path = "Olympsis-Watchkit";
@@ -1847,6 +1873,9 @@
 				5DB03C3D2C4CB2890083C943 /* EllaspsedTimeView.swift */,
 				5DB03C482C4CBFAE0083C943 /* ActivityRingsView.swift */,
 				5DE988F62C4CD35F00C594F8 /* ActivityGoalButton.swift */,
+				5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */,
+				5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */,
+				5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2120,8 +2149,7 @@
 		9A8FF0A428BB14BF00DE4CF8 = {
 			isa = PBXGroup;
 			children = (
-				5DE988F12C4CCBEB00C594F8 /* OlympsisWatchkit-Info.plist */,
-				5DE988F02C4CCBD900C594F8 /* OlympsisWatchkit.entitlements */,
+				5DB63DBB2C4DB71400F815DE /* Shared */,
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DC8B4802E05CE6C008C9052 /* Olympsis-Watchkit */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
@@ -3052,6 +3080,7 @@
 				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
 				5D204B5C2DA2D19000B67F5D /* EventError.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
+				5DB63DA42C4DADBC00F815DE /* SoccerMetrics.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activities.swift in Sources */,
 				5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */,
@@ -3122,7 +3151,6 @@
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
-				5DD834022C3A612F00DD4691 /* RunningMetrics.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
 				5D0CCB242E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */,
 				5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */,
@@ -3153,7 +3181,9 @@
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
+				5DB63DB32C4DB17800F815DE /* RunningMetricsView.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
+				5DB63DB82C4DB5EA00F815DE /* RunningMetrics.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */,
 				5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */,
@@ -3422,7 +3452,6 @@
 				5D78BDEA2C0D48C000F170D6 /* NewEventImagePicker.swift in Sources */,
 				5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */,
 				5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */,
-				5DDD5E512C3AF58000793FEB /* RunningMetricsView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3517,7 +3546,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OlympsisWatchkit.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3527,7 +3556,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "OlympsisWatchkit-Info.plist";
+				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
@@ -3556,7 +3585,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OlympsisWatchkit.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3566,7 +3595,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "OlympsisWatchkit-Info.plist";
+				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";

@@ -62,9 +62,9 @@ struct RunningMetricsView: View {
             
             Spacer()
             
-            RunningActions(selectedTab: $tab)
-                .padding(.bottom, 20)
-                .environmentObject(manager)
+//            RunningActions(selectedTab: $tab)
+//                .padding(.bottom, 20)
+//                .environmentObject(manager)
         }
     }
 }
