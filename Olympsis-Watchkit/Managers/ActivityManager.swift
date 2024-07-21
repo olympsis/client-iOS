@@ -50,6 +50,8 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
     
     @Published var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
     
+    
+    
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?
     var builder: HKLiveWorkoutBuilder?
@@ -184,6 +186,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
                 if self.unit == UnitLength.kilometers {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
+                    
                 } else {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0
                 }
