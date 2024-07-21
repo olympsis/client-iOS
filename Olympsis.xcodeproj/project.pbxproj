@@ -700,6 +700,27 @@
 			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
 			remoteInfo = Olympsis;
 		};
+		5DDCB9882C4C487600AE6C7A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DDCB9772C4C487500AE6C7A;
+			remoteInfo = "Olympsis-Watchkit Watch App";
+		};
+		5DDCB9922C4C487600AE6C7A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DDCB9772C4C487500AE6C7A;
+			remoteInfo = "Olympsis-Watchkit Watch App";
+		};
+		5DDCB9992C4C487600AE6C7A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DDCB9772C4C487500AE6C7A;
+			remoteInfo = "Olympsis-Watchkit Watch App";
+		};
 /* End PBXContainerItemProxy section */
 /* Begin PBXCopyFilesBuildPhase section */
 		5D17F9C22ADB920400E8B15C /* Embed Watch Content */ = {
@@ -708,6 +729,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				5DDCB99B2C4C487600AE6C7A /* Olympsis.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1264,6 +1286,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DDCB9752C4C487500AE6C7A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DDCB9842C4C487600AE6C7A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DDCB98E2C4C487600AE6C7A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9A8FF0AA28BB14BF00DE4CF8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1759,6 +1802,105 @@
 			path = Running;
 			sourceTree = "<group>";
 		};
+		5DDCB9792C4C487500AE6C7A /* Olympsis-Watchkit */ = {
+			isa = PBXGroup;
+			children = (
+				5DDCB9DC2C4C9C0700AE6C7A /* Data */,
+				5DDCB9DB2C4C9BFF00AE6C7A /* Managers */,
+				5DDCB9C82C4C9B2100AE6C7A /* Views */,
+				5DDCB9A72C4C4C5D00AE6C7A /* Components */,
+				5DDCB97A2C4C487500AE6C7A /* Olympsis_WatchkitApp.swift */,
+				5DDCB97E2C4C487600AE6C7A /* Assets.xcassets */,
+				5DDCB9802C4C487600AE6C7A /* Preview Content */,
+			);
+			path = "Olympsis-Watchkit";
+			sourceTree = "<group>";
+		};
+		5DDCB9802C4C487600AE6C7A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				5DDCB9812C4C487600AE6C7A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5DDCB98A2C4C487600AE6C7A /* Olympsis-Watchkit Watch AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				5DDCB98B2C4C487600AE6C7A /* Olympsis_Watchkit_Watch_AppTests.swift */,
+			);
+			path = "Olympsis-Watchkit Watch AppTests";
+			sourceTree = "<group>";
+		};
+		5DDCB9942C4C487600AE6C7A /* Olympsis-Watchkit Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				5DDCB9952C4C487600AE6C7A /* Olympsis_Watchkit_Watch_AppUITests.swift */,
+				5DDCB9972C4C487600AE6C7A /* Olympsis_Watchkit_Watch_AppUITestsLaunchTests.swift */,
+			);
+			path = "Olympsis-Watchkit Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		5DDCB9A72C4C4C5D00AE6C7A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5DB03C3D2C4CB2890083C943 /* EllaspsedTimeView.swift */,
+				5DB03C482C4CBFAE0083C943 /* ActivityRingsView.swift */,
+				5DE988F62C4CD35F00C594F8 /* ActivityGoalButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5DDCB9C82C4C9B2100AE6C7A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5DE989022C4CE28600C594F8 /* Preparation */,
+				5DDCB9DE2C4CA9F500AE6C7A /* Soccer */,
+				5DDCB9DD2C4CA9F000AE6C7A /* Running */,
+				5DDCB9C22C4C9A2200AE6C7A /* ActivityView.swift */,
+				5DB03C522C4CC3510083C943 /* ActivityHomeView.swift */,
+				5DB03C562C4CC3B10083C943 /* ActivitySettingsView.swift */,
+				5DB03C542C4CC3A00083C943 /* ActivityHistoryView.swift */,
+				5DDCB9A82C4C4D6F00AE6C7A /* ActivitySportsPicker.swift */,
+				5DB03C432C4CBA070083C943 /* ActivitySummaryView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5DDCB9DB2C4C9BFF00AE6C7A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				5DB03C3B2C4CAB0B0083C943 /* ActivityManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		5DDCB9DC2C4C9C0700AE6C7A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		5DDCB9DD2C4CA9F000AE6C7A /* Running */ = {
+			isa = PBXGroup;
+			children = (
+				5DDCB9CD2C4C9B5A00AE6C7A /* RunActivityMetrics.swift */,
+				5DDCB9C92C4C9B3600AE6C7A /* RunActivityMenu.swift */,
+				5DDCB9CB2C4C9B4100AE6C7A /* RunActivityDetails.swift */,
+				5DE988F22C4CD24F00C594F8 /* RunActivityPreperation.swift */,
+				5DE988FA2C4CD6B600C594F8 /* RunActivityGoalSetter.swift */,
+			);
+			path = Running;
+			sourceTree = "<group>";
+		};
+		5DDCB9DE2C4CA9F500AE6C7A /* Soccer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Soccer;
+			sourceTree = "<group>";
+		};
 		5DDD5E4F2C3AF57200793FEB /* Running */ = {
 			isa = PBXGroup;
 			children = (
@@ -1768,6 +1910,15 @@
 				5DDD5E582C3B3A3300793FEB /* RunningActivityView.swift */,
 			);
 			path = Running;
+			sourceTree = "<group>";
+		};
+		5DE989022C4CE28600C594F8 /* Preparation */ = {
+			isa = PBXGroup;
+			children = (
+				5DE988FE2C4CE1C200C594F8 /* ActivityPreparationView.swift */,
+				5DE989032C4CE2DA00C594F8 /* ActivityPreparationSettings.swift */,
+			);
+			path = Preparation;
 			sourceTree = "<group>";
 		};
 		5DF8C8762BF18E92002FE392 /* System */ = {
@@ -1804,6 +1955,7 @@
 		5F493FA82A5480B700EAF5A4 /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
+				5F493FA92A5480C100EAF5A4 /* SportsPicker.swift */,
 				5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */,
 				5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */,
 				5D9F69462BB87A350057D205 /* HometownPicker.swift */,
@@ -1968,6 +2120,8 @@
 		9A8FF0A428BB14BF00DE4CF8 = {
 			isa = PBXGroup;
 			children = (
+				5DE988F12C4CCBEB00C594F8 /* OlympsisWatchkit-Info.plist */,
+				5DE988F02C4CCBD900C594F8 /* OlympsisWatchkit.entitlements */,
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DC8B4802E05CE6C008C9052 /* Olympsis-Watchkit */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
@@ -2469,6 +2623,10 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+
+
+
+
 		5DDCB9772C4C487500AE6C7A /* OlympsisWatchkit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D8C08462E05FB3C0022D438 /* Build configuration list for PBXNativeTarget "OlympsisWatchkit" */;
@@ -2483,6 +2641,7 @@
 			);
 			name = OlympsisWatchkit;
 			productName = "Olympsis-Watchkit Watch App";
+			productReference = 9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */ = {
@@ -2498,6 +2657,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5DDCB99A2C4C487600AE6C7A /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -3352,6 +3512,179 @@
 			};
 			name = Release;
 		};
+		5DDCB99D2C4C487600AE6C7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OlympsisWatchkit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Olympsis-Watchkit/Preview Content\"";
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlympsisWatchkit-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.watchkit;
+				PRODUCT_NAME = Olympsis;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		5DDCB99E2C4C487600AE6C7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OlympsisWatchkit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Olympsis-Watchkit/Preview Content\"";
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "OlympsisWatchkit-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.watchkit;
+				PRODUCT_NAME = Olympsis;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		5DDCB9A02C4C487600AE6C7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.Olympsis-Watchkit-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis-Watchkit Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis-Watchkit Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		5DDCB9A12C4C487600AE6C7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.Olympsis-Watchkit-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis-Watchkit Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis-Watchkit Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		5DDCB9A32C4C487600AE6C7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.Olympsis-Watchkit-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Olympsis-Watchkit Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		5DDCB9A42C4C487600AE6C7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.olympsis.Olympsis-Watchkit-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Olympsis-Watchkit Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
 		9A8FF0B928BB14C100DE4CF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3588,6 +3921,33 @@
 			buildConfigurations = (
 				5D8C08442E05E9CF0022D438 /* Debug */,
 				5D8C08452E05E9CF0022D438 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DDCB99C2C4C487600AE6C7A /* Build configuration list for PBXNativeTarget "OlympsisWatchkit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DDCB99D2C4C487600AE6C7A /* Debug */,
+				5DDCB99E2C4C487600AE6C7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DDCB99F2C4C487600AE6C7A /* Build configuration list for PBXNativeTarget "Olympsis-Watchkit Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DDCB9A02C4C487600AE6C7A /* Debug */,
+				5DDCB9A12C4C487600AE6C7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DDCB9A22C4C487600AE6C7A /* Build configuration list for PBXNativeTarget "Olympsis-Watchkit Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DDCB9A32C4C487600AE6C7A /* Debug */,
+				5DDCB9A42C4C487600AE6C7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
