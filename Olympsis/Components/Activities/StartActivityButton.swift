@@ -21,7 +21,7 @@ struct StartActivityButton: View {
         Button(action: action) {
             RoundedRectangle(cornerRadius: 10)
                 .frame(height: 100)
-                .foregroundStyle(Color.colorPrime)
+                .foregroundStyle(Color.colorSecnd)
                 .padding(.horizontal)
                 .overlay {
                     VStack(spacing: 3) {

@@ -99,7 +99,7 @@ struct Activity: View {
                 switch manager.state {
                 case .pending, .success:
                     VStack(alignment: .leading) {
-                        Text(String(Int(manager.workouts.totalCaloriesBurned())))
+                        Text(totalCaloriesBurned)
                             .font(.largeTitle)
                             .bold()
                         Text("Calories")

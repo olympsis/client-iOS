@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import HealthKit
+import WorkoutKit
 import Foundation
 
 enum ACCOUNT_STATE {
@@ -178,6 +180,7 @@ enum EVENT_STATUS: String {
 enum SPORTS: String, CaseIterable {
     
     case running = "running"
+    case walking = "walking"
     case cycling = "cycling"
     case weights = "weights"
     case soccer = "soccer"
@@ -199,6 +202,8 @@ enum SPORTS: String, CaseIterable {
             return Image(systemName: "figure.soccer")
         case .running:
             return Image(systemName: "figure.run")
+        case .walking:
+            return Image(systemName: "figure.walk")
         case .cycling:
             return Image(systemName: "figure.outdoor.cycle")
         case .volleyball:
@@ -246,7 +251,7 @@ enum SPORTS: String, CaseIterable {
             return ["event-images/climbing-0.jpg","event-images/climbing-1.jpg","event-images/climbing-2.jpg"]
         case .spike:
             return ["event-images/spikeball-0.jpg"]
-        case .running:
+        case .running, .walking:
             return ["event-images/running-0.jpg", "event-images/running-1.jpg"]
         case .cycling:
             return ["event-images/cycling-0.jpg", "event-images/cycling-1.jpg"]
@@ -265,6 +270,8 @@ enum SPORTS: String, CaseIterable {
             return "Soccer"
         case .running:
             return "Running"
+        case .walking:
+            return "Walking"
         case .cycling:
             return "Cycling"
         case .volleyball:
@@ -289,6 +296,41 @@ enum SPORTS: String, CaseIterable {
             return "Football"
         case .weights:
             return "Weights"
+        }
+    }
+    
+    func getWorkoutActivityType() -> HKWorkoutActivityType {
+        switch self {
+        case .running:
+                .running
+        case .walking:
+                .walking
+        case .cycling:
+                .cycling
+        case .weights:
+                .other
+        case .soccer:
+                .soccer
+        case .volleyball:
+                .volleyball
+        case .basketball:
+                .basketball
+        case .pickleball:
+                .pickleball
+        case .racquetball:
+                .racquetball
+        case .tennis:
+                .tennis
+        case .golf:
+                .golf
+        case .hiking:
+                .hiking
+        case .climbing:
+                .climbing
+        case .spike:
+                .other
+        case .football:
+                .americanFootball
         }
     }
 }

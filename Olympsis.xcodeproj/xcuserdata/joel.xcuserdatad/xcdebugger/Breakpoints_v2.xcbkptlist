@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "01B33438-DDBF-4D83-9458-BC084534886A"
-            shouldBeEnabled = "Yes"
+            uuid = "FC59C438-5FC0-485E-A90C-9896ED0CA055"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Olympsis/Data/Managers/LocationManager.swift"
+            filePath = "Olympsis-Watchkit/Managers/ActivityManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "locationManager(_:didFailWithError:)"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "updateForStatistics(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
