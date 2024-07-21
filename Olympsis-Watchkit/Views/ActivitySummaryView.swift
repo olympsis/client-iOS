@@ -25,14 +25,14 @@ struct ActivitySummaryView: View {
         if manager.unit == UnitLength.kilometers {
             let distance = manager.workout?.statistics(for:
                 HKQuantityType.init(.distanceWalkingRunning))?
-                    .mostRecentQuantity()?
+                    .sumQuantity()?
                     .doubleValue(for: .meter()) ?? 0
             let conversion = (distance / 1000)
             return Text("\(conversion, specifier: "%.2f") km")
         } else {
             let distance = manager.workout?.statistics(for:
                 HKQuantityType.init(.distanceWalkingRunning))?
-                    .mostRecentQuantity()?
+                    .sumQuantity()?
                     .doubleValue(for: .mile()) ?? 0
             return Text("\(distance, specifier: "%.2f") mi")
         }
@@ -62,7 +62,7 @@ struct ActivitySummaryView: View {
     }
     
     var totalEnergyBurned: Double {
-        return manager.workout?.statistics(for: HKQuantityType.init(.activeEnergyBurned))?.mostRecentQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
+        return manager.workout?.statistics(for: HKQuantityType.init(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
     }
     
     @Environment(\.dismiss) private var dismiss

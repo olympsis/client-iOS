@@ -144,6 +144,9 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
     func stopWorkout() {
         // If a workout is less than a minute we should not record it
         if Double(builder?.elapsedTime ?? 0) < 60 {
+            guard session != nil else {
+                return
+            }
             session?.stopActivity(with: session?.currentActivity.startDate)
             resetWorkout()
             state = .ended

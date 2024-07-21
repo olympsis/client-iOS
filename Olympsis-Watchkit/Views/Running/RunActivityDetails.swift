@@ -25,8 +25,7 @@ struct RunActivityDetails: View {
                             ).formatted(
                                 .measurement (
                                     width: .abbreviated,
-                                    usage: .workout,
-                                    numberFormatStyle: .number
+                                    usage: .workout
                                 )
                             )
                         )
