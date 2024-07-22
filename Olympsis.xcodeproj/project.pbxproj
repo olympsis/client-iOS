@@ -1553,6 +1553,13 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		5DB63DC62C4DBC6000F815DE /* Cycling */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cycling;
+			sourceTree = "<group>";
+		};
 		5DBA3AEF2B9404AC00B67CFB /* Management */ = {
 			isa = PBXGroup;
 			children = (
@@ -1884,9 +1891,11 @@
 			isa = PBXGroup;
 			children = (
 				5DE989022C4CE28600C594F8 /* Preparation */,
-				5DDCB9DE2C4CA9F500AE6C7A /* Soccer */,
+				5DDCB9DE2C4CA9F500AE6C7A /* General */,
 				5DDCB9DD2C4CA9F000AE6C7A /* Running */,
+				5DB63DC62C4DBC6000F815DE /* Cycling */,
 				5DDCB9C22C4C9A2200AE6C7A /* ActivityView.swift */,
+				5DDCB9C92C4C9B3600AE6C7A /* ActivityMenu.swift */,
 				5DB03C522C4CC3510083C943 /* ActivityHomeView.swift */,
 				5DB03C562C4CC3B10083C943 /* ActivitySettingsView.swift */,
 				5DB03C542C4CC3A00083C943 /* ActivityHistoryView.swift */,
@@ -1915,7 +1924,6 @@
 			isa = PBXGroup;
 			children = (
 				5DDCB9CD2C4C9B5A00AE6C7A /* RunActivityMetrics.swift */,
-				5DDCB9C92C4C9B3600AE6C7A /* RunActivityMenu.swift */,
 				5DDCB9CB2C4C9B4100AE6C7A /* RunActivityDetails.swift */,
 				5DE988F22C4CD24F00C594F8 /* RunActivityPreperation.swift */,
 				5DE988FA2C4CD6B600C594F8 /* RunActivityGoalSetter.swift */,
@@ -1923,11 +1931,15 @@
 			path = Running;
 			sourceTree = "<group>";
 		};
-		5DDCB9DE2C4CA9F500AE6C7A /* Soccer */ = {
+		5DDCB9DE2C4CA9F500AE6C7A /* General */ = {
 			isa = PBXGroup;
 			children = (
+				5DB63DC72C4DBC8400F815DE /* GeneralActivityMetrics.swift */,
+				5DB63DC92C4DBC8E00F815DE /* GeneralActivityDetails.swift */,
+				5DB63DCB2C4DBC9B00F815DE /* GeneralActivityGoalSetter.swift */,
+				5DB63DCD2C4DBCB100F815DE /* GeneralActivityPreparation.swift */,
 			);
-			path = Soccer;
+			path = General;
 			sourceTree = "<group>";
 		};
 		5DDD5E4F2C3AF57200793FEB /* Running */ = {
