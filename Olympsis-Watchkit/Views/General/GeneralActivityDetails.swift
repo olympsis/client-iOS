@@ -1,0 +1,42 @@
+//
+//  GeneralActivityDetails.swift
+//  Olympsis
+//
+//  Created by Joel Joseph on 7/21/24.
+//
+
+import SwiftUI
+
+struct GeneralActivityDetails: View {
+    
+    @EnvironmentObject private var manager: ActivityManager
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 10) {
+                VStack(alignment: .leading) {
+                    Text("BPM")
+                        .textCase(.uppercase)
+                    
+                    Rectangle()
+                        .frame(height: 80)
+                        .foregroundStyle(.gray)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("zones")
+                        .textCase(.uppercase)
+                    
+                    Rectangle()
+                        .frame(height: 80)
+                        .foregroundStyle(.gray)
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    GeneralActivityDetails()
+        .environmentObject(ActivityManager())
+}

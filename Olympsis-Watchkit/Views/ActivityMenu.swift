@@ -8,7 +8,7 @@
 import SwiftUI
 import WatchKit
 
-struct RunActivityMenu: View {
+struct ActivityMenu: View {
     
     @Binding var selection: ACTIVITY_PAGES
     @EnvironmentObject private var manager: ActivityManager
@@ -99,6 +99,6 @@ struct RunActivityMenu: View {
 }
 
 #Preview {
-    RunActivityMenu(selection: .constant(.menu))
+    ActivityMenu(selection: .constant(.menu))
         .environmentObject(ActivityManager())
 }

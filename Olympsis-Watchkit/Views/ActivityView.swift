@@ -38,17 +38,36 @@ struct ActivityView: View {
     
     var body: some View {
         TabView(selection: $selected) {
-            RunActivityMenu(selection: $selected)
+            ActivityMenu(selection: $selected)
                 .environmentObject(manager)
                 .tag(ACTIVITY_PAGES.menu)
             
-            RunActivityMetrics()
-                .environmentObject(manager)
-                .tag(ACTIVITY_PAGES.metrics)
+            switch selectedSport {
+            case .running, .walking:
+                RunActivityMetrics()
+                    .environmentObject(manager)
+                    .tag(ACTIVITY_PAGES.metrics)
+            case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
+                GeneralActivityMetrics()
+                    .environmentObject(manager)
+                    .tag(ACTIVITY_PAGES.metrics)
+            default:
+                EmptyView()
+            }
             
-            RunActivityDetails()
-                .environmentObject(manager)
-                .tag(ACTIVITY_PAGES.details)
+            switch selectedSport {
+            case .running, .walking:
+                RunActivityDetails()
+                    .environmentObject(manager)
+                    .tag(ACTIVITY_PAGES.details)
+            case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
+                GeneralActivityDetails()
+                    .environmentObject(manager)
+                    .tag(ACTIVITY_PAGES.details)
+            default:
+                EmptyView()
+            }
+            
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode:  isLuminenceReduced ? .never : .automatic))
         .navigationBarBackButtonHidden()
@@ -74,7 +93,7 @@ struct ActivityView: View {
         })
         .task {
             if manager.session == nil {
-                manager.buildWorkout(.running, location: .outdoor)
+                manager.buildWorkout(selectedSport.getWorkoutActivityType(), location: .outdoor)
             } else {
                 manager.resumeWorkout()
             }
@@ -83,6 +102,6 @@ struct ActivityView: View {
 }
 
 #Preview {
-    ActivityView(selectedSport: .running)
+    ActivityView(selectedSport: .soccer)
         .environmentObject(ActivityManager())
 }

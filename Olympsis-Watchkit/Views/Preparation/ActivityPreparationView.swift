@@ -17,8 +17,12 @@ struct ActivityPreparationView: View {
         NavigationStack {
             TabView(selection: $selected) {
                 switch sport {
-                case .running:
+                case .running, .walking:
                     RunActivityPreperation()
+                        .environmentObject(manager)
+                        .tag(0)
+                case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
+                    GeneralActivityPreparation(sport: sport)
                         .environmentObject(manager)
                         .tag(0)
                 default:
@@ -27,6 +31,8 @@ struct ActivityPreparationView: View {
                 ActivityPreparationSettings(sport: sport)
                     .environmentObject(manager)
                     .tag(1)
+            }.task {
+                manager.selectedSport = sport
             }
         }
     }
