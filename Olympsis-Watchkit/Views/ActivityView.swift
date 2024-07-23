@@ -10,16 +10,16 @@ import SwiftUI
 struct ActivityView: View {
     
     var selectedSport: SPORTS
-    @State var selected: ACTIVITY_PAGES = .metrics
     
+    @State private var selected: ACTIVITY_PAGES = .metrics
+    @State private var isActive = true
     @State private var countdown: Int = 3
-    @State private var isActive: Bool = true
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isLuminanceReduced) var isLuminenceReduced
     @EnvironmentObject private var manager: ActivityManager
     
-    func startCountdown() {
+    private func startCountdown() {
         if manager.session == nil {
             manager.prepareWorkout()
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
@@ -38,6 +38,7 @@ struct ActivityView: View {
     
     var body: some View {
         TabView(selection: $selected) {
+            
             ActivityMenu(selection: $selected)
                 .environmentObject(manager)
                 .tag(ACTIVITY_PAGES.menu)
@@ -71,7 +72,7 @@ struct ActivityView: View {
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode:  isLuminenceReduced ? .never : .automatic))
         .navigationBarBackButtonHidden()
-        .toolbar(.hidden)
+        .toolbar(isActive ? .hidden : .visible)
         .overlay {
             if isActive {
                 ZStack(alignment: .center) {
@@ -83,7 +84,9 @@ struct ActivityView: View {
                         .padding(.bottom)
                         .padding(.bottom)
                     
-                }.onAppear(perform: startCountdown)
+                }
+                .onAppear(perform: startCountdown)
+                .zIndex(100)
             }
         }
         .onChange(of: manager.state, { oldValue, newValue in

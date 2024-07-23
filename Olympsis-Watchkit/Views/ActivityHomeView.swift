@@ -24,6 +24,7 @@ struct ActivityHomeView: View {
                 .environmentObject(manager)
                 .tag(2)
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .task {
             await manager.requestHealthStoreAuthorization()
         }

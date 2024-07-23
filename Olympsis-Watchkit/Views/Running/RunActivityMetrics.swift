@@ -24,22 +24,39 @@ struct RunActivityMetrics: View {
     var distanceText: Text {
         if manager.unit == UnitLength.kilometers {
             let conversion = (manager.distance / 1000)
-            return Text("\(conversion, specifier: "%.2f") km")
+            return Text("\(conversion, specifier: "%.2f")")
         } else {
-            return Text("\(manager.distance, specifier: "%.2f") mi")
+            return Text("\(manager.distance, specifier: "%.2f")")
+        }
+    }
+    
+    var distanceMetric: Text {
+        if manager.unit == UnitLength.kilometers {
+            return Text("KILOMETERS")
+        } else {
+            return Text("MILES")
         }
     }
     
     var body: some View {
         VStack {
-            distanceText
-            .font(.system(size: 55))
-            .fontWeight(.semibold)
             
-            Text("distance")
-                .textCase(.uppercase)
-                .font(.caption)
-                .foregroundStyle(.gray)
+            Spacer()
+            
+            VStack(spacing: -10) {
+                distanceText
+                    .foregroundStyle(.yellow)
+                    .font(.system(size: 70))
+                    .fontWeight(.bold)
+                
+                distanceMetric
+                    .textCase(.uppercase)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+            
+            Spacer()
+            Spacer()
             
             TimelineView(
                 PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
@@ -65,34 +82,33 @@ struct RunActivityMetrics: View {
                                     .number.precision(.fractionLength(0))
                                 )
                             )
-                            .font(.title2)
+                            .font(.title3)
                             .fontWeight(.semibold)
                             
                             Image(systemName: "heart.fill")
                                 .foregroundStyle(.red)
                                 .imageScale(.large)
                         }
+                        Text("bpm")
+                            .textCase(.uppercase)
+                            .font(.caption2)
+                            .foregroundStyle(.gray)
+                    }
+                }.padding(.horizontal)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                TimelineView(
+                    EllapsedTimeTimelineSchedule(
+                        from: manager.builder?.startDate ?? Date()
+                    )
+                ) { context in
+                    HStack {
+                        EllaspsedTimeView(ellapsedTime: TimeInterval(manager.builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
+                            .fontWeight(.semibold)
                     }
                 }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-            }
-            
-            TimelineView(
-                EllapsedTimeTimelineSchedule(
-                    from: manager.builder?.startDate ?? Date()
-                )
-            ) { context in
-                HStack {
-                    EllaspsedTimeView(ellapsedTime: TimeInterval(manager.builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Image(systemName: "clock")
-                        .foregroundStyle(Color.colorPrime)
-                        .imageScale(.large)
-                        .fontWeight(.bold)
-                }
-                .padding(.vertical, 5)
             }
         }
     }
@@ -135,6 +151,8 @@ private struct PaceTimelineSchedule: TimelineSchedule {
 }
 
 #Preview {
-    RunActivityMetrics()
-        .environmentObject(ActivityManager())
+    NavigationStack {
+        RunActivityMetrics()
+            .environmentObject(ActivityManager())
+    }
 }

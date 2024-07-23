@@ -27,14 +27,14 @@ struct GeneralActivityPreparation: View {
                     .environmentObject(manager)
             }) {
                 Circle()
-                    .frame(width: 140, height: 140)
+                    .frame(width: 120, height: 120)
                     .foregroundStyle(Color.colorPrime)
                     .overlay {
                         VStack {
                             Text("Start")
                                 .textCase(.uppercase)
                                 .italic()
-                                .font(.system(size: 40))
+                                .font(.system(size: 30))
                                 .fontWeight(.bold)
                         }
                     }

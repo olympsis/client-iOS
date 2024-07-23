@@ -68,6 +68,11 @@ struct RunActivityDetails: View {
                         .foregroundStyle(.gray)
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Details")
+                }
+            }
         }
     }
 }

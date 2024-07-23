@@ -66,6 +66,7 @@ struct ActivityMenu: View {
                     }
                     .frame(width: 75, height: 75)
                     .buttonStyle(PlainButtonStyle())
+                    .disabled(manager.isProcessingWorkout)
                 }
                 
                 // MARK: - Water & Lap
@@ -80,6 +81,7 @@ struct ActivityMenu: View {
                     }
                     .frame(width: 75, height: 75)
                     .buttonStyle(PlainButtonStyle())
+                    .disabled(manager.isProcessingWorkout)
                     
                     Button(action: {}) {
                         Circle()
@@ -92,6 +94,12 @@ struct ActivityMenu: View {
                     }
                     .frame(width: 75, height: 75)
                     .buttonStyle(PlainButtonStyle())
+                    .disabled(manager.isProcessingWorkout)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Menu")
                 }
             }
         }

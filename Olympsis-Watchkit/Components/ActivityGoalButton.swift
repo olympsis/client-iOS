@@ -14,7 +14,7 @@ struct ActivityGoalButton: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(height: 45)
-            .foregroundStyle(Color.background)
+            .foregroundStyle(Color.foreground)
             .overlay {
                 HStack {
                     Text(goal.toString())
@@ -22,13 +22,13 @@ struct ActivityGoalButton: View {
                         .font(.title3)
                         .italic()
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.background)
                     
                     Spacer()
                     
                     goal.toIcon()
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.background)
                 }
                 .padding(.horizontal)
             }
