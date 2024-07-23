@@ -175,7 +175,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             switch statistics.quantityType {
             case HKQuantityType.quantityType(forIdentifier: .heartRate):
                 let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-                let heartHistory = statistics.maximumQuantity()
+                let _ = statistics.maximumQuantity()
                 self.heartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
                 self.averageHeartRate = statistics.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
             case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned):
