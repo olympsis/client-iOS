@@ -8,7 +8,7 @@
 import MapKit
 import SwiftUI
 
-struct RunningMap: View {
+struct WorkoutMapView: View {
     var body: some View {
         Map()
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -18,5 +18,5 @@ struct RunningMap: View {
 }
 
 #Preview {
-    RunningMap()
+    WorkoutMapView()
 }

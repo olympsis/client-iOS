@@ -1529,18 +1529,10 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		5DB63DA22C4DADB100F815DE /* Soccer */ = {
-			isa = PBXGroup;
-			children = (
-				5DB63DA32C4DADBC00F815DE /* SoccerMetrics.swift */,
-			);
-			path = Soccer;
-			sourceTree = "<group>";
-		};
 		5DB63DBB2C4DB71400F815DE /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				5FA350572A6737AF00669B2C /* Enums.swift */,
+				5D34F07A2C4F83110014E676 /* Data */,
 				5DB63DBC2C4DB72700F815DE /* Components */,
 			);
 			path = Shared;
@@ -1822,17 +1814,6 @@
 			path = Activities;
 			sourceTree = "<group>";
 		};
-		5DD834002C3A611900DD4691 /* Running */ = {
-			isa = PBXGroup;
-			children = (
-				5DD834012C3A612F00DD4691 /* RunningMetrics.swift */,
-				5DD834032C3A614100DD4691 /* RunningActions.swift */,
-				5DD834052C3A617600DD4691 /* RunningMap.swift */,
-				5DD834072C3A618400DD4691 /* RunningSplits.swift */,
-			);
-			path = Running;
-			sourceTree = "<group>";
-		};
 		5DDCB9792C4C487500AE6C7A /* Olympsis-Watchkit */ = {
 			isa = PBXGroup;
 			children = (
@@ -1883,6 +1864,7 @@
 				5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */,
 				5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */,
 				5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */,
+				5D89D9A52C50B4E000813586 /* WorkoutSmallListItemView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1908,7 +1890,6 @@
 		5DDCB9DB2C4C9BFF00AE6C7A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				5DB03C3B2C4CAB0B0083C943 /* ActivityManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1940,17 +1921,6 @@
 				5DB63DCD2C4DBCB100F815DE /* GeneralActivityPreparation.swift */,
 			);
 			path = General;
-			sourceTree = "<group>";
-		};
-		5DDD5E4F2C3AF57200793FEB /* Running */ = {
-			isa = PBXGroup;
-			children = (
-				5DDD5E502C3AF58000793FEB /* RunningMetricsView.swift */,
-				5DDD5E522C3AF64900793FEB /* RunningSettingsView.swift */,
-				5DDD5E542C3AF65400793FEB /* RunningAdvancedMetricsView.swift */,
-				5DDD5E582C3B3A3300793FEB /* RunningActivityView.swift */,
-			);
-			path = Running;
 			sourceTree = "<group>";
 		};
 		5DE989022C4CE28600C594F8 /* Preparation */ = {
@@ -3092,7 +3062,7 @@
 				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
 				5D204B5C2DA2D19000B67F5D /* EventError.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
-				5DB63DA42C4DADBC00F815DE /* SoccerMetrics.swift in Sources */,
+				5DB63DA42C4DADBC00F815DE /* GeneralSportMetrics.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activities.swift in Sources */,
 				5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */,
@@ -3152,6 +3122,7 @@
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
+				5D34F07B2C4F83230014E676 /* WorkoutManager.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
 				5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */,
 				5D90A9DC2D53D0FD00D7B168 /* NewEventTopView.swift in Sources */,
@@ -3159,6 +3130,7 @@
 				5D4B0A602D96DA0300475A0C /* GroupBadgeView.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
+				5D34F0842C5065F40014E676 /* CyclingComputerView.swift in Sources */,
 				5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */,
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
@@ -3193,9 +3165,7 @@
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
-				5DB63DB32C4DB17800F815DE /* RunningMetricsView.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
-				5DB63DB82C4DB5EA00F815DE /* RunningMetrics.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */,
 				5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */,
@@ -3257,7 +3227,6 @@
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
-				5DD833EC2C36720C00DD4691 /* ActivityPresenter.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */,
 				5DC8B4412E05BF09008C9052 /* WorkoutManager+Location.swift in Sources */,
@@ -3325,7 +3294,6 @@
 				9A8162A729669A370042F0A6 /* MessageView.swift in Sources */,
 				5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
-				5DDD5E532C3AF64900793FEB /* RunningSettingsView.swift in Sources */,
 				5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */,
 				5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
@@ -3344,6 +3312,7 @@
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				5D76D3772C7966AA00846382 /* Routes.swift in Sources */,
 				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
+				5D34F07E2C4F8C0C0014E676 /* HKWorkoutStatistics.swift in Sources */,
 				5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */,
 				5D4B0A662D96F87400475A0C /* EventMedia.swift in Sources */,
 				5D0CCB1C2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */,
@@ -3430,7 +3399,6 @@
 				5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
-				5DB36C022C35F18400DB2912 /* ActivityPicker.swift in Sources */,
 				9A5CA4DD296F7DA300C63A32 /* ClubMemberMenu.swift in Sources */,
 				9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */,
 				5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */,

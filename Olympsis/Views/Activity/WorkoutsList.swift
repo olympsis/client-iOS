@@ -16,7 +16,7 @@ struct WorkoutsList: View {
     var body: some View {
         ScrollView {
             ForEach(manager.workouts.sorted(by: { $0.startDate > $1.startDate })) { workout in
-                WorkoutListItem(workout: workout)
+                WorkoutListItemView(workout: workout)
             }
         }
         .contentMargins(.vertical, 10)
