@@ -8,15 +8,9 @@
 import SwiftUI
 import Foundation
 
-enum WorkoutType {
-    case walking
-    case running
-    case soccer
-}
-
 struct Workout: Identifiable {
     let id: UUID
-    let type: WorkoutType
+    let type: SPORTS
     let startDate: Date
     let endDate: Date
     let averageHeartRate: Double
@@ -37,7 +31,7 @@ struct Workout: Identifiable {
         
         let timeInterval = endDate.timeIntervalSince(startDate)
         let totalMinutes = timeInterval / 60.0
-        let averagePace = totalMinutes / totalDistanceTraveled
+        let averagePace = (totalMinutes/totalDistanceTraveled) == .infinity ? 0 : totalMinutes/totalDistanceTraveled
         
         let minutes = Int(averagePace)
         let seconds = Int((averagePace - Double(minutes)) * 60)
@@ -106,4 +100,91 @@ struct CaloricMonthlyAverage: Identifiable {
         default: return ""
         }
     }
+}
+
+extension [Workout] {
+    func calculateTotalCalories() -> Int {
+        return Int(self.reduce(0.0) { $0 + $1.caloriesBurned })
+    }
+       
+   func totalCaloriesBurnedPerDay() -> [CaloricDailyAverage] {
+       let calendar = Calendar.current
+       var caloriesBurnedPerDay = [0, 0, 0, 0, 0, 0, 0]
+       var workoutCountPerDay = [0, 0, 0, 0, 0, 0, 0]
+           
+       for workout in self {
+           let startDate = workout.startDate
+           let weekday = calendar.component(.weekday, from: startDate)
+           
+           // Adjust weekday index to be 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
+           let index = (weekday + 5) % 7
+           caloriesBurnedPerDay[index] += Int(workout.caloriesBurned)
+           workoutCountPerDay[index] += 1
+       }
+       
+       var caloricDailyAverages = [CaloricDailyAverage]()
+       
+       for (index, totalCalories) in caloriesBurnedPerDay.enumerated() {
+           _ = workoutCountPerDay[index]
+           caloricDailyAverages.append(CaloricDailyAverage(id: index, count: totalCalories))
+       }
+       
+       return caloricDailyAverages
+   }
+   
+   func totalCaloriesBurnedPerDayInMonth() -> [CaloricDailyAverage] {
+       let calendar = Calendar.current
+       let now = Date()
+       guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) else {
+           return []
+       }
+       let range = calendar.range(of: .day, in: .month, for: startOfMonth)!
+       let numDays = range.count
+       
+       var caloriesBurnedPerDay = [Int]()
+       for _ in 0..<numDays {
+           caloriesBurnedPerDay.append(0)
+       }
+       
+       for workout in self {
+           let startDate = workout.startDate
+           let dayOfMonth = calendar.component(.day, from: startDate) - 1 // -1 to convert to 0-based index
+           caloriesBurnedPerDay[dayOfMonth] += Int(workout.caloriesBurned)
+       }
+       
+       var caloricDailyAverages = [CaloricDailyAverage]()
+       
+       for (index, totalCalories) in caloriesBurnedPerDay.enumerated() {
+           caloricDailyAverages.append(CaloricDailyAverage(id: index+1, count: totalCalories)) // +1 to convert back to 1-based day
+       }
+       
+       return caloricDailyAverages
+   }
+   
+   func monthlyAverageCaloriesBurned() -> [CaloricMonthlyAverage] {
+       let calendar = Calendar.current
+       var caloriesBurnedPerMonth = [Int]()
+       var workoutCountPerMonth = [Int]()
+       
+       for _ in 0..<12 {
+           caloriesBurnedPerMonth.append(0)
+           workoutCountPerMonth.append(0)
+       }
+       
+       for workout in self {
+           let startDate = workout.startDate
+           let month = calendar.component(.month, from: startDate) - 1 // -1 to convert to 0-based index
+           caloriesBurnedPerMonth[month] += Int(workout.caloriesBurned)
+           workoutCountPerMonth[month] += 1
+       }
+       
+       var caloricMonthlyAverages = [CaloricMonthlyAverage]()
+       
+       for (index, totalCalories) in caloriesBurnedPerMonth.enumerated() {
+           _ = workoutCountPerMonth[index]
+           caloricMonthlyAverages.append(CaloricMonthlyAverage(id: index, count: totalCalories)) // +1 to convert back to 1-based month
+       }
+       
+       return caloricMonthlyAverages
+   }
 }

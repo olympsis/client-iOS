@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC93E2BAD035000E16B95 /* PostViewer.swift */; };
 		5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */; };
-		5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */; };
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
 		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
 		5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */; };
@@ -288,8 +287,22 @@
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
 		5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2C1862C338128007CE0B8 /* ClubEditor.swift */; };
 		5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */; };
-		5DB4D04F2C5EF82C00F241BB /* GroupSelectionListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */; };
-		5DB4D0532C5F042D00F241BB /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */; };
+		5DB63D972C4D9E9000F815DE /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */; };
+		5DB63D982C4D9E9000F815DE /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */; };
+		5DB63D992C4D9E9000F815DE /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */; };
+		5DB63D9B2C4D9E9B00F815DE /* ActivityZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */; };
+		5DB63D9C2C4D9E9B00F815DE /* ActivityZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */; };
+		5DB63D9D2C4D9E9B00F815DE /* ActivityZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */; };
+		5DB63D9F2C4D9ECA00F815DE /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */; };
+		5DB63DA02C4D9ECA00F815DE /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */; };
+		5DB63DA12C4D9ECA00F815DE /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */; };
+		5DB63DA42C4DADBC00F815DE /* GeneralSportMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63DA32C4DADBC00F815DE /* GeneralSportMetrics.swift */; };
+		5DB63DC42C4DBB5E00F815DE /* OlympsisWatchkit-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DE988F12C4CCBEB00C594F8 /* OlympsisWatchkit-Info.plist */; };
+		5DB63DC52C4DBB5F00F815DE /* OlympsisWatchkit-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DE988F12C4CCBEB00C594F8 /* OlympsisWatchkit-Info.plist */; };
+		5DB63DCF2C4DBDD700F815DE /* GeneralActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63DC72C4DBC8400F815DE /* GeneralActivityMetrics.swift */; };
+		5DB63DD22C4DC06600F815DE /* GeneralActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63DC92C4DBC8E00F815DE /* GeneralActivityDetails.swift */; };
+		5DB63DD32C4DC11000F815DE /* GeneralActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63DCD2C4DBCB100F815DE /* GeneralActivityPreparation.swift */; };
+		5DB63DD42C4DC1FB00F815DE /* GeneralActivityGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB63DCB2C4DBC9B00F815DE /* GeneralActivityGoalSetter.swift */; };
 		5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681822BFEF4420084B5E8 /* MenuLabel.swift */; };
 		5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
@@ -516,7 +529,6 @@
 /* Begin PBXFileReference section */
 		5D0CC93E2BAD035000E16B95 /* PostViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewer.swift; sourceTree = "<group>"; };
 		5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItemTemplate.swift; sourceTree = "<group>"; };
-		5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
 		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
 		5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRoomView.swift; sourceTree = "<group>"; };
@@ -794,8 +806,14 @@
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
 		5DB2C1862C338128007CE0B8 /* ClubEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEditor.swift; sourceTree = "<group>"; };
 		5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingView.swift; sourceTree = "<group>"; };
-		5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelectionListItem.swift; sourceTree = "<group>"; };
-		5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		5DB63D962C4D9E9000F815DE /* ActivitySplitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySplitsView.swift; sourceTree = "<group>"; };
+		5DB63D9A2C4D9E9B00F815DE /* ActivityZoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityZoneView.swift; sourceTree = "<group>"; };
+		5DB63D9E2C4D9ECA00F815DE /* ActivityElevationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityElevationView.swift; sourceTree = "<group>"; };
+		5DB63DA32C4DADBC00F815DE /* GeneralSportMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSportMetrics.swift; sourceTree = "<group>"; };
+		5DB63DC72C4DBC8400F815DE /* GeneralActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityMetrics.swift; sourceTree = "<group>"; };
+		5DB63DC92C4DBC8E00F815DE /* GeneralActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityDetails.swift; sourceTree = "<group>"; };
+		5DB63DCB2C4DBC9B00F815DE /* GeneralActivityGoalSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityGoalSetter.swift; sourceTree = "<group>"; };
+		5DB63DCD2C4DBCB100F815DE /* GeneralActivityPreparation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityPreparation.swift; sourceTree = "<group>"; };
 		5DB681822BFEF4420084B5E8 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
 		5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
@@ -1850,7 +1868,6 @@
 			children = (
 				9AB02F4D290246BD008C07F1 /* NotificationManager.swift */,
 				9A81B63D2925DE1A009CA6ED /* LocationManager.swift */,
-				5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */,
 				5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */,
 				5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */,
 				5D78BDE32C0C11D100F170D6 /* EventManager.swift */,
@@ -2334,6 +2351,7 @@
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
+				5D34F07B2C4F83230014E676 /* WorkoutManager.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
 				5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */,
 				5D90A9DC2D53D0FD00D7B168 /* NewEventTopView.swift in Sources */,
@@ -2342,6 +2360,7 @@
 				5DB4D04F2C5EF82C00F241BB /* GroupSelectionListItem.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
+				5D34F0842C5065F40014E676 /* CyclingComputerView.swift in Sources */,
 				5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */,
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
@@ -2499,6 +2518,7 @@
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				5D76D3772C7966AA00846382 /* Routes.swift in Sources */,
 				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
+				5D34F07E2C4F8C0C0014E676 /* HKWorkoutStatistics.swift in Sources */,
 				5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */,
 				5D4B0A662D96F87400475A0C /* EventMedia.swift in Sources */,
 				5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */,

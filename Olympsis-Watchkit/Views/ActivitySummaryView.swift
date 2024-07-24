@@ -66,7 +66,7 @@ struct ActivitySummaryView: View {
     }
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     var body: some View {
         ScrollView {
@@ -220,6 +220,6 @@ struct ActivitySummaryView: View {
 #Preview {
     NavigationStack {
         ActivitySummaryView()
-            .environmentObject(ActivityManager())
+            .environmentObject(WorkoutManager())
     }
 }

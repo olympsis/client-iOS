@@ -10,7 +10,7 @@ import SwiftUI
 struct GeneralActivityMetrics: View {
     
     @AppStorage("selected_face") private var selectedFace: Int?
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     private var averagePaceText: Text {
         let mins = Double(manager.builder?.elapsedTime ?? 0) / 60
@@ -143,5 +143,5 @@ private struct EllapsedTimeTimelineSchedule: TimelineSchedule {
 
 #Preview {
     GeneralActivityMetrics()
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }

@@ -11,7 +11,7 @@ struct ActivityPreparationView: View {
     
     var sport: SPORTS
     @State private var selected: Int = 0
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     var body: some View {
         NavigationStack {
@@ -40,5 +40,5 @@ struct ActivityPreparationView: View {
 
 #Preview {
     ActivityPreparationView(sport: .running)
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }

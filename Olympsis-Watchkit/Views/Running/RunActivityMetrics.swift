@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RunActivityMetrics: View {
     
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     var averagePaceText: Text {
         let mins = Double(manager.builder?.elapsedTime ?? 0) / 60
@@ -153,6 +153,6 @@ private struct PaceTimelineSchedule: TimelineSchedule {
 #Preview {
     NavigationStack {
         RunActivityMetrics()
-            .environmentObject(ActivityManager())
+            .environmentObject(WorkoutManager())
     }
 }

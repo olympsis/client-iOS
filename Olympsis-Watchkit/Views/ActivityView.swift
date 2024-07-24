@@ -17,7 +17,7 @@ struct ActivityView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isLuminanceReduced) var isLuminenceReduced
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     private func startCountdown() {
         if manager.session == nil {
@@ -106,5 +106,5 @@ struct ActivityView: View {
 
 #Preview {
     ActivityView(selectedSport: .soccer)
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }

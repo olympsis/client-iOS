@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkoutListItem: View {
+struct WorkoutListItemView: View {
     
     @State var workout: Workout
     @State var event: Event?
@@ -69,6 +69,16 @@ struct WorkoutListItem: View {
                     .frame(width: 30, height: 40)
                     .foregroundColor(Color.Background.primary)
             }
+        default:
+            return ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 85, height: 85)
+                    .foregroundColor(.primary)
+                Image(systemName: "figure")
+                    .resizable()
+                    .frame(width: 30, height: 40)
+                    .foregroundColor(.background)
+            }
         }
     }
     
@@ -78,7 +88,7 @@ struct WorkoutListItem: View {
             return "Run"
         case .walking:
             return "Walk"
-        case .soccer:
+        default:
             return "Exercise"
         }
     }
@@ -98,51 +108,80 @@ struct WorkoutListItem: View {
                 switch workout.type {
                 case .walking, .running:
                     HStack {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .center) {
+                            Text("\(workout.totalDistanceTraveled, specifier: "%.2f")")
                             Text("Miles")
                                 .font(.caption)
                                 .bold()
+                                .textCase(.uppercase)
                                 .padding(.bottom, -5)
-                            Text("\(workout.totalDistanceTraveled, specifier: "%.2f")")
+                                .foregroundStyle(.gray)
                         }
                         
                         Spacer()
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .center) {
+                            Text(workout.averagePace)
                             Text("Avg Pace")
                                 .font(.caption)
                                 .bold()
+                                .textCase(.uppercase)
                                 .padding(.bottom, -5)
-                            Text(workout.averagePace)
+                                .foregroundStyle(.gray)
                         }
                         
                         Spacer()
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .center) {
+                            Text(workout.ellapsedTime)
                             Text("Time")
                                 .font(.caption)
                                 .bold()
+                                .textCase(.uppercase)
                                 .padding(.bottom, -5)
-                            Text(workout.ellapsedTime)
+                                .foregroundStyle(.gray)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 1)
+                default:
+                    HStack {
+                        VStack(alignment: .center) {
+                            Text("\(workout.totalDistanceTraveled, specifier: "%.2f")")
+                            Text("Miles")
+                                .font(.caption)
+                                .bold()
+                                .textCase(.uppercase)
+                                .padding(.bottom, -5)
+                                .foregroundStyle(.gray)
                         }
                         
                         Spacer()
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .center) {
+                            Text("\(workout.caloriesBurned, specifier: "%.0f")")
                             Text("Calories")
                                 .font(.caption)
                                 .bold()
+                                .textCase(.uppercase)
                                 .padding(.bottom, -5)
-                            Text("\(workout.caloriesBurned, specifier: "%.0f")")
+                                .foregroundStyle(.gray)
                         }
-                    }.padding(.horizontal)
-                        .padding(.top, 1)
-                case .soccer:
-                    HStack {
-                        VStack {
-                            
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .center) {
+                            Text(workout.ellapsedTime)
+                            Text("Time")
+                                .font(.caption)
+                                .bold()
+                                .textCase(.uppercase)
+                                .padding(.bottom, -5)
+                                .foregroundStyle(.gray)
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.top, 1)
                 }
             }
             Spacer()
@@ -163,5 +202,5 @@ struct WorkoutListItem: View {
 }
 
 #Preview {
-    WorkoutListItem(workout: Workout(id: UUID(), type: .running, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
+    WorkoutListItemView(workout: Workout(id: UUID(), type: .soccer, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
 }

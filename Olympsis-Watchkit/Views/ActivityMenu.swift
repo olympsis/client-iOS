@@ -11,7 +11,7 @@ import WatchKit
 struct ActivityMenu: View {
     
     @Binding var selection: ACTIVITY_PAGES
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     var body: some View {
         ScrollView {
@@ -108,5 +108,5 @@ struct ActivityMenu: View {
 
 #Preview {
     ActivityMenu(selection: .constant(.menu))
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }

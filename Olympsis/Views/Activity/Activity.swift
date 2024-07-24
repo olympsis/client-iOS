@@ -7,6 +7,7 @@
 
 import Charts
 import SwiftUI
+import HealthKit
 
 struct Activity: View {
     
@@ -22,7 +23,9 @@ struct Activity: View {
                     Button(action: {
                         withAnimation(.interpolatingSpring) {
                             selectedFilter = 0
-                            manager.loadWeeklyRunHistory()
+                            Task {
+                                await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
+                            }
                         }
                     }){
                         Text("Week")
@@ -46,7 +49,9 @@ struct Activity: View {
                     Button(action: {
                         withAnimation(.interpolatingSpring) {
                             selectedFilter = 1
-                            manager.loadMonthlyRunHistory()
+                            Task {
+                                await manager.fetchWorkoutsHistory(in: manager.monthPredicate.predicateFormat)
+                            }
                         }
                     }){
                         if selectedFilter == 1 {
@@ -72,7 +77,9 @@ struct Activity: View {
                     Button(action: {
                         withAnimation(.interpolatingSpring) {
                             selectedFilter = 2
-                            manager.loadYearlyRunHistory()
+                            Task {
+                                await manager.fetchWorkoutsHistory(in: manager.yearPredicate.predicateFormat)
+                            }
                         }
                     }){
                         if selectedFilter == 2 {
@@ -96,7 +103,7 @@ struct Activity: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical)
                 
-                switch manager.state {
+                switch manager.viewState {
                 case .pending, .success:
                     VStack(alignment: .leading) {
                         Text(totalCaloriesBurned)
@@ -167,10 +174,6 @@ struct Activity: View {
                     .padding(.vertical)
                     .padding(.horizontal, 20)
                     
-                    StartActivityButton(.running) {
-                        
-                    }
-                    
                     HStack {
                         Text("Activities")
                             .font(.system(.headline))
@@ -191,7 +194,7 @@ struct Activity: View {
                     }
                     if (manager.workouts.count > 0) {
                         ForEach(manager.workouts.sorted(by: { $0.startDate > $1.startDate}).prefix(4)) { workout in
-                            WorkoutListItem(workout: workout)
+                            WorkoutListItemView(workout: workout)
                         }
                     } else {
                         Text("😤")
@@ -204,8 +207,6 @@ struct Activity: View {
                             .frame(height: 200)
                             .padding(.all)
                             .foregroundStyle(.gray)
-                        
-                        StartActivityButton(.running) {}
                         
                         HStack {
                             Text("Activities")
@@ -239,33 +240,29 @@ struct Activity: View {
                 
                 Spacer(minLength: 40)
             }
-            .onChange(of: manager.workoutState, { oldValue, newValue in
+            .task {
+                guard manager.checkAuthorizationStatus(),
+                      manager.workouts.isEmpty else {
+                    await manager.requestHealthStoreAuthorization()
+                    return
+                }
+                await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
+            }
+            .onChange(of: manager.state, { oldValue, newValue in
                 if newValue == .active {
                     showActivityView = true
                 }
             })
-            .fullScreenCover(isPresented: $showActivityView, onDismiss: {
-                ()
-            }, content: {
-                ActivityPresenter()
-                    .environmentObject(session)
-            })
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack {
-                        Text("Activity")
+                        Text("Workouts")
                             .font(.title)
                             .bold()
                             .foregroundColor(.primary)
                         
                         Text("beta")
                             .foregroundStyle(.yellow)
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {}) {
-                        Image(systemName: "plus")
                     }
                 }
             }

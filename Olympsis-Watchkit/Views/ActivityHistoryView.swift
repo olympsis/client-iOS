@@ -8,13 +8,22 @@
 import SwiftUI
 
 struct ActivityHistoryView: View {
+    
+    @EnvironmentObject private var manager: WorkoutManager
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    
+            ScrollView {
+                ForEach(manager.workouts) { workout in
+                    WorkoutSmallListItemView(workout: workout)
                 }
-            }.toolbar {
+                
+                Text("To see more workout details check the Olympsis application.")
+                    .foregroundStyle(.gray)
+                    .font(.caption)
+                    .padding(.vertical)
+            }
+            .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Text("History")
                 }
@@ -25,4 +34,5 @@ struct ActivityHistoryView: View {
 
 #Preview {
     ActivityHistoryView()
+        .environmentObject(WorkoutManager())
 }

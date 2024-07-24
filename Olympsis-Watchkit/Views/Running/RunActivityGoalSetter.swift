@@ -18,7 +18,7 @@ struct RunActivityGoalSetter: View {
     @State private var distance: Double = 1
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     func secondsToMinutesSecondsFormat(seconds: Int) -> String {
         let minutes = seconds / 60

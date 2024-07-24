@@ -738,3 +738,83 @@ enum DevicePlatform: String, Codable {
     case android = "android"
     case web = "web"
 }
+
+enum SUPPORTED_SPORTS: String, CaseIterable {
+    case running = "running"
+    case walking = "walking"
+    case cycling = "cycling"
+    case soccer = "soccer"
+    case volleyball = "volleyball"
+    case basketball = "basketball"
+    case pickleball = "pickleball"
+    case racquetball = "racquetball"
+    case tennis = "tennis"
+    case golf = "golf"
+    case hiking = "hiking"
+    case climbing = "climbing"
+    case football = "football"
+    
+    var workoutActivityType: HKWorkoutActivityType {
+        switch self {
+        case .running:
+                .running
+        case .walking:
+                .walking
+        case .cycling:
+                .cycling
+        case .soccer:
+                .soccer
+        case .volleyball:
+                .volleyball
+        case .basketball:
+                .basketball
+        case .pickleball:
+                .pickleball
+        case .racquetball:
+                .racquetball
+        case .tennis:
+                .tennis
+        case .golf:
+                .golf
+        case .hiking:
+                .hiking
+        case .climbing:
+                .climbing
+        case .football:
+                .americanFootball
+        }
+    }
+}
+
+func sportFromActivityType(activity: HKWorkoutActivityType) -> SPORTS? {
+    switch activity {
+    case.americanFootball:
+        return .football
+    case .basketball:
+        return .basketball
+    case .climbing:
+        return .climbing
+    case .cycling:
+        return .cycling
+    case .golf:
+        return .golf
+    case .hiking:
+        return .hiking
+    case .racquetball:
+        return .racquetball
+    case .running:
+        return .running
+    case .soccer:
+        return.soccer
+    case .tennis:
+        return .tennis
+    case .volleyball:
+        return .volleyball
+    case .walking:
+        return .walking
+    case .pickleball:
+        return .pickleball
+    default:
+        return nil
+    }
+}

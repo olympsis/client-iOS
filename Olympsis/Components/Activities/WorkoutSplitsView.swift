@@ -8,7 +8,7 @@
 import Charts
 import SwiftUI
 
-struct RunningSplits: View {
+struct WorkoutSplitsView: View {
     
     var splits: [RunSplit]
     
@@ -50,7 +50,7 @@ struct RunningSplits: View {
 }
 
 #Preview {
-    RunningSplits(
+    WorkoutSplitsView(
         splits: [
             RunSplit(id: 1, pace: 511, elevation: -3),
             RunSplit(id: 2, pace: 485, elevation: 10),

@@ -45,6 +45,17 @@ struct WorkoutView: View {
                     .frame(width: 45, height: 55)
                     .foregroundColor(Color.Background.primary)
             }
+            
+        default:
+            return ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(.primary)
+                Image(systemName: "figure")
+                    .resizable()
+                    .frame(width: 45, height: 55)
+                    .foregroundColor(.background)
+            }
         }
     }
     
@@ -121,6 +132,8 @@ struct WorkoutView: View {
                             }.padding(.horizontal, 25)
                         }
                     case .soccer:
+                        HStack {}
+                    default:
                         HStack {}
                     }
                 }.toolbar {

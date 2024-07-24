@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityHomeView: View {
     
     @State private var selectedTab: Int = 1
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -33,5 +33,5 @@ struct ActivityHomeView: View {
 
 #Preview {
     ActivityHomeView()
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }

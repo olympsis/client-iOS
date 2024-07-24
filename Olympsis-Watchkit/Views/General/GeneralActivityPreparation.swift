@@ -16,7 +16,7 @@ struct GeneralActivityPreparation: View {
     @State private var showLiveActivity: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: ActivityManager
+    @EnvironmentObject private var manager: WorkoutManager
     
     @AppStorage("run_type") private var runType: String?
     
@@ -72,5 +72,5 @@ struct GeneralActivityPreparation: View {
 
 #Preview {
     GeneralActivityPreparation(sport: .soccer)
-        .environmentObject(ActivityManager())
+        .environmentObject(WorkoutManager())
 }
