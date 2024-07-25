@@ -64,7 +64,7 @@ struct TabBar: View {
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
                             .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
-                        Text("RECORD")
+                        Text("ACTIVITY")
                             .font(.caption2)
                             .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
                     }

@@ -256,7 +256,7 @@ struct Activity: View {
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack {
-                        Text("Workouts")
+                        Text("Activity")
                             .font(.title)
                             .bold()
                             .foregroundColor(.primary)

@@ -9,9 +9,9 @@ import SwiftUI
 
 struct WorkoutView: View {
     
-    @State var activityName: Text
-    @State var workout: Workout
-    @Environment(\.presentationMode) private var presentationMode
+    var activityName: Text
+    var workout: Workout
+    @Environment(\.dismiss) private var dismiss
     
     var sportIcon: some View {
         switch (workout.type) {
@@ -61,7 +61,7 @@ struct WorkoutView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 VStack {
                     HStack {
                         sportIcon
@@ -75,8 +75,9 @@ struct WorkoutView: View {
                                 .padding(.leading)
                         }
                         Spacer()
-                    }.frame(maxWidth: .infinity)
-                        .padding(.horizontal)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal)
                     
                     switch (workout.type) {
                     case .walking, .running:
@@ -136,9 +137,10 @@ struct WorkoutView: View {
                     default:
                         HStack {}
                     }
-                }.toolbar {
+                }
+                .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                        Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
                         }
                     }

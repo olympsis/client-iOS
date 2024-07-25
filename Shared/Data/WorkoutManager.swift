@@ -537,6 +537,12 @@ extension WorkoutManager {
             let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [dateSortDescriptor]) { (query, results, error) in
                 if let samples = results as? [HKQuantitySample] {
                     let average = samples.reduce(0.0) { $0 + $1.quantity.doubleValue(for: unit) }
+                    if quantityType == .heartRate {
+                        if let last = samples.last?.quantity.doubleValue(for: unit) {
+                            continuation.resume(returning: last)
+                            return
+                        }
+                    }
                     continuation.resume(returning: average)
                 } else if let error = error {
                     continuation.resume(throwing: error)
