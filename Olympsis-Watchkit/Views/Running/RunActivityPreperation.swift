@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RunActivityPreperation: View {
     
+    var sport: SPORTS
     @State private var pickedGoal: ACTIVITY_GOALS?
     @State private var showGoalPicker: Bool = false
     @State private var showLiveActivity: Bool = false
@@ -21,7 +22,7 @@ struct RunActivityPreperation: View {
     var body: some View {
         ScrollView {
             NavigationLink(destination: {
-                ActivityView(selectedSport: .running)
+                ActivityView(selectedSport: sport)
                     .environmentObject(manager)
             }) {
                 Circle()
@@ -69,6 +70,6 @@ struct RunActivityPreperation: View {
 }
 
 #Preview {
-    RunActivityPreperation()
+    RunActivityPreperation(sport: .running)
         .environmentObject(WorkoutManager())
 }
