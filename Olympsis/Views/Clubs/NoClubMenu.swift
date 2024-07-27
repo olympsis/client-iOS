@@ -10,17 +10,19 @@ import SwiftUI
 
 struct NoClubMenu: View {
     
+    @Binding var location: [Double]
+    
     @State private var showEula: Bool = false
     @State private var showNewClub: Bool = false
     @State private var showInvites: Bool = false
+    @State private var showChangeLocation: Bool = false
     
-    @State private var area: String = "Unknown"
     @State private var region : MKCoordinateRegion = .init()
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var session:SessionStore
     
-    var acceptedEULA: Bool {
+    private var acceptedEULA: Bool {
         guard let user = session.user,
               let hasAccepted = user.acceptedEULA else {
             return false
@@ -28,27 +30,10 @@ struct NoClubMenu: View {
         return hasAccepted
     }
     
-    func fetchLocaleInformation() async {
-        let geoCoder = CLGeocoder()
-        let location = session.locationManager.region
-        let l = CLLocation(latitude: location.center.latitude, longitude: location.center.longitude)
-        do {
-            let pk = try await geoCoder.reverseGeocodeLocation(l)
-            guard let _ = pk.first?.country,
-                  let state = pk.first?.administrativeArea,
-                  let _ = pk.first?.locality else {
-                return
-            }
-            area = state
-        } catch {
-            return
-        }
-    }
-    
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack {
+                VStack(spacing: 10) {
                     Button(action:{
                         guard acceptedEULA else {
                             self.showEula.toggle()
@@ -70,9 +55,33 @@ struct NoClubMenu: View {
                             }
                             Spacer()
                         }
-                    }.fullScreenCover(isPresented: $showNewClub) {
-                        NewGroup()
                     }
+                    
+                    Button(action:{
+                        location = []
+                        self.showChangeLocation.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "globe.americas")
+                                .imageScale(.large)
+                                .padding(.leading)
+                                .foregroundColor(.primary)
+                            VStack(alignment: .leading){
+                                Text("Change Location")
+                                    .foregroundColor(.primary)
+                                Text("Look for clubs in other locations")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            Spacer()
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $showNewClub) {
+                    NewGroup()
+                }
+                .fullScreenCover(isPresented: $showChangeLocation) {
+                    HometownPicker(hometown: $location)
                 }
                 .fullScreenCover(isPresented: $showEula, content: {
                     EndUserLicenseAgreement()
@@ -94,9 +103,7 @@ struct NoClubMenu: View {
     }
 }
 
-struct NoClubMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        NoClubMenu()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    NoClubMenu(location: .constant([]))
+        .environmentObject(SessionStore())
 }
