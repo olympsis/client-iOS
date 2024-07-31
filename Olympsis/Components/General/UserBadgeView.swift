@@ -44,11 +44,6 @@ struct UserBadgeView: View {
                                     .frame(width: 18, height: 18)
                                     .foregroundStyle(Color.foreground)
                             }
-                            .overlay {
-                                Circle()
-                                    .stroke(Color.foreground, lineWidth: 2)
-                                    .frame(width: 35, height: 35)
-                            }
                     }
                 }
                 .clipShape(Circle())
@@ -79,11 +74,6 @@ struct UserBadgeView: View {
                                     .resizable()
                                     .frame(width: 30, height: 30)
                                     .foregroundStyle(Color.foreground)
-                            }
-                            .overlay {
-                                Circle()
-                                    .stroke(Color.foreground, lineWidth: 4)
-                                    .frame(width: 65, height: 65)
                             }
                     }
                 }
