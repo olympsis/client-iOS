@@ -117,6 +117,7 @@
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9572392C326D8B004D5318 /* EventSharingView.swift */; };
+		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
@@ -486,6 +487,7 @@
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
 		5D9572392C326D8B004D5318 /* EventSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingView.swift; sourceTree = "<group>"; };
+		5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProfileLabel.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
@@ -1072,9 +1074,10 @@
 		5F493FA32A54024900EAF5A4 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				5DB681822BFEF4420084B5E8 /* MenuLabel.swift */,
 				5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */,
 				5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */,
-				5DB681822BFEF4420084B5E8 /* MenuLabel.swift */,
+				5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */,
 			);
 			name = Buttons;
 			path = ../Views/Buttons;
@@ -1919,6 +1922,7 @@
 				5D9F694B2BB9F7F90057D205 /* AboutUs.swift in Sources */,
 				5D666A9F2BF7CDAD001EE754 /* MediaPickerViewModel.swift in Sources */,
 				5DF5CFC22C0450D5008F5374 /* ClubBanner.swift in Sources */,
+				5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */,
 				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,

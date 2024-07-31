@@ -88,9 +88,7 @@ struct ViewContainer: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewContainer()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    ViewContainer()
+        .environmentObject(SessionStore())
 }

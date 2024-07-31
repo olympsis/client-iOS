@@ -22,10 +22,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .home ? "house.fill" : "house")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == .home ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                         Text("HOME")
                             .font(.caption2)
-                            .foregroundColor(currentTab == .home ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                     }
                 }
                 Button() {
@@ -37,10 +37,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .club ? "person.3.fill" : "person.3")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == .club ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                         Text("GROUPS")
                             .font(.caption2)
-                            .foregroundColor(currentTab == .club ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                     }
                 }
                 Button() {
@@ -52,10 +52,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .map ? "map.fill" : "map")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                         Text("EVENTS")
                             .font(.caption2)
-                            .foregroundColor(currentTab == .map ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                     }
                 }
 //                Button() {
@@ -120,15 +120,15 @@ struct TabBar: View {
                                 .frame(width: 20, height: 20)
                                 .frame(maxWidth: .infinity)
                                 .overlay {
-                                    Image(systemName: "person")
+                                    Image(systemName: "person.fill")
                                         .imageScale(.small)
-                                        .foregroundStyle(currentTab == .profile ? .white : Color("color-secnd") )
+                                        .foregroundStyle(currentTab == .profile ? .white : Color.dark)
                                 }
-                                .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
+                                .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white)
                         }
                         Text("PROFILE")
                             .font(.caption2)
-                            .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
+                            .foregroundColor(.white )
                     }
                 }
             }
@@ -141,9 +141,7 @@ struct TabBar: View {
     }
 }
 
-struct TabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        TabBar(currentTab: .constant(.home)).environmentObject(SessionStore())
-            .background(Color("dark-color"))
-    }
+#Preview {
+    TabBar(currentTab: .constant(.home)).environmentObject(SessionStore())
+        .background(Color("dark-color"))
 }
