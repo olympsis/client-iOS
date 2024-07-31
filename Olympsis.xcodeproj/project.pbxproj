@@ -118,6 +118,7 @@
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9572392C326D8B004D5318 /* EventSharingView.swift */; };
 		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
+		5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
@@ -488,6 +489,7 @@
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
 		5D9572392C326D8B004D5318 /* EventSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingView.swift; sourceTree = "<group>"; };
 		5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProfileLabel.swift; sourceTree = "<group>"; };
+		5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBadgeView.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
@@ -1105,7 +1107,7 @@
 				5D9F693B2BB663F60057D205 /* Profile */,
 				5D3FFAA12BAD01C100B54E02 /* Reports */,
 				5DBA3AF22B94E75900B67CFB /* Member */,
-				9A81B62129247707009CA6ED /* CustomViews */,
+				9A81B62129247707009CA6ED /* General */,
 				5F493FA32A54024900EAF5A4 /* Buttons */,
 				5D9557A22A6C5E19006A1EF8 /* Onboarding */,
 				5F493FA82A5480B700EAF5A4 /* Pickers */,
@@ -1203,15 +1205,16 @@
 			path = Club;
 			sourceTree = "<group>";
 		};
-		9A81B62129247707009CA6ED /* CustomViews */ = {
+		9A81B62129247707009CA6ED /* General */ = {
 			isa = PBXGroup;
 			children = (
 				9A81B6222924771A009CA6ED /* SearchBar.swift */,
 				9AA5F616294DB0F900219B95 /* LoadingButton.swift */,
 				9AC5BABE295E5460003E851B /* ScrollingHStackModifier.swift */,
 				9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */,
+				5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */,
 			);
-			path = CustomViews;
+			path = General;
 			sourceTree = "<group>";
 		};
 		9A81B6472925EB6F009CA6ED /* Event */ = {
@@ -2035,6 +2038,7 @@
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,
 				5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */,
+				5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */,
 				5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */,
 				5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */,
 				5D18BD182B391D9000F90777 /* GenericModels.swift in Sources */,

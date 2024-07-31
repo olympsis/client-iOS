@@ -36,7 +36,7 @@ struct TabBarProfileLabel: View {
                 imageFailed = true
             }
             .cacheOriginalImage()
-            .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100)))
+            .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
             .resizable()
             .overlay {
                 if imageFailed {

@@ -178,7 +178,7 @@ struct PostHeader: View {
                             ProgressView()
                         }
                     }
-                } .frame(width: 35, height: 35)
+                }.frame(width: 35, height: 35)
                 VStack(alignment: .leading) {
                     Text(username)
                         .bold()

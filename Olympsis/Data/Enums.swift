@@ -343,3 +343,9 @@ enum APP_STATE: Int, CaseIterable {
     case developer = 1
     case suspended = 2
 }
+
+enum BADGE_SIZE {
+    case small
+    case medium
+    case large
+}
