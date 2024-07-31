@@ -47,6 +47,7 @@ struct TabBarProfileLabel: View {
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .imageScale(.small)
+                                    .foregroundStyle(Color.dark)
                             }
                     } else {
                         Circle()
@@ -60,7 +61,6 @@ struct TabBarProfileLabel: View {
                             .overlay {
                                 Circle()
                                     .stroke(Color.white, lineWidth: 2)
-                                    .frame(width: 22, height: 22)
                             }
                     }
                 }

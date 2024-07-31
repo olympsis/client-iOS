@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct TabBar: View {
+    
     @Binding var currentTab: Tab
     @EnvironmentObject var session: SessionStore
+    
     var body: some View {
         GeometryReader { proxy in
             HStack(alignment: .center, spacing: 0) {
@@ -28,6 +30,7 @@ struct TabBar: View {
                             .foregroundColor(.white )
                     }
                 }
+                
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .club
@@ -75,57 +78,10 @@ struct TabBar: View {
                     }
                 } label: {
                     VStack {
-                        if let user = session.user {
-                            ZStack {
-                                Image(systemName: "circle.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                    .frame(maxWidth: .infinity)
-                                    .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
-                                if let img = user.imageURL,
-                                 img != "" {
-                                    AsyncImage(url: URL(string: GenerateImageURL(img))){ phase in
-                                        if let image = phase.image {
-                                                image // Displays the loaded image.
-                                                    .resizable()
-                                                    .clipShape(Circle())
-                                                    .scaledToFill()
-                                                    .clipped()
-                                            } else if phase.error != nil {
-                                                Color.red // Indicates an error.
-                                                    .clipShape(Circle())
-                                                    .opacity(0.3)
-                                            } else {
-                                                Color.gray // Acts as a placeholder.
-                                                    .clipShape(Circle())
-                                                    .opacity(0.3)
-                                            }
-                                    }.frame(width: 18, height: 18)
-                                } else {
-                                    Image(systemName: "circle.fill")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                        .frame(maxWidth: .infinity)
-                                        .overlay {
-                                            Image(systemName: "person")
-                                                .imageScale(.small)
-                                                .foregroundStyle(currentTab == .profile ? .white : Color("color-secnd") )
-                                        }
-                                        .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white )
-                                }
-                            }
-                        } else {
-                            Image(systemName: "circle.fill")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                                .frame(maxWidth: .infinity)
-                                .overlay {
-                                    Image(systemName: "person.fill")
-                                        .imageScale(.small)
-                                        .foregroundStyle(currentTab == .profile ? .white : Color.dark)
-                                }
-                                .foregroundColor(currentTab == .profile ? Color("color-secnd") : .white)
-                        }
+                        TabBarProfileLabel(currentTab: $currentTab)
+                            .environmentObject(session)
+                            .frame(maxWidth: .infinity)
+                        
                         Text("PROFILE")
                             .font(.caption2)
                             .foregroundColor(.white )
@@ -142,6 +98,9 @@ struct TabBar: View {
 }
 
 #Preview {
-    TabBar(currentTab: .constant(.home)).environmentObject(SessionStore())
-        .background(Color("dark-color"))
+    @State var currentTab: Tab = .home
+    return TabBar(currentTab: $currentTab)
+        .background(Color.dark)
+        .environmentObject(SessionStore())
+        
 }
