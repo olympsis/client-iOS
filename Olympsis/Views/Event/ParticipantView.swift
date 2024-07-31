@@ -12,7 +12,7 @@ struct ParticipantView: View {
     
     @State var participant: Participant
     
-    var imageURL: URL? {
+    private var imageURL: URL? {
         guard let data = participant.user,
               let img = data.imageURL else {
             return nil
@@ -20,8 +20,25 @@ struct ParticipantView: View {
         return generateImageURL(img)
     }
     
+    private var ringColor: Color {
+        guard participant.user != nil else {
+            return Color("color-prime")
+        }
+        if participant.status == "yes" {
+            return Color("color-prime")
+        } else if participant.status == "maybe" {
+            return Color("color-secnd")
+        } else {
+            return Color("color-tert")
+        }
+    }
+    
     var body: some View {
         UserBadgeView(size: .medium, imageURL: imageURL)
+            .overlay {
+                Circle()
+                    .stroke(ringColor, lineWidth: 2)
+            }
     }
 }
 
