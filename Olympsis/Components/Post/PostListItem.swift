@@ -93,12 +93,12 @@ struct PostHeader: View {
         return true
     }
     
-    private var userImageURL: String {
+    private var userImageURL: URL? {
         guard let user = post.poster,
                 let image = user.imageURL else {
-            return "https://api.olympsis.com"
+            return nil
         }
-        return GenerateImageURL(image)
+        return generateImageURL(image)
     }
     
     private var orgImageURL: String {
@@ -157,28 +157,9 @@ struct PostHeader: View {
         HStack {
             switch post.type {
             case "post":
-                AsyncImage(url: URL(string: userImageURL)){ phase in
-                    if let image = phase.image {
-                        image // Displays the loaded image.
-                            .resizable()
-                            .clipShape(Circle())
-                            .scaledToFill()
-                            .clipped()
-                    } else if phase.error != nil {
-                        Color("background") // Indicates an error.
-                            .clipShape(Circle())
-                            .overlay {
-                                Image(systemName: "person.fill")
-                                    .foregroundStyle(Color("foreground"))
-                            }
-                    } else {
-                        ZStack {
-                            Color("background") // Acts as a placeholder.
-                                .clipShape(Circle())
-                            ProgressView()
-                        }
-                    }
-                }.frame(width: 35, height: 35)
+
+                UserBadgeView(size: .small, imageURL: userImageURL)
+                
                 VStack(alignment: .leading) {
                     Text(username)
                         .bold()
@@ -219,29 +200,8 @@ struct PostHeader: View {
                             
                     }.padding(.leading, 5)
                 } else {
-                    AsyncImage(url: URL(string: userImageURL)){ phase in
-                        if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .clipShape(Circle())
-                                .scaledToFill()
-                                .clipped()
-                        } else if phase.error != nil {
-                            Color("background") // Indicates an error.
-                                .clipShape(Circle())
-                                .overlay {
-                                    Image(systemName: "person.fill")
-                                        .foregroundStyle(Color("foreground"))
-                                }
-                        } else {
-                            ZStack {
-                                Color("background") // Acts as a placeholder.
-                                    .clipShape(Circle())
-                                ProgressView()
-                            }
-                        }
-                    }
-                    .frame(width: 35, height: 35)
+                    UserBadgeView(size: .small, imageURL: userImageURL)
+                    
                     VStack(alignment: .leading) {
                         Text(username)
                             .bold()

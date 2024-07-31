@@ -11,16 +11,9 @@ import Kingfisher
 struct UserBadgeView: View {
     
     var size: BADGE_SIZE
+    var imageURL: URL?
     @State private var imageFailed: Bool = false
     @EnvironmentObject private var session: SessionStore
-    
-    private var imageURL: URL? {
-        guard let user = session.user,
-              let imageURL = user.imageURL else {
-            return nil
-        }
-        return generateImageURL(imageURL)
-    }
     
     var body: some View {
         switch size {
@@ -122,11 +115,6 @@ struct UserBadgeView: View {
                                     .resizable()
                                     .frame(width: 50, height: 50)
                                     .foregroundStyle(Color.foreground)
-                            }
-                            .overlay {
-                                Circle()
-                                    .stroke(Color.foreground, lineWidth: 5)
-                                    .frame(width: 100, height: 100)
                             }
                     }
                 }

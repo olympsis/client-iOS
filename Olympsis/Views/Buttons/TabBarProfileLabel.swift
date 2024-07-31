@@ -46,7 +46,8 @@ struct TabBarProfileLabel: View {
                             .foregroundStyle(.white)
                             .overlay {
                                 Image(systemName: "person.fill")
-                                    .imageScale(.small)
+                                    .resizable()
+                                    .frame(width: 10, height: 10)
                                     .foregroundStyle(Color.dark)
                             }
                     } else {
@@ -55,7 +56,8 @@ struct TabBarProfileLabel: View {
                             .foregroundStyle(Color.dark)
                             .overlay {
                                 Image(systemName: "person.fill")
-                                    .imageScale(.small)
+                                    .resizable()
+                                    .frame(width: 10, height: 10)
                                     .foregroundStyle(.white)
                             }
                             .overlay {

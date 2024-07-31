@@ -48,34 +48,7 @@ struct ProfileModel: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                KFImage(imageURL)
-                    .placeholder({
-                        Circle()
-                            .foregroundStyle(Color.background)
-                            .overlay {
-                                ProgressView()
-                            }
-                    })
-                    .onFailure({ _ in
-                        imageFailed = true
-                    })
-                    .resizable()
-                    .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
-                    .overlay {
-                        if imageFailed {
-                            Circle()
-                                .frame(width: 100, height: 100)
-                                .foregroundStyle(Color.background)
-                                .overlay {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .frame(width: 35, height: 35)
-                                        .foregroundStyle(Color.foreground)
-                                }
-                        }
-                    }
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
+                UserBadgeView(size: .large, imageURL: imageURL)
                 
                 VStack(alignment: .leading){
                     HStack(){
