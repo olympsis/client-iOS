@@ -138,6 +138,11 @@ class SessionStore: ObservableObject {
     
     @MainActor
     func CheckIn() async {
+        
+        clubs = []
+        orgs = []
+        groups = []
+        
         do {
             guard let resp = try await userObserver.CheckIn() else {
                 return

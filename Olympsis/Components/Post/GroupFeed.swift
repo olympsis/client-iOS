@@ -184,11 +184,6 @@ struct GroupFeed: View {
                 }
             }
         }
-        .onChange(of: session.selectedGroup, { _, _ in
-            Task {
-                await self.viewModel.getLatestPosts(session: session)
-            }
-        })
         .task {
             if viewModel.posts.isEmpty {
                 await self.viewModel.getLatestPosts(session: session)

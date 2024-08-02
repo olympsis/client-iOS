@@ -17,7 +17,7 @@ struct GroupSelector: View {
     
     var body: some View {
         VStack {
-            List(selection: $selection) {
+            List {
                 Section {
                     ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
                         HStack {
@@ -41,17 +41,23 @@ struct GroupSelector: View {
                                         Image(systemName: "person.2")
                                     }
                             }
+                            
                             Text(c.club?.name ?? "club_name")
+                                .fontWeight(session.selectedGroup?.id == c.id ? .bold : .regular)
+                            
+                        }.onTapGesture {
+                            selection = c.id
                         }
                     }
                 } header: {
                     Text("Clubs")
                 }
+                
                 if (session.groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
                     Section {
-                        ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
+                        ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { o in
                             HStack {
-                                if let logo = c.organization?.logo,
+                                if let logo = o.organization?.logo,
                                    let url = generateImageURL(logo) {
                                     KFImage(url)
                                         .placeholder({
@@ -71,7 +77,12 @@ struct GroupSelector: View {
                                             Image(systemName: "building")
                                         }
                                 }
-                                Text(c.organization?.name ?? "club_name")
+                                
+                                Text(o.organization?.name ?? "club_name")
+                                    .fontWeight(session.selectedGroup?.id == o.id ? .bold : .regular)
+                                
+                            }.onTapGesture {
+                                selection = o.id
                             }
                         }
                     } header: {
@@ -97,18 +108,12 @@ struct GroupSelector: View {
         })
         .onChange(of: selection) { _, _ in
             Task {
-                guard let selection = session.groups.first(where: { $0.id == selection }) else {
-                    dismiss()
-                    return
-                }
                 await MainActor.run {
-                    session.clubsState = .loading
-                    session.selectedGroup = selection
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        session.clubsState = .success
+                    guard let selection = session.groups.first(where: { $0.id == selection }) else {
                         dismiss()
+                        return
                     }
+                    session.selectedGroup = selection
                 }
             }
         }
