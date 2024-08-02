@@ -28,18 +28,23 @@ struct ViewContainer: View {
             TabView(selection: $currentTab) {
                 Home()
                     .tag(Tab.home)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 GroupView()
                     .tag(Tab.club)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 MapView()
                     .tag(Tab.map)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 Activity()
                     .tag(Tab.activity)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 Profile()
                     .tag(Tab.profile)
+                    .toolbar(.hidden, for: .tabBar)
             }
             .toast(
                 isPresented: session.$notificationsManager.showToast,
