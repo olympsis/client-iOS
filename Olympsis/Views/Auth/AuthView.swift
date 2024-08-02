@@ -90,11 +90,12 @@ struct AuthView: View {
                                 }
                             }
                         }
-                    ).signInWithAppleButtonStyle(.white)
-                        .frame(height: 50)
-                        .padding(.horizontal, 50)
-                        .padding(.bottom, 50)
-                        .padding(.top)
+                    )
+                    .signInWithAppleButtonStyle(.white)
+                    .frame(height: 50)
+                    .padding(.horizontal, 50)
+                    .padding(.bottom, 50)
+                    .padding(.top)
                 case .loading:
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 50)
@@ -125,8 +126,6 @@ struct AuthView: View {
     }
 }
 
-struct Auth_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthView(currentView: .constant(.auth))
-    }
+#Preview {
+    AuthView(currentView: .constant(.auth))
 }

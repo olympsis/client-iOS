@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct AuthContainer: View {
+    
     @State var currentView = AuthTab.auth
     
-    init() {
-        UITabBar.appearance().isHidden = true
-    }
-    
     var body: some View {
-        VStack {
-            TabView(selection: $currentView){
-                AuthView(currentView: $currentView).tag(AuthTab.auth)
-                UserDataCreation(currentView: $currentView).tag(AuthTab.username)
-            }
+        TabView(selection: $currentView){
+            AuthView(currentView: $currentView)
+                .tag(AuthTab.auth)
+                .toolbar(.hidden, for: .tabBar)
+            UserDataCreation(currentView: $currentView)
+                .tag(AuthTab.username)
+                .toolbar(.hidden, for: .tabBar)
         }
     }
 }
 
-struct AuthContainer_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthContainer()
-    }
+#Preview {
+    AuthContainer()
 }
