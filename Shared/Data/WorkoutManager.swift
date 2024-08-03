@@ -58,6 +58,7 @@ class WorkoutManager: NSObject, ObservableObject {
     
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?
+    var routeBuilder: HKWorkoutRouteBuilder?
     var log: Logger = Logger(subsystem: "com.olympsis.watchkit", category: "activity_manager")
     
     #if os(watchOS)

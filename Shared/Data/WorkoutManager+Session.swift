@@ -20,6 +20,10 @@ extension WorkoutManager {
             return config
         }()
         
+        if location == .outdoor {
+            self.routeBuilder = HKWorkoutRouteBuilder(healthStore: self.healthStore, device: .local())
+        }
+        
         do {
             #if os(watchOS)
             session = try HKWorkoutSession(
@@ -61,6 +65,23 @@ extension WorkoutManager {
             #if os(watchOS)
             try await builder?.beginCollection(at: startDate)
             #endif
+            
+            Task {
+                guard let routeBuilder else {
+                    log.info("Route builder not created")
+                    return
+                }
+                
+                let updates = CLLocationUpdate.liveUpdates()
+                for try await update in updates {
+                    if let loc = update.location {
+                        if loc.horizontalAccuracy <= 50.0 {
+                            try await routeBuilder.insertRouteData([loc])
+                            log.info("Route Location added: \(loc.coordinate.latitude), \(loc.coordinate.longitude)")
+                        }
+                    }
+                }
+            }
         } catch {
             log.error("Failed to start collecting data from workout: \(error.localizedDescription, privacy: .public)")
             return
@@ -98,29 +119,17 @@ extension WorkoutManager {
     func resetWorkout() {
         if let workout,
            let selectedSport  {
-            if unit == UnitLength.kilometers {
-                let distance = workout.statistics(for:
-                    HKQuantityType.init(.distanceWalkingRunning))?
-                        .sumQuantity()?
-                        .doubleValue(for: .meter()) ?? 0
-                let conversion = (distance / 1000)
-                let work = Workout(type: selectedSport, workout: workout)
-                workouts.append(work)
-            } else {
-                let distance = workout.statistics(for:
-                    HKQuantityType.init(.distanceWalkingRunning))?
-                        .sumQuantity()?
-                        .doubleValue(for: .mile()) ?? 0
-                let work = Workout(type: selectedSport, workout: workout)
-                workouts.append(work)
-            }
+            let work = Workout(type: selectedSport, workout: workout)
+            workouts.append(work)
         }
         
-        selectedSport = nil
-        selectedWorkout = nil
         #if os(watchOS)
         builder = nil
         #endif
+        
+        selectedSport = nil
+        selectedWorkout = nil
+        routeBuilder = nil
         session = nil
         workout = nil
         activeEnergy = 0
@@ -161,29 +170,31 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
                 }
             }
         case .ended:
-            Task {
-                Task {
-                    do {
-                        await MainActor.run {
-                            self.isProcessingWorkout = true
-                        }
-                        #if os(watchOS)
-                        try await builder?.endCollection(at: date)
-                        let workout = try await self.builder?.finishWorkout()
-                        #endif
-                        await MainActor.run {
-                            self.workout = workout
-                            self.state = .ended
-                            self.isProcessingWorkout = false
-                            self.showingSummaryView = true
-                            self.log.info("Workout state changed -> ENDED")
-                        }
-                    } catch {
-                        await MainActor.run {
-                            self.state = .ended
-                            self.log.error("Failed to finish workout: \(error.localizedDescription, privacy: .public)")
-                        }
+            Task { @MainActor in
+                do {
+                    self.isProcessingWorkout = true
+                    
+                    #if os(watchOS)
+                    try await builder?.endCollection(at: date)
+                    let workout = try await self.builder?.finishWorkout()
+                    #endif
+                    
+                    self.workout = workout
+                    self.state = .ended
+                    self.isProcessingWorkout = false
+                    self.showingSummaryView = true
+                    
+                    self.log.info("Workout state changed -> ENDED")
+                    
+                    guard let routeBuilder,
+                          let workout else {
+                        return
                     }
+                    try await routeBuilder.finishRoute(with: workout, metadata: [:])
+                    log.info("Workout Route finished.")
+                } catch {
+                    self.state = .ended
+                    self.log.error("Failed to finish workout: \(error.localizedDescription, privacy: .public)")
                 }
             }
         case .paused:

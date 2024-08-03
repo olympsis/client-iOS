@@ -191,7 +191,7 @@ extension WorkoutManager {
         }
     }
     
-    func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [HKWorkoutRoute] {
+    func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [CLLocation] {
         return try await withCheckedThrowingContinuation { continuation in
             let workoutPredicate = HKQuery.predicateForObjects(from: workout)
             
@@ -199,8 +199,26 @@ extension WorkoutManager {
                                       predicate: workoutPredicate,
                                       limit: 0,
                                       sortDescriptors: nil) { (query, results, error) in
-                if let samples = results as? [HKWorkoutRoute] {
-                    continuation.resume(returning: samples)
+                if let workoutRouteSamples = results as? [HKWorkoutRoute] {
+                    var locations: [CLLocation] = []
+                                
+                    let group = DispatchGroup()
+                    for workoutRoute in workoutRouteSamples {
+                        group.enter()
+                        let locationQuery = HKWorkoutRouteQuery(route: workoutRoute) { (query, routeData, done, error) in
+                            if let routeData = routeData {
+                                locations.append(contentsOf: routeData)
+                            }
+                            if done {
+                                group.leave()
+                            }
+                        }
+                        self.healthStore.execute(locationQuery)
+                    }
+                    
+                    group.notify(queue: .main) {
+                        continuation.resume(returning: locations)
+                    }
                 } else if let error = error {
                     continuation.resume(throwing: error)
                 } else {

@@ -8,3 +8,8 @@
 import os
 import SwiftUI
 
+extension WorkoutManager {
+    func startRecordingLocation() {
+        
+    }
+}

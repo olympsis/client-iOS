@@ -12,11 +12,11 @@ import HealthKit
 
 struct WorkoutMapView: View {
     
-    @State var locations: [CLLocation] = []
+    @State var locations: [CLLocationCoordinate2D] = []
     
     var body: some View {
         Map {
-            MapPolyline(coordinates: locations.map { $0.coordinate })
+            MapPolyline(coordinates: locations)
                 .tint(Color.blue)
                 .stroke(Color.blue, lineWidth: 5)
         }

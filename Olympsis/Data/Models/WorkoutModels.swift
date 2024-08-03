@@ -20,7 +20,7 @@ class Workout: Identifiable {
     var caloriesBurned: Double = 100
     
     var heartSamples: [HKQuantitySample] = []
-    var locationSamples: [HKWorkoutRoute] = []
+    var locationSamples: [CLLocation] = []
     var distanceSamples: [HKQuantitySample] = []
     
     init(type: SPORTS, workout: HKWorkout) {
@@ -95,6 +95,10 @@ class Workout: Identifiable {
             return 0
         }
         return bpm
+    }
+    
+    var route2DPoints: [CLLocationCoordinate2D] {
+        return locationSamples.map { $0.coordinate }
     }
 }
 
