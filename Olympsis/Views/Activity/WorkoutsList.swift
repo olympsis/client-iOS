@@ -15,7 +15,7 @@ struct WorkoutsList: View {
     
     var body: some View {
         ScrollView {
-            ForEach(manager.workouts.sorted(by: { $0.startDate > $1.startDate })) { workout in
+            ForEach(manager.workouts.sorted(by: { $0.workout.startDate > $1.workout.startDate })) { workout in
                 WorkoutListItemView(workout: workout)
             }
         }

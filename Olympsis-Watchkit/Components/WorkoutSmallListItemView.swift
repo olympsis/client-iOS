@@ -45,7 +45,7 @@ struct WorkoutSmallListItemView: View {
                                 .imageScale(.large)
                         }
                         
-                        Text("\(workout.totalDistanceTraveled, specifier: "%.2f")")
+                        Text("\(workout.totalDistance, specifier: "%.2f")")
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.horizontal)
@@ -61,5 +61,5 @@ struct WorkoutSmallListItemView: View {
 }
 
 #Preview {
-    WorkoutSmallListItemView(workout: Workout(id: UUID(), type: .soccer, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
+    WorkoutSmallListItemView(workout: WORKOUTS[0])
 }

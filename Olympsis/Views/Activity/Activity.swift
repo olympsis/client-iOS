@@ -193,7 +193,7 @@ struct Activity: View {
                         
                     }
                     if (manager.workouts.count > 0) {
-                        ForEach(manager.workouts.sorted(by: { $0.startDate > $1.startDate}).prefix(4)) { workout in
+                        ForEach(manager.workouts.sorted(by: { $0.workout.startDate > $1.workout.startDate }).prefix(4)) { workout in
                             WorkoutListItemView(workout: workout)
                         }
                     } else {
@@ -227,8 +227,10 @@ struct Activity: View {
                             
                         }
                         
-                        ForEach(0..<5, id: \.self) { _ in
-                            WorkoutListItemTemplate()
+                        LazyVStack {
+                            ForEach(0..<5, id: \.self) { _ in
+                                WorkoutListItemTemplate()
+                            }
                         }
                     }
                     .disabled(true)
@@ -241,11 +243,10 @@ struct Activity: View {
                 Spacer(minLength: 40)
             }
             .task {
-                guard manager.checkAuthorizationStatus(),
-                      manager.workouts.isEmpty else {
-                    await manager.requestHealthStoreAuthorization()
+                guard manager.workouts.isEmpty else {
                     return
                 }
+                await manager.requestHealthStoreAuthorization()
                 await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
             }
             .onChange(of: manager.state, { oldValue, newValue in
