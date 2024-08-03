@@ -1541,6 +1541,8 @@
 		5DB63DBC2C4DB72700F815DE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5DD834052C3A617600DD4691 /* WorkoutMapView.swift */,
+				5DD834072C3A618400DD4691 /* WorkoutSplitsView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3312,7 +3314,6 @@
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
 				5D76D3772C7966AA00846382 /* Routes.swift in Sources */,
 				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
-				5D34F07E2C4F8C0C0014E676 /* HKWorkoutStatistics.swift in Sources */,
 				5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */,
 				5D4B0A662D96F87400475A0C /* EventMedia.swift in Sources */,
 				5D0CCB1C2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */,
@@ -3325,6 +3326,7 @@
 				5D90A9D92D53CD9100D7B168 /* EventTypePicker.swift in Sources */,
 				5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
+				5DB4D0492C5EC5F400F241BB /* WorkoutManager+Session.swift in Sources */,
 				5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
