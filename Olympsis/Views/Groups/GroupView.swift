@@ -10,18 +10,23 @@ import SwiftUI
 
 struct GroupView: View {
     
+    @StateObject private var viewModel: GroupViewModel
     @EnvironmentObject private var session: SessionStore
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
     
+    init() {
+        _viewModel = StateObject(wrappedValue: GroupViewModel(session: session))
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack {
+            Group {
                 switch session.clubsState {
                 case .loading:
                     ClubLoadingView()
                 case .success, .pending:
-                    VStack {
+                    Group {
                         switch session.selectedGroup?.type {
                         case .Club:
                             if let club = session.selectedGroup?.club {

@@ -132,6 +132,8 @@
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
 		5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2C1862C338128007CE0B8 /* ClubEditor.swift */; };
 		5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */; };
+		5DB4D04F2C5EF82C00F241BB /* GroupSelectionListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */; };
+		5DB4D0532C5F042D00F241BB /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */; };
 		5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681822BFEF4420084B5E8 /* MenuLabel.swift */; };
 		5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
@@ -503,6 +505,8 @@
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
 		5DB2C1862C338128007CE0B8 /* ClubEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEditor.swift; sourceTree = "<group>"; };
 		5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingView.swift; sourceTree = "<group>"; };
+		5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelectionListItem.swift; sourceTree = "<group>"; };
+		5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
 		5DB681822BFEF4420084B5E8 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
 		5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
@@ -775,6 +779,7 @@
 			children = (
 				5DBB94CC2B0326300031876D /* NewGroup.swift */,
 				5DC733F82B2937D60051BE21 /* GroupsView.swift */,
+				5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -825,6 +830,7 @@
 			isa = PBXGroup;
 			children = (
 				5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */,
+				5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1852,6 +1858,7 @@
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
 				5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */,
 				5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */,
+				5DB4D04F2C5EF82C00F241BB /* GroupSelectionListItem.swift in Sources */,
 				5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */,
 				5FF2A0272A380534009234AD /* ChatModels.swift in Sources */,
 				5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */,
@@ -2012,6 +2019,7 @@
 				5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */,
 				9AA5F619294DCBF700219B95 /* MapOptions.swift in Sources */,
+				5DB4D0532C5F042D00F241BB /* GroupViewModel.swift in Sources */,
 				9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */,
 				5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */,
 				5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */,
