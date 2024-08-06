@@ -65,25 +65,8 @@ extension WorkoutManager {
             #if os(watchOS)
             try await builder?.beginCollection(at: startDate)
             #endif
-            
-            Task {
-                guard let routeBuilder else {
-                    log.info("Route builder not created")
-                    return
-                }
-                
-                let updates = CLLocationUpdate.liveUpdates()
-                for try await update in updates {
-                    if let loc = update.location {
-                        if loc.horizontalAccuracy <= 50.0 {
-                            try await routeBuilder.insertRouteData([loc])
-                            log.info("Route Location added: \(loc.coordinate.latitude), \(loc.coordinate.longitude)")
-                        }
-                    }
-                }
-            }
         } catch {
-            log.error("Failed to start collecting data from workout: \(error.localizedDescription, privacy: .public)")
+            self.log.error("Failed to start collecting data from workout: \(error.localizedDescription, privacy: .public)")
             return
         }
     }
@@ -137,10 +120,61 @@ extension WorkoutManager {
         heartRate = 0
         distance = 0
     }
+    
+    func listenToLocationUpdates() {
+        Task {
+            guard let routeBuilder else {
+                self.log.info("Route builder not created")
+                return
+            }
+            
+            self.manager.requestWhenInUseAuthorization()
+            self.manager.startUpdatingLocation()
+            
+            if #available(iOS 18.0, watchOS 11.0, *) {
+                let session = CLServiceSession(authorization: .whenInUse, fullAccuracyPurposeKey: "fitness")
+                
+                for try await diagnostic in session.diagnostics {
+                    if diagnostic.authorizationDenied {
+                        self.log.info("Authorization denied")
+                    } else if diagnostic.authorizationRestricted {
+                        self.log.info("Authorization restricted")
+                    } else if diagnostic.authorizationDeniedGlobally {
+                        self.log.info("Authorization denied globally")
+                    } else if diagnostic.authorizationRequestInProgress {
+                        self.log.info("Authorization request in progress")
+                    } else if diagnostic.fullAccuracyDenied {
+                        self.log.info("Full accuracy denied")
+                    } else if diagnostic.insufficientlyInUse {
+                        self.log.info("Insufficiently in use")
+                    } else if diagnostic.serviceSessionRequired {
+                        self.log.info("Service session required")
+                    }
+                }
+            }
+            
+            self.backgroundActivity = CLBackgroundActivitySession()
+            let updates = CLLocationUpdate.liveUpdates(.fitness)
+            for try await update in updates {
+                guard let loc = update.location,
+                      loc.horizontalAccuracy <= 50.0 else {
+                    self.log.info("Location accuracy too low or location not recieved.")
+                    return
+                }
+                try await routeBuilder.insertRouteData([loc])
+                self.log.info("Route Location added: \(loc.coordinate.latitude), \(loc.coordinate.longitude)")
+            }
+        }
+    }
+    
+    func stopListeningToLocationUpdates() {
+        backgroundActivity?.invalidate()
+        backgroundActivity = nil
+    }
 }
 
 #if os(watchOS)
-extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
+extension WorkoutManager: @preconcurrency HKLiveWorkoutBuilderDelegate {
     
 }
 #endif
@@ -166,6 +200,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
             Task {
                 await MainActor.run {
                     state = .active
+                    listenToLocationUpdates()
                     self.log.info("Workout state changed -> ACTIVE")
                 }
             }
@@ -190,6 +225,9 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
                           let workout else {
                         return
                     }
+                    
+                    stopListeningToLocationUpdates()
+                    
                     try await routeBuilder.finishRoute(with: workout, metadata: [:])
                     log.info("Workout Route finished.")
                 } catch {

@@ -16,6 +16,7 @@ class WorkoutManager: NSObject, ObservableObject {
     @Published var workouts = [Workout]()
     @Published var samples: [HKSample] = []
     @Published var events: [HKWorkoutEvent] = []
+    @Published var manager = CLLocationManager()
     
     @Published var selectedSport: SPORTS? {
         didSet {
@@ -59,6 +60,7 @@ class WorkoutManager: NSObject, ObservableObject {
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?
     var routeBuilder: HKWorkoutRouteBuilder?
+    var backgroundActivity: CLBackgroundActivitySession?
     var log: Logger = Logger(subsystem: "com.olympsis.watchkit", category: "activity_manager")
     
     #if os(watchOS)
@@ -84,6 +86,11 @@ class WorkoutManager: NSObject, ObservableObject {
         HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
         HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
     ]
+    
+    override init() {
+        super.init()
+        manager.delegate = self
+    }
     
     func checkAuthorizationStatus() -> Bool {
         let status = healthStore.authorizationStatus(for: .workoutType())
@@ -130,6 +137,7 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
     }
+    
 }
 
 extension WorkoutManager {

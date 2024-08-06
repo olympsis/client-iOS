@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ActivityHomeView: View {
     
@@ -26,6 +27,8 @@ struct ActivityHomeView: View {
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .task {
+            var location = CLLocationManager()
+            location.requestWhenInUseAuthorization()
             await manager.requestHealthStoreAuthorization()
         }
     }
