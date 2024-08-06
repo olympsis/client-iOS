@@ -59,15 +59,17 @@ struct GroupSelector: View {
             NewGroup()
         })
         .onChange(of: selection) { _, _ in
-            Task {
-                await MainActor.run {
-                    guard let selection = session.groups.first(where: { $0.id == selection }),
-                          let selectedGroup = session.selectedGroup,
-                          selectedGroup.id != selection.id else {
-                        return
-                    }
-                    
-                    session.selectedGroup = selection
+            Task { @MainActor in
+                guard let selection = session.groups.first(where: { $0.id == selection }),
+                      let selectedGroup = session.selectedGroup,
+                      selectedGroup.id != selection.id else {
+                    return
+                }
+                session.clubsState = .loading
+                session.selectedGroup = selection
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    session.clubsState = .success
                     dismiss()
                 }
             }

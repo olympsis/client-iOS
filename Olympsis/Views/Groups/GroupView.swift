@@ -10,14 +10,9 @@ import SwiftUI
 
 struct GroupView: View {
     
-    @StateObject private var viewModel: GroupViewModel
     @EnvironmentObject private var session: SessionStore
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
-    
-    init() {
-        _viewModel = StateObject(wrappedValue: GroupViewModel(session: session))
-    }
     
     var body: some View {
         NavigationStack {

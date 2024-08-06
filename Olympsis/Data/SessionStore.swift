@@ -44,7 +44,19 @@ class SessionStore: ObservableObject {
     @Published var invitations = [Invitation]() // Invitations Cache
     
     // groups & posts
-    @Published var selectedGroup: GroupSelection?
+    @Published var selectedGroup: GroupSelection? {
+        didSet {
+            guard let selectedGroup else {
+                return
+            }
+            if let club = selectedGroup.club {
+                selectedGroupID = club.id
+            }
+            if let org = selectedGroup.organization {
+                selectedGroupID = org.id
+            }
+        }
+    }
     @Published var groups: [GroupSelection] = [GroupSelection]()
     
     // Observers
@@ -73,6 +85,8 @@ class SessionStore: ObservableObject {
     
     /// Keeps track of the user's search radius for venues and events
     @AppStorage("searchRadius") var radius: Double?
+    
+    @AppStorage("selected_group_id") var selectedGroupID: String?
     
     @AppStorage("deviceToken") private var _token: String?
     @AppStorage("auth_type") private var authType: USER_STATUS?
@@ -159,28 +173,31 @@ class SessionStore: ObservableObject {
                 c.forEach { c in
                     let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
                     self.groups.append(group)
+                    
+                    if selectedGroupID == c.id {
+                        selectedGroup = group
+                    }
                 }
-                guard let g = self.groups.first else {
-                    return
-                }
-                self.selectedGroup = g
             }
             if let o = resp.organizations {
                 self.orgs = o
                 o.forEach { o in
                     let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
                     self.groups.append(group)
-                }
-                if (self.selectedGroup == nil) {
-                    guard let g = self.groups.first else {
-                        return
+                    
+                    if selectedGroupID == o.id {
+                        selectedGroup = group
                     }
-                    self.selectedGroup = g
                 }
             }
             if let i = resp.invitations {
                 invitations = i
             }
+            
+            if selectedGroup == nil {
+                selectedGroup = groups.first
+            }
+            
             authStatus = .authenticated
         } catch {
             authStatus = .unauthenticated
