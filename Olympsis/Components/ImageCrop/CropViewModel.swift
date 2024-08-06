@@ -64,6 +64,9 @@ class CropViewModel: ObservableObject {
         case .rectangle:
             self.maskWidthRadius = configuration.screenWidth / 2
             self.maskHeightRadius = configuration.screenWidth * ((566.0 / 1080.0) / 2)
+        case .rectangleV:
+            self.maskWidthRadius = configuration.screenWidth / 2
+            self.maskHeightRadius = configuration.screenWidth * ((1350.0 / 1080.0) / 2)
         }
         
         for _ in 0..<images.count {
@@ -91,15 +94,16 @@ class CropViewModel: ObservableObject {
      */
     func calculateMagnificationGestureMaxValues() -> (CGFloat, CGFloat) {
         
-        switch configuration.maskShape {
-        case .circle, .square:
-            let minScale = (maskHeightRadius * 2 / min(imageSizeInView.width, imageSizeInView.height))
-            return (minScale, maxMagnificationScale)
-        case .rectangle:
-            let minScale = (maskWidthRadius * 2 / min(imageSizeInView.width, imageSizeInView.height))
-            return (minScale, maxMagnificationScale)
-        }
-        
+//        switch configuration.maskShape {
+//        case .circle, .square:
+//            let minScale = (maskHeightRadius * 2 / min(imageSizeInView.width, imageSizeInView.height))
+//            return (minScale, maxMagnificationScale)
+//        case .rectangle:
+//            let minScale = (maskWidthRadius * 2 / min(imageSizeInView.width, imageSizeInView.height))
+//            return (minScale, maxMagnificationScale)
+//        }
+        let minScale = (maskWidthRadius * 2 / min(imageSizeInView.width, imageSizeInView.height))
+        return (minScale, maxMagnificationScale)
     }
 
     func cropImages() -> [UIImage] {
@@ -129,7 +133,7 @@ class CropViewModel: ObservableObject {
             }
 
             return UIImage(cgImage: result)
-        case .rectangle:
+        case .rectangle, .rectangleV:
             guard let orientedImage = image.correctlyOriented else {
                 return nil
             }

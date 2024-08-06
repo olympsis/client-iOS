@@ -21,24 +21,28 @@ struct Profile: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
-                    ProfileModel(userData: $session.user)
-                        .padding(.top, 20)
-                        .padding(.leading)
                     
-                    // Edit profile button
+                    // MARK: - Profile View
+                    ProfileModel()
+                        .padding(.top, 20)
+                        .padding(.horizontal)
+                        .environmentObject(session)
+                    
+                    // MARK: - Profile Button
                     EditProfileButton()
                         .padding(.bottom, 30)
                     
-                    // Badges View
+                    // MARK: - Badges View
                     BadgesView()
                     
-                    // Trophies View
+                    // MARK: - Trophies View
                     TrophiesView()
                     
-                }.fullScreenCover(isPresented: $showMenu, content: {
+                }
+                .fullScreenCover(isPresented: $showMenu, content: {
                     ProfileMenu()
                 })
                 .toolbar {
@@ -50,18 +54,8 @@ struct Profile: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 45, height: 35)
-                                    .foregroundStyle(Color("background"))
-                                Image(systemName: "slider.horizontal.3")
-                                    .foregroundStyle(Color("foreground"))
-                                    .overlay {
-                                        if session.invitations.count > 0 {
-                                            NotificationCountView(value: $session.invitations.count)
-                                        }
-                                    }
-                            }
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundStyle(Color.foreground)
                         }
                     }
                 }
@@ -70,8 +64,7 @@ struct Profile: View {
     }
 }
 
-struct Settings_Previews: PreviewProvider {
-    static var previews: some View {
-        Profile().environmentObject(SessionStore())
-    }
+#Preview {
+    Profile()
+        .environmentObject(SessionStore())
 }

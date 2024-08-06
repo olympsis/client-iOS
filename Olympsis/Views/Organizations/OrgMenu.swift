@@ -14,8 +14,6 @@ struct OrgMenu: View {
         case DeleteClub
     }
     
-    @State var organization: Organization
-    
     @State private var showAlert = false
     @State private var showClubs = false
     @State private var showNewClub = false
@@ -30,8 +28,9 @@ struct OrgMenu: View {
     @StateObject private var clubObserver = ClubObserver()
     @StateObject private var postObserver = PostObserver()
     
-    @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var organization: Organization
     
     var role: String {
         guard let user = session.user,
@@ -127,15 +126,18 @@ struct OrgMenu: View {
                         alertType = .DeleteClub
                         showAlert.toggle()
                     }, type: .destructive)
+                    
+                    Spacer(minLength: 50)
                 }
             }.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
+                    Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
                             .foregroundColor(Color("color-prime"))
                     }
                 }
             }
+            .navigationBarBackButtonHidden()
             .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
@@ -203,7 +205,7 @@ struct OrgMenu: View {
                                     session.selectedGroup = session.groups.first
                                     session.groups.removeAll(where: { $0.organization?.id == id })
                                 }
-                                self.presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             }
                         })
                     );
@@ -216,7 +218,8 @@ struct OrgMenu: View {
 
 #Preview {
     NavigationStack {
-        OrgMenu(organization: ORGANIZATIONS[0])
+        OrgMenu()
+            .environmentObject(ORGANIZATIONS[0])
             .environmentObject(SessionStore())
     }
 }

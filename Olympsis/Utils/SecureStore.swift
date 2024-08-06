@@ -12,7 +12,7 @@ class SecureStore {
     
     static let account = "olmypsis"
     static let server = "api.olympsis.com"
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "secure_store")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "secure_store")
     
     func saveCurrentUserID(uuid: String) {
         guard let uuidData = uuid.data(using: .utf8) else {

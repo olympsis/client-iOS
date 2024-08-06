@@ -27,14 +27,8 @@ struct EventSmallListItem: View {
     }
     
     private var fieldName: String {
-        guard let field = event.fieldData else {
-            guard let field = event.field,
-                  let name = field.name else {
-                return "Custom Location"
-            }
-            return name
-        }
-        return field.name
+        
+        return ""
     }
     
     var participantsCount: Int {
@@ -97,7 +91,7 @@ struct EventSmallListItem: View {
                 self.showDetails.toggle()
             }
             .fullScreenCover(isPresented: $showDetails) {
-                EventView(event: $event)
+                EventView(event: event)
                     .presentationDetents([.large])
             }
     }

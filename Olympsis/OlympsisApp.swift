@@ -20,7 +20,6 @@ struct OlympsisApp: App {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @StateObject private var sessionStore = SessionStore()
-    @StateObject private var notificationManager = NotificationManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
@@ -31,22 +30,17 @@ struct OlympsisApp: App {
             case .authenticated:
                 ViewContainer()
                     .environmentObject(sessionStore)
-                    .environmentObject(notificationManager)
             case .unauthenticated, .not_finished:
                 AuthContainer()
                     .environmentObject(sessionStore)
-                    .environmentObject(notificationManager)
             }
         }
     }
-    
-    
 }
-
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     @AppStorage("deviceToken") private var _token: String?
-    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "app_delegate")
+    let log = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()

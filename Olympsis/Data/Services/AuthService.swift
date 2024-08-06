@@ -15,7 +15,7 @@ class AuthService {
     private var http: Courrier
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             self.http = Courrier(.HTTP, host: "localhost")
         #else
             let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""

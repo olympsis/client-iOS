@@ -5,15 +5,22 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import SwiftUI
+import Kingfisher
 
 /// A view that shows an event's data at a glance. A list item.
 struct EventListItem: View {
     
     @State var event: Event
+    @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
+    @State private var venueState: LOADING_STATE = .pending
+    
     @State private var showDetails = false
     @EnvironmentObject private var session:SessionStore
+    
+    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
     private var title: String {
         guard let title = event.title else {
@@ -22,22 +29,18 @@ struct EventListItem: View {
         return title
     }
     
-    private var imageURL: String {
+    private var imageURL: URL? {
         guard let img = event.imageURL else {
-            return ""
+            return nil
         }
-        return img
+        return generateImageURL(img)
     }
     
-    private var fieldName: String {
-        guard let field = event.fieldData else {
-            guard let field = event.field,
-                  let name = field.name else {
-                return ""
-            }
-            return name
+    private var venueDescriptors: [VenueDescriptor] {
+        guard let venues = event.venues else {
+            return [VenueDescriptor]()
         }
-        return field.name
+        return venues
     }
     
     var body: some View {
@@ -45,7 +48,16 @@ struct EventListItem: View {
             VStack {
                 VStack(alignment: .leading){
                     HStack {
-                        Image(imageURL)
+                        KFImage(imageURL)
+                            .placeholder {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.gray)
+                                    .frame(width: 80, height: 80)
+                                    .overlay {
+                                        Image(systemName: "photo")
+                                            .foregroundStyle(Color("background"))
+                                    }
+                            }
                             .resizable()
                             .scaledToFill()
                             .frame(width: 80, height: 80)
@@ -59,9 +71,27 @@ struct EventListItem: View {
                                 .padding(.top)
                                 .foregroundColor(.primary)
                             
-                            Text(fieldName)
-                                .foregroundColor(.gray)
-                                .lineLimit(1)
+                            if venueDescriptors.count > 1 {
+                                Text("Multiple Locations")
+                                    .foregroundColor(.gray)
+                                    .lineLimit(1)
+                                    .redacted(reason: venueState != .success ? .placeholder : [])
+                            } else {
+                                if let venue = venues.first {
+                                    Text(venue.name)
+                                        .foregroundColor(.gray)
+                                        .lineLimit(1)
+                                        .redacted(reason: venueState != .success ? .placeholder : [])
+                                } else {
+                                    if let d = venueDescriptors.first,
+                                       let name = d.name {
+                                        Text(name)
+                                            .foregroundColor(.gray)
+                                            .lineLimit(1)
+                                            .redacted(reason: venueState != .success ? .placeholder : [])
+                                    }
+                                }
+                            }
                             Spacer()
                             if event.type == "tournament" {
                                 Text("Tournament")
@@ -77,13 +107,18 @@ struct EventListItem: View {
             }.frame(height: 100)
         }
         .clipShape(Rectangle())
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color("background"))
-            }
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color("background"))
+        }
         .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: $event)
+            EventView(event: event)
                 .presentationDetents([.large])
+        }
+        .task {
+            venueState = .loading
+            venues = await session.fetchVenues(in: venueDescriptors)
+            venueState = .success
         }
     }
 }
@@ -93,6 +128,7 @@ struct EventListItem: View {
 struct _TrailingView: View {
     
     @Binding var event: Event
+    @State private var isBlinking: Bool = false
     
     var participantsCount: Int {
         guard let participants = event.participants else {
@@ -134,7 +170,14 @@ struct _TrailingView: View {
                     HStack {
                         Circle()
                             .frame(width: 10, height: 10)
-                        
+                            .opacity(isBlinking ? 0 : 1)
+                            .onAppear {
+                                withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: true)) {
+                                    if event.actualStopTime == nil {
+                                        isBlinking.toggle()
+                                    }
+                                }
+                            }
                         Text("Live")
                             .bold()
                             .font(.callout)

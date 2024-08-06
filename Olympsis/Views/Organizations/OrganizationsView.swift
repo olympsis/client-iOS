@@ -35,10 +35,10 @@ struct OrganizationsView: View {
     }
     
     private var geoCoder = CLGeocoder()
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "clubs_list_view")
+    private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     HStack {

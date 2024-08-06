@@ -21,16 +21,7 @@ struct AuthView: View {
     @EnvironmentObject var sessionStore: SessionStore
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
-    var log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_view")
-    
-    var usernameCompleted: Bool {
-        let user = cacheService.fetchUser()
-        guard user?.username != nil,
-              user?.username != "" else {
-            return false
-        }
-        return true
-    }
+    var log = Logger(subsystem: "com.olympsis.client", category: "auth_view")
     
     var body: some View {
         VStack {
@@ -50,7 +41,7 @@ struct AuthView: View {
                         .foregroundColor(.white)
                         .padding(.top, 25)
                         .padding(.bottom, 5)
-                    Text("Join a community made by athletes for athletes.")
+                    Text(String(localized: "Slogan", table: "General"))
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
                         .font(.title3)
@@ -82,14 +73,8 @@ struct AuthView: View {
                                             authStatus = .authenticated
                                         }
                                     } else if resp == USER_STATUS.not_finished {
-                                        guard usernameCompleted else {
-                                            withAnimation {
-                                                currentView = .username
-                                            }
-                                            return
-                                        }
                                         withAnimation {
-                                            currentView = .sports
+                                            authStatus = .authenticated
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
@@ -105,11 +90,12 @@ struct AuthView: View {
                                 }
                             }
                         }
-                    ).signInWithAppleButtonStyle(.white)
-                        .frame(height: 50)
-                        .padding(.horizontal, 50)
-                        .padding(.bottom, 50)
-                        .padding(.top)
+                    )
+                    .signInWithAppleButtonStyle(.white)
+                    .frame(height: 50)
+                    .padding(.horizontal, 50)
+                    .padding(.bottom, 50)
+                    .padding(.top)
                 case .loading:
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 50)
@@ -140,8 +126,6 @@ struct AuthView: View {
     }
 }
 
-struct Auth_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthView(currentView: .constant(.auth))
-    }
+#Preview {
+    AuthView(currentView: .constant(.auth))
 }

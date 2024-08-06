@@ -46,7 +46,7 @@ struct PostCreator: View {
               let post = try await viewModel.createPost(groupId: groupId, user: user) else {
             return
         }
-        feedModel.posts.append(post)
+        feedModel.posts[groupId]?.append(post)
         dismiss()
     }
     

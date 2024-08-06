@@ -14,24 +14,21 @@ struct OrgApplicationListItem: View {
     @EnvironmentObject private var session: SessionStore
     
     var clubName: String {
-        guard let club = application.data?.club,
-              let name = club.name else {
+        guard let club = application.club else {
             return "club_name"
         }
-        return name
+        return club.name
     }
     
     var clubLocation: String {
-        guard let club = application.data?.club,
-              let city = club.city,
-              let state = club.state else {
+        guard let club = application.club else {
             return ""
         }
-        return "\(city), \(state)"
+        return "\(club.city), \(club.state)"
     }
     
     var imageURL: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let url = club.logo else {
             return GenerateImageURL("")
         }
@@ -39,7 +36,7 @@ struct OrgApplicationListItem: View {
     }
     
     var clubDescription: String {
-        guard let club = application.data?.club,
+        guard let club = application.club,
               let description = club.description else {
             return "..."
         }
@@ -47,16 +44,19 @@ struct OrgApplicationListItem: View {
     }
     
     var dateTimeInString: String {
-        guard let club = application.data?.club,
-              let time = club.createdAt else {
+        guard let club = application.club else {
             return "Created at: unknown"
         }
-        return Date(timeIntervalSince1970: TimeInterval(time)).formatted(.dateTime.day().month().year());
+        return Date(timeIntervalSince1970: TimeInterval(club.createdAt)).formatted(.dateTime.day().month().year());
     }
     
     func accept() async {
-        application.status = "accepted"
-        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
+        guard let org = session.selectedGroup?.organization,
+            let club = application.club else {
+            return
+        }
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "accepted")
+        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -65,8 +65,12 @@ struct OrgApplicationListItem: View {
     }
     
     func deny() async {
-        application.status = "denied"
-        let res = await session.orgObserver.updateApplication(id: application.id, app: application)
+        guard let org = session.selectedGroup?.organization,
+            let club = application.club else {
+            return
+        }
+        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "denied")
+        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})

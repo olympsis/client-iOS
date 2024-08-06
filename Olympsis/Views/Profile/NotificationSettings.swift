@@ -30,6 +30,14 @@ struct NotificationSettings: View {
         }
         .padding(.top)
         .navigationTitle("Notifications")
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
         .task {
             do {
                 let status = try await notifications.checkAuthorizationStatus()

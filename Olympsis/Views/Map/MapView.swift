@@ -10,11 +10,13 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
+
+
 /// Map view to see fields
 struct MapView: View {
     
     @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = true
+    @State private var showBottomSheet: Bool = false
     @State private var showFieldDetail: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false
@@ -46,109 +48,119 @@ struct MapView: View {
     
     var body: some View {
         Map(position: $cameraPosition) {
-            ForEach(session.fields) { field in
-                Annotation(field.name, coordinate: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), anchor: .bottom) {
-                    PlaceAnnotationView(field: field)
+            ForEach(session.venues) { venue in
+                Annotation(venue.name, coordinate: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), anchor: .bottom) {
+                    VenueAnnotation(venue: venue)
+                        .environmentObject(session)
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                selectedField = field
-                                cameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: field.location.coordinates[1], longitude: field.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500))
+                                selectedField = venue
+                                cameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), latitudinalMeters: 500, longitudinalMeters: 500))
                             }
                         }
                 }
             }
-            
             UserAnnotation()
-            
-        }.ignoresSafeArea(edges: .all)
-            .mapStyle(.standard(elevation: .realistic))
-            .overlay(alignment: .topTrailing) {
-                VStack(alignment: .trailing) {
-                    HStack {
-                        Text("Map")
-                            .font(.title)
-                            .bold()
-                        
-                        Spacer()
-                        LocationButton(.currentLocation){
-                            withAnimation {
-                                cameraPosition = .automatic
-                            }
-                        }
-                        .clipShape(Circle())
-                        .labelStyle(.iconOnly)
-                        .symbolVariant(.fill)
-                        .foregroundColor(.white)
-                        .tint(Color("color-secnd"))
-                        .frame(width: 40, height: 40)
-                        
-                        Button(action:{ self.showOptions.toggle() }){
-                            ZStack {
-                                Circle()
-                                    .tint(Color("color-secnd"))
-                                    .frame(width: 41, height: 41)
-                                Image(systemName: "slider.vertical.3")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
-                            }
-                        }.frame(width: 41, height: 41)
-                    }.padding(.horizontal)
+        }
+        .ignoresSafeArea(edges: .all)
+        .mapStyle(.standard(elevation: .realistic))
+        .overlay(alignment: .topTrailing) {
+            VStack(alignment: .trailing) {
+                HStack {
+                    Text("Map")
+                        .font(.title)
+                        .bold()
                     
-                    VStack {
-                        Button(action:{ self.showNewEvent.toggle() }){
-                            ZStack {
-                                Circle()
-                                    .tint(Color("color-secnd"))
-                                Image(systemName: "plus")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
-                            }
-                        }.frame(width: 41)
-                        
-                        Button(action:{ self.showBottomSheet.toggle() }){
-                            ZStack {
-                                Circle()
-                                    .tint(Color("color-secnd"))
+                    Spacer()
+                    LocationButton(.currentLocation){
+                        withAnimation {
+                            cameraPosition = .automatic
+                        }
+                    }
+                    .clipShape(Circle())
+                    .labelStyle(.iconOnly)
+                    .symbolVariant(.fill)
+                    .foregroundColor(.white)
+                    .tint(Color("color-secnd"))
+                    .frame(width: 40, height: 40)
+                    
+                    Button(action:{ self.showOptions.toggle() }){
+                        ZStack {
+                            Circle()
+                                .tint(Color("color-secnd"))
+                                .frame(width: 41, height: 41)
+                            Image(systemName: "slider.vertical.3")
+                                .imageScale(.large)
+                                .symbolRenderingMode(.palette)
+                                .foregroundColor(.white)
+                        }
+                    }.frame(width: 41, height: 41)
+                }.padding(.horizontal)
+                
+                VStack {
+                    Button(action:{ self.showNewEvent.toggle() }){
+                        ZStack {
+                            Circle()
+                                .tint(Color("color-secnd"))
+                            Image(systemName: "plus")
+                                .imageScale(.large)
+                                .symbolRenderingMode(.palette)
+                                .foregroundColor(.white)
+                        }
+                    }.frame(width: 41)
+                    
+                    Button(action:{ self.showBottomSheet.toggle() }){
+                        Circle()
+                            .tint(Color("color-secnd"))
+                            .overlay {
                                 Image(systemName: "line.3.horizontal.decrease")
                                     .imageScale(.large)
                                     .symbolRenderingMode(.palette)
                                     .foregroundColor(.white)
+                                    
                             }
-                        }.frame(width: 41)
-                            .padding(.top, 2)
-                    }.padding(.horizontal)
-                        .padding(.top, -12)
+                            .overlay(alignment: .topTrailing) {
+                                if session.events.count > 0 {
+                                    Circle()
+                                        .foregroundStyle(.red)
+                                        .frame(width: 15, height: 15)
+                                }
+                            }
+                    }
+                    .frame(width: 41)
+                    .padding(.top, 2)
                 }
-            }.sheet(item: $selectedField) { field in
-                VenueView(venue: field)
-                    .presentationDetents([.height(250), .large])
+                .padding(.horizontal)
+                .padding(.top, -12)
             }
-            .fullScreenCover(isPresented: $showNewEvent) {
-                NewEvent(manager: NewEventManager())
-            }
-            .sheet(isPresented: $showBottomSheet) {
-                EventsModalView(events: $session.events)
-                    .presentationDetents([.height(250), .large])
-            }
-            .sheet(isPresented: $showOptions) {
-                MapOptions(availableSports: SPORT.allCases, selectedSports: sports)
-                    .presentationDetents([.medium])
-            }
-            .alert(isPresented: $showError){
-                Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                }))
-            }
-            .task {
-                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
-            }
+        }.sheet(item: $selectedField) { field in
+            VenueView(venue: field)
+                .presentationDetents([.height(250), .large])
+        }
+        .fullScreenCover(isPresented: $showNewEvent) {
+            NewEvent(manager: NewEventManager())
+        }
+        .sheet(isPresented: $showBottomSheet) {
+            EventsModalView(events: $session.events)
+                .presentationDetents([.height(250), .large])
+        }
+        .sheet(isPresented: $showOptions) {
+            MapOptions(availableSports: SPORTS.allCases, selectedSports: sports)
+                .presentationDetents([.medium])
+        }
+        .alert(isPresented: $showError){
+            Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+        }
+        .task {
+            cameraPosition = .userLocation(fallback: .region(fallbackLocation))
+        }
     }
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView().environmentObject(SessionStore())
-    }
+#Preview {
+    let session = SessionStore()
+    return MapView()
+        .environmentObject(session)
 }

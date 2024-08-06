@@ -24,11 +24,10 @@ struct NewRoom: View {
                 state = .loading
             }
             guard let user = session.user,
-                  let uuid = user.uuid,
-                  let clubID = club.id else {
+                  let uuid = user.uuid else {
                 return
             }
-            let res = await chatObserver.CreateRoom(group: clubID, groupType: "club", name: text, type: "group", uuid: uuid)
+            let res = await chatObserver.CreateRoom(group: club.id, groupType: "club", name: text, type: "group", uuid: uuid)
             if let r = res {
                 rooms.append(r)
             }
@@ -49,7 +48,7 @@ struct NewRoom: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack (alignment: .leading){
                 Text("New Chat Room")
                     .font(.largeTitle)
@@ -92,7 +91,7 @@ struct NewRoom: View {
 struct NewRoom_Previews: PreviewProvider {
     static var previews: some View {
         let club = CLUBS[0]
-        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: club.id!, type: "club"), members: [ChatMember](), history: [Message]())
+        let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: club.id, type: "club"), members: [ChatMember](), history: [Message]())
         NewRoom(club: .constant(club), rooms: .constant([room]))
     }
 }

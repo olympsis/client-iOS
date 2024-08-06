@@ -10,9 +10,29 @@ import FirebaseAuth
 
 struct ProfileMenu: View {
     
+    enum AlertType {
+        case logout
+        case deletion
+    }
+    
+    @State private var tapCount: Int = 0
+    @State private var showAlert: Bool = false
     @State private var showDeleteView: Bool = false
-    @EnvironmentObject var session:SessionStore
+    @State private var alertType: AlertType = .logout
+    
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session:SessionStore
+    
+    @AppStorage("app_mode") private var appMode: APP_MODE?
+    @AppStorage("app_state") private var appState: APP_STATE?
+    
+    private var appVersion: String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return "0.0"
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -34,6 +54,10 @@ struct ProfileMenu: View {
                         MenuLabel(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
                     }
 
+                    NavigationLink(destination: TermsOfUse()) {
+                        MenuLabel(icon: Image(systemName: "text.viewfinder"), text: "Terms of Use")
+                    }
+                    
                     NavigationLink(destination: PrivacyPolicy()) {
                         MenuLabel(icon: Image(systemName: "lock.fill"), text: "Privacy Policy")
                     }
@@ -42,17 +66,39 @@ struct ProfileMenu: View {
                         MenuLabel(icon: Image(systemName: "info.circle.fill"), text: "About Us")
                     }
                     
-                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
-                        Task {
-                            await session.logout()
-                            dismiss()
+                    if (appState != nil) && appState == .developer {
+                        NavigationLink(destination: LogViewer()) {
+                            MenuLabel(icon: Image(systemName: "text.word.spacing"), text: "Logs")
                         }
+                    }
+                    
+                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
+                        alertType = .logout
+                        self.showAlert.toggle()
                     }, type: .destructive)
                     
                     MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
-                        self.showDeleteView.toggle()
+                        alertType = .deletion
+                        self.showAlert.toggle()
                     }, type: .destructive)
+                 
+                    Spacer(minLength: 80)
                     
+                    VStack {
+                        Text("version")
+                        Text(appVersion)
+                    }
+                    .font(.callout)
+                    .foregroundStyle(.gray)
+                    .onTapGesture {
+                        tapCount += 1
+                        if tapCount == 7 {
+                            withAnimation {
+                                appState = .developer
+                                tapCount = 0
+                            }
+                        }
+                    }
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -63,9 +109,33 @@ struct ProfileMenu: View {
                     }
                 }
                 .navigationTitle("Settings")
+                .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
-                .fullScreenCover(isPresented: $showDeleteView, onDismiss: { dismiss() }) {
-                    DeleteAccountView()
+            }
+            .alert(isPresented: $showAlert) {
+                switch alertType {
+                case .logout:
+                    return Alert(
+                        title: Text("Logging out?"),
+                        message: Text("Are you sure you want to logout?"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text("Logout"), action: {
+                            Task {
+                                await session.logout()
+                            }
+                        })
+                    );
+                case .deletion:
+                    return Alert(
+                        title: Text("Are you sure?"),
+                        message: Text("Deletin your account means that you will loose all of your info on Olympsis"),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text("Delete"), action: {
+                            Task {
+                                await session.deleteAccount()
+                            }
+                        })
+                    );
                 }
             }
         }
@@ -74,4 +144,5 @@ struct ProfileMenu: View {
 
 #Preview("Profile Menu") {
     ProfileMenu()
+        .environmentObject(SessionStore())
 }

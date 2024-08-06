@@ -19,6 +19,7 @@ struct ClubMenu: View {
     @State private var showClubs = false
     @State private var showReports = false
     @State private var showNewClub = false
+    @State private var showEditClub = false
     @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false
@@ -27,13 +28,10 @@ struct ClubMenu: View {
     @StateObject private var clubObserver = ClubObserver()
     @StateObject private var postObserver = PostObserver()
     
-    @StateObject private var club: Club
-    @EnvironmentObject var session: SessionStore
     @Environment(\.dismiss) private var dismiss
     
-    init(club: Club) {
-        self._club = StateObject(wrappedValue: club)
-    }
+    @EnvironmentObject private var club: Club
+    @EnvironmentObject private var session: SessionStore
     
     // user's role
     var role: String {
@@ -89,6 +87,16 @@ struct ClubMenu: View {
                 
                 VStack {
                     if role != "member" {
+                        NavigationLink {
+                            ClubEditor()
+                                .environmentObject(club)
+                                .environmentObject(session)
+                        } label: {
+                            MenuLabel(icon: Image(systemName: "pencil"), text: "Edit Club")
+                        }
+                    }
+                    
+                    if role != "member" {
                         MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
                             self.showApplications.toggle()
                         })
@@ -114,7 +122,10 @@ struct ClubMenu: View {
                         self.showClubs.toggle()
                     })
                     
-                    NavigationLink(destination: MembersListView().environmentObject(club)) {
+                    NavigationLink {
+                        MembersListView()
+                            .environmentObject(club)
+                    } label: {
                         MenuLabel(icon: Image(systemName: "person.3"), text: "Members")
                     }
                     
@@ -137,11 +148,11 @@ struct ClubMenu: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
                     }
                 }
             }
-            .navigationTitle(club.name ?? "Clubs")
+            .navigationTitle(club.name)
+            .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
                 NewGroup()
@@ -176,10 +187,7 @@ struct ClubMenu: View {
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        guard let id = club.id else {
-                                            return
-                                        }
-                                        _ = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: club.id)
                                         session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
                                         session.selectedGroup = session.groups.first
                                         dismiss()
@@ -194,13 +202,19 @@ struct ClubMenu: View {
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    guard let id = club.id else {
-                                        return
-                                    }
-                                    _ = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: club.id)
                                     session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                    session.selectedGroup = session.groups.first
-                                    dismiss()
+                                    
+                                    session.clubsState = .loading
+                                    session.selectedGroup = nil
+                                    if let next = session.groups.first {
+                                        session.selectedGroup = next
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        session.clubsState = .success
+                                        dismiss()
+                                    }
                                 }
                             })
                         );
@@ -212,13 +226,19 @@ struct ClubMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                guard let id = club.id else {
-                                    return
-                                }
-                                _ = await session.clubObserver.deleteClub(id: id)
+                                _ = await session.clubObserver.deleteClub(id: club.id)
                                 session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                session.selectedGroup = session.groups.first
-                                dismiss()
+                                
+                                session.clubsState = .loading
+                                session.selectedGroup = nil
+                                if let next = session.groups.first {
+                                    session.selectedGroup = next
+                                }
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    session.clubsState = .success
+                                    dismiss()
+                                }
                             }
                         })
                     );
@@ -229,6 +249,7 @@ struct ClubMenu: View {
 }
 
 #Preview("Club Menu") {
-    ClubMenu(club: CLUBS[0])
+    ClubMenu()
+        .environmentObject(CLUBS[0])
         .environmentObject(SessionStore())
 }

@@ -43,8 +43,8 @@ struct InvitationView: View {
     }
     
     func acceptInvite() async {
-        invitation.status = "accepted"
-        let resp = await session.orgObserver.updateInvitation(data: invitation)
+        let dto = InvitationDTO(id: nil, type: "", sender: "", recipient: "", subjectID: "", status: "accepted", createdAt: nil)
+        let resp = await session.orgObserver.updateInvitation(data: dto)
         guard resp else {
             handleAcceptFailure()
             return
@@ -61,8 +61,8 @@ struct InvitationView: View {
     }
     
     func denyInvite() async {
-        invitation.status = "denied"
-        let resp = await session.orgObserver.updateInvitation(data: invitation)
+        let dto = InvitationDTO(id: nil, type: "", sender: "", recipient: "", subjectID: "", status: "denied", createdAt: nil)
+        let resp = await session.orgObserver.updateInvitation(data: dto)
         guard resp else {
             handleDenyFailure()
             return

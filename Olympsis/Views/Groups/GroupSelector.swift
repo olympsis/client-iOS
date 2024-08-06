@@ -6,71 +6,44 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct GroupSelector: View {
     
-    @Binding var showNewGroup: Bool
-    
     @State private var selection: UUID?
+    @State private var showNewGroup = false
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var groups: [GroupSelection] = []
     
     var body: some View {
         VStack {
-            List(selection: $selection) {
+            List {
                 Section {
-                    ForEach(groups.filter({ $0.type == GROUP_TYPE.Club })) { c in
-                        HStack {
-                            AsyncImage(url: URL(string: GenerateImageURL(c.club?.logo ?? "https://api.olympsis.com"))){ image in
-                                image.resizable()
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .frame(width: 40, height: 40)
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipped()
-                                    
-                            } placeholder: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.gray)
-                                    .opacity(0.3)
-                                    .frame(width: 40, height: 40)
+                    ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Club })) { g in
+                        GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
+                            .onTapGesture {
+                                selection = g.id
                             }
-                            Text(c.club?.name ?? "club_name")
-                        }
                     }
                 } header: {
                     Text("Clubs")
                 }
-                if (groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
+                
+                if (session.groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
                     Section {
-                        ForEach(groups.filter({ $0.type == GROUP_TYPE.Organization })) { c in
-                            HStack {
-                                AsyncImage(url: URL(string: GenerateImageURL(c.organization?.logo ?? "https://api.olympsis.com"))){ image in
-                                    image.resizable()
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .frame(width: 40, height: 40)
-                                        .aspectRatio(contentMode: .fill)
-                                        .clipped()
-                                        
-                                } placeholder: {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundColor(.gray)
-                                        .opacity(0.3)
-                                        .frame(width: 40, height: 40)
+                        ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { g in
+                            GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
+                                .onTapGesture {
+                                    selection = g.id
                                 }
-                                Text(c.organization?.name ?? "club_name")
-                            }
                         }
                     } header: {
                         Text("Organizations")
                     }
                 }
             }.listStyle(.plain)
-            Button(action:{
-                self.presentationMode.wrappedValue.dismiss()
-                self.showNewGroup.toggle()
-            }) {
+            
+            Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                     HStack {
@@ -78,20 +51,41 @@ struct GroupSelector: View {
                         Text("Create a new Group")
                     }.foregroundStyle(.white)
                 }
-            }.frame(height: 50)
-                .padding(.all)
+            }
+            .frame(height: 50)
+            .padding(.all)
         }
+        .fullScreenCover(isPresented: $showNewGroup, content: {
+            NewGroup()
+        })
         .onChange(of: selection) { _, _ in
-            guard let select = groups.first(where: { $0.id == selection }) else {
-                self.presentationMode.wrappedValue.dismiss()
+            Task { @MainActor in
+                guard let selection = session.groups.first(where: { $0.id == selection }),
+                      let selectedGroup = session.selectedGroup,
+                      selectedGroup.id != selection.id else {
+                    return
+                }
+                session.clubsState = .loading
+                session.selectedGroup = selection
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    session.clubsState = .success
+                    dismiss()
+                }
+            }
+        }
+        .task {
+            guard let selectedGroup = session.selectedGroup else {
                 return
             }
-            session.selectedGroup = select
-            self.presentationMode.wrappedValue.dismiss()
+            self.selection = selectedGroup.id
         }
     }
 }
 
 #Preview {
-    GroupSelector(showNewGroup: .constant(false), groups: GROUP_SELECTIONS)
+    let session = SessionStore()
+    session.groups = GROUP_SELECTIONS
+    return GroupSelector()
+        .environmentObject(session)
 }

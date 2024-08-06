@@ -16,7 +16,7 @@ class UserService {
     private var http: Courrier
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             self.http = Courrier(.HTTP, host: "localhost")
         #else
             let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
@@ -46,7 +46,7 @@ class UserService {
     
     func createUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let req = User(username: userName, visibility: "public", sports: sports)
+        let req = UserDao(username: userName, sports: sports, visibility: "public", hasOnboarded: false)
         let endpoint = Endpoint("/v1/users", queryItems: [URLQueryItem]())
         return try await http.Request(.POST, endpoint, body: EncodeToData(req), headers: ["Authorization": token ?? ""])
     }
@@ -57,11 +57,10 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
-    func UpdateUserData(update: UserDao) async throws -> URLResponse {
+    func UpdateUserData(update: UserDao) async throws -> (Data,URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/users/user", queryItems: [URLQueryItem]())
-        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: ["Authorization": token ?? ""])
-        return resp
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: ["Authorization": token ?? ""])
     }
     
     func SearchUsersByUsername(username: String) async throws -> (Data, URLResponse) {

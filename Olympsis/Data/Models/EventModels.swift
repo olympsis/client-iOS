@@ -15,32 +15,31 @@ class Event: Codable, Identifiable, ObservableObject {
     let type: String?
     let poster: UserSnippet?
     var organizers: [Organizer]?
-    var field: FieldDescriptor?
+    var venues: [VenueDescriptor]?
     var imageURL: String?
     var title: String?
     var body: String?
     let sport: String?
     var level: Int?
-    var startTime: Int?
-    var actualStartTime: Int?
-    var stopTime: Int?
-    var actualStopTime: Int?
-    var minParticipants: Int?
-    var maxParticipants: Int?
-    var participants: [Participant]?
+    @Published var startTime: Int?
+    @Published var actualStartTime: Int?
+    @Published var stopTime: Int?
+    @Published var actualStopTime: Int?
+    @Published var minParticipants: Int?
+    @Published var maxParticipants: Int?
+    @Published var participants: [Participant]?
     var visibility: String?
-    let clubs: [Club]?
-    let organizations: [Organization]?
-    let fieldData: Venue?
     let createdAt: Int?
     var externalLink: String?
+    var isSensitive: Bool?
     
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case poster
         case organizers
-        case field
+        case venue
+        case venues
         case imageURL = "image_url"
         case title
         case body
@@ -56,17 +55,17 @@ class Event: Codable, Identifiable, ObservableObject {
         case visibility
         case clubs = "clubs"
         case organizations = "organizations"
-        case fieldData = "field_data"
         case createdAt = "created_at"
         case externalLink = "external_link"
+        case isSensitive = "is_sensitive"
     }
     
-    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil, clubs: [Club]?=nil, organizations: [Organization]?=nil, fieldData: Venue?=nil) {
+    init(id: String?=nil, type: String, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
         self.organizers = organizers
-        self.field = field
+        self.venues = venues
         self.imageURL = imageURL
         self.title = title
         self.body = body
@@ -80,24 +79,82 @@ class Event: Codable, Identifiable, ObservableObject {
         self.maxParticipants = maxParticipants
         self.participants = participants
         self.visibility = visibility
-        self.clubs = clubs
-        self.organizations = organizations
-        self.fieldData = fieldData
         self.createdAt = createdAt
         self.externalLink = externalLink
+        self.isSensitive = isSensitive
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id)
+        self.type = try container.decodeIfPresent(String.self, forKey: .type)
+        self.poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
+        self.organizers = try container.decodeIfPresent([Organizer].self, forKey: .organizers)
+        self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
+        self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.body = try container.decodeIfPresent(String.self, forKey: .body)
+        self.sport = try container.decodeIfPresent(String.self, forKey: .sport)
+        self.level = try container.decodeIfPresent(Int.self, forKey: .level)
+        self.startTime = try container.decodeIfPresent(Int.self, forKey: .startTime)
+        self.actualStartTime = try container.decodeIfPresent(Int.self, forKey: .actualStartTime)
+        self.stopTime = try container.decodeIfPresent(Int.self, forKey: .stopTime)
+        self.actualStopTime = try container.decodeIfPresent(Int.self, forKey: .actualStopTime)
+        self.minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
+        self.maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
+        self.participants = try container.decodeIfPresent([Participant].self, forKey: .participants)
+        self.visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
+        self.externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        self.isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive)
+        self.createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(type, forKey: .type)
+        try container.encodeIfPresent(poster, forKey: .poster)
+        try container.encodeIfPresent(organizers, forKey: .organizers)
+        try container.encodeIfPresent(venues, forKey: .venues)
+        try container.encodeIfPresent(imageURL, forKey: .imageURL)
+        try container.encodeIfPresent(title, forKey: .title)
+        try container.encodeIfPresent(body, forKey: .body)
+        try container.encodeIfPresent(sport, forKey: .sport)
+        try container.encodeIfPresent(level, forKey: .level)
+        try container.encodeIfPresent(startTime, forKey: .startTime)
+        try container.encodeIfPresent(actualStartTime, forKey: .actualStartTime)
+        try container.encodeIfPresent(stopTime, forKey: .stopTime)
+        try container.encodeIfPresent(actualStopTime, forKey: .actualStopTime)
+        try container.encodeIfPresent(minParticipants, forKey: .minParticipants)
+        try container.encodeIfPresent(maxParticipants, forKey: .maxParticipants)
+        try container.encodeIfPresent(participants, forKey: .participants)
+        try container.encodeIfPresent(visibility, forKey: .visibility)
+        try container.encodeIfPresent(isSensitive, forKey: .isSensitive)
+        try container.encodeIfPresent(externalLink, forKey: .externalLink)
+    }
+    
+    func update(_ event: Event) {
+        self.title = event.title
+        self.body = event.body
+        self.level = event.level
+        self.venues = event.venues
+        self.participants = event.participants
+        self.startTime = event.startTime
+        self.actualStartTime = event.actualStartTime
+        self.stopTime = event.actualStopTime
+        self.actualStopTime = event.actualStopTime
+        self.imageURL = event.imageURL
+        self.minParticipants = event.minParticipants
+        self.maxParticipants = event.maxParticipants
+        self.visibility = event.visibility
+        self.externalLink = event.externalLink
+        self.organizers = event.organizers
     }
 }
 
 struct Organizer: Codable, Identifiable {
     let type: String
     let id: String
-}
-
-struct FieldDescriptor: Codable {
-    let type: String
-    let id: String?
-    let name: String?
-    let location: GeoJSON?
 }
 
 struct Participant: Codable, Identifiable, Hashable {
@@ -118,7 +175,7 @@ struct Participant: Codable, Identifiable, Hashable {
     }
 }
 
-struct EventData: Codable {
+struct EventData: Decodable {
     let poster: UserData?
     let field: Venue?
     let clubs: [Club]?
@@ -203,19 +260,13 @@ extension Event {
     }
     
     /// Returns in string the estimated time to an event's field
-    func estimatedTimeToField(_ loc: CLLocationCoordinate2D?) -> String {
+    func estimatedTimeToVenue(venue: Venue, _ loc: CLLocationCoordinate2D?) -> String {
         var fieldLocation: [Double] {
-            guard let field = self.fieldData else {
-                guard let field = self.field,
-                      let coordinates = field.location?.coordinates else {
-                    return [0,0]
-                }
-                return coordinates
-            }
-            return field.location.coordinates
+            return venue.location.coordinates
         }
         
-        guard let location = loc else {
+        guard let location = loc,
+              fieldLocation.count > 1 else {
             return "10 min"
         }
         
@@ -279,7 +330,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     let type: String?
     let poster: String?
     var organizers: [Organizer]?
-    var field: FieldDescriptor?
+    var venues: [VenueDescriptor]?
     var imageURL: String?
     var title: String?
     var body: String?
@@ -295,12 +346,13 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var visibility: String?
     let createdAt: Int?
     var externalLink: String?
+    var isSensitive: Bool?
     
     enum CodingKeys: String, CodingKey {
         case type
         case poster
         case organizers
-        case field
+        case venues
         case imageURL = "image_url"
         case title
         case body
@@ -314,15 +366,16 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case maxParticipants = "max_participants"
         case participants
         case visibility
+        case isSensitive = "is_sensitive"
         case createdAt = "created_at"
         case externalLink = "external_link"
     }
     
-    init(type: String? = EVENT_TYPES.PickUp.rawValue, poster: String?=nil, organizers: [Organizer]?=nil, field: FieldDescriptor?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, externalLink: String?=nil) {
+    init(type: String? = EVENT_TYPES.PickUp.rawValue, poster: String?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: Int?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: String?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.type = type
         self.poster = poster
         self.organizers = organizers
-        self.field = field
+        self.venues = venues
         self.imageURL = imageURL
         self.title = title
         self.body = body
@@ -337,6 +390,14 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.participants = participants
         self.visibility = visibility
         self.createdAt = createdAt
+        self.isSensitive = isSensitive
         self.externalLink = externalLink
     }
+}
+
+
+struct EventSharingTemplate {
+    var titlePosition: SHARING_TITLE_POSITION
+    var timePosition: SHARING_TIME_POSITION
+    var venuePosition: SHARING_VENUE_POSITION
 }

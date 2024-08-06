@@ -11,14 +11,14 @@ import Foundation
 class Organization: Codable, Identifiable, ObservableObject {
 
     let id: String?
-    let name: String?
-    let description: String?
-    let sports: [String]?
+    var name: String?
+    var description: String?
+    var sports: [String]?
     let city: String?
     let state: String?
     let country: String?
-    let logo: String?
-    let banner: String?
+    var logo: String?
+    var banner: String?
     let members: [Member]?
     let blackList: [String]?
     var pinnedPosts: [String]?
@@ -85,7 +85,7 @@ class Organization: Codable, Identifiable, ObservableObject {
     }
 }
 
-struct OrganizationData: Codable {
+struct OrganizationData: Decodable {
     let children: [Club]?
     
     enum CodingKeys: String, CodingKey {
@@ -103,25 +103,42 @@ struct OrganizationsResponse: Codable {
     }
 }
 
-struct OrganizationApplication: Codable, Identifiable {
+struct OrganizationApplication: Decodable, Identifiable {
     let id: String
-    let organizationID: String
-    let clubID: String
     var status: String
-    let data: OrganizationApplicationData?
+    let club: Club?
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
         case id
-        case organizationID = "organization_id"
-        case clubID = "club_id"
         case status
-        case data
+        case club
         case createdAt = "created_at"
     }
 }
 
-struct OrganizationApplicationData: Codable {
+struct OrganizationApplicationDao: Codable {
+    let organizationID: String?
+    let clubID: String?
+    var status: String?
+    let createdAt: Int?
+    
+    init(organizationID: String?=nil, clubID: String?=nil, status: String? = "pending", createdAt: Int?=nil) {
+        self.organizationID = organizationID
+        self.clubID = clubID
+        self.status = status
+        self.createdAt = createdAt
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case organizationID = "organization_id"
+        case clubID = "club_id"
+        case status
+        case createdAt = "created_at"
+    }
+}
+
+struct OrganizationApplicationData: Decodable {
     let club: Club?
 }
 

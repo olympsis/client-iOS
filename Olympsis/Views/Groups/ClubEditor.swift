@@ -1,0 +1,271 @@
+//
+//  ClubEditor.swift
+//  Olympsis
+//
+//  Created by Joel Joseph on 7/1/24.
+//
+
+import SwiftUI
+
+import Kingfisher
+
+struct ClubEditor: View {
+    
+    @StateObject private var viewModel = GroupEditorViewModel()
+    
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var club: Club
+    @EnvironmentObject private var session: SessionStore
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                ZStack(alignment: .top) {
+                    Group {
+                        if let img = viewModel.bannerPhoto {
+                            Image(uiImage: img)
+                                .resizable()
+                                .frame(height: 200)
+                                .onTapGesture {
+                                    viewModel.showBannerMediaPicker.toggle()
+                                }
+                        } else if viewModel.bannerURL != "",
+                                    let url = generateImageURL(viewModel.bannerURL) {
+                            KFImage(url)
+                                .placeholder({
+                                    Rectangle()
+                                        .foregroundStyle(.gray)
+                                        .overlay {
+                                            ProgressView()
+                                        }
+                                })
+                                .resizable()
+                                .frame(height: 200)
+                                .overlay(alignment: .topTrailing) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .padding(.all, 5)
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .onTapGesture {
+                                    viewModel.showBannerMediaPicker.toggle()
+                                }
+                        } else {
+                            Rectangle()
+                                .frame(height: 200)
+                                .foregroundStyle(.gray)
+                                .overlay {
+                                    Image(systemName: "photo.fill")
+                                        .imageScale(.large)
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .onTapGesture {
+                                    viewModel.showBannerMediaPicker.toggle()
+                                }
+                                
+                        }
+                    }.overlay(alignment: .topTrailing) {
+                        Image(systemName: "pencil.circle.fill")
+                            .padding(.all, 5)
+                            .foregroundStyle(Color("background"))
+                    }
+                    .fullScreenCover(isPresented: $viewModel.showBannerMediaPicker) {
+                        MediaPicker(pickerType: .other) { images in
+                            if let img = images.first {
+                                DispatchQueue.main.async {
+                                    viewModel.bannerPhoto = img
+                                }
+                            }
+                        }
+                    }
+                    .onTapGesture {
+                        viewModel.showBannerMediaPicker.toggle()
+                    }
+                    
+                    VStack {
+                        Spacer()
+                        if let img = viewModel.logoPhoto {
+                            Image(uiImage: img)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .border(Color("background"), width: 3)
+                                .overlay(alignment: .topTrailing) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .padding(.all, 5)
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .onTapGesture {
+                                    viewModel.showLogoMediaPicker.toggle()
+                                }
+                        } else if viewModel.logoURL != "",
+                                  let url = generateImageURL(viewModel.logoURL) {
+                            KFImage(url)
+                                .placeholder({
+                                    Rectangle()
+                                        .foregroundStyle(.gray)
+                                        .overlay {
+                                            ProgressView()
+                                        }
+                                })
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .border(Color("background"), width: 3)
+                                .overlay(alignment: .topTrailing) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .padding(.all, 5)
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .onTapGesture {
+                                    viewModel.showLogoMediaPicker.toggle()
+                                }
+                        } else {
+                            Rectangle()
+                                .foregroundStyle(.gray)
+                                .frame(width: 100, height: 100)
+                                .border(Color("background"), width: 3)
+                                .overlay {
+                                    Image(systemName: "person.3.fill")
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .overlay(alignment: .topTrailing) {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .padding(.all, 5)
+                                        .foregroundStyle(Color("background"))
+                                }
+                                .onTapGesture {
+                                    viewModel.showLogoMediaPicker.toggle()
+                                }
+                        }
+                    }.fullScreenCover(isPresented: $viewModel.showLogoMediaPicker) {
+                        MediaPicker(pickerType: .newEvent) { images in
+                            if let img = images.first {
+                                DispatchQueue.main.async {
+                                    viewModel.logoPhoto = img
+                                }
+                            }
+                        }
+                    }
+                }.frame(height: 250)
+                
+                // MARK: - Organization Home
+                VStack (alignment: .leading){
+                    Text("Organization Name:")
+                        .font(.title3)
+                        .bold()
+                }
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color("background"))
+                    TextField("", text: $viewModel.clubName)
+                        .padding(.leading)
+                }.frame(height: 40)
+                
+                // MARK: - Organization Description
+                VStack(alignment: .leading){
+                    Text("Description:")
+                        .font(.title3)
+                        .bold()
+                    .padding(.top)
+                    Text("What is this organization about?")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color("background"))
+                    TextEditor(text: $viewModel.description)
+                        .scrollContentBackground(.hidden)
+                    .frame(height: 200)
+                }
+                
+                // MARK: - Sports picker
+                VStack(alignment: .leading){
+                    VStack(alignment: .leading){
+                        Text("Sport")
+                            .font(.title3)
+                            .bold()
+                        Text("The sport(s) your organization will focus on")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color("background"))
+                            .frame(height: 40)
+                        Button(action: {
+                            viewModel.showSportsPicker.toggle()
+                        }) {
+                            if !viewModel.selectedSports.isEmpty {
+                                ScrollView(.horizontal) {
+                                    HStack(alignment: .center) {
+                                        ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
+                                            Text(sport)
+                                                .foregroundStyle(.white)
+                                                .padding(.horizontal, 10)
+                                                .padding(.vertical, 5)
+                                                .background {
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .foregroundStyle(Color("color-prime"))
+                                                }
+                                        }
+                                    }
+                                }.scrollIndicators(.never)
+                            } else {
+                                Text("N/A")
+                            }
+                        }
+                    }
+                }
+                .padding(.top)
+                .frame(width: SCREEN_WIDTH-25)
+                .fullScreenCover(isPresented: $viewModel.showSportsPicker, content: {
+                    MultiSportsPicker(selectedSports: $viewModel.selectedSports)
+                })
+                
+                VStack(alignment: .leading){
+                    VStack(alignment: .center){
+                        Button(action: {
+                            Task {
+                                guard await viewModel.updateClub(club) else {
+                                    return
+                                }
+                                dismiss()
+                            }
+                        }) {
+                            LoadingButton(text: "Update", width: 150, status: $viewModel.status)
+                        }.disabled(viewModel.status == .pending ? false : true)
+                    }.frame(width: SCREEN_WIDTH-25)
+                        .padding(.top, 50)
+                }
+                
+                Spacer(minLength: 20)
+                
+            }.padding(.horizontal)
+        }
+        .navigationTitle("Edit Group")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
+        .task {
+            viewModel.loadClub(club)
+        }
+    }
+}
+
+#Preview {
+    let session = SessionStore()
+    session.selectedGroup = GroupSelection(type: .Club, club: CLUBS[1])
+    return NavigationStack {
+        ClubEditor()
+            .environmentObject(session)
+            .environmentObject(CLUBS[0])
+    }
+}
+

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct PrivacyPolicy: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ScrollView {
             Text("At Olympsis, we take your privacy seriously. This Privacy Policy outlines how we collect, use, and protect the information you provide to us.")
@@ -89,7 +92,14 @@ struct PrivacyPolicy: View {
         }
         .navigationTitle("Privacy Policy")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
     }
 }
 

@@ -5,20 +5,19 @@
 //  Created by Joel Joseph on 8/27/22.
 //
 
+import MapKit
 import SwiftUI
+import Firebase
 import Security
 import SwiftToast
-import Firebase
 import AuthenticationServices
 
 struct ViewContainer: View {
     
     @State var currentTab: Tab = .home
-    @State private var showBeta: Bool = false
     @State private var showOnboarding: Bool = false
     
     @EnvironmentObject private var session: SessionStore
-    @EnvironmentObject private var notificationManager: NotificationManager
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -29,28 +28,34 @@ struct ViewContainer: View {
             TabView(selection: $currentTab) {
                 Home()
                     .tag(Tab.home)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 GroupView()
                     .tag(Tab.club)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 MapView()
                     .tag(Tab.map)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 Activity()
                     .tag(Tab.activity)
+                    .toolbar(.hidden, for: .tabBar)
                 
                 Profile()
                     .tag(Tab.profile)
-                
-            }.toast(isPresented: $notificationManager.showToast, toast: $notificationManager.toastContent)
-                .padding(.bottom, -10)
+                    .toolbar(.hidden, for: .tabBar)
+            }
+            .toast(
+                isPresented: session.$notificationsManager.showToast,
+                position: session.$notificationsManager.toastPosition,
+                content: session.$notificationsManager.toastContent
+            )
+            .padding(.bottom, -10)
             
             TabBar(currentTab: $currentTab)
                 .background(Color("dark-color"))
                 .ignoresSafeArea(.keyboard)
-        }
-        .fullScreenCover(isPresented: $showBeta) {
-            BetaPage()
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {
@@ -61,22 +66,34 @@ struct ViewContainer: View {
             Onboarding()
         })
         .task {
+            session.state = .loading
             await session.CheckIn()
-            guard let user = session.user,
-                  let hasOnboarded = user.hasOnboarded else {
+            guard let user = session.user else {
+                await session.logout()
                 return
             }
-            if hasOnboarded {
+            
+            // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
+            if (!session.locationRecieved) {
+                if let hometown = user.hometown {
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
+                } else {
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
+                }
+            }
+            session.state = .success
+            
+            guard let hasOnboarded = user.hasOnboarded else {
+                return
+            }
+            if !hasOnboarded {
                 showOnboarding.toggle()
             }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewContainer()
-            .environmentObject(SessionStore())
-            .environmentObject(NotificationManager())
-    }
+#Preview {
+    ViewContainer()
+        .environmentObject(SessionStore())
 }

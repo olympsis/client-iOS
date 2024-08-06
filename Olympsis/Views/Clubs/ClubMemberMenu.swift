@@ -23,15 +23,15 @@ struct ClubMemberMenu: View {
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "club_member_menu_view")
     
     func promote(_ role: String) async {
-        _ = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
+        _ = await session.clubObserver.changeMemberRank(id: club.id, memberId: member.id!, role: role)
     }
     
     func demote(_ role: String) async {
-        _ = await session.clubObserver.changeMemberRank(id: club.id!, memberId: member.id!, role: role)
+        _ = await session.clubObserver.changeMemberRank(id: club.id, memberId: member.id!, role: role)
     }
     
     func kick() async {
-        _ = await session.clubObserver.kickMember(id: club.id!, memberId: member.id!)
+        _ = await session.clubObserver.kickMember(id: club.id, memberId: member.id!)
 
     }
     
@@ -47,11 +47,11 @@ struct ClubMemberMenu: View {
             blockedList.removeAll(where: { $0 == memberUID })
             let dto = UserDao(blockedUsers: blockedList)
             
-            let resp = await session.userObserver.UpdateUserData(update: dto)
-            if resp {
-                isBlocked = false
-                session.user?.blockedUsers = blockedList
+            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+                return
             }
+            isBlocked = false
+            session.user = resp
         }
     }
     

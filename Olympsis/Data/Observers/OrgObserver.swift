@@ -11,7 +11,9 @@ import Foundation
 /// Org Observer is a class object that keeps tracks of and fetches organizations
 class OrgObserver: ObservableObject{
     
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "club_observer")
+    static let shared = OrgObserver()
+    
+    private let log = Logger(subsystem: "com.olympsis.client", category: "club_observer")
     private let decoder = JSONDecoder()
     private let orgService = OrgService()
     private let cacheService = CacheService()
@@ -61,6 +63,19 @@ class OrgObserver: ObservableObject{
             return nil
         }
     }
+
+    func updateOrganization(id: String, dto: OrganizationDao) async -> Bool {
+        do {
+            let res = try await orgService.updateOrganization(id: id, dto: dto)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("\(error)")
+            return false
+        }
+    }
     
     func deleteOrganization(id: String) async -> Bool {
         do {
@@ -75,7 +90,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func createOrganizationApplication(app: OrganizationApplication) async -> Bool {
+    func createOrganizationApplication(app: OrganizationApplicationDao) async -> Bool {
         do {
             return try await orgService.createApplication(app: app)
         } catch {
@@ -97,7 +112,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func updateApplication(id: String, app: OrganizationApplication) async -> Bool {
+    func updateApplication(id: String, app: OrganizationApplicationDao) async -> Bool {
         do {
             let res = try await orgService.updateApplication(id: id, app: app)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
@@ -110,7 +125,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func createInvitation(data: Invitation) async -> Invitation? {
+    func createInvitation(data: InvitationDTO) async -> Invitation? {
         do {
             let (data, res) = try await orgService.createInvitation(data: data)
             guard (res as? HTTPURLResponse)?.statusCode == 201 || (res as? HTTPURLResponse)?.statusCode == 200 else {
@@ -123,7 +138,7 @@ class OrgObserver: ObservableObject{
         }
     }
     
-    func updateInvitation(data: Invitation) async -> Bool {
+    func updateInvitation(data: InvitationDTO) async -> Bool {
         do {
             let resp = try await orgService.updateInvitation(data: data)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {

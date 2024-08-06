@@ -22,7 +22,7 @@ struct PostMenu: View {
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
-    var isPosterOrAdmin: Bool {
+    private var isPosterOrAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
               let group = session.selectedGroup else {
@@ -49,7 +49,7 @@ struct PostMenu: View {
         }
     }
     
-    var isPinned: Bool {
+    private var isPinned: Bool {
         guard let selectedGroup = session.selectedGroup else {
             return false
         }
@@ -72,17 +72,16 @@ struct PostMenu: View {
         }
     }
     
-    func pinPost() async {
+    private func pinPost() async {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
             guard let club = selectedGroup.club,
-                  let id = club.id,
                   let postId = post.id else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: id, postId: postId)
+            let resp = await session.clubObserver.pinPost(id: club.id, postId: postId)
             if resp {
                 club.pinnedPosts?.append(postId)
                 pinned = true
@@ -103,18 +102,17 @@ struct PostMenu: View {
         }
     }
     
-    func unPinPost() async {
+    private func unPinPost() async {
         guard let selectedGroup = session.selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club,
-                  let id = club.id else {
+            guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.unPinPost(id: id)
+            let resp = await session.clubObserver.unPinPost(id: club.id)
             if resp {
-                club.pinnedPosts?.removeAll(where: { $0 == id})
+                club.pinnedPosts?.removeAll(where: { $0 == club.id})
                 pinned = false
             }
             return
@@ -131,27 +129,45 @@ struct PostMenu: View {
         }
     }
     
-    func deletePost() async {
-        guard let id = post.id else {
+    private func deletePost() async {
+        guard let selectedGroup = session.selectedGroup,
+            let id = post.id else {
             return
         }
         
-        let res = await session.postObserver.deletePost(postID: id)
-        guard res == true,
-            let images = post.images else {
-            feedModel.posts.removeAll(where: { $0.id == post.id })
+        if selectedGroup.type == .Club {
+            guard let clubID = selectedGroup.club?.id,
+                  await session.postObserver.deletePost(postID: id) else {
+                return
+            }
+
+            if let images = post.images {
+                // delete images
+                for image in images {
+                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                }
+            }
+            
+            // remove post
+            feedModel.posts[clubID]?.removeAll(where: { $0.id == post.id })
             dismiss()
-            return
+        } else {
+            guard let orgID = selectedGroup.organization?.id,
+                  await session.postObserver.deletePost(postID: id) else {
+                return
+            }
+            
+            if let images = post.images {
+                // delete images
+                for image in images {
+                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                }
+            }
+            
+            // remove post
+            feedModel.posts[orgID]?.removeAll(where: { $0.id == post.id })
+            dismiss()
         }
-        
-        // delete images
-        for image in images {
-            let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
-        }
-        
-        // remove post
-        feedModel.posts.removeAll(where: { $0.id == post.id })
-        dismiss()
     }
     
     var body: some View {
@@ -182,7 +198,8 @@ struct PostMenu: View {
             MenuButton(icon: Image(systemName: "exclamationmark.bubble.fill"), text: "Report Post") {
                 showReport.toggle()
             }.fullScreenCover(isPresented: $showReport, content: {
-                PostReportView(post: post)
+                PostReportView()
+                    .environmentObject(post)
             })
             
             if !isBlocked {

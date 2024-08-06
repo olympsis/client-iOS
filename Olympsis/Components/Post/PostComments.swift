@@ -93,7 +93,7 @@ struct PostComments: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if post.comments.count != 0 {

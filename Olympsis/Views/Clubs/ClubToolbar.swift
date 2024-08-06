@@ -59,13 +59,13 @@ struct ClubToolbar: ToolbarContent {
                                 }
                             }
                             ){
-                                Text(club.name ?? "Club")
+                                Text(club.name)
                             }
                         }
                     } label: {
                         HStack {
                             VStack {
-                                Text(myClubs[index].name!)
+                                Text(myClubs[index].name)
                                     .font(.title)
                                     .bold()
                                     .minimumScaleFactor(0.5)

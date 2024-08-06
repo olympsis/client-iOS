@@ -17,6 +17,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var location: CLLocationCoordinate2D?
     @Published var region : MKCoordinateRegion = .init()
     
+    @Published var isLocationAuthorized: Bool = false
+    @Published var isLocationServicesEnabled: Bool = false
+    
     @AppStorage("latitude") private var latitude: Double?
     @AppStorage("longitude") private var longitude: Double?
     
@@ -50,10 +53,14 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
             case .authorizedWhenInUse:  // Location services are available.
+                isLocationAuthorized = true
+                isLocationServicesEnabled = true
                 manager.startMonitoringSignificantLocationChanges()
                 break
                 
             case .restricted, .denied:  // Location services currently unavailable.
+            isLocationAuthorized = false
+            isLocationServicesEnabled = false
                 guard let lat = latitude,
                       let long = longitude else {
                     // We will use apple park as the fallback location
@@ -68,6 +75,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 break
                 
             case .notDetermined:        // Authorization not determined yet.
+                isLocationAuthorized = false
+                isLocationServicesEnabled = true
                 break
                 
             default:

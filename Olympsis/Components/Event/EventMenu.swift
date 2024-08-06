@@ -9,13 +9,15 @@ import SwiftUI
 
 struct EventMenu: View {
     
-    @Binding var event: Event
-    @State private var loadingState: LOADING_STATE = .pending
+    @Binding var clubs: [Club]
+    @Binding var organizations: [Organization]
     
+    @State private var loadingState: LOADING_STATE = .pending
     @State private var showReport: Bool = false
     @State private var showEditEvent: Bool = false
     @State private var showNotification: Bool = false
     
+    @EnvironmentObject private var event: Event
     @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
     
@@ -35,40 +37,29 @@ struct EventMenu: View {
     var isPosterOrAdmin: Bool {
         
         // check to see if you're the poster
-        if let user = session.user,
-           let uuid = user.uuid {
-            if event.poster?.uuid == uuid {
-                return true
-            }
+        guard let user = session.user,
+           let uuid = user.uuid else {
+            return false
         }
         
-        // check to see if you're an admin of an associated club
-        if let clubs = event.clubs {
-            let eventClubs = clubs.filter { c in
-                return session.clubs.contains { $0.id == c.id }
-            }
-            guard let userID = session.user?.uuid else {
-                return false
-            }
-            return eventClubs.first { e in
-                e.members.contains { ($0.user?.uuid == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) } ?? false
-            } != nil
+        if event.poster?.uuid == uuid {
+            return true
         }
         
-        // check to see if you're an manager of an associated org
-        if let organizations = event.organizations {
-            let eventOrgs = organizations.filter { o in
-                return session.orgs.contains { $0.id == o.id }
-            }
-            guard let userID = session.user?.uuid else {
-                return false
-            }
-            return eventOrgs.first { e in
-                e.members?.contains { $0.user?.uuid == userID } ?? false
-            } != nil
+        if clubs.first(where: { e in
+            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+        }) != nil {
+            return true
         }
         
-        return true
+        
+        if organizations.first(where: { e in
+            e.members?.contains { $0.user?.uuid == uuid } ?? false
+        }) != nil {
+            return true
+        }
+        
+        return false
     }
     
     func startEvent() async {
@@ -116,9 +107,10 @@ struct EventMenu: View {
                 .padding(.top, 5)
             
             if isPosterOrAdmin {
-                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
-                    self.showEditEvent.toggle()
-                })
+// TODO: - Disabling for now
+//                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
+//                    self.showEditEvent.toggle()
+//                })
                 
                 if event.actualStopTime == nil {
                     HStack {
@@ -167,9 +159,11 @@ struct EventMenu: View {
         })
         .fullScreenCover(isPresented: $showEditEvent, content: {
             if event.type == "pickup" {
-                EditPickUpEvent(event: $event)
+                EditPickUpEvent()
+                    .environmentObject(event)
             } else {
-                EditTournamentEvent(event: $event)
+                EditTournamentEvent()
+                    .environmentObject(event)
             }
         })
         
@@ -177,6 +171,7 @@ struct EventMenu: View {
 }
 
 #Preview {
-    EventMenu(event: .constant(EVENTS[0]))
+    EventMenu(clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
+        .environmentObject(EVENTS[0])
         .environmentObject(SessionStore())
 }

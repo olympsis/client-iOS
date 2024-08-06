@@ -14,7 +14,7 @@ import AuthenticationServices
 
 class AuthObserver: ObservableObject {
 
-    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "auth_observer")
+    let log = Logger(subsystem: "com.olympsis.client", category: "auth_observer")
     let decoder =  JSONDecoder()
     let secureStore = SecureStore()
     let authService = AuthService()
@@ -88,6 +88,8 @@ class AuthObserver: ObservableObject {
                         }
                         
                         try await Register(firstName: firstName, lastName: lastName, email: email, token: token)
+                        cacheService.cacheUser(user: UserData(firstName: firstName, lastName: lastName))
+                        
                         return USER_STATUS.new
                     } catch {
                         log.error("Authentication Failed: \(error.localizedDescription)")

@@ -13,8 +13,7 @@ struct MediaPicker: View {
     var pickerType: MediaPickerType
     let onComplete: ([UIImage]) -> Void
     
-    var maskShape: CropMaskShape = .square
-    
+    @State var maskShape: CropMaskShape = .square
     @State private var path = NavigationPath()
     @State private var croppedImages: [UIImage] = []
     @StateObject private var viewModel: MediaPickerViewModel
@@ -46,6 +45,9 @@ struct MediaPicker: View {
         case .other:
             maxSelection = 1
             maskShape = .rectangle
+        case .eventImage:
+            maxSelection = 1
+            maskShape = .rectangleV
         }
         
         _viewModel = StateObject(wrappedValue:
@@ -84,6 +86,10 @@ struct MediaPicker: View {
                             .fontWeight(.bold)
                     case .other:
                         Text("Photo")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                    case .eventImage:
+                        Text(MediaPickerType.eventImage.rawValue)
                             .font(.subheadline)
                             .fontWeight(.bold)
                     }
@@ -133,6 +139,31 @@ struct MediaPicker: View {
                     case .newPost, .newAnnouncement:
                         HStack {
                             Spacer()
+                            Button(action: {
+                                if maskShape == CropMaskShape.square {
+                                    maskShape = CropMaskShape.rectangleV
+                                } else {
+                                    maskShape = .square
+                                }
+                            }) {
+                                if maskShape == CropMaskShape.square {
+                                    Image(systemName: "square.fill")
+                                        .resizable()
+                                        .frame(width: 12, height: 17)
+                                } else {
+                                    Image(systemName: "square.fill")
+                                        .resizable()
+                                        .frame(width: 12, height: 12)
+
+                                }
+                            }
+                            .padding(.horizontal, 5)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color("background"))
+                                    .frame(width: 27, height: 25)
+                            }
+                            
                             Button(action: { viewModel.selectingMultiple.toggle() }) {
                                 viewModel.selectingMultiple ? Image(systemName: "square.stack.3d.down.right.fill") : Image(systemName: "square.stack.3d.down.right")
                             }

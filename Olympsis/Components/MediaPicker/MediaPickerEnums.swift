@@ -12,5 +12,6 @@ enum MediaPickerType: String, CaseIterable {
     case profile = "Profile picture"
     case newAnnouncement = "New announcement"
     case newEvent = "New event"
+    case eventImage = "Event Image"
     case other = "Other"
 }

@@ -16,30 +16,13 @@ struct Notifications: View {
     @State private var userObserver = UserObserver()
     @State private var cacheService = CacheService()
     @State private var notifications = NotificationManager()
-    @State private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "notification_permission_view")
+    @State private var log = Logger(subsystem: "com.olympsis.client", category: "notification_permission_view")
     
     @AppStorage("deviceToken") private var deviceToken: String?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @EnvironmentObject private var sessionStore: SessionStore
     func handleAllow() async {
-        do {
-            try await notifications.requestAuthorization()
-            guard let tk = deviceToken else {
-                status = .failure
-                return
-            }
-            _ = await userObserver.UpdateUserData(update: UserDao(deviceToken: tk))
-            let user = try await userObserver.GetUserData()
-            cacheService.cacheUser(user: user)
-            status = .success
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                authStatus = .authenticated
-            }
-        } catch {
-            status = .failure
-            log.error("failed to allow notifications: \(error.localizedDescription)")
-        }
     }
     
     func handleNoThanks() {

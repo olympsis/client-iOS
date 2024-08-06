@@ -12,168 +12,76 @@ import NotificationCenter
 
 struct Home: View {
     
-    @State private var hasLoaded = false // to make sure user location is updated once
     @State private var showDetail = false
     @State private var showMoreFields = false
-    @State private var showNotifications = false
-    @State private var status: LOADING_STATE = .loading
     
-    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject private var session: SessionStore
     
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "home_view")
-    
-    private var name: String {
-        guard let user = session.user, let name = user.firstName else {
-            log.error("Failed to get user's name")
-            return ""
-        }
-        return name
-    }
-    
-    private var event: Event? {
-        guard let user = session.user,
-              let uuid = user.uuid else {
-            return nil
-        }
-        
-        return session.events.mostRecentForUser(uuid: uuid)
-    }
+    private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     var body: some View {
-        NavigationView {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack {
-                    
-                    //MARK: - Welcome message
-                    HStack {
-                        VStack(alignment: .leading){
-                            WelcomeView(name: name, status: $status)
-                        }.padding(.top, 25)
-                        Spacer()
-                    }
-                    
-                    if let e = event {
-                        if status == .success {
-                            VStack (alignment: .center){
-                                EventListItem(event: e)
-                                    .padding(.horizontal)
-                            }
-                        }
-                    }
-                    
-                    // MARK: - Announcements
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(String(localized: "Announcements", table: "General"))
-                                .font(.custom("Helvetica Neue", size: 17))
-                                .bold()
-                                .padding()
-                            AnnouncementsView(status: $status, announcements: $session.feedObserver.announcements)
-                        }
-                    }
-                    
-                    // MARK: - Hot Events
-                    if (session.hotEvents.count > 0) {
-                        HStack {
-                            VStack(alignment: .leading){
-                                HStack {
-                                    Text(String(localized: "Hot Events", table: "General"))
-                                        .font(.system(.headline))
-                                    .padding()
-                                    Spacer()
-                                }
-                                
-                                ForEach(session.hotEvents) { event in
-                                    EventSmallListItem(event: event)
-                                }
-                            }
-                        }
-                    }
-                    
-                    // MARK: - Nearby Venues
-                    HStack {
-                        VStack(alignment: .leading){
-                            HStack {
-                                Text(String(localized: "Nearby Venues", table: "General"))
-                                    .font(.system(.headline))
-                                .padding()
-                                Spacer()
-                                Button(action:{self.showMoreFields.toggle()}){
-                                    Text(String(localized: "View All", table: "General"))
-                                       .bold()
-                                    Image(systemName: "chevron.down")
-                                }.padding()
-                                    .foregroundColor(Color.primary)
-                            }.fullScreenCover(isPresented: $showMoreFields) {
-                                VenuesList(venues: session.fields)
-                            }
-                            
-                            Venues(venues: $session.fields, status: $status)
-                        }
-                    }.onReceive(session.locationManager.$location) { newLoc in
-                        
-                        // make sure new location is valid
-                        guard let location = newLoc else {
-                            return
-                        }
-                        // we have to wait an undetermined amount of time to hear back from the gps to get location
-                        // so i used on recieve and after that info is delivered we can start fetching for fields by location
-                        guard hasLoaded == false else {
-                            return
-                        }
-                        Task {
-                            await session.getNearbyData(location: location)
-                            status = .success
-                        }
-                        // prevents us from doing this everytime we get new info from gps
-                        // thus we only load data the first time
-                        // later i might add a button for you to reload, however, i dont see the need to
-                        // unless you are in map view.
-                        hasLoaded = true
-                    }
-                    .task {
-                        // If we don't have the user's location, we will use the fallback location
-                        if (!session.locationManager.isAuthorized) {
-                            guard hasLoaded == false else {
-                                return
-                            }
-                            guard let user = session.user,
-                                  let hometown = user.hometown else {
-                                // fall back location is apple park
-                                let loc = CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
-                                await session.getNearbyData(location: loc)
-                                status = .success
-                                return
-                            }
-                            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
-                            status = .success
-                            
-                            hasLoaded = true
-                        }
-                    }
-                    .padding(.bottom, 100)
-                }.fullScreenCover(isPresented: $showNotifications, content: {
-                    NotificationsView()
-                })
-            }.toolbar{
+        NavigationStack {
+            ScrollView(.vertical) {
+                
+                //MARK: - Welcome message
+                WelcomeCard()
+                    .padding(.top, 25)
+                    .environmentObject(session)
+                
+                // MARK: - Announcements
+                AnnouncementsView()
+                    .environmentObject(session)
+                
+                // MARK: - Next Events
+                NextEvents()
+                    .environmentObject(session)
+                
+                // MARK: - Hot Events
+                HotEvents()
+                    .environmentObject(session)
+                
+                // MARK: - Nearby Venues
+                NearbyVenues()
+                    .environmentObject(session)
+                
+                Spacer(minLength: 100)
+                
+            }
+            .onReceive(session.locationManager.$location) { newLoc in
+                
+                // make sure new location is valid
+                guard newLoc != nil else {
+                    return
+                }
+                // we have to wait an undetermined amount of time to hear back from the gps to get location
+                // so i used on recieve and after that info is delivered we can start fetching for fields by location
+                guard !session.locationRecieved else {
+                    return
+                }
+                
+                // prevents us from doing this everytime we get new info from gps
+                // thus we only load data the first time
+                session.locationRecieved = true
+                
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
-                        .font(.custom("ITCAvantGardeStd-Bold", size: 30, relativeTo: .largeTitle))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action:{ self.showNotifications.toggle() }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 45, height: 35)
-                                .foregroundStyle(Color("background"))
-                            Image(systemName: "bell")
-                                .foregroundStyle(Color("foreground"))
-                                .overlay {
-                                    if session.invitations.count > 0 {
-                                        NotificationCountView(value: $session.invitations.count)
-                                    }
+                    NavigationLink {
+                        NotificationsView()
+                            .environmentObject(session)
+                    } label: {
+                        Image(systemName: "bell")
+                            .foregroundStyle(Color("foreground"))
+                            .overlay {
+                                if session.invitations.count > 0 {
+                                    NotificationCountView(value: $session.invitations.count)
                                 }
-                        }
+                            }
                     }
                 }
             }
@@ -181,9 +89,7 @@ struct Home: View {
     }
 }
 
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    Home()
+        .environmentObject(SessionStore())
 }

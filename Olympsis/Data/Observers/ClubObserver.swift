@@ -11,7 +11,9 @@ import Foundation
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class ClubObserver: ObservableObject{
     
-    private let log = Logger(subsystem: "com.josephlabs.olympsis", category: "club_observer")
+    static let shared = ClubObserver()
+    
+    private let log = Logger(subsystem: "com.olympsis.client", category: "club_observer")
     private let decoder = JSONDecoder()
     private let clubService = ClubService()
     private let cacheService = CacheService()
@@ -49,10 +51,10 @@ class ClubObserver: ObservableObject{
         }
     }
     
-    func getClub(id: String) async -> ClubResponse? {
+    func getClub(id: String) async -> Club? {
         do {
             let res = try await clubService.getClub(id: id)
-            let object = try decoder.decode(ClubResponse.self, from: res)
+            let object = try decoder.decode(Club.self, from: res)
             return object
         } catch {
             log.error("\(error)")
@@ -124,6 +126,19 @@ class ClubObserver: ObservableObject{
             return true
         } catch {
             log.error("\(error)")
+        }
+        return false
+    }
+    
+    func updateClub(id: String, dto: ClubDao) async -> Bool {
+        do {
+            let res = try await clubService.updateClub(id: id, club: dto)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("Failed to update club: \(error.localizedDescription)")
         }
         return false
     }

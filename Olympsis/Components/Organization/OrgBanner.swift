@@ -14,14 +14,14 @@ struct OrgBanner: View {
         guard let logo = organization.logo else {
             return nil
         }
-        return URL(string: GenerateImageURL(logo))
+        return generateImageURL(logo)
     }
     
     var banner: URL? {
         guard let banner = organization.banner else {
             return nil
         }
-        return URL(string: GenerateImageURL(banner))
+        return generateImageURL(banner)
     }
     
     @EnvironmentObject private var organization: Organization
@@ -30,6 +30,13 @@ struct OrgBanner: View {
         ZStack(alignment: .top) {
             if let bannerURL = banner {
                 KFImage(bannerURL)
+                    .placeholder({
+                        Rectangle()
+                            .foregroundStyle(.gray)
+                            .overlay {
+                                ProgressView()
+                            }
+                    })
                     .resizable()
                     .frame(width: SCREEN_WIDTH, height: 250)
             } else {
@@ -38,7 +45,7 @@ struct OrgBanner: View {
                     .frame(width: SCREEN_WIDTH, height: 250)
                     .overlay {
                         Image(systemName: "photo.fill")
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color.background)
                             .imageScale(.large)
                     }
             }
@@ -47,18 +54,25 @@ struct OrgBanner: View {
                 Spacer()
                 if let logoURL = logo {
                     KFImage(logoURL)
+                        .placeholder({
+                            Rectangle()
+                                .foregroundStyle(.gray)
+                                .overlay {
+                                    ProgressView()
+                                }
+                        })
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .border(Color("background"), width: 3)
+                        .border(Color.background, width: 3)
                 } else {
                     Rectangle()
                         .frame(width: 100, height: 100)
                         .foregroundStyle(.gray)
-                        .border(Color("background"), width: 3)
+                        .border(Color.background, width: 3)
                         .overlay {
                             Image(systemName: "building.fill")
                                 .imageScale(.large)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color.background)
                         }
                 }
             }
@@ -69,5 +83,5 @@ struct OrgBanner: View {
 
 #Preview {
     OrgBanner()
-        .environmentObject(ORGANIZATIONS[1])
+        .environmentObject(ORGANIZATIONS[0])
 }

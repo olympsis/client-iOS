@@ -11,126 +11,77 @@ import PhotosUI
 
 struct NewClub: View {
     
-    @StateObject private var viewModel = NewGroupViewModel()
+    @State private var showLocationPicker = false
     
-    @EnvironmentObject private var session: SessionStore
+    @StateObject private var viewModel = GroupEditorViewModel()
+    
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: SessionStore
     
-    private var log = Logger(subsystem: "com.josephlabs.olympsis", category: "create_new_club_view")
+    
+    private var log = Logger(subsystem: "com.olympsis.client", category: "new_club_view")
     
     @MainActor
     func CreateClub() async {
         // generate DTO
         guard let dto = await viewModel.createClubDTO() else {
+            log.error("Failed to create club dto")
             return
         }
         
-        // grab current location and create club
-        let geoCoder = CLGeocoder()
-        if let location = session.locationManager.location {
-            let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
-            do {
-                let pk = try await geoCoder.reverseGeocodeLocation(l)
-                guard let country = pk.first?.country,
-                      let state = pk.first?.administrativeArea,
-                      let city = pk.first?.locality else {
-                    return
-                }
-                dto.city = city
-                dto.state = state
-                dto.country = country
-                
-                // create new club
-                guard let user = session.user,
-                    let id = try await session.clubObserver.createClub(club: dto) else {
-                    viewModel.state = .failure
-                    log.error("Failed to create club")
-                    return
-                }
-                
-                let club = Club(
-                    id: id, parent: nil,
-                    name: dto.name,
-                    logo: dto.logo,
-                    banner: dto.banner,
-                    sports: dto.sports,
-                    description: dto.description,
-                    city: dto.city,
-                    state: dto.state,
-                    country: dto.country,
-                    visibility: dto.visibility,
-                    members: [
-                        Member(
-                            id: UUID().uuidString, 
-                            role: "owner",
-                            user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
-                            joinedAt: Int64(Date().timeIntervalSince1970)
-                        )
-                    ],
-                    pinnedPosts: nil,
-                    isVerified: false,
-                    createdAt: Int(Date().timeIntervalSince1970)
-                )
-                
-                let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
-                session.groups.append(group)
-                session.selectedGroup = group
-
-                viewModel.showToast = true
-                viewModel.state = .success
-                dismiss()
-            } catch {
-                viewModel.state = .failure
-                log.error("Failed to create club: \(error)")
+        do {
+            // create new club
+            guard let user = session.user,
+                let id = try await session.clubObserver.createClub(club: dto) else {
+                viewModel.status = .failure
+                log.error("Failed to create club")
+                return
             }
-        } else {
-            if let hometown = session.user?.hometown {
-                let l = CLLocation(latitude: hometown[0], longitude: hometown[1])
-                do {
-                    let pk = try await geoCoder.reverseGeocodeLocation(l)
-                    guard let country = pk.first?.country,
-                          let state = pk.first?.administrativeArea,
-                          let city = pk.first?.locality else {
-                        return
-                    }
-                    dto.city = city
-                    dto.state = state
-                    dto.country = country
-                    
-                    // create new club
-                    guard let id = try await session.clubObserver.createClub(club: dto) else {
-                        viewModel.state = .failure
-                        log.error("Failed to create club")
-                        return
-                    }
-                    
-                    let club = Club(
-                        id: id, parent: nil,
-                        name: dto.name,
-                        logo: dto.logo,
-                        banner: dto.banner,
-                        sports: dto.sports,
-                        description: dto.description,
-                        city: dto.city,
-                        state: dto.state,
-                        country: dto.country,
-                        visibility: dto.visibility,
-                        pinnedPosts: nil,
-                        createdAt: Int(Date().timeIntervalSince1970)
+            
+            guard let name = dto.name,
+                  let sports = dto.sports,
+                  let city = dto.city,
+                  let state = dto.state,
+                  let country = dto.country,
+                  let visibility = dto.visibility else {
+                log.error("Failed to validate DTO data before creating club locally")
+                return
+            }
+            
+            let club = Club(
+                id: id, parent: nil,
+                name: name,
+                logo: dto.logo,
+                banner: dto.banner,
+                sports: sports,
+                description: dto.description,
+                city: city,
+                state: state,
+                country: country,
+                visibility: visibility,
+                members: [
+                    Member(
+                        id: UUID().uuidString,
+                        role: "owner",
+                        user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
+                        joinedAt: Int64(Date().timeIntervalSince1970)
                     )
-                    
-                    let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
-                    session.groups.append(group)
-                    session.selectedGroup = group
+                ],
+                pinnedPosts: nil,
+                isVerified: false,
+                createdAt: Int(Date().timeIntervalSince1970)
+            )
+            
+            let group = GroupSelection(type: GROUP_TYPE.Club, club: club, organization: nil, posts: nil)
+            session.groups.append(group)
+            session.selectedGroup = group
 
-                    viewModel.showToast = true
-                    viewModel.state = .success
-                    dismiss()
-                } catch {
-                    viewModel.state = .failure
-                    log.error("Failed to create club: \(error)")
-                }
-            }
+            viewModel.showToast = true
+            viewModel.status = .success
+            dismiss()
+        } catch {
+            viewModel.status = .failure
+            log.error("Failed to create club: \(error)")
         }
     }
     
@@ -154,7 +105,8 @@ struct NewClub: View {
                                 }
                                 
                         }
-                    }.overlay(alignment: .topTrailing) {
+                    }
+                    .overlay(alignment: .topTrailing) {
                         Image(systemName: "pencil.circle.fill")
                             .padding(.all, 5)
                             .foregroundStyle(Color("background"))
@@ -216,39 +168,56 @@ struct NewClub: View {
                     }
                 }.frame(height: 250)
                 
-                VStack (alignment: .leading){
-                    Text("Club Name:")
-                        .font(.title3)
-                        .bold()
-                    Text("What your club will be known by")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.primary)
-                        .opacity(0.1)
-                    TextField("", text: $viewModel.clubName)
-                        .padding(.leading)
-                }.frame(height: 40)
-                VStack(alignment: .leading){
-                    Text("Description:")
-                        .font(.title3)
-                        .bold()
-                        .padding(.top)
-                    Text("What your club is about?")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                // MARK: - Name
+                Group {
+                    VStack (alignment: .leading){
+                        Text("Club Name:")
+                            .font(.title3)
+                            .bold()
+                        Text("What your club will be known by")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        TextField("", text: $viewModel.clubName)
+                            .padding(.leading)
+                            .frame(height: 40)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color("background"))
+                            }
+                        Text("*required")
+                            .foregroundStyle(.gray)
+                    }
                 }
                 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.primary)
-                        .opacity(0.1)
-                    TextEditor(text: $viewModel.description)
-                        .scrollContentBackground(.hidden)
-                    .frame(height: 200)
+                // MARK: - Description
+                Group {
+                    VStack(alignment: .leading){
+                        Text("Description:")
+                            .font(.title3)
+                            .bold()
+                            .padding(.top)
+                        Text("What your club is about?")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        TextEditor(text: $viewModel.description)
+                            .scrollContentBackground(.hidden)
+                            .frame(height: 200)
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color("background"))
+                            }
+                        
+                        Text("*required")
+                            .foregroundStyle(.gray)
+                    }
                 }
+                
                 
                 // MARK: - Sports picker
                 VStack(alignment: .leading){
@@ -261,33 +230,36 @@ struct NewClub: View {
                             .foregroundColor(.gray)
                     }
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.primary)
-                            .opacity(0.1)
-                            .frame(height: 40)
-                        Button(action: {
-                            viewModel.showSportsPicker.toggle()
-                        }) {
-                            if !viewModel.selectedSports.isEmpty {
-                                ScrollView(.horizontal) {
-                                    HStack(alignment: .center) {
-                                        ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
-                                            Text(sport)
-                                                .foregroundStyle(.white)
-                                                .padding(.horizontal, 10)
-                                                .padding(.vertical, 5)
-                                                .background {
-                                                    RoundedRectangle(cornerRadius: 10)
-                                                        .foregroundStyle(Color("color-prime"))
-                                                }
+                    VStack(alignment: .leading) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color("background"))
+                                .frame(height: 40)
+                            Button(action: {
+                                viewModel.showSportsPicker.toggle()
+                            }) {
+                                if !viewModel.selectedSports.isEmpty {
+                                    ScrollView(.horizontal) {
+                                        HStack(alignment: .center) {
+                                            ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
+                                                Text(sport)
+                                                    .foregroundStyle(.white)
+                                                    .padding(.horizontal, 10)
+                                                    .padding(.vertical, 5)
+                                                    .background {
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(Color("color-prime"))
+                                                    }
+                                            }
                                         }
-                                    }
-                                }.scrollIndicators(.never)
-                            } else {
-                                Text("N/A")
+                                    }.scrollIndicators(.never)
+                                } else {
+                                    Text("N/A")
+                                }
                             }
                         }
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                 }
                 .padding(.top)
@@ -296,11 +268,45 @@ struct NewClub: View {
                     MultiSportsPicker(selectedSports: $viewModel.selectedSports)
                 })
                 
+                // MARK: - Hometown picker
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text("Hometown")
+                        HStack(alignment: .top) {
+                            Text("Where does this club call home?")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                        }.foregroundStyle(.gray)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Button(action: { self.showLocationPicker.toggle() }) {
+                            if (viewModel.latitude == 0 && viewModel.longitude == 0 || viewModel.city == "") {
+                                Text("N/A")
+                            } else {
+                                Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                            }
+                        }
+                        .frame(maxWidth: .infinity, idealHeight: 40)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 40)
+                                .foregroundColor(Color("background"))
+                        }
+                        Text("*required")
+                            .foregroundStyle(.gray)
+                    }
+                }
+                .padding(.top)
+                .fullScreenCover(isPresented: $showLocationPicker, content: {
+                    ProfileHometownPicker(city: $viewModel.city, state: $viewModel.state, country: $viewModel.country, latitude: $viewModel.latitude, longitude: $viewModel.longitude)
+                })
+                
                 VStack(alignment: .leading){
                     VStack(alignment: .center){
                         Button(action: { Task { await CreateClub() } }) {
-                            LoadingButton(text: "Create", width: 150, status: $viewModel.state)
-                        }.disabled(viewModel.state == .pending ? false : true)
+                            LoadingButton(text: "Create", width: 150, status: $viewModel.status)
+                        }.disabled(viewModel.status == .pending ? false : true)
                     }
                     .frame(width: SCREEN_WIDTH-25)
                     .padding(.top, 50)
@@ -314,7 +320,7 @@ struct NewClub: View {
         .frame(width: SCREEN_WIDTH-25)
         .navigationTitle("Create Club")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.state = .pending }, content: {
+        .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {
             GroupMediaViolation()
         })
     }

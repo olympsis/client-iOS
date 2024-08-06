@@ -51,7 +51,7 @@ struct UserDataListView: View {
             return
         }
         
-        let data = Invitation(id: nil, type: GROUP_TYPE.Organization.rawValue, sender: sender, recipient: recipient, subjectID: organizationID, status: "pending", data: nil, createdAt: nil)
+        let data = InvitationDTO(id: nil, type: GROUP_TYPE.Organization.rawValue, sender: sender, recipient: recipient, subjectID: organizationID, status: "pending", createdAt: nil)
         guard let resp = await session.orgObserver.createInvitation(data: data) else {
             handleFailure()
             return

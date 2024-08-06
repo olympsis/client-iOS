@@ -24,12 +24,16 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        Image(systemName: "person.3.fill")
+                                            .foregroundStyle(Color.foreground)
+                                    }
                                 VStack {
-                                    if let club = clubs.first(where: { $0.id == organizer.id }),
-                                       let name = club.name {
-                                        Text(name)
+                                    if let club = clubs.first(where: { $0.id == organizer.id }) {
+                                        Text(club.name)
                                             .fullScreenCover(isPresented: $showClub, content: {
-                                                ClubView(club: club)
+                                                ClubDetailView(club: club)
                                             })
                                     }
                                 }
@@ -42,12 +46,17 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
+                                    .foregroundStyle(Color.background)
+                                    .overlay {
+                                        Image(systemName: "building.fill")
+                                            .foregroundStyle(Color.foreground)
+                                    }
                                 VStack {
                                     if let org = organizations.first(where: { $0.id == organizer.id }),
                                        let name = org.name {
                                         Text(name)
                                             .fullScreenCover(isPresented: $showOrg, content: {
-                                                OrgView(organization: org)
+                                                OrgDetailView(organization: org)
                                             })
                                     }
                                 }

@@ -13,6 +13,7 @@ struct BlockedUsersList: View {
     @State private var blockedUsers = [UserData]()
     @State private var state: LOADING_STATE = .pending
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "blocked_users_list_view")
@@ -28,11 +29,11 @@ struct BlockedUsersList: View {
             blockedList.removeAll(where: { $0 == uuid })
             let dto = UserDao(blockedUsers: blockedList)
             
-            let resp = await session.userObserver.UpdateUserData(update: dto)
-            if resp {
-                session.user?.blockedUsers = blockedList
-                blockedUsers.removeAll(where: { $0.uuid == uuid })
+            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+                return
             }
+            session.user = resp
+            blockedUsers.removeAll(where: { $0.uuid == uuid })
         }
     }
     
@@ -128,7 +129,14 @@ struct BlockedUsersList: View {
         }
         .navigationTitle("Blocked Users")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
         .task {
             await loadList()
         }

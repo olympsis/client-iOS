@@ -68,7 +68,7 @@ struct MemberListItem: View {
                                 Color.gray // Indicates an error.
                                     .clipShape(Circle())
                                 .opacity(0.3)
-                                Image(systemName: "person")
+                                Image(systemName: "person.fill")
                                     .foregroundStyle(.white)
                                     .imageScale(.large)
                             }

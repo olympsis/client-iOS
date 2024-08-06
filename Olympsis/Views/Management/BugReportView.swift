@@ -18,7 +18,7 @@ struct BugReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    private let log = Logger(subsystem: "com.olympsis.ui", category: "bug_report_view")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "bug_report_view")
     
     func createReport() async {
         guard notes != "" else {
@@ -83,7 +83,14 @@ struct BugReportView: View {
         }
         .navigationTitle("Report a problem")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
     }
 }
 

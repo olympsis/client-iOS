@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AboutUs: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ScrollView {
             HStack {
@@ -34,7 +37,14 @@ struct AboutUs: View {
         .padding(.horizontal)
         .navigationTitle("About Us")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
     }
 }
 

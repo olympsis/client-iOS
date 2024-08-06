@@ -80,27 +80,38 @@ enum EVENT_STATUS: String {
 }
 
 
-enum SPORT: String, CaseIterable {
+enum SPORTS: String, CaseIterable {
     case soccer = "soccer"
+    case running = "running"
+    case cycling = "cycling"
     case volleyball = "volleyball"
     case basketball = "basketball"
     case pickleball = "pickleball"
+    case racquetball = "racquetball"
     case tennis = "tennis"
     case golf = "golf"
     case hiking = "hiking"
     case climbing = "climbing"
-    case spikeball = "spike"
+    case spike = "spike"
+    case football = "football"
+    case weights = "weights"
     
-    func Icon() -> Image {
+    func icon() -> Image {
         switch self {
         case .soccer:
             return Image(systemName: "figure.soccer")
+        case .running:
+            return Image(systemName: "figure.run")
+        case .cycling:
+            return Image(systemName: "figure.outdoor.cycle")
         case .volleyball:
             return Image(systemName: "figure.volleyball")
         case .basketball:
             return Image(systemName: "figure.basketball")
         case .pickleball:
             return Image(systemName: "figure.pickleball")
+        case .racquetball:
+            return Image(systemName: "figure.racquetball")
         case .tennis:
             return Image(systemName: "figure.tennis")
         case .golf:
@@ -109,31 +120,78 @@ enum SPORT: String, CaseIterable {
             return Image(systemName: "figure.hiking")
         case .climbing:
             return Image(systemName: "figure.climbing")
-        case .spikeball:
+        case .spike:
             return Image("logo-spikeball")
+        case .football:
+            return Image(systemName: "figure.american.football")
+        case .weights:
+            return Image(systemName: "figure.strengthtraining.traditional")
         }
     }
     
-    func Images() -> [String] {
+    func images() -> [String] {
         switch self {
         case .soccer:
-            return ["soccer-0","soccer-1"]
+            return ["event-images/soccer-0.jpg","event-images/soccer-1.jpg"]
         case .basketball:
-            return ["basketball-0", "basketball-1", "basketball-2"]
+            return ["event-images/basketball-0.jpg", "event-images/basketball-1.jpg", "event-images/basketball-2.jpg"]
         case .volleyball:
-            return ["volleyball-0","volleyball-1","volleyball-2"]
+            return ["event-images/volleyball-0.jpg","event-images/volleyball-1.jpg","event-images/volleyball-2.jpg"]
         case .tennis:
-            return ["tennis-0", "tennis-1", "tennis-2"]
+            return ["event-images/tennis-0.jpg", "event-images/tennis-1.jpg", "event-images/tennis-2.jpg"]
         case .pickleball:
-            return ["pickleball-0","pickleball-1","pickleball-2"]
+            return ["event-images/pickleball-0.jpg","event-images/pickleball-1.jpg","event-images/pickleball-2.jpg"]
         case .golf:
-            return ["golf-0","golf-1","golf-2"]
+            return ["event-images/golf-0.jpg","event-images/golf-1.jpg","event-images/golf-2.jpg"]
         case .hiking:
-            return ["hiking-0", "hiking-1"]
+            return ["event-images/hiking-0.jpg", "event-images/hiking-1.jpg"]
         case .climbing:
-            return ["climbing-0","climbing-1","climbing-2"]
-        case .spikeball:
-            return ["spikeball-0"]
+            return ["event-images/climbing-0.jpg","event-images/climbing-1.jpg","event-images/climbing-2.jpg"]
+        case .spike:
+            return ["event-images/spikeball-0.jpg"]
+        case .running:
+            return ["event-images/running-0.jpg", "event-images/running-1.jpg"]
+        case .cycling:
+            return ["event-images/cycling-0.jpg", "event-images/cycling-1.jpg"]
+        case .racquetball:
+            return ["event-images/racquetball-0.jpg"]
+        case .football:
+            return ["event-images/football-0.jpg"]
+        case .weights:
+            return ["event-images/weights-0.jpg", "event-images/weights-1.jpg"]
+        }
+    }
+    
+    func getName() -> String {
+        switch self {
+        case .soccer:
+            return "Soccer"
+        case .running:
+            return "Running"
+        case .cycling:
+            return "Cycling"
+        case .volleyball:
+            return "Volleyball"
+        case .basketball:
+            return "Basketball"
+        case .pickleball:
+            return "Pickleball"
+        case .racquetball:
+            return "Racquetball"
+        case .tennis:
+            return "Tennis"
+        case .golf:
+            return "Golf"
+        case .hiking:
+            return "Hiking"
+        case .climbing:
+            return "Climbing"
+        case .spike:
+            return "Spike"
+        case .football:
+            return "Football"
+        case .weights:
+            return "Weights"
         }
     }
 }
@@ -202,7 +260,7 @@ enum FIELD_TYPES: String {
 }
 
 enum RSVP_STATUS: String {
-    case Going = "going"
+    case Going = "yes"
     case Maybe = "maybe"
 }
 
@@ -237,4 +295,57 @@ enum MediaUploadError: Error {
 enum CREATE_ERROR: Error {
     case unexpected
     case noName
+}
+
+enum SCALE {
+    case Small
+    case Medium
+    case Large
+}
+
+enum SHARING_TITLE_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}
+
+enum SHARING_TIME_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}
+
+enum SHARING_VENUE_POSITION {
+    case top_leading
+    case top_trailing
+    case top_center
+    case center
+    case bottom_center
+    case bottom_leading
+    case bottom_trailing
+}
+
+enum APP_MODE: Int, CaseIterable {
+    case free = 0
+    case premium = 1
+}
+
+enum APP_STATE: Int, CaseIterable {
+    case normal = 0
+    case developer = 1
+    case suspended = 2
+}
+
+enum BADGE_SIZE {
+    case small
+    case medium
+    case large
 }

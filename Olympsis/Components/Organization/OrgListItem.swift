@@ -56,7 +56,7 @@ struct OrgListItem: View {
             }
             return
         }
-        let app = OrganizationApplication(id: "", organizationID: id, clubID: clubID, status: "pending", data: nil, createdAt: 0)
+        let app = OrganizationApplicationDao(organizationID: id, clubID: clubID, status: "pending")
         let res = await session.orgObserver.createOrganizationApplication(app: app)
         if res {
             status = .success
@@ -95,8 +95,8 @@ struct OrgListItem: View {
                     .font(.callout)
             }
             
-            HStack {
-                ScrollView(.horizontal) {
+            ScrollView(.horizontal) {
+                HStack {
                     ForEach(sports, id: \.self) { sport in
                         ClubTag(isSport: true, tagName: sport)
                     }
@@ -129,7 +129,7 @@ struct OrgListItem: View {
                 .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
-            OrgView(organization: organization)
+            OrgDetailView(organization: organization)
         })
     }
 }

@@ -15,7 +15,7 @@ struct ClubApplicationListItem: View {
     @EnvironmentObject var session: SessionStore
     
     var fullName: String {
-        guard let data = application.data,
+        guard let data = application.applicant,
               let firstName = data.firstName,
               let lastName = data.lastName else {
             return "Olympsis User"
@@ -24,7 +24,7 @@ struct ClubApplicationListItem: View {
     }
     
     var username: String {
-        guard let data = application.data,
+        guard let data = application.applicant,
               let username = data.username else {
             return "olympsis-user"
         }
@@ -32,7 +32,7 @@ struct ClubApplicationListItem: View {
     }
     
     var userBio: String {
-        guard let data = application.data,
+        guard let data = application.applicant,
               let bio = data.bio else {
                   return "..."
               }
@@ -40,7 +40,7 @@ struct ClubApplicationListItem: View {
     }
     
     var userImageURL: String {
-        guard let data = application.data,
+        guard let data = application.applicant,
               let imageURL = data.imageURL else {
             return ""
         }
@@ -52,11 +52,8 @@ struct ClubApplicationListItem: View {
     }
     
     func accept() async {
-        guard let id = club.id else {
-            return
-        }
         let req = ApplicationUpdateRequest(status: "accepted")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -65,11 +62,8 @@ struct ClubApplicationListItem: View {
     }
     
     func deny() async {
-        guard let id = club.id else {
-            return
-        }
         let req = ApplicationUpdateRequest(status: "denied")
-        let res = await session.clubObserver.updateApplication(id: id, appID: application.id, req: req)
+        let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})

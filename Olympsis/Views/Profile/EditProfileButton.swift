@@ -23,7 +23,8 @@ struct EditProfileButton: View {
                         .bold()
                         .font(.callout)
                 }
-            }.fullScreenCover(isPresented: $showEditProfile) {
+            }
+            .fullScreenCover(isPresented: $showEditProfile) {
                 EditProfile()
             }
         }.frame(width: SCREEN_WIDTH)

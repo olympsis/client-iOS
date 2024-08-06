@@ -49,19 +49,19 @@ struct UserBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            let resp = await session.userObserver.UpdateUserData(update: dto)
-            if resp {
-                session.user?.blockedUsers = blockedList
+            guard let user = await session.userObserver.UpdateUserData(update: dto) else {
+                return
             }
+            session.user = user
         } else {
             var blockedList = [String]()
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            let resp = await session.userObserver.UpdateUserData(update: dto)
-            if resp {
-                session.user?.blockedUsers = blockedList
+            guard let user = await session.userObserver.UpdateUserData(update: dto) else {
+                return
             }
+            session.user = user
         }
         status = .success
         onComplete(true)
@@ -83,6 +83,9 @@ struct UserBlockingConfirmation: View {
                 Group {
                     if let url = imageURL {
                         KFImage(url)
+                            .placeholder({
+                                ImageLoadingView()
+                            })
                             .resizable()
                             .clipShape(Circle())
                             .scaledToFill()

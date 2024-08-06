@@ -4,6 +4,18 @@
     "About this Venue" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About this Venue"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acerca de este lugar"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14,6 +26,18 @@
     },
     "Accept" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acepte"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25,6 +49,18 @@
     "Allow" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36,6 +72,18 @@
     "Announcements" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Announcements"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuncios"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47,6 +95,18 @@
     "are you ready to play?" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "are you ready to play?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿estás listo para jugar?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58,6 +118,18 @@
     "Events can be created anywhere, venues are locations vetted by Olympsis" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events can be created anywhere, venues are locations vetted by Olympsis"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los eventos se pueden crear en cualquier lugar, los lugares son localizaciones examinadas por Olympsis"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67,11 +139,42 @@
       }
     },
     "Hot Events" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hot Events"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos candentes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements Marquants"
+          }
+        }
+      }
     },
     "How is my location used?" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How is my location used?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo se utiliza mi localización?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,11 +184,42 @@
       }
     },
     "Move and scale" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move and Scale"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover y escalar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplacement et mise à l'échelle"
+          }
+        }
+      }
     },
     "Nearby Venues" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby Venues"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lugares cercanos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97,6 +231,18 @@
     "No Thanks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Thanks"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No, gracias"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -108,6 +254,18 @@
     "No venues near you" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No venues near you"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay sedes cerca de usted"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -119,6 +277,18 @@
     "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity." : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olympsis necesita acceder a su ubicación para mostrarle los eventos deportivos y torneos que se celebran en su zona. Olympsis le ofrecerá una experiencia deportiva local óptima en función de su proximidad. Esto asegura que nunca te pierdas los partidos más importantes o que puedas descubrir fácilmente nuevos eventos deportivos en tu vecindad."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -130,6 +300,18 @@
     "ready to play?" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ready to play?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Listo para jugar?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140,6 +322,18 @@
     },
     "Share Your Location" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your location"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparte tu localización"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -148,9 +342,44 @@
         }
       }
     },
+    "Slogan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join a community made by athletes for athletes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Únete a una comunidad hecha por atletas para atletas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejoignez une communauté créée par des athlètes pour des athlètes."
+          }
+        }
+      }
+    },
     "Sorry there are no venues in your area" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorry there are no venues in your area"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo sentimos, no hay locales en su zona"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162,6 +391,18 @@
     "View All" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View All"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -173,6 +414,18 @@
     "Welcome back" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome back"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido de nuevo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -184,6 +437,18 @@
     "Welcome!" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome!"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido!"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",

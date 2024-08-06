@@ -20,7 +20,7 @@ struct FieldReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    private let log = Logger(subsystem: "com.olympsis.ui", category: "field_report_view")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "field_report_view")
     
     func createReport() async {
         guard issue != "",

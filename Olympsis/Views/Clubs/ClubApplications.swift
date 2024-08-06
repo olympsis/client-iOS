@@ -16,7 +16,7 @@ struct ClubApplications: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if applications.filter({$0.status != "accepted"}).count > 0 {
@@ -28,7 +28,7 @@ struct ClubApplications: View {
                     }
                     
                 }.refreshable {
-                    let res = await clubObserver.getApplications(id: club.id!)
+                    let res = await clubObserver.getApplications(id: club.id)
                     await MainActor.run {
                         applications = res
                     }
@@ -44,7 +44,7 @@ struct ClubApplications: View {
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                let res = await clubObserver.getApplications(id: club.id!)
+                let res = await clubObserver.getApplications(id: club.id)
                 await MainActor.run {
                     applications = res
                 }

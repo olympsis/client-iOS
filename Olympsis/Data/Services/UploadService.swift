@@ -15,7 +15,7 @@ class UploadService {
     private var http: Courrier
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             // Eventually we want to have a local way of testing the upload server
             let host = Bundle.main.object(forInfoDictionaryKey: "STORAGE") as? String ?? ""
             self.http = Courrier(.HTTP, host: host)

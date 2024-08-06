@@ -9,47 +9,44 @@ import SwiftUI
 
 struct NotificationsView: View {
     
-    @State private var notifications: [NotificationModel] = [NotificationModel]()
-    @Environment(\.presentationMode) var presentationMode
+    @State private var notifications: [NotificationModel] = []
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if notifications.count > 0 {
-                    ScrollView(showsIndicators: false) {
-                        ForEach(notifications, id: \.id){ note in
-                            NotificationModelView(notification: note)
-                        }
-                    }
-                } else {
-                    Spacer()
-                    Text("No new notifications")
-                    Spacer()
-                }
-            }.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
+        VStack {
+            if notifications.count > 0 {
+                ScrollView(showsIndicators: false) {
+                    ForEach(notifications, id: \.id){ note in
+                        NotificationModelView(notification: note)
                     }
                 }
+            } else {
+                Spacer()
+                Text("No new notifications")
+                Spacer()
             }
-            .navigationTitle("Notifications")
-            .navigationBarTitleDisplayMode(.inline)
-            .task {
-                notifications = session.invitations.map({ i in
-                    NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
-                })
+        }.toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action:{ dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(Color("color-prime"))
+                }
             }
+        }
+        .navigationBarBackButtonHidden()
+        .navigationTitle("Notifications")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            notifications = session.invitations.map({ i in
+                NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
+            })
         }
     }
 }
 
-struct NotificationsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NotificationsView()
-            .environmentObject(SessionStore())
-    }
+#Preview {
+    NotificationsView()
+        .environmentObject(SessionStore())
 }
-

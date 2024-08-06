@@ -7,45 +7,45 @@
 
 import Foundation
 
-class Club: Codable, Identifiable, ObservableObject {
+class Club: Decodable, Identifiable, ObservableObject {
 
-    let id: String?
+    let id: String
     let parent: OrganizationDao?
-    let name: String?
+    @Published var name: String
     var logo: String?
     var banner: String?
-    let sports: [String]?
-    let description: String?
-    let city: String?
-    let state: String?
-    let country: String?
-    let visibility: String?
-    var members: [Member]
+    var sports: [String]
+    var description: String?
+    let city: String
+    let state: String
+    let country: String
+    let visibility: String
+    @Published var members: [Member]
     var blackList: [String]?
     let rules: [String]?
     var tags: [String]?
     var pinnedPosts: [String]?
-    let isVerified: Bool?
-    let createdAt: Int?
+    let isVerified: Bool
+    let createdAt: Int
     
-    init(id: String?,
+    init(id: String,
          parent: OrganizationDao?,
-         name: String?,
+         name: String,
          logo: String?,
          banner: String?,
-         sports: [String]?,
+         sports: [String],
          description: String?,
-         city: String?,
-         state: String?,
-         country: String?,
-         visibility: String?,
+         city: String,
+         state: String,
+         country: String,
+         visibility: String,
          members: [Member] = [Member](),
          blackList: [String]?=nil,
          rules: [String]?=nil,
          tags: [String]?=nil,
          pinnedPosts: [String]?,
          isVerified: Bool=false,
-         createdAt: Int?) {
+         createdAt: Int) {
         
         self.id = id
         self.parent = parent
@@ -67,12 +67,30 @@ class Club: Codable, Identifiable, ObservableObject {
         self.createdAt = createdAt
     }
     
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.parent = try container.decodeIfPresent(OrganizationDao.self, forKey: .parent)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.logo = try container.decodeIfPresent(String.self, forKey: .logo)
+        self.banner = try container.decodeIfPresent(String.self, forKey: .banner)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.sports = try container.decode([String].self, forKey: .sports)
+        self.city = try container.decode(String.self, forKey: .city)
+        self.state = try container.decode(String.self, forKey: .state)
+        self.country = try container.decode(String.self, forKey: .country)
+        self.visibility = try container.decode(String.self, forKey: .visibility)
+        self.members = try container.decode([Member].self, forKey: .members)
+        self.blackList = try container.decodeIfPresent([String].self, forKey: .blackList)
+        self.rules = try container.decodeIfPresent([String].self, forKey: .rules)
+        self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
+        self.pinnedPosts = try container.decodeIfPresent([String].self, forKey: .pinnedPosts)
+        self.isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
+        self.createdAt = try container.decode(Int.self, forKey: .createdAt)
+    }
+    
     static func == (lhs: Club, rhs: Club) -> Bool {
-        guard let lhsID = lhs.id,
-              let rhsID = rhs.id else {
-            return false
-        }
-        return lhsID == rhsID
+        return lhs.id == rhs.id
     }
     
     enum CodingKeys: String, CodingKey {
@@ -187,7 +205,7 @@ struct ClubInvite: Codable, Identifiable {
     }
 }
 
-struct ClubResponse: Codable {
+struct ClubResponse: Decodable {
     let token: String?
     let club: Club
     
@@ -197,7 +215,7 @@ struct ClubResponse: Codable {
     }
 }
 
-struct ClubsResponse: Codable {
+struct ClubsResponse: Decodable {
     let totalClubs: Int
     let clubs: [Club]
     
@@ -221,7 +239,7 @@ struct ChangeRoleRequest: Codable {
     let role: String
 }
 
-struct CreateClubResponse: Codable {
+struct CreateClubResponse: Decodable {
     let token: String
     let club: Club
 }
@@ -232,18 +250,21 @@ struct ApplicationUpdateRequest: Codable {
 
 struct ClubApplication: Codable, Identifiable {
     let id: String
-    let uuid: String
-    let clubID: String
+    let applicant: UserData?
     let status: String
-    let data: UserData?
     let createdAt: Int64
+    
+    init(id: String, applicant: UserData?, status: String, createdAt: Int64) {
+        self.id = id
+        self.applicant = applicant
+        self.status = status
+        self.createdAt = createdAt
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
-        case clubID = "club_id"
+        case applicant
         case status
-        case data
         case createdAt = "created_at"
     }
 }
@@ -258,7 +279,7 @@ struct ClubApplicationsResponse: Codable {
     }
 }
 
-struct ClubInvitation: Codable, Identifiable {
+struct ClubInvitation: Decodable, Identifiable {
     let id: String
     let uuid: String
     let clubID: String
@@ -283,4 +304,26 @@ struct ClubData: Codable {
     enum CodingKeys: String, CodingKey {
         case parent
     }
+}
+
+struct ClubSnippet: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let sports: [String]
+    let city: String
+    let state: String
+    let country: String
+    let visibility: String
+}
+
+
+struct OrgSnippet: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let sports: [String]
+    let city: String
+    let state: String
+    let country: String
 }

@@ -16,7 +16,7 @@ struct PostViewer: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                PostView(post: post)
+                PostListItem(post: post)
                     .environmentObject(post)
             }
             .toolbar {

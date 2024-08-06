@@ -16,7 +16,7 @@ class PostService {
     private var http: Courrier
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             self.http = Courrier(.HTTP, host: "localhost")
         #else
             let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
@@ -26,11 +26,11 @@ class PostService {
     
     func getPosts(id: String, parentId: String?) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        var endpoint = Endpoint("/posts", queryItems: [
+        var endpoint = Endpoint("/v1/posts", queryItems: [
             URLQueryItem(name: "groupID", value: id),
         ])
         if (parentId != nil) {
-            endpoint = Endpoint("/posts", queryItems: [
+            endpoint = Endpoint("/v1/posts", queryItems: [
                 URLQueryItem(name: "groupID", value: id),
                 URLQueryItem(name: "parentID", value: parentId)
             ])
@@ -41,21 +41,21 @@ class PostService {
     
     func getPost(id: String) async throws -> (Data) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(id)")
+        let endpoint = Endpoint("/v1/posts/\(id)")
         let (data, _) = try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
         return data
     }
     
     func createPost(post: PostDTO) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts")
+        let endpoint = Endpoint("/v1/posts")
         
         return try await http.Request(.POST, endpoint, body: EncodeToData(post), headers: ["Authorization": token ?? ""])
     }
     
     func deletePost(postID: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(postID)")
+        let endpoint = Endpoint("/v1/posts/\(postID)")
         
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
@@ -63,7 +63,7 @@ class PostService {
     
     func addLike(id: String, like: LikeDao) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(id)/likes")
+        let endpoint = Endpoint("/v1/posts/\(id)/likes")
         return try await http.Request(.POST, endpoint, body: EncodeToData(like), headers: [
             "Authorization": token ?? ""
         ])
@@ -71,7 +71,7 @@ class PostService {
     
     func removeLike(id: String, likeID: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(id)/likes/\(likeID)")
+        let endpoint = Endpoint("/v1/posts/\(id)/likes/\(likeID)")
         
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
@@ -79,7 +79,7 @@ class PostService {
     
     func addComment(id: String, comment: CommentDao) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(id)/comments")
+        let endpoint = Endpoint("/v1/posts/\(id)/comments")
         
         return try await http.Request(.POST, endpoint, body: EncodeToData(comment), headers: [
             "Authorization": token ?? ""
@@ -88,7 +88,7 @@ class PostService {
     
     func deleteComment(id: String, cid: String) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/posts/\(id)/comments/\(cid)")
+        let endpoint = Endpoint("/v1/posts/\(id)/comments/\(cid)")
         
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp

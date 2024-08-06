@@ -23,11 +23,10 @@ struct RoomView: View {
     
     @State private var state: LOADING_STATE = .pending
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: SessionStore
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var notificationManager: NotificationManager
     
-    var log = Logger(subsystem: "com.coronislabs.olympsis", category: "room_view")
+    var log = Logger(subsystem: "com.olympsis.client", category: "room_view")
     
     func SendMessage() {
         guard text.count > 0 else {
@@ -51,7 +50,7 @@ struct RoomView: View {
     func DidDismiss(){
         if hasDeleted {
             self.rooms.removeAll(where: {$0.id == room.id})
-            self.presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
     }
     
@@ -63,7 +62,7 @@ struct RoomView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollViewReader { scrollView in
                     ScrollView(showsIndicators: false) {
@@ -87,35 +86,38 @@ struct RoomView: View {
                         RoomSettingsView(room: room, hasDeleted: $hasDeleted, observer: observer)
                             .presentationDetents([.height(250)])
                     }
-                    .refreshable {
-                        state = .loading
-                        guard let id = room.id else {
-                            return
-                        }
-                        let resp = await observer.GetRoom(id: id)
-                        if let r = resp {
-                            await MainActor.run {
-                                guard let history = r.history else {
-                                    state = .success
-                                    return
-                                }
-                                messages = history
-                                state = .success
-                            }
-                        }
-                        await observer.InitiateSocketConnection(id: id)
-                        observer.Ping()
-                        while true {
-                            let msg = await observer.ReceiveMessage()
-                            if let m = msg {
-                                messages.append(m)
-                            } else {
-                                log.error("Failed to get message")
-                                await observer.InitiateSocketConnection(id: id)
-                                observer.Ping()
-                            }
-                        }
-                    }
+//                    .refreshable {
+//                        state = .loading
+//                        guard let id = room.id else {
+//                            return
+//                        }
+//                        let resp = await observer.GetRoom(id: id)
+//                        if let r = resp {
+//                            await MainActor.run {
+//                                guard let history = r.history else {
+//                                    state = .success
+//                                    return
+//                                }
+//                                messages = history
+//                                state = .success
+//                            }
+//                        }
+//                        await observer.InitiateSocketConnection(id: id)
+//                        observer.Ping()
+//                        while true {
+//                            guard session.notificationsManager.inMessageView == true else {
+//                                return
+//                            }
+//                            let msg = await observer.ReceiveMessage()
+//                            if let m = msg {
+//                                messages.append(m)
+//                            } else {
+//                                log.error("Failed to get message")
+//                                await observer.InitiateSocketConnection(id: id)
+//                                observer.Ping()
+//                            }
+//                        }
+//                    }
                     .onChange(of: messages) { _, newValue in
                         withAnimation {
                             scrollView.scrollTo(newValue.last?.id, anchor: .bottom)
@@ -148,10 +150,15 @@ struct RoomView: View {
                 }
                 .padding(.bottom, 5)
                 
-            }.toolbar{
+            }
+            .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{
-                        self.presentationMode.wrappedValue.dismiss()
+                        Task {
+                            session.notificationsManager.inMessageView = false
+                            await observer.CloseSocketConnection()
+                            dismiss()
+                        }
                     }){
                         Image(systemName: "chevron.left")
                     }
@@ -168,7 +175,7 @@ struct RoomView: View {
                 }
             }
             .task {
-                notificationManager.inMessageView = true
+                session.notificationsManager.inMessageView = true
                 state = .loading
                 guard let id = room.id else {
                     return
@@ -184,21 +191,24 @@ struct RoomView: View {
                         state = .success
                     }
                 }
-                await observer.InitiateSocketConnection(id: id)
+                await observer.initiateSocketConnection(id: id)
                 observer.Ping()
                 while true {
+                    guard session.notificationsManager.inMessageView == true else {
+                        return
+                    }
                     let msg = await observer.ReceiveMessage()
                     if let m = msg {
                         messages.append(m)
                     } else {
                         log.error("Failed to get message")
-                        await observer.InitiateSocketConnection(id: id)
+                        await observer.initiateSocketConnection(id: id)
                         observer.Ping()
                     }
                 }
             }
             .onDisappear() {
-                notificationManager.inMessageView = false
+                session.notificationsManager.inMessageView = false
                 Task {
                     await observer.CloseSocketConnection()
                 }
@@ -213,6 +223,5 @@ struct RoomView_Previews: PreviewProvider {
 
         RoomView(club: CLUBS[0], room: room, rooms: .constant([room]), observer: ChatObserver())
             .environmentObject(SessionStore())
-            .environmentObject(NotificationManager())
     }
 }

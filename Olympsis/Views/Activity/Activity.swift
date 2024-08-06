@@ -14,7 +14,7 @@ struct Activity: View {
     @EnvironmentObject private var session: SessionStore
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false) {
                     HStack {

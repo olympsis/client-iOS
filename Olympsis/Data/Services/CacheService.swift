@@ -10,7 +10,7 @@ import Foundation
 
 class CacheService: ObservableObject {
     
-    let log = Logger(subsystem: "com.josephlabs.olympsis", category: "cache_service")
+    let log = Logger(subsystem: "com.olympsis.client", category: "cache_service")
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
     let defaults = UserDefaults()
