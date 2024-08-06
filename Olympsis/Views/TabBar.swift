@@ -98,8 +98,7 @@ struct TabBar: View {
 }
 
 #Preview {
-    @Previewable @State var currentTab: Tab = .home
-    return TabBar(currentTab: $currentTab)
+    return TabBar(currentTab: .constant(.home))
         .background(Color.dark)
         .environmentObject(SessionStore())
         

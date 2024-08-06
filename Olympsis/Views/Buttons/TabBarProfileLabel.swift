@@ -73,13 +73,11 @@ struct TabBarProfileLabel: View {
 }
 
 #Preview {
-    @Previewable @State var currentTab: Tab = .home
-    @Previewable @StateObject var session = SessionStore()
     return ZStack {
         Rectangle()
             .foregroundStyle(Color.dark)
             .frame(width: 40, height: 40)
-        TabBarProfileLabel(currentTab: $currentTab)
-            .environmentObject(session)
+        TabBarProfileLabel(currentTab: .constant(.home))
+            .environmentObject(SessionStore())
     }
 }
