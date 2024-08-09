@@ -2469,6 +2469,7 @@
 				5D2DEFC62B27EF060082FE73 /* EventOrganizers.swift in Sources */,
 				5D4B0A622D96F37C00475A0C /* EventComments.swift in Sources */,
 				5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */,
+				5DEDCCA32C6345AF00246A5F /* WorkoutHeatMapView.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
 				5D38BD9F2C169B24003EEF90 /* LogViewer.swift in Sources */,
 				5D6C013F2C07BB45006A264C /* Onboard-AboutOlympsis.swift in Sources */,

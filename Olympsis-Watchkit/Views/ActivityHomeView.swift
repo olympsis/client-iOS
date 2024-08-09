@@ -27,7 +27,7 @@ struct ActivityHomeView: View {
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .task {
-            var location = CLLocationManager()
+            let location = CLLocationManager()
             location.requestWhenInUseAuthorization()
             await manager.requestHealthStoreAuthorization()
         }

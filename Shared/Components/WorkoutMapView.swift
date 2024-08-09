@@ -12,13 +12,14 @@ import HealthKit
 
 struct WorkoutMapView: View {
     
-    @State var locations: [CLLocationCoordinate2D] = []
+    @State var locations: [CLLocationCoordinate2D] = RUNNING_POINTS
     
     var body: some View {
         Map {
             MapPolyline(coordinates: locations)
                 .tint(Color.blue)
                 .stroke(Color.blue, lineWidth: 5)
+            
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
@@ -29,3 +30,5 @@ struct WorkoutMapView: View {
 #Preview {
     WorkoutMapView()
 }
+
+

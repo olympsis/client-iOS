@@ -135,7 +135,11 @@ struct WorkoutView: View {
                     case .soccer:
                         HStack {}
                     default:
-                        HStack {}
+                        VStack {
+                            if mapState == .success {
+                                WorkoutMapView(locations: workout.route2DPoints)
+                            }
+                        }
                     }
                 }
                 .toolbar {
