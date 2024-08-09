@@ -59,14 +59,14 @@ struct TabBar: View {
                     }
                 } label: {
                     VStack {
-                        Image(systemName: "figure.run.circle.fill")
+                        Image(systemName: currentTab == .activity ? "figure.run.circle.fill" : "figure.run.circle")
                             .imageScale(.large)
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
+                            .foregroundColor(.white )
                         Text("ACTIVITY")
                             .font(.caption2)
-                            .foregroundColor(currentTab == .activity ? Color.colorSecnd : .white )
+                            .foregroundColor(.white )
                     }
                 }
                 

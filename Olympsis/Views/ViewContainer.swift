@@ -48,22 +48,28 @@ struct ViewContainer: View {
                 Home(router: homeRouter)
                     .tag(ViewTab.home)
                     .toolbar(.hidden, for: .tabBar)
+                    .environmentObject(session)
                 
                 GroupView(router: groupRouter)
                     .tag(ViewTab.club)
                     .toolbar(.hidden, for: .tabBar)
+                    .environmentObject(session)
                 
                 Events(router: eventRouter)
                     .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
+                    .environmentObject(session)
                 
                 Activity()
                     .tag(ViewTab.activity)
                     .toolbar(.hidden, for: .tabBar)
+                    .environmentObject(session)
+                    .environmentObject(session.workoutManager)
                 
                 Profile()
                     .tag(ViewTab.profile)
                     .toolbar(.hidden, for: .tabBar)
+                    .environmentObject(session)
             }
             .padding(.bottom, -10)
             
