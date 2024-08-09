@@ -1821,7 +1821,6 @@
 			isa = PBXGroup;
 			children = (
 				5DDCB9DC2C4C9C0700AE6C7A /* Data */,
-				5DDCB9DB2C4C9BFF00AE6C7A /* Managers */,
 				5DDCB9C82C4C9B2100AE6C7A /* Views */,
 				5DDCB9A72C4C4C5D00AE6C7A /* Components */,
 				5DDCB97A2C4C487500AE6C7A /* Olympsis_WatchkitApp.swift */,
@@ -1888,13 +1887,6 @@
 				5DB03C432C4CBA070083C943 /* ActivitySummaryView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		5DDCB9DB2C4C9BFF00AE6C7A /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		5DDCB9DC2C4C9C0700AE6C7A /* Data */ = {
