@@ -818,3 +818,10 @@ func sportFromActivityType(activity: HKWorkoutActivityType) -> SPORTS? {
         return nil
     }
 }
+
+enum SHARE_METHOD {
+    case image
+    case facebook
+    case instagram
+    case x
+}
