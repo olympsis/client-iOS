@@ -80,6 +80,7 @@ struct MemberBlockingConfirmation: View {
     
     var body: some View {
         VStack {
+            
             ScrollView {
                 Group {
                     if let url = imageURL {
@@ -149,10 +150,9 @@ struct MemberBlockingConfirmation: View {
                     LoadingButton(text: "Block", status: $status)
                 }
             }
-        }
-        .padding(.top)
-        .scrollIndicators(.never)
-        .presentationDragIndicator(.visible)
+        }.presentationDragIndicator(.visible)
+            .padding(.top)
+            .scrollIndicators(.never)
     }
 }
 

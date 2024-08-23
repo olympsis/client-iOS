@@ -100,56 +100,58 @@ struct EventMenu: View {
     
     var body: some View {
         VStack {
-            Group {
-                if isPosterOrAdmin {
-    // TODO: - Disabling for now
-    //                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
-    //                    self.showEditEvent.toggle()
-    //                })
-                    
-                    if event.actualStopTime == nil {
-                        HStack {
-                            if event.actualStartTime == nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    MenuButton(icon: Image(systemName: "play.fill"), text: "Start Event", action:  {
-                                        Task {
-                                            await startEvent()
-                                        }
-                                    }, type: .start)
-                                }
-                            } else if event.actualStartTime != nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    MenuButton(icon: Image(systemName: "square.fill"), text: "Stop Event", action:  {
-                                        Task {
-                                            await stopEvent()
-                                        }
-                                    }, type: .destructive)
-                                }
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 35, height: 5)
+                .foregroundColor(.gray)
+                .opacity(0.3)
+                .padding(.top, 5)
+            
+            if isPosterOrAdmin {
+// TODO: - Disabling for now
+//                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
+//                    self.showEditEvent.toggle()
+//                })
+                
+                if event.actualStopTime == nil {
+                    HStack {
+                        if event.actualStartTime == nil {
+                            if loadingState == .loading {
+                                ProgressView()
+                            } else {
+                                MenuButton(icon: Image(systemName: "play.fill"), text: "Start Event", action:  {
+                                    Task {
+                                        await startEvent()
+                                    }
+                                }, type: .start)
                             }
-                        }.disabled(loadingState == .loading ? true : false)
-                    }
-                }
-                
-                MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
-                
-                
-                if isPosterOrAdmin {
-                    MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
-                        Task {
-                            await deleteEvent()
+                        } else if event.actualStartTime != nil {
+                            if loadingState == .loading {
+                                ProgressView()
+                            } else {
+                                MenuButton(icon: Image(systemName: "square.fill"), text: "Stop Event", action:  {
+                                    Task {
+                                        await stopEvent()
+                                    }
+                                }, type: .destructive)
+                            }
                         }
-                    }, type: .destructive)
+                    }.disabled(loadingState == .loading ? true : false)
                 }
-            }.padding(.top)
+            }
+            
+            MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
+            
+            
+            if isPosterOrAdmin {
+                MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
+                    Task {
+                        await deleteEvent()
+                    }
+                }, type: .destructive)
+            }
             
             Spacer()
-        }
-        .presentationDragIndicator(.visible)
-        .sheet(isPresented: $showNotification, content: {
+        }.sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)
         })
         .fullScreenCover(isPresented: $showReport, content: {

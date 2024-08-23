@@ -20,7 +20,6 @@ struct EventView: View {
     @State private var organizations = [Organization]()
     @State private var venuesTarget: Int = 0
     @State private var showFullImage: Bool = false
-    @State private var showSharingMenu: Bool = false
     @State private var state: LOADING_STATE = .pending
     @State private var venueState: LOADING_STATE = .pending
     @State private var organizersState: LOADING_STATE = .pending
@@ -135,14 +134,39 @@ struct EventView: View {
 
                 Spacer()
                 
-                Button(action: { self.showSharingMenu = true }) {
-                    Image(systemName: "square.and.arrow.up")
-                }.clipShape(Rectangle())
+                Button(action: { Task { await reloadEvent() }}) {
+                    switch state {
+                    case .pending:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .loading:
+                        withAnimation {
+                            ProgressView()
+                        }
+                    case .success:
+                        withAnimation {
+                            Image(systemName: "arrow.clockwise")
+                                .fontWeight(.bold)
+                        }
+                    case .failure:
+                        withAnimation {
+                            Image(systemName: "exclamationmark.circle.fill")
+                                .foregroundColor(.red)
+                                .imageScale(.medium)
+                        }
+                    }
+                }
+                .clipShape(Circle())
+                .frame(width: 25, height: 20)
                 
                 Button(action:{ dismiss() }) {
                     Image(systemName: "xmark.circle.fill")
                         .imageScale(.large)
-                }.clipShape(Circle())
+                }
+                .clipShape(Circle())
+                .frame(width: 25, height: 20)
 
             }.padding([.top, .horizontal])
             
@@ -265,12 +289,7 @@ struct EventView: View {
                     })
                 }
             }
-        }
-        .sheet(isPresented: $showSharingMenu, content: {
-            ShareMenu(event: event, venue: venues[0])
-                .presentationDetents([.height(170)])
-        })
-        .task {
+        }.task {
             // TODO: - I will want to make a synchronous call here
             venueState = .loading
             organizersState = .loading

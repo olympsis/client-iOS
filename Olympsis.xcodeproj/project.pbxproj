@@ -909,7 +909,6 @@
 				5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */,
 				5D9572392C326D8B004D5318 /* EventSharingView.swift */,
 				5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */,
-				5D8958F82C76E4B000AAF374 /* ShareMenu.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -1087,7 +1086,6 @@
 				5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */,
 				5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */,
 				5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */,
-				5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */,
 			);
 			name = Buttons;
 			path = ../Views/Buttons;
@@ -1486,7 +1484,6 @@
 				5D78BDE32C0C11D100F170D6 /* EventManager.swift */,
 				5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */,
 				5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */,
-				5D8958F42C76D82400AAF374 /* ImageSaver.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1911,13 +1908,11 @@
 				5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */,
 				5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */,
 				9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */,
-				5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,
-				5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */,
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */,
@@ -1939,7 +1934,6 @@
 				5DF5CFC22C0450D5008F5374 /* ClubBanner.swift in Sources */,
 				5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */,
 				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
-				5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */,
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
 				5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */,
@@ -2048,7 +2042,6 @@
 				5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */,
 				5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */,
 				9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */,
-				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,

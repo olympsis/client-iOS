@@ -16,84 +16,67 @@ struct EventSharingTemplateView: View {
         Group {
             switch template {
             case 0:
-                VStack(spacing: 2) {
+                VStack {
                     HStack {
                         Rectangle()
-                            .frame(width: 40, height: 10)
-                            .foregroundStyle(Color.foreground)
+                            .frame(width: 60, height: 12)
                         Spacer()
                     }
-                    .padding(.top)
-                    .padding(.leading, 10)
-                    
-                    Spacer()
                     
                     HStack {
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(spacing: 5) {
                             Rectangle()
-                                .frame(width: 30, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .frame(width: 60, height: 12)
                             Rectangle()
-                                .frame(width: 55, height: 10)
-                                .foregroundStyle(Color.foreground)
-                        }.padding(.leading, 10)
+                                .frame(width: 60, height: 12)
+                        }
                         Spacer()
-                    }.padding(.bottom, 5)
+                    }.padding(.top)
                 }
             case 1:
-                VStack(spacing: 2) {
+                VStack {
                     Rectangle()
-                        .frame(width: 30, height: 10)
-                        .foregroundStyle(Color.foreground)
+                        .frame(width: 60, height: 12)
                         .padding(.top)
                     
                     HStack {
-                        VStack(spacing: 2) {
+                        VStack(spacing: 5) {
                             Rectangle()
-                                .frame(width: 50, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .frame(width: 60, height: 12)
                             Rectangle()
-                                .frame(width: 50, height: 10)
-                                .foregroundStyle(Color.foreground)
-                        }.padding(.leading, 10)
+                                .frame(width: 60, height: 12)
+                        }
                         Spacer()
                     }.padding(.top, 5)
                 }
-            case 3:
-                VStack(spacing: 2) {
-                    Rectangle()
-                        .frame(width: 10, height: 20)
-                        .foregroundStyle(Color.foreground)
-                        .padding(.vertical)
-                    Rectangle()
-                        .frame(width: 45, height: 10)
-                        .foregroundStyle(Color.foreground)
-                    Rectangle()
-                        .frame(width: 60, height: 10)
-                        .foregroundStyle(Color.foreground)
-                        .padding(.bottom, 5)
-                }
             case 2:
-                VStack(spacing: 2) {
+                VStack {
                     Rectangle()
-                        .frame(width: 30, height: 10)
-                        .foregroundStyle(Color.foreground)
-                        .padding(.vertical)
+                        .frame(width: 60, height: 12)
+                        .padding(.top)
+                    Rectangle()
+                        .frame(width: 60, height: 12)
+                    Rectangle()
+                        .frame(width: 60, height: 12)
+                }
+            case 3:
+                VStack {
+                    Rectangle()
+                        .frame(width: 30, height: 12)
+                        .padding(.top)
                     
-                    VStack(spacing: 2) {
+                    VStack(spacing: 5) {
                         Rectangle()
-                            .frame(width: 45, height: 10)
-                            .foregroundStyle(Color.foreground)
+                            .frame(width: 60, height: 12)
                         Rectangle()
-                            .frame(width: 60, height: 10)
-                            .foregroundStyle(Color.foreground)
-                    }.padding(.bottom, 5)
+                            .frame(width: 60, height: 12)
+                    }.padding(.top, 5)
                 }
             default:
                 EmptyView()
             }
         }
-        .frame(width: 85, height: 85)
+        .frame(width: 100, height: 100)
         .background {
             Color.background
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -102,5 +85,5 @@ struct EventSharingTemplateView: View {
 }
 
 #Preview {
-    EventSharingTemplateView(template: 2)
+    EventSharingTemplateView(template: 3)
 }
