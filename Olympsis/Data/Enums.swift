@@ -301,6 +301,7 @@ enum SCALE {
     case Small
     case Medium
     case Large
+	case XLarge
 }
 
 enum SHARING_TITLE_POSITION {
@@ -348,4 +349,18 @@ enum BADGE_SIZE {
     case small
     case medium
     case large
+}
+
+enum SHARE_METHOD {
+    case image
+    case facebook
+    case instagram
+    case x
+}
+
+enum SHARE_METHOD {
+    case image
+    case facebook
+    case instagram
+    case x
 }
