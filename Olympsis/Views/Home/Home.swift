@@ -67,8 +67,9 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Olympsis")
+                        .italic()
                         .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .fontWeight(.black)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {

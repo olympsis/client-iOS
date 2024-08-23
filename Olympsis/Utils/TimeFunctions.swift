@@ -154,8 +154,8 @@ func formatTimeFromTimestamp(_ timestamp: Int?) -> String {
     let formatter = DateFormatter()
     
     // Set the time format to hh:mm
-    formatter.dateFormat = "HH:mm a"
-    let time = formatter.string(from: date)
+//    formatter.dateFormat = "HH:mm a"
+//    let time = formatter.string(from: date)
     
     formatter.dateFormat = "HH"
     let hour = formatter.string(from: date)

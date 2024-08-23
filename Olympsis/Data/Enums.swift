@@ -357,10 +357,3 @@ enum SHARE_METHOD {
     case instagram
     case x
 }
-
-enum SHARE_METHOD {
-    case image
-    case facebook
-    case instagram
-    case x
-}

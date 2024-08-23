@@ -158,6 +158,77 @@ struct SportView: View {
                         .textCase(.uppercase)
                 }
             }.frame(width: 100, height: 100)
+        case .XLarge:
+            ZStack {
+                Circle()
+                    .foregroundStyle(Color("background"))
+                    .frame(width: 100, height: 100)
+                
+                VStack(alignment: .center) {
+                    switch sport {
+                    case .soccer:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 35, height: 40)
+                    case .running:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 35, height: 40)
+                    case .cycling:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 45, height: 30)
+                    case .volleyball:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 30, height: 40)
+                    case .basketball:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    case .pickleball:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    case .racquetball:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 35)
+                    case .tennis:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 35, height: 40)
+                    case .golf:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 30, height: 40)
+                    case .hiking:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 30, height: 40)
+                    case .climbing:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    case .spike:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    case .football:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    case .weights:
+                        sport.icon()
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                    
+                    Text(sport.getName())
+                        .font(.caption)
+                        .textCase(.uppercase)
+                }
+            }.frame(width: 100, height: 100)
         }
     }
 }

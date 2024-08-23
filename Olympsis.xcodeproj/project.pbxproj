@@ -91,6 +91,8 @@
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
 		5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */; };
 		5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01442C07C8F9006A264C /* Onboarding.swift */; };
+		5D72A7E52C784C020051DDAF /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72A7E42C784C020051DDAF /* TempData.swift */; };
+		5D76D3672C784E9300846382 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3662C784E9300846382 /* Enums.swift */; };
 		5D78BDE22C0BB17F00F170D6 /* Salt Lake City.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5D78BDE12C0BB17F00F170D6 /* Salt Lake City.gpx */; };
 		5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE32C0C11D100F170D6 /* EventManager.swift */; };
 		5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */; };
@@ -116,9 +118,6 @@
 		5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F42C76D82400AAF374 /* ImageSaver.swift */; };
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
 		5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F82C76E4B000AAF374 /* ShareMenu.swift */; };
-		5D89D9A62C50B4E000813586 /* WorkoutSmallListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89D9A52C50B4E000813586 /* WorkoutSmallListItemView.swift */; };
-		5D89D9A72C50B4E000813586 /* WorkoutSmallListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89D9A52C50B4E000813586 /* WorkoutSmallListItemView.swift */; };
-		5D89D9A82C50B4E000813586 /* WorkoutSmallListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89D9A52C50B4E000813586 /* WorkoutSmallListItemView.swift */; };
 		5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
@@ -222,9 +221,7 @@
 		5F8D13A92A1EDD260054F631 /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13A82A1EDD260054F631 /* AuthModels.swift */; };
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* VenueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* VenueModels.swift */; };
-		5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
 		5FA350562A67352500669B2C /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350552A67352500669B2C /* NotificationsView.swift */; };
-		5FA350582A6737AF00669B2C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350572A6737AF00669B2C /* Enums.swift */; };
 		5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */; };
 		5FF2A0272A380534009234AD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
 		5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
@@ -477,7 +474,9 @@
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
 		5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutEvents.swift"; sourceTree = "<group>"; };
 		5D6C01442C07C8F9006A264C /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		5D72A7E42C784C020051DDAF /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		5D7668682BF95A2C003FAD7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D76D3662C784E9300846382 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		5D78BDE12C0BB17F00F170D6 /* Salt Lake City.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Salt Lake City.gpx"; sourceTree = "<group>"; };
 		5D78BDE32C0C11D100F170D6 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventSportsPicker.swift; sourceTree = "<group>"; };
@@ -496,7 +495,6 @@
 		5D8958F42C76D82400AAF374 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIconButton.swift; sourceTree = "<group>"; };
 		5D8958F82C76E4B000AAF374 /* ShareMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMenu.swift; sourceTree = "<group>"; };
-		5D89D9A52C50B4E000813586 /* WorkoutSmallListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSmallListItemView.swift; sourceTree = "<group>"; };
 		5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessors.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
@@ -900,6 +898,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5D72A7E32C784B980051DDAF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				5F8D13AE2A213CC30054F631 /* TempData.swift */,
+				5FA350572A6737AF00669B2C /* Enums.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		5D73480E2C0A4AE30003AB41 /* Event */ = {
 			isa = PBXGroup;
 			children = (
@@ -1262,6 +1269,7 @@
 				5D8086042B2FF9C100EA01AC /* OlympsisTests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
+				5D72A7E32C784B980051DDAF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1331,9 +1339,11 @@
 		9A8FF0BF28BB18C300DE4CF8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				5D76D3662C784E9300846382 /* Enums.swift */,
 				9ABB1EBC29053D020050C0F0 /* SessionStore.swift */,
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
 				5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */,
+				5D72A7E42C784C020051DDAF /* TempData.swift */,
 				9AB02F4A29024300008C07F1 /* Managers */,
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
@@ -1700,7 +1710,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					5D8086022B2FF9C100EA01AC = {
 						CreatedOnToolsVersion = 15.1;
@@ -1815,6 +1825,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D76D3672C784E9300846382 /* Enums.swift in Sources */,
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
 				5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */,
@@ -1878,7 +1889,6 @@
 				5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */,
 				5DC734032B2A98A90051BE21 /* EventOrganizersPickerView.swift in Sources */,
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
-				5F8D13AF2A213CC30054F631 /* TempData.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
@@ -1893,7 +1903,6 @@
 				5D38BDA42C16A036003EEF90 /* SystemModels.swift in Sources */,
 				5D666A952BF6AD29001EE754 /* PhotosPickerViewModel.swift in Sources */,
 				9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */,
-				5FA350582A6737AF00669B2C /* Enums.swift in Sources */,
 				5DF945AE2BFAAFAD00BE3C63 /* PostMediaViolation.swift in Sources */,
 				9ABB1EC12905F9F90050C0F0 /* Announcement.swift in Sources */,
 				5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */,
@@ -2035,6 +2044,7 @@
 				9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */,
 				5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */,
+				5D72A7E52C784C020051DDAF /* TempData.swift in Sources */,
 				9AA5F619294DCBF700219B95 /* MapOptions.swift in Sources */,
 				5DB4D0532C5F042D00F241BB /* GroupViewModel.swift in Sources */,
 				9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */,
@@ -2301,7 +2311,6 @@
 		9A8FF0BC28BB14C100DE4CF8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -2340,7 +2349,6 @@
 		9A8FF0BD28BB14C100DE4CF8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
