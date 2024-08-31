@@ -101,7 +101,7 @@ class EventService {
         return resp
     }
     
-    func notifyParticipants(id: String, notif: Notification) async throws -> URLResponse {
+    func notifyParticipants(id: String, notif: OlympsisNotification) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/notify/participants", queryItems: [URLQueryItem]())
         
@@ -109,7 +109,7 @@ class EventService {
         return resp
     }
     
-    func notifyClubMembers(id: String, notif: Notification) async throws -> URLResponse {
+    func notifyClubMembers(id: String, notif: OlympsisNotification) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/notify/club", queryItems: [URLQueryItem]())
         

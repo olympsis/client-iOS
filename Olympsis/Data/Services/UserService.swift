@@ -87,11 +87,6 @@ class UserService {
     
     func CheckIn() async throws -> (Data, URLResponse){
         let token = try await Auth.auth().currentUser?.getIDToken()
-        print(token ?? "")
-        #if targetEnvironment(simulator)
-            print(token ?? "")
-        #endif
-        
         let endpoint = Endpoint("/v1/users/check-in")
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }

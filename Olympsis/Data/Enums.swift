@@ -31,6 +31,8 @@ enum USER_STATUS: String, CaseIterable {
     case not_finished
 }
 
+// MARK: - Navigation
+
 enum Tab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
@@ -64,6 +66,64 @@ enum AuthNavigation: String, Hashable {
     
 }
 
+enum URL_ACTIONS: String {
+    case open_home = "open-home"
+    case open_groups = "open-groups"
+    case open_events = "open-events"
+    case open_profile = "open-profile"
+}
+
+enum ROUTES: String {
+    case home
+    case groups
+    case events
+    case profile
+}
+
+enum HOME_ROUTES: String {
+    case notifications
+    case events
+    case venues
+    case messages
+    case full_post_view
+}
+
+enum GROUP_ROUTES: String {
+    case messages
+    case newPost
+    case newEvent
+    case settings
+}
+
+enum GROUP_SETTINGS_ROUTES: String {
+    case edit
+    case applications
+    case reports
+    case changeParent
+    case members
+}
+
+enum EVENTS_ROUTES: String {
+    case events
+    case settings
+}
+
+enum PROFILE_ROUTES: String {
+    case badges
+    case trophies
+}
+
+enum PROFILE_SETTINGS_ROUTES: String {
+    case notifications
+    case bug_report
+    case blocked_users
+    case help
+    case terms_of_use
+    case privacy_policy
+    case about_us
+    case logs
+}
+
 /// Enum to denote loading state of an event/view
 ///
 enum LOADING_STATE {
@@ -79,6 +139,7 @@ enum EVENT_STATUS: String {
     case completed = "ended"
 }
 
+// MARK: - Sports
 
 enum SPORTS: String, CaseIterable {
     case soccer = "soccer"
@@ -304,6 +365,8 @@ enum SCALE {
 	case XLarge
 }
 
+// MARK: - Event Sharing
+
 enum SHARING_TITLE_POSITION {
     case top_leading
     case top_trailing
@@ -334,6 +397,13 @@ enum SHARING_VENUE_POSITION {
     case bottom_trailing
 }
 
+enum SHARE_METHOD {
+    case image
+    case facebook
+    case instagram
+    case x
+}
+
 enum APP_MODE: Int, CaseIterable {
     case free = 0
     case premium = 1
@@ -351,9 +421,60 @@ enum BADGE_SIZE {
     case large
 }
 
-enum SHARE_METHOD {
-    case image
-    case facebook
-    case instagram
-    case x
+// MARK: - Notifications
+
+public enum TOAST_POSITION {
+    case top
+    case bottom
+}
+
+enum TOAST_TYPE: String {
+    case post = "post"
+    case event = "event"
+    case group = "group"
+    case friend = "friend"
+    case status = "status"
+    case message = "message"
+}
+
+enum POST_TOAST_TYPES: String {
+    case newPost = "new_post"
+    case like = "like"
+    case comment = "comment"
+}
+
+enum EVENT_TOAST_TYPES: String {
+    case newEvent = "new_event"
+    case eventInvite = "event_invite"
+    
+    case eventsSummary = "events_summary"
+    
+    case eventUpdate = "event_update"
+    case event_started = "event_started"
+    case event_finished = "event_finished"
+    case eventCancelled = "event_cancelled"
+}
+
+enum GROUP_TOAST_TYPES: String {
+    case newReport = "new_report"
+    case newApplication = "new_application"
+}
+
+enum FRIEND_TOAST_TYPES: String {
+    case newRequest = "new_request"
+}
+
+enum STATUS_TOAST_TYPES: String {
+    case warning = "warning"
+    case success = "success"
+    case error = "error"
+}
+
+enum MESSAGE_TOAST_TYPES: String {
+    case messageRequest = "message_request"
+    
+    case newMessage = "new_message"
+    case newGroupMessage = "new_group_message"
+    case addedToGroup = "added_to_group"
+    case removedFromGroup = "removed_from_group"
 }

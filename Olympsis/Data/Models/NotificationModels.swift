@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Notification: Codable {
+struct OlympsisNotification: Codable {
     var title: String
     var body: String
 }

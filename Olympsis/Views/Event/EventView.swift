@@ -126,7 +126,9 @@ struct EventView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            
+            // MARK: - Event Top Bar
+            HStack(alignment: .center) {
                 Text(eventTitle)
                     .font(.largeTitle)
                     .bold()
@@ -137,10 +139,14 @@ struct EventView: View {
                 
                 Button(action: { self.showSharingMenu = true }) {
                     Image(systemName: "square.and.arrow.up")
-                }.clipShape(Rectangle())
+                        .imageScale(.large)
+                }
+                .padding(.horizontal, 10)
+                .clipShape(Rectangle())
                 
                 Button(action:{ dismiss() }) {
                     Image(systemName: "xmark.circle.fill")
+                        .padding(.top, 5)
                         .imageScale(.large)
                 }.clipShape(Circle())
 

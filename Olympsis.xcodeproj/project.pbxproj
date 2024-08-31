@@ -83,7 +83,6 @@
 		5D666AA32BF91B5A001EE754 /* ImageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666AA22BF91B5A001EE754 /* ImageModels.swift */; };
 		5D67494A2A73339E00AEC868 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventView.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
-		5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5D67495D2A74BF1600AEC868 /* SwiftToast */; };
 		5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01352C04EA75006A264C /* OrgBanner.swift */; };
 		5D6C01382C054D6A006A264C /* GroupEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* GroupEditorViewModel.swift */; };
 		5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */; };
@@ -91,8 +90,16 @@
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
 		5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */; };
 		5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01442C07C8F9006A264C /* Onboarding.swift */; };
+		5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322B2C7C324E007DB25D /* ToastView.swift */; };
+		5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322D2C7C370A007DB25D /* ToastModifier.swift */; };
 		5D72A7E52C784C020051DDAF /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72A7E42C784C020051DDAF /* TempData.swift */; };
 		5D76D3672C784E9300846382 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3662C784E9300846382 /* Enums.swift */; };
+		5D76D36A2C79534800846382 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3692C79534800846382 /* ToastManager.swift */; };
+		5D76D36F2C79632D00846382 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D36E2C79632D00846382 /* HomeRouter.swift */; };
+		5D76D3712C79633700846382 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3702C79633700846382 /* GroupRouter.swift */; };
+		5D76D3732C79634B00846382 /* EventRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3722C79634B00846382 /* EventRouter.swift */; };
+		5D76D3752C79635E00846382 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3742C79635E00846382 /* ProfileRouter.swift */; };
+		5D76D3772C7966AA00846382 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3762C7966AA00846382 /* Routes.swift */; };
 		5D78BDE22C0BB17F00F170D6 /* Salt Lake City.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5D78BDE12C0BB17F00F170D6 /* Salt Lake City.gpx */; };
 		5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE32C0C11D100F170D6 /* EventManager.swift */; };
 		5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */; };
@@ -474,9 +481,17 @@
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
 		5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutEvents.swift"; sourceTree = "<group>"; };
 		5D6C01442C07C8F9006A264C /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		5D6F322B2C7C324E007DB25D /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		5D6F322D2C7C370A007DB25D /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
 		5D72A7E42C784C020051DDAF /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		5D7668682BF95A2C003FAD7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D76D3662C784E9300846382 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		5D76D3692C79534800846382 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
+		5D76D36E2C79632D00846382 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		5D76D3702C79633700846382 /* GroupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRouter.swift; sourceTree = "<group>"; };
+		5D76D3722C79634B00846382 /* EventRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRouter.swift; sourceTree = "<group>"; };
+		5D76D3742C79635E00846382 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		5D76D3762C7966AA00846382 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		5D78BDE12C0BB17F00F170D6 /* Salt Lake City.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Salt Lake City.gpx"; sourceTree = "<group>"; };
 		5D78BDE32C0C11D100F170D6 /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventSportsPicker.swift; sourceTree = "<group>"; };
@@ -749,7 +764,6 @@
 			files = (
 				5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */,
 				5D4499D32BAB7F4100F54D10 /* Hermes in Frameworks */,
-				5D67495E2A74BF1600AEC868 /* SwiftToast in Frameworks */,
 				5D38BDC32C174372003EEF90 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -898,6 +912,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5D6F32292C7C323C007DB25D /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				5D6F322B2C7C324E007DB25D /* ToastView.swift */,
+				5D6F322D2C7C370A007DB25D /* ToastModifier.swift */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
 		5D72A7E32C784B980051DDAF /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -931,6 +954,18 @@
 				5D8958F82C76E4B000AAF374 /* ShareMenu.swift */,
 			);
 			path = Event;
+			sourceTree = "<group>";
+		};
+		5D76D36D2C79631D00846382 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				5D76D3762C7966AA00846382 /* Routes.swift */,
+				5D76D36E2C79632D00846382 /* HomeRouter.swift */,
+				5D76D3702C79633700846382 /* GroupRouter.swift */,
+				5D76D3722C79634B00846382 /* EventRouter.swift */,
+				5D76D3742C79635E00846382 /* ProfileRouter.swift */,
+			);
+			path = Routers;
 			sourceTree = "<group>";
 		};
 		5D8086042B2FF9C100EA01AC /* OlympsisTests */ = {
@@ -1126,6 +1161,7 @@
 		9A3536FF2928930D005EC806 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5D6F32292C7C323C007DB25D /* Toast */,
 				5D38BDA02C169FE7003EEF90 /* System */,
 				5D38BD8F2C15029E003EEF90 /* Notifications */,
 				5D2F199F2C13E37300D98222 /* Image */,
@@ -1344,6 +1380,7 @@
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
 				5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */,
 				5D72A7E42C784C020051DDAF /* TempData.swift */,
+				5D76D36D2C79631D00846382 /* Routers */,
 				9AB02F4A29024300008C07F1 /* Managers */,
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
@@ -1508,6 +1545,7 @@
 				5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */,
 				5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */,
 				5D8958F42C76D82400AAF374 /* ImageSaver.swift */,
+				5D76D3692C79534800846382 /* ToastManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1693,7 +1731,6 @@
 			);
 			name = Olympsis;
 			packageProductDependencies = (
-				5D67495D2A74BF1600AEC868 /* SwiftToast */,
 				5D4499D22BAB7F4100F54D10 /* Hermes */,
 				5DF945AB2BF9CCB500BE3C63 /* Kingfisher */,
 				5D38BDC22C174372003EEF90 /* FirebaseAuth */,
@@ -1733,7 +1770,6 @@
 			);
 			mainGroup = 9A8FF0A428BB14BF00DE4CF8;
 			packageReferences = (
-				5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */,
 				5D4499D12BAB7EEE00F54D10 /* XCRemoteSwiftPackageReference "Hermes" */,
 				5DF945AA2BF9CBB400BE3C63 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5D38BDC12C174372003EEF90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
@@ -1825,6 +1861,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D76D3752C79635E00846382 /* ProfileRouter.swift in Sources */,
 				5D76D3672C784E9300846382 /* Enums.swift in Sources */,
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
@@ -1878,6 +1915,7 @@
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */,
 				5DBB94C72B0321560031876D /* NewPickUpEvent.swift in Sources */,
+				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
@@ -1914,6 +1952,7 @@
 				9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */,
 				5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */,
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
+				5D76D36F2C79632D00846382 /* HomeRouter.swift in Sources */,
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
 				5D38BD932C150963003EEF90 /* UserNotificationToast.swift in Sources */,
@@ -1979,10 +2018,12 @@
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				5DFB8A062A720B560002A560 /* VenueView.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
+				5D76D3712C79633700846382 /* GroupRouter.swift in Sources */,
 				5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */,
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
 				5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */,
+				5D76D36A2C79534800846382 /* ToastManager.swift in Sources */,
 				5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */,
 				5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
@@ -2027,6 +2068,7 @@
 				5D2F19A52C13F4E600D98222 /* AccountDeleteSignin.swift in Sources */,
 				5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */,
 				9AECDA4029540FE9007956FB /* LookupView.swift in Sources */,
+				5D76D3772C7966AA00846382 /* Routes.swift in Sources */,
 				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
 				5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */,
 				5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */,
@@ -2099,11 +2141,13 @@
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
 				9A5CA4DD296F7DA300C63A32 /* ClubMemberMenu.swift in Sources */,
 				9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */,
+				5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */,
 				9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */,
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				5DC468C82B9FD6830023353D /* ManagementModels.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
 				5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */,
+				5D76D3732C79634B00846382 /* EventRouter.swift in Sources */,
 				5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */,
 				5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */,
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
@@ -2325,6 +2369,9 @@
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -2332,7 +2379,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.3;
+				MARKETING_VERSION = 0.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2363,6 +2410,9 @@
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -2370,7 +2420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.3;
+				MARKETING_VERSION = 0.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2433,14 +2483,6 @@
 				minimumVersion = 0.2.1;
 			};
 		};
-		5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/NokoAnubis/Swift-Toast.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
-			};
-		};
 		5DF945AA2BF9CBB400BE3C63 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -2461,11 +2503,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5D4499D12BAB7EEE00F54D10 /* XCRemoteSwiftPackageReference "Hermes" */;
 			productName = Hermes;
-		};
-		5D67495D2A74BF1600AEC868 /* SwiftToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5D67495C2A74BF1600AEC868 /* XCRemoteSwiftPackageReference "Swift-Toast" */;
-			productName = SwiftToast;
 		};
 		5DF945AB2BF9CCB500BE3C63 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -2,23 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string></string>
-	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.olympsis.client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>olympsis</string>
+			</array>
+		</dict>
+	</array>
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
 	<string>localhost</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>STORAGE</key>
-	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSPrivacyAccessedAPITypes</key>
@@ -35,11 +41,9 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Olympsis requires your location to show you the venues and events that are happening in close proximity to you.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Olympsis requires access to your photos library to allow you to share images of the activites you&apos;re participating in with your friends.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<key>STORAGE</key>
+	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>
@@ -76,7 +80,10 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>UIRequiresFullScreen</key>
-	<true/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string></string>
+	</dict>
 </dict>
 </plist>

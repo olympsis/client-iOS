@@ -8,21 +8,16 @@
 import os
 import SwiftUI
 import Foundation
-import SwiftToast
 import NotificationCenter
 
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
 
     let center = UNUserNotificationCenter.current()
     
-    @Published var showToast: Bool = false {
-        didSet {
-            
-        }
-    }
+    @Published var showToast: Bool = false
     @Published var inMessageView: Bool = false
     @Published var toastPosition: DisplayPosition = .bottom
-    @Published var toastContent: () -> any View = { EmptyView() }
+    @Published var toastContent: ToastContent = ToastContent(view: { AnyView(EmptyView()) })
     
     private var userObserver = UserObserver()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
@@ -94,9 +89,15 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             }
             if let user = userInfo["user_img"] as? String,
                let event = userInfo["event_img"] as? String {
-                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message, profileImg: user, eventImg: event ) }
+                self.toastContent = ToastContent(
+                    view: { NewEventNotificationToast(title: title, name: actor, content: message, profileImg: user, eventImg: event ) },
+                    url: nil
+                )
             } else {
-                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message) }
+                self.toastContent = ToastContent(
+                    view: { NewEventNotificationToast(title: title, name: actor, content: message) },
+                    url: nil
+                )
             }
             self.showToast = true
             self.toastPosition = .top
@@ -110,12 +111,18 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             }
             
             if let user = userInfo["user_img"] as? String {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
+                self.toastContent = ToastContent(
+                    view: { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) },
+                    url: nil
+                )
             } else {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
+                self.toastContent = ToastContent(
+                    view: { UserNotificationToast(title: title, name: actor, content: message) },
+                    url: nil
+                )
             }
-            self.showToast = true
             self.toastPosition = .top
+            self.showToast = true
             
             // MESSAGE
         case "message":
@@ -129,12 +136,18 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             }
             
             if let user = userInfo["user_img"] as? String {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
+                self.toastContent = ToastContent(
+                    view: { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) },
+                    url: nil
+                )
             } else {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
+                self.toastContent = ToastContent(
+                    view: { UserNotificationToast(title: title, name: actor, content: message) },
+                    url: nil
+                )
             }
-            self.showToast = true
             self.toastPosition = .top
+            self.showToast = true
             
             // EVENT STATUS
         case "event_status":
@@ -144,12 +157,22 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             }
             
             if let event = userInfo["event_img"] as? String {
-                self.toastContent = { EventNotificationToast(title: title, content: message, eventImg: event) }
+                self.toastContent = ToastContent(
+                    view: { EventNotificationToast(title: title, content: message, eventImg: event) },
+                    url: nil
+                )
             } else {
-                self.toastContent = { EventNotificationToast(title: title, content: message) }
+                self.toastContent = ToastContent(
+                    view: { EventNotificationToast(title: title, content: message) },
+                    url: nil
+                )
             }
-            self.showToast = true
+            
             self.toastPosition = .top
+            self.showToast = true
+            
+            let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: ["test": "data"])
+            ToastManager.shared.sendNotification(note: note)
             
         default:
             guard let _ = userInfo["title"] as? String,
@@ -162,8 +185,5 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         } else {
             completionHandler([.sound])
         }
-        
     }
-        
-
 }

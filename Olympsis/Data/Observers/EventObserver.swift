@@ -144,7 +144,7 @@ class EventObserver: ObservableObject{
     
     func notifyParticipants(id: String, title: String, body: String) async -> Bool {
         do {
-            let notif = Notification(title: title, body: body)
+            let notif = OlympsisNotification(title: title, body: body)
             let res = try await eventService.notifyParticipants(id: id, notif: notif)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
@@ -158,7 +158,7 @@ class EventObserver: ObservableObject{
     
     func notifyClubMembers(id: String, title: String, body: String) async -> Bool {
         do {
-            let notif = Notification(title: title, body: body)
+            let notif = OlympsisNotification(title: title, body: body)
             let res = try await eventService.notifyClubMembers(id: id, notif: notif)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false

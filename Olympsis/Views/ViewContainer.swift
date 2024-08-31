@@ -9,7 +9,6 @@ import MapKit
 import SwiftUI
 import Firebase
 import Security
-import SwiftToast
 import AuthenticationServices
 
 struct ViewContainer: View {
@@ -17,6 +16,7 @@ struct ViewContainer: View {
     @State var currentTab: Tab = .home
     @State private var showOnboarding: Bool = false
     
+    @StateObject private var toastManager = ToastManager()
     @EnvironmentObject private var session: SessionStore
     
     init() {
@@ -47,9 +47,9 @@ struct ViewContainer: View {
                     .toolbar(.hidden, for: .tabBar)
             }
             .toast(
-                isPresented: session.$notificationsManager.showToast,
-                position: session.$notificationsManager.toastPosition,
-                content: session.$notificationsManager.toastContent
+                isPresented: $toastManager.isPresented,
+                position: $toastManager.toastPosition,
+                content: $toastManager.toastContent
             )
             .padding(.bottom, -10)
             
