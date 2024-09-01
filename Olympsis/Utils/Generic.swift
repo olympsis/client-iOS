@@ -39,3 +39,28 @@ func sha256(_ input: String) -> String {
 
     return hashString
 }
+
+func generateMetadata(data: [AnyHashable : Any]) -> NotificationMetadata {
+    var metadata = NotificationMetadata()
+    
+    metadata.type = data["sub_type"] as? String ?? "status"
+    
+    metadata.userId = data["user_id"] as? String
+    metadata.username = data["username"] as? String
+    metadata.userImageURL = data["user_image_url"] as? String
+    
+    metadata.postId = data["post_id"] as? String
+    metadata.postImageURL = data["post_image_url"] as? String
+    
+    metadata.groupId = data["group_id"] as? String
+    metadata.groupName = data["group_name"] as? String
+    metadata.groupImageURL = data["group_image_url"] as? String
+    
+    metadata.eventId = data["event_id"] as? String
+    metadata.eventName = data["event_name"] as? String
+    metadata.eventImageURL = data["event_image_url"] as? String
+    
+    metadata.timestamp = data["timestamp"] as? Int ?? Int(Date.now.timeIntervalSince1970)
+    
+    return metadata
+}

@@ -48,11 +48,6 @@
 		5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D314C9F2C33A3F000F99676 /* ClubView.swift */; };
 		5D314CA22C33ADBF00F99676 /* OrganizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D314CA12C33ADBF00F99676 /* OrganizationView.swift */; };
 		5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */; };
-		5D38BD912C1502B6003EEF90 /* NewEventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */; };
-		5D38BD932C150963003EEF90 /* UserNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD922C150963003EEF90 /* UserNotificationToast.swift */; };
-		5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */; };
-		5D38BD992C150FEE003EEF90 /* WarningNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */; };
-		5D38BD9B2C150FFA003EEF90 /* ErrorNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */; };
 		5D38BD9D2C1699DF003EEF90 /* LoggingManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */; };
 		5D38BD9F2C169B24003EEF90 /* LogViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BD9E2C169B24003EEF90 /* LogViewer.swift */; };
 		5D38BDA22C169FF4003EEF90 /* LogListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BDA12C169FF4003EEF90 /* LogListItem.swift */; };
@@ -126,6 +121,13 @@
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
 		5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F82C76E4B000AAF374 /* ShareMenu.swift */; };
 		5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */; };
+		5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA902C82D0D600B19BD4 /* PostNotificationToast.swift */; };
+		5D92BA932C834C1800B19BD4 /* MetadataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA922C834C1800B19BD4 /* MetadataModels.swift */; };
+		5D92BA942C834C1800B19BD4 /* MetadataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA922C834C1800B19BD4 /* MetadataModels.swift */; };
+		5D92BA982C83692B00B19BD4 /* EventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */; };
+		5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */; };
+		5D92BA9C2C840B5300B19BD4 /* StatusNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */; };
+		5D92BA9E2C840CFF00B19BD4 /* MessageNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
@@ -441,11 +443,6 @@
 		5D314C9F2C33A3F000F99676 /* ClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubView.swift; sourceTree = "<group>"; };
 		5D314CA12C33ADBF00F99676 /* OrganizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationView.swift; sourceTree = "<group>"; };
 		5D38BD8D2C14C02B003EEF90 /* EventMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMediaViolation.swift; sourceTree = "<group>"; };
-		5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventNotificationToast.swift; sourceTree = "<group>"; };
-		5D38BD922C150963003EEF90 /* UserNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationToast.swift; sourceTree = "<group>"; };
-		5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotificationToast.swift; sourceTree = "<group>"; };
-		5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningNotificationToast.swift; sourceTree = "<group>"; };
-		5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorNotificationToast.swift; sourceTree = "<group>"; };
 		5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingManagement.swift; sourceTree = "<group>"; };
 		5D38BD9E2C169B24003EEF90 /* LogViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewer.swift; sourceTree = "<group>"; };
 		5D38BDA12C169FF4003EEF90 /* LogListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListItem.swift; sourceTree = "<group>"; };
@@ -511,6 +508,12 @@
 		5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIconButton.swift; sourceTree = "<group>"; };
 		5D8958F82C76E4B000AAF374 /* ShareMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMenu.swift; sourceTree = "<group>"; };
 		5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessors.swift; sourceTree = "<group>"; };
+		5D92BA902C82D0D600B19BD4 /* PostNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNotificationToast.swift; sourceTree = "<group>"; };
+		5D92BA922C834C1800B19BD4 /* MetadataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataModels.swift; sourceTree = "<group>"; };
+		5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotificationToast.swift; sourceTree = "<group>"; };
+		5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNotificationToast.swift; sourceTree = "<group>"; };
+		5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusNotificationToast.swift; sourceTree = "<group>"; };
+		5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationToast.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
 		5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageEvents.swift; sourceTree = "<group>"; };
@@ -820,18 +823,6 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
-		5D38BD8F2C15029E003EEF90 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				5D38BD902C1502B6003EEF90 /* NewEventNotificationToast.swift */,
-				5D38BD922C150963003EEF90 /* UserNotificationToast.swift */,
-				5D38BD942C150C18003EEF90 /* EventNotificationToast.swift */,
-				5D38BD982C150FEE003EEF90 /* WarningNotificationToast.swift */,
-				5D38BD9A2C150FFA003EEF90 /* ErrorNotificationToast.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
 		5D38BDA02C169FE7003EEF90 /* System */ = {
 			isa = PBXGroup;
 			children = (
@@ -917,6 +908,11 @@
 			children = (
 				5D6F322B2C7C324E007DB25D /* ToastView.swift */,
 				5D6F322D2C7C370A007DB25D /* ToastModifier.swift */,
+				5D92BA902C82D0D600B19BD4 /* PostNotificationToast.swift */,
+				5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */,
+				5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */,
+				5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */,
+				5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -1163,7 +1159,6 @@
 			children = (
 				5D6F32292C7C323C007DB25D /* Toast */,
 				5D38BDA02C169FE7003EEF90 /* System */,
-				5D38BD8F2C15029E003EEF90 /* Notifications */,
 				5D2F199F2C13E37300D98222 /* Image */,
 				5D666A972BF7C832001EE754 /* MediaPicker */,
 				5D666A872BF66477001EE754 /* ImageCrop */,
@@ -1423,6 +1418,7 @@
 				5DC468C72B9FD6830023353D /* ManagementModels.swift */,
 				5D666AA22BF91B5A001EE754 /* ImageModels.swift */,
 				5D38BDA32C16A036003EEF90 /* SystemModels.swift */,
+				5D92BA922C834C1800B19BD4 /* MetadataModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1851,6 +1847,7 @@
 				5D8086162B301EFC00EA01AC /* EncodeToData.swift in Sources */,
 				5D8086132B3005D600EA01AC /* UserModels.swift in Sources */,
 				5DBEFB5D2B6442AF00FFCADA /* ChatModels.swift in Sources */,
+				5D92BA932C834C1800B19BD4 /* MetadataModels.swift in Sources */,
 				5DBEFB572B641D1100FFCADA /* NewEventManagerTests.swift in Sources */,
 				5D8086102B30057000EA01AC /* EventModels.swift in Sources */,
 				5DBEFB5B2B643EB000FFCADA /* GenericModels.swift in Sources */,
@@ -1865,7 +1862,6 @@
 				5D76D3672C784E9300846382 /* Enums.swift in Sources */,
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
-				5D38BD952C150C18003EEF90 /* EventNotificationToast.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
@@ -1903,7 +1899,6 @@
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
-				5D38BD992C150FEE003EEF90 /* WarningNotificationToast.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,
@@ -1936,7 +1931,6 @@
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
 				5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */,
-				5D38BD9B2C150FFA003EEF90 /* ErrorNotificationToast.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				5D38BDA42C16A036003EEF90 /* SystemModels.swift in Sources */,
 				5D666A952BF6AD29001EE754 /* PhotosPickerViewModel.swift in Sources */,
@@ -1955,11 +1949,11 @@
 				5D76D36F2C79632D00846382 /* HomeRouter.swift in Sources */,
 				5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */,
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
-				5D38BD932C150963003EEF90 /* UserNotificationToast.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */,
+				5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
@@ -2035,7 +2029,6 @@
 				5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
-				5D38BD912C1502B6003EEF90 /* NewEventNotificationToast.swift in Sources */,
 				5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
 				9A81B627292485A3009CA6ED /* ClubDetailView.swift in Sources */,
@@ -2047,6 +2040,7 @@
 				5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */,
 				5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */,
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,
+				5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
 				9AA5F617294DB0F900219B95 /* LoadingButton.swift in Sources */,
@@ -2094,6 +2088,7 @@
 				5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */,
 				5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
+				5D92BA982C83692B00B19BD4 /* EventNotificationToast.swift in Sources */,
 				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
 				5D18BD122B35FF0F00F90777 /* NewEventTopView.swift in Sources */,
 				5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */,
@@ -2144,14 +2139,17 @@
 				5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */,
 				9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */,
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
+				5D92BA942C834C1800B19BD4 /* MetadataModels.swift in Sources */,
 				5DC468C82B9FD6830023353D /* ManagementModels.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
 				5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */,
 				5D76D3732C79634B00846382 /* EventRouter.swift in Sources */,
 				5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */,
 				5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */,
+				5D92BA9E2C840CFF00B19BD4 /* MessageNotificationToast.swift in Sources */,
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
 				5DF945B22BFC706100BE3C63 /* UserBlockingConfirmation.swift in Sources */,
+				5D92BA9C2C840B5300B19BD4 /* StatusNotificationToast.swift in Sources */,
 				5D314CA22C33ADBF00F99676 /* OrganizationView.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5D666A932BF69715001EE754 /* CropModels.swift in Sources */,

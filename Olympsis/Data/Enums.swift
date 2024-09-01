@@ -423,9 +423,9 @@ enum BADGE_SIZE {
 
 // MARK: - Notifications
 
-public enum TOAST_POSITION {
-    case top
-    case bottom
+public enum TOAST_POSITION: String {
+    case top = "top"
+    case bottom = "bottom"
 }
 
 enum TOAST_TYPE: String {
@@ -446,18 +446,15 @@ enum POST_TOAST_TYPES: String {
 enum EVENT_TOAST_TYPES: String {
     case newEvent = "new_event"
     case eventInvite = "event_invite"
-    
     case eventsSummary = "events_summary"
-    
-    case eventUpdate = "event_update"
-    case event_started = "event_started"
-    case event_finished = "event_finished"
-    case eventCancelled = "event_cancelled"
+    case eventStatus = "event_status"
+    case eventParticipantStatus = "event_participant_status"
 }
 
 enum GROUP_TOAST_TYPES: String {
     case newReport = "new_report"
     case newApplication = "new_application"
+    case applicationStatus = "application_status"
 }
 
 enum FRIEND_TOAST_TYPES: String {
@@ -472,7 +469,6 @@ enum STATUS_TOAST_TYPES: String {
 
 enum MESSAGE_TOAST_TYPES: String {
     case messageRequest = "message_request"
-    
     case newMessage = "new_message"
     case newGroupMessage = "new_group_message"
     case addedToGroup = "added_to_group"
