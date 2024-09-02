@@ -26,6 +26,8 @@ struct NotificationMetadata: Codable {
     var eventName: String?
     var eventImageURL: String?
     
+    var url: String?
+    
     var timestamp: Int?
     
     init(
@@ -41,6 +43,7 @@ struct NotificationMetadata: Codable {
         eventId: String?=nil,
         eventName: String?=nil,
         eventImageURL: String?=nil,
+        url: String?=nil,
         timestamp: Int?=nil
     ){
         self.type = type
@@ -58,6 +61,8 @@ struct NotificationMetadata: Codable {
         self.eventId = eventId
         self.eventName = eventName
         self.eventImageURL = eventImageURL
+        
+        self.url = url
         
         self.timestamp = timestamp
     }

@@ -86,8 +86,17 @@ class ToastManager: ObservableObject {
             let prefetcher = ImagePrefetcher(urls: images)
             prefetcher.start()
 
+            var url: URL?
+            
+            if let urlString = metadata.url {
+                url = URL(string: urlString)
+            }
+            
             await self.showToast(
-                ToastContent(view: { view }),
+                ToastContent(
+                    view: { view },
+                    url: url
+                ),
                 position: position
             )
         }

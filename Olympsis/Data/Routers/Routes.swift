@@ -28,34 +28,86 @@ func handleIncomingURL(_ url: URL) -> ROUTES? {
     
     switch action {
     case URL_ACTIONS.open_home.rawValue:
-        return ROUTES.home
+        return ROUTES.home()
         
     case URL_ACTIONS.open_groups.rawValue:
         return ROUTES.groups
         
     case URL_ACTIONS.open_events.rawValue:
-        return ROUTES.events
+        return ROUTES.events()
         
     case URL_ACTIONS.open_profile.rawValue:
         return ROUTES.profile
+    
+    case URL_ACTIONS.open_post_view.rawValue:
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
+            print("Invalid URL: no post ID")
+            return ROUTES.home()
+        }
+        return ROUTES.home(postId: id)
+    
+    case URL_ACTIONS.open_notifications.rawValue:
+        return ROUTES.home(openNotifications: true)
+        
+    case URL_ACTIONS.open_home_messages.rawValue:
+        return ROUTES.home(openMessages: true)
         
     default:
         return nil
     }
 }
 
-func handleHomeURL(_ url: URL) -> HOME_ROUTES? {
-    return nil
+@MainActor
+func handleHomeURL(_ route: ROUTES, router: HomeRouter) {
+    router.navigateToRoot()
+    switch route {
+    case .home(let postId, let openMessages, let openNotifications):
+        if let postId {
+            router.navigate(to: .full_post_view(postId))
+            return
+        }
+        if openMessages != nil  && openMessages == true {
+            router.navigate(to: .messages)
+            return
+        }
+        if openNotifications != nil && openNotifications == true {
+            router.navigate(to: .notifications)
+            return
+        }
+    case .groups, .events, .profile:
+        return
+    }
 }
 
-func handleGroupsURL(_ url: URL) -> GROUP_ROUTES? {
-    return nil
+@MainActor
+func handleGroupsURL(_ route: ROUTES, router: GroupRouter) {
+    router.navigateToRoot()
+    switch route {
+    case .home, .events, .profile:
+        return
+    case .groups:
+        return
+    }
 }
 
-func handleEventsURL(_ url: URL) -> EVENTS_ROUTES? {
-    return nil
+@MainActor
+func handleEventsURL(_ route: ROUTES, router: EventRouter) {
+    router.navigateToRoot()
+    switch route {
+    case .home, .groups, .profile:
+        return
+    case .events(let eventId, let venueId):
+        return
+    }
 }
 
-func handleProfileURL(_ url: URL) -> PROFILE_ROUTES? {
-    return nil
+@MainActor
+func handleProfileURL(_ route: ROUTES, router: ProfileRouter) {
+    router.navigateToRoot()
+    switch route {
+    case .home, .groups, .events:
+        return
+    case .profile:
+        return
+    }
 }

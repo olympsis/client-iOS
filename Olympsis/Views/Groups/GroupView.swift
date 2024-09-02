@@ -10,12 +10,17 @@ import SwiftUI
 
 struct GroupView: View {
     
+    @StateObject public var router: GroupRouter
     @EnvironmentObject private var session: SessionStore
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
     
+    init(router: GroupRouter = GroupRouter()) {
+        self._router = StateObject(wrappedValue: router)
+    }
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.navPath) {
             Group {
                 switch session.clubsState {
                 case .loading:

@@ -40,6 +40,7 @@ func sha256(_ input: String) -> String {
     return hashString
 }
 
+// MARK: - Notification Metadata
 func generateMetadata(data: [AnyHashable : Any]) -> NotificationMetadata {
     var metadata = NotificationMetadata()
     
@@ -59,6 +60,8 @@ func generateMetadata(data: [AnyHashable : Any]) -> NotificationMetadata {
     metadata.eventId = data["event_id"] as? String
     metadata.eventName = data["event_name"] as? String
     metadata.eventImageURL = data["event_image_url"] as? String
+    
+    metadata.url = data["url"] as? String
     
     metadata.timestamp = data["timestamp"] as? Int ?? Int(Date.now.timeIntervalSince1970)
     

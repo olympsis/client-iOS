@@ -71,31 +71,40 @@ enum URL_ACTIONS: String {
     case open_groups = "open-groups"
     case open_events = "open-events"
     case open_profile = "open-profile"
+    
+    case open_notifications = "open-notifications"
+    case open_home_messages = "open-home-messages"
+    case open_group_messages = "open-group-messages"
+    
+    case open_post_view = "open-post-view"
+    
 }
 
-enum ROUTES: String {
-    case home
+enum ROUTES: Codable, Hashable {
+    case home(
+        postId: String?=nil,
+        openMessages: Bool?=nil,
+        openNotifications: Bool?=nil
+    )
     case groups
-    case events
+    case events(eventId: String?=nil, venueId: String?=nil)
     case profile
 }
 
-enum HOME_ROUTES: String {
+enum HOME_ROUTES: Codable, Hashable {
     case notifications
-    case events
-    case venues
     case messages
-    case full_post_view
+    case full_post_view(_ postId: String)
 }
 
-enum GROUP_ROUTES: String {
+enum GROUP_ROUTES: Codable, Hashable {
     case messages
     case newPost
     case newEvent
     case settings
 }
 
-enum GROUP_SETTINGS_ROUTES: String {
+enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
     case edit
     case applications
     case reports

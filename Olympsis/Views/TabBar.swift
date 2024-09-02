@@ -10,6 +10,11 @@ import SwiftUI
 struct TabBar: View {
     
     @Binding var currentTab: Tab
+    @StateObject public var homeRouter = HomeRouter()
+    @StateObject public var groupRouter = GroupRouter()
+    @StateObject public var eventRouter = EventRouter()
+    @StateObject public var profileRouter = ProfileRouter()
+    
     @EnvironmentObject var session: SessionStore
     
     var body: some View {
@@ -18,6 +23,9 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .home
+                        if currentTab == .home {
+                            homeRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
@@ -34,6 +42,9 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .club
+                        if currentTab == .club {
+                            groupRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
@@ -49,6 +60,9 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .map
+                        if currentTab == .map {
+                            eventRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
@@ -75,6 +89,9 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .profile
+                        if currentTab == .profile {
+                            profileRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {

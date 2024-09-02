@@ -12,6 +12,8 @@ import NotificationCenter
 
 struct Home: View {
     
+    @StateObject public var router: HomeRouter
+    
     @State private var showDetail = false
     @State private var showMoreFields = false
     
@@ -19,8 +21,12 @@ struct Home: View {
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
+    init(router: HomeRouter = HomeRouter()) {
+        self._router = StateObject(wrappedValue: router)
+    }
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.navPath) {
             ScrollView(.vertical) {
                 
                 //MARK: - Welcome message
@@ -47,6 +53,16 @@ struct Home: View {
                 Spacer(minLength: 100)
                 
             }
+            .navigationDestination(for: HOME_ROUTES.self, destination: { route in
+                switch route {
+                case .notifications:
+                    NotificationsView()
+                case .messages:
+                    EmptyView()
+                case .full_post_view(let id):
+                    EmptyView()
+                }
+            })
             .onReceive(session.locationManager.$location) { newLoc in
                 
                 // make sure new location is valid
@@ -72,10 +88,9 @@ struct Home: View {
                         .fontWeight(.black)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        NotificationsView()
-                            .environmentObject(session)
-                    } label: {
+                    Button(action: {
+                        router.navigate(to: .notifications)
+                    }) {
                         Image(systemName: "bell")
                             .foregroundStyle(Color("foreground"))
                             .overlay {

@@ -16,6 +16,11 @@ struct ViewContainer: View {
     @State var currentTab: Tab = .home
     @State private var showOnboarding: Bool = false
     
+    @StateObject private var homeRouter = HomeRouter()
+    @StateObject private var groupRouter = GroupRouter()
+    @StateObject private var eventRouter = EventRouter()
+    @StateObject private var profileRouter = ProfileRouter()
+    
     @StateObject private var toastManager = ToastManager()
     @EnvironmentObject private var session: SessionStore
     
@@ -23,14 +28,31 @@ struct ViewContainer: View {
         UITabBar.appearance().isHidden = true
     }
 
+    func handleRoute(_ route: ROUTES) {
+        switch route {
+        case .home:
+            currentTab = .home
+            handleHomeURL(route, router: homeRouter)
+        case .groups:
+            currentTab = .club
+            handleGroupsURL(route, router: groupRouter)
+        case .events:
+            currentTab = .map
+            handleEventsURL(route, router: eventRouter)
+        case .profile:
+            currentTab = .profile
+            handleProfileURL(route, router: profileRouter)
+        }
+    }
+    
     var body: some View {
         VStack {
             TabView(selection: $currentTab) {
-                Home()
+                Home(router: homeRouter)
                     .tag(Tab.home)
                     .toolbar(.hidden, for: .tabBar)
                 
-                GroupView()
+                GroupView(router: groupRouter)
                     .tag(Tab.club)
                     .toolbar(.hidden, for: .tabBar)
                 
@@ -53,9 +75,15 @@ struct ViewContainer: View {
             )
             .padding(.bottom, -10)
             
-            TabBar(currentTab: $currentTab)
-                .background(Color("dark-color"))
-                .ignoresSafeArea(.keyboard)
+            TabBar(
+                currentTab: $currentTab,
+                homeRouter: homeRouter,
+                groupRouter: groupRouter,
+                eventRouter: eventRouter,
+                profileRouter: profileRouter
+            )
+            .background(Color("dark-color"))
+            .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {
@@ -64,6 +92,21 @@ struct ViewContainer: View {
             }
         }, content: {
             Onboarding()
+        })
+        .environment(\.openURL, OpenURLAction { url in // Handles internal URLS
+            guard let route = handleIncomingURL(url) else {
+                return .systemAction
+            }
+            
+            handleRoute(route)
+            return .handled
+        })
+        .onOpenURL(perform: { url in
+            guard let route = handleIncomingURL(url) else {
+                return
+            }
+            
+            handleRoute(route)
         })
         .task {
             session.state = .loading
