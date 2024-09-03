@@ -142,6 +142,13 @@ enum LOADING_STATE {
     case failure
 }
 
+enum VIEW_STATE {
+    case pending
+    case loading
+    case success
+    case failure
+}
+
 enum EVENT_STATUS: String {
     case pending = "pending"
     case in_progress = "in-progress"

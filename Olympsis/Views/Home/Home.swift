@@ -60,7 +60,8 @@ struct Home: View {
                 case .messages:
                     EmptyView()
                 case .full_post_view(let id):
-                    EmptyView()
+                    AsyncPostView(postId: id)
+                        .environmentObject(session)
                 }
             })
             .onReceive(session.locationManager.$location) { newLoc in

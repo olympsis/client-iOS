@@ -199,6 +199,7 @@
 		5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E732C41099B00793FEB /* Profile.xcstrings */; };
 		5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E752C4109AF00793FEB /* Home.xcstrings */; };
 		5DDD5E782C4109EC00793FEB /* System.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E772C4109EC00793FEB /* System.xcstrings */; };
+		5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F632C8758ED001A9861 /* AsyncPostView.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
@@ -581,6 +582,7 @@
 		5DDD5E732C41099B00793FEB /* Profile.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Profile.xcstrings; sourceTree = "<group>"; };
 		5DDD5E752C4109AF00793FEB /* Home.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Home.xcstrings; sourceTree = "<group>"; };
 		5DDD5E772C4109EC00793FEB /* System.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = System.xcstrings; sourceTree = "<group>"; };
+		5DE67F632C8758ED001A9861 /* AsyncPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPostView.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
@@ -778,6 +780,7 @@
 			isa = PBXGroup;
 			children = (
 				5D0CC93E2BAD035000E16B95 /* PostViewer.swift */,
+				5DE67F632C8758ED001A9861 /* AsyncPostView.swift */,
 			);
 			path = Viewers;
 			sourceTree = "<group>";
@@ -2119,6 +2122,7 @@
 				9AF0A1BB29313E350055D1F6 /* PostObserver.swift in Sources */,
 				5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */,
 				5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */,
+				5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */,
 				5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */,
 				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
