@@ -88,7 +88,7 @@ struct MapView: View {
                         .tint(Color("color-secnd"))
                         .frame(width: 40, height: 40)
                         
-                        Button(action:{ self.showOptions = true }){
+                        Button(action:{ self.router.navigate(to: .settings) }){
                             ZStack {
                                 Circle()
                                     .tint(Color("color-secnd"))
@@ -140,15 +140,16 @@ struct MapView: View {
             }
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                 switch route {
-                case .events(let eventId, let venueId, let openEvents):
+                case .events(let eventId, let openEvents):
                     if let eventId {
                         AsyncEventView(eventId: eventId)
                             .toolbar(.hidden, for: .navigationBar)
-                    } else if let openEvents {
+                    } else if openEvents != nil && openEvents == true {
                         EventsList(events: session.events)
                     }
                 case .settings:
-                    EmptyView()
+                    MapOptions(availableSports: SPORTS.allCases, selectedSports: sports)
+                        .environmentObject(router)
                 }
             })
         }
@@ -162,10 +163,6 @@ struct MapView: View {
         .sheet(isPresented: $showBottomSheet) {
             EventsModalView(events: $session.events)
                 .presentationDetents([.height(250), .large])
-        }
-        .sheet(isPresented: $showOptions) {
-            MapOptions(availableSports: SPORTS.allCases, selectedSports: sports)
-                .presentationDetents([.medium])
         }
         .alert(isPresented: $showError){
             Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {

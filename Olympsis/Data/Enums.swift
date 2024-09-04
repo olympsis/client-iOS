@@ -116,7 +116,6 @@ enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
 enum EVENT_ROUTES: Codable, Hashable {
     case events(
         eventId: String?=nil,
-        venueId: String?=nil,
         openEvents: Bool?=nil
     )
     case settings

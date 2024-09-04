@@ -14,8 +14,9 @@ struct MapOptions: View {
     @State var selectedSports: [String] = [String]()
     @State private var status: LOADING_STATE = .pending
     @State private var sliderValue = 5.0
-    @EnvironmentObject var session:SessionStore
-    @Environment(\.dismiss) private var dismiss
+    
+    @EnvironmentObject private var router: EventRouter
+    @EnvironmentObject private var session: SessionStore
     
     @AppStorage("searchRadius") private var radius: Double? // search radius for fields/events in meters
     
@@ -41,37 +42,7 @@ struct MapOptions: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Button(action:{ dismiss() }){
-                    Text("Cancel")
-                        .font(.caption)
-                        .textCase(.uppercase)
-                        .foregroundColor(.red)
-                }.frame(height: 40)
-                
-                Spacer()
-                
-                Button(action:{
-                    Task {
-                        await MainActor.run {
-                            self.status = .loading
-                        }
-                        await NewSearch()
-                        await MainActor.run {
-                            self.status = .success
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                            dismiss()
-                        }
-                    }
-                }){
-                    LoadingButton(text: "Search", width: 100, status: $status)
-                        .frame(width: 100)
-                }
-            }.padding(.horizontal)
-                .padding(.top)
-            
+        VStack {            
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     Text("Search Radius:")
@@ -102,22 +73,56 @@ struct MapOptions: View {
                     }
                     
                     
-                }.padding(.leading)
-                    .task {
-                        guard let radiusValue = radius else {
-                            return
-                        }
-                        await MainActor.run {
-                            sliderValue = metersToMiles(radius: radiusValue)
-                        }
+                }
+                .padding(.leading)
+                .task {
+                    guard let radiusValue = radius else {
+                        return
                     }
+                    await MainActor.run {
+                        sliderValue = metersToMiles(radius: radiusValue)
+                    }
+                }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { self.router.navigateBack() }) {
+                    Image(systemName: "chevron.left")
+                    
+                }
+                .clipShape(Circle())
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action:{
+                    Task {
+                        await MainActor.run {
+                            self.status = .loading
+                        }
+                        await NewSearch()
+                        await MainActor.run {
+                            self.status = .success
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                            self.router.navigateBack()
+                        }
+                    }
+                }){
+                    LoadingButton(text: "Search", width: 100, status: $status)
+                        .frame(width: 100)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden()
     }
 }
 
-struct MapOptions_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    NavigationStack {
         MapOptions(availableSports: [SPORTS.soccer, SPORTS.basketball, SPORTS.golf], selectedSports: ["soccer", "basketball", "pickleball"])
+            .environmentObject(EventRouter())
+            .environmentObject(SessionStore())
+            .navigationBarBackButtonHidden(false)
     }
 }
