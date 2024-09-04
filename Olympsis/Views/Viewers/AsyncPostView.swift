@@ -20,7 +20,7 @@ struct AsyncPostView: View {
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "async_post_view")
     
     @MainActor
-    func fetchPost() async {
+    private func fetchPost() async {
         state = .loading
         guard let post = await session.postObserver.getPost(id: postId) else {
             state = .failure
@@ -51,8 +51,7 @@ struct AsyncPostView: View {
                     Button(action: { Task { await fetchPost() }}) {
                         Text("Try again")
                     }
-                }
-                .padding(.vertical, 100)
+                }.padding(.vertical, 100)
             }
         }
         .task {
@@ -73,9 +72,9 @@ struct AsyncPostView: View {
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
         .navigationTitle("Post")
+        .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

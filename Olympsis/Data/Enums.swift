@@ -77,6 +77,7 @@ enum URL_ACTIONS: String {
     case open_group_messages = "open-group-messages"
     
     case open_post_view = "open-post-view"
+    case open_event_view = "open-event-view"
     
 }
 
@@ -112,8 +113,12 @@ enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
     case members
 }
 
-enum EVENTS_ROUTES: String {
-    case events
+enum EVENT_ROUTES: Codable, Hashable {
+    case events(
+        eventId: String?=nil,
+        venueId: String?=nil,
+        openEvents: Bool?=nil
+    )
     case settings
 }
 

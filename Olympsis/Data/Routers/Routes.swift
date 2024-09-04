@@ -45,7 +45,14 @@ func handleIncomingURL(_ url: URL) -> ROUTES? {
             return ROUTES.home()
         }
         return ROUTES.home(postId: id)
-    
+        
+    case URL_ACTIONS.open_event_view.rawValue:
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
+            print("Invalid URL: no event ID")
+            return ROUTES.events()
+        }
+        return ROUTES.events(eventId: id)
+        
     case URL_ACTIONS.open_notifications.rawValue:
         return ROUTES.home(openNotifications: true)
         
@@ -97,6 +104,9 @@ func handleEventsURL(_ route: ROUTES, router: EventRouter) {
     case .home, .groups, .profile:
         return
     case .events(let eventId, let venueId):
+        if let eventId {
+            router.navigate(to: .events(eventId: eventId))
+        }
         return
     }
 }

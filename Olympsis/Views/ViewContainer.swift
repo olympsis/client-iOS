@@ -56,7 +56,7 @@ struct ViewContainer: View {
                     .tag(Tab.club)
                     .toolbar(.hidden, for: .tabBar)
                 
-                MapView()
+                MapView(router: eventRouter)
                     .tag(Tab.map)
                     .toolbar(.hidden, for: .tabBar)
                 

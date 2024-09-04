@@ -13,7 +13,7 @@ class EventRouter: ObservableObject {
     @Published var navPath = NavigationPath()
     
     @MainActor
-    func navigate(to destination: EVENTS_ROUTES) {
+    func navigate(to destination: EVENT_ROUTES) {
         navPath.append(destination)
     }
     
