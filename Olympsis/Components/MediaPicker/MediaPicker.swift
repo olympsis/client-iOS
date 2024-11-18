@@ -44,10 +44,10 @@ struct MediaPicker: View {
             maskShape = .square
         case .other:
             maxSelection = 1
-            maskShape = .rectangle
+            maskShape = .landscape
         case .eventImage:
             maxSelection = 1
-            maskShape = .rectangleV
+            maskShape = .portrait
         }
         
         _viewModel = StateObject(wrappedValue:
@@ -141,7 +141,7 @@ struct MediaPicker: View {
                             Spacer()
                             Button(action: {
                                 if maskShape == CropMaskShape.square {
-                                    maskShape = CropMaskShape.rectangleV
+                                    maskShape = CropMaskShape.portrait
                                 } else {
                                     maskShape = .square
                                 }

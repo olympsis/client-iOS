@@ -78,7 +78,7 @@ struct MapView: View {
                         Spacer()
                         LocationButton(.currentLocation){
                             withAnimation {
-                                cameraPosition = .automatic
+                                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
                             }
                         }
                         .clipShape(Circle())

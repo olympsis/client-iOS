@@ -19,7 +19,7 @@ class ChatService {
         #if targetEnvironment(simulator)
             self.http = Courrier(.HTTP, host: "localhost:8082")
         #else
-            let host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
             self.http = Courrier(.HTTPS, host: host)
         #endif
     }

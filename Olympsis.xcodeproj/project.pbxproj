@@ -105,8 +105,6 @@
 		5D8086062B2FF9C100EA01AC /* OlympsisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */; };
 		5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D80860D2B2FFA0F00EA01AC /* EventModel.swift */; };
 		5D8086102B30057000EA01AC /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B92A282BE200B31170 /* EventModels.swift */; };
-		5D8086112B3005BD00EA01AC /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AE2A213CC30054F631 /* TempData.swift */; };
-		5D8086122B3005C700EA01AC /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350572A6737AF00669B2C /* Enums.swift */; };
 		5D8086132B3005D600EA01AC /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5D8086142B30161000EA01AC /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
 		5D8086152B30161500EA01AC /* VenueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* VenueModels.swift */; };
@@ -615,9 +613,7 @@
 		5F8D13A82A1EDD260054F631 /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* VenueModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueModels.swift; sourceTree = "<group>"; };
-		5F8D13AE2A213CC30054F631 /* TempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempData.swift; sourceTree = "<group>"; };
 		5FA350552A67352500669B2C /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
-		5FA350572A6737AF00669B2C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbar.swift; sourceTree = "<group>"; };
 		5FF2A0262A380534009234AD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		5FF49CB92A2BE92100FAA4DA /* PostModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModels.swift; sourceTree = "<group>"; };
@@ -921,15 +917,6 @@
 				5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */,
 			);
 			path = Toast;
-			sourceTree = "<group>";
-		};
-		5D72A7E32C784B980051DDAF /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				5F8D13AE2A213CC30054F631 /* TempData.swift */,
-				5FA350572A6737AF00669B2C /* Enums.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		5D73480E2C0A4AE30003AB41 /* Event */ = {
@@ -1306,7 +1293,6 @@
 				5D8086042B2FF9C100EA01AC /* OlympsisTests */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
-				5D72A7E32C784B980051DDAF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1840,10 +1826,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */,
-				5D8086112B3005BD00EA01AC /* TempData.swift in Sources */,
 				5D8086172B301F3600EA01AC /* OrganizationModels.swift in Sources */,
 				5D8086142B30161000EA01AC /* ClubModels.swift in Sources */,
-				5D8086122B3005C700EA01AC /* Enums.swift in Sources */,
 				5DBEFB592B64216900FFCADA /* GroupSelection.swift in Sources */,
 				5D8086152B30161500EA01AC /* VenueModels.swift in Sources */,
 				5DBEFB5A2B643E9C00FFCADA /* PostModels.swift in Sources */,

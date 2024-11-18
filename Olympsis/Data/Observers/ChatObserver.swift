@@ -24,10 +24,10 @@ class ChatObserver: ObservableObject {
     private let log = Logger(subsystem: "com.olympsis.client", category: "chat_observer")
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             host = "localhost:8082"
         #else
-            host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         #endif
     }
     
@@ -133,7 +133,7 @@ class ChatObserver: ObservableObject {
         do {
             let token = try await Auth.auth().currentUser?.getIDToken()
             
-            #if DEBUG
+            #if targetEnvironment(simulator)
                 self.request = URLRequest(url: URL(string: "ws://\(host)/v1/chats/\(id)/ws")!)
             #else
                 self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
