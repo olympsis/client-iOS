@@ -24,6 +24,13 @@ enum AUTH_STATUS: String, CaseIterable {
     case unauthenticated
 }
 
+enum CONNECTION_STATE {
+    case disconnected
+    case connecting
+    case connected
+    case reconnecting
+}
+
 enum USER_STATUS: String, CaseIterable {
     case new
     case unknown

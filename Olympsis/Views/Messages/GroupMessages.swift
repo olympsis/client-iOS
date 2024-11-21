@@ -202,7 +202,7 @@ struct GroupMessages: View {
                                             .padding(.bottom)
                                     }
                                     .fullScreenCover(isPresented: $showDetail) {
-                                        GroupRoomView(room: room, rooms: $rooms, observer: chatObserver)
+                                        GroupRoomView(room: room, rooms: $rooms)
                                     }
                                 }
                             }
@@ -272,7 +272,7 @@ struct GroupMessages: View {
                 GroupNewRoom(rooms: $rooms)
             }
             .fullScreenCover(item: $selectedRoom, content: { r in
-                GroupRoomView(room: r, rooms: $rooms, observer: chatObserver)
+                GroupRoomView(room: r, rooms: $rooms)
             })
         }
     }

@@ -103,7 +103,7 @@ func handleEventsURL(_ route: ROUTES, router: EventRouter) {
     switch route {
     case .home, .groups, .profile:
         return
-    case .events(let eventId, let venueId):
+    case .events(let eventId, _):
         if let eventId {
             router.navigate(to: .events(eventId: eventId))
         }
