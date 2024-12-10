@@ -17,7 +17,7 @@ class ClubService {
     
     init() {
         #if targetEnvironment(simulator)
-            self.http = Courrier(.HTTP, host: "localhost")
+            self.http = Courrier(.HTTPS, host: "localhost")
         #else
             let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
             self.http = Courrier(.HTTPS, host: host)

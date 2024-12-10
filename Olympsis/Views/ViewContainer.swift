@@ -82,7 +82,7 @@ struct ViewContainer: View {
                 eventRouter: eventRouter,
                 profileRouter: profileRouter
             )
-            .background(Color("dark-color"))
+            .background(Color.Brand.primary)
             .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {

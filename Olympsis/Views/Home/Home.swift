@@ -81,25 +81,24 @@ struct Home: View {
                 session.locationRecieved = true
                 
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Olympsis")
-                        .italic()
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        router.navigate(to: .notifications)
-                    }) {
-                        Image(systemName: "bell")
-                            .foregroundStyle(Color("foreground"))
-                            .overlay {
-                                if session.invitations.count > 0 {
-                                    NotificationCountView(value: $session.invitations.count)
-                                }
+        }.toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text("Olympsis")
+                    .italic()
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    router.navigate(to: .notifications)
+                }) {
+                    Image(systemName: "bell")
+                        .foregroundStyle(Color("foreground"))
+                        .overlay {
+                            if session.invitations.count > 0 {
+                                NotificationCountView(value: $session.invitations.count)
                             }
-                    }
+                        }
                 }
             }
         }
@@ -107,6 +106,8 @@ struct Home: View {
 }
 
 #Preview {
-    Home()
-        .environmentObject(SessionStore())
+    NavigationStack {
+        Home()
+            .environmentObject(SessionStore())
+    }
 }
