@@ -37,6 +37,7 @@ struct ClubLoadingView: View {
                     .environmentObject(SessionStore())
             }
         }
+        .background(Color("background-color/primary"))
     }
 }
 

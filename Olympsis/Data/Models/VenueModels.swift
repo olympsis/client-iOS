@@ -22,7 +22,7 @@ class Venue: Codable, Identifiable, Equatable {
     let country: String
     
     private enum CodingKeys: String, CodingKey {
-       case id = "id"
+       case id
        case name
        case owner
        case description

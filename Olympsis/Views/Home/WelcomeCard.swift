@@ -47,7 +47,6 @@ struct WelcomeCard: View {
                 }
             }
             .padding(.leading)
-            .redacted(reason: session.state != .success ? .placeholder : [])
             
             Spacer()
         }

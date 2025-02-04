@@ -16,14 +16,14 @@ class EventService {
     
     init() {
         #if targetEnvironment(simulator)
-            self.http = Courrier(.HTTPS, host: "localhost")
+            self.http = Courrier(.HTTP, host: "localhost")
         #else
             let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
             self.http = Courrier(.HTTPS, host: host)
         #endif
     }
     
-    func location(long: Double, lat: Double, radius: Int, sports: String, status: String) async throws -> (Data, URLResponse) {
+    func location(long: Double, lat: Double, radius: Int, sports: String, status: String, limit: Int) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Hermes.Endpoint("/v1/events/location", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
@@ -31,6 +31,7 @@ class EventService {
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sports", value: sports),
             URLQueryItem(name: "status", value: status),
+            URLQueryItem(name: "limit", value: String(limit)),
         ])
         
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])

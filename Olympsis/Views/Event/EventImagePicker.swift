@@ -100,7 +100,9 @@ struct EventImagePicker: View {
                     }
                 }
             }
-        }.fullScreenCover(isPresented: $showImagePicker, content: {
+        }
+        .background(Color("background-color/primary"))
+        .fullScreenCover(isPresented: $showImagePicker, content: {
             MediaPicker(pickerType: .eventImage) { images in
                 manager.selectedImage = images.first
             }

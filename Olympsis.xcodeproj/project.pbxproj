@@ -134,6 +134,7 @@
 		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
 		5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
+		5D9E5AB82D09475800D3E814 /* HomeMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69402BB7653F0057D205 /* MapFunctions.swift */; };
@@ -523,6 +524,7 @@
 		5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProfileLabel.swift; sourceTree = "<group>"; };
 		5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBadgeView.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
+		5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMessagesView.swift; sourceTree = "<group>"; };
 		5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5D9F69402BB7653F0057D205 /* MapFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFunctions.swift; sourceTree = "<group>"; };
@@ -1659,6 +1661,7 @@
 				9A8162A429668CC90042F0A6 /* RoomView.swift */,
 				9A8162A629669A370042F0A6 /* MessageView.swift */,
 				9ADDD949296A74D700245CCE /* RoomsSearch.swift */,
+				5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -2136,6 +2139,7 @@
 				9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */,
 				9A81B6322925C038009CA6ED /* BadgesView.swift in Sources */,
 				5D92BA942C834C1800B19BD4 /* MetadataModels.swift in Sources */,
+				5D9E5AB82D09475800D3E814 /* HomeMessagesView.swift in Sources */,
 				5DC468C82B9FD6830023353D /* ManagementModels.swift in Sources */,
 				9AB02F4E290246BD008C07F1 /* NotificationManager.swift in Sources */,
 				5D9F69472BB87A350057D205 /* HometownPicker.swift in Sources */,
@@ -2368,7 +2372,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2409,7 +2413,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

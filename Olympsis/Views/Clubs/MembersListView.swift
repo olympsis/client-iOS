@@ -41,6 +41,7 @@ struct MembersListView: View {
                     .environmentObject(club)
             }.padding(.top)
         }
+        .background(Color("background-color/primary"))
         .navigationTitle("Members")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()

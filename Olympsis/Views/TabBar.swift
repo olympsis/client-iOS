@@ -10,7 +10,7 @@ import SwiftUI
 struct TabBar: View {
     
     @Binding var currentTab: Tab
-    @StateObject public var homeRouter = HomeRouter()
+    @State public var homeRouter = HomeRouter()
     @StateObject public var groupRouter = GroupRouter()
     @StateObject public var eventRouter = EventRouter()
     @StateObject public var profileRouter = ProfileRouter()

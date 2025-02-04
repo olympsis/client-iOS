@@ -48,6 +48,7 @@ struct OrgApplications: View {
                     }
                 }
             }
+            .background(Color("background-color/primary"))
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {

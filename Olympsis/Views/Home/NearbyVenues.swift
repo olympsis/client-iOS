@@ -28,7 +28,6 @@ struct NearbyVenues: View {
                 .foregroundColor(Color.primary)
             }
             .padding(.horizontal)
-            .redacted(reason: session.state != .success ? .placeholder : [])
             
             Venues(venues: $session.venues, status: $session.state)
         }

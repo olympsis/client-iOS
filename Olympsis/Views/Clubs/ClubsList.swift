@@ -197,6 +197,7 @@ struct ClubsList: View {
                     await fetchClubs(customCoordinates)
                 }
             }
+            .background(Color("background-color/primary"))
             .task {
                 guard !hasLoaded else {
                     return

@@ -37,6 +37,7 @@ struct OrganizationView: View {
     var body: some View {
         NavigationStack {
             GroupFeed(showNewPost: $showNewPost, showNewEvent: $showNewEvent)
+                .background(Color("background-color/primary"))
                 .sheet(isPresented: $showSelector, content: {
                     GroupSelector()
                         .presentationDetents([.medium])

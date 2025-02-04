@@ -46,6 +46,7 @@ struct ShareMenu: View {
             
             Spacer()
         }
+        .background(Color("background-color/secondary"))
         .presentationDragIndicator(.visible)
         .fullScreenCover(isPresented: $showShareView) {
             EventSharingView(event: event, venue: venue, method: sharingMethod)

@@ -243,6 +243,7 @@ struct GroupMessages: View {
                     }
                 }
             }
+            .background(Color("background-color/primary"))
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -19,7 +19,7 @@ class EventObserver: ObservableObject{
     /// - Parameter descritiveLocation: `[String]` city, state, country
     func location(longitude: Double, latitude: Double, radius: Int, sports: String, status: String="live") async -> LocationResponse? {
         do {
-            let (data, resp) = try await eventService.location(long: longitude, lat: latitude, radius: radius, sports: sports, status: status)
+            let (data, resp) = try await eventService.location(long: longitude, lat: latitude, radius: radius, sports: sports, status: status, limit: 100)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }

@@ -101,7 +101,9 @@ struct EventsModalView: View {
             .fullScreenCover(isPresented: $showMore) {
                 EventsList(events: session.events)
             }
-        }.presentationDragIndicator(.visible)
+        }
+        .presentationDragIndicator(.visible)
+        .background(Color("background-color/primary"))
     }
 }
 

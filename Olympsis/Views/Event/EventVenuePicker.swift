@@ -152,7 +152,9 @@ struct EventVenuePicker: View {
                             }
                         }
                     }
-                }.tag(0)
+                }
+                .tag(0)
+                .background(Color("background-color/primary"))
 
                 VStack {
                     TextField("Location name", text: $searchModel.searchText)
@@ -199,9 +201,12 @@ struct EventVenuePicker: View {
                             }
                         }
                     })
-                }.tag(1)
+                }
+                .tag(1)
+                .background(Color("background-color/primary"))
             }.tabViewStyle(.automatic)
         }
+        .background(Color("background-color/primary"))
     }
 }
 

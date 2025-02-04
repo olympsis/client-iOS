@@ -244,6 +244,7 @@ struct ClubMenu: View {
                     );
                 }
             }
+            .background(Color("background-color/primary"))
         }
     }
 }

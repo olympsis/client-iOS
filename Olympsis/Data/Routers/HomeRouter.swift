@@ -8,10 +8,10 @@
 import SwiftUI
 import Foundation
 
-
-class HomeRouter: ObservableObject {
+@Observable
+class HomeRouter {
     
-    @Published var navPath = NavigationPath()
+    var navPath = NavigationPath()
     
     @MainActor
     func navigate(to destination: HOME_ROUTES) {
@@ -20,7 +20,9 @@ class HomeRouter: ObservableObject {
     
     @MainActor
     func navigateBack() {
-        navPath.removeLast()
+        if (navPath.count > 0) {
+            navPath.removeLast()
+        }
     }
     
     @MainActor

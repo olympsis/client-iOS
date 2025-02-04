@@ -95,7 +95,9 @@ struct OrganizationsView: View {
                         log.error("\(error)")
                     }
                 }
-            }.toolbar {
+            }
+            .background(Color("background-color/primary"))
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                         Image(systemName: "chevron.left")

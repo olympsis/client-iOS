@@ -116,6 +116,7 @@ struct RoomView: View {
                 .padding(.horizontal, 5)
                 .disabled(state != .success)
             }
+            .background(Color("background-color/primary"))
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{

@@ -59,7 +59,7 @@ struct Profile: View {
                         }
                     }
                 }
-            }
+            }.background(Color("background-color/primary"))
         }
     }
 }

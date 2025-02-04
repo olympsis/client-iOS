@@ -28,15 +28,13 @@ struct AnnouncementsView: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0), alignment: .center)
                 
-                if session.state == .success {
-                    HStack(spacing: 2) {
-                        ForEach(session.feedObserver.announcements, id: \.id) { index in
-                            Rectangle()
-                                .fill(index.id == self.index ? Color("color-prime") : Color("color-prime").opacity(0.5))
-                                .frame(width: 30, height: 5)
-                        }
-                    }.padding()
-                }
+                HStack(spacing: 2) {
+                    ForEach(session.feedObserver.announcements, id: \.id) { index in
+                        Rectangle()
+                            .fill(index.id == self.index ? Color("color-prime") : Color("color-prime").opacity(0.5))
+                            .frame(width: 30, height: 5)
+                    }
+                }.padding()
             }
             .onChange(of: session.feedObserver.announcements) { _, _ in
                 if !session.feedObserver.announcements.isEmpty {
@@ -45,7 +43,6 @@ struct AnnouncementsView: View {
             }
         }
         .padding(.top)
-        .redacted(reason: session.state != .success ? .placeholder : [])
     }
 }
 

@@ -24,7 +24,10 @@ struct ClubApplications: View {
                             ClubApplicationListItem(club: club, application: application, applications: $applications)
                         }
                     } else {
-                        Text("No Applications")
+                        HStack {
+                            Spacer()
+                        }
+                        Text("No applications found")
                     }
                     
                 }.refreshable {
@@ -41,6 +44,7 @@ struct ClubApplications: View {
                     }
                 }
             }
+            .background(Color("background-color/primary"))
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {

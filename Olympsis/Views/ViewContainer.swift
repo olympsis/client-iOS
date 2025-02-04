@@ -16,7 +16,7 @@ struct ViewContainer: View {
     @State var currentTab: Tab = .home
     @State private var showOnboarding: Bool = false
     
-    @StateObject private var homeRouter = HomeRouter()
+    private var homeRouter = HomeRouter()
     @StateObject private var groupRouter = GroupRouter()
     @StateObject private var eventRouter = EventRouter()
     @StateObject private var profileRouter = ProfileRouter()
@@ -25,7 +25,7 @@ struct ViewContainer: View {
     @EnvironmentObject private var session: SessionStore
     
     init() {
-        UITabBar.appearance().isHidden = true
+//        UITabBar.appearance().isHidden = true
     }
 
     func handleRoute(_ route: ROUTES) {

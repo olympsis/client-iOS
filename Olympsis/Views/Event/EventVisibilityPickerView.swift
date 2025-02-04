@@ -59,6 +59,7 @@ struct EventVisibilityPickerView: View {
                 Spacer()
                 
             }.padding(.top)
+                .background(Color("background-color/primary"))
             .navigationTitle("Visibility")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

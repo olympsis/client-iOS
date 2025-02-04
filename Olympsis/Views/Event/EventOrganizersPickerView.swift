@@ -75,6 +75,7 @@ struct EventOrganizersPickerView: View {
                 }
                 Spacer()
             }
+            .background(Color("background-color/primary"))
             .padding(.top)
             .navigationTitle("Organizers")
             .navigationBarTitleDisplayMode(.inline)

@@ -90,6 +90,7 @@ struct EventsList: View {
 //                        .datePickerStyle(.compact)
 //                }
             }
+            .background(Color("background-color/primary"))
             .navigationTitle("Events")
             .navigationBarTitleDisplayMode(.inline)
         }

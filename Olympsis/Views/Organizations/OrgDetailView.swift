@@ -156,7 +156,7 @@ struct OrgDetailView: View {
                         }
                     }
                 }
-            }
+            }.background(Color("background-color/primary"))
         }.onAppear {
             updatePosition()
         }

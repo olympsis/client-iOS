@@ -259,7 +259,9 @@ struct ClubDetailView: View {
                         }
                     }
                 }
-            }.onAppear {
+            }
+            .background(Color("background-color/primary"))
+            .onAppear {
                 updatePosition()
             }
         }

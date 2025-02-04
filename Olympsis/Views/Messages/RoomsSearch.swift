@@ -44,7 +44,8 @@ struct RoomsSearch: View {
                             Spacer()
                         }
                     }
-                }.toolbar {
+                }
+                .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                             Image(systemName: "chevron.left")
@@ -55,7 +56,9 @@ struct RoomsSearch: View {
                         Text("Chat Rooms")
                     }
                 }
-            }.refreshable {
+            }
+            .background(Color("background-color/primary"))
+            .refreshable {
                 state = .loading
                 let resp = await observer.GetRooms(id: club.id)
                 if let r = resp {

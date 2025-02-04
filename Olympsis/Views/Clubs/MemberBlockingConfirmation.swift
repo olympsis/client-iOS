@@ -153,6 +153,7 @@ struct MemberBlockingConfirmation: View {
         .padding(.top)
         .scrollIndicators(.never)
         .presentationDragIndicator(.visible)
+        .background(Color("background-color/secondary"))
     }
 }
 

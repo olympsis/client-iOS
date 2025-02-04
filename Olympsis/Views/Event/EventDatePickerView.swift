@@ -19,6 +19,7 @@ struct EventDatePickerView: View {
                 .labelsHidden()
                 .padding()
         }
+        .background(Color("background-color/secondary"))
     }
 }
 
