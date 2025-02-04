@@ -63,10 +63,7 @@ struct EventMiddleView: View {
     }
     
     var eventLevel: Int {
-        guard let level = event.level else {
-            return 0
-        }
-        return level
+        return event.level.toInt()
     }
     
     var body: some View {

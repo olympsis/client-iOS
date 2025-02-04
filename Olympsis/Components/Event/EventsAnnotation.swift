@@ -72,26 +72,26 @@ struct EventsAnnotation: View {
             
             let event = Event(
                 id: UUID().uuidString,
-                type: "pick-up",
+                type: EVENT_TYPES.PickUp,
                 poster: USER_SNIPPETS[0],
                 organizers: [
-                    Organizer(type: "Club", id: CLUBS[0].id)
+                    Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)
                 ],
                 venues: [i % 10 == 0 ? initialVenue : newVenue], // Add some events at the same venue
                 imageURL: "soccer-\(i % 5)",
                 title: "Pick Up Soccer International #\(i + 1)",
                 body: "Let's go play boys!!!",
                 sport: "soccer",
-                level: 0,
+                level: EVENT_SKILL_LEVELS.All,
                 startTime: 1699806600 + i * 3600, // Increment start time for each event
                 actualStartTime: 1699806600 + i * 3600,
                 stopTime: 1699806615 + i * 3600,
                 actualStopTime: 0,
                 maxParticipants: 10,
                 participants: [
-                    Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
+                    Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
                 ],
-                visibility: "public",
+                visibility: EVENT_VISIBILITY_TYPES.Public,
                 createdAt: 1639364780,
                 isSensitive: false
             )

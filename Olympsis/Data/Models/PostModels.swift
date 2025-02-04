@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, Codable {
+class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, Decodable {
     
     let id: String?
     let type: String?
@@ -76,22 +76,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, C
         createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
     }
-    
-    // This is useless...
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(id, forKey: .id)
-        try container.encodeIfPresent(type, forKey: .type)
-        try container.encodeIfPresent(poster, forKey: .poster)
-        try container.encode(body, forKey: .body)
-        try container.encodeIfPresent(event, forKey: .event)
-        try container.encodeIfPresent(images, forKey: .images)
-        try container.encodeIfPresent(likes, forKey: .likes)
-        try container.encodeIfPresent(comments, forKey: .comments)
-        try container.encodeIfPresent(externalLink, forKey: .externalLink)
-        try container.encodeIfPresent(createdAt, forKey: .createdAt)
-        try container.encodeIfPresent(isSensitive, forKey: .isSensitive)
-    }
+
     
     // RandomAccessCollection requirements
     typealias Index = Int

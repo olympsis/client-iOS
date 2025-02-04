@@ -180,9 +180,9 @@ class NewEventManager: ObservableObject {
         return self.organizers.map { o in
             switch (o.type) {
             case .Club:
-                return Organizer(type: o.type.rawValue, id: o.club?.id ?? "")
+                return Organizer(type: o.type, id: o.club?.id ?? "")
             case .Organization:
-                return Organizer(type: o.type.rawValue, id: o.organization?.id ?? "")
+                return Organizer(type: o.type, id: o.organization?.id ?? "")
             }
         }
     }
@@ -212,19 +212,19 @@ class NewEventManager: ObservableObject {
         }
         
         return EventDao(
-            type: self.type.rawValue,
+            type: self.type,
             organizers: self.generateOrganizers(),
             venues: self.selectedVenueDescriptors,
             imageURL: self.image,
             title: self.title,
             body: self.body,
             sport: self.sport.rawValue,
-            level: self.skillLevel.toInt(),
+            level: self.skillLevel,
             startTime: Int(self.startDate.timeIntervalSince1970),
             stopTime: Int(self.endDate.timeIntervalSince1970),
             minParticipants: Int(self.minParticipants),
             maxParticipants: Int(self.maxParticipants),
-            visibility: self.visibility.rawValue,
+            visibility: self.visibility,
             isSensitive: false,
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )
@@ -263,7 +263,7 @@ class NewEventManager: ObservableObject {
         }
         
         let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
-        let participant = Participant(id: UUID().uuidString, user: snippet, status: RSVP_STATUS.Going.rawValue, createdAt: Int(Date.now.timeIntervalSince1970))
+        let participant = Participant(id: UUID().uuidString, user: snippet, status: EVENT_RSVP_STATUS.Yes, createdAt: Int(Date.now.timeIntervalSince1970))
         
         return Event(
             id: id, 

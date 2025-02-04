@@ -156,7 +156,7 @@ struct EventView: View {
                 ScrollViewReader { proxy in
                     VStack(alignment: .leading) {
                         
-                        if event.type == "tournament" {
+                        if event.type == EVENT_TYPES.Tournament {
                             Text("Tournament")
                                 .font(.caption)
                                 .padding(.leading)

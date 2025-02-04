@@ -20,7 +20,7 @@ struct GroupsView: View {
             VStack(alignment: .leading) {
                 ScrollView {
                     ForEach(organizers) { organizer in
-                        if organizer.type == GROUP_TYPE.Club.rawValue {
+                        if organizer.type == GROUP_TYPE.Club {
                             HStack {
                                 Circle()
                                     .frame(width: 60)

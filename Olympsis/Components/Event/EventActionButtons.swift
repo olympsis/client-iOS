@@ -55,7 +55,7 @@ struct EventActionButtons: View {
             return
         }
         
-        let participant = Participant(id: nil, user: nil, status: status, createdAt: nil)
+        let participant = Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: nil)
         let resp = await session.eventObserver.addParticipant(id: event.id!, participant)
         
         guard resp == true,
@@ -180,7 +180,7 @@ struct EventActionButtons: View {
                     .frame(maxWidth: .infinity, idealHeight: 80)
                     .foregroundColor(Color("background"))
                 VStack {
-                    if event.visibility == "private" {
+                    if event.visibility == EVENT_VISIBILITY_TYPES.Private {
                         VStack {
                             Image(systemName: "lock.fill")
                                 .resizable()

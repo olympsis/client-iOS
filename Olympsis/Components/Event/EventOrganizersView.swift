@@ -31,7 +31,7 @@ struct EventOrganizersView: View {
         guard let o = organizers.first else {
             return "organizer"
         }
-        if o.type == GROUP_TYPE.Club.rawValue {
+        if o.type == GROUP_TYPE.Club {
             guard let club = clubs.first(where: { $0.id == o.id }) else {
                 return "organizer"
             }
@@ -48,7 +48,7 @@ struct EventOrganizersView: View {
     /// the co host or second organizer if there is only two
     private var coHost: String {
         if organizers.count == 2 {
-            if organizers[1].type == GROUP_TYPE.Club.rawValue {
+            if organizers[1].type == GROUP_TYPE.Club {
                 guard let club = clubs.first(where: { $0.id == organizers[1].id }) else {
                     return "organizer"
                 }
@@ -75,7 +75,7 @@ struct EventOrganizersView: View {
                     }
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
-                            if org.type == GROUP_TYPE.Club.rawValue {
+                            if org.type == GROUP_TYPE.Club {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubDetailView(club: club)
                                 }
@@ -96,7 +96,7 @@ struct EventOrganizersView: View {
                     }
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
-                            if org.type == GROUP_TYPE.Club.rawValue {
+                            if org.type == GROUP_TYPE.Club {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubDetailView(club: club)
                                 }
@@ -117,7 +117,7 @@ struct EventOrganizersView: View {
                         self.showSecond.toggle()
                     }
                     .fullScreenCover(isPresented: $showSecond, content: {
-                        if organizers[1].type == GROUP_TYPE.Club.rawValue {
+                        if organizers[1].type == GROUP_TYPE.Club {
                             if let club = clubs.first(where: { $0.id == organizers[1].id }) {
                                 ClubDetailView(club: club)
                             }
@@ -136,7 +136,7 @@ struct EventOrganizersView: View {
                     }
                     .fullScreenCover(isPresented: $showFirst, content: {
                         if let org = organizers.first {
-                            if org.type == GROUP_TYPE.Club.rawValue {
+                            if org.type == GROUP_TYPE.Club {
                                 if let club = clubs.first(where: { $0.id == org.id }) {
                                     ClubDetailView(club: club)
                                 }

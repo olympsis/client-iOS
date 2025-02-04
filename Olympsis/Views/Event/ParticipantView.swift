@@ -24,12 +24,12 @@ struct ParticipantView: View {
         guard participant.user != nil else {
             return Color("color-prime")
         }
-        if participant.status == "yes" {
+        
+        switch participant.status {
+        case .Yes:
             return Color("color-prime")
-        } else if participant.status == "maybe" {
+        case .Maybe:
             return Color("color-secnd")
-        } else {
-            return Color("color-tert")
         }
     }
     

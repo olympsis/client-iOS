@@ -295,12 +295,64 @@ enum MEMBER_ROLES: String, CaseIterable {
 enum GROUP_TYPE: String, CaseIterable {
     case Club = "club"
     case Organization = "organization"
+    
+    func toInt() -> Int {
+        switch self {
+        case .Club:
+            0
+        case .Organization:
+            1
+        }
+    }
+}
+
+func numberToGroupType(number: Int) -> GROUP_TYPE {
+    if (number == 0) {
+        return .Club
+    } else {
+        return .Organization
+    }
+}
+
+enum EVENT_RSVP_STATUS: String, CaseIterable {
+    case Yes = "yes"
+    case Maybe = "maybe"
+}
+
+func numberToEventRSVPStatus(_ number: Int) -> EVENT_RSVP_STATUS {
+    if (number == 0) {
+        return .Yes
+    } else {
+        return .Maybe
+    }
 }
 
 enum EVENT_VISIBILITY_TYPES: String, CaseIterable {
     case Public = "public"
-    case Private = "private"
     case Group = "group"
+    case Private = "private"
+    
+    func toInt() -> Int {
+        switch self {
+        case .Public:
+            0
+        case .Group:
+            1
+        case .Private:
+            2
+        }
+    }
+}
+
+func numberToEventVisibilityType(_ number: Int) -> EVENT_VISIBILITY_TYPES {
+    switch number {
+    case 0:
+        return .Public
+    case 1:
+        return .Group
+    default:
+        return .Private
+    }
 }
 
 enum EVENT_SKILL_LEVELS: String, CaseIterable {
@@ -323,6 +375,19 @@ enum EVENT_SKILL_LEVELS: String, CaseIterable {
     }
 }
 
+func numberToEventSkillLEvel(number: Int) -> EVENT_SKILL_LEVELS {
+    switch number {
+    case 0:
+        return .All
+    case 1:
+        return .Beginner
+    case 2:
+        return .Amateur
+    default:
+        return .Expert
+    }
+}
+
 enum NEW_EVENT_ERROR: Error {
     case unexpected
     case noTitle
@@ -340,7 +405,25 @@ enum SkillLevel: String, CaseIterable {
 enum EVENT_TYPES: String, CaseIterable {
     case PickUp = "pickup"
     case Tournament = "tournament"
+    
+    func toInt() -> Int {
+        switch self {
+        case .PickUp:
+            return 0
+        case .Tournament:
+            return 1
+        }
+    }
 }
+
+func numberToEventType(number: Int) -> EVENT_TYPES {
+    if number == 1 {
+        return .Tournament
+    } else {
+        return .PickUp
+    }
+}
+
 
 enum FIELD_TYPES: String {
     case Internal = "internal"

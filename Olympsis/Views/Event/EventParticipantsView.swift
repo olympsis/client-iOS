@@ -23,16 +23,16 @@ struct EventParticipantsView: View {
     var participants: [Participant] {
         guard var ptps = event.participants else {
             return [
-                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0)
+                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
+                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0)
             ]
         }
         if ptps.count < 5 {
             let remainder = 5 - ptps.count
             for _ in 1...remainder {
-                ptps.append(Participant(id: UUID().uuidString, user: nil, status: "going", createdAt: 0))
+                ptps.append(Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0))
             }
         } else {
             return ptps.dropLast(ptps.count - 5)
@@ -67,7 +67,7 @@ struct EventRSVPChart: View {
             return 0
         }
         let yesNum = participants.filter { p in
-            return p.status == "yes"
+            return p.status == EVENT_RSVP_STATUS.Yes
         }
         return yesNum.count
     }
@@ -77,7 +77,7 @@ struct EventRSVPChart: View {
             return 0
         }
         let maybeNum = participants.filter { p in
-            return p.status == "maybe"
+            return p.status == EVENT_RSVP_STATUS.Maybe
         }
         return maybeNum.count
     }

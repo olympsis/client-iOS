@@ -90,7 +90,7 @@ class EventService {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        let (_,resp) = try await http.Request(.POST, endpoint, body: EncodeToData(participant), headers: ["Authorization": token ?? ""])
+        let (_,resp) = try await http.Request(.POST, endpoint, body: nil, headers: ["Authorization": token ?? ""])
         return resp
     }
     

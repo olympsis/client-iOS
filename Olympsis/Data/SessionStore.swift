@@ -250,7 +250,7 @@ class SessionStore: ObservableObject {
         var orgs = [Organization]()
         
         for organizer in organizers {
-            if organizer.type == "club" {
+            if organizer.type == GROUP_TYPE.Club {
                 if let club = await fetchClub(id: organizer.id) {
                     clubs.append(club)
                 }

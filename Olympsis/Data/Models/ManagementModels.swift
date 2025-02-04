@@ -77,7 +77,7 @@ struct EventReportDao: Codable {
     }
 }
 
-struct EventReport: Codable, Identifiable {
+struct EventReport: Decodable, Identifiable {
     var id: String
     var user: UserSnippet?
     var type: String
@@ -121,7 +121,7 @@ struct PostReportDao: Codable {
     }
 }
 
-struct PostReport: Codable, Identifiable {
+struct PostReport: Decodable, Identifiable {
     var id: String
     var post: Post?
     var type: String

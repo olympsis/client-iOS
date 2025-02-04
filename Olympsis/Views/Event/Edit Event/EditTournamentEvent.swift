@@ -75,18 +75,18 @@ struct EditTournamentEvent: View {
             imageURL: eventImageURL, 
             title: eventTitle,
             body: eventBody,
-            level: eventLevel, 
+            level: eventSkilLevel,
             startTime: Int(eventStartTime.timeIntervalSince1970),
             stopTime: stopTime,
             minParticipants: Int(eventMinParticipants),
             maxParticipants: Int(eventMaxParticipants),
-            visibility: eventVisibility.rawValue,
+            visibility: eventVisibility,
             externalLink: eventExternalLink
         )
         let resp = await session.eventObserver.updateEvent(id: event.id ?? "", dao: dao)
         if resp {
-            event.visibility = eventVisibility.rawValue
-            event.level = eventSkilLevel.toInt()
+            event.visibility = eventVisibility
+            event.level = eventSkilLevel
             event.title = eventTitle
             event.body = eventBody
             event.externalLink = eventExternalLink
@@ -336,37 +336,14 @@ struct EditTournamentEvent: View {
                 }
                 .onAppear {
                     guard let title = event.title,
-                        let body = event.body,
-                          let visibility = event.visibility,
-                          let level = event.level else {
+                        let body = event.body else {
                         return
                     }
                     eventTitle = title
                     eventBody = body
-                    
-                    switch visibility {
-                    case "public":
-                        eventVisibility = .Public
-                    case "private":
-                        eventVisibility = .Private
-                    case "group":
-                        eventVisibility = .Group
-                    default:
-                        eventVisibility = .Public
-                    }
-                    
-                    switch level {
-                    case 0:
-                        eventSkilLevel = .All
-                    case 1:
-                        eventSkilLevel = .Beginner
-                    case 2:
-                        eventSkilLevel = .Amateur
-                    case 3:
-                        eventSkilLevel = .Expert
-                    default:
-                        eventSkilLevel = .All
-                    }
+
+                    eventVisibility = event.visibility
+                    eventSkilLevel = event.level
                     
                     guard let startTime = event.startTime else {
                         return

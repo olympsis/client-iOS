@@ -150,7 +150,7 @@ struct CheckIn: Decodable {
     let invitations: [Invitation]?
 }
 
-struct LocationResponse: Codable {
+struct LocationResponse: Decodable {
     let venues: [Venue]?
     let events: [Event]?
 }

@@ -81,34 +81,34 @@ let GROUP_SELECTIONS = [
 let EVENTS = [
     Event(
         id: UUID().uuidString,
-        type: "tournament",
+        type: EVENT_TYPES.Tournament,
         poster: USER_SNIPPETS[0],
-        organizers: [Organizer(type: GROUP_TYPE.Club.rawValue, id: CLUBS[0].id)],
+        organizers: [Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)],
         venues: VENUE_DESCRIPTORS,
         imageURL: "event-images/soccer-0.jpg",
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!", 
         sport: "soccer",
-        level: 0,
+        level: EVENT_SKILL_LEVELS.All,
         startTime: 1720696495,
         actualStartTime: 1699806600,
         stopTime: 1699806615,
         actualStopTime: 0,
         maxParticipants: 10, 
         participants: [
-            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
-        ], 
-        visibility: "public",
+            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
+        ],
+        visibility: EVENT_VISIBILITY_TYPES.Public,
         createdAt: 1639364780,
         isSensitive: false
     ),
     Event(
         id: UUID().uuidString,
-        type: "pick-up",
+        type: EVENT_TYPES.PickUp,
         poster: USER_SNIPPETS[0],
         organizers: [
             Organizer(
-                type: GROUP_TYPE.Club.rawValue, 
+                type: GROUP_TYPE.Club, 
                 id: CLUBS[0].id
             )
         ],
@@ -117,16 +117,16 @@ let EVENTS = [
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!",
         sport: "soccer",
-        level: 0,
+        level: EVENT_SKILL_LEVELS.All,
         startTime: 1699806600,
         actualStartTime: 1699806600,
         stopTime: 1699806615,
         actualStopTime: 0,
         maxParticipants: 10,
         participants: [
-            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: "yes", createdAt: 1639364780)
+            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
         ],
-        visibility: "public",
+        visibility: EVENT_VISIBILITY_TYPES.Public,
         createdAt: 1639364780,
         isSensitive: true
     ),
