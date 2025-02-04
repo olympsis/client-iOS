@@ -76,22 +76,22 @@ struct MapView: View {
                             .bold()
                         
                         Spacer()
-                        LocationButton(.currentLocation){
-                            withAnimation {
-                                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
-                            }
-                        }
-                        .clipShape(Circle())
-                        .labelStyle(.iconOnly)
-                        .symbolVariant(.fill)
-                        .foregroundColor(.white)
-                        .tint(Color("color-secnd"))
-                        .frame(width: 40, height: 40)
+//                        LocationButton(.currentLocation){
+//                            withAnimation {
+//                                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
+//                            }
+//                        }
+//                        .clipShape(Circle())
+//                        .labelStyle(.iconOnly)
+//                        .symbolVariant(.fill)
+//                        .foregroundColor(.white)
+//                        .tint(Color("color-secnd"))
+//                        .frame(width: 40, height: 40)
                         
                         Button(action:{ self.router.navigate(to: .settings) }){
                             ZStack {
                                 Circle()
-                                    .tint(Color("color-secnd"))
+                                    .tint(Color.colorPrime)
                                     .frame(width: 41, height: 41)
                                 Image(systemName: "slider.vertical.3")
                                     .imageScale(.large)
@@ -105,7 +105,7 @@ struct MapView: View {
                         Button(action:{ self.showNewEvent = true }){
                             ZStack {
                                 Circle()
-                                    .tint(Color("color-secnd"))
+                                    .tint(Color.colorPrime)
                                 Image(systemName: "plus")
                                     .imageScale(.large)
                                     .symbolRenderingMode(.palette)
@@ -115,7 +115,7 @@ struct MapView: View {
                         
                         Button(action:{ self.showBottomSheet = true }){
                             Circle()
-                                .tint(Color("color-secnd"))
+                                .tint(Color.colorPrime)
                                 .overlay {
                                     Image(systemName: "line.3.horizontal.decrease")
                                         .imageScale(.large)

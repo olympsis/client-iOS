@@ -105,7 +105,7 @@ struct GroupFeed: View {
                                             .lineLimit(1)
                                         Image(systemName: "chevron.down")
                                     }
-                                }
+                                }.foregroundStyle(Color.foreground)
                             }.fullScreenCover(isPresented: $showEvents, content: {
                                 EventsList(events: groupEvents)
                             })

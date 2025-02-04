@@ -32,10 +32,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .home ? "house.fill" : "house")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                         Text("HOME")
                             .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
                 
@@ -51,10 +51,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .club ? "person.3.fill" : "person.3")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                         Text("GROUPS")
                             .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
                 Button() {
@@ -69,10 +69,10 @@ struct TabBar: View {
                         Image(systemName: currentTab == .map ? "map.fill" : "map")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                         Text("EVENTS")
                             .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
 //                Button() {
@@ -101,7 +101,7 @@ struct TabBar: View {
                         
                         Text("PROFILE")
                             .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
             }
