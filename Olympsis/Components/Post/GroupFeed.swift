@@ -92,7 +92,7 @@ struct GroupFeed: View {
                     }
                 }
             case .pending, .success:
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     if groupEvents.count > 0  {
                         VStack{
                             HStack {

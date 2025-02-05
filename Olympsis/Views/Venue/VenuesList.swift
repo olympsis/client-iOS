@@ -78,6 +78,14 @@ struct VenuesList: View {
                 EmptyView()
             })
         }
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        dismiss()
+                    }
+                }
+        )
     }
 }
 

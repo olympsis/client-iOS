@@ -248,6 +248,14 @@ struct ClubMenu: View {
             }
             .background(Color("background-color/primary"))
         }
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        dismiss()
+                    }
+                }
+        )
     }
 }
 

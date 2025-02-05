@@ -44,6 +44,14 @@ struct NotificationsView: View {
             }
         }
         .toolbarRole(.navigationStack)
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        router.navigateBack()
+                    }
+                }
+        )
         .task {
             notifications = session.invitations.map({ i in
                 NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
