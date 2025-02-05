@@ -68,19 +68,21 @@ struct ClubMenu: View {
                     } else {
                         HStack {
                             Image(systemName: "globe.americas.fill")
-                                .foregroundStyle(Color("color-prime"))
                             Text("Public group")
                                 .font(.callout)
                             Spacer()
-                        }.frame(height: 20)
+                        }
+                        .frame(height: 20)
+                        .foregroundStyle(Color.foreground)
                     }
                     
                     HStack {
-                        Text("\(club.members.count)").foregroundColor(Color("color-prime")) +
+                        Text("\(club.members.count)") +
                         Text(" members")
                             .font(.callout)
                         Spacer()
                     }
+                    .foregroundStyle(Color.foreground)
                     
                 }.padding(.vertical)
                     .padding(.horizontal)

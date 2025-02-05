@@ -46,10 +46,12 @@ struct GroupSelector: View {
             Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color.colorPrime)
                     HStack {
                         Image(systemName: "plus.circle.fill")
                         Text("Create a new Group")
-                    }.foregroundStyle(.white)
+                    }
+                    .foregroundStyle(Color.white)
                 }
             }
             .frame(height: 50)
