@@ -64,11 +64,11 @@ struct ViewContainer: View {
                     .tag(Tab.profile)
                     .toolbar(.hidden, for: .tabBar)
             }
-            .toast(
-                isPresented: $toastManager.isPresented,
-                position: $toastManager.toastPosition,
-                content: $toastManager.toastContent
-            )
+//            .toast(
+//                isPresented: $toastManager.isPresented,
+//                position: $toastManager.toastPosition,
+//                content: $toastManager.toastContent
+//            )
             .padding(.bottom, -10)
             
             TabBar(
