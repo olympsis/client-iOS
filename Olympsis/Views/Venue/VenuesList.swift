@@ -61,7 +61,6 @@ struct VenuesList: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
                     }
                 }
                 if !hasLocation {

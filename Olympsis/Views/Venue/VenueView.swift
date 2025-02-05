@@ -47,8 +47,8 @@ struct VenueView: View {
                         Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
                             Image(systemName: "xmark.circle.fill")
                                 .imageScale(.large)
-                                .foregroundColor(Color("color-prime"))
-                        }.clipShape(Circle())
+                        }
+                        .clipShape(Circle())
                     }.padding(.horizontal)
                     
                     Text(fieldLocation)
