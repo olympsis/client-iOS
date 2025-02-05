@@ -22,11 +22,7 @@ struct ViewContainer: View {
     @StateObject private var profileRouter = ProfileRouter()
     
     @StateObject private var toastManager = ToastManager()
-    @EnvironmentObject private var session: SessionStore
-    
-    init() {
-//        UITabBar.appearance().isHidden = true
-    }
+    @Environment(SessionStore.self) private var session
 
     func handleRoute(_ route: ROUTES) {
         switch route {
@@ -139,5 +135,5 @@ struct ViewContainer: View {
 
 #Preview {
     ViewContainer()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

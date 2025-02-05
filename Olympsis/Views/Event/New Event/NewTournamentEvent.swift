@@ -31,7 +31,7 @@ struct NewTournamentEvent: View {
     @FocusState private var descriptionFocus: Bool
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var manager: NewEventManager
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
@@ -202,7 +202,7 @@ struct NewTournamentEvent: View {
                         .padding(.horizontal)
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
                             EventOrganizersPickerView(selectedOrganizers: $manager.organizers)
-                                .environmentObject(SessionStore())
+                                .environment(SessionStore())
                         }
                         
                         // MARK: - Title
@@ -257,7 +257,7 @@ struct NewTournamentEvent: View {
                             Text("Location(s) of the event")
                                 .font(.subheadline)
                                 .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
-                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environmentObject(session)) {
+                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environment(session)) {
                                 if hasSelectedVenue {
                                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
                                         ForEach(manager.selectedVenueDescriptors, id: \.self) {
@@ -282,7 +282,7 @@ struct NewTournamentEvent: View {
                         .fullScreenCover(isPresented: $showFieldPicker) {
                             EventVenuePickerView()
                                 .environmentObject(manager)
-                                .environmentObject(session)
+                                .environment(session)
                         }
                         .id(3)
                         
@@ -469,6 +469,6 @@ struct NewTournamentEvent: View {
 
 #Preview {
     NewTournamentEvent()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(NewEventManager())
 }

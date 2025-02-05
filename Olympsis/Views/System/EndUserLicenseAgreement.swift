@@ -13,7 +13,7 @@ struct EndUserLicenseAgreement: View {
     @State private var status: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     func AcceptEULA() async {
         status = .loading
@@ -191,5 +191,5 @@ struct EndUserLicenseAgreement: View {
 
 #Preview {
     EndUserLicenseAgreement()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

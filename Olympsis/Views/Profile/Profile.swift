@@ -10,7 +10,7 @@ import SwiftUI
 struct Profile: View {
 
     @State private var showMenu = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var username: String {
         guard let user = session.user,
@@ -29,7 +29,7 @@ struct Profile: View {
                     ProfileModel()
                         .padding(.top, 20)
                         .padding(.horizontal)
-                        .environmentObject(session)
+                        .environment(session)
                     
                     // MARK: - Profile Button
                     EditProfileButton()
@@ -66,5 +66,5 @@ struct Profile: View {
 
 #Preview {
     Profile()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -15,7 +15,7 @@ struct MemberBlockingConfirmation: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var member: Member
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "member_blocking_confirmation_view")
     
@@ -159,6 +159,6 @@ struct MemberBlockingConfirmation: View {
 
 #Preview {
     MemberBlockingConfirmation()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(CLUBS[0].members.first!)
 }

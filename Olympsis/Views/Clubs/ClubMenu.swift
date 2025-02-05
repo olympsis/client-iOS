@@ -31,7 +31,7 @@ struct ClubMenu: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var club: Club
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     // user's role
     var role: String {
@@ -90,7 +90,7 @@ struct ClubMenu: View {
                         NavigationLink {
                             ClubEditor()
                                 .environmentObject(club)
-                                .environmentObject(session)
+                                .environment(session)
                         } label: {
                             MenuLabel(icon: Image(systemName: "pencil"), text: "Edit Club")
                         }
@@ -252,5 +252,5 @@ struct ClubMenu: View {
 #Preview("Club Menu") {
     ClubMenu()
         .environmentObject(CLUBS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

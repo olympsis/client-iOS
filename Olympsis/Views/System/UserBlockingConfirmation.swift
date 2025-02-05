@@ -16,7 +16,7 @@ struct UserBlockingConfirmation: View {
     
     @State private var status: LOADING_STATE = .pending
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "user_blocking_confirmation_view")
     

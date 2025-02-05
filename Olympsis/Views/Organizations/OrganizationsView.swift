@@ -14,7 +14,7 @@ struct OrganizationsView: View {
     @State private var text: String = ""
     @State var organizations = [Organization]()
     @State private var showCancel: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     var organizationID: String {
@@ -137,5 +137,5 @@ struct OrganizationsView: View {
 
 #Preview {
     OrganizationsView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

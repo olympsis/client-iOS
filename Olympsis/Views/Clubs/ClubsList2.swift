@@ -29,6 +29,6 @@ struct ClubsList2: View {
 struct ClubsList2_Previews: PreviewProvider {
     static var previews: some View {
         ClubsList2()
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

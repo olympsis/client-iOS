@@ -11,7 +11,7 @@ struct OrgApplicationListItem: View {
     
     @State var application: OrganizationApplication
     @Binding var applications: [OrganizationApplication]
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var clubName: String {
         guard let club = application.club else {
@@ -176,5 +176,5 @@ struct OrgApplicationListItem: View {
 
 #Preview {
     OrgApplicationListItem(application: ORGANIZATION_APPLICATIONS[0], applications: .constant(ORGANIZATION_APPLICATIONS))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

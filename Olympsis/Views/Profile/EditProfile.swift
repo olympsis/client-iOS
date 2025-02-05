@@ -48,7 +48,7 @@ struct EditProfile: View {
     private var userObserver: UserObserver = UserObserver()
     private var uploadObserver: UploadObserver = UploadObserver()
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     @Environment(\.dismiss) private var dismiss
     
@@ -396,5 +396,5 @@ struct EditProfile: View {
 
 #Preview {
     EditProfile()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

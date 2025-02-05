@@ -99,5 +99,5 @@ struct EventSmallListItem: View {
 
 #Preview {
     EventSmallListItem(event: EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

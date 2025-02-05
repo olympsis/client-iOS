@@ -18,7 +18,7 @@ struct ClubView: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var club: Club
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     init(club: Club) {
         self._club = StateObject(wrappedValue: club)
@@ -94,7 +94,7 @@ struct ClubView: View {
                     NavigationLink {
                         ClubMenu()
                             .environmentObject(club)
-                            .environmentObject(session)
+                            .environment(session)
                     } label: {
                         if let logo = club.logo,
                            let url = generateImageURL(logo) {
@@ -121,6 +121,6 @@ struct ClubView: View {
 #Preview {
     NavigationStack {
         ClubView(club: CLUBS[0])
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

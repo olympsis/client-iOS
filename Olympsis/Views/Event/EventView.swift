@@ -26,7 +26,7 @@ struct EventView: View {
     @State private var organizersState: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_view")
     
@@ -296,5 +296,5 @@ struct EventView: View {
 
 #Preview {
     EventView(event: EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

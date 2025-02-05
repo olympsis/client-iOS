@@ -14,7 +14,7 @@ struct RoomListItem: View {
     @State var observer: ChatObserver
     @State private var joined = false
     @State private var state: LOADING_STATE = .pending
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var isJoined: Bool {
         guard let user = session.user,
@@ -79,5 +79,5 @@ struct RoomListItem: View {
 
 #Preview {
     RoomListItem(room: ROOMS[0], rooms: .constant([Room]()), observer: ChatObserver())
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

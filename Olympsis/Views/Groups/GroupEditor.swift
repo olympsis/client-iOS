@@ -13,7 +13,7 @@ struct GroupEditor: View {
     @StateObject private var viewModel = GroupEditorViewModel()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         ScrollView {
@@ -278,6 +278,6 @@ struct GroupEditor: View {
     session.selectedGroup = GroupSelection(type: .Club, club: CLUBS[1])
     return NavigationStack {
         GroupEditor()
-            .environmentObject(session)
+            .environment(session)
     }
 }

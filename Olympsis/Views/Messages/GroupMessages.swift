@@ -22,7 +22,7 @@ struct GroupMessages: View {
     @StateObject private var chatObserver = ChatObserver()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     
     private var joinedRooms: [Room] {
@@ -281,5 +281,5 @@ struct GroupMessages: View {
 
 #Preview {
     GroupMessages(rooms: ROOMS)
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -16,7 +16,7 @@ struct AsyncEventView: View {
     @State private var state: VIEW_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "async_event_view")
     
@@ -101,5 +101,5 @@ struct AsyncEventView: View {
 
 #Preview {
     AsyncEventView(eventId: "")
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

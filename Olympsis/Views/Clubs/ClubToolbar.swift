@@ -15,7 +15,7 @@ struct ClubToolbar: ToolbarContent {
     @Binding var showNewPost: Bool
     @Binding var showMessages: Bool
     @Binding var status: LOADING_STATE
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some ToolbarContent {
         if status == .loading {

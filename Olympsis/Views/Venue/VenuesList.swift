@@ -11,7 +11,7 @@ struct VenuesList: View {
     
     @State var venues:[Venue]
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     @State private var showRequestLocation: Bool = false
     
@@ -84,6 +84,6 @@ struct VenuesList: View {
 struct FieldsList_Previews: PreviewProvider {
     static var previews: some View {
         VenuesList(venues: [Venue]())
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

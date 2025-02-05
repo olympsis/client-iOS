@@ -15,7 +15,7 @@ struct TabBar: View {
     @StateObject public var eventRouter = EventRouter()
     @StateObject public var profileRouter = ProfileRouter()
     
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         GeometryReader { proxy in
@@ -96,7 +96,7 @@ struct TabBar: View {
                 } label: {
                     VStack {
                         TabBarProfileLabel(currentTab: $currentTab)
-                            .environmentObject(session)
+                            .environment(session)
                             .frame(maxWidth: .infinity)
                         
                         Text("PROFILE")
@@ -117,6 +117,6 @@ struct TabBar: View {
 #Preview {
     return TabBar(currentTab: .constant(.home))
         .background(Color.dark)
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         
 }

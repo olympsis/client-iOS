@@ -11,7 +11,7 @@ import SwiftUI
 struct GroupView: View {
     
     @StateObject public var router: GroupRouter
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
     
@@ -62,5 +62,5 @@ struct GroupView: View {
 
 #Preview {
     GroupView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

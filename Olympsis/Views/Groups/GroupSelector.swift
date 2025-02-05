@@ -13,7 +13,7 @@ struct GroupSelector: View {
     @State private var selection: UUID?
     @State private var showNewGroup = false
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         VStack {
@@ -87,5 +87,5 @@ struct GroupSelector: View {
     let session = SessionStore()
     session.groups = GROUP_SELECTIONS
     return GroupSelector()
-        .environmentObject(session)
+        .environment(session)
 }

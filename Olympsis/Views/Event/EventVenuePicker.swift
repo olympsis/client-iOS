@@ -23,7 +23,7 @@ struct EventVenuePicker: View {
     @StateObject private var searchModel = VenueSearchViewModel()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var manager: NewEventManager
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
@@ -212,6 +212,6 @@ struct EventVenuePicker: View {
 
 #Preview {
     EventVenuePicker()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(NewEventManager())
 }

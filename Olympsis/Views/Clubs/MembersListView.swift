@@ -59,6 +59,6 @@ struct MembersListView_Previews: PreviewProvider {
     static var previews: some View {
         MembersListView()
             .environmentObject(CLUBS[0])
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

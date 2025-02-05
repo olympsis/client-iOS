@@ -12,7 +12,7 @@ struct TabBarProfileLabel: View {
     
     @Binding var currentTab: Tab
     @State private var imageFailed: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var imageURL: URL? {
         guard let user = session.user,
@@ -78,6 +78,6 @@ struct TabBarProfileLabel: View {
             .foregroundStyle(Color.dark)
             .frame(width: 40, height: 40)
         TabBarProfileLabel(currentTab: .constant(.home))
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

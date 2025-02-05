@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NextEvents: View {
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var event: Event? {
         guard let user = session.user,
@@ -35,5 +35,5 @@ struct NextEvents: View {
 
 #Preview {
     NextEvents()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

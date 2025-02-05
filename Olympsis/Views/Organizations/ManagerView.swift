@@ -11,7 +11,7 @@ struct ManagerView: View {
     
     @State var member: Member
     @State private var showMenu = false
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var username: String {
         guard let data = member.user, let username = data.username else {

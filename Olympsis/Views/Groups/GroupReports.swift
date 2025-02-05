@@ -17,7 +17,7 @@ struct GroupReports: View {
     @State private var eventReports: [EventReport] = []
     @State private var memberReports: [MemberReport] = []
     @StateObject private var manager: ManagementObserver = ManagementObserver()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     private var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "group_reports_view")
@@ -263,5 +263,5 @@ struct GroupReports: View {
 
 #Preview {
     GroupReports()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

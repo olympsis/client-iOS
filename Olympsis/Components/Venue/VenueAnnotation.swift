@@ -11,7 +11,7 @@ import Kingfisher
 struct VenueAnnotation: View {
     
     var venue: Venue
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var imageURL: URL? {
         return generateImageURL(venue.images[0])
@@ -69,5 +69,5 @@ struct VenueAnnotation: View {
 
 #Preview {
     VenueAnnotation(venue: FIELDS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

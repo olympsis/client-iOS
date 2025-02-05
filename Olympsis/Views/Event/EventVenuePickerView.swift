@@ -12,7 +12,7 @@ struct EventVenuePickerView: View {
     @State private var search: String = ""
     @State private var showPicker: Bool = false
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var manager: NewEventManager
     
     var body: some View {
@@ -33,8 +33,8 @@ struct EventVenuePickerView: View {
             }
         }.sheet(isPresented: $showPicker, content: {
             EventVenuePicker()
+                .environment(session)
                 .environmentObject(manager)
-                .environmentObject(session)
         })
         .navigationTitle("Pick a location")
         .navigationBarTitleDisplayMode(.inline)
@@ -43,6 +43,6 @@ struct EventVenuePickerView: View {
 
 #Preview {
     EventVenuePickerView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(NewEventManager())
 }

@@ -16,7 +16,7 @@ struct PostComments: View {
     @State private var status: LOADING_STATE = .pending
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     func canDelete(_ comment: Comment) -> Bool {
@@ -180,5 +180,5 @@ struct PostComments: View {
 #Preview("Post Comments") {
     PostComments(club: CLUBS[0])
         .environmentObject(POSTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

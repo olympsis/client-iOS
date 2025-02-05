@@ -20,7 +20,7 @@ struct OrganizationView: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var org: Organization
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     init(org: Organization) {
         self._org = StateObject(wrappedValue: org)
@@ -98,7 +98,7 @@ struct OrganizationView: View {
                         NavigationLink {
                             OrgMenu()
                                 .environmentObject(org)
-                                .environmentObject(session)
+                                .environment(session)
                         } label: {
                             if let logo = org.logo,
                                let url = generateImageURL(logo) {
@@ -125,6 +125,6 @@ struct OrganizationView: View {
 
 #Preview {
     OrganizationView(org: ORGANIZATIONS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
 

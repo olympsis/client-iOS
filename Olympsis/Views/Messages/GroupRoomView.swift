@@ -18,7 +18,7 @@ struct GroupRoomView: View {
     @State private var hasDeleted = false
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "room_view")
@@ -171,5 +171,5 @@ struct GroupRoomView: View {
 
 #Preview {
     GroupRoomView(room: ROOMS[0], rooms: .constant(ROOMS))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -15,7 +15,7 @@ struct OrgManagerInvite: View {
     @State private var log = Logger(subsystem: "com.olympsis.client", category: "org_manager_invite_view")
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         NavigationStack {
@@ -56,5 +56,5 @@ struct OrgManagerInvite: View {
 
 #Preview {
     OrgManagerInvite()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

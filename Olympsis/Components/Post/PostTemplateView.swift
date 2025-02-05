@@ -14,7 +14,7 @@ struct PostTemplateView: View {
     @State private var showComments: Bool = false
     
     @StateObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     
     init() {
@@ -42,5 +42,5 @@ struct PostTemplateView: View {
 
 #Preview {
     PostTemplateView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

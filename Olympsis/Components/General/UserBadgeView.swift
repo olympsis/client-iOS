@@ -13,7 +13,7 @@ struct UserBadgeView: View {
     var size: BADGE_SIZE
     var imageURL: URL?
     @State private var imageFailed: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         switch size {
@@ -116,5 +116,5 @@ struct UserBadgeView: View {
 
 #Preview {
     UserBadgeView(size: .small)
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

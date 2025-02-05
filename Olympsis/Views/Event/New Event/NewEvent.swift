@@ -14,7 +14,7 @@ struct NewEvent: View {
     @State private var selection: Int = 0
     @State private var showPickUp: Bool = false
     @State private var showTournament: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -102,5 +102,5 @@ struct NewEvent: View {
 
 #Preview {
     NewEvent(manager: NewEventManager())
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

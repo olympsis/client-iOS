@@ -18,7 +18,7 @@ struct ClubMemberMenu: View {
     @State private var showBlocking: Bool = false
     
     @EnvironmentObject var member: Member
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "club_member_menu_view")
     
@@ -128,7 +128,7 @@ struct ClubMemberMenu: View {
 struct ClubMemberMenu_Previews: PreviewProvider {
     static var previews: some View {
         ClubMemberMenu(club: CLUBS[0], role: "member")
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
             .environmentObject(CLUBS[0].members.first!)
     }
 }

@@ -14,7 +14,7 @@ struct OrgListItem: View {
     @State private var status: LOADING_STATE = .pending
     @State private var showDetails: Bool = false
     @Binding var showToast: Bool
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var name: String {
         guard let name = organization.name else {
@@ -136,5 +136,5 @@ struct OrgListItem: View {
 
 #Preview {
     OrgListItem(organization: ORGANIZATIONS[1], showToast: .constant(false))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

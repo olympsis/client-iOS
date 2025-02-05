@@ -29,7 +29,7 @@ struct OrgMenu: View {
     @StateObject private var postObserver = PostObserver()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var organization: Organization
     
     var role: String {
@@ -221,6 +221,6 @@ struct OrgMenu: View {
     NavigationStack {
         OrgMenu()
             .environmentObject(ORGANIZATIONS[0])
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

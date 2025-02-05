@@ -82,5 +82,5 @@ struct NewGroup: View {
 
 #Preview {
     NewGroup()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

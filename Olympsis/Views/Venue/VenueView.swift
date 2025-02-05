@@ -14,7 +14,7 @@ struct VenueView: View {
     
     @State var venue: Venue
     @State private var status: LOADING_STATE = .loading
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) private var presentationMode
     
     var fieldLocation: String {
@@ -128,7 +128,7 @@ struct VenueActionButtons: View {
     @State private var showReport: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showVisibility: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var joinGroupTip = JoinGroupTip()
     
@@ -295,7 +295,7 @@ struct VenueEventsView: View {
     
     @Binding var venue: Venue
     @State private var status: LOADING_STATE = .pending
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var fieldEvents: [Event] {
         return session.events.filter({ $0.venues?.contains(where: { $0.id == venue.id }) ?? false })
@@ -395,6 +395,6 @@ struct VenueEventsView: View {
 
 struct FieldViewExt_Previews: PreviewProvider {
     static var previews: some View {
-        VenueView(venue: FIELDS[0]).environmentObject(SessionStore())
+        VenueView(venue: FIELDS[0]).environment(SessionStore())
     }
 }

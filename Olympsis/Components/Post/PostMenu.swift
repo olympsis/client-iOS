@@ -18,7 +18,7 @@ struct PostMenu: View {
     @StateObject private var uploadObserver = UploadObserver()
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
@@ -235,6 +235,6 @@ struct PostMenu: View {
 #Preview("Post Menu") {
     PostMenu(pinned: .constant(false))
         .environmentObject(POSTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

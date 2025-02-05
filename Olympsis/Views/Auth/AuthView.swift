@@ -18,7 +18,7 @@ struct AuthView: View {
     @StateObject private var observer = AuthObserver()
     @StateObject private var cacheService = CacheService()
     
-    @EnvironmentObject var sessionStore: SessionStore
+    @Environment(SessionStore.self) var sessionStore
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     var log = Logger(subsystem: "com.olympsis.client", category: "auth_view")

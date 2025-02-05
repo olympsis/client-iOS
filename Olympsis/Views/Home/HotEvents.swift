@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HotEvents: View {
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         if (session.hotEvents.count > 0) {
@@ -33,5 +33,5 @@ struct HotEvents: View {
 
 #Preview {
     HotEvents()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -15,7 +15,7 @@ struct NewRoom: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var chatObserver = ChatObserver()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     func CreateRoom() async {

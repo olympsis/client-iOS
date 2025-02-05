@@ -13,12 +13,13 @@ import FirebaseAuth
 import CoreLocation
 
 /// App session data, fetched every session, stored in memory until app is closed
-class SessionStore: ObservableObject {
+@Observable
+class SessionStore {
     
     /// Global variable to keep track of the first lcation recieved when the app is opened.
     /// We have to wait on the gps system to give us a location. Sometimes this may take longer than the startup sequence.
     /// So we load in data from a fall back location until we get the location from the gps module.
-    @Published var locationRecieved: Bool = false {
+    var locationRecieved: Bool = false {
         didSet {
             Task {
                 guard let location = locationManager.location else {
@@ -31,20 +32,20 @@ class SessionStore: ObservableObject {
     
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
-    @Published var state: LOADING_STATE = .pending
+    var state: LOADING_STATE = .pending
     
-    @Published var clubsState: LOADING_STATE = .pending
+    var clubsState: LOADING_STATE = .pending
     
-    @Published var user: UserData?              // User data Cache
-    @Published var clubs = [Club]()             // Clubs Cache
-    @Published var orgs = [Organization]()      // Organizations Cache
-    @Published var events = [Event]()           // Events Cache
-    @Published var venues = [Venue]()           // Venues Cache
-    @Published var hotEvents = [Event]()        // Hot Events Cache
-    @Published var invitations = [Invitation]() // Invitations Cache
+    var user: UserData?              // User data Cache
+    var clubs = [Club]()             // Clubs Cache
+    var orgs = [Organization]()      // Organizations Cache
+    var events = [Event]()           // Events Cache
+    var venues = [Venue]()           // Venues Cache
+    var hotEvents = [Event]()        // Hot Events Cache
+    var invitations = [Invitation]() // Invitations Cache
     
     // groups & posts
-    @Published var selectedGroup: GroupSelection? {
+    var selectedGroup: GroupSelection? {
         didSet {
             guard let selectedGroup else {
                 return
@@ -57,20 +58,20 @@ class SessionStore: ObservableObject {
             }
         }
     }
-    @Published var groups: [GroupSelection] = [GroupSelection]()
+    var groups: [GroupSelection] = [GroupSelection]()
     
     // Observers
-    @ObservedObject var authObserver = AuthObserver()
-    @ObservedObject var feedObserver = FeedObserver()
-    @ObservedObject var cacheService = CacheService()
-    @ObservedObject var userObserver = UserObserver()
-    @ObservedObject var clubObserver = ClubObserver()
-    @ObservedObject var orgObserver = OrgObserver()
-    @ObservedObject var postObserver = PostObserver()
-    @ObservedObject var fieldObserver = FieldObserver()
-    @ObservedObject var eventObserver = EventObserver()
-    @ObservedObject var locationManager = LocationManager()
-    @ObservedObject var notificationsManager = NotificationManager()
+    var authObserver = AuthObserver()
+    var feedObserver = FeedObserver()
+    var cacheService = CacheService()
+    var userObserver = UserObserver()
+    var clubObserver = ClubObserver()
+    var orgObserver = OrgObserver()
+    var postObserver = PostObserver()
+    var fieldObserver = FieldObserver()
+    var eventObserver = EventObserver()
+    var locationManager = LocationManager()
+    var notificationsManager = NotificationManager()
     
     /**
      App lifetime data
@@ -78,21 +79,31 @@ class SessionStore: ObservableObject {
      */
     
     /// App mode to keep track on wether the user is paid/free
+    @ObservationIgnored
     @AppStorage("app_mode") var appMode: APP_MODE = .free
     
     /// App state to keep track of normal/developer mode
+    @ObservationIgnored
     @AppStorage("app_state") var appState: APP_STATE = .normal
     
     /// Keeps track of the user's search radius for venues and events
+    @ObservationIgnored
     @AppStorage("searchRadius") var radius: Double?
     
+    @ObservationIgnored
     @AppStorage("selected_group_id") var selectedGroupID: String?
     
+    @ObservationIgnored
     @AppStorage("deviceToken") private var _token: String?
+    
+    @ObservationIgnored
     @AppStorage("auth_type") private var authType: USER_STATUS?
+    
+    @ObservationIgnored
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
 
     
+    private let secureStore = SecureStore()
     private var isRegisterComplete: Bool {
         
         let user = cacheService.fetchUser()
@@ -103,7 +114,6 @@ class SessionStore: ObservableObject {
         }
         return true
     }
-    private let secureStore = SecureStore()
     private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     init() {
@@ -111,20 +121,25 @@ class SessionStore: ObservableObject {
         notificationCenter.delegate = notificationsManager
         authStatus = .unknown
         user = cacheService.fetchUser()
-        
-        Auth.auth().addStateDidChangeListener { auth, usr in
-            if (usr != nil) {
-                guard self.authType != nil && self.authType == .new else {
-                    guard self.isRegisterComplete else {
-                        self.authStatus = .unauthenticated
+    }
+    
+    func listenToAuthStateChanges() {
+        Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
+            guard let self = self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if (usr != nil) {
+                    guard self.authType != nil && self.authType == .new else {
+                        guard self.isRegisterComplete else {
+                            self.authStatus = .unauthenticated
+                            return
+                        }
+                        self.authStatus = .authenticated
                         return
                     }
-                    self.authStatus = .authenticated
-                    return
+                    self.authStatus = .unauthenticated
+                } else {
+                    self.authStatus = .unauthenticated
                 }
-                self.authStatus = .unauthenticated
-            } else {
-                self.authStatus = .unauthenticated
             }
         }
     }
@@ -150,7 +165,6 @@ class SessionStore: ObservableObject {
         }
     }
     
-    @MainActor
     func CheckIn() async {
         
         clubs = []
@@ -462,7 +476,7 @@ class SessionStore: ObservableObject {
     func deleteAccount() async -> Bool {
         do {
             guard let user = Auth.auth().currentUser else { return false }
-            let signInWithApple = SignInWithApple()
+            let signInWithApple = await SignInWithApple()
             let appleIDCredential = try await signInWithApple()
             guard let appleIDToken = appleIDCredential.identityToken else {
                 log.error("Unable to fetdch identify token.")

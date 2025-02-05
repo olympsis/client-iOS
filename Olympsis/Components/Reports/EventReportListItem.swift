@@ -83,5 +83,5 @@ struct EventReportListItem: View {
 
 #Preview {
     EventReportListItem(report: EVENT_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

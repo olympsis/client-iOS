@@ -13,7 +13,7 @@ struct EventDetailActionButton: View {
     @Binding var showMenu: Bool
     @State private var state: LOADING_STATE = .pending
     @Environment(\.isPresented) var isPresented
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     func startEvent() async {
         let now = Int(Date.now.timeIntervalSince1970)

@@ -20,7 +20,7 @@ struct GroupToolbar: ToolbarContent {
     @Binding var showMessages: Bool
     @Binding var groupState: LOADING_STATE
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var acceptedEULA: Bool {
         guard let user = session.user,
@@ -259,6 +259,6 @@ struct GroupToolbar: ToolbarContent {
         VStack {}.toolbar {
             GroupToolbar(showEULA: .constant(false), showMenu: .constant(false), showNewPost: .constant(false), showNewEvent: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
         }
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
     }
 }

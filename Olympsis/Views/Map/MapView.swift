@@ -26,7 +26,7 @@ struct MapView: View {
     @State private var selectedEvent: Event?
     @State private var cameraPosition: MapCameraPosition = .automatic
     
-    @EnvironmentObject private var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var visibleRegion: MKCoordinateRegion?
     
@@ -54,7 +54,7 @@ struct MapView: View {
                 ForEach(session.venues) { venue in
                     Annotation(venue.name, coordinate: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), anchor: .bottom) {
                         VenueAnnotation(venue: venue)
-                            .environmentObject(session)
+                            .environment(session)
                             .onTapGesture {
                                 withAnimation(.easeInOut) {
                                     selectedVenue = venue
@@ -161,7 +161,7 @@ struct MapView: View {
             NewEvent(manager: NewEventManager())
         }
         .sheet(isPresented: $showBottomSheet) {
-            EventsModalView(events: $session.events)
+            EventsModalView(events: session.events)
                 .presentationDetents([.height(250), .large])
         }
         .alert(isPresented: $showError){
@@ -178,5 +178,5 @@ struct MapView: View {
 #Preview {
     let session = SessionStore()
     return MapView()
-        .environmentObject(session)
+        .environment(session)
 }

@@ -18,7 +18,7 @@ struct EventMenu: View {
     @State private var showNotification: Bool = false
     
     @EnvironmentObject private var event: Event
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     func deleteEvent() async {
@@ -171,5 +171,5 @@ struct EventMenu: View {
 #Preview {
     EventMenu(clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
         .environmentObject(EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

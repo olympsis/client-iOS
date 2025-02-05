@@ -21,7 +21,7 @@ struct EventActionButtons: View {
     
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var event: Event
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
@@ -280,5 +280,5 @@ struct EventActionButtons: View {
 #Preview {
     EventActionButtons(venues: .constant(FIELDS), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
         .environmentObject(EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

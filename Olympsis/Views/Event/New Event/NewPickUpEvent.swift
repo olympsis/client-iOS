@@ -28,7 +28,7 @@ struct NewPickUpEvent: View {
     @FocusState private var descriptionFocus: Bool
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var manager: NewEventManager
     
     private var uploadObserver = UploadObserver()
@@ -190,7 +190,7 @@ struct NewPickUpEvent: View {
                         .fullScreenCover(isPresented: $showOrganizersPicker) {
                             EventOrganizersPickerView(
                                 selectedOrganizers: $manager.organizers
-                            ).environmentObject(session)
+                            ).environment(session)
                         }
                         
                         // MARK: - Title
@@ -248,7 +248,7 @@ struct NewPickUpEvent: View {
                             Text("Location(s) of the event")
                                 .font(.subheadline)
                                 .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
-                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environmentObject(session)) {
+                            NavigationLink(destination: EventVenuePickerView().environmentObject(manager).environment(session)) {
                                 if hasSelectedVenue {
                                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
                                         ForEach(manager.selectedVenueDescriptors, id: \.self) {
@@ -273,7 +273,7 @@ struct NewPickUpEvent: View {
                         .fullScreenCover(isPresented: $showFieldPicker) {
                             EventVenuePickerView()
                                 .environmentObject(manager)
-                                .environmentObject(session)
+                                .environment(session)
                         }
                         .id(3)
                         
@@ -439,6 +439,6 @@ struct NewPickUpEvent: View {
 
 #Preview {
     NewPickUpEvent()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(NewEventManager())
 }

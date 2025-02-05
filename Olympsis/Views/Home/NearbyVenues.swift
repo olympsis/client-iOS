@@ -10,7 +10,7 @@ import SwiftUI
 struct NearbyVenues: View {
     
     @State private var showMoreFields = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         VStack(alignment: .leading){
@@ -29,7 +29,7 @@ struct NearbyVenues: View {
             }
             .padding(.horizontal)
             
-            Venues(venues: $session.venues, status: $session.state)
+            Venues(venues: session.venues, status: session.state)
         }
         .fullScreenCover(isPresented: $showMoreFields) {
             VenuesList(venues: session.venues)
@@ -39,5 +39,5 @@ struct NearbyVenues: View {
 
 #Preview {
     NearbyVenues()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -34,7 +34,7 @@ struct EditPickUpEvent: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var event: Event
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var startTimeString: String {
         let dateFormatter = DateFormatter()

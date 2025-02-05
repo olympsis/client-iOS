@@ -14,7 +14,7 @@ struct EventsList: View {
     @State private var selectedDate = Date()
     @State private var state: LOADING_STATE = .pending
     
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     /// Struct for filtering events by the day they are to start
@@ -98,5 +98,5 @@ struct EventsList: View {
 
 #Preview {
     EventsList(events: EVENTS)
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

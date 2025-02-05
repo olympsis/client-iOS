@@ -20,7 +20,7 @@ struct NoClubMenu: View {
     @State private var region : MKCoordinateRegion = .init()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var acceptedEULA: Bool {
         guard let user = session.user,
@@ -105,5 +105,5 @@ struct NoClubMenu: View {
 
 #Preview {
     NoClubMenu(location: .constant([]))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

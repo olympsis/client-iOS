@@ -17,7 +17,7 @@ struct ClubListItem: View {
     @State private var showDetails: Bool = false
     @State private var status: LOADING_STATE = .pending
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var clubName: String {
         return club.name
@@ -149,5 +149,5 @@ struct ClubListItem: View {
 
 #Preview {
     ClubListItem(club: CLUBS[0], showToast: .constant(false))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

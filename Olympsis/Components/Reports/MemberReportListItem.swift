@@ -78,5 +78,5 @@ struct MemberReportListItem: View {
 
 #Preview {
     MemberReportListItem(club: CLUBS[0], report: MEMBER_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

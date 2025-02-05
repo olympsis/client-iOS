@@ -12,7 +12,7 @@ struct ClubApplicationListItem: View {
     @State var club: Club
     @State var application: ClubApplication
     @Binding var applications: [ClubApplication]
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var fullName: String {
         guard let data = application.applicant,

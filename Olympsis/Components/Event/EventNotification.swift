@@ -13,7 +13,7 @@ struct EventNotification: View {
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var status: LOADING_STATE = .pending
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) private var presentationMode
     
     func notifyParticipants() async {
@@ -80,5 +80,5 @@ struct EventNotification: View {
 
 #Preview {
     EventNotification(event: EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

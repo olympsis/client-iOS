@@ -18,7 +18,7 @@ struct PostReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "post_report_view")
     

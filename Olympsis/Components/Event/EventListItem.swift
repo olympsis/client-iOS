@@ -18,7 +18,7 @@ struct EventListItem: View {
     @State private var venueState: LOADING_STATE = .pending
     
     @State private var showDetails = false
-    @EnvironmentObject private var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
@@ -210,5 +210,5 @@ struct _TrailingView: View {
 
 #Preview {
     EventListItem(event: EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

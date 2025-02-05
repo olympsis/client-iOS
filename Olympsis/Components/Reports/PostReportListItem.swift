@@ -84,5 +84,5 @@ struct PostReportListItem: View {
 
 #Preview {
     PostReportListItem(report: POST_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

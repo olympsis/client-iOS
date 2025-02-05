@@ -12,7 +12,7 @@ struct NotificationsView: View {
     @State private var notifications: [NotificationModel] = []
     
     @Environment(HomeRouter.self) private var router
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         ScrollView {
@@ -56,6 +56,6 @@ struct NotificationsView: View {
     NavigationStack {
         NotificationsView()
             .environment(HomeRouter())
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

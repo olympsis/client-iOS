@@ -16,7 +16,7 @@ struct PostListItem: View {
     @State private var showAlert: Bool = false
     
     @StateObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     
     init(post: Post, pinned: Bool = false, showMenu: Bool = false, showComments: Bool = false) {
@@ -83,7 +83,7 @@ struct PostHeader: View {
     @Binding var showMenu: Bool
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var isOrg: Bool {
         guard let selectedGroup = session.selectedGroup,
@@ -309,7 +309,7 @@ struct PostFooter: View {
     
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var likeCount: Int {
         return post.likes.count
@@ -430,7 +430,7 @@ struct PostFooter: View {
 #Preview("Header") {
     PostHeader(pinned: .constant(false), showMenu: .constant(false))
         .environmentObject(POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
 
 #Preview("Body") {
@@ -441,11 +441,11 @@ struct PostFooter: View {
 #Preview("Footer") {
     PostFooter(showComments: .constant(false))
         .environmentObject(POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
 
 #Preview {
     PostListItem(post: POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

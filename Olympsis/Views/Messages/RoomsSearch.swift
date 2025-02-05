@@ -13,7 +13,7 @@ struct RoomsSearch: View {
     @Binding var rooms: [Room]
     @State var observer: ChatObserver
     @State private var state: LOADING_STATE = .success
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -76,6 +76,6 @@ struct RoomsSearch_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
         RoomsSearch(club: .constant(CLUBS[0]), rooms:.constant([room]), observer: ChatObserver())
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

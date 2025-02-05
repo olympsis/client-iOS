@@ -21,7 +21,7 @@ struct ClubsList: View {
     @State private var customCoordinates: [Double] = []
     @State private var showCompletedApplicationToast:Bool = false
     
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var geoCoder = CLGeocoder()
     private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
@@ -236,5 +236,5 @@ struct ClubsList: View {
 
 #Preview {
     ClubsList()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

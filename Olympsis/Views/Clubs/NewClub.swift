@@ -16,7 +16,7 @@ struct NewClub: View {
     @StateObject private var viewModel = GroupEditorViewModel()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "new_club_view")
@@ -329,5 +329,5 @@ struct NewClub: View {
 
 #Preview {
     NewClub()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

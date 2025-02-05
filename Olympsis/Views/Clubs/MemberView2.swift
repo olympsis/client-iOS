@@ -11,7 +11,7 @@ struct MemberView2: View {
     
     @State var member: UserSnippet
     @State private var showMenu = false
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var username: String {
         guard let username = member.username else {
@@ -65,6 +65,6 @@ struct MemberView2: View {
 struct ClubMemberView2_Previews: PreviewProvider {
     static var previews: some View {
         MemberView2(member: USER_SNIPPETS[0])
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

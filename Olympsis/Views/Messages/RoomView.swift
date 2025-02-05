@@ -22,7 +22,7 @@ struct RoomView: View {
     @State private var viewModel: RoomViewModel
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log = Logger(subsystem: "com.olympsis.client", category: "room_view")
     
@@ -159,5 +159,5 @@ struct RoomView: View {
     let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
 
     return RoomView(club: CLUBS[0], room: room, rooms: .constant([room]))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

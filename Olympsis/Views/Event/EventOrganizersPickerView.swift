@@ -15,7 +15,7 @@ struct EventOrganizersPickerView: View {
     @Binding var selectedOrganizers: [GroupSelection]
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         NavigationStack {
@@ -99,5 +99,5 @@ struct EventOrganizersPickerView: View {
 
 #Preview {
     EventOrganizersPickerView(selectedOrganizers: .constant([GroupSelection]()))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

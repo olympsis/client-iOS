@@ -15,7 +15,7 @@ struct GroupFeed: View {
     @State private var showEvents: Bool = false
     
     @StateObject private var viewModel = FeedViewModel()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
@@ -208,6 +208,6 @@ struct GroupFeed: View {
 
 #Preview {
     GroupFeed(showNewPost: .constant(false), showNewEvent: .constant(false))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

@@ -10,9 +10,9 @@ import SwiftUI
 /// A view that shows the most recent and nearby events
 struct EventsModalView: View {
     
-    @Binding var events: [Event]
+    var events: [Event]
     @State private var showMore = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     /// Struct for filtering events by the day they are to start
     struct DayGroup: Identifiable {
@@ -110,6 +110,6 @@ struct EventsModalView: View {
 #Preview {
     let session = SessionStore()
     session.events = EVENTS
-    return EventsModalView(events: .constant(EVENTS))
-        .environmentObject(session)
+    return EventsModalView(events: EVENTS)
+        .environment(session)
 }

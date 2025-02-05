@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentView: View {
     
     @State var comment: Comment
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
 
     var imageURL: String {
@@ -82,6 +82,6 @@ struct CommentView: View {
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        CommentView(comment: COMMENTS[0]).environmentObject(SessionStore())
+        CommentView(comment: COMMENTS[0]).environment(SessionStore())
     }
 }

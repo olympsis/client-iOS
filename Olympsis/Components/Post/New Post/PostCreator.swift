@@ -20,7 +20,7 @@ struct PostCreator: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "post_creator_view")
@@ -137,6 +137,6 @@ struct PostCreator: View {
 
 #Preview {
     PostCreator(type: .Post, groupId: "")
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

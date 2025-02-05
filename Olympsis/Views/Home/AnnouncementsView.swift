@@ -10,7 +10,7 @@ import SwiftUI
 struct AnnouncementsView: View {
     
     @State var index = "0"
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         VStack(alignment: .leading){
@@ -48,5 +48,5 @@ struct AnnouncementsView: View {
 
 #Preview {
     AnnouncementsView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

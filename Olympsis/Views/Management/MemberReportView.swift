@@ -19,7 +19,7 @@ struct MemberReportView: View {
     @StateObject private var managementObserver = ManagementObserver()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "member_report_view")
     
@@ -170,5 +170,5 @@ struct MemberReportView: View {
 
 #Preview {
     MemberReportView(member: Member(id: "", role: "", user: UserSnippet(uuid: "", username: "johndoe"), joinedAt: 0))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

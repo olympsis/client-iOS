@@ -16,7 +16,7 @@ struct AccountDeleteSignin: View {
     @State private var nonce: String = randomNonceString()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "account_delete_signin_view")
     

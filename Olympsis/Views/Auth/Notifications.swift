@@ -21,7 +21,7 @@ struct Notifications: View {
     @AppStorage("deviceToken") private var deviceToken: String?
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
-    @EnvironmentObject private var sessionStore: SessionStore
+    @Environment(SessionStore.self) private var session
     func handleAllow() async {
     }
     

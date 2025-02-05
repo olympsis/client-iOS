@@ -16,7 +16,7 @@ struct MapOptions: View {
     @State private var sliderValue = 5.0
     
     @EnvironmentObject private var router: EventRouter
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     @AppStorage("searchRadius") private var radius: Double? // search radius for fields/events in meters
     
@@ -122,7 +122,7 @@ struct MapOptions: View {
     NavigationStack {
         MapOptions(availableSports: [SPORTS.soccer, SPORTS.basketball, SPORTS.golf], selectedSports: ["soccer", "basketball", "pickleball"])
             .environmentObject(EventRouter())
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
             .navigationBarBackButtonHidden(false)
     }
 }

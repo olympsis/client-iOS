@@ -17,7 +17,7 @@ struct Home: View {
     @State private var showDetail = false
     @State private var showMoreFields = false
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
@@ -32,23 +32,23 @@ struct Home: View {
                 //MARK: - Welcome message
                 WelcomeCard()
                     .padding(.top, 25)
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Announcements
                 AnnouncementsView()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Next Events
                 NextEvents()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Hot Events
                 HotEvents()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Nearby Venues
                 NearbyVenues()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 Spacer(minLength: 100)
                 
@@ -84,7 +84,7 @@ struct Home: View {
                                 .foregroundStyle(Color.foreground)
                                 
                             if session.invitations.count > 0 {
-                                NotificationCountView(value: $session.invitations.count)
+                                NotificationCountView(value: session.invitations.count)
                             }
                         }
                     }
@@ -103,20 +103,20 @@ struct Home: View {
                     NotificationsView()
                         .id(HOME_ROUTES.notifications)
                         .environment(router)
-                        .environmentObject(session)
+                        .environment(session)
                         .navigationBarBackButtonHidden()
                     
                 case .messages:
                     HomeMessagesView()
                         .id(HOME_ROUTES.messages)
                         .environment(router)
-                        .environmentObject(session)
+                        .environment(session)
                         .navigationBarBackButtonHidden()
                     
                 case .full_post_view(let id):
                     AsyncPostView(postId: id)
                         .id(HOME_ROUTES.full_post_view(id))
-                        .environmentObject(session)
+                        .environment(session)
                         .navigationBarBackButtonHidden()
                 }
             })
@@ -143,5 +143,5 @@ struct Home: View {
 
 #Preview {
     Home()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

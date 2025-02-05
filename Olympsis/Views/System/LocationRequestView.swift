@@ -16,7 +16,7 @@ struct LocationRequestView: View {
     @State private var status: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     func handleAllow() async {
         location.requestLocation()
@@ -88,5 +88,5 @@ struct LocationRequestView: View {
 
 #Preview {
     LocationRequestView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -84,5 +84,5 @@ struct VenueInfo: View {
 #Preview {
     VenueInfo(venues: .constant([Venue]()), venuesTarget: .constant(0), state: .constant(.pending))
         .environmentObject(EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

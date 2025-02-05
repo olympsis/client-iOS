@@ -14,7 +14,7 @@ struct BlockedUsersList: View {
     @State private var state: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "blocked_users_list_view")
     
@@ -149,6 +149,6 @@ struct BlockedUsersList: View {
 #Preview {
     NavigationStack {
         BlockedUsersList()
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }
