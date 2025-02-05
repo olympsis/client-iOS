@@ -20,9 +20,8 @@ class HomeRouter {
     
     @MainActor
     func navigateBack() {
-        if (navPath.count > 0) {
-            navPath.removeLast()
-        }
+        if (navPath.isEmpty) { return }
+        navPath.removeLast()
     }
     
     @MainActor

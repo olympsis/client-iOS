@@ -64,10 +64,10 @@ class EventService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
-    func createEvent(event: EventDao) async throws -> (Data,URLResponse) {
+    func createEvent(dao: NewEventDao) async throws -> (Data,URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(event), headers: ["Authorization": token ?? ""])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {

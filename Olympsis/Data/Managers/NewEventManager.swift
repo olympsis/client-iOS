@@ -29,9 +29,9 @@ class NewEventManager: ObservableObject {
         didSet {
             selectedVenueDescriptors = selectedVenues.map {
                 if $0.description == "external" {
-                    return VenueDescriptor(name: $0.name, location: $0.location)
+                    return VenueDescriptor(name: $0.name, city: $0.city, state: $0.state, country: $0.country, location: $0.location)
                 } else {
-                    return VenueDescriptor(id: $0.id)
+                    return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
                 }
             }
         }
@@ -65,6 +65,8 @@ class NewEventManager: ObservableObject {
     @Published var visibility: EVENT_VISIBILITY_TYPES = .Public
     
     @Published var customVenueSearch: String = ""
+    
+    @Published var recurrenceOptions: EventRecurrenceOptions?
     
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
@@ -104,7 +106,7 @@ class NewEventManager: ObservableObject {
         
         if venues.count > 0 {
             selectedVenueDescriptors = venues.map {
-                return VenueDescriptor(id: $0.id)
+                return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
             }
         }
     }
@@ -142,32 +144,32 @@ class NewEventManager: ObservableObject {
                 throw MediaUploadError.innapropriateContent
             }
             if resp.score > 3 {
-                dto.isSensitive = true
+                dto.event.isSensitive = true
             }
             
             guard let url = resp.url else {
                 status = .pending
                 return nil
             }
-            dto.imageURL = url.replacingOccurrences(of: "olympsis-", with: "")
+            dto.event.imageURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
-            guard let id = await eventObserver.createEvent(event: dto) else {
-                if let img = dto.imageURL {
+            guard let id = await eventObserver.createEvent(dao: dto) else {
+                if let img = dto.event.imageURL {
                     await deleteImage(image: img)
                 }
                 return nil
             }
             
-            return generateNewEvent(id: id, dao: dto, user: user)
+            return generateNewEvent(id: id, dao: dto.event, user: user)
         } else {
-            guard let id = await eventObserver.createEvent(event: dto) else {
-                if let img = dto.imageURL {
+            guard let id = await eventObserver.createEvent(dao: dto) else {
+                if let img = dto.event.imageURL {
                     await deleteImage(image: img)
                 }
                 return nil
             }
             
-            return generateNewEvent(id: id, dao: dto, user: user)
+            return generateNewEvent(id: id, dao: dto.event, user: user)
         }
     }
     
@@ -202,7 +204,7 @@ class NewEventManager: ObservableObject {
     /// We want the data to be complete before we attempt to make a request to the server
     ///
     /// - Returns: an optional `EventDao` object
-    func generateEventDTO() -> EventDao? {
+    func generateEventDTO() -> NewEventDao? {
         guard !self.title.isEmpty,
               !self.body.isEmpty,
               !self.selectedVenueDescriptors.isEmpty,
@@ -211,14 +213,14 @@ class NewEventManager: ObservableObject {
             return nil
         }
         
-        return EventDao(
+        let event = EventDao(
             type: self.type,
             organizers: self.generateOrganizers(),
             venues: self.selectedVenueDescriptors,
             imageURL: self.image,
             title: self.title,
             body: self.body,
-            sport: self.sport.rawValue,
+            sports: [self.sport.rawValue],
             level: self.skillLevel,
             startTime: Int(self.startDate.timeIntervalSince1970),
             stopTime: Int(self.endDate.timeIntervalSince1970),
@@ -228,6 +230,8 @@ class NewEventManager: ObservableObject {
             isSensitive: false,
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )
+        
+        return NewEventDao(event: event, includeHost: true, reccurenceOptions: recurrenceOptions)
     }
     
     /// Generates a new event object
@@ -246,7 +250,7 @@ class NewEventManager: ObservableObject {
               let imageURL = dao.imageURL,
               let title = dao.title,
               let body = dao.body,
-              let sport = dao.sport,
+              let sports = dao.sports,
               let level = dao.level,
               let startTime = dao.startTime,
               let minParticipants = dao.minParticipants,
@@ -274,7 +278,7 @@ class NewEventManager: ObservableObject {
             imageURL: imageURL,
             title: title,
             body: body,
-            sport: sport,
+            sports: sports,
             level: level,
             startTime: startTime,
             minParticipants: minParticipants,

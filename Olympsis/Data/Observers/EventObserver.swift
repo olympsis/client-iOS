@@ -76,9 +76,9 @@ class EventObserver: ObservableObject{
         return nil
     }
     
-    func createEvent(event: EventDao) async -> String? {
+    func createEvent(dao: NewEventDao) async -> String? {
         do {
-            let (data, resp) = try await eventService.createEvent(event: event)
+            let (data, resp) = try await eventService.createEvent(dao: dao)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
                 return nil
             }

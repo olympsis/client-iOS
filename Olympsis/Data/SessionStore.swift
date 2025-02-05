@@ -299,7 +299,7 @@ class SessionStore {
                 }
             } else {
                 // External Venue
-                if let name = desc.name,
+                if
                    let cod = desc.location,
                    let loc = await desc.geocode()?.first,
                    let city = loc.locality,
@@ -307,7 +307,7 @@ class SessionStore {
                    let country = loc.country {
                     fetchedVenues.append(
                         Venue(
-                            name: name,
+                            name: desc.name,
                             location: cod,
                             city: city,
                             state: state,

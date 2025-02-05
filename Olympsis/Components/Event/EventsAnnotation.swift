@@ -60,13 +60,14 @@ struct EventsAnnotation: View {
             let randomLonOffset = Double.random(in: -offset...offset)
             return [base[0] + randomLonOffset, base[1] + randomLatOffset]
         }
-        let initialVenue = VenueDescriptor(location: GeoJSON(type: "point", coordinates: [-122.008988, 37.334886]))
+        let initialVenue = VenueDescriptor(name: "Initial Venue", city: "City", state: "State", country: "Country", location: GeoJSON(type: "point", coordinates: [-122.008988, 37.334886]))
         // Generate 50 events
         var events: [Event] = []
 
         for i in 0..<50 {
             let newVenue = VenueDescriptor(
                 name: "Venue \(i)",
+                city: "City", state: "State", country: "Country",
                 location: GeoJSON(type: "Point", coordinates: generateNearbyCoordinates(base: initialVenue.location!.coordinates, offset: 0.001))
             )
             
@@ -81,7 +82,7 @@ struct EventsAnnotation: View {
                 imageURL: "soccer-\(i % 5)",
                 title: "Pick Up Soccer International #\(i + 1)",
                 body: "Let's go play boys!!!",
-                sport: "soccer",
+                sports: ["soccer"],
                 level: EVENT_SKILL_LEVELS.All,
                 startTime: 1699806600 + i * 3600, // Increment start time for each event
                 actualStartTime: 1699806600 + i * 3600,

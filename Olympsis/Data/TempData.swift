@@ -38,9 +38,9 @@ let FIELDS = [
 ]
 
 let VENUE_DESCRIPTORS = [
-    VenueDescriptor(name: "Faultline Gardens Park", location: GeoJSON(type: "point", coordinates: [-111.861028, 40.760891])),
-    VenueDescriptor(id: FIELDS[0].id),
-    VenueDescriptor(id: FIELDS[1].id)
+    VenueDescriptor(name: "Faultline Gardens Park", city: "New York", state: "New York", country: "United States", location: GeoJSON(type: "point", coordinates: [-111.861028, 40.760891])),
+    VenueDescriptor(id: FIELDS[0].id, name: "Richard Building Fields", city: "Provo", state: "Utah", country: "United States"),
+    VenueDescriptor(id: FIELDS[1].id, name: "Indoor Practice Facility", city: "Provo", state: "Utah", country: "United States")
 ]
 
 let CLUBS = [
@@ -88,7 +88,7 @@ let EVENTS = [
         imageURL: "event-images/soccer-0.jpg",
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!", 
-        sport: "soccer",
+        sports: ["soccer"],
         level: EVENT_SKILL_LEVELS.All,
         startTime: 1720696495,
         actualStartTime: 1699806600,
@@ -116,7 +116,7 @@ let EVENTS = [
         imageURL: "soccer-0",
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!",
-        sport: "soccer",
+        sports: ["soccer"],
         level: EVENT_SKILL_LEVELS.All,
         startTime: 1699806600,
         actualStartTime: 1699806600,

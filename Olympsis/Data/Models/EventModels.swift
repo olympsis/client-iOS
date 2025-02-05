@@ -19,7 +19,7 @@ class Event: Decodable, Identifiable, ObservableObject {
     var imageURL: String?
     var title: String?
     var body: String?
-    let sport: String?
+    let sports: [String]
     var level: EVENT_SKILL_LEVELS
     @Published var startTime: Int?
     @Published var actualStartTime: Int?
@@ -43,7 +43,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         case imageURL = "image_url"
         case title
         case body
-        case sport
+        case sports
         case level
         case startTime = "start_time"
         case actualStartTime = "actual_start_time"
@@ -60,7 +60,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         case isSensitive = "is_sensitive"
     }
     
-    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -69,7 +69,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.imageURL = imageURL
         self.title = title
         self.body = body
-        self.sport = sport
+        self.sports = sports
         self.level = level ?? .All
         self.startTime = startTime
         self.actualStartTime = actualStartTime
@@ -108,7 +108,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
-        self.sport = try container.decodeIfPresent(String.self, forKey: .sport)
+        self.sports = try container.decodeIfPresent([String].self, forKey: .sports) ?? []
         
         // Decode level and convert from Int to EVENT_SKILL_LEVELS
         if let levelInt = try container.decodeIfPresent(Int.self, forKey: .level) {
@@ -380,7 +380,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var imageURL: String?
     var title: String?
     var body: String?
-    let sport: String?
+    let sports: [String]?
     var level: EVENT_SKILL_LEVELS?
     var startTime: Int?
     var actualStartTime: Int?
@@ -402,7 +402,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case imageURL = "image_url"
         case title
         case body
-        case sport
+        case sports
         case level
         case startTime = "start_time"
         case actualStartTime = "actual_start_time"
@@ -417,7 +417,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case externalLink = "external_link"
     }
     
-    init(type: EVENT_TYPES?=nil, poster: String?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sport: String?=nil, level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(type: EVENT_TYPES?=nil, poster: String?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String]?=nil, level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.type = type
         self.poster = poster
         self.organizers = organizers
@@ -425,7 +425,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.imageURL = imageURL
         self.title = title
         self.body = body
-        self.sport = sport
+        self.sports = sports
         self.level = level
         self.startTime = startTime
         self.actualStartTime = actualStartTime
@@ -449,7 +449,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
-        self.sport = try container.decodeIfPresent(String.self, forKey: .sport)
+        self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
         self.level = numberToEventSkillLEvel(number: try container.decodeIfPresent(Int.self, forKey: .level) ?? 0)
         self.startTime = try container.decodeIfPresent(Int.self, forKey: .startTime)
         self.actualStopTime = try container.decodeIfPresent(Int.self, forKey: .actualStopTime)
@@ -474,7 +474,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(imageURL, forKey: .imageURL)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(body, forKey: .body)
-        try container.encodeIfPresent(sport, forKey: .sport)
+        try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(level?.toInt(), forKey: .level)
         try container.encodeIfPresent(startTime, forKey: .startTime)
         try container.encodeIfPresent(actualStartTime, forKey: .actualStartTime)
@@ -490,6 +490,29 @@ class EventDao: Codable, Identifiable, ObservableObject {
     }
 }
 
+struct NewEventDao: Codable {
+    var event: EventDao
+    var includeHost: Bool
+    var reccurenceOptions: EventRecurrenceOptions?
+    
+    enum CodingKeys: String, CodingKey {
+        case event
+        case includeHost = "include_host"
+        case reccurenceOptions = "recurrence_options"
+    }
+}
+
+class EventRecurrenceOptions: Codable {
+    var pattern: String
+    var endTime: Int
+    var interval: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case pattern
+        case endTime = "end_time"
+        case interval
+    }
+}
 
 struct EventSharingTemplate {
     var titlePosition: SHARING_TITLE_POSITION

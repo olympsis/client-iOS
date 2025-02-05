@@ -83,9 +83,8 @@ struct EventListItem: View {
                                         .lineLimit(1)
                                         .redacted(reason: venueState != .success ? .placeholder : [])
                                 } else {
-                                    if let d = venueDescriptors.first,
-                                       let name = d.name {
-                                        Text(name)
+                                    if let d = venueDescriptors.first{
+                                        Text(d.name)
                                             .foregroundColor(.gray)
                                             .lineLimit(1)
                                             .redacted(reason: venueState != .success ? .placeholder : [])

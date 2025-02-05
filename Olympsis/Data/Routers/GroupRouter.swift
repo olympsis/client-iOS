@@ -19,6 +19,7 @@ class GroupRouter: ObservableObject {
     
     @MainActor
     func navigateBack() {
+        if (navPath.isEmpty) { return }
         navPath.removeLast()
     }
     
