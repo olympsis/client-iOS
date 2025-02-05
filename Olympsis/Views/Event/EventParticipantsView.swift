@@ -47,7 +47,9 @@ struct EventParticipantsView: View {
             }
             Button(action: { self.showParticipants.toggle() }) {
                 Text("See who's going...")
-            }.padding(.leading, 45)
+            }
+            .padding(.leading, 45)
+            .tint(Color.foreground)
         }.padding(.all)
             .sheet(isPresented: $showParticipants, content: {
                 EventParticipantsViewExt()

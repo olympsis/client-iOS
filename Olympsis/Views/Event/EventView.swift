@@ -143,12 +143,15 @@ struct EventView: View {
                 }
                 .padding(.horizontal, 10)
                 .clipShape(Rectangle())
+                .tint(Color.foreground)
                 
                 Button(action:{ dismiss() }) {
                     Image(systemName: "xmark.circle.fill")
                         .padding(.top, 5)
                         .imageScale(.large)
-                }.clipShape(Circle())
+                }
+                .clipShape(Circle())
+                .tint(Color.foreground)
 
             }.padding([.top, .horizontal])
             
