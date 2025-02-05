@@ -120,7 +120,7 @@ struct EventMiddleView: View {
                     } else {
                         VStack {
                             Text("Game On!")
-                                .foregroundColor(Color("color-prime"))
+                                .foregroundColor(Color("color-secnd"))
                             Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.green)
                                 .bold()

@@ -92,7 +92,7 @@ struct EventListItem: View {
                                 }
                             }
                             Spacer()
-                            if event.type == EVENT_TYPES.Tournament {
+                            if event.type == EVENT_TYPES.Competitive {
                                 Text("Tournament")
                                     .font(.caption)
                                     .padding(.bottom)

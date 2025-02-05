@@ -253,9 +253,10 @@ struct VenueActionButtons: View {
                         Text("Event")
                     }.foregroundStyle(canCreateEvent == false ? .gray : Color("foreground"))
                 }
-            }.disabled(canCreateEvent == false ? true : false)
-                .popoverTip(joinGroupTip)
-            .sheet(isPresented: $showNewEvent) {
+            }
+            .disabled(canCreateEvent == false ? true : false)
+            .popoverTip(joinGroupTip)
+            .fullScreenCover(isPresented: $showNewEvent) {
                 NewEvent(manager: NewEventManager(venues: [venue]))
             }
             

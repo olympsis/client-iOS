@@ -156,7 +156,7 @@ struct EventMenu: View {
             EventReportView(event: event)
         })
         .fullScreenCover(isPresented: $showEditEvent, content: {
-            if event.type == EVENT_TYPES.PickUp {
+            if event.type == EVENT_TYPES.Regular {
                 EditPickUpEvent()
                     .environmentObject(event)
             } else {

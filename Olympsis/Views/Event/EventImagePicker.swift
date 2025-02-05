@@ -11,7 +11,7 @@ import Kingfisher
 struct EventImagePicker: View {
     
     @State private var showImagePicker: Bool = false
-    @EnvironmentObject private var manager: NewEventManager
+    @Environment(NewEventManager.self) private var manager
     
     var imageURLs: [URL] {
         var urls = [URL]()
@@ -101,7 +101,6 @@ struct EventImagePicker: View {
                 }
             }
         }
-        .background(Color("background-color/primary"))
         .fullScreenCover(isPresented: $showImagePicker, content: {
             MediaPicker(pickerType: .eventImage) { images in
                 manager.selectedImage = images.first
@@ -112,5 +111,5 @@ struct EventImagePicker: View {
 
 #Preview {
     EventImagePicker()
-        .environmentObject(NewEventManager())
+        .environment(NewEventManager())
 }

@@ -403,14 +403,14 @@ enum SkillLevel: String, CaseIterable {
 }
 
 enum EVENT_TYPES: String, CaseIterable {
-    case PickUp = "pickup"
-    case Tournament = "tournament"
+    case Regular = "regular"
+    case Competitive = "competitive"
     
     func toInt() -> Int {
         switch self {
-        case .PickUp:
+        case .Regular:
             return 0
-        case .Tournament:
+        case .Competitive:
             return 1
         }
     }
@@ -418,9 +418,9 @@ enum EVENT_TYPES: String, CaseIterable {
 
 func numberToEventType(number: Int) -> EVENT_TYPES {
     if number == 1 {
-        return .Tournament
+        return .Competitive
     } else {
-        return .PickUp
+        return .Regular
     }
 }
 

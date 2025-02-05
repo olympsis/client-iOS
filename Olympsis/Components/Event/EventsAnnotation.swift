@@ -73,7 +73,7 @@ struct EventsAnnotation: View {
             
             let event = Event(
                 id: UUID().uuidString,
-                type: EVENT_TYPES.PickUp,
+                type: EVENT_TYPES.Regular,
                 poster: USER_SNIPPETS[0],
                 organizers: [
                     Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)

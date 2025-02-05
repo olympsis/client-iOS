@@ -11,10 +11,7 @@ import SwiftUI
 
 struct EventVenuePicker: View {
     
-    var venues: [Venue] {
-        return session.venues
-    }
-    
+    @State var manager: NewEventManager
     @State private var index: Int = 0
     @State private var search: String = ""
     @State private var customVenues = [Venue]()
@@ -24,10 +21,13 @@ struct EventVenuePicker: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-    @EnvironmentObject private var manager: NewEventManager
+
+    private var venues: [Venue] {
+        return session.venues
+    }
     
-    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
-    
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
+
     func search(_ text: String) async {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         let request = MKLocalSearch.Request()
@@ -51,7 +51,7 @@ struct EventVenuePicker: View {
                         return
                     }
                     let location = item.placemark.coordinate
-                    
+
                     self.customVenues.append(
                         Venue(
                             name: name,
@@ -211,7 +211,6 @@ struct EventVenuePicker: View {
 }
 
 #Preview {
-    EventVenuePicker()
+    EventVenuePicker(manager: NewEventManager())
         .environment(SessionStore())
-        .environmentObject(NewEventManager())
 }

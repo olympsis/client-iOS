@@ -10,22 +10,24 @@ import MapKit
 import SwiftUI
 import Foundation
 
-class NewEventManager: ObservableObject {
+@Observable
+class NewEventManager {
     
-    @Published var type: EVENT_TYPES
-    @Published var title: String
-    @Published var body: String
-    @Published var externalLink: String
-    @Published var status: LOADING_STATE = .pending
+    var type: EVENT_TYPES
+    var title: String
+    var body: String
+    var externalLink: String
+    var status: LOADING_STATE = .pending
+    
     // Organizers
-    @Published var organizers: [GroupSelection]
+    var organizers: [GroupSelection]
     
     // Timestamps
-    @Published var startDate: Date
-    @Published var endDate: Date
+    var startDate: Date
+    var endDate: Date
     
     // Location
-    @Published var selectedVenues = [Venue]() {
+    var selectedVenues = [Venue]() {
         didSet {
             selectedVenueDescriptors = selectedVenues.map {
                 if $0.description == "external" {
@@ -36,10 +38,10 @@ class NewEventManager: ObservableObject {
             }
         }
     }
-    @Published var selectedVenueDescriptors = [VenueDescriptor]()
+    var selectedVenueDescriptors = [VenueDescriptor]()
     
     // Image
-    @Published var selectedImage: UIImage? {
+    var selectedImage: UIImage? {
         didSet {
             guard let image = selectedImage,
                   let data = image.jpegData(compressionQuality: 0.5) else {
@@ -49,24 +51,24 @@ class NewEventManager: ObservableObject {
             selectedImageData = data
         }
     }
-    @Published var selectedImageData: Data?
-    @Published var selectedImageIndex: Int = 0
+    var selectedImageData: Data?
+    var selectedImageIndex: Int = 0
     
     // Participants
-    @Published var minParticipants: Double
-    @Published var maxParticipants: Double
+    var minParticipants: Double
+    var maxParticipants: Double
     
     // Sport
-    @Published var sport: SPORTS
-    @Published var image: String?
+    var sport: SPORTS
+    var image: String?
     
     // More Options
-    @Published var skillLevel: EVENT_SKILL_LEVELS = .All
-    @Published var visibility: EVENT_VISIBILITY_TYPES = .Public
+    var skillLevel: EVENT_SKILL_LEVELS = .All
+    var visibility: EVENT_VISIBILITY_TYPES = .Public
     
-    @Published var customVenueSearch: String = ""
+    var customVenueSearch: String = ""
     
-    @Published var recurrenceOptions: EventRecurrenceOptions?
+    var recurrenceOptions: EventRecurrenceOptions?
     
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
@@ -74,7 +76,7 @@ class NewEventManager: ObservableObject {
     
     
     init(
-        type: EVENT_TYPES = .PickUp,
+        type: EVENT_TYPES = .Regular,
         title: String = "",
         body: String = "",
         venues: [Venue] = [Venue](),
@@ -111,7 +113,7 @@ class NewEventManager: ObservableObject {
         }
     }
     
-    convenience init(type: EVENT_TYPES = .PickUp) {
+    convenience init(type: EVENT_TYPES = .Regular) {
         self.init(
             type: type, 
             title: "",

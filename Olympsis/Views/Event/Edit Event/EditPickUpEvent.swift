@@ -24,11 +24,13 @@ struct EditPickUpEvent: View {
     @State private var showStartTimePicker: Bool = false
     @State private var showStopTimePicker: Bool = false
     
+    @State private var eventType: EVENT_TYPES = .Regular
     @State private var eventSkilLevel: EVENT_SKILL_LEVELS = .All
     @State private var eventVisibility: EVENT_VISIBILITY_TYPES = .Public
     
     
     @State private var status: LOADING_STATE = .pending
+    @State private var showTypePicker: Bool = false
     @State private var showVisibilityPicker: Bool = false
     @State private var showSkillLevelPicker: Bool = false
     
@@ -103,7 +105,7 @@ struct EditPickUpEvent: View {
             ScrollView {
                 
                 // MARK: - Top Options
-                NewEventTopView(showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventSkilLevel: $eventSkilLevel, eventVisibility: $eventVisibility)
+                NewEventTopView(showTypePicker: $showTypePicker, showVisibilityPicker: $showVisibilityPicker, showSkillLevelPicker: $showSkillLevelPicker, eventType: $eventType, eventSkilLevel: $eventSkilLevel, eventVisibility: $eventVisibility)
                 
                 // MARK: - Title
                 VStack(alignment: .leading){

@@ -9,40 +9,56 @@ import SwiftUI
 
 struct EventVenuePickerView: View {
     
+    @State var manager: NewEventManager
     @State private var search: String = ""
     @State private var showPicker: Bool = false
     
+    @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-    @EnvironmentObject private var manager: NewEventManager
+    
     
     var body: some View {
         VStack {
-            Button(action: { showPicker.toggle() }) {
-                HStack {
-                    Image(systemName: "plus")
-                    Text("Add a Location")
-                }
-                .modifier(InputField())
-                .padding(.horizontal)
-            }.padding(.vertical)
-            
-            List {
-                ForEach(manager.selectedVenues, id: \.name) {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                        .padding(.horizontal)
+                }.clipShape(Rectangle())
+                
+                Spacer()
+                Spacer()
+                
+                Text("Pick a Location")
+                
+                Spacer()
+                Spacer()
+                
+            }.frame(height: 44)
+            ScrollView {
+                Button(action: { showPicker.toggle() }) {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Add a Location")
+                    }
+                    .modifier(InputField())
+                    .padding(.horizontal)
+                }.padding(.vertical)
+                
+                ForEach(manager.selectedVenues, id: \.id) {
                     VenueMediumListItem(item: $0)
-                }.onDelete(perform: manager.deleteVenues)
-            }
-        }.sheet(isPresented: $showPicker, content: {
-            EventVenuePicker()
-                .environment(session)
-                .environmentObject(manager)
-        })
-        .navigationTitle("Pick a location")
-        .navigationBarTitleDisplayMode(.inline)
+                }
+                .onDelete(perform: manager.deleteVenues)
+                .padding(.horizontal)
+            }.sheet(isPresented: $showPicker, content: {
+                EventVenuePicker(manager: manager)
+                    .environment(session)
+            })
+        }
     }
 }
 
 #Preview {
-    EventVenuePickerView()
+    EventVenuePickerView(manager: NewEventManager())
         .environment(SessionStore())
-        .environmentObject(NewEventManager())
 }
