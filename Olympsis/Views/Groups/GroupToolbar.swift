@@ -115,18 +115,18 @@ struct GroupToolbar: ToolbarContent {
                                 }
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action:{ self.showMessages.toggle() }){
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 45, height: 35)
-                                        .foregroundStyle(Color("background"))
-                                    Image(systemName: "bubble.left.and.bubble.right")
-                                        .foregroundStyle(Color("foreground"))
-                                        .imageScale(.medium)
-                                }
-                            }
-                        }
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            Button(action:{ self.showMessages.toggle() }){
+//                                ZStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 45, height: 35)
+//                                        .foregroundStyle(Color("background"))
+//                                    Image(systemName: "bubble.left.and.bubble.right")
+//                                        .foregroundStyle(Color("foreground"))
+//                                        .imageScale(.medium)
+//                                }
+//                            }
+//                        }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
                                 if let logo = group.club?.logo,
@@ -193,18 +193,18 @@ struct GroupToolbar: ToolbarContent {
                                 }
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action:{ self.showMessages.toggle() }){
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 45, height: 35)
-                                        .foregroundStyle(Color("background"))
-                                    Image(systemName: "bubble.left.and.bubble.right")
-                                        .foregroundStyle(Color("foreground"))
-                                        .imageScale(.medium)
-                                }
-                            }
-                        }
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            Button(action:{ self.showMessages.toggle() }){
+//                                ZStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 45, height: 35)
+//                                        .foregroundStyle(Color("background"))
+//                                    Image(systemName: "bubble.left.and.bubble.right")
+//                                        .foregroundStyle(Color("foreground"))
+//                                        .imageScale(.medium)
+//                                }
+//                            }
+//                        }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
                                 if let logo = group.organization?.logo,

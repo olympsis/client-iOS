@@ -64,19 +64,19 @@ struct Home: View {
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button(action: { router.navigate(to: .messages) }) {
-                        ZStack(alignment: .topTrailing) {
-                            Image(systemName: "bubble.left.and.bubble.right")
-                                .foregroundStyle(Color.foreground)
-                            
-                            if session.invitations.count > 0 {
-                                NotificationCountView(value: $session.invitations.count)
-                            }
-                        }
-                    }
-                    .id(UUID())
-                    .disabled(session.state == .loading)
-                    .redacted(reason: session.state == .loading ? .placeholder : [])
+//                    Button(action: { router.navigate(to: .messages) }) {
+//                        ZStack(alignment: .topTrailing) {
+//                            Image(systemName: "bubble.left.and.bubble.right")
+//                                .foregroundStyle(Color.foreground)
+//                            
+//                            if session.invitations.count > 0 {
+//                                NotificationCountView(value: $session.invitations.count)
+//                            }
+//                        }
+//                    }
+//                    .id(UUID())
+//                    .disabled(session.state == .loading)
+//                    .redacted(reason: session.state == .loading ? .placeholder : [])
                     
                     Button(action: { router.navigate(to: .notifications) }) {
                         ZStack(alignment: .topTrailing) {
