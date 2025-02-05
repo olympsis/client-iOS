@@ -162,8 +162,8 @@ enum VIEW_STATE {
 
 enum EVENT_STATUS: String {
     case pending = "pending"
-    case in_progress = "in-progress"
-    case completed = "ended"
+    case live = "live"
+    case ended = "ended"
 }
 
 // MARK: - Sports

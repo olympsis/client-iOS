@@ -93,7 +93,9 @@ struct EditTournamentEvent: View {
             event.body = eventBody
             event.externalLink = eventExternalLink
             event.startTime = Int(eventStartTime.timeIntervalSince1970)
-            event.stopTime = stopTime
+            if (stopTime != nil) {
+                event.stopTime = stopTime!
+            }
             event.minParticipants = Int(eventMinParticipants)
             event.maxParticipants = Int(eventMaxParticipants)
             event.imageURL = eventImageURL
@@ -346,19 +348,10 @@ struct EditTournamentEvent: View {
 
                     eventVisibility = event.visibility
                     eventSkilLevel = event.level
-                    
-                    guard let startTime = event.startTime else {
-                        return
-                    }
-                    eventStartTime = Date(timeIntervalSince1970: TimeInterval(startTime))
-                    
-                    if let stopTime = event.stopTime {
-                        eventStopTime = Date(timeIntervalSince1970: TimeInterval(stopTime))
-                        hasEndTime = true
-                    } else {
-                        hasEndTime = false
-                    }
-                    
+
+                    eventStartTime = Date(timeIntervalSince1970: TimeInterval(event.startTime))
+                    eventStopTime = Date(timeIntervalSince1970: TimeInterval(event.stopTime))
+                    hasEndTime = true
                     
                     if let image = event.imageURL {
                         eventImageURL = image

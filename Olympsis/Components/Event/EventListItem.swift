@@ -153,18 +153,18 @@ struct _TrailingView: View {
     
     var body: some View {
         VStack (alignment: .trailing){
-            if event.actualStopTime != nil {
+            switch event.getEventStatus() {
+            case .pending:
                 VStack (alignment: .trailing){
-                    HStack {
-                        Text("Ended")
-                            .bold()
-                            .font(.callout)
-                    }.foregroundStyle(.gray)
+                    Text(event.timeToString())
+                        .bold()
+                        .font(.callout)
+                        .foregroundColor(.primary)
                     
                     Text(event.timeDifferenceToString())
                         .foregroundColor(.primary)
                 }.padding(.bottom, 5)
-            } else if event.actualStartTime != nil {
+            case .live:
                 VStack (alignment: .trailing){
                     HStack {
                         Circle()
@@ -172,9 +172,7 @@ struct _TrailingView: View {
                             .opacity(isBlinking ? 0 : 1)
                             .onAppear {
                                 withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: true)) {
-                                    if event.actualStopTime == nil {
-                                        isBlinking.toggle()
-                                    }
+                                    isBlinking.toggle()
                                 }
                             }
                         Text("Live")
@@ -185,12 +183,13 @@ struct _TrailingView: View {
                     Text(event.timeDifferenceToString())
                         .foregroundColor(.primary)
                 }.padding(.bottom, 5)
-            } else {
+            case .ended:
                 VStack (alignment: .trailing){
-                    Text(event.timeToString())
-                        .bold()
-                        .font(.callout)
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("Ended")
+                            .bold()
+                            .font(.callout)
+                    }.foregroundStyle(.gray)
                     
                     Text(event.timeDifferenceToString())
                         .foregroundColor(.primary)

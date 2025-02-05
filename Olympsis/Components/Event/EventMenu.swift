@@ -61,42 +61,7 @@ struct EventMenu: View {
         
         return false
     }
-    
-    func startEvent() async {
-        let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStartTime: now)
-        loadingState = .loading
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
-        if res {
-            await MainActor.run {
-                withAnimation(.easeInOut){
-                    event.actualStartTime = now
-                    loadingState = .success
-                }
-            }
-        }
-    }
-    
-    func stopEvent() async {
-        let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStopTime: now)
-        loadingState = .loading
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
-        if res {
-            await MainActor.run {
-                withAnimation(.easeInOut){
-                    event.actualStopTime = now
-                    loadingState = .success
-                }
-            }
-        }
-    }
+
     
     var body: some View {
         VStack {
@@ -106,32 +71,6 @@ struct EventMenu: View {
     //                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
     //                    self.showEditEvent.toggle()
     //                })
-                    
-                    if event.actualStopTime == nil {
-                        HStack {
-                            if event.actualStartTime == nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    MenuButton(icon: Image(systemName: "play.fill"), text: "Start Event", action:  {
-                                        Task {
-                                            await startEvent()
-                                        }
-                                    }, type: .start)
-                                }
-                            } else if event.actualStartTime != nil {
-                                if loadingState == .loading {
-                                    ProgressView()
-                                } else {
-                                    MenuButton(icon: Image(systemName: "square.fill"), text: "Stop Event", action:  {
-                                        Task {
-                                            await stopEvent()
-                                        }
-                                    }, type: .destructive)
-                                }
-                            }
-                        }.disabled(loadingState == .loading ? true : false)
-                    }
                 }
                 
                 MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })

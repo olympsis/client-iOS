@@ -15,10 +15,7 @@ struct EventMiddleView: View {
     @EnvironmentObject private var event: Event
     
     var startTime: Int {
-        guard let time = event.startTime else {
-            return 0
-        }
-        return time
+        return event.startTime;
     }
     
     var participantsCount: Int {
@@ -51,10 +48,7 @@ struct EventMiddleView: View {
     }
     
     func getTimeDifference() -> Int {
-        guard let startTime = event.actualStartTime else {
-            return 2
-        }
-        let startDate = Date(timeIntervalSince1970: TimeInterval(startTime))
+        let startDate = Date(timeIntervalSince1970: TimeInterval(event.startTime))
         let time = Calendar.current.dateComponents([.minute], from: startDate, to: Date.now)
         if let min = time.minute {
             return min
@@ -74,18 +68,16 @@ struct EventMiddleView: View {
                 .foregroundStyle(Color("background"))
             HStack (alignment: .center) {
                 VStack(alignment: .center){
-                    if event.actualStopTime != nil {
+                    switch event.getEventStatus() {
+                    case .pending:
                         VStack {
-                            Text("Ended")
-                                .foregroundColor(.gray)
+                            Text("Pending")
+                                .foregroundColor(.yellow)
+                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.green)
                                 .bold()
-                            if let sT = event.actualStopTime {
-                                Text(Date(timeIntervalSince1970: TimeInterval(sT)).formatted(.dateTime.hour().minute()))
-                                    .foregroundColor(.primary)
-                                    .bold()
-                            }
                         }
-                    } else if event.actualStartTime != nil {
+                    case .live:
                         HStack {
                             Circle()
                                 .frame(width: 10, height: 10)
@@ -109,20 +101,13 @@ struct EventMiddleView: View {
                                     timeDifference = event.timeDifferenceToString()
                                 }
                             }
-                    } else if minParticipantsCount != 0 && participantsCount < minParticipantsCount {
+                    case .ended:
                         VStack {
-                            Text("Pending")
-                                .foregroundColor(.yellow)
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.green)
+                            Text("Ended")
+                                .foregroundColor(.gray)
                                 .bold()
-                        }
-                    } else {
-                        VStack {
-                            Text("Game On!")
-                                .foregroundColor(Color("color-secnd"))
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.green)
+                            Text(Date(timeIntervalSince1970: TimeInterval(event.stopTime)).formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.primary)
                                 .bold()
                         }
                     }
@@ -136,7 +121,6 @@ struct EventMiddleView: View {
                         Image(systemName: "person.2.fill")
                         Text(participantsCountString)
                     }
-                    .disabled(event.actualStopTime != nil)
                 }
                 
                 Spacer()

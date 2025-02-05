@@ -257,7 +257,6 @@
 		9A5D3365292AAA71008CF61D /* PostListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3364292AAA71008CF61D /* PostListItem.swift */; };
 		9A5D3369292AC610008CF61D /* PostComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D3368292AC610008CF61D /* PostComments.swift */; };
 		9A5D336C292AE5DE008CF61D /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D336B292AE5DE008CF61D /* CommentView.swift */; };
-		9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */; };
 		9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5429724C9200EBC5F9 /* EventsList.swift */; };
 		9A69FE5729725A1300EBC5F9 /* VenuesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5629725A1300EBC5F9 /* VenuesList.swift */; };
 		9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A69FE5A2973261900EBC5F9 /* PostTemplateView.swift */; };
@@ -642,7 +641,6 @@
 		9A5D3364292AAA71008CF61D /* PostListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListItem.swift; sourceTree = "<group>"; };
 		9A5D3368292AC610008CF61D /* PostComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComments.swift; sourceTree = "<group>"; };
 		9A5D336B292AE5DE008CF61D /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
-		9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailActionButton.swift; sourceTree = "<group>"; };
 		9A69FE5429724C9200EBC5F9 /* EventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsList.swift; sourceTree = "<group>"; };
 		9A69FE5629725A1300EBC5F9 /* VenuesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenuesList.swift; sourceTree = "<group>"; };
 		9A69FE5A2973261900EBC5F9 /* PostTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTemplateView.swift; sourceTree = "<group>"; };
@@ -1187,7 +1185,6 @@
 			isa = PBXGroup;
 			children = (
 				9A81B6412925E50C009CA6ED /* EventListItem.swift */,
-				9A69FE4C29721DD500EBC5F9 /* EventDetailActionButton.swift */,
 				9AD208F32933FE41007A62C4 /* EventMenu.swift */,
 				5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */,
 				5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */,
@@ -2105,7 +2102,6 @@
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,
 				5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */,
 				5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */,
-				9A69FE4D29721DD500EBC5F9 /* EventDetailActionButton.swift in Sources */,
 				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,

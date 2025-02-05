@@ -85,9 +85,7 @@ struct EventsAnnotation: View {
                 sports: ["soccer"],
                 level: EVENT_SKILL_LEVELS.All,
                 startTime: 1699806600 + i * 3600, // Increment start time for each event
-                actualStartTime: 1699806600 + i * 3600,
                 stopTime: 1699806615 + i * 3600,
-                actualStopTime: 0,
                 maxParticipants: 10,
                 participants: [
                     Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)

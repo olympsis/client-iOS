@@ -226,8 +226,9 @@ struct EventActionButtons: View {
                             }
                         }
                     }.foregroundStyle(.white)
-                }.disabled(state == .loading ? true : false)
-                    .disabled(event.actualStopTime != nil ? true : false)
+                }
+                .disabled(state == .loading ? true : false)
+                .disabled(event.getEventStatus() == .ended ? true : false)
             } else {
                 Button(action: { Task { await cancel() }}) {
                     ZStack {

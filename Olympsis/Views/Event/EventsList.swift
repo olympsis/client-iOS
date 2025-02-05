@@ -33,14 +33,11 @@ struct EventsList: View {
         
         var groups: [DayGroup] = [DayGroup]();
         events.forEach { e in
-            guard let startTime = e.startTime else {
-                return
-            }
-            
+
             let index = groups.firstIndex(where: {
                 areDatesOnSameDay(
                     date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
-                    date2: Date(timeIntervalSince1970: TimeInterval(startTime))
+                    date2: Date(timeIntervalSince1970: TimeInterval(e.startTime))
                 )}
             )
             
@@ -48,7 +45,7 @@ struct EventsList: View {
                 groups[index!].events.append(e)
                 return
             } else {
-                let newGroup = DayGroup(timestamp: startTime, events: [e])
+                let newGroup = DayGroup(timestamp: e.startTime, events: [e])
                 groups.append(newGroup)
                 return
             }

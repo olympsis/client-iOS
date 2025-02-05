@@ -21,10 +21,8 @@ class Event: Decodable, Identifiable, ObservableObject {
     var body: String?
     let sports: [String]
     var level: EVENT_SKILL_LEVELS
-    @Published var startTime: Int?
-    @Published var actualStartTime: Int?
-    @Published var stopTime: Int?
-    @Published var actualStopTime: Int?
+    @Published var startTime: Int
+    @Published var stopTime: Int
     @Published var minParticipants: Int?
     @Published var maxParticipants: Int?
     @Published var participants: [Participant]?
@@ -60,7 +58,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         case isSensitive = "is_sensitive"
     }
     
-    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -72,9 +70,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.sports = sports
         self.level = level ?? .All
         self.startTime = startTime
-        self.actualStartTime = actualStartTime
         self.stopTime = stopTime
-        self.actualStopTime = actualStopTime
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
         self.participants = participants
@@ -118,10 +114,8 @@ class Event: Decodable, Identifiable, ObservableObject {
         }
         
         // Decode @Published properties
-        self.startTime = try container.decodeIfPresent(Int.self, forKey: .startTime)
-        self.actualStartTime = try container.decodeIfPresent(Int.self, forKey: .actualStartTime)
-        self.stopTime = try container.decodeIfPresent(Int.self, forKey: .stopTime)
-        self.actualStopTime = try container.decodeIfPresent(Int.self, forKey: .actualStopTime)
+        self.startTime = try container.decode(Int.self, forKey: .startTime)
+        self.stopTime = try container.decode(Int.self, forKey: .stopTime)
         self.minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
         self.maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
         self.participants = try container.decodeIfPresent([Participant].self, forKey: .participants)
@@ -140,9 +134,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.venues = event.venues
         self.participants = event.participants
         self.startTime = event.startTime
-        self.actualStartTime = event.actualStartTime
-        self.stopTime = event.actualStopTime
-        self.actualStopTime = event.actualStopTime
+        self.stopTime = event.stopTime
         self.imageURL = event.imageURL
         self.minParticipants = event.minParticipants
         self.maxParticipants = event.maxParticipants
@@ -245,13 +237,9 @@ extension Event {
     /// Can either return today, tomorrow, a day of the week, if futher than a week away M/d/y.
     /// - Returns: a formated `String` value of the event's start date
     func timeToString() -> String {
-        guard let eventStartTime = self.startTime else {
-            return "0/0/0"
-        }
-        
         let currentDate = Date()
         let calendar = Calendar.current
-        let timestamp = TimeInterval(eventStartTime)
+        let timestamp = TimeInterval(self.startTime)
         
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -275,21 +263,10 @@ extension Event {
     /// If an event is not live then it will return the start date of the event.
     /// - Returns: a formatted `String` of the time difference
     func timeDifferenceToString() -> String {
-        guard let eventStartTime = self.startTime else {
-            return "00:00 am"
-        }
-        
         let currentDate = Date()
         let dateFormatter = DateFormatter()
-        let date = Date(timeIntervalSince1970: TimeInterval(eventStartTime))
-        
-        // if this event has started move on if not return the formatted start time
-        guard let actualStartTime = self.actualStartTime else {
-            dateFormatter.dateFormat = "h:mm a"
-            return dateFormatter.string(from: date)
-        }
-        
-        let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(actualStartTime))
+        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
+        let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(self.startTime))
         
         if timeDifference < 60 {
             return "\(timeDifference) secs"
@@ -337,6 +314,17 @@ extension Event {
             return formattedTime
         }
     }
+    
+    func getEventStatus() -> EVENT_STATUS {
+        let currentDate = Date().timeIntervalSince1970
+        if (currentDate < TimeInterval(self.startTime)) {
+            return .pending
+        } else if (currentDate >= TimeInterval(self.startTime) && currentDate < TimeInterval(self.stopTime)) {
+            return .live
+        } else {
+            return .ended
+        }
+    }
 }
 
 extension [Event] {
@@ -347,7 +335,7 @@ extension [Event] {
             return nil
         }
         var filtered = self.filter{ $0.participants?.first(where: { $0.user?.uuid == uuid }) != nil }
-        filtered = filtered.sorted { ($0.startTime ?? 0) < ($1.startTime ?? 0) }
+        filtered = filtered.sorted { ($0.startTime) < ($1.startTime) }
         
         guard filtered.count > 0 else {
             return nil
@@ -367,7 +355,7 @@ extension [Event] {
             return nil
         }
         
-        return filtered.sorted { $0.startTime! < $1.startTime! }
+        return filtered.sorted { $0.startTime < $1.startTime }
     }
 }
 
@@ -383,9 +371,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     let sports: [String]?
     var level: EVENT_SKILL_LEVELS?
     var startTime: Int?
-    var actualStartTime: Int?
     var stopTime: Int?
-    var actualStopTime: Int?
     var minParticipants: Int?
     var maxParticipants: Int?
     var participants: [Participant]?
@@ -417,7 +403,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case externalLink = "external_link"
     }
     
-    init(type: EVENT_TYPES?=nil, poster: String?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String]?=nil, level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, actualStartTime: Int?=nil, stopTime: Int?=nil, actualStopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(type: EVENT_TYPES?=nil, poster: String?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String]?=nil, level: EVENT_SKILL_LEVELS?=nil, startTime: Int?=nil, stopTime: Int?=nil, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES?=nil, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.type = type
         self.poster = poster
         self.organizers = organizers
@@ -428,9 +414,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.sports = sports
         self.level = level
         self.startTime = startTime
-        self.actualStartTime = actualStartTime
         self.stopTime = stopTime
-        self.actualStopTime = actualStopTime
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
         self.participants = participants
@@ -452,9 +436,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
         self.level = numberToEventSkillLEvel(number: try container.decodeIfPresent(Int.self, forKey: .level) ?? 0)
         self.startTime = try container.decodeIfPresent(Int.self, forKey: .startTime)
-        self.actualStopTime = try container.decodeIfPresent(Int.self, forKey: .actualStopTime)
         self.stopTime = try container.decodeIfPresent(Int.self, forKey: .stopTime)
-        self.actualStopTime = try container.decodeIfPresent(Int.self, forKey: .actualStopTime)
         self.minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
         self.maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
         self.visibility = numberToEventVisibilityType(try container.decodeIfPresent(Int.self, forKey: .visibility) ?? 0)
@@ -477,9 +459,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(level?.toInt(), forKey: .level)
         try container.encodeIfPresent(startTime, forKey: .startTime)
-        try container.encodeIfPresent(actualStartTime, forKey: .actualStartTime)
         try container.encodeIfPresent(stopTime, forKey: .stopTime)
-        try container.encodeIfPresent(actualStopTime, forKey: .actualStopTime)
         try container.encodeIfPresent(minParticipants, forKey: .minParticipants)
         try container.encodeIfPresent(maxParticipants, forKey: .maxParticipants)
 //        try container.encodeIfPresent(participants, forKey: .participants) We don't do anything with that here

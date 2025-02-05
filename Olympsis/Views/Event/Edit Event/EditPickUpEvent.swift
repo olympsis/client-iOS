@@ -66,13 +66,7 @@ struct EditPickUpEvent: View {
     
     func updateEvent() async {
         
-        var stopTime: Int?
-        if hasEndTime {
-            stopTime = Int(eventStopTime.timeIntervalSince1970)
-        } else {
-            stopTime = nil
-        }
-        
+        let stopTime = Int(eventStopTime.timeIntervalSince1970)
         let dao = EventDao(
             imageURL: eventImageURL, title: eventTitle,
             body: eventBody,
@@ -319,17 +313,9 @@ struct EditPickUpEvent: View {
                     eventVisibility = event.visibility
                     eventSkilLevel = event.level
                     
-                    guard let startTime = event.startTime else {
-                        return
-                    }
-                    eventStartTime = Date(timeIntervalSince1970: TimeInterval(startTime))
-                    
-                    if let stopTime = event.stopTime {
-                        eventStopTime = Date(timeIntervalSince1970: TimeInterval(stopTime))
-                        hasEndTime = true
-                    } else {
-                        hasEndTime = false
-                    }
+                    eventStartTime = Date(timeIntervalSince1970: TimeInterval(event.startTime))
+                    eventStopTime = Date(timeIntervalSince1970: TimeInterval(event.stopTime))
+                    hasEndTime = true
                     
                     
                     if let image = event.imageURL {
