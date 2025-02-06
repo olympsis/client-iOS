@@ -76,14 +76,14 @@ struct EventMenu: View {
                 MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
                 
                 
-                if isPosterOrAdmin {
+                if true {
                     MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
                         Task {
                             await deleteEvent()
                         }
                     }, type: .destructive)
                 }
-            }.padding(.top)
+            }
             
             Spacer()
         }
