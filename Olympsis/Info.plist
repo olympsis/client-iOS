@@ -39,7 +39,7 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
 	<key>STORAGE</key>
 	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>Scene Configuration</key>
@@ -77,7 +77,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
-		<string>location</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>
