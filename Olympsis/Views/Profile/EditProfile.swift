@@ -391,6 +391,7 @@ struct EditProfile: View {
                 }
             }
         }
+        .background(Color("background-color/primary"))
     }
 }
 

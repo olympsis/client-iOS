@@ -83,7 +83,7 @@ struct MapOptions: View {
                         sliderValue = metersToMiles(radius: radiusValue)
                     }
                 }
-            }
+            }.background(Color("background-color/primary"))
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
