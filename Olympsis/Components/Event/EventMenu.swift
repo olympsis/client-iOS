@@ -73,7 +73,12 @@ struct EventMenu: View {
     //                })
                 }
                 
-                MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
+                MenuButton(
+                    icon: Image(systemName: "exclamationmark.shield.fill"),
+                    text: "Report an Issue",
+                    action: { showReport.toggle() }
+                )
+                .padding(.top)
                 
                 
                 if true {

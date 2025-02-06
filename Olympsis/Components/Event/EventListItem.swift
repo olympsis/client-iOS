@@ -170,11 +170,10 @@ struct _TrailingView: View {
                         Circle()
                             .frame(width: 10, height: 10)
                             .opacity(isBlinking ? 0 : 1)
-                            .onAppear {
-                                withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: true)) {
-                                    isBlinking.toggle()
-                                }
+                            .transaction { transaction in
+                                transaction.animation = .linear(duration: 0.5).repeatForever(autoreverses: true)
                             }
+                            .onAppear { isBlinking.toggle() }
                         Text("Live")
                             .bold()
                             .font(.callout)

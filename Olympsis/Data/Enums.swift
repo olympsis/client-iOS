@@ -317,10 +317,19 @@ func numberToGroupType(number: Int) -> GROUP_TYPE {
 enum EVENT_RSVP_STATUS: String, CaseIterable {
     case Yes = "yes"
     case Maybe = "maybe"
+    
+    func toInt() -> Int {
+        switch self {
+        case .Yes:
+            1
+        case .Maybe:
+            0
+        }
+    }
 }
 
 func numberToEventRSVPStatus(_ number: Int) -> EVENT_RSVP_STATUS {
-    if (number == 0) {
+    if (number == 1) {
         return .Yes
     } else {
         return .Maybe
