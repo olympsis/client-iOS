@@ -37,7 +37,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 35, height: 35)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -68,7 +68,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 65, height: 65)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -99,7 +99,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 100, height: 100)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()

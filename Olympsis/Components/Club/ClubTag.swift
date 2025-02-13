@@ -15,7 +15,7 @@ struct ClubTag: View {
     var body: some View {
         if (isSport) {
             Text(tagName.prefix(1).capitalized + tagName.dropFirst())
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
                 .padding(.horizontal)
                 .frame(height: 25)
                 .background {

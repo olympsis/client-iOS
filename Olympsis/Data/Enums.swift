@@ -56,6 +56,11 @@ enum AuthTab: String, CaseIterable {
     case notifications = "NOTIFICATIONS"
 }
 
+enum EVENTS_PAGE_STATE: String, CaseIterable {
+    case list
+    case map
+}
+
 
 enum NavigationType: String, Hashable {
     case home = "HOME"

@@ -96,7 +96,7 @@ struct Home: View {
             .toolbarRole(.navigationStack)
             .ignoresSafeArea(.keyboard)
             .ignoresSafeArea(.container, edges: .bottom)
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .navigationDestination(for: HOME_ROUTES.self, destination: { route in
                 switch route {
                 case .notifications:

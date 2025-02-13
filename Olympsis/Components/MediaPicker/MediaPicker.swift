@@ -160,7 +160,7 @@ struct MediaPicker: View {
                             .padding(.horizontal, 5)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                                     .frame(width: 27, height: 25)
                             }
                             
@@ -170,7 +170,7 @@ struct MediaPicker: View {
                             .padding(.horizontal, 3)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                             .padding(.horizontal)
                         }

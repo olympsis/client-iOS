@@ -13,7 +13,7 @@ import _PhotosUI_SwiftUI
 class NewPostViewModel: ObservableObject {
     
     @Published var type: POST_TYPE
-    @Published var body: String = "Write a caption"
+    @Published var body: String = ""
     
     @Published var selectedEvent: Event? = nil
     @Published var selectedImages: [UIImage] = [] {

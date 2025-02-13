@@ -93,7 +93,7 @@ struct GroupReports: View {
                     }
                     .padding(.vertical)
                     .background {
-                        Color("background")
+                        Color(Color.Background.secondary)
                     }
                     :
                     Button(action: {
@@ -129,7 +129,7 @@ struct GroupReports: View {
                         }
                     }.padding(.vertical)
                         .background {
-                            Color("background")
+                            Color(Color.Background.secondary)
                         }
                     :
                     Button(action: {
@@ -164,7 +164,7 @@ struct GroupReports: View {
                         }
                     }.padding(.vertical)
                         .background {
-                            Color("background")
+                            Color(Color.Background.secondary)
                         }
                     :
                     Button(action: {

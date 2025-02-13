@@ -55,7 +55,7 @@ struct EventListItem: View {
                                     .frame(width: 80, height: 80)
                                     .overlay {
                                         Image(systemName: "photo")
-                                            .foregroundStyle(Color("background"))
+                                            .foregroundStyle(Color(Color.Background.secondary))
                                     }
                             }
                             .resizable()
@@ -108,7 +108,7 @@ struct EventListItem: View {
         .clipShape(Rectangle())
         .background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color.Background.secondary)
         }
         .fullScreenCover(isPresented: $showDetails) {
             EventView(event: event)
@@ -161,7 +161,7 @@ struct _TrailingView: View {
                         .font(.callout)
                         .foregroundColor(.primary)
                     
-                    Text(event.timeDifferenceToString())
+                    Text(event.getStartHourAndMinute())
                         .foregroundColor(.primary)
                 }.padding(.bottom, 5)
             case .live:
@@ -190,7 +190,7 @@ struct _TrailingView: View {
                             .font(.callout)
                     }.foregroundStyle(.gray)
                     
-                    Text(event.timeDifferenceToString())
+                    Text(event.getStopHourAndMinute())
                         .foregroundColor(.primary)
                 }.padding(.bottom, 5)
             }

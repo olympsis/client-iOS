@@ -39,7 +39,7 @@ struct Onboard_AboutClubs: View {
                 }
             }) {
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
                     .background {
                         Circle()
                             .frame(width: 50, height: 50)
@@ -50,7 +50,7 @@ struct Onboard_AboutClubs: View {
             Spacer()
         }
         .background {
-            Color.background
+            Color.Background.primary
         }
     }
 }

@@ -39,7 +39,7 @@ struct Onboard_AboutEvents: View {
             Spacer()
         }
         .background {
-            Color.background
+            Color.Background.primary
         }
     }
 }

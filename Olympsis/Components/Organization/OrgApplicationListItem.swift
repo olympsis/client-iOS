@@ -168,7 +168,7 @@ struct OrgApplicationListItem: View {
         }
         .background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
                 .padding(.horizontal, 5)
         }
     }

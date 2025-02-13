@@ -60,7 +60,7 @@ struct GroupToolbar: ToolbarContent {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 35)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             Image(systemName: "slider.horizontal.3")
                                 .foregroundStyle(Color("foreground"))
                         }
@@ -108,7 +108,7 @@ struct GroupToolbar: ToolbarContent {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
                                         .imageScale(.medium)
@@ -120,7 +120,7 @@ struct GroupToolbar: ToolbarContent {
 //                                ZStack {
 //                                    RoundedRectangle(cornerRadius: 10)
 //                                        .frame(width: 45, height: 35)
-//                                        .foregroundStyle(Color("background"))
+//                                        .foregroundStyle(Color(Color.Background.secondary))
 //                                    Image(systemName: "bubble.left.and.bubble.right")
 //                                        .foregroundStyle(Color("foreground"))
 //                                        .imageScale(.medium)
@@ -186,7 +186,7 @@ struct GroupToolbar: ToolbarContent {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
                                         .imageScale(.medium)
@@ -198,7 +198,7 @@ struct GroupToolbar: ToolbarContent {
 //                                ZStack {
 //                                    RoundedRectangle(cornerRadius: 10)
 //                                        .frame(width: 45, height: 35)
-//                                        .foregroundStyle(Color("background"))
+//                                        .foregroundStyle(Color(Color.Background.secondary))
 //                                    Image(systemName: "bubble.left.and.bubble.right")
 //                                        .foregroundStyle(Color("foreground"))
 //                                        .imageScale(.medium)
@@ -243,7 +243,7 @@ struct GroupToolbar: ToolbarContent {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 35)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             Image(systemName: "arrow.clockwise")
                                 .foregroundStyle(Color("foreground"))
                         }

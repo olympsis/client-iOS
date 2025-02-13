@@ -18,7 +18,7 @@ struct MapView: View {
     @StateObject var router: EventRouter = EventRouter()
     
     @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = false
+    @State private var showBottomSheet: Bool = true
     @State private var showFieldDetail: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false
@@ -49,7 +49,7 @@ struct MapView: View {
     }
     
     var body: some View {
-        NavigationStack(path: $router.navPath) {
+        ZStack {
             Map(position: $cameraPosition) {
                 ForEach(session.venues) { venue in
                     Annotation(venue.name, coordinate: CLLocationCoordinate2D(latitude: venue.location.coordinates[1], longitude: venue.location.coordinates[0]), anchor: .bottom) {
@@ -65,104 +65,19 @@ struct MapView: View {
                 }
                 UserAnnotation()
             }
-            .ignoresSafeArea(edges: .all)
-            .toolbar(.hidden, for: .navigationBar)
-            .mapStyle(.standard(elevation: .realistic))
-            .overlay(alignment: .topTrailing) {
-                VStack(alignment: .trailing) {
-                    HStack {
-                        Text("Events")
-                            .font(.title)
-                            .bold()
-                        
-                        Spacer()
-//                        LocationButton(.currentLocation){
-//                            withAnimation {
-//                                cameraPosition = .userLocation(fallback: .region(fallbackLocation))
-//                            }
-//                        }
-//                        .clipShape(Circle())
-//                        .labelStyle(.iconOnly)
-//                        .symbolVariant(.fill)
-//                        .foregroundColor(.white)
-//                        .tint(Color("color-secnd"))
-//                        .frame(width: 40, height: 40)
-                        
-                        Button(action:{ self.router.navigate(to: .settings) }){
-                            ZStack {
-                                Circle()
-                                    .tint(Color.colorPrime)
-                                    .frame(width: 41, height: 41)
-                                Image(systemName: "slider.vertical.3")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
-                            }
-                        }.frame(width: 41, height: 41)
-                    }.padding(.horizontal)
-                    
-                    VStack {
-                        Button(action:{ self.showNewEvent = true }){
-                            ZStack {
-                                Circle()
-                                    .tint(Color.colorPrime)
-                                Image(systemName: "plus")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
-                            }
-                        }.frame(width: 41)
-                        
-                        Button(action:{ self.showBottomSheet = true }){
-                            Circle()
-                                .tint(Color.colorPrime)
-                                .overlay {
-                                    Image(systemName: "line.3.horizontal.decrease")
-                                        .imageScale(.large)
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundColor(.white)
-                                        
-                                }
-                                .overlay(alignment: .topTrailing) {
-                                    if session.events.count > 0 {
-                                        Circle()
-                                            .foregroundStyle(.red)
-                                            .frame(width: 15, height: 15)
-                                    }
-                                }
-                        }
-                        .frame(width: 41)
-                        .padding(.top, 2)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, -12)
-                }.zIndex(10)
+            DraggableCard(detents: [.height(50), .height(250), .fraction(0.5)]) {
+                EventsModalView(events: session.events)
             }
-            .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
-                switch route {
-                case .events(let eventId, let openEvents):
-                    if let eventId {
-                        AsyncEventView(eventId: eventId)
-                            .toolbar(.hidden, for: .navigationBar)
-                    } else if openEvents != nil && openEvents == true {
-                        EventsList(events: session.events)
-                    }
-                case .settings:
-                    MapOptions(availableSports: SPORTS.allCases, selectedSports: sports)
-                        .environmentObject(router)
-                }
-            })
         }
+        .ignoresSafeArea(edges: .all)
+        .toolbar(.hidden, for: .navigationBar)
+        .mapStyle(.standard(elevation: .realistic))
         .sheet(item: $selectedVenue) { field in
             VenueView(venue: field)
                 .presentationDetents([.height(250), .large])
         }
         .fullScreenCover(isPresented: $showNewEvent) {
             NewEvent(manager: NewEventManager())
-        }
-        .sheet(isPresented: $showBottomSheet) {
-            EventsModalView(events: session.events)
-                .presentationDetents([.height(250), .large])
         }
         .alert(isPresented: $showError){
             Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
@@ -176,7 +91,6 @@ struct MapView: View {
 }
 
 #Preview {
-    let session = SessionStore()
-    return MapView()
-        .environment(session)
+    MapView()
+        .environment(SessionStore())
 }

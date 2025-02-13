@@ -42,7 +42,7 @@ struct GroupEditor: View {
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showBannerMediaPicker.toggle()
@@ -54,7 +54,7 @@ struct GroupEditor: View {
                                 .overlay {
                                     Image(systemName: "photo.fill")
                                         .imageScale(.large)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showBannerMediaPicker.toggle()
@@ -64,7 +64,7 @@ struct GroupEditor: View {
                     }.overlay(alignment: .topTrailing) {
                         Image(systemName: "pencil.circle.fill")
                             .padding(.all, 5)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                     }
                     .fullScreenCover(isPresented: $viewModel.showBannerMediaPicker) {
                         MediaPicker(pickerType: .other) { images in
@@ -85,11 +85,11 @@ struct GroupEditor: View {
                             Image(uiImage: img)
                                 .resizable()
                                 .frame(width: 100, height: 100)
-                                .border(Color("background"), width: 3)
+                                .border(Color(Color.Background.secondary), width: 3)
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showLogoMediaPicker.toggle()
@@ -106,11 +106,11 @@ struct GroupEditor: View {
                                 })
                                 .resizable()
                                 .frame(width: 100, height: 100)
-                                .border(Color("background"), width: 3)
+                                .border(Color(Color.Background.secondary), width: 3)
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showLogoMediaPicker.toggle()
@@ -119,15 +119,15 @@ struct GroupEditor: View {
                             Rectangle()
                                 .foregroundStyle(.gray)
                                 .frame(width: 100, height: 100)
-                                .border(Color("background"), width: 3)
+                                .border(Color(Color.Background.secondary), width: 3)
                                 .overlay {
                                     Image(systemName: "person.3.fill")
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showLogoMediaPicker.toggle()
@@ -152,7 +152,7 @@ struct GroupEditor: View {
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color("background"))
+                        .foregroundColor(Color(Color.Background.secondary))
                     TextField("", text: $viewModel.clubName)
                         .padding(.leading)
                 }.frame(height: 40)
@@ -170,7 +170,7 @@ struct GroupEditor: View {
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color("background"))
+                        .foregroundColor(Color(Color.Background.secondary))
                     TextEditor(text: $viewModel.description)
                         .scrollContentBackground(.hidden)
                     .frame(height: 200)
@@ -189,7 +189,7 @@ struct GroupEditor: View {
 
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                             .frame(height: 40)
                         Button(action: {
                             viewModel.showSportsPicker.toggle()

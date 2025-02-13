@@ -69,6 +69,7 @@ struct EventsList: View {
                         Section(header: Text(group.dayInString)) {
                             ForEach(group.events, id: \.id) { event in
                                 EventListItem(event: event)
+                                    .listRowBackground(Color.clear)
                             }
                         }
                         .id(group.timestamp)
@@ -86,7 +87,7 @@ struct EventsList: View {
 //                        .datePickerStyle(.compact)
 //                }
             }
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .navigationTitle("Events")
             .navigationBarTitleDisplayMode(.inline)
         }

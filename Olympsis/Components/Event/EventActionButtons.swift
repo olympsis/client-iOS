@@ -129,7 +129,7 @@ struct EventActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color.Background.secondary)
                         
                         VStack {
                             VStack {
@@ -153,7 +153,7 @@ struct EventActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color.Background.secondary)
                         
                         VStack {
                             VStack {
@@ -178,7 +178,7 @@ struct EventActionButtons: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("background"))
+                    .foregroundColor(Color.Background.secondary)
                 VStack {
                     if event.visibility == EVENT_VISIBILITY_TYPES.Private {
                         VStack {
@@ -257,7 +257,7 @@ struct EventActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
+                        .foregroundColor(Color.Background.secondary)
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")

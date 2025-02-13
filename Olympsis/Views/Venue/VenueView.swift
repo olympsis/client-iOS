@@ -77,7 +77,9 @@ struct VenueView: View {
                 VenueEventsView(venue: $venue)
                 
             }       
-        }.padding(.top)
+        }
+        .background(Color.Background.primary)
+        .padding(.top)
     }
 }
 
@@ -197,7 +199,7 @@ struct VenueActionButtons: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("background"))
+                    .foregroundColor(Color(Color.Background.secondary))
                 VStack {
                     if venue.isPublic() {
                         VStack {
@@ -235,7 +237,7 @@ struct VenueActionButtons: View {
                     }
                 }.presentationCompactAdaptation(.popover)
                     .presentationBackground(content: {
-                        Color("background")
+                        Color(Color.Background.secondary)
                     })
                     .frame(width: 200)
                     .padding(.vertical)
@@ -245,7 +247,7 @@ struct VenueActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
+                        .foregroundColor(Color(Color.Background.secondary))
                     VStack {
                         Image(systemName: "plus")
                             .resizable()
@@ -268,7 +270,7 @@ struct VenueActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
+                        .foregroundColor(Color(Color.Background.secondary))
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")

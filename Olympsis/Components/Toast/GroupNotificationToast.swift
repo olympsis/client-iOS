@@ -79,7 +79,7 @@ struct GroupNotificationToast: View {
                             if groupImageFailed {
                                 Circle()
                                     .frame(width: size, height: size)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         Image(systemName: "person.3.fill")
                                             .imageScale(.small)
@@ -121,7 +121,7 @@ struct GroupNotificationToast: View {
                             if groupImageFailed {
                                 Circle()
                                     .frame(width: size, height: size)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         Image(systemName: "person.3.fill")
                                             .imageScale(.small)

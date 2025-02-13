@@ -159,7 +159,7 @@ struct PostComments: View {
                             .background {
                                 Rectangle()
                                     .frame(height: 50)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                     }
                 }

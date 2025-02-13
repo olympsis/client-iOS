@@ -46,7 +46,7 @@ struct Notifications: View {
                 .padding(.vertical)
                 .background {
                     Rectangle()
-                        .foregroundStyle(Color("background"))
+                        .foregroundStyle(Color(Color.Background.secondary))
                         .ignoresSafeArea(.all)
                 }
             

@@ -65,7 +65,7 @@ struct EventMiddleView: View {
             RoundedRectangle(cornerRadius: 10)
                 .padding(.horizontal)
                 .frame(height: 70)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color.Background.secondary)
             HStack (alignment: .center) {
                 VStack(alignment: .center){
                     switch event.getEventStatus() {

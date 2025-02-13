@@ -90,22 +90,16 @@ struct PostCreator: View {
                     }
                     Rectangle()
                         .frame(height: 1)
-                        .foregroundStyle(Color("background"))
+                        .foregroundStyle(Color(Color.Background.secondary))
                     
                     TextEditor(text: $viewModel.body)
                         .focused($bodyFocused)
                         .padding(.horizontal)
-                        .onTapGesture {
-                            if (viewModel.body == "Write a caption") {
-                                viewModel.body = ""
-                            }
-                        }
-                        .foregroundStyle(viewModel.body == "Write a caption" ? .gray : .primary)
                         .frame(height: 200)
                     
                     Rectangle()
                         .frame(height: 1)
-                        .foregroundStyle(Color("background"))
+                        .foregroundStyle(Color(Color.Background.secondary))
                 }
                 
                 HStack {
@@ -120,7 +114,7 @@ struct PostCreator: View {
                     .padding(.all)
                     .background {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                     }
                     .fullScreenCover(isPresented: $showMediaPicker, content: {
                         MediaPicker(pickerType: .newPost) { images in
@@ -131,7 +125,7 @@ struct PostCreator: View {
             }.sheet(isPresented: $showPostViolation, onDismiss: { dismiss() }, content: {
                 PostMediaViolation()
             })
-        }
+        }.background(Color.Background.primary)
     }
 }
 

@@ -95,7 +95,7 @@ struct GroupNewRoom: View {
                         .padding(.horizontal, 50)
                 }
             }
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .padding(.horizontal)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

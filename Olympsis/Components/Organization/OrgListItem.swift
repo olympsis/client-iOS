@@ -125,7 +125,7 @@ struct OrgListItem: View {
             }.padding(.all)
         }.background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color("background"))
+                .foregroundColor(Color(Color.Background.secondary))
                 .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {

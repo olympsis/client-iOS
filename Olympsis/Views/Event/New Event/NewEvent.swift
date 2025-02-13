@@ -255,7 +255,7 @@ struct NewEvent: View {
                         .font(.subheadline)
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                             .frame(height: 100)
                         TextEditor(text: $manager.body)
                             .focused($descriptionFocus)
@@ -308,7 +308,7 @@ struct NewEvent: View {
                         }
                     } else {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                             .frame(height: 100)
                             .overlay {
                                 Text("Pick a location")
@@ -474,7 +474,7 @@ struct NewEvent: View {
             .sheet(isPresented: $showPostViolation, content: {
                 PostMediaViolation()
             })
-        }
+        }.background(Color.Background.primary)
     }
 }
 

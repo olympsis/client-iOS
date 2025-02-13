@@ -45,7 +45,7 @@ struct OrgBanner: View {
                     .frame(width: SCREEN_WIDTH, height: 250)
                     .overlay {
                         Image(systemName: "photo.fill")
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .imageScale(.large)
                     }
             }
@@ -63,16 +63,16 @@ struct OrgBanner: View {
                         })
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .border(Color.background, width: 3)
+                        .border(Color.Background.primary, width: 3)
                 } else {
                     Rectangle()
                         .frame(width: 100, height: 100)
                         .foregroundStyle(.gray)
-                        .border(Color.background, width: 3)
+                        .border(Color.Background.primary, width: 3)
                         .overlay {
                             Image(systemName: "building.fill")
                                 .imageScale(.large)
-                                .foregroundStyle(Color.background)
+                                .foregroundStyle(Color.Background.primary)
                         }
                 }
             }

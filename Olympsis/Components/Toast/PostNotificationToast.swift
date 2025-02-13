@@ -87,7 +87,7 @@ struct PostNotificationToast: View {
                             if profileImageFailed {
                                 Circle()
                                     .frame(width: size, height: size)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         Image(systemName: "person.fill")
                                             .resizable()
@@ -141,7 +141,7 @@ struct PostNotificationToast: View {
                             if profileImageFailed {
                                 Circle()
                                     .frame(width: size, height: size)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         Image(systemName: "person.fill")
                                             .resizable()

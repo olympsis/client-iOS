@@ -10,7 +10,7 @@ import SwiftUI
 struct ClubDefaultBadge: View {
     var body: some View {
         Circle()
-            .foregroundStyle(Color("background"))
+            .foregroundStyle(Color(Color.Background.secondary))
             .frame(width: 35, height: 35)
             .overlay {
                 Image(systemName: "person.2.fill")

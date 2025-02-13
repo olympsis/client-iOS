@@ -44,7 +44,7 @@ struct ClubApplications: View {
                     }
                 }
             }
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {

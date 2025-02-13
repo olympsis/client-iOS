@@ -95,7 +95,7 @@ struct MemberBlockingConfirmation: View {
                                 .resizable()
                                 .frame(width: 35, height: 35)
                                 .foregroundColor(.red)
-                            Color("background") // Acts as a placeholder.
+                            Color(Color.Background.secondary) // Acts as a placeholder.
                                 .clipShape(Circle())
                                 .opacity(0.3)
                         }.frame(width: 100, height: 100)

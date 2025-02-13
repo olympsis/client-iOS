@@ -13,7 +13,7 @@ struct ImageLoadingFailedView: View {
             .foregroundStyle(.gray)
             .overlay {
                 Image(systemName: "rectangle.slash")
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
             }
     }
 }

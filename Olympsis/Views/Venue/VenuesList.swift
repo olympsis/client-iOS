@@ -57,7 +57,9 @@ struct VenuesList: View {
                         })
                     }
                 }
-            }.toolbar {
+            }
+            .background(Color.Background.primary)
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")

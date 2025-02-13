@@ -48,7 +48,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.walk")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .running:
             return ZStack {
@@ -58,7 +58,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.run")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .soccer:
             return ZStack {
@@ -68,7 +68,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.soccer")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         }
     }
@@ -151,7 +151,7 @@ struct SmallWorkoutView: View {
             .padding(.vertical, 10)
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .foregroundColor(Color("background"))
+                    .foregroundColor(Color(Color.Background.secondary))
             }
             .padding(.horizontal, 5)
             .onTapGesture {

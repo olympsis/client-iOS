@@ -23,7 +23,7 @@ struct WorkoutView: View {
                 Image(systemName: "figure.walk")
                     .resizable()
                     .frame(width: 45, height: 55)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .running:
             return ZStack {
@@ -33,7 +33,7 @@ struct WorkoutView: View {
                 Image(systemName: "figure.run")
                     .resizable()
                     .frame(width: 45, height: 55)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .soccer:
             return ZStack {
@@ -43,7 +43,7 @@ struct WorkoutView: View {
                 Image(systemName: "figure.soccer")
                     .resizable()
                     .frame(width: 45, height: 55)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         }
     }

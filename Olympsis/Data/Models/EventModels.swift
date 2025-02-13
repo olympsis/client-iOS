@@ -325,6 +325,22 @@ extension Event {
             return .ended
         }
     }
+    
+    func getStartHourAndMinute() -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
+    }
+
+    func getStopHourAndMinute() -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(self.stopTime))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
+    }
 }
 
 extension [Event] {
@@ -498,4 +514,15 @@ struct EventSharingTemplate {
     var titlePosition: SHARING_TITLE_POSITION
     var timePosition: SHARING_TIME_POSITION
     var venuePosition: SHARING_VENUE_POSITION
+}
+
+
+struct DayGroup: Identifiable {
+    let id = UUID()
+    let timestamp: Int
+    var events: [Event]
+    
+    var dayInString: String {
+        return events[0].timeToString()
+    }
 }

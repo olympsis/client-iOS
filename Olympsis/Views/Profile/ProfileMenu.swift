@@ -112,7 +112,7 @@ struct ProfileMenu: View {
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .alert(isPresented: $showAlert) {
                 switch alertType {
                 case .logout:

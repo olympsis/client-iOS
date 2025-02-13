@@ -137,7 +137,7 @@ struct UserDataCreation: View {
                 .padding(.vertical)
                 .background {
                     Rectangle()
-                        .foregroundStyle(Color("background"))
+                        .foregroundStyle(Color(Color.Background.secondary))
                         .ignoresSafeArea(.all)
                         .frame(width: SCREEN_WIDTH)
                 }
@@ -150,7 +150,7 @@ struct UserDataCreation: View {
                 HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                         TextField("", text: $viewModel.searchText)
                             .focused($isFocused)
                             .padding(.horizontal)
@@ -183,7 +183,7 @@ struct UserDataCreation: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                             .frame(width: 45, height: 45)
                             .overlay {
                                 switch status {

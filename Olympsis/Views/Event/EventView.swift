@@ -277,7 +277,7 @@ struct EventView: View {
                 }
             }
         }
-        .background(Color("background-color/primary"))
+        .background(Color.Background.primary)
         .sheet(isPresented: $showSharingMenu, content: {
             ShareMenu(event: event, venue: venues[0])
                 .presentationDetents([.height(170)])

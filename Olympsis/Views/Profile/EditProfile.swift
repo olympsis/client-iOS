@@ -158,7 +158,7 @@ struct EditProfile: View {
                                         .scaledToFit()
                                 } else if phase.error != nil {
                                     ZStack {
-                                        Color("background") // Acts as a placeholder.
+                                        Color(Color.Background.secondary) // Acts as a placeholder.
                                             .clipShape(Circle())
                                         Image(systemName: "person.fill")
                                             .resizable()
@@ -167,7 +167,7 @@ struct EditProfile: View {
                                     }.frame(width: 100, height: 100)
                                 } else {
                                     ZStack {
-                                        Color("background") // Acts as a placeholder.
+                                        Color(Color.Background.secondary) // Acts as a placeholder.
                                             .clipShape(Circle())
                                         ProgressView()
                                     }.frame(width: 100, height: 100)
@@ -175,7 +175,7 @@ struct EditProfile: View {
                             }.frame(width: 100, height: 100)
                         } else {
                             ZStack {
-                                Color("background")
+                                Color(Color.Background.secondary)
                                     .clipShape(Circle())
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -214,7 +214,7 @@ struct EditProfile: View {
                         .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 40)
-                                .foregroundColor(Color("background"))
+                                .foregroundColor(Color(Color.Background.secondary))
                         }
                         .padding(.top, 5)
                 }.padding(.horizontal)
@@ -235,7 +235,7 @@ struct EditProfile: View {
                         .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 100)
-                                .foregroundColor(Color("background"))
+                                .foregroundColor(Color(Color.Background.secondary))
                         }
                 }.padding(.horizontal)
                     .padding(.bottom, 15)
@@ -300,7 +300,7 @@ struct EditProfile: View {
                     .background {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 40)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                     }
                 }.padding(.horizontal)
                     .padding(.top)
@@ -329,7 +329,7 @@ struct EditProfile: View {
                     .background {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 40)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                     }
                 }.padding(.horizontal)
                     .padding(.vertical, 15)
@@ -391,7 +391,7 @@ struct EditProfile: View {
                 }
             }
         }
-        .background(Color("background-color/primary"))
+        .background(Color.Background.primary)
     }
 }
 

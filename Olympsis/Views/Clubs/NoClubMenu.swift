@@ -98,7 +98,7 @@ struct NoClubMenu: View {
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
 
-            }.background(Color("background-color/primary"))
+            }.background(Color.Background.primary)
         }
     }
 }

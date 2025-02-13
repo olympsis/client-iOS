@@ -14,17 +14,6 @@ struct EventsModalView: View {
     @State private var showMore = false
     @Environment(SessionStore.self) private var session
     
-    /// Struct for filtering events by the day they are to start
-    struct DayGroup: Identifiable {
-        let id = UUID()
-        let timestamp: Int
-        var events: [Event]
-        
-        var dayInString: String {
-            return events[0].timeToString()
-        }
-    }
-    
     /// Groups the events by date
     var eventsGrouped: [DayGroup] {
         
@@ -89,6 +78,7 @@ struct EventsModalView: View {
                     Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
                         ForEach(group.events, id: \.id) { event in
                             EventListItem(event: event)
+                                .listRowBackground(Color.clear)
                         }
                     }
                 }
@@ -100,7 +90,7 @@ struct EventsModalView: View {
             }
         }
         .presentationDragIndicator(.visible)
-        .background(Color("background-color/primary"))
+        .background(Color.Background.primary)
     }
 }
 

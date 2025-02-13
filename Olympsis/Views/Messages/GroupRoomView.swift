@@ -130,7 +130,7 @@ struct GroupRoomView: View {
                 .padding(.horizontal, 5)
                 .disabled(viewModel.state != .success)
             }
-            .background(Color("background-color/primary"))
+            .background(Color.Background.primary)
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{

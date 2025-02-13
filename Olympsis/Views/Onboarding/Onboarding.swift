@@ -41,7 +41,7 @@ struct Onboarding: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .background {
-            Color.background
+            Color.Background.primary
                 .ignoresSafeArea()
         }
     }

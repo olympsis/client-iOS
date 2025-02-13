@@ -29,7 +29,7 @@ struct NotificationsView: View {
                 }.padding(.top, 50)
             }
         }
-        .background(Color("background-color/primary"))
+        .background(Color.Background.primary)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

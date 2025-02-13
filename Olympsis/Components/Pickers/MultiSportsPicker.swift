@@ -19,7 +19,7 @@ struct MultiSportsPicker: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 40, maxHeight: 40)
                         .padding(.horizontal)
-                        .foregroundStyle(Color("background"))
+                        .foregroundStyle(Color(Color.Background.secondary))
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(Array(selectedSports), id: \.self) { sport in
@@ -30,7 +30,7 @@ struct MultiSportsPicker: View {
                                         selectedSports.remove(sport)
                                     }) {
                                         Image(systemName: "xmark.circle.fill")
-                                            .foregroundStyle(Color("background"))
+                                            .foregroundStyle(Color(Color.Background.secondary))
                                     }
                                 }.padding(.horizontal, 10)
                                     .padding(.vertical, 5)

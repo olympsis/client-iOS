@@ -101,7 +101,7 @@ struct NewClub: View {
                                 .overlay {
                                     Image(systemName: "photo.fill")
                                         .imageScale(.large)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 
                         }
@@ -109,7 +109,7 @@ struct NewClub: View {
                     .overlay(alignment: .topTrailing) {
                         Image(systemName: "pencil.circle.fill")
                             .padding(.all, 5)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                     }
                     .fullScreenCover(isPresented: $viewModel.showBannerMediaPicker) {
                         MediaPicker(pickerType: .other) { images in
@@ -130,11 +130,11 @@ struct NewClub: View {
                             Image(uiImage: img)
                                 .resizable()
                                 .frame(width: 100, height: 100)
-                                .border(Color("background"), width: 3)
+                                .border(Color(Color.Background.secondary), width: 3)
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showLogoMediaPicker.toggle()
@@ -143,15 +143,15 @@ struct NewClub: View {
                             Rectangle()
                                 .foregroundStyle(.gray)
                                 .frame(width: 100, height: 100)
-                                .border(Color("background"), width: 3)
+                                .border(Color(Color.Background.secondary), width: 3)
                                 .overlay {
                                     Image(systemName: "person.3.fill")
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .overlay(alignment: .topTrailing) {
                                     Image(systemName: "pencil.circle.fill")
                                         .padding(.all, 5)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                 }
                                 .onTapGesture {
                                     viewModel.showLogoMediaPicker.toggle()
@@ -185,7 +185,7 @@ struct NewClub: View {
                             .frame(height: 40)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                         Text("*required")
                             .foregroundStyle(.gray)
@@ -210,7 +210,7 @@ struct NewClub: View {
                             .frame(height: 200)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                         
                         Text("*required")
@@ -233,7 +233,7 @@ struct NewClub: View {
                     VStack(alignment: .leading) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                                 .frame(height: 40)
                             Button(action: {
                                 viewModel.showSportsPicker.toggle()
@@ -291,7 +291,7 @@ struct NewClub: View {
                         .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 40)
-                                .foregroundColor(Color("background"))
+                                .foregroundColor(Color(Color.Background.secondary))
                         }
                         Text("*required")
                             .foregroundStyle(.gray)
@@ -318,7 +318,7 @@ struct NewClub: View {
             .padding(.top)
         }
         .frame(width: SCREEN_WIDTH-25)
-        .background(Color("background-color/primary"))
+        .background(Color.Background.primary)
         .navigationTitle("Create Club")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {

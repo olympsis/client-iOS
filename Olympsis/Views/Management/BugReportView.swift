@@ -63,7 +63,7 @@ struct BugReportView: View {
                 VStack(alignment: .leading) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 1)
                             .foregroundStyle(.gray)

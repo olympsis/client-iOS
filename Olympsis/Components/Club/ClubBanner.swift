@@ -39,7 +39,7 @@ struct ClubBanner: View {
                     .frame(width: SCREEN_WIDTH, height: 250)
                     .overlay {
                         Image(systemName: "photo.fill")
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                             .imageScale(.large)
                     }
             }
@@ -52,16 +52,16 @@ struct ClubBanner: View {
                             .resizable()
                             .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200)))
                             .frame(width: 100, height: 100)
-                            .border(Color("background"), width: 3)
+                            .border(Color(Color.Background.secondary), width: 3)
                     } else {
                         Rectangle()
                             .frame(width: 100, height: 100)
                             .foregroundStyle(.gray)
-                            .border(Color("background"), width: 3)
+                            .border(Color(Color.Background.secondary), width: 3)
                             .overlay {
                                 Image(systemName: "person.3.fill")
                                     .imageScale(.large)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                     }
                     Spacer()

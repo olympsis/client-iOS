@@ -422,7 +422,7 @@ struct PostFooter: View {
             
             Rectangle()
                 .frame(height: 1)
-                .foregroundStyle(Color.background)
+                .foregroundStyle(Color.Background.primary)
         }
     }
 }

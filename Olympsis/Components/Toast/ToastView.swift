@@ -40,7 +40,7 @@ struct ToastView: View {
         .foregroundStyle(Color.foreground)
         .background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color.background)
+                .foregroundStyle(Color.Background.primary)
         }
     }
 }

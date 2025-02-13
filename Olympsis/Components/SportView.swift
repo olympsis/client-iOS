@@ -18,7 +18,7 @@ struct SportView: View {
         case .Small, .Medium:
             ZStack {
                 Circle()
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
                     .frame(width: 70, height: 70)
                 
                 VStack(alignment: .center) {
@@ -90,7 +90,7 @@ struct SportView: View {
         case .Large:
             ZStack {
                 Circle()
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
                     .frame(width: 100, height: 100)
                 
                 VStack(alignment: .center) {
@@ -161,7 +161,7 @@ struct SportView: View {
         case .XLarge:
             ZStack {
                 Circle()
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
                     .frame(width: 100, height: 100)
                 
                 VStack(alignment: .center) {
