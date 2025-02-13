@@ -13,18 +13,20 @@ struct Onboard_AboutEvents: View {
     
     var body: some View {
         VStack {
-            Text("Local Sports Events")
+            Text("Create Sports Events")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
+                .foregroundStyle(Color.foreground)
             
-            Text("Host events for your group and or share it publicly to others to help them reach their goals. ")
+            Text("Make events exclusive to your group or share them with the community to inspire others")
                 .font(.title2)
                 .multilineTextAlignment(.center)
                 .padding([.horizontal, .vertical])
+                .foregroundStyle(Color.foreground)
             
-            Image("World-rafiki")
+            Image("illustrations/world")
                 .resizable()
                 .frame(width: SCREEN_WIDTH/1.2, height: SCREEN_WIDTH/1.2)
             
@@ -35,6 +37,9 @@ struct Onboard_AboutEvents: View {
             }
             
             Spacer()
+        }
+        .background {
+            Color.background
         }
     }
 }
