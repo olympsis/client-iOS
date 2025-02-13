@@ -36,6 +36,7 @@ struct NewEvent: View {
     @FocusState private var descriptionFocus: Bool
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(SessionStore.self) private var session
     
     private let uploadObserver = UploadObserver()
@@ -154,6 +155,7 @@ struct NewEvent: View {
         }
         await MainActor.run {
             session.events.append(e)
+//            openURL(URL(string: "olympsis://events?ID=\(String(describing: e.id))")!)
             dismiss()
         }
     }

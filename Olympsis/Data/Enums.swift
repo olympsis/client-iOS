@@ -74,10 +74,10 @@ enum AuthNavigation: String, Hashable {
 }
 
 enum URL_ACTIONS: String {
-    case open_home = "open-home"
-    case open_groups = "open-groups"
-    case open_events = "open-events"
-    case open_profile = "open-profile"
+    case open_home = "home"
+    case open_groups = "groups"
+    case open_events = "events"
+    case open_profile = "profile"
     
     case open_notifications = "open-notifications"
     case open_home_messages = "open-home-messages"

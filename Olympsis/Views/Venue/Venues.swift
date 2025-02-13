@@ -12,6 +12,7 @@ struct Venues: View {
     var venues: [Venue]
     var status: LOADING_STATE
     
+    @State private var showNewEvent: Bool = false
     @State private var showRequestLocation: Bool = false
     
     @Environment(SessionStore.self) private var session
@@ -32,7 +33,8 @@ struct Venues: View {
                                 .imageScale(.small)
                             Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
                                 .font(.caption2)
-                        }.foregroundStyle(.gray)
+                        }
+                        .foregroundStyle(.gray)
                         
                         if !hasLocation {
                             HStack {
@@ -49,6 +51,15 @@ struct Venues: View {
                                 Spacer()
                             }.padding(.top)
                         }
+                        
+                        HStack {
+                            Spacer()
+                            Button(action: { showNewEvent.toggle() }) {
+                                SimpleButtonLabel(text: "Create an Event")
+                            }
+                            Spacer()
+                        }
+                        .padding(.top)
                     }
                     .frame(height: 200)
                     .padding(.horizontal)
@@ -64,9 +75,13 @@ struct Venues: View {
             } else {
                 VenueListItemTemplate()
             }
-        }.fullScreenCover(isPresented: $showRequestLocation, content: {
+        }
+        .fullScreenCover(isPresented: $showRequestLocation){
             LocationRequestView()
-        })
+        }
+        .fullScreenCover(isPresented: $showNewEvent) {
+            NewEvent(manager: NewEventManager(venues: session.venues))
+        }
     }
 }
 

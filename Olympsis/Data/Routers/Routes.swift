@@ -34,7 +34,10 @@ func handleIncomingURL(_ url: URL) -> ROUTES? {
         return ROUTES.groups
         
     case URL_ACTIONS.open_events.rawValue:
-        return ROUTES.events()
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
+            return ROUTES.events()
+        }
+        return ROUTES.events(eventId: id)
         
     case URL_ACTIONS.open_profile.rawValue:
         return ROUTES.profile
