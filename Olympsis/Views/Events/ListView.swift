@@ -18,7 +18,12 @@ struct ListView: View {
     private var eventsGrouped: [DayGroup] {
         
         var groups: [DayGroup] = [DayGroup]();
-        session.events.forEach { e in
+        session.events
+            .filter {
+                searchText.isEmpty ||
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
+            .forEach { e in
 
             let index = groups.firstIndex(where: {
                 areDatesOnSameDay(

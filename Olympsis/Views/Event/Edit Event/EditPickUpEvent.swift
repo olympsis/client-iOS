@@ -303,11 +303,10 @@ struct EditPickUpEvent: View {
                     }
                 }
                 .onAppear {
-                    guard let title = event.title,
-                        let body = event.body else {
+                    guard let body = event.body else {
                         return
                     }
-                    eventTitle = title
+                    eventTitle = event.title
                     eventBody = body
                     
                     eventVisibility = event.visibility

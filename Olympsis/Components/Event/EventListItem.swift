@@ -23,10 +23,7 @@ struct EventListItem: View {
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
     private var title: String {
-        guard let title = event.title else {
-            return "Event"
-        }
-        return title
+        return event.title
     }
     
     private var imageURL: URL? {

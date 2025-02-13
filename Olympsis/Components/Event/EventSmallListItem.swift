@@ -13,10 +13,7 @@ struct EventSmallListItem: View {
     @State private var showDetails: Bool = false
     
     private var title: String {
-        guard let title = event.title else {
-            return "Event"
-        }
-        return title
+        return event.title
     }
     
     private var imageURL: String {

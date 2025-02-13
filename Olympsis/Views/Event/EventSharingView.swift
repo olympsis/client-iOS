@@ -42,7 +42,7 @@ struct EventSharingView: View {
                 switch selectedTemplate {
                 case 0:
                     HStack {
-                        Text(event.title ?? "")
+                        Text(event.title)
                             .font(.largeTitle)
                             .fontWeight(.black)
                             .foregroundStyle(textColor)
@@ -90,7 +90,7 @@ struct EventSharingView: View {
                     Spacer()
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(event.title ?? "")
+                            Text(event.title)
                                 .font(.title2)
                                 .padding(.bottom, 2)
                                 .fontWeight(.regular)
@@ -109,7 +109,7 @@ struct EventSharingView: View {
                 case 2:
                     VStack {
                         Spacer()
-                        Text(event.title ?? "")
+                        Text(event.title)
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundStyle(textColor)
@@ -142,7 +142,7 @@ struct EventSharingView: View {
                         
                         Spacer()
                         
-                        Text(event.title ?? "")
+                        Text(event.title)
                             .font(.title)
                             .fontWeight(.heavy)
                             .fontWeight(.regular)

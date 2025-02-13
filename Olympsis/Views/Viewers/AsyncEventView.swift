@@ -28,7 +28,7 @@ struct AsyncEventView: View {
             log.error("Failed to fetch event:\(eventId, privacy: .public)")
             return
         }
-        self.title = event.title ?? "Event"
+        self.title = event.title
         self.event = event
         state = .success
     }

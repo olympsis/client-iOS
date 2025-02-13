@@ -15,8 +15,7 @@ struct SmallWorkoutView: View {
     
     /// Computed property of the workout's name
     var workoutName: Text {
-        guard let e = event,
-              let title = e.title else {
+        guard let e = event else {
             let calendar = Calendar.current
             let hour = calendar.component(.hour, from: workout.startDate)
             var timeOfDay: String
@@ -35,7 +34,7 @@ struct SmallWorkoutView: View {
 
             return Text("\(dayOfWeek) \(timeOfDay) \(sportInString())").foregroundColor(.gray)
         }
-        return Text("\(title)").foregroundColor(.gray)
+        return Text("\(e.title)").foregroundColor(.gray)
     }
     
     var sportIcon: some View {

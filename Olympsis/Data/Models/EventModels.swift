@@ -17,7 +17,7 @@ class Event: Decodable, Identifiable, ObservableObject {
     var organizers: [Organizer]?
     var venues: [VenueDescriptor]?
     var imageURL: String?
-    var title: String?
+    var title: String
     var body: String?
     let sports: [String]
     var level: EVENT_SKILL_LEVELS
@@ -58,7 +58,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         case isSensitive = "is_sensitive"
     }
     
-    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String?=nil, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -102,7 +102,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         }
         
         self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
-        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.title = try container.decode(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports) ?? []
         
