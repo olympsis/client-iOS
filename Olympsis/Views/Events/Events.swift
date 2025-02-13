@@ -28,12 +28,18 @@ struct Events: View {
     
     @Environment(SessionStore.self) private var session
     
-    private var sports: [String] {
+    private var sports: [SPORTS] {
         guard let user = session.user,
               let sports = user.sports else {
-            return [String]()
+            return [SPORTS]()
         }
-        return sports
+        var arr = [SPORTS]()
+        sports.forEach {
+            if let s = SPORTS(rawValue: $0) {
+                arr.append(s)
+            }
+        }
+        return arr
     }
     
     var body: some View {
@@ -154,7 +160,7 @@ struct Events: View {
                         EventsList(events: session.events)
                     }
                 case .settings:
-                    MapOptions(availableSports: SPORTS.allCases, selectedSports: sports)
+                    EventsOptions(availableSports: SPORTS.allCases, selectedSports: sports)
                         .environmentObject(router)
                 }
             })
