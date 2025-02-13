@@ -128,4 +128,5 @@ struct AuthView: View {
 
 #Preview {
     AuthView(currentView: .constant(.auth))
+        .environment(SessionStore())
 }

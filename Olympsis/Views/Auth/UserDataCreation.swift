@@ -238,7 +238,6 @@ struct UserDataCreation: View {
                 }
             }.padding(.top, 50)
             
-            
             VStack(alignment: .leading) {
                 Text("Favorite Sports")
                     
@@ -254,7 +253,7 @@ struct UserDataCreation: View {
                             SportView(sport: sport, scale: .Medium)
                                 .overlay {
                                     if (selectedSports.contains(sport)) {
-                                        Circle().stroke(Color("color-prime"), lineWidth: 2)
+                                        Circle().stroke(Color.Brand.secondary, lineWidth: 3)
                                     }
                                 }
                                 .onTapGesture {
@@ -264,7 +263,7 @@ struct UserDataCreation: View {
                                         self.selectedSports.append(sport)
                                     }
                                 }
-                        }
+                        }.padding(.top, 5)
                     }
                 }
             }.padding(.all)
@@ -277,7 +276,7 @@ struct UserDataCreation: View {
             }
             .padding(.bottom)
             .disabled(!(status == .success && uStatus == .available) || continueStatus == .loading)
-        }
+        }.background(Color.Background.primary)
     }
 }
 
