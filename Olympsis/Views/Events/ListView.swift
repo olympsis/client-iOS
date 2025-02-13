@@ -86,17 +86,24 @@ struct ListView: View {
             SearchBar(text: $searchText)
                 .padding(.horizontal, 10)
             
-            List {
-                ForEach(eventsGrouped, id: \.id) { group in
-                    Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
-                        ForEach(group.events, id: \.id) { event in
-                            EventListItem(event: event)
-                                .listRowBackground(Color.clear)
-                        }
+            ScrollViewReader { proxy in
+                List {
+                    ForEach(eventsGrouped, id: \.id) { group in
+                        Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
+                            ForEach(group.events, id: \.id) { event in
+                                EventListItem(event: event)
+                                    .listRowBackground(Color.clear)
+                            }
+                        }.id(String(group.timestamp))
+                    }
+                }
+                .listStyle(.plain)
+                .onChange(of: selectedDate) { oldValue, newValue in
+                    withAnimation {
+                        proxy.scrollTo(Int(newValue.timeIntervalSince1970), anchor: .top)
                     }
                 }
             }
-            .listStyle(.plain)
         }
         .background {
             Color.Background.primary

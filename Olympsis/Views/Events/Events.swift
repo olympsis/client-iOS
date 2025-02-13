@@ -106,7 +106,9 @@ struct Events: View {
                                             
                                         }
                                 }
-                            }.overlay(alignment: .topTrailing) {
+                            }
+                            .frame(width: 41)
+                            .overlay(alignment: .topTrailing) {
                                 if session.events.count > 0 {
                                     Circle()
                                         .foregroundStyle(.red)
@@ -134,7 +136,7 @@ struct Events: View {
                                 }
                             }
                         }.frame(width: 41)
-                    }.frame(height: 35)
+                    }.frame(height: 41)
                 }
                 .frame(height: 41)
                 .padding(.horizontal)
