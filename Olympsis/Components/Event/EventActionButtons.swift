@@ -56,11 +56,10 @@ struct EventActionButtons: View {
         }
         
         let participant = Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: nil)
-        let resp = await session.eventObserver.addParticipant(id: event.id!, participant)
+        let resp = await session.eventObserver.addParticipant(id: event.id, participant)
         
         guard resp == true,
-              let id = event.id,
-              let update = await session.eventObserver.fetchEvent(id: id) else {
+              let update = await session.eventObserver.fetchEvent(id: event.id) else {
             handleFailure()
             return
         }
@@ -76,19 +75,10 @@ struct EventActionButtons: View {
     
     func cancel() async {
         state = .loading
-        guard let id = event.id,
-            let user = session.user,
-              let uuid = user.uuid,
-              let participants = event.participants,
-              let participantID = participants.first(where: { $0.user?.uuid == uuid })?.id else {
-            handleFailure()
-            return
-        }
         
-        let resp = await session.eventObserver.removeParticipant(id: id, pid: participantID)
+        let resp = await session.eventObserver.removeParticipant(id: event.id)
         guard resp == true,
-            let id = event.id,
-            let update = await session.eventObserver.fetchEvent(id: id) else {
+              let update = await session.eventObserver.fetchEvent(id: event.id) else {
             handleFailure()
             return
         }

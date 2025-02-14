@@ -95,12 +95,19 @@ class EventService {
         return resp
     }
     
-    func removeParticipant(id: String, pid: String) async throws -> URLResponse {
+    func removeParticipant(id: String, pid: String?=nil) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/events/\(id)/participants/\(pid)", queryItems: [URLQueryItem]())
-        
-        let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
-        return resp
+        if ((pid) != nil && pid != "") {
+            let endpoint = Endpoint("/v1/events/\(id)/participants/\(pid!)", queryItems: [URLQueryItem]())
+            
+            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
+            return resp
+        } else {
+            let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+            
+            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
+            return resp
+        }
     }
     
     func notifyParticipants(id: String, notif: OlympsisNotification) async throws -> URLResponse {

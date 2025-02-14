@@ -132,7 +132,7 @@ class EventObserver: ObservableObject{
         return false
     }
     
-    func removeParticipant(id: String, pid: String) async -> Bool {
+    func removeParticipant(id: String, pid: String?=nil) async -> Bool {
         do {
             let res = try await eventService.removeParticipant(id: id, pid: pid)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {

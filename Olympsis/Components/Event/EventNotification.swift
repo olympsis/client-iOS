@@ -19,11 +19,10 @@ struct EventNotification: View {
     func notifyParticipants() async {
         status = .loading
         guard title != "",
-            content != "",
-              let id = event.id else {
+            content != "" else {
             return
         }
-        let resp = await session.eventObserver.notifyParticipants(id: id, title: title, body: content)
+        let resp = await session.eventObserver.notifyParticipants(id: event.id, title: title, body: content)
         if resp {
             status = .success
             self.presentationMode.wrappedValue.dismiss()

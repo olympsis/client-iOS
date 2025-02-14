@@ -11,7 +11,7 @@ import CoreLocation
 
 class Event: Decodable, Identifiable, ObservableObject {
     
-    let id: String?
+    let id: String
     let type: EVENT_TYPES
     let poster: UserSnippet?
     var organizers: [Organizer]?
@@ -58,7 +58,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         case isSensitive = "is_sensitive"
     }
     
-    init(id: String?=nil, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(id: String, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -84,7 +84,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         // Decode required properties
-        self.id = try container.decodeIfPresent(String.self, forKey: .id)
+        self.id = try container.decode(String.self, forKey: .id)
         
         // Decode type and convert from Int to EVENT_TYPES
         let typeInt = try container.decode(Int.self, forKey: .type)

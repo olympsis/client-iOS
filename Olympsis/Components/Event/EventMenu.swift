@@ -22,10 +22,7 @@ struct EventMenu: View {
     @Environment(\.dismiss) private var dismiss
     
     func deleteEvent() async {
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.deleteEvent(id: id)
+        let res = await session.eventObserver.deleteEvent(id: event.id)
         if res {
             await MainActor.run {
                 session.events.removeAll(where: {$0.id == event.id})

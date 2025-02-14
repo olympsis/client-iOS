@@ -68,8 +68,7 @@ struct EventView: View {
     
     /// Update event data
     func reloadEvent() async {
-        guard let id = event.id,
-              let resp = await session.eventObserver.fetchEvent(id: id) else {
+        guard let resp = await session.eventObserver.fetchEvent(id: event.id) else {
             handleFailure()
             return
         }
@@ -240,7 +239,7 @@ struct EventView: View {
                             .environmentObject(event)
                         
                         // MARK: - Participants View
-                        EventParticipantsView()
+                        EventParticipantsView(clubs: $clubs, organizations: $organizations)
                             .id(6)
                             .environmentObject(event)
                         

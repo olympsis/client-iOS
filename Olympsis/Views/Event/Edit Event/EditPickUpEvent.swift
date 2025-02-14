@@ -77,7 +77,7 @@ struct EditPickUpEvent: View {
             maxParticipants: Int(eventMaxParticipants),
             visibility: eventVisibility
         )
-        let resp = await session.eventObserver.updateEvent(id: event.id ?? "", dao: dao)
+        let resp = await session.eventObserver.updateEvent(id: event.id, dao: dao)
         if resp {
             event.visibility = eventVisibility
             event.level = eventSkilLevel

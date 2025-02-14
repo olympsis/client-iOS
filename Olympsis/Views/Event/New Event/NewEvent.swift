@@ -155,7 +155,7 @@ struct NewEvent: View {
         }
         await MainActor.run {
             session.events.append(e)
-//            openURL(URL(string: "olympsis://events?ID=\(String(describing: e.id))")!)
+//            openURL(URL(string: "olympsis://events?ID=\(e.id)")!)
             dismiss()
         }
     }
