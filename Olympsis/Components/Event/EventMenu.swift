@@ -81,7 +81,7 @@ struct EventMenu: View {
                 .padding(.top)
                 
                 
-                if true {
+                if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
                     MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
                         Task {
                             await deleteEvent()
