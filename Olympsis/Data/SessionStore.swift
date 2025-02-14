@@ -39,7 +39,10 @@ class SessionStore {
     var user: UserData?              // User data Cache
     var clubs = [Club]()             // Clubs Cache
     var orgs = [Organization]()      // Organizations Cache
-    var events = [Event]()           // Events Cache
+    
+    var events: [Event] = []
+    var pastEvents: [Event] = []
+    
     var venues = [Venue]()           // Venues Cache
     var hotEvents = [Event]()        // Hot Events Cache
     var invitations = [Invitation]() // Invitations Cache
