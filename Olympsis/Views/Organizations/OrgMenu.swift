@@ -34,8 +34,7 @@ struct OrgMenu: View {
     
     var role: String {
         guard let user = session.user,
-              let members = organization.members,
-              let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = organization.members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
         return member.role ?? ""
@@ -43,10 +42,7 @@ struct OrgMenu: View {
     
     // this will be handled in the backend as well
     var isOnlyOwner: Bool {
-        guard let members = organization.members else {
-            return false
-        }
-        let owners = members.filter({ $0.role == "owner" })
+        let owners = organization.members.filter({ $0.role == "owner" })
         return owners.count < 2
     }
     
@@ -65,10 +61,7 @@ struct OrgMenu: View {
     }
     
     var members: [Member] {
-        guard let members = organization.members else {
-            return [Member]()
-        }
-        return members
+        return organization.members
     }
     
     var body: some View {

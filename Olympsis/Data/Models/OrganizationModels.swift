@@ -19,7 +19,7 @@ class Organization: Codable, Identifiable, ObservableObject {
     let country: String?
     var logo: String?
     var banner: String?
-    let members: [Member]?
+    let members: [Member]
     let blackList: [String]?
     var pinnedPosts: [String]?
     let data: ClubData?
@@ -35,7 +35,7 @@ class Organization: Codable, Identifiable, ObservableObject {
          country: String?,
          logo: String?,
          banner: String?,
-         members: [Member]?,
+         members: [Member],
          blackList: [String]?,
          pinnedPosts: [String]?,
          isVerified: Bool?,

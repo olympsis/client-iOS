@@ -56,8 +56,8 @@ let CLUBS = [
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: nil, blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: 0),
-    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: nil, blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: 0),
+    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: nil)
 ]
 
 

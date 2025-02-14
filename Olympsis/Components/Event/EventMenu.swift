@@ -51,7 +51,7 @@ struct EventMenu: View {
         
         
         if organizations.first(where: { e in
-            e.members?.contains { $0.user?.uuid == uuid } ?? false
+            e.members.contains { $0.user?.uuid == uuid }
         }) != nil {
             return true
         }

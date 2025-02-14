@@ -20,7 +20,7 @@ struct NewEventSportsPicker: View {
                             .padding(.horizontal, 3)
                             .overlay {
                                 if (selectedSport == sport) {
-                                    Circle().stroke(Color("color-prime"), lineWidth: 2)
+                                    Circle().stroke(Color.Brand.secondary, lineWidth: 2)
                                 }
                             }
                     }.buttonStyle(PlainButtonStyle())
