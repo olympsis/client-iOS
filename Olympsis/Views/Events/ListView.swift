@@ -85,6 +85,46 @@ struct ListView: View {
     }
     
     @MainActor
+    private func fetchEvents() async {
+        state = .loading
+        
+        guard let user = session.user,
+              let sports = user.sports else {
+            state = .failure
+            return
+        }
+        
+        // If user has location on
+        if let location = session.locationManager.location {
+            guard let resp = await session.eventObserver.fetchEvents(
+                longitude: location.longitude,
+                latitude: location.latitude,
+                radius: Int(radius ?? 8050),
+                sports: sports.joined(separator: ","),
+                status: pastEvents ? "completed" : "pending,live") else {
+                state = .failure
+                return
+            }
+            session.pastEvents = resp
+            state = .success
+            return
+        }
+        
+        // Use fallback location
+        guard let resp = await session.eventObserver.fetchEvents(
+            longitude: fallbackLocation.center.longitude,
+            latitude: fallbackLocation.center.latitude,
+            radius: Int(radius ?? 8050),
+            sports: sports.joined(separator: ","),
+            status: pastEvents ? "completed" : "pending,live") else {
+            state = .failure
+            return
+        }
+        session.pastEvents = resp
+        state = .success
+    }
+    
+    @MainActor
     private func fetchPastEvents() async {
         state = .loading
         
@@ -135,7 +175,7 @@ struct ListView: View {
                     } else {
                         Task {
                             pastEvents = true
-                            await fetchPastEvents()
+                            await fetchEvents()
                         }
                     }
                 }) {
@@ -191,6 +231,11 @@ struct ListView: View {
                             }
                         }
                     }
+                    .refreshable {
+                        Task {
+                            await self.fetchEvents()
+                        }
+                    }
                 }
             case .loading:
                 VStack {
@@ -213,7 +258,15 @@ struct ListView: View {
         .background {
             Color.Background.primary
         }
-        .fullScreenCover(isPresented: $showNewEvent) {
+        .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
+            Task {
+                if pastEvents {
+                    await self.fetchPastEvents()
+                } else {
+                    await self.fetchEvents()
+                }
+            }
+        }) {
             NewEvent(manager: NewEventManager())
         }
     }

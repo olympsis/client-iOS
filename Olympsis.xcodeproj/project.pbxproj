@@ -196,6 +196,10 @@
 		5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B82ADE33BD00450F69 /* SmallWorkoutView.swift */; };
 		5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */; };
 		5DD751BE2D5E9727000B0640 /* SportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751BD2D5E9727000B0640 /* SportsPicker.swift */; };
+		5DD751C02D601946000B0640 /* NewEventAdvancedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */; };
+		5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */; };
+		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
+		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
 		5DDCB9702C4C063F00AE6C7A /* EventsAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
@@ -584,6 +588,10 @@
 		5DD0E3F42AC889F900C85B94 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		5DD0E3F62AC889FA00C85B94 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		5DD751BD2D5E9727000B0640 /* SportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsPicker.swift; sourceTree = "<group>"; };
+		5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventAdvancedSettings.swift; sourceTree = "<group>"; };
+		5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventParticipantsLimit.swift; sourceTree = "<group>"; };
+		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
+		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
@@ -1041,6 +1049,10 @@
 				9A353707292A04B0005EC806 /* NewEvent.swift */,
 				5D90A9DA2D53D0FD00D7B168 /* NewEventTopView.swift */,
 				5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */,
+				5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */,
+				5DD751C32D602275000B0640 /* NewEventExternalLink.swift */,
+				5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */,
+				5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */,
 			);
 			path = "New Event";
 			sourceTree = "<group>";
@@ -1874,6 +1886,7 @@
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
+				5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */,
 				5DBB94D42B0A7F230031876D /* ClubTag.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
@@ -1884,6 +1897,7 @@
 				5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */,
 				5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */,
 				5D20625A2B142D4700A9D408 /* ManagersListView.swift in Sources */,
+				5DD751C02D601946000B0640 /* NewEventAdvancedSettings.swift in Sources */,
 				9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */,
 				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
@@ -2034,6 +2048,7 @@
 				5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */,
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
+				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
 				5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
@@ -2114,6 +2129,7 @@
 				5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */,
 				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
+				5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,
 				5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */,

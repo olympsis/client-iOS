@@ -61,6 +61,10 @@ enum EVENTS_PAGE_STATE: String, CaseIterable {
     case map
 }
 
+enum EVENT_RECURRENCE_FREQUENCY: String, CaseIterable {
+    case weekly = "WEEKLY"
+    case monthly = "MONTHLY"
+}
 
 enum NavigationType: String, Hashable {
     case home = "HOME"

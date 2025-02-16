@@ -30,6 +30,7 @@ class Event: Decodable, Identifiable, ObservableObject {
     let createdAt: Int?
     var externalLink: String?
     var isSensitive: Bool?
+    var isRecurring: Bool?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -56,9 +57,10 @@ class Event: Decodable, Identifiable, ObservableObject {
         case createdAt = "created_at"
         case externalLink = "external_link"
         case isSensitive = "is_sensitive"
+        case isRecurring = "is_recurring"
     }
     
-    init(id: String, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil) {
+    init(id: String, type: EVENT_TYPES, poster: UserSnippet?=nil, organizers: [Organizer]?=nil, venues: [VenueDescriptor]?=nil, imageURL: String?=nil, title: String, body: String?=nil, sports: [String], level: EVENT_SKILL_LEVELS?=nil, startTime: Int, stopTime: Int, minParticipants: Int?=nil, maxParticipants: Int?=nil, participants: [Participant]?=nil, visibility: EVENT_VISIBILITY_TYPES, createdAt: Int?=nil, isSensitive: Bool?=nil, externalLink: String?=nil, isRecurring: Bool?=nil) {
         self.id = id
         self.type = type
         self.poster = poster
@@ -78,6 +80,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.createdAt = createdAt
         self.externalLink = externalLink
         self.isSensitive = isSensitive
+        self.isRecurring = isRecurring
     }
     
     required init(from decoder: Decoder) throws {
@@ -125,6 +128,7 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
         self.externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
         self.isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
+        self.isRecurring = try container.decodeIfPresent(Bool.self, forKey: .isRecurring) ?? false
     }
     
     func update(_ event: Event) {
@@ -489,19 +493,50 @@ class EventDao: Codable, Identifiable, ObservableObject {
 struct NewEventDao: Codable {
     var event: EventDao
     var includeHost: Bool
-    var reccurenceOptions: EventRecurrenceOptions?
+    var recurrence: EventRecurrenceOptions?
     
     enum CodingKeys: String, CodingKey {
         case event
         case includeHost = "include_host"
-        case reccurenceOptions = "recurrence_options"
+        case recurrence = "recurrence"
     }
 }
 
 class EventRecurrenceOptions: Codable {
-    var pattern: String
+    var pattern: EVENT_RECURRENCE_FREQUENCY
     var endTime: Int
     var interval: Int
+    
+    init(pattern: EVENT_RECURRENCE_FREQUENCY, endTime: Int, interval: Int) {
+        self.pattern = pattern
+        self.endTime = endTime
+        self.interval = interval
+    }
+    
+    // Required decoder init
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode pattern as string and convert to enum
+        let patternString = try container.decode(String.self, forKey: .pattern)
+        guard let decodedPattern = EVENT_RECURRENCE_FREQUENCY(rawValue: patternString) else {
+            throw DecodingError.dataCorruptedError(forKey: .pattern,
+                in: container,
+                debugDescription: "Invalid pattern value")
+        }
+        
+        pattern = decodedPattern
+        endTime = try container.decode(Int.self, forKey: .endTime)
+        interval = try container.decode(Int.self, forKey: .interval)
+    }
+    
+    // Encoder
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(pattern.rawValue, forKey: .pattern)
+        try container.encode(endTime, forKey: .endTime)
+        try container.encode(interval, forKey: .interval)
+    }
     
     enum CodingKeys: String, CodingKey {
         case pattern

@@ -233,7 +233,7 @@ class NewEventManager {
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )
         
-        return NewEventDao(event: event, includeHost: true, reccurenceOptions: recurrenceOptions)
+        return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)
     }
     
     /// Generates a new event object

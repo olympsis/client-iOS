@@ -13,16 +13,18 @@ struct EventMenu: View {
     @Binding var organizations: [Organization]
     
     @State private var loadingState: LOADING_STATE = .pending
+    
     @State private var showReport: Bool = false
     @State private var showEditEvent: Bool = false
+    @State private var showRecurring: Bool = false
     @State private var showNotification: Bool = false
     
     @EnvironmentObject private var event: Event
     @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
-    func deleteEvent() async {
-        let res = await session.eventObserver.deleteEvent(id: event.id)
+    func deleteEvent(deleteAll: Bool = false) async {
+        let res = await session.eventObserver.deleteEvent(id: event.id, deleteAll: deleteAll)
         if res {
             await MainActor.run {
                 session.events.removeAll(where: {$0.id == event.id})
@@ -80,8 +82,12 @@ struct EventMenu: View {
                 
                 if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
                     MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
-                        Task {
-                            await deleteEvent()
+                        if (event.isRecurring != nil && !event.isRecurring!) {
+                            Task {
+                                await deleteEvent()
+                            }
+                        } else {
+                            showRecurring.toggle()
                         }
                     }, type: .destructive)
                 }
@@ -90,6 +96,25 @@ struct EventMenu: View {
             Spacer()
         }
         .presentationDragIndicator(.visible)
+        .alert("Recurring Event", isPresented: $showRecurring, actions: {
+            Button(role: .destructive) {
+                Task {
+                    await deleteEvent()
+                }
+            } label: {
+                Text("Delete This")
+            }
+            
+            Button(role: .destructive) {
+                Task {
+                    await deleteEvent(deleteAll: true)
+                }
+            } label: {
+                Text("Delete All")
+            }
+        }, message: {
+            Text("This event is part of a recurring event. Would you like to delete the individual event or the entire series?")
+        })
         .sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)
         })

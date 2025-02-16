@@ -79,9 +79,9 @@ class EventService {
         return resp
     }
     
-    func deleteEvent(id: String) async throws -> URLResponse {
+    func deleteEvent(id: String, deleteAll: Bool = false) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/events/\(id)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint("/v1/events/\(id)", queryItems: deleteAll ? [URLQueryItem(name: "deleteAll", value: "true")] : [])
         
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp

@@ -106,9 +106,9 @@ class EventObserver: ObservableObject{
         return false
     }
     
-    func deleteEvent(id: String) async -> Bool {
+    func deleteEvent(id: String, deleteAll: Bool = false) async -> Bool {
         do {
-            let res = try await eventService.deleteEvent(id: id)
+            let res = try await eventService.deleteEvent(id: id, deleteAll: deleteAll)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return false
             }

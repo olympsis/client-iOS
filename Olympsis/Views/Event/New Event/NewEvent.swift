@@ -29,6 +29,7 @@ struct NewEvent: View {
     @State private var showStartTimePicker: Bool = false
     @State private var showStopTimePicker: Bool = false
     
+    @State private var showAdvancedSettings: Bool = false
     @State private var showOrganizersPicker: Bool = false
     
     
@@ -374,66 +375,22 @@ struct NewEvent: View {
                         .presentationDetents([.medium])
                 })
                 
-                // MARK: - Min Participants slider
-                VStack(alignment: .leading){
-                    Text("Min Participants")
-                        .font(.title3)
-                        .bold()
-                    Text("The minimum number of participants")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                    
-                    HStack {
-                        Slider(
-                            value: $manager.minParticipants,
-                            in: 0...100,
-                            step: 1.0,
-                            onEditingChanged: { editing in
-                                isEditing = editing
-                            }).padding(.horizontal)
-                        
-                        Text("\(Int(manager.minParticipants))")
-                            .foregroundColor(isEditing ? .red : Color("color-prime"))
-                        Stepper("", value: $manager.minParticipants, in: 0...100)
-                            .padding(.trailing)
-                    }.modifier(InputField())
-                    
-                }
-                .padding(.top)
-                .padding(.horizontal)
-                
-                // MARK: - Max Participants slider
-                VStack(alignment: .leading){
-                    Text("Max Participants")
-                        .font(.title3)
-                        .bold()
-                    Text("Limit the headcount")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                    
-                    HStack {
-                        Slider(
-                            value: $manager.maxParticipants,
-                            in: 0...1000,
-                            step: 5.0,
-                            onEditingChanged: { editing in
-                                isEditing = editing
-                            }).padding(.horizontal)
-                        
-                        Text("\(Int(manager.maxParticipants))")
-                            .foregroundColor(isEditing ? .red : Color("color-prime"))
-                        Stepper("", value: $manager.maxParticipants, in: 0...1000)
-                            .padding(.trailing)
-                    }.modifier(InputField())
-                    
-                }
-                .padding(.top)
-                .padding(.horizontal)
-                
                 // MARK: - Background Image picker
                 EventImagePicker()
                     .padding([.top, .horizontal])
                     .environment(manager)
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: { showAdvancedSettings.toggle() }) {
+                        HStack {
+                            Text("Advanced Settings")
+                                .fontWeight(.bold)
+                            Image(systemName: "gearshape.fill")
+                        }.padding(.all)
+                    }
+                }
                 
                 // MARK: - Action Button
                 VStack(alignment: .center){
@@ -470,6 +427,9 @@ struct NewEvent: View {
                 if !manager.organizers.contains(where: { $0.id == select.id }) {
                     manager.organizers.append(select)
                 }
+            }
+            .fullScreenCover(isPresented: $showAdvancedSettings) {
+                NewEventAdvancedSettings(manager: manager)
             }
             .sheet(isPresented: $showPostViolation, content: {
                 PostMediaViolation()

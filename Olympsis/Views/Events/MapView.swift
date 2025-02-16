@@ -76,7 +76,9 @@ struct MapView: View {
             VenueView(venue: field)
                 .presentationDetents([.height(250), .large])
         }
-        .fullScreenCover(isPresented: $showNewEvent) {
+        .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
+            //TODO: - fetch events
+        }) {
             NewEvent(manager: NewEventManager())
         }
         .alert(isPresented: $showError){
