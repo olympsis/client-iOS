@@ -942,11 +942,11 @@
 		5D73480E2C0A4AE30003AB41 /* Event */ = {
 			isa = PBXGroup;
 			children = (
-				5D90A9D82D53CD8C00D7B168 /* EventTypePicker.swift */,
 				5D18BD202B3A190000F90777 /* Edit Event */,
 				5DBB94C32B028D310031876D /* New Event */,
 				5D6749492A73339E00AEC868 /* EventView.swift */,
 				9A69FE5429724C9200EBC5F9 /* EventsList.swift */,
+				5D90A9D82D53CD8C00D7B168 /* EventTypePicker.swift */,
 				5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */,
 				5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */,
 				5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */,

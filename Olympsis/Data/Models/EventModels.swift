@@ -235,150 +235,6 @@ struct EventsResponse: Decodable {
     }
 }
 
-extension Event {
-    
-    /// Converts the start time of the event to a human comprehensible string value.
-    /// Can either return today, tomorrow, a day of the week, if futher than a week away M/d/y.
-    /// - Returns: a formated `String` value of the event's start date
-    func timeToString() -> String {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let timestamp = TimeInterval(self.startTime)
-        
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.locale = Locale(identifier: "en_US")
-        
-        if calendar.isDateInToday(Date(timeIntervalSince1970: timestamp)) {
-            return "Today"
-        } else if calendar.isDateInTomorrow(Date(timeIntervalSince1970: timestamp)) {
-            return "Tomorrow"
-        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .weekOfYear) {
-            formatter.dateFormat = "EEEE"
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .year) {
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        } else {
-            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
-        }
-    }
-    
-    /// If an event is live this will return the time difference from the start date and now.
-    /// If an event is not live then it will return the start date of the event.
-    /// - Returns: a formatted `String` of the time difference
-    func timeDifferenceToString() -> String {
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
-        let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(self.startTime))
-        
-        if timeDifference < 60 {
-            return "\(timeDifference) secs"
-        } else if timeDifference < 3600 {
-            let minutes = timeDifference / 60
-            return "\(minutes) mins"
-        } else if timeDifference < 86400 * 12 {
-            dateFormatter.dateFormat = "h:mm"
-            return dateFormatter.string(from: date) + " mins";
-        } else {
-            dateFormatter.dateFormat = "d"
-            return dateFormatter.string(from: date) + " days";
-        }
-    }
-    
-    /// Returns in string the estimated time to an event's field
-    func estimatedTimeToVenue(venue: Venue, _ loc: CLLocationCoordinate2D?) -> String {
-        var fieldLocation: [Double] {
-            return venue.location.coordinates
-        }
-        
-        guard let location = loc,
-              fieldLocation.count > 1 else {
-            return "10 min"
-        }
-        
-        let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let targetLocation = CLLocation(latitude: fieldLocation[1], longitude: fieldLocation[0])
-        let distance = currentLocation.distance(from: targetLocation)
-        let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
-        let timeDifference = distance / speed
-        
-        if timeDifference < 0 {
-            return "1 min"
-        }
-        
-        let timeInMinutes = Int(timeDifference)
-        
-        if timeInMinutes < 60 {
-            return "\(timeInMinutes) min"
-        } else {
-            let hours = timeInMinutes / 60
-            let minutes = timeInMinutes % 60
-            let formattedTime = String(format: "%d:%02d min", hours, minutes)
-            return formattedTime
-        }
-    }
-    
-    func getEventStatus() -> EVENT_STATUS {
-        let currentDate = Date().timeIntervalSince1970
-        if (currentDate < TimeInterval(self.startTime)) {
-            return .pending
-        } else if (currentDate >= TimeInterval(self.startTime) && currentDate < TimeInterval(self.stopTime)) {
-            return .live
-        } else {
-            return .ended
-        }
-    }
-    
-    func getStartHourAndMinute() -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter.string(from: date)
-    }
-
-    func getStopHourAndMinute() -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(self.stopTime))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter.string(from: date)
-    }
-}
-
-extension [Event] {
-    
-    /// Returns the most recent event for the user
-    func mostRecentForUser(uuid: String) -> Event? {
-        guard self.count > 0 else {
-            return nil
-        }
-        var filtered = self.filter{ $0.participants?.first(where: { $0.user?.uuid == uuid }) != nil }
-        filtered = filtered.sorted { ($0.startTime) < ($1.startTime) }
-        
-        guard filtered.count > 0 else {
-            return nil
-        }
-        
-        return filtered[0]
-    }
-    
-    /// Returns a filtered array of the events by club ID
-    func filterByGroupID(id: String) -> [Event]? {
-        guard self.count > 0 else {
-            return nil
-        }
-        
-        let filtered = self.filter { $0.organizers?.contains(where: { $0.id == id }) ?? false }
-        guard filtered.count > 0 else {
-            return nil
-        }
-        
-        return filtered.sorted { $0.startTime < $1.startTime }
-    }
-}
-
 class EventDao: Codable, Identifiable, ObservableObject {
     
     let type: EVENT_TYPES?
@@ -559,5 +415,192 @@ struct DayGroup: Identifiable {
     
     var dayInString: String {
         return events[0].timeToString()
+    }
+}
+
+// MARK: - Extensions
+
+extension Event {
+    
+    /// Converts the start time of the event to a human comprehensible string value.
+    /// Can either return today, tomorrow, a day of the week, if futher than a week away M/d/y.
+    /// - Returns: a formated `String` value of the event's start date
+    func timeToString() -> String {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let timestamp = TimeInterval(self.startTime)
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "en_US")
+        
+        if calendar.isDateInToday(Date(timeIntervalSince1970: timestamp)) {
+            return "Today"
+        } else if calendar.isDateInTomorrow(Date(timeIntervalSince1970: timestamp)) {
+            return "Tomorrow"
+        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .weekOfYear) {
+            formatter.dateFormat = "EEEE"
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        } else if calendar.isDate(Date(timeIntervalSince1970: timestamp), equalTo: currentDate, toGranularity: .year) {
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        } else {
+            return formatter.string(from: Date(timeIntervalSince1970: timestamp))
+        }
+    }
+    
+    /// If an event is live this will return the time difference from the start date and now.
+    /// If an event is not live then it will return the start date of the event.
+    /// - Returns: a formatted `String` of the time difference
+    func timeDifferenceToString() -> String {
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
+        let timeDifference = Int(currentDate.timeIntervalSince1970 - TimeInterval(self.startTime))
+        
+        if timeDifference < 60 {
+            return "\(timeDifference) secs"
+        } else if timeDifference < 3600 {
+            let minutes = timeDifference / 60
+            return "\(minutes) mins"
+        } else if timeDifference < 86400 * 12 {
+            dateFormatter.dateFormat = "h:mm"
+            return dateFormatter.string(from: date) + " mins";
+        } else {
+            dateFormatter.dateFormat = "d"
+            return dateFormatter.string(from: date) + " days";
+        }
+    }
+    
+    /// Returns in string the estimated time to an event's field
+    func estimatedTimeToVenue(venue: Venue, _ loc: CLLocationCoordinate2D?) -> String {
+        var fieldLocation: [Double] {
+            return venue.location.coordinates
+        }
+        
+        guard let location = loc,
+              fieldLocation.count > 1 else {
+            return "10 min"
+        }
+        
+        let currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let targetLocation = CLLocation(latitude: fieldLocation[1], longitude: fieldLocation[0])
+        let distance = currentLocation.distance(from: targetLocation)
+        let speed: CLLocationSpeed = 500 // Assuming a speed of 500 meters/minute
+        let timeDifference = distance / speed
+        
+        if timeDifference < 0 {
+            return "1 min"
+        }
+        
+        let timeInMinutes = Int(timeDifference)
+        
+        if timeInMinutes < 60 {
+            return "\(timeInMinutes) min"
+        } else {
+            let hours = timeInMinutes / 60
+            let minutes = timeInMinutes % 60
+            let formattedTime = String(format: "%d:%02d min", hours, minutes)
+            return formattedTime
+        }
+    }
+    
+    func getEventStatus() -> EVENT_STATUS {
+        let currentDate = Date().timeIntervalSince1970
+        if (currentDate < TimeInterval(self.startTime)) {
+            return .pending
+        } else if (currentDate >= TimeInterval(self.startTime) && currentDate < TimeInterval(self.stopTime)) {
+            return .live
+        } else {
+            return .ended
+        }
+    }
+    
+    func getStartHourAndMinute() -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(self.startTime))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
+    }
+
+    func getStopHourAndMinute() -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(self.stopTime))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
+    }
+}
+
+extension [Event] {
+    
+    /// Returns the most recent event for the user
+    func mostRecentForUser(uuid: String) -> Event? {
+        guard self.count > 0 else {
+            return nil
+        }
+        var filtered = self.filter{ $0.participants?.first(where: { $0.user?.uuid == uuid }) != nil }
+        filtered = filtered.sorted { ($0.startTime) < ($1.startTime) }
+        
+        guard filtered.count > 0 else {
+            return nil
+        }
+        
+        return filtered[0]
+    }
+    
+    /// Returns a filtered array of the events by club ID
+    func filterByGroupID(id: String) -> [Event]? {
+        guard self.count > 0 else {
+            return nil
+        }
+        
+        let filtered = self.filter { $0.organizers?.contains(where: { $0.id == id }) ?? false }
+        guard filtered.count > 0 else {
+            return nil
+        }
+        
+        return filtered.sorted { $0.startTime < $1.startTime }
+    }
+    
+    /// Returns an array of Day Group structs that groups events by their start dates
+    func eventsGroupedByDay() -> [DayGroup] {
+        var groups: [DayGroup] = [DayGroup]();
+        self
+            .forEach { e in
+                let index = groups.firstIndex(where: {
+                    areDatesOnSameDay(
+                        date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
+                        date2: Date(timeIntervalSince1970: TimeInterval(e.startTime))
+                    )}
+                )
+                
+                if index != nil {
+                    groups[index!].events.append(e)
+                    return
+                } else {
+                    let newGroup = DayGroup(timestamp: e.startTime, events: [e])
+                    groups.append(newGroup)
+                    return
+                }
+            }
+        
+        var sorted = groups
+            .sorted { (group1: DayGroup, group2: DayGroup) in
+                if areDatesOnSameDay(date1: Date(timeIntervalSince1970: TimeInterval(group1.timestamp)), date2: Date(timeIntervalSince1970: TimeInterval(group2.timestamp))) {
+                    // If dates are on the same day, prioritize item1
+                    return true
+                } else {
+                    // If dates are not on the same day, sort by timestamp
+                    return group1.timestamp < group2.timestamp
+                }
+            }
+        for i in 0..<sorted.count {
+            sorted[i].events = sorted[i].events.sorted { event1, event2 in
+                return event1.startTime < event2.startTime
+            }
+        }
+        
+        return sorted
     }
 }

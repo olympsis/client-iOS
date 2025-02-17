@@ -10,19 +10,15 @@ import SwiftUI
 import CoreLocation
 import CoreLocationUI
 
-
-
-/// Map view to see fields
 struct MapView: View {
     
-    @StateObject var router: EventRouter = EventRouter()
+    @Binding var showNewEvent: Bool
+    @Binding var selectedVenue: Venue?
     
     @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = true
-    @State private var showFieldDetail: Bool = false
-    @State private var showNewEvent: Bool = false
     @State private var showOptions: Bool = false
-    @State private var selectedVenue: Venue?
+    @State private var showNearbyEvents: Bool = false
+    
     @State private var selectedEvent: Event?
     @State private var cameraPosition: MapCameraPosition = .automatic
     
@@ -30,7 +26,7 @@ struct MapView: View {
     
     var visibleRegion: MKCoordinateRegion?
     
-    var sports: [String] {
+    private var sports: [String] {
         guard let user = session.user,
               let sports = user.sports else {
             return [String]()
@@ -41,7 +37,7 @@ struct MapView: View {
     // This fallback location is a second location in case we are unable to find the user's current location
     // In this case we check to see if they have a stored location(hometown)
     // If not then we default to apple park
-    var fallbackLocation: MKCoordinateRegion {
+    private var fallbackLocation: MKCoordinateRegion {
         guard let user = session.user, let hometown = user.hometown else {
             return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
@@ -65,26 +61,21 @@ struct MapView: View {
                 }
                 UserAnnotation()
             }
+            
             DraggableCard(detents: [.height(50), .height(250), .fraction(0.5)]) {
-                EventsModalView(events: session.events)
+                EventsModalView(showNewEvent: $showNewEvent, showMoreEvents: $showNearbyEvents)
             }
         }
         .ignoresSafeArea(edges: .all)
         .toolbar(.hidden, for: .navigationBar)
         .mapStyle(.standard(elevation: .realistic))
-        .sheet(item: $selectedVenue) { field in
-            VenueView(venue: field)
-                .presentationDetents([.height(250), .large])
-        }
-        .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
-            //TODO: - fetch events
-        }) {
-            NewEvent(manager: NewEventManager())
-        }
         .alert(isPresented: $showError){
             Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }))
+        }
+        .fullScreenCover(isPresented: $showNearbyEvents) {
+            EventsList(events: session.events)
         }
         .task {
             cameraPosition = .userLocation(fallback: .region(fallbackLocation))
@@ -93,6 +84,6 @@ struct MapView: View {
 }
 
 #Preview {
-    MapView()
+    MapView(showNewEvent: .constant(false), selectedVenue: .constant(nil))
         .environment(SessionStore())
 }

@@ -47,10 +47,10 @@ struct Events: View {
             Group {
                 switch state {
                 case .list:
-                    ListView()
+                    ListView(showNewEvent: $showNewEvent)
                         .environment(session)
                 case .map:
-                    MapView()
+                    MapView(showNewEvent: $showNewEvent, selectedVenue: $selectedVenue)
                         .environment(session)
                 }
             }

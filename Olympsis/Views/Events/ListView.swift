@@ -10,15 +10,15 @@ import SwiftUI
 
 struct ListView: View {
     
+    @Binding var showNewEvent: Bool
+    
     @State private var searchText = ""
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
     
     @State private var pastEvents: Bool = false
-    @State private var showNewEvent: Bool = false
     
     @State private var state: VIEW_STATE = .pending
-    
     
     @Environment(SessionStore.self) private var session
     
@@ -29,52 +29,14 @@ struct ListView: View {
             return session.events
         }
         return session.pastEvents
-    }
-    
-    private var eventsGrouped: [DayGroup] {
-        
-        var groups: [DayGroup] = [DayGroup]();
-        events
             .filter {
                 searchText.isEmpty ||
                 $0.title.lowercased().contains(searchText.lowercased())
             }
-            .forEach { e in
-
-            let index = groups.firstIndex(where: {
-                areDatesOnSameDay(
-                    date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
-                    date2: Date(timeIntervalSince1970: TimeInterval(e.startTime))
-                )}
-            )
-            
-            if index != nil {
-                groups[index!].events.append(e)
-                return
-            } else {
-                let newGroup = DayGroup(timestamp: e.startTime, events: [e])
-                groups.append(newGroup)
-                return
-            }
-        }
-        
-        var sorted = groups
-            .sorted { (group1: DayGroup, group2: DayGroup) in
-                if areDatesOnSameDay(date1: Date(timeIntervalSince1970: TimeInterval(group1.timestamp)), date2: Date(timeIntervalSince1970: TimeInterval(group2.timestamp))) {
-                    // If dates are on the same day, prioritize item1
-                    return true
-                } else {
-                    // If dates are not on the same day, sort by timestamp
-                    return group1.timestamp < group2.timestamp
-                }
-            }
-        for i in 0..<sorted.count {
-            sorted[i].events = sorted[i].events.sorted { event1, event2 in
-                return event1.startTime < event2.startTime
-            }
-        }
-        
-        return sorted
+    }
+    
+    private var eventsGrouped: [DayGroup] {
+        return events.eventsGroupedByDay()
     }
     
     private var fallbackLocation: MKCoordinateRegion {
@@ -258,21 +220,10 @@ struct ListView: View {
         .background {
             Color.Background.primary
         }
-        .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
-            Task {
-                if pastEvents {
-                    await self.fetchPastEvents()
-                } else {
-                    await self.fetchEvents()
-                }
-            }
-        }) {
-            NewEvent(manager: NewEventManager())
-        }
     }
 }
 
 #Preview {
-    ListView()
+    ListView(showNewEvent: .constant(false))
         .environment(SessionStore())
 }

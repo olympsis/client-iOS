@@ -10,50 +10,15 @@ import SwiftUI
 /// A view that shows the most recent and nearby events
 struct EventsModalView: View {
     
-    var events: [Event]
-    @State private var showMore = false
+    @Binding var showNewEvent: Bool
+    @Binding var showMoreEvents: Bool
     @Environment(SessionStore.self) private var session
     
-    /// Groups the events by date
-    var eventsGrouped: [DayGroup] {
-        
-        var groups: [DayGroup] = [DayGroup]();
-        events.forEach { e in
-
-            let index = groups.firstIndex(where: {
-                areDatesOnSameDay(
-                    date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
-                    date2: Date(timeIntervalSince1970: TimeInterval(e.startTime))
-                )}
-            )
-            
-            if index != nil {
-                groups[index!].events.append(e)
-                return
-            } else {
-                let newGroup = DayGroup(timestamp: e.startTime, events: [e])
-                groups.append(newGroup)
-                return
-            }
-        }
-        
-        var sorted = groups
-            .sorted { (group1: DayGroup, group2: DayGroup) in
-                if areDatesOnSameDay(date1: Date(timeIntervalSince1970: TimeInterval(group1.timestamp)), date2: Date(timeIntervalSince1970: TimeInterval(group2.timestamp))) {
-                    // If dates are on the same day, prioritize item1
-                    return true
-                } else {
-                    // If dates are not on the same day, sort by timestamp
-                    return group1.timestamp < group2.timestamp
-                }
-            }
-        for i in 0..<sorted.count {
-            sorted[i].events = sorted[i].events.sorted { event1, event2 in
-                return event1.startTime < event2.startTime
-            }
-        }
-        
-        return sorted
+    private var events: [Event] {
+        return session.events
+    }
+    private var eventsGrouped: [DayGroup] {
+        return events.eventsGroupedByDay()
     }
     
     var body: some View {
@@ -64,7 +29,7 @@ struct EventsModalView: View {
                 
                 Spacer()
 
-                Button(action:{ self.showMore.toggle() }){
+                Button(action:{ self.showMoreEvents.toggle() }){
                     HStack {
                         Text("More")
                             .bold()
@@ -73,20 +38,34 @@ struct EventsModalView: View {
                 }.foregroundColor(.primary)
             }.padding()
             
-            List {
-                ForEach(eventsGrouped, id: \.id) { group in
-                    Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
-                        ForEach(group.events, id: \.id) { event in
-                            EventListItem(event: event)
-                                .listRowBackground(Color.clear)
+            if (!events.isEmpty) {
+                List {
+                    ForEach(eventsGrouped, id: \.id) { group in
+                        Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
+                            ForEach(group.events, id: \.id) { event in
+                                EventListItem(event: event)
+                                    .listRowBackground(Color.clear)
+                            }
                         }
                     }
                 }
-            }
-            .listStyle(.plain)
-            .padding(.top, -20)
-            .fullScreenCover(isPresented: $showMore) {
-                EventsList(events: session.events)
+                .listStyle(.plain)
+                .padding(.top, -20)
+            } else {
+                VStack {
+                    Text("No events found in your area. Change location settings or")
+                        .italic()
+                        .font(.callout)
+                        .padding(.horizontal)
+                        .multilineTextAlignment(.center)
+                        
+                    Button(action: { self.showNewEvent.toggle() }) {
+                        SimpleButtonLabel(text: "Create One")
+                    }
+                    
+                    Spacer()
+                }
+                .padding(.vertical)
             }
         }
         .presentationDragIndicator(.visible)
@@ -95,8 +74,6 @@ struct EventsModalView: View {
 }
 
 #Preview {
-    let session = SessionStore()
-    session.events = EVENTS
-    return EventsModalView(events: EVENTS)
-        .environment(session)
+    EventsModalView(showNewEvent: .constant(false), showMoreEvents: .constant(false))
+        .environment(SessionStore())
 }
