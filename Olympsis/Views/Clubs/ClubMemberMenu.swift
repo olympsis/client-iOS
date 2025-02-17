@@ -109,7 +109,7 @@ struct ClubMemberMenu: View {
             
             Spacer()
         }
-        .background(Color("background-color/secondary"))
+        .background(Color.Background.secondary)
         .presentationDragIndicator(.visible)
         .padding(.top)
         .onAppear {

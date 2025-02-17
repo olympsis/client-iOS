@@ -139,6 +139,10 @@ class SessionStore {
         notificationCenter.delegate = notificationsManager
         authStatus = .unknown
         user = cacheService.fetchUser()
+        
+        #if targetEnvironment(simulator)
+        events = EVENTS
+        #endif
     }
     
     func listenToAuthStateChanges() {

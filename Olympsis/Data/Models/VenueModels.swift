@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class Venue: Codable, Identifiable, Equatable {
+class Venue: Codable, Identifiable, Equatable, Hashable {
     
     let id: String
     let name: String
@@ -62,7 +62,12 @@ class Venue: Codable, Identifiable, Equatable {
     }
     
     static func == (lhs: Venue, rhs: Venue) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id || (lhs.name == rhs.name && lhs.location == rhs.location)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(location)
     }
     
     func isPublic() -> Bool {
@@ -71,11 +76,24 @@ class Venue: Codable, Identifiable, Equatable {
 }
 
 struct GeoJSON: Codable, Hashable {
-    static func == (lhs: GeoJSON, rhs: GeoJSON) -> Bool {
-        return (lhs.coordinates[0] == rhs.coordinates[0]) && (lhs.coordinates[1] == rhs.coordinates[1])
-    }
     let type: String
     let coordinates: [Double]
+    
+    static func == (lhs: GeoJSON, rhs: GeoJSON) -> Bool {
+        let threshold = 0.0005
+        return (abs(lhs.coordinates[0] - rhs.coordinates[0]) <= threshold &&
+        abs(lhs.coordinates[1] - rhs.coordinates[1]) <= threshold)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        // Round coordinates to the nearest threshold bucket
+        let threshold = 0.0005
+        let bucketLong = (coordinates[0] / threshold).rounded() * threshold
+        let bucketLat = (coordinates[1] / threshold).rounded() * threshold
+        hasher.combine(type)
+        hasher.combine(bucketLong)
+        hasher.combine(bucketLat)
+    }
 }
 
 struct Ownership: Codable, Hashable {

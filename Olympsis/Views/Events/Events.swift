@@ -139,8 +139,7 @@ struct Events: View {
                     }.frame(height: 41)
                 }
                 .frame(height: 35)
-                .padding(.leading)
-                .padding(.trailing, 5)
+                .padding(.horizontal)
             }
             .background {
                 Color.Background.primary

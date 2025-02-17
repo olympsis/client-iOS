@@ -14,6 +14,7 @@ struct EventVenuePicker: View {
     @State var manager: NewEventManager
     @State private var index: Int = 0
     @State private var search: String = ""
+    @State private var venues: Set<Venue> = []
     @State private var customVenues = [Venue]()
     @State private var state: LOADING_STATE = .pending
     
@@ -21,10 +22,6 @@ struct EventVenuePicker: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-
-    private var venues: [Venue] {
-        return session.venues
-    }
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
 
@@ -52,7 +49,7 @@ struct EventVenuePicker: View {
                     }
                     let location = item.placemark.coordinate
 
-                    self.customVenues.append(
+                    self.venues.insert(
                         Venue(
                             name: name,
                             location: GeoJSON(
@@ -78,7 +75,7 @@ struct EventVenuePicker: View {
                     }
                     let location = item.placemark.coordinate
                     
-                    self.customVenues.append(
+                    self.venues.insert(
                         Venue(
                             name: name,
                             location: GeoJSON(
@@ -109,53 +106,12 @@ struct EventVenuePicker: View {
                     Text("Venues")
                 }
                 Spacer()
-                Button(action: { index = 1 }) {
-                    Text("Custom Location")
-                }
+//                Button(action: { index = 1 }) {
+//                    Text("Custom Location")
+//                }
             }.padding([.top, .horizontal])
             
             TabView(selection: $index) {
-                VStack {
-                    TextField("Location name", text: $search)
-                        .padding(.leading)
-                        .modifier(InputField())
-                        .submitLabel(.search)
-                        .padding([.horizontal, .vertical])
-                    
-                    ScrollView {
-                        VStack {
-                            if venues.count > 0 {
-                                ForEach(venues, id: \.id) { venue in
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            Text(venue.name)
-                                                .font(.title2)
-                                                .lineLimit(1)
-                                            Text("\(venue.city), \(venue.state)")
-                                                .lineLimit(1)
-                                                .foregroundStyle(.gray)
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding(.all)
-                                    .onTapGesture {
-                                        manager.selectedVenues.append(venue)
-                                        dismiss()
-                                    }
-                                }
-                            } else {
-                                Text("No venues found near you")
-                                Button(action: { index = 1 }) {
-                                    Text("Pick a custom Venue")
-                                        .font(.callout)
-                                }
-                            }
-                        }
-                    }
-                }
-                .tag(0)
-                .background(Color.Background.primary)
-
                 VStack {
                     TextField("Location name", text: $searchModel.searchText)
                         .padding(.leading)
@@ -164,19 +120,23 @@ struct EventVenuePicker: View {
                         .padding([.horizontal, .vertical])
                     
                     ScrollView {
-                        switch state {
-                        case .pending:
-                            EmptyView()
-                        case .loading:
-                            ProgressView()
-                        case .success:
-                            if customVenues.count > 0 {
-                                ForEach(customVenues, id: \.id) { venue in
+                        VStack {
+                            if venues.count > 0 {
+                                ForEach(Array(venues), id: \.id) { venue in
                                     HStack {
                                         VStack(alignment: .leading) {
-                                            Text(venue.name)
-                                                .font(.title2)
-                                                .lineLimit(1)
+                                            HStack {
+                                                Text(venue.name)
+                                                    .font(.title2)
+                                                    .lineLimit(1)
+                                                
+                                                if (venue.description != "external") {
+                                                    Image(systemName: "checkmark.seal")
+                                                        .foregroundColor(Color.Brand.quaternary)
+                                                }
+                                                
+                                                Spacer()
+                                            }
                                             Text("\(venue.city), \(venue.state)")
                                                 .lineLimit(1)
                                                 .foregroundStyle(.gray)
@@ -185,28 +145,86 @@ struct EventVenuePicker: View {
                                     }
                                     .padding(.all)
                                     .onTapGesture {
+                                        print(venue.location)
                                         manager.selectedVenues.append(venue)
                                         dismiss()
                                     }
                                 }
-                            }
-                        case .failure:
-                            Text("Failed to look up venues")
-                        }
-                    }.onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
-                        customVenues = [Venue]()
-                        if (!newValue.isEmpty) {
-                            Task {
-                                await search(newValue)
+                            } else {
+                                Text("No venues found near you")
+                                Button(action: { index = 1 }) {
+                                    Text("Search for a custom location")
+                                        .font(.callout)
+                                }
                             }
                         }
-                    })
+                    }
                 }
-                .tag(1)
+                .tag(0)
                 .background(Color.Background.primary)
+                .onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
+                    venues = Set(session.venues)
+                    if (!newValue.isEmpty) {
+                        Task {
+                            await search(newValue)
+                        }
+                    }
+                })
+
+//                VStack {
+//                    TextField("Location name", text: $searchModel.searchText)
+//                        .padding(.leading)
+//                        .modifier(InputField())
+//                        .submitLabel(.search)
+//                        .padding([.horizontal, .vertical])
+//                    
+//                    ScrollView {
+//                        switch state {
+//                        case .pending:
+//                            EmptyView()
+//                        case .loading:
+//                            ProgressView()
+//                        case .success:
+//                            if customVenues.count > 0 {
+//                                ForEach(customVenues, id: \.id) { venue in
+//                                    HStack {
+//                                        VStack(alignment: .leading) {
+//                                            Text(venue.name)
+//                                                .font(.title2)
+//                                                .lineLimit(1)
+//                                            Text("\(venue.city), \(venue.state)")
+//                                                .lineLimit(1)
+//                                                .foregroundStyle(.gray)
+//                                        }
+//                                        Spacer()
+//                                    }
+//                                    .padding(.all)
+//                                    .onTapGesture {
+//                                        manager.selectedVenues.append(venue)
+//                                        dismiss()
+//                                    }
+//                                }
+//                            }
+//                        case .failure:
+//                            Text("Failed to look up venues")
+//                        }
+//                    }.onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
+//                        customVenues = [Venue]()
+//                        if (!newValue.isEmpty) {
+//                            Task {
+//                                await search(newValue)
+//                            }
+//                        }
+//                    })
+//                }
+//                .tag(1)
+//                .background(Color.Background.primary)
             }.tabViewStyle(.automatic)
         }
         .background(Color.Background.primary)
+        .onAppear {
+            venues = Set(session.venues)
+        }
     }
 }
 

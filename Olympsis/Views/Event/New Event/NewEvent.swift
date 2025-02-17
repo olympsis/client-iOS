@@ -295,7 +295,7 @@ struct NewEvent: View {
                                     .padding(.vertical, 2.5)
                                     .background {
                                         RoundedRectangle(cornerRadius: 10)
-                                            .foregroundStyle(Color("background-color/secondary"))
+                                            .foregroundStyle(Color.Background.secondary)
                                     }
                             }
                         }
