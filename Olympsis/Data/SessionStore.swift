@@ -33,7 +33,7 @@ class SessionStore {
     
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
-    var state: LOADING_STATE = .pending
+    var state: LOADING_STATE = .loading
     
     var clubsState: LOADING_STATE = .pending
     

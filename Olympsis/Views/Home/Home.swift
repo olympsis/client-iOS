@@ -34,6 +34,10 @@ struct Home: View {
                     .padding(.top, 25)
                     .environment(session)
                 
+                QuickActions()
+                    .padding(.top)
+                    .environment(session)
+                
                 // MARK: - Announcements
                 AnnouncementsView()
                     .environment(session)
@@ -64,6 +68,7 @@ struct Home: View {
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
+// DISABLED FOR NOW
 //                    Button(action: { router.navigate(to: .messages) }) {
 //                        ZStack(alignment: .topTrailing) {
 //                            Image(systemName: "bubble.left.and.bubble.right")
