@@ -66,7 +66,7 @@ struct TabBar: View {
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .map ? "map.fill" : "map")
+                        Image(systemName: currentTab == .map ? "calendar.circle.fill" : "calendar")
                             .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
                             .foregroundColor(.foreground)
