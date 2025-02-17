@@ -34,16 +34,18 @@ struct Home: View {
                     .padding(.top, 25)
                     .environment(session)
                 
+                // MARK: - Next Event
+                NextEvent()
+                    .padding(.top)
+                    .environment(session)
+                
+                // MARK: - Quick Actions
                 QuickActions()
                     .padding(.top)
                     .environment(session)
                 
                 // MARK: - Announcements
                 AnnouncementsView()
-                    .environment(session)
-                
-                // MARK: - Next Events
-                NextEvents()
                     .environment(session)
                 
                 // MARK: - Hot Events

@@ -66,7 +66,7 @@
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
 		5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */; };
 		5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF712C3120BB005D431F /* HotEvents.swift */; };
-		5D63AF742C31212A005D431F /* NextEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF732C31212A005D431F /* NextEvents.swift */; };
+		5D63AF742C31212A005D431F /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF732C31212A005D431F /* NextEvent.swift */; };
 		5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A882BF664BA001EE754 /* CropViewModel.swift */; };
 		5D666A8F2BF66580001EE754 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A8E2BF66580001EE754 /* CropView.swift */; };
 		5D666A932BF69715001EE754 /* CropModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666A922BF69715001EE754 /* CropModels.swift */; };
@@ -469,7 +469,7 @@
 		5D5BEF862BEFE894008648C5 /* General.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = General.xcstrings; sourceTree = "<group>"; };
 		5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyVenues.swift; sourceTree = "<group>"; };
 		5D63AF712C3120BB005D431F /* HotEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotEvents.swift; sourceTree = "<group>"; };
-		5D63AF732C31212A005D431F /* NextEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvents.swift; sourceTree = "<group>"; };
+		5D63AF732C31212A005D431F /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
 		5D666A882BF664BA001EE754 /* CropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropViewModel.swift; sourceTree = "<group>"; };
 		5D666A8E2BF66580001EE754 /* CropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropView.swift; sourceTree = "<group>"; };
 		5D666A922BF69715001EE754 /* CropModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropModels.swift; sourceTree = "<group>"; };
@@ -1572,7 +1572,7 @@
 				5FA350552A67352500669B2C /* NotificationsView.swift */,
 				5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */,
 				5D63AF712C3120BB005D431F /* HotEvents.swift */,
-				5D63AF732C31212A005D431F /* NextEvents.swift */,
+				5D63AF732C31212A005D431F /* NextEvent.swift */,
 				5DFDBE192D63210A00735F51 /* QuickActions.swift */,
 			);
 			path = Home;
@@ -2151,7 +2151,7 @@
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
 				5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
-				5D63AF742C31212A005D431F /* NextEvents.swift in Sources */,
+				5D63AF742C31212A005D431F /* NextEvent.swift in Sources */,
 				5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */,
 				5D4942BE2B129AC800D19188 /* GroupSelector.swift in Sources */,
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,

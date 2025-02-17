@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NextEvents: View {
+struct NextEvent: View {
     
     @Environment(SessionStore.self) private var session
     
@@ -26,7 +26,7 @@ struct NextEvents: View {
                 VStack (alignment: .center){
                     EventListItem(event: e)
                         .padding(.horizontal)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, -10)
                 }
             }
         }
@@ -34,6 +34,6 @@ struct NextEvents: View {
 }
 
 #Preview {
-    NextEvents()
+    NextEvent()
         .environment(SessionStore())
 }
