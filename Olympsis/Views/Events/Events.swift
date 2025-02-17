@@ -122,7 +122,7 @@ struct Events: View {
                         Button(action:{ self.router.navigate(to: .settings) }){
                             switch state {
                             case .list:
-                                Image(systemName: "slider.vertical.3")
+                                Image(systemName: "slider.horizontal.3")
                                     .imageScale(.large)
                             case .map:
                                 ZStack {
@@ -138,8 +138,9 @@ struct Events: View {
                         }.frame(width: 41)
                     }.frame(height: 41)
                 }
-                .frame(height: 41)
-                .padding(.horizontal)
+                .frame(height: 35)
+                .padding(.leading)
+                .padding(.trailing, 5)
             }
             .background {
                 Color.Background.primary
