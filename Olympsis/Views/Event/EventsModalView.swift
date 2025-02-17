@@ -65,7 +65,6 @@ struct EventsModalView: View {
                     
                     Spacer()
                 }
-                .padding(.vertical)
             }
         }
         .presentationDragIndicator(.visible)

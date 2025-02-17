@@ -96,10 +96,16 @@ struct EventImagePicker: View {
                                         }
                                     }
                                 }
+                                .onChange(of: manager.selectedImageIndex) { _, newValue in
+                                    manager.image = manager.sport.images()[newValue]
+                                }
                         }
                     }
                 }
             }
+        }
+        .task {
+            manager.image = manager.sport.images()[manager.selectedImageIndex]
         }
         .fullScreenCover(isPresented: $showImagePicker, content: {
             MediaPicker(pickerType: .eventImage) { images in

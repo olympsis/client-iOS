@@ -72,6 +72,7 @@ struct EventVisibilityPickerView: View {
                                 .padding(.vertical, 5)
                                 .background {
                                     Rectangle()
+                                        .foregroundStyle(Color.Brand.primary)
                                 }
                         }
                     }

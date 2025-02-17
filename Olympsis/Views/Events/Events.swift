@@ -149,7 +149,11 @@ struct Events: View {
                 VenueView(venue: field)
                     .presentationDetents([.height(250), .large])
             }
-            .fullScreenCover(isPresented: $showNewEvent) {
+            .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
+                Task {
+                    await session.getNearbyData(location: session.currentLocation.center)
+                }
+            }) {
                 NewEvent(manager: NewEventManager())
             }
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in

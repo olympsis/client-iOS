@@ -229,7 +229,7 @@ enum SPORTS: String, CaseIterable {
     func images() -> [String] {
         switch self {
         case .soccer:
-            return ["event-images/soccer-0.jpg","event-images/soccer-1.jpg"]
+            return ["event-images/soccer-0.jpg", "event-images/soccer-1.jpg", "event-images/soccer-2.jpg"]
         case .basketball:
             return ["event-images/basketball-0.jpg", "event-images/basketball-1.jpg", "event-images/basketball-2.jpg"]
         case .volleyball:

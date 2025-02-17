@@ -125,6 +125,7 @@ struct EventsOptions: View {
             cameraPosition = .userLocation(fallback: .region(fallbackLocation))
             guard let radiusValue = radius else { return }
             sliderValue = metersToMiles(radius: radiusValue)
+            updateMapRegion()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

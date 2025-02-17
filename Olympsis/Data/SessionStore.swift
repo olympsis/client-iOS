@@ -7,6 +7,7 @@
 
 import os
 import OSLog
+import MapKit
 import SwiftUI
 import Foundation
 import FirebaseAuth
@@ -75,6 +76,20 @@ class SessionStore {
     var eventObserver = EventObserver()
     var locationManager = LocationManager()
     var notificationsManager = NotificationManager()
+
+    // This variable helps us keep track of the user's current location. It also includes a fallback to a location
+    // This fallback location is a second location in case we are unable to find the user's current location
+    // In this case we check to see if they have a stored location(hometown)
+    // If not then we default to new york city
+    var currentLocation: MKCoordinateRegion {
+        guard let location = locationManager.location else {
+            guard let user = user, let hometown = user.hometown else {
+                return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
+            }
+            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 5000, longitudinalMeters: 5000)
+        }
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+    }
     
     /**
      App lifetime data
