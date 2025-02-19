@@ -112,7 +112,7 @@ class SessionStore {
     @AppStorage("selected_group_id") var selectedGroupID: String?
     
     @ObservationIgnored
-    @AppStorage("deviceToken") private var _token: String?
+    @AppStorage("deviceToken") private var dToken: String?
     
     @ObservationIgnored
     @AppStorage("auth_type") private var authType: USER_STATUS?
@@ -168,22 +168,72 @@ class SessionStore {
     
     func updateNotifications() async {
         do {
-            guard !(try await notificationsManager.checkAuthorizationStatus()) else {
-                return
-            }
-            await notificationsManager.requestAuthorization()
-            guard let user = user,
-                let token = _token else {
-                return
-            }
-            if var tokens = user.deviceTokens {
-                tokens.append(token)
-                _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: tokens))
+            if try await notificationsManager.checkAuthorizationStatus() {
+                guard let dToken = dToken else {
+                    log.error("Failed to grab notification token from cache.")
+                    return
+                }
+                
+                let uuid = await UIDevice.current.identifierForVendor?.uuidString
+                let model = await UIDevice.current.model
+                let device = NotificationDevice(
+                    deviceID: uuid,
+                    token: dToken,
+                    platform: .ios,
+                    model: model,
+                    active: true,
+                    createdAt: Int64(Date().timeIntervalSince1970),
+                    updatedAt: nil
+                )
+                
+                // Check for existing devices
+                guard let user = cacheService.fetchUser(),
+                      var devices = user.notificationDevices else {
+                    let dao = UserDao(notificationDevices: [device])
+                    guard let user = await userObserver.UpdateUserData(update: dao) else {
+                        log.error("Failed to update user with new device token.")
+                        return
+                    }
+                    cacheService.cacheUser(user: user)
+                    self.user = user
+                    return
+                }
+                
+                // Check for this device
+                guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
+                    devices.append(device)
+                    let dao = UserDao(notificationDevices: devices)
+                    guard let user = await userObserver.UpdateUserData(update: dao) else {
+                        log.error("Failed to update user with new device token.")
+                        return
+                    }
+                    cacheService.cacheUser(user: user)
+                    self.user = user
+                    return
+                }
+                
+                // Make sure that it's not the same
+                guard devices[idx].token != dToken else {
+                    return
+                }
+                
+                devices[idx].token = dToken
+                devices[idx].updatedAt = Int64(Date().timeIntervalSince1970)
+                let dao = UserDao(notificationDevices: devices)
+                guard let user = await userObserver.UpdateUserData(update: dao) else {
+                    log.error("Failed to update user with new device token.")
+                    return
+                }
+                cacheService.cacheUser(user: user)
+                self.user = user
             } else {
-                _ = await userObserver.UpdateUserData(update: UserDao(deviceTokens: [token]))
+                log.debug("Notification authorization is invalid.")
+                return
+                
             }
         } catch {
-            log.error("Failed to update notifications: \(error.localizedDescription)")
+            log.error("Failed to check authorization status: \(error.localizedDescription)")
+            return
         }
     }
     

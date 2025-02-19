@@ -52,9 +52,13 @@ struct VenuesList: View {
                             }.foregroundStyle(.gray)
                         }
                         .padding(.all)
-                        .fullScreenCover(isPresented: $showRequestLocation, content: {
+                        .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+                            Task {
+                                await session.updateNotifications()
+                            }
+                        }) {
                             LocationRequestView()
-                        })
+                        }
                     }
                 }
             }

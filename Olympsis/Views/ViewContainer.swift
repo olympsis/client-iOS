@@ -113,6 +113,8 @@ struct ViewContainer: View {
                 return
             }
             
+            await session.updateNotifications()
+            
             // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
             if (!session.locationRecieved) {
                 if let hometown = user.hometown {

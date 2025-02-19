@@ -38,7 +38,7 @@ struct ProfileMenu: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    NavigationLink(destination: NotificationSettings()) {
+                    NavigationLink(destination: NotificationSettings().environment(session)) {
                         MenuLabel(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
                     }
                     

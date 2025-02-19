@@ -19,8 +19,12 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     @Published var toastPosition: DisplayPosition = .bottom
     @Published var toastContent: ToastContent = ToastContent(view: { AnyView(EmptyView()) })
     
+    @AppStorage("deviceToken") private var dToken: String?
+    
     private var userObserver = UserObserver()
-    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
+    private var cacheService = CacheService()
+    
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
     
     override init() {
         super.init()

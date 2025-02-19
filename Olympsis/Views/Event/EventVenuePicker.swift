@@ -145,7 +145,6 @@ struct EventVenuePicker: View {
                                     }
                                     .padding(.all)
                                     .onTapGesture {
-                                        print(venue.location)
                                         manager.selectedVenues.append(venue)
                                         dismiss()
                                     }

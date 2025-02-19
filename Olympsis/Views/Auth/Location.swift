@@ -19,10 +19,12 @@ struct Location: View {
     @State private var location = LocationManager()
     @State private var log = Logger(subsystem: "com.olympsis.client", category: "location_permission_view")
     
+    private let manager: NotificationManager = NotificationManager()
     
     func handleAllow() async {
         location.requestLocation()
         status = .success
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             currentView = .notifications
         }

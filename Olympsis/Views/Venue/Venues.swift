@@ -76,7 +76,11 @@ struct Venues: View {
                 VenueListItemTemplate()
             }
         }
-        .fullScreenCover(isPresented: $showRequestLocation){
+        .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+            Task {
+                await session.updateNotifications()
+            }
+        }){
             LocationRequestView()
         }
         .fullScreenCover(isPresented: $showNewEvent) {

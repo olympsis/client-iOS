@@ -40,7 +40,7 @@ struct OlympsisApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    @AppStorage("deviceToken") private var _token: String?
+    @AppStorage("deviceToken") private var dToken: String?
     let log = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -53,12 +53,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 extension AppDelegate : UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        _token = token;
-        log.info("Registering for remote notifications successfull")
+        dToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined();
+        log.info("Registering for remote notifications successful.")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        log.error("Failed to register for remote notifications")
+        log.error("Failed to register for remote notifications. Error: \(error.localizedDescription)")
     }
 }
