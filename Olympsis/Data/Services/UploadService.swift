@@ -17,10 +17,10 @@ class UploadService {
     init() {
         #if targetEnvironment(simulator)
             // Eventually we want to have a local way of testing the upload server
-            let host = Bundle.main.object(forInfoDictionaryKey: "STORAGE") as? String ?? ""
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
             self.http = Courrier(.HTTP, host: host)
         #else
-            let host = Bundle.main.object(forInfoDictionaryKey: "STORAGE") as? String ?? ""
+            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
             self.http = Courrier(.HTTPS, host: host)
         #endif
     }
