@@ -14,7 +14,7 @@ struct StatusNotificationToast: View {
     var metadata: NotificationMetadata
     
     init(content: String, metadata: NotificationMetadata) {
-        self.type = STATUS_TOAST_TYPES(rawValue: metadata.type) ?? .warning
+        self.type = STATUS_TOAST_TYPES(rawValue: metadata.type) ?? .normal
         self.content = content
         self.metadata = metadata
     }
@@ -44,6 +44,10 @@ struct StatusNotificationToast: View {
                         .fontWeight(.bold)
                         .foregroundStyle(.red)
                     
+                    Text(content)
+                }
+            case .normal:
+                HStack {
                     Text(content)
                 }
             }

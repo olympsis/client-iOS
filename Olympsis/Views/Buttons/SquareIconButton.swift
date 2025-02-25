@@ -20,7 +20,7 @@ struct SquareIconButton: View {
             VStack {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.Background.primary)
+                        .foregroundStyle(Color.Background.tertiary)
                         .frame(width: size.width, height: size.height)
                     icon
                         .resizable()

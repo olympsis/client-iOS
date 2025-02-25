@@ -19,8 +19,11 @@ struct EventView: View {
     @State private var clubs = [Club]()
     @State private var organizations = [Organization]()
     @State private var venuesTarget: Int = 0
+    
+    @State private var showToast: Bool = false
     @State private var showFullImage: Bool = false
     @State private var showSharingMenu: Bool = false
+    
     @State private var state: LOADING_STATE = .pending
     @State private var venueState: LOADING_STATE = .pending
     @State private var organizersState: LOADING_STATE = .pending

@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import Kingfisher
+import AlertToast
 import NotificationCenter
 
 class ToastManager: ObservableObject {

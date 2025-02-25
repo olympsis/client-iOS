@@ -57,59 +57,30 @@ public struct ToastViewModifier: ViewModifier {
      }
     
     public func body(content: Content) -> some View {
-        switch position {
-        case .top:
-            return content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .top) {
-                    Group {
-                        if isPresented {
-                            AnyView(toastContent.view())
-                                .zIndex(10)
-                                .padding(.horizontal, 10)
-                                .padding(.bottom, 0)
-                        }
+            content
+                .overlay(alignment: position == .top ? .top : .bottom) {
+                    if isPresented {
+                        AnyView(toastContent.view())
+                            .padding(.horizontal, 10)
+                            .padding(position == .top ? .top : .bottom, position == .top ? 0 : 15)
+                            .onTapGesture {
+                                if let url = toastContent.url {
+                                    openURL(url)
+                                }
+                                hideToast()
+                            }
+                            .transition(.move(edge: position == .top ? .top : .bottom))
+                            .animation(.easeInOut, value: isPresented)
+                            .zIndex(10)
                     }
                 }
-                .onChange(of: isPresented, { _, newValue in
-                    guard newValue == true else {
-                        return
-                    }
-                    resetTimer()
-                })
-                .onTapGesture {
-                    if let url = toastContent.url {
-                        openURL(url)
-                    }
-                    hideToast()
+            .onChange(of: isPresented) { _, newValue in
+                guard newValue == true else {
+                    return
                 }
-        case .bottom:
-            return content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .bottom) {
-                    Group {
-                        if isPresented {
-                            AnyView(toastContent.view())
-                                .zIndex(10)
-                                .padding(.horizontal, 10)
-                                .padding(.bottom, 15)
-                        }
-                    }
-                }
-                .onChange(of: isPresented, { _, newValue in
-                    guard newValue == true else {
-                        return
-                    }
-                    resetTimer()
-                })
-                .onTapGesture {
-                    if let url = toastContent.url {
-                        openURL(url)
-                    }
-                    hideToast()
-                }
+                resetTimer()
+            }
         }
-    }
 }
 
 extension View {

@@ -590,6 +590,7 @@ enum FRIEND_TOAST_TYPES: String {
 }
 
 enum STATUS_TOAST_TYPES: String {
+    case normal = "normal"
     case warning = "warning"
     case success = "success"
     case error = "error"
