@@ -155,13 +155,28 @@ struct EventView: View {
                 ScrollViewReader { proxy in
                     VStack(alignment: .leading) {
                         
-                        if event.type == EVENT_TYPES.Competitive {
-                            Text("Tournament")
-                                .font(.caption)
-                                .padding(.leading)
-                                .bold()
-                                .foregroundStyle(Color("color-tert"))
-                        }
+                        VStack(alignment: .leading) {
+                            HStack {
+                                ForEach(event.sports, id: \.self) { sport in
+                                    Text(sport)
+                                        .italic()
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                }
+                            }
+                            if event.type == EVENT_TYPES.Competitive {
+                                HStack {
+                                    Image(systemName: "trophy.fill")
+                                        .imageScale(.small)
+                                        .foregroundStyle(Color.Brand.tertiary)
+                                    Text("Tournament")
+                                        .bold()
+                                        .font(.caption)
+                                        .padding(.leading, -5)
+                                        .foregroundStyle(Color.Brand.tertiary)
+                                }
+                            }
+                        }.padding(.leading)
                         
                         // MARK: - Organizers Names
                         EventOrganizersView(event: event, clubs: $clubs, organizations: $organizations)

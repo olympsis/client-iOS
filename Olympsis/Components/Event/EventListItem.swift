@@ -89,12 +89,19 @@ struct EventListItem: View {
                                 }
                             }
                             Spacer()
-                            if event.type == EVENT_TYPES.Competitive {
-                                Text("Tournament")
-                                    .font(.caption)
-                                    .padding(.bottom)
-                                    .foregroundStyle(Color("color-tert"))
+                            HStack(alignment: .center) {
+                                if event.type == EVENT_TYPES.Competitive {
+                                    Image(systemName: "trophy.fill")
+                                        .foregroundStyle(Color.Brand.tertiary)
+                                }
+                                ForEach(event.sports, id: \.self) { sport in
+                                    Text(sport)
+                                        .italic()
+                                        .font(.caption)
+                                        .textCase(.uppercase)
+                                }
                             }
+                            .padding(.bottom)
                         }
                         Spacer()
                         _TrailingView(event: $event)
