@@ -30,11 +30,8 @@ struct TabBar: View {
                 } label: {
                     VStack {
                         Image(systemName: currentTab == .home ? "house.fill" : "house")
-                            .frame(width: 20, height: 20)
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
-                        Text("HOME")
-                            .font(.caption2)
                             .foregroundColor(.foreground)
                     }
                 }
@@ -49,11 +46,8 @@ struct TabBar: View {
                 } label: {
                     VStack {
                         Image(systemName: currentTab == .club ? "person.3.fill" : "person.3")
-                            .frame(width: 20, height: 20)
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
-                        Text("GROUPS")
-                            .font(.caption2)
                             .foregroundColor(.foreground)
                     }
                 }
@@ -67,11 +61,8 @@ struct TabBar: View {
                 } label: {
                     VStack {
                         Image(systemName: currentTab == .map ? "calendar.circle.fill" : "calendar")
-                            .frame(width: 20, height: 20)
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
-                        Text("EVENTS")
-                            .font(.caption2)
                             .foregroundColor(.foreground)
                     }
                 }
@@ -98,10 +89,10 @@ struct TabBar: View {
                         TabBarProfileLabel(currentTab: $currentTab)
                             .environment(session)
                             .frame(maxWidth: .infinity)
-                        
-                        Text("PROFILE")
-                            .font(.caption2)
-                            .foregroundColor(.foreground)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.foreground, lineWidth: currentTab == .profile ? 3 : 1)
+                            )
                     }
                 }
             }
@@ -115,8 +106,6 @@ struct TabBar: View {
 }
 
 #Preview {
-    return TabBar(currentTab: .constant(.home))
-        .background(Color.dark)
+    TabBar(currentTab: .constant(.home))
         .environment(SessionStore())
-        
 }
