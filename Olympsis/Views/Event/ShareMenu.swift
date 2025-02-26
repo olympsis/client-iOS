@@ -13,10 +13,11 @@ struct ShareMenu: View {
     var event: Event
     var venue: Venue
     
+    @Binding var showToast: Bool
     @State private var showShareView: Bool = false
     @State private var sharingMethod: SHARE_METHOD = .image
     
-    @StateObject private var toastManager = ToastManager()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
@@ -27,12 +28,9 @@ struct ShareMenu: View {
                 
                 HStack {
                     SquareIconButton(icon: Image(systemName: "link"), text: "Copy Link", size: CGSize(width: 80, height: 80), imageSize: CGSize(width: 35, height: 35)) {
-                        toastManager.sendNotification(note: Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: [
-                            "type": TOAST_TYPE.status.rawValue,
-                            "content": "Event Link Copied",
-                            "postion": TOAST_POSITION.bottom.rawValue,
-                            "sub_type": STATUS_TOAST_TYPES.normal.rawValue
-                        ]))
+                        UIPasteboard.general.setValue("https://olympsis.com/events/\(event.id)", forPasteboardType: "public.plain-text")
+                        showToast.toggle()
+                        dismiss()
                     }
                     
                     SquareIconButton(icon: Image(systemName: "photo"), text: "Export", size: CGSize(width: 80, height: 80), imageSize: CGSize(width: 35, height: 25)) {
@@ -70,5 +68,5 @@ struct ShareMenu: View {
 }
 
 #Preview {
-    ShareMenu(event: EVENTS[0], venue: FIELDS[0])
+    ShareMenu(event: EVENTS[0], venue: FIELDS[0], showToast: .constant(false))
 }

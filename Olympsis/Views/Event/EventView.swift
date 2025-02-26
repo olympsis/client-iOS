@@ -9,6 +9,7 @@ import os
 import MapKit
 import SwiftUI
 import Kingfisher
+import AlertToast
 import CoreLocation
 
 /// A view that shows more detail about a specific event
@@ -291,9 +292,12 @@ struct EventView: View {
                 }
             }
         }
+        .toast(isPresenting: $showToast, alert: {
+            AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
+        })
         .background(Color.Background.primary)
         .sheet(isPresented: $showSharingMenu, content: {
-            ShareMenu(event: event, venue: venues[0])
+            ShareMenu(event: event, venue: venues[0], showToast: $showToast)
                 .presentationDetents([.height(170)])
         })
         .task {

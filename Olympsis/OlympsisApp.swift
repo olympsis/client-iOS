@@ -20,6 +20,7 @@ struct OlympsisApp: App {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @State private var sessionStore = SessionStore()
+    @StateObject private var toastManager = ToastManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
