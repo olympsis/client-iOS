@@ -21,6 +21,7 @@ struct GroupSelector: View {
                 Section {
                     ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Club })) { g in
                         GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
+                            .listRowBackground(Color.Background.secondary)
                             .onTapGesture {
                                 selection = g.id
                             }
@@ -33,6 +34,7 @@ struct GroupSelector: View {
                     Section {
                         ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { g in
                             GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
+                                .listRowBackground(Color.Background.secondary)
                                 .onTapGesture {
                                     selection = g.id
                                 }
@@ -41,7 +43,9 @@ struct GroupSelector: View {
                         Text("Organizations")
                     }
                 }
-            }.listStyle(.plain)
+            }
+            .listStyle(.plain)
+            .background(Color.Background.primary)
             
             Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {

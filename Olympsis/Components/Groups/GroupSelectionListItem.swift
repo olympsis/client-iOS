@@ -82,7 +82,8 @@ struct GroupSelectionListItem: View {
                 .fontWeight(selectionID == selectedGroup.id ? .bold : .regular)
             
             Spacer()
-        }.padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
 }
 
