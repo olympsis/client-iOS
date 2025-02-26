@@ -78,15 +78,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        let userInfo = notification.request.content.userInfo
-        let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: userInfo)
-        ToastManager.shared.sendNotification(note: note)
-        
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
         } else {
             completionHandler([.sound])
+            // Handle Notifications in App
+//            let userInfo = notification.request.content.userInfo
+//            let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: userInfo)
+//            ToastManager.shared.sendNotification(note: note)
         }
     }
 }

@@ -120,6 +120,8 @@ struct GroupFeed: View {
                     
                     if viewModel.posts[groupID]?.count ?? 0 > 0 {
                         ForEach(viewModel.posts[groupID] ?? [Post]()) { post in
+                            Spacer(minLength: 10)
+                            
                             PostListItem(post: post)
                                 .environmentObject(viewModel)
                         }
