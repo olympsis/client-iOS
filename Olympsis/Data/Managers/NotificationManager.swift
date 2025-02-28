@@ -41,7 +41,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             log.error("Failed to request authorization: \(error.localizedDescription)")
         }
     }
-
     
     // checks and makes sure all the notification authorizations are there
     func checkAuthorizationStatus() async throws -> Bool {
@@ -61,6 +60,60 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }else{
             // notification with badge and sound and device locked
             return false
+        }
+    }
+    
+    // Sets a local notification to remind users to head to the event
+    func setEventLocalNotification(_ event: Event, minutesBefore: Int = 30) async {
+        do {
+            guard try await checkAuthorizationStatus() else { return }
+            
+            let subtitles = [
+                "Time to make your way to the venue. ",
+                "Get ready—the event kicks off shortly!",
+                "The countdown is almost over—see you there!",
+                "Don’t be late! Head to the event now.",
+                "It’s almost game time—make your way over!",
+                "The action begins soon—get moving!",
+                "Your event is about to start—let’s go!",
+                "Final call—time to head out!",
+                "The excitement is about to begin!",
+                "See you soon—the event starts shortly!"
+            ]
+            
+            // Create notification content
+            let content = UNMutableNotificationContent()
+            content.title = "\(event.title) is starting soon!"
+            content.body = subtitles.randomElement() ?? "Get ready—the event starts soon!"
+            content.sound = UNNotificationSound.default
+            
+            // Calculate the time 'minutesBefore' minutes before the specified date
+            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: Date(timeIntervalSince1970: TimeInterval(event.startTime)))!
+            
+            // Extract date components from the early reminder time
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: earlyReminderTime)
+            
+            // Create trigger with the date components
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            
+            // Create request with a unique identifier
+            let identifier = event.id
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            try await center.add(request)
+        } catch {
+            log.error("Error scheduling local notification: \(error)")
+        }
+    }
+    
+    // Removes the local notification
+    func removeEventLocalNotification(_ id: String) async {
+        do {
+            guard try await checkAuthorizationStatus() else { return }
+            // Remove the specific notification with the given identifier
+            center.removePendingNotificationRequests(withIdentifiers: [id])
+        } catch {
+            log.error("Error removing local notification: \(error)")
         }
     }
     

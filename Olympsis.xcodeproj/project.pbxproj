@@ -35,6 +35,7 @@
 		5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625D2B1435F300A9D408 /* OrgApplicationListItem.swift */; };
 		5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListItem.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
+		5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26182F2D715AE300FE2923 /* CalendarManager.swift */; };
 		5D2AF5E32CEED1FB0026A526 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
 		5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueInfo.swift */; };
@@ -101,6 +102,7 @@
 		5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE72C0D387500F170D6 /* SportView.swift */; };
 		5D78BDEA2C0D48C000F170D6 /* EventImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE92C0D48C000F170D6 /* EventImagePicker.swift */; };
 		5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */; };
+		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D8086062B2FF9C100EA01AC /* OlympsisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */; };
 		5D80860E2B2FFA0F00EA01AC /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D80860D2B2FFA0F00EA01AC /* EventModel.swift */; };
@@ -441,6 +443,7 @@
 		5D20625D2B1435F300A9D408 /* OrgApplicationListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplicationListItem.swift; sourceTree = "<group>"; };
 		5D20625F2B14463400A9D408 /* OrgListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItem.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
+		5D26182F2D715AE300FE2923 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* VenueInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueInfo.swift; sourceTree = "<group>"; };
@@ -506,6 +509,7 @@
 		5D78BDE72C0D387500F170D6 /* SportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportView.swift; sourceTree = "<group>"; };
 		5D78BDE92C0D48C000F170D6 /* EventImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventImagePicker.swift; sourceTree = "<group>"; };
 		5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePickerView.swift; sourceTree = "<group>"; };
+		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
 		5D8086032B2FF9C100EA01AC /* OlympsisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D8086052B2FF9C100EA01AC /* OlympsisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisTests.swift; sourceTree = "<group>"; };
@@ -1455,6 +1459,7 @@
 				9AB6DDC32961537E00C7E427 /* ChatService.swift */,
 				5D20624F2B141C7E00A9D408 /* OrgService.swift */,
 				5DC468C52B9FCE7D0023353D /* ManagementService.swift */,
+				5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1560,6 +1565,7 @@
 				5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */,
 				5D8958F42C76D82400AAF374 /* ImageSaver.swift */,
 				5D76D3692C79534800846382 /* ToastManager.swift */,
+				5D26182F2D715AE300FE2923 /* CalendarManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1950,6 +1956,7 @@
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
+				5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				5DCAEA2D2B01958F00B9C22A /* EventParticipantsView.swift in Sources */,
 				5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */,
@@ -2080,6 +2087,7 @@
 				5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,
 				5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */,
+				5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
 				9A5D3365292AAA71008CF61D /* PostListItem.swift in Sources */,
 				5D67494A2A73339E00AEC868 /* EventView.swift in Sources */,

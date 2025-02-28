@@ -110,6 +110,7 @@ struct ViewContainer: View {
             }
             
             await session.updateNotifications()
+            await session.getNotifications()
             
             // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
             if (!session.locationRecieved) {

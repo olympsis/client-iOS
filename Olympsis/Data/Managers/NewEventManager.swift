@@ -69,11 +69,10 @@ class NewEventManager {
     var customVenueSearch: String = ""
     
     var recurrenceOptions: EventRecurrenceOptions?
-    
+
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
-    
     
     init(
         type: EVENT_TYPES = .Regular,
@@ -291,7 +290,8 @@ class NewEventManager {
             visibility: visibility,
             createdAt: Int(Date().timeIntervalSince1970), 
             isSensitive: sensitivity,
-            externalLink: dao.externalLink != "" ? dao.externalLink : nil
+            externalLink: dao.externalLink != "" ? dao.externalLink : nil,
+            isRecurring: recurrenceOptions != nil
         )
     }
     

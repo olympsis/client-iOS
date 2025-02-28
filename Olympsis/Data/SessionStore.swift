@@ -47,6 +47,7 @@ class SessionStore {
     var venues = [Venue]()           // Venues Cache
     var hotEvents = [Event]()        // Hot Events Cache
     var invitations = [Invitation]() // Invitations Cache
+    var notifications = [NotificationItem]()
     
     // groups & posts
     var selectedGroup: GroupSelection? {
@@ -75,6 +76,7 @@ class SessionStore {
     var fieldObserver = FieldObserver()
     var eventObserver = EventObserver()
     var locationManager = LocationManager()
+    var notificationService = NotificationService()
     var notificationsManager = NotificationManager()
 
     // This variable helps us keep track of the user's current location. It also includes a fallback to a location
@@ -299,6 +301,14 @@ class SessionStore {
         } catch {
             authStatus = .unauthenticated
             log.error("Failed to check user in: \(error.localizedDescription)")
+        }
+    }
+    
+    func getNotifications() async {
+        do {
+            self.notifications = try await notificationService.GetNotifications().notifications
+        } catch {
+            log.error("Failed to get notifications. Error: \(error)")
         }
     }
     

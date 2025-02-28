@@ -16,9 +16,12 @@ struct NotificationsView: View {
     
     var body: some View {
         ScrollView {
-            if notifications.count > 0 {
-                ForEach(notifications, id: \.id){ note in
-                    NotificationModelView(notification: note)
+            if session.notifications.count > 0 {
+                ForEach(session.notifications, id: \.id){ note in
+                    LazyVStack {
+                        NotificationModelView(notification: note)
+                            .environment(session)
+                    }
                 }
             } else {
                 VStack {

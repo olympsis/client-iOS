@@ -90,8 +90,8 @@ struct Home: View {
                             Image(systemName: "bell")
                                 .foregroundStyle(Color.foreground)
                                 
-                            if session.invitations.count > 0 {
-                                NotificationCountView(value: session.invitations.count)
+                            if session.notifications.contains(where: { !$0.isRead }) {
+                                NotificationCountView(value: session.notifications.count(where: { !$0.isRead }))
                             }
                         }
                     }

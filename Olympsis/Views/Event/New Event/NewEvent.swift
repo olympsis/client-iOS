@@ -41,6 +41,7 @@ struct NewEvent: View {
     @Environment(SessionStore.self) private var session
     
     private let uploadObserver = UploadObserver()
+    private let notificationsManager = NotificationManager()
     private let log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
 
     private var setStartTime: Int {
@@ -156,7 +157,7 @@ struct NewEvent: View {
         }
         await MainActor.run {
             session.events.append(e)
-//            openURL(URL(string: "olympsis://events?ID=\(e.id)")!)
+            notificationsManager.setEventLocalNotification(e)
             dismiss()
         }
     }

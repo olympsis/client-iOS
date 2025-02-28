@@ -23,6 +23,8 @@ struct EventActionButtons: View {
     @EnvironmentObject private var event: Event
     @Environment(SessionStore.self) private var session
     
+    private let notificationManager = NotificationManager()
+    
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
     }
@@ -63,8 +65,10 @@ struct EventActionButtons: View {
             handleFailure()
             return
         }
+        
         event.update(update)
         handleSuccess()
+        await notificationManager.setEventLocalNotification(event)
         guard let extLink = event.externalLink,
               let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
             await session.notificationsManager.requestAuthorization()
@@ -83,6 +87,7 @@ struct EventActionButtons: View {
             return
         }
         event.update(update)
+        await notificationManager.removeEventLocalNotification(event.id)
         handleSuccess()
     }
     
