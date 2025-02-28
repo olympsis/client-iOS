@@ -137,6 +137,7 @@ struct NewEvent: View {
         return nil
     }
     
+    @MainActor
     func createEvent(value: ScrollViewProxy) async throws {
         guard Validate(value: value) == nil else {
             handleFailure()
@@ -155,11 +156,10 @@ struct NewEvent: View {
             handleFailure()
             return
         }
-        await MainActor.run {
-            session.events.append(e)
-            notificationsManager.setEventLocalNotification(e)
-            dismiss()
-        }
+        
+        session.events.append(e)
+        await notificationsManager.setEventLocalNotification(e)
+        dismiss()
     }
     
     var body: some View {

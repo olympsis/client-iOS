@@ -7,18 +7,24 @@
 
 import os
 import SwiftUI
+import AlertToast
 import AuthenticationServices
 
 struct AuthView: View {
     
     @Binding var currentView: AuthTab
+    
+    @State private var showToast: Bool = false
+    @State private var enableLogin: Bool = false
+    
     @State private var state: LOADING_STATE = .pending
     @State private var nonce: String = randomNonceString()
     
     @StateObject private var observer = AuthObserver()
     @StateObject private var cacheService = CacheService()
+    @State private var managementService = ManagementService()
     
-    @Environment(SessionStore.self) var sessionStore
+    @Environment(SessionStore.self) var session
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     var log = Logger(subsystem: "com.olympsis.client", category: "auth_view")
@@ -93,9 +99,15 @@ struct AuthView: View {
                     )
                     .signInWithAppleButtonStyle(.white)
                     .frame(height: 50)
+                    .overlay {
+                        Color.gray
+                            .opacity(0.9)
+                            .cornerRadius(radius: 5, corners: .allCorners)
+                    }
                     .padding(.horizontal, 50)
                     .padding(.bottom, 50)
                     .padding(.top)
+                    .disabled(!enableLogin)
                 case .loading:
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 50)
@@ -116,12 +128,24 @@ struct AuthView: View {
                     .opacity(0.6)
                     .ignoresSafeArea(edges: .bottom)
             }
-        }.background {
+        }
+        .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
+            AlertToast(displayMode: .hud, type: .regular, title: "Server Unavailable", style: .style(backgroundColor: .red, titleColor: .white))
+        })
+        .background {
             Image("basketball-bw")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
                 .blur(radius: 2, opaque: true)
+        }
+        .task {
+            // If server is down we don't want people signing up
+            guard await managementService.wsg() else {
+                showToast = true
+                return
+            }
+            enableLogin = true
         }
     }
 }

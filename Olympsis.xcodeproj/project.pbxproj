@@ -36,6 +36,7 @@
 		5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListItem.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26182F2D715AE300FE2923 /* CalendarManager.swift */; };
+		5D2618322D72541200FE2923 /* QuickActionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2618312D72541200FE2923 /* QuickActionsManager.swift */; };
 		5D2AF5E32CEED1FB0026A526 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */; };
 		5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueInfo.swift */; };
@@ -444,6 +445,7 @@
 		5D20625F2B14463400A9D408 /* OrgListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItem.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D26182F2D715AE300FE2923 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		5D2618312D72541200FE2923 /* QuickActionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsManager.swift; sourceTree = "<group>"; };
 		5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizersView.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* VenueInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueInfo.swift; sourceTree = "<group>"; };
@@ -1566,6 +1568,7 @@
 				5D8958F42C76D82400AAF374 /* ImageSaver.swift */,
 				5D76D3692C79534800846382 /* ToastManager.swift */,
 				5D26182F2D715AE300FE2923 /* CalendarManager.swift */,
+				5D2618312D72541200FE2923 /* QuickActionsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2169,6 +2172,7 @@
 				9A69FE5B2973261900EBC5F9 /* PostTemplateView.swift in Sources */,
 				9AECDA4229542108007956FB /* LookUpMenu.swift in Sources */,
 				5DF945B42BFC736200BE3C63 /* BlockedUsersList.swift in Sources */,
+				5D2618322D72541200FE2923 /* QuickActionsManager.swift in Sources */,
 				BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */,
 				5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* FeedObserver.swift in Sources */,
@@ -2419,7 +2423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.4;
+				MARKETING_VERSION = 0.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2460,7 +2464,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.4;
+				MARKETING_VERSION = 0.8.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -23,6 +23,20 @@ class ManagementService {
         #endif
     }
     
+    func wsg() async -> Bool {
+        do {
+            let endpoint = Endpoint("/v1/health/wsg")
+            let (_, res) = try await http.Request(.GET, endpoint)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+        } catch {
+            return false
+        }
+        
+        return false
+    }
+    
     /// HTTP request to create a bug report
     ///
     /// The dao object is the data needed to create the report
