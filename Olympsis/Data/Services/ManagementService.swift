@@ -34,7 +34,7 @@ class ManagementService {
             return false
         }
         
-        return false
+        return true
     }
     
     /// HTTP request to create a bug report
