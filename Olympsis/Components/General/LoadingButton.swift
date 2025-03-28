@@ -29,7 +29,7 @@ struct LoadingButton: View {
                 ZStack{
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(color)
-                        .frame(width: width, height: height)
+                        .frame(minWidth: width, minHeight: 40, maxHeight: 40)
                     Text(text ?? "")
                         .font(.caption)
                         .textCase(.uppercase)

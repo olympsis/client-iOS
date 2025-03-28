@@ -99,18 +99,22 @@ struct EventListItem: View {
                                 
                                 Text("At \(venueLocationName)")
                                     .font(.body)
-                                    .foregroundStyle(.gray)
+                                    .opacity(0.8)
+                                    .foregroundStyle(.white)
                             }
                             
                             Spacer()
                             
                             // MARK: - Participants
                             HStack {
-                                Image(systemName: "person.3.fill")
+                                Image(systemName: "person.2.fill")
                                     .imageScale(.small)
+                                    .foregroundStyle(.white)
+                                
                                 Text("\(event.participants.count) Participants")
                                     .font(.caption)
                                     .fontWeight(.bold)
+                                    .foregroundStyle(.white)
                                     .padding(.trailing, 2.5)
                             }
                             .padding(5)
@@ -129,8 +133,10 @@ struct EventListItem: View {
                             HStack {
                                 Image(systemName: "calendar")
                                     .imageScale(.small)
+                                    .foregroundStyle(.white)
                                 Text(eventStartDate)
                                     .font(.callout)
+                                    .foregroundStyle(.white)
                             }
                             
                             Spacer()
@@ -159,6 +165,7 @@ struct EventListItem: View {
                                 Text(eventSport)
                                     .font(.caption)
                                     .fontWeight(.bold)
+                                    .foregroundStyle(.white)
                                     .padding([.leading, .trailing], 2.5)
                             }
                             .padding(5)
@@ -173,9 +180,11 @@ struct EventListItem: View {
                             HStack {
                                 Image(systemName: "clock")
                                     .imageScale(.small)
+                                    .foregroundStyle(.white)
                                 Text(event.getStartHourAndMinute())
                                     .font(.caption)
                                     .fontWeight(.bold)
+                                    .foregroundStyle(.white)
                                     .padding(.trailing, 2.5)
                             }
                             .padding(5)

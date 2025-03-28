@@ -67,6 +67,10 @@
 		5D4B0A662D96F87400475A0C /* EventMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A652D96F87400475A0C /* EventMedia.swift */; };
 		5D4B0A682D96F9F900475A0C /* EventQuickInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */; };
 		5D4B0A6A2D9704AE00475A0C /* EventCommentListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */; };
+		5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */; };
+		5D4B0A6F2D97446400475A0C /* PastEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A6E2D97446400475A0C /* PastEvents.swift */; };
+		5D4B0A712D9747A100475A0C /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A702D9747A100475A0C /* Awards.swift */; };
+		5D4B0A732D974B4200475A0C /* ClubListItemMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */; };
 		5D5170E12C27270F0035C1F1 /* VenueAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */; };
 		5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E22C2749D10035C1F1 /* EditClub.swift */; };
 		5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */; };
@@ -479,6 +483,10 @@
 		5D4B0A652D96F87400475A0C /* EventMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMedia.swift; sourceTree = "<group>"; };
 		5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventQuickInfo.swift; sourceTree = "<group>"; };
 		5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCommentListItem.swift; sourceTree = "<group>"; };
+		5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsEnrolled.swift; sourceTree = "<group>"; };
+		5D4B0A6E2D97446400475A0C /* PastEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastEvents.swift; sourceTree = "<group>"; };
+		5D4B0A702D9747A100475A0C /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
+		5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubListItemMedia.swift; sourceTree = "<group>"; };
 		5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAnnotation.swift; sourceTree = "<group>"; };
 		5D5170E22C2749D10035C1F1 /* EditClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClub.swift; sourceTree = "<group>"; };
 		5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorGroupViewModel.swift; sourceTree = "<group>"; };
@@ -1231,6 +1239,7 @@
 				5DBB94D32B0A7F230031876D /* ClubTag.swift */,
 				5DF5CFC12C0450D5008F5374 /* ClubBanner.swift */,
 				5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */,
+				5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */,
 			);
 			path = Club;
 			sourceTree = "<group>";
@@ -1626,6 +1635,9 @@
 				5DF945B32BFC736200BE3C63 /* BlockedUsersList.swift */,
 				5D2F19A42C13F4E600D98222 /* AccountDeleteSignin.swift */,
 				5D38BD9E2C169B24003EEF90 /* LogViewer.swift */,
+				5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */,
+				5D4B0A6E2D97446400475A0C /* PastEvents.swift */,
+				5D4B0A702D9747A100475A0C /* Awards.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -2045,6 +2057,7 @@
 				9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
 				5D18BD102B35F85800F90777 /* EventDatePickerView.swift in Sources */,
+				5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
 				5D0CC9432BB0CC8700E16B95 /* MemberView2.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
@@ -2120,6 +2133,7 @@
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
 				5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */,
+				5D4B0A6F2D97446400475A0C /* PastEvents.swift in Sources */,
 				5D90A9D92D53CD9100D7B168 /* EventTypePicker.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,
 				5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */,
@@ -2172,7 +2186,9 @@
 				5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */,
 				5F8615742A3E9D8D0068865F /* PostMenu.swift in Sources */,
 				5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */,
+				5D4B0A712D9747A100475A0C /* Awards.swift in Sources */,
 				5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */,
+				5D4B0A732D974B4200475A0C /* ClubListItemMedia.swift in Sources */,
 				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
 				5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */,

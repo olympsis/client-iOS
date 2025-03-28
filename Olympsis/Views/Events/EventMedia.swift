@@ -90,6 +90,7 @@ struct EventMedia: View {
                         .opacity(0.85)
                         .mask(gradient)
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding(.horizontal)
     }

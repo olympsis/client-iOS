@@ -27,7 +27,9 @@ struct ListView: View {
     }
     
     private var eventsGrouped: [DayGroup] {
-        return events.eventsGroupedByDay()
+        return events
+            .filter { searchText.isEmpty ? true : $0.title.lowercased().contains(searchText.lowercased()) }
+            .eventsGroupedByDay()
     }
     
     private var fallbackLocation: MKCoordinateRegion {
@@ -178,9 +180,8 @@ struct ListView: View {
                                 DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
                                     .frame(width: 120)
                             }
-                            .frame(height: 35)
+                            .frame(height: 40)
                             .padding(.horizontal)
-                            .padding(.top, 50)
                             .listRowBackground(Color.Background.primary)
                             
                             SearchBar(text: $searchText)

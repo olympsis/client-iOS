@@ -9,18 +9,45 @@ import SwiftUI
 
 struct EventComments: View {
     
+    @Binding var clubs: [Club]
+    @Binding var organizations: [Organization]
+    
     @State private var text: String = ""
     @State private var state: LOADING_STATE = .pending
     
     @FocusState private var fieldIsFocused: Bool
     
-    private var service = EventObserver()
+    private let service = EventObserver()
     
     @EnvironmentObject private var event: Event
     @Environment(SessionStore.self) private var session
     
-    private var canDelete: Bool {
-        return true
+    var isPosterOrAdmin: Bool {
+        
+        // check to see if you're the poster
+        guard let user = session.user,
+           let uuid = user.uuid else {
+            return false
+        }
+        
+        if event.poster?.uuid == uuid {
+            return true
+        }
+        
+        if clubs.first(where: { e in
+            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+        }) != nil {
+            return true
+        }
+        
+        
+        if organizations.first(where: { e in
+            e.members.contains { $0.user?.uuid == uuid }
+        }) != nil {
+            return true
+        }
+        
+        return false
     }
     
     @MainActor
@@ -123,7 +150,7 @@ struct EventComments: View {
             ForEach(event.comments, id: \.id) { comment in
                 EventCommentListItem(comment: comment)
                     .contextMenu {
-                        if (canDelete) {
+                        if (isPosterOrAdmin) {
                             Button(role: .destructive) {
                                 deleteComment(comment: comment)
                             } label: {
@@ -138,7 +165,7 @@ struct EventComments: View {
 }
 
 #Preview {
-    EventComments()
+    EventComments(clubs: .constant([]), organizations: .constant([]))
         .environmentObject(EVENTS[0])
         .environment(SessionStore())
 }

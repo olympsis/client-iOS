@@ -10,7 +10,15 @@ import SwiftUI
 struct Profile: View {
 
     @State private var showMenu = false
+    @State private var selectedTab = ProfileTabs.achievements
+    
     @Environment(SessionStore.self) private var session
+    
+    enum ProfileTabs: Int {
+        case achievements
+        case groupsEnrolled
+        case pastEvents
+    }
     
     var username: String {
         guard let user = session.user,
@@ -25,22 +33,89 @@ struct Profile: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading){
                     
-                    // MARK: - Profile View
-                    ProfileModel()
-                        .padding(.top, 20)
-                        .padding(.horizontal)
-                        .environment(session)
+                    VStack(alignment: .leading) {
+                        // MARK: - Profile View
+                        ProfileModel()
+                            .padding(.top, 20)
+                            .padding(.horizontal)
+                            .environment(session)
+                        
+                        // MARK: - Profile Button
+                        EditProfileButton()
+                            .padding(.bottom, 30)
+                    }
                     
-                    // MARK: - Profile Button
-                    EditProfileButton()
-                        .padding(.bottom, 30)
+                    HStack() {
+                        Button(action: {
+                            withAnimation(.smooth) {
+                                selectedTab = .achievements
+                            }
+                        }) {
+                            VStack {
+                                Text("Awards")
+                                    .font(.callout)
+                                    .padding(.vertical, 10)
+                                    .fontWeight(.medium)
+                                    
+                                
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.Background.primary)
+                            }
+                        }
+                        
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            withAnimation(.smooth) {
+                                selectedTab = .groupsEnrolled
+                            }
+                        }) {
+                            VStack {
+                                Text("Groups")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                                
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.Background.primary)
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            withAnimation(.smooth) {
+                                selectedTab = .pastEvents
+                            }
+                        }) {
+                            VStack {
+                                Text("Past Events")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                                
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundStyle(selectedTab == .pastEvents ? Color.foreground : Color.Background.primary)
+                            }
+                        }
+                    }.padding(.horizontal)
                     
-                    // MARK: - Badges View
-                    BadgesView()
-                    
-                    // MARK: - Trophies View
-                    TrophiesView()
-                    
+                    switch selectedTab {
+                    case .achievements:
+                        Awards()
+                            .environment(session)
+                        
+                    case .groupsEnrolled:
+                        GroupsEnrolled()
+                            .environment(session)
+                        
+                    case .pastEvents:
+                        PastEvents()
+                            .environment(session)
+                    }
+
                 }
                 .fullScreenCover(isPresented: $showMenu, content: {
                     ProfileMenu()

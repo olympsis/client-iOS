@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TabBar: View {
     
-    @Binding var currentTab: Tab
+    @Binding var currentTab: ViewTab
     @State public var homeRouter = HomeRouter()
     @StateObject public var groupRouter = GroupRouter()
     @StateObject public var eventRouter = EventRouter()
@@ -45,7 +45,7 @@ struct TabBar: View {
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .club ? "person.3.fill" : "person.3")
+                        Image(systemName: currentTab == .club ? "person.2.fill" : "person.2")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
                             .foregroundColor(.foreground)

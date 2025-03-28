@@ -40,7 +40,7 @@ enum USER_STATUS: String, CaseIterable {
 
 // MARK: - Navigation
 
-enum Tab: String, CaseIterable {
+enum ViewTab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
     case map = "Map"

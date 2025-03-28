@@ -14,7 +14,7 @@ import AuthenticationServices
 
 struct ViewContainer: View {
     
-    @State var currentTab: Tab = .home
+    @State var currentTab: ViewTab = .home
     @State private var showOnboarding: Bool = false
     
     private var homeRouter = HomeRouter()
@@ -46,23 +46,23 @@ struct ViewContainer: View {
         VStack {
             TabView(selection: $currentTab) {
                 Home(router: homeRouter)
-                    .tag(Tab.home)
+                    .tag(ViewTab.home)
                     .toolbar(.hidden, for: .tabBar)
                 
                 GroupView(router: groupRouter)
-                    .tag(Tab.club)
+                    .tag(ViewTab.club)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Events(router: eventRouter)
-                    .tag(Tab.map)
+                    .tag(ViewTab.map)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Activity()
-                    .tag(Tab.activity)
+                    .tag(ViewTab.activity)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Profile()
-                    .tag(Tab.profile)
+                    .tag(ViewTab.profile)
                     .toolbar(.hidden, for: .tabBar)
             }
             .padding(.bottom, -10)

@@ -133,6 +133,7 @@ struct EventView: View {
                         // MARK: - Event Media
                         EventMedia(event: event)
                             .id(2)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         
                         // MARK: - Detail/Body
                         VStack(alignment: .leading) {
@@ -181,7 +182,7 @@ struct EventView: View {
                             .id(7)
                         
                         // MARK: - Comments
-                        EventComments()
+                        EventComments(clubs: $clubs, organizations: $organizations)
                             .id(8)
                             .padding(.top)
                             .environmentObject(event)
@@ -198,7 +199,14 @@ struct EventView: View {
         .toast(isPresenting: $showToast, alert: {
             AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
         })
-        .background(Color.Background.primary)
+        .background(.regularMaterial)
+        .background {
+            KFImage(generateImageURL(event.mediaURL))
+                .resizable()
+                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100)))
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+        }
         .sheet(isPresented: $showSharingMenu, content: {
             ShareMenu(event: event, venue: venues[0], showToast: $showToast)
                 .presentationDetents([.height(170)])

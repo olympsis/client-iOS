@@ -10,7 +10,7 @@ import Kingfisher
 
 struct TabBarProfileLabel: View {
     
-    @Binding var currentTab: Tab
+    @Binding var currentTab: ViewTab
     @State private var imageFailed: Bool = false
     @Environment(SessionStore.self) private var session
     

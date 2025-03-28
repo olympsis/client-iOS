@@ -64,31 +64,24 @@ struct ClubListItem: View {
     
     var body: some View {
         VStack (alignment: .leading){
+            ClubListItemMedia(club: club)
+                
             HStack {
-                
-                ClubLogo(club: club)
-                
                 VStack(alignment:.leading){
                     Text(clubName)
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
                         .foregroundColor(Color("foreground"))
                         .minimumScaleFactor(0.8)
                         .lineLimit(1)
-                    Text("\(club.city), ").foregroundColor(.gray)
-                    +
-                    Text(club.state)
-                        .foregroundColor(.gray)
                     HStack {
-                        if club.members.count > 1 {
-                            Text("\(club.members.count) members")
-                                .foregroundColor(Color("foreground"))
-                                .font(.caption)
-                        } else {
-                            Text("\(club.members.count) member")
-                                .foregroundColor(Color("foreground"))
-                                .font(.caption)
-                        }
+                        Image(systemName: "mappin.and.ellipse")
+                            .foregroundColor(.gray)
+                        Text("\(club.city), ").foregroundColor(.gray).font(.callout)
+                        +
+                        Text(club.state)
+                            .foregroundColor(.gray)
+                            .font(.callout)
                     }
                 }
                 .padding(.leading, 5)
@@ -103,21 +96,11 @@ struct ClubListItem: View {
                     .font(.callout)
             }
             
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(sports, id: \.self) { sport in
-                        ClubTag(isSport: true, tagName: sport)
-                    }
-                }
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            
             HStack(spacing: 15) {
                 Button(action: { self.showDetails.toggle() }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(width: (SCREEN_WIDTH/2)-25,height: 35)
+                            .frame(height: 35)
                             .foregroundStyle(.gray)
                             .opacity(0.5)
                         Text("Details")
@@ -126,17 +109,19 @@ struct ClubListItem: View {
                             .foregroundStyle(.white)
                     }
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
+                
                 Spacer()
+                
                 Button(action:{ Task{ await Apply() } }) {
-                    LoadingButton(text: "Apply", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
+                    LoadingButton(text: "Apply", height: 35, status: $status)
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding(.all)
         }
+        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
         .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(Color.Background.secondary))
-                .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
             ClubDetailView(club: club)
