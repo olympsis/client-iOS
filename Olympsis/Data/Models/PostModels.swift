@@ -16,7 +16,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
     let body: String
     var event: Event?
     let images: [String]?
-    @Published var likes: [Like]
+    @Published var likes: [Reaction]
     @Published var comments: [Comment]
     let externalLink: String?
     @Published var isSensitive: Bool
@@ -29,7 +29,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
          body: String,
          event: Event? = nil,
          images: [String]?,
-         likes: [Like] = [],
+         likes: [Reaction] = [],
          comments: [Comment] = [],
          externalLink: String?,
          isSensitive: Bool = false,
@@ -70,10 +70,13 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
         body = try container.decode(String.self, forKey: .body)
         event = try container.decodeIfPresent(Event.self, forKey: .event)
         images = try container.decodeIfPresent([String].self, forKey: .images)
-        likes = try container.decodeIfPresent([Like].self, forKey: .likes) ?? [Like]()
+        likes = try container.decodeIfPresent([Reaction].self, forKey: .likes) ?? [Reaction]()
         comments = try container.decodeIfPresent([Comment].self, forKey: .comments) ?? [Comment]()
         externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
-        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        
+        let createdAtString = try container.decode(String.self, forKey: .createdAt)
+        createdAt = try parseDate(from: createdAtString)
+        
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
     }
 

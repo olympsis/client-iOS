@@ -61,7 +61,7 @@ class PostService {
         return resp
     }
     
-    func addLike(id: String, like: LikeDao) async throws -> (Data, URLResponse) {
+    func addLike(id: String, like: ReactionDao) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/posts/\(id)/likes")
         return try await http.Request(.POST, endpoint, body: EncodeToData(like), headers: [

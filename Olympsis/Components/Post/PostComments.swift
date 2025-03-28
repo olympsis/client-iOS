@@ -64,13 +64,12 @@ struct PostComments: View {
     
     func deleteComment(_ comment: Comment) {
         Task {
-            guard let id = post.id,
-            let commentID = comment.id else {
+            guard let id = post.id else {
                 return
             }
-            let res = await session.postObserver.deleteComment(id: id, cid: commentID)
+            let res = await session.postObserver.deleteComment(id: id, cid: comment.id)
             if res {
-                post.comments.removeAll(where: { $0.id == commentID })
+                post.comments.removeAll(where: { $0.id == comment.id })
             }
         }
     }

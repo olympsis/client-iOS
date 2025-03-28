@@ -200,7 +200,7 @@ class NewPostViewModel: ObservableObject {
             body: dto.body ?? "",
             event: nil,
             images: dto.images,
-            likes: [Like](),
+            likes: [Reaction](),
             comments: [Comment](),
             externalLink: dto.externalLink,
             isSensitive: false,

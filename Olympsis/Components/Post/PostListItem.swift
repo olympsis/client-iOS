@@ -333,12 +333,12 @@ struct PostFooter: View {
             let uuid = user.uuid else {
             return
         }
-        let dao = LikeDao(uuid: uuid)
+        let dao = ReactionDao(uuid: uuid)
         guard let id = await session.postObserver.addLike(id: id, like: dao) else {
             return
         }
         let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
-        let like = Like(id: id, uuid: uuid, user: snippet, createdAt: Int(Date.now.timeIntervalSince1970))
+        let like = Reaction(id: id, uuid: uuid, user: snippet, createdAt: Date())
         isLiked = true
         post.likes.append(like)
     }
@@ -347,8 +347,7 @@ struct PostFooter: View {
         guard let id = post.id,
                 let user = session.user, let uuid = user.uuid,
               let like = post.likes.first(where: {$0.uuid == uuid }),
-              let likeID = like.id,
-              await session.postObserver.deleteLike(id: id, likeID: likeID) else {
+              await session.postObserver.deleteLike(id: id, likeID: like.id) else {
             return
         }
         post.likes.removeAll(where: {$0.uuid == like.uuid})

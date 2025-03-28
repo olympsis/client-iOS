@@ -67,14 +67,32 @@ struct InvitationsResponse: Decodable {
 }
 
 struct Comment: Codable {
-    static func == (lhs: Comment, rhs: Comment) -> Bool {
-        return lhs.id == rhs.id
-    }
     
-    let id: String?
+    let id: String
     let text: String
     var user: UserSnippet?
     let createdAt: Date
+    
+    init(id: String = UUID().uuidString, text: String, user: UserSnippet? = nil, createdAt: Date = Date()) {
+        self.id = id
+        self.text = text
+        self.user = user
+        self.createdAt = createdAt
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.text = try container.decode(String.self, forKey: .text)
+        self.user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
+        
+        let createdAtString = try container.decode(String.self, forKey: .createdAt)
+        self.createdAt = try parseDate(from: createdAtString)
+    }
+    
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -98,15 +116,32 @@ struct CommentDao: Codable {
     }
 }
 
-struct Like: Codable, Identifiable {
-    static func == (lhs: Like, rhs: Like) -> Bool {
+struct Reaction: Codable, Identifiable {
+    static func == (lhs: Reaction, rhs: Reaction) -> Bool {
         return lhs.id == rhs.id
     }
     
-    let id: String?
+    let id: String
     let uuid: String
     let user: UserSnippet?
-    let createdAt: Int?
+    let createdAt: Date
+    
+    init(id: String = UUID().uuidString, uuid: String = UUID().uuidString, user: UserSnippet? = nil, createdAt: Date = Date()) {
+        self.id = id
+        self.uuid = uuid
+        self.user = user
+        self.createdAt = createdAt
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.uuid = try container.decode(String.self, forKey: .uuid)
+        self.user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
+        
+        let createdAtString = try container.decode(String.self, forKey: .createdAt)
+        self.createdAt = try parseDate(from: createdAtString)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -116,7 +151,7 @@ struct Like: Codable, Identifiable {
     }
 }
 
-struct LikeDao: Codable {
+struct ReactionDao: Codable {
     
     let uuid: String
     
