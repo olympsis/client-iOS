@@ -9,11 +9,11 @@ import SwiftUI
 
 struct OrgListItem: View {
     
-    @State var organization: Organization
-    
+    var organization: Organization
+    @Binding var showToast: Bool
+    @State var showActions: Bool = true
     @State private var status: LOADING_STATE = .pending
     @State private var showDetails: Bool = false
-    @Binding var showToast: Bool
     @Environment(SessionStore.self) private var session
     
     var name: String {
@@ -59,22 +59,29 @@ struct OrgListItem: View {
     
     var body: some View {
         VStack (alignment: .leading){
+            OrgListItemMedia(org: organization)
+            
             HStack {
-                
-                OrgLogo(organization: organization)
-                
                 VStack(alignment:.leading){
                     Text(name)
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
                         .foregroundColor(Color("foreground"))
                         .minimumScaleFactor(0.8)
                         .lineLimit(1)
-                    Text(location)
-                        .foregroundColor(.gray)
-                }.padding(.leading, 5)
-                
-            }.padding(.all)
+                    
+                    HStack {
+                        Image(systemName: "mappin.and.ellipse")
+                            .foregroundColor(.gray)
+                        
+                        Text(location)
+                            .foregroundColor(.gray)
+                    }
+                    
+                }
+                .padding(.leading, 5)
+            }
+            .padding(.all)
             
             HStack {
                 Text(description)
@@ -83,39 +90,34 @@ struct OrgListItem: View {
                     .lineLimit(nil)
                     .font(.callout)
             }
+            .padding(.bottom)
             
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(sports, id: \.self) { sport in
-                        ClubTag(isSport: true, tagName: sport)
+            if showActions {
+                HStack(spacing: 15) {
+                    Button(action: { self.showDetails.toggle() }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.gray)
+                                .opacity(0.5)
+                                .frame(height: 35)
+                            Text("Details")
+                                .foregroundStyle(Color("foreground"))
+                        }
                     }
+                    .contentShape(Rectangle())
+                    
+                    Button(action:{ Task { await Apply() } }) {
+                        LoadingButton(text: "Request", height: 35, status: $status)
+                    }
+                    .contentShape(Rectangle())
                 }
+                .padding([.horizontal, .bottom])
             }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            HStack(spacing: 15) {
-                Button(action: { self.showDetails.toggle() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.gray)
-                            .opacity(0.5)
-                            .frame(height: 35)
-                        Text("Details")
-                            .foregroundStyle(Color("foreground"))
-                    }
-                }
-                .contentShape(Rectangle())
-                .frame(width: (SCREEN_WIDTH/2)-25)
-                
-                Button(action:{ Task { await Apply() } }) {
-                    LoadingButton(text: "Request", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
-                }.contentShape(Rectangle())
-            }.padding(.all)
-        }.background {
+        }
+        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+        .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(Color(Color.Background.secondary))
-                .padding(.horizontal, 5)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
             OrgDetailView(organization: organization)

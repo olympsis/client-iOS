@@ -12,7 +12,7 @@ struct ClubListItem: View {
     
     var club: Club
     @Binding var showToast: Bool
-    
+    @State var showActions: Bool = true
     @State private var showEULA: Bool = false
     @State private var showDetails: Bool = false
     @State private var status: LOADING_STATE = .pending
@@ -95,28 +95,32 @@ struct ClubListItem: View {
                     .lineLimit(nil)
                     .font(.callout)
             }
+            .padding(.bottom)
             
-            HStack(spacing: 15) {
-                Button(action: { self.showDetails.toggle() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 35)
-                            .foregroundStyle(.gray)
-                            .opacity(0.5)
-                        Text("Details")
-                            .textCase(.uppercase)
-                            .font(.caption)
-                            .foregroundStyle(.white)
+            if showActions {
+                HStack(spacing: 15) {
+                    Button(action: { self.showDetails.toggle() }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 35)
+                                .foregroundStyle(.gray)
+                                .opacity(0.5)
+                            Text("Details")
+                                .textCase(.uppercase)
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                        }
+                    }.contentShape(RoundedRectangle(cornerRadius: 10))
+                    
+                    Spacer()
+                    
+                    Button(action:{ Task{ await Apply() } }) {
+                        LoadingButton(text: "Apply", height: 35, status: $status)
                     }
-                }.contentShape(RoundedRectangle(cornerRadius: 10))
-                
-                Spacer()
-                
-                Button(action:{ Task{ await Apply() } }) {
-                    LoadingButton(text: "Apply", height: 35, status: $status)
-                }.contentShape(RoundedRectangle(cornerRadius: 10))
+                    .contentShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .padding([.horizontal, .bottom])
             }
-            .padding(.all)
         }
         .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
         .background {

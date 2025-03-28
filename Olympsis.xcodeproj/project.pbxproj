@@ -71,6 +71,7 @@
 		5D4B0A6F2D97446400475A0C /* PastEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A6E2D97446400475A0C /* PastEvents.swift */; };
 		5D4B0A712D9747A100475A0C /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A702D9747A100475A0C /* Awards.swift */; };
 		5D4B0A732D974B4200475A0C /* ClubListItemMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */; };
+		5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A742D9757C700475A0C /* OrgListItemMedia.swift */; };
 		5D5170E12C27270F0035C1F1 /* VenueAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */; };
 		5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E22C2749D10035C1F1 /* EditClub.swift */; };
 		5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */; };
@@ -487,6 +488,7 @@
 		5D4B0A6E2D97446400475A0C /* PastEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastEvents.swift; sourceTree = "<group>"; };
 		5D4B0A702D9747A100475A0C /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
 		5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubListItemMedia.swift; sourceTree = "<group>"; };
+		5D4B0A742D9757C700475A0C /* OrgListItemMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItemMedia.swift; sourceTree = "<group>"; };
 		5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAnnotation.swift; sourceTree = "<group>"; };
 		5D5170E22C2749D10035C1F1 /* EditClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClub.swift; sourceTree = "<group>"; };
 		5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorGroupViewModel.swift; sourceTree = "<group>"; };
@@ -1065,6 +1067,7 @@
 				5D20625D2B1435F300A9D408 /* OrgApplicationListItem.swift */,
 				5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */,
 				5D6C01352C04EA75006A264C /* OrgBanner.swift */,
+				5D4B0A742D9757C700475A0C /* OrgListItemMedia.swift */,
 			);
 			path = Organization;
 			sourceTree = "<group>";
@@ -2022,6 +2025,7 @@
 				5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
+				5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,
 				9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */,

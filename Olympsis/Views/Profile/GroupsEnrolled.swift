@@ -32,7 +32,7 @@ struct GroupsEnrolled: View {
     @Environment(SessionStore.self) private var session
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             VStack(alignment: .leading) {
                 Text("Clubs")
                     .font(.title)
@@ -47,8 +47,7 @@ struct GroupsEnrolled: View {
                     }
                 } else {
                     ForEach(clubs, id: \.id) { club in
-                        ClubListItem(club: club, showToast: .constant(false))
-                            .padding(.horizontal)
+                        ClubListItem(club: club, showToast: .constant(false), showActions: false)
                     }
                 }
                 
@@ -71,14 +70,13 @@ struct GroupsEnrolled: View {
                     }
                 } else {
                     ForEach(organizations, id: \.id) { organization in
-                        OrgListItem(organization: organization, showToast: .constant(false))
-                            .padding(.horizontal)
+                        OrgListItem(organization: organization, showToast: .constant(false), showActions: false)
                     }
                 }
             }
             .padding()
             .frame(minHeight: 200)
-        }
+        }.frame(maxWidth: SCREEN_WIDTH)
     }
 }
 

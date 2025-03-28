@@ -46,12 +46,28 @@ struct ClubListItemMedia: View {
     
     var body: some View {
         KFImage(bannerURL)
+            .placeholder {
+                Rectangle()
+                    .foregroundStyle(Color.Background.secondary)
+                    .overlay(alignment: .center) {
+                        Image(systemName: "photo")
+                            .imageScale(.large)
+                    }
+            }
             .resizable()
             .scaledToFill()
             .frame(height: 200)
             .clipped()
             .overlay(alignment: .topLeading) {
                 KFImage(logoURL)
+                    .placeholder {
+                        Rectangle()
+                            .foregroundStyle(Color.Background.tertiary)
+                            .overlay(alignment: .center) {
+                                Image(systemName: "person.2.fill")
+                                    .imageScale(.large)
+                            }
+                    }
                     .resizable()
                     .scaledToFill()
                     .clipped()
@@ -106,12 +122,12 @@ struct ClubListItemMedia: View {
                     .clipShape(Capsule())
                 }
                 .padding(.bottom, 4)
+                .padding(.horizontal, 5)
                 .background {
                     Rectangle()
                         .fill(.ultraThinMaterial)
                         .opacity(0.95)
                         .mask(gradient)
-                        .blur(radius: 2)
                 }
             }
     }
