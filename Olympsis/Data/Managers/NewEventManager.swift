@@ -13,7 +13,7 @@ import Foundation
 @Observable
 class NewEventManager {
     
-    var type: EVENT_TYPES
+    var type: EVENT_TYPES = .Regular
     var title: String
     var body: String
     var externalLink: String
@@ -55,15 +55,16 @@ class NewEventManager {
     var selectedImageIndex: Int = 0
     
     // Participants
-    var minParticipants: Double
-    var maxParticipants: Double
+    var teamsConfig: TeamsConfig?
+    var participantsConfig: ParticipantsConfig?
     
     // Sport
-    var sport: SPORTS
+    var tags: [Tag] = []
+    var sports: [Sport] = []
     var image: String?
     
     // More Options
-    var skillLevel: EVENT_SKILL_LEVELS = .All
+    var formatConfig: EventFormatConfig?
     var visibility: EVENT_VISIBILITY_TYPES = .Public
     
     var customVenueSearch: String = ""
@@ -75,60 +76,24 @@ class NewEventManager {
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
     init(
-        type: EVENT_TYPES = .Regular,
-        title: String = "",
-        body: String = "",
         venues: [Venue] = [Venue](),
-        organizers: [GroupSelection] = [GroupSelection](),
-        startDate: Date = Date(),
-        endDate: Date = Date().addingTimeInterval(30 * 60),
-        minParticipants: Double = 0,
-        maxParticipants: Double = 0,
-        sport: SPORTS = .soccer,
-        image: String? = nil,
-        skillLevel: EVENT_SKILL_LEVELS = .All,
-        visibility: EVENT_VISIBILITY_TYPES = .Public,
-        externalLink: String = ""
+        organizers: [GroupSelection] = [GroupSelection]()
     ) {
-        self.type = type
-        self.title = title
-        self.body = body
+        self.title = ""
+        self.body = ""
         self.selectedVenues = venues
         self.organizers = organizers
-        self.startDate = startDate
-        self.endDate = endDate
-        self.minParticipants = minParticipants
-        self.maxParticipants = maxParticipants
-        self.sport = sport
-        self.image = sport.images().first
-        self.skillLevel = skillLevel
-        self.visibility = visibility
-        self.externalLink = externalLink
+        
+        self.startDate = Date()
+        self.endDate = Date().addingTimeInterval(60 * 60 * 24)
+        
+        self.externalLink = ""
         
         if venues.count > 0 {
             selectedVenueDescriptors = venues.map {
                 return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
             }
         }
-    }
-    
-    convenience init(type: EVENT_TYPES = .Regular) {
-        self.init(
-            type: type, 
-            title: "",
-            body: "",
-            venues: [Venue](),
-            organizers: [GroupSelection](),
-            startDate: Date(),
-            endDate: Date().addingTimeInterval(30 * 60),
-            minParticipants: 0,
-            maxParticipants: 0,
-            sport: .soccer,
-            image: SPORTS.soccer.images().first,
-            skillLevel: .All,
-            visibility: .Public,
-            externalLink: ""
-        )
     }
     
     func createEvent(user: UserData) async throws -> Event? {
@@ -152,10 +117,10 @@ class NewEventManager {
                 status = .pending
                 return nil
             }
-            dto.event.imageURL = url.replacingOccurrences(of: "olympsis-", with: "")
+            dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
             guard let id = await eventObserver.createEvent(dao: dto) else {
-                if let img = dto.event.imageURL {
+                if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
                 return nil
@@ -164,7 +129,7 @@ class NewEventManager {
             return generateNewEvent(id: id, dao: dto.event, user: user)
         } else {
             guard let id = await eventObserver.createEvent(dao: dto) else {
-                if let img = dto.event.imageURL {
+                if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
                 return nil
@@ -215,20 +180,19 @@ class NewEventManager {
         }
         
         let event = EventDao(
-            type: self.type,
             organizers: self.generateOrganizers(),
             venues: self.selectedVenueDescriptors,
-            imageURL: self.image,
+            mediaURL: self.image,
+            mediaType: .image,
             title: self.title,
             body: self.body,
-            sports: [self.sport.rawValue],
-            level: self.skillLevel,
-            startTime: Int(self.startDate.timeIntervalSince1970),
-            stopTime: Int(self.endDate.timeIntervalSince1970),
-            minParticipants: Int(self.minParticipants),
-            maxParticipants: Int(self.maxParticipants),
+            tags: self.tags.map { $0.name },
+            sports: self.sports.map { $0.name.components(separatedBy: " ")[1] },
+            formatConfig: self.formatConfig,
+            startTime: self.startDate,
+            stopTime: self.endDate,
+            participantsConfig: self.participantsConfig,
             visibility: self.visibility,
-            isSensitive: false,
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )
         
@@ -245,18 +209,15 @@ class NewEventManager {
     ///
     /// - Returns:  An optional `Event` object
     func generateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
-        guard let type = dao.type,
-              let organizers = dao.organizers,
+        guard let organizers = dao.organizers,
               let venues = dao.venues,
-              let imageURL = dao.imageURL,
+              let mediaURL = dao.mediaURL,
+              let mediaType = dao.mediaType,
               let title = dao.title,
               let body = dao.body,
               let sports = dao.sports,
-              let level = dao.level,
               let startTime = dao.startTime,
               let stopTime = dao.stopTime,
-              let minParticipants = dao.minParticipants,
-              let maxParticipants = dao.maxParticipants,
               let visibility = dao.visibility,
               let sensitivity = dao.isSensitive else {
             log.error("Failed to validate dto data for new event")
@@ -269,29 +230,48 @@ class NewEventManager {
         }
         
         let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
-        let participant = Participant(id: UUID().uuidString, user: snippet, status: EVENT_RSVP_STATUS.Yes, createdAt: Int(Date.now.timeIntervalSince1970))
+        let participant = Participant(
+            id: UUID().uuidString,
+            user: snippet,
+            status: .Yes,
+            createdAt: Date()
+        )
+        
+        // Create ParticipantsConfig from the DAO or use provided one
+        let participantsConfig = dao.participantsConfig ?? ParticipantsConfig(
+            hasWaitlist: false,
+            minParticipants: dao.participantsConfig?.minParticipants,
+            maxParticipants: dao.participantsConfig?.maxParticipants
+        )
         
         return Event(
-            id: id, 
-            type: type,
+            id: id,
             poster: snippet,
             organizers: organizers,
             venues: venues,
-            imageURL: imageURL,
+            mediaURL: mediaURL,
+            mediaType: mediaType,
             title: title,
             body: body,
+            tags: dao.tags ?? [],
             sports: sports,
-            level: level,
+            formatConfig: dao.formatConfig,
             startTime: startTime,
             stopTime: stopTime,
-            minParticipants: minParticipants,
-            maxParticipants: maxParticipants,
             participants: [participant],
+            participantsWaitlist: [],
+            participantsConfig: participantsConfig,
+            teams: [],
+            teamsWaitlist: [],
+            teamsConfig: dao.teamsConfig,
+            comments: [],
             visibility: visibility,
-            createdAt: Int(Date().timeIntervalSince1970), 
+            externalLink: (dao.externalLink != nil && dao.externalLink != "") ? dao.externalLink : nil,
             isSensitive: sensitivity,
-            externalLink: dao.externalLink != "" ? dao.externalLink : nil,
-            isRecurring: recurrenceOptions != nil
+            createdAt: Date(),
+            updatedAt: nil,
+            canceledAt: nil,
+            recurrenceConfig: dao.recurrenceConfig
         )
     }
     

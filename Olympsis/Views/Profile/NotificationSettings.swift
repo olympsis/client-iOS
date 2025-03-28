@@ -49,7 +49,7 @@ struct NotificationSettings: View {
                 "events": true,
                 "announcements": true
             ],
-            updatedAt: Int64(Date().timeIntervalSince1970)
+            updatedAt: Date()
         )
         
         let dao = UserDao(notificationPreference: update)

@@ -42,11 +42,10 @@ struct EventActionButtons: View {
     
     private var hasRSVP: Bool {
         guard let user = session.user,
-              let uuid = user.uuid,
-              let participants = event.participants else {
+              let uuid = user.uuid else {
             return false
         }
-        return participants.first(where: { $0.user?.uuid == uuid }) != nil
+        return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
     func rsvp(status: String) async {
@@ -57,7 +56,7 @@ struct EventActionButtons: View {
             return
         }
         
-        let participant = Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: nil)
+        let participant = Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: Date())
         let resp = await session.eventObserver.addParticipant(id: event.id, participant)
         
         guard resp == true,
@@ -66,7 +65,7 @@ struct EventActionButtons: View {
             return
         }
         
-        event.update(update)
+        event.update(from: update)
         handleSuccess()
         await notificationManager.setEventLocalNotification(event)
         guard let extLink = event.externalLink,
@@ -86,7 +85,7 @@ struct EventActionButtons: View {
             handleFailure()
             return
         }
-        event.update(update)
+        event.update(from: update)
         await notificationManager.removeEventLocalNotification(event.id)
         handleSuccess()
     }

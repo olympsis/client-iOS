@@ -16,7 +16,7 @@ struct Invitation: Decodable {
     let subjectID: String
     var status: String
     let data: InvitationData?
-    let createdAt: Int?
+    let createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -37,7 +37,7 @@ struct InvitationDTO: Codable {
     let recipient: String
     let subjectID: String
     var status: String
-    let createdAt: Int?
+    let createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -74,7 +74,7 @@ struct Comment: Codable {
     let id: String?
     let text: String
     var user: UserSnippet?
-    let createdAt: Int?
+    let createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -88,7 +88,7 @@ struct CommentDao: Codable {
     let id: String?
     let text: String
     var uuid: String?
-    let createdAt: Int?
+    let createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -154,7 +154,7 @@ class Member: Codable, Identifiable, ObservableObject {
     let id: String?
     let role: String?
     let user: UserSnippet?
-    let joinedAt: Int64?
+    let joinedAt: Date?
     
     @Published var isBlocked: Bool = false
     @Published var roleEnum: MEMBER_ROLES = .Member
@@ -162,7 +162,7 @@ class Member: Codable, Identifiable, ObservableObject {
     init(id: String?,
          role: String,
          user: UserSnippet?,
-         joinedAt: Int64?) {
+         joinedAt: Date?) {
         
         self.id = id
         self.role = role
@@ -175,6 +175,39 @@ class Member: Codable, Identifiable, ObservableObject {
         case role
         case user
         case joinedAt = "joined_at"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode regular properties
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        role = try container.decodeIfPresent(String.self, forKey: .role)
+        user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
+        
+        // Create date formatter for ISO8601 format
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        // Handle date decoding with multiple formats
+        if let joinedAtString = try container.decodeIfPresent(String.self, forKey: .joinedAt) {
+            joinedAt = dateFormatter.date(from: joinedAtString)
+        } else if let joinedAtInt = try container.decodeIfPresent(Int.self, forKey: .joinedAt) {
+            joinedAt = Date(timeIntervalSince1970: TimeInterval(joinedAtInt))
+        } else {
+            joinedAt = try container.decodeIfPresent(Date.self, forKey: .joinedAt)
+        }
+        
+        // Initialize published properties
+        isBlocked = false
+        roleEnum = .Member
+        
+        // Call the helper methods to set up the object
+        if let r = role, let e = MEMBER_ROLES(rawValue: r) {
+            roleEnum = e
+        }
     }
     
     func checkBlockStatus(_ user: UserData) {
@@ -203,13 +236,13 @@ class MemberDao: Codable, Identifiable {
     let uuid: String
     let role: String
     let data: UserData?
-    let joinedAt: Int64?
+    let joinedAt: Date?
     
     init(id: String?,
          uuid: String,
          role: String,
          data: UserData?,
-         joinedAt: Int64?) {
+         joinedAt: Date?) {
         
         self.id = id
         self.uuid = uuid
@@ -224,5 +257,58 @@ class MemberDao: Codable, Identifiable {
         case role
         case data
         case joinedAt = "joined_at"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode regular properties
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        uuid = try container.decode(String.self, forKey: .uuid)
+        role = try container.decode(String.self, forKey: .role)
+        data = try container.decodeIfPresent(UserData.self, forKey: .data)
+        
+        // Create date formatter for ISO8601 format
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        // Handle date decoding with multiple formats
+        if let joinedAtString = try container.decodeIfPresent(String.self, forKey: .joinedAt) {
+            joinedAt = dateFormatter.date(from: joinedAtString)
+        } else if let joinedAtInt = try container.decodeIfPresent(Int.self, forKey: .joinedAt) {
+            joinedAt = Date(timeIntervalSince1970: TimeInterval(joinedAtInt))
+        } else {
+            joinedAt = try container.decodeIfPresent(Date.self, forKey: .joinedAt)
+        }
+    }
+}
+
+class Tag: Codable {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+class Sport: Codable {
+    var name: String
+    var images: [String]
+    
+    init(name: String, images: [String]) {
+        self.name = name
+        self.images = images
+    }
+}
+
+struct DayGroup: Identifiable {
+    let id = UUID()
+    let date: Date
+    var events: [Event]
+    
+    var dayInString: String {
+        return events[0].timeToString()
     }
 }

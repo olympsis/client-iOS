@@ -48,7 +48,7 @@ struct ClubApplicationListItem: View {
     }
     
     var dateTimeInString: String {
-        return Date(timeIntervalSince1970: TimeInterval(application.createdAt)).formatted(.dateTime.day().month().year());
+        return application.createdAt.formatted(.dateTime.day().month().year());
     }
     
     func accept() async {

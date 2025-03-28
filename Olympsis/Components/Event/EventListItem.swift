@@ -20,99 +20,210 @@ struct EventListItem: View {
     @State private var showDetails = false
     @Environment(SessionStore.self) private var session
     
-    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
+    private let gradient = LinearGradient(
+        gradient: Gradient(stops: [
+            .init(color: .clear, location: 0),
+            .init(color: Color.gray, location: 0.4),
+            .init(color: Color.gray, location: 0.8),
+            .init(color: Color.gray, location: 1)
+        ]),
+        startPoint: .top,
+        endPoint: .bottom
+    )
+    
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
     private var title: String {
         return event.title
     }
     
     private var imageURL: URL? {
-        guard let img = event.imageURL else {
-            return nil
-        }
-        return generateImageURL(img)
+        return generateImageURL(event.mediaURL)
     }
     
     private var venueDescriptors: [VenueDescriptor] {
-        guard let venues = event.venues else {
-            return [VenueDescriptor]()
+        return event.venues
+    }
+    
+    private var venueLocationName: String {
+        guard let first = event.venues.first,
+              let name = first.name else {
+            guard let venue = venues.first else {
+                return "Custom Location";
+            }
+            
+            return venue.name
         }
-        return venues
+        
+        return name
+    }
+    
+    private var eventSport: String {
+        guard let sport = event.sports.first else {
+            return "Activity"
+        }
+        return sport.prefix(1).capitalized + sport.dropFirst()
+    }
+    
+    private var eventStartDate: String {
+        return event.timeToString()
     }
     
     var body: some View {
         Button(action:{ self.showDetails.toggle() }) {
-            VStack {
-                VStack(alignment: .leading){
-                    HStack {
-                        KFImage(imageURL)
-                            .placeholder {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(.gray)
-                                    .frame(width: 80, height: 80)
-                                    .overlay {
-                                        Image(systemName: "photo")
-                                            .foregroundStyle(Color(Color.Background.secondary))
-                                    }
-                            }
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 80, height: 80)
-                            .clipped()
-                            .cornerRadius(radius: 10, corners: .allCorners)
-                        VStack(alignment: .leading){
-                            Text(title)
-                                .font(.custom("Helvetica-Nue", size: 20))
-                                .bold()
-                                .frame(height: 20)
-                                .padding(.top)
-                                .foregroundColor(.primary)
-                            
-                            if venueDescriptors.count > 1 {
-                                Text("Multiple Locations")
-                                    .foregroundColor(.gray)
-                                    .lineLimit(1)
-                                    .redacted(reason: venueState != .success ? .placeholder : [])
-                            } else {
-                                if let venue = venues.first {
-                                    Text(venue.name)
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
-                                        .redacted(reason: venueState != .success ? .placeholder : [])
-                                } else {
-                                    if let d = venueDescriptors.first{
-                                        Text(d.name)
-                                            .foregroundColor(.gray)
-                                            .lineLimit(1)
-                                            .redacted(reason: venueState != .success ? .placeholder : [])
-                                    }
-                                }
-                            }
-                            Spacer()
-                            HStack(alignment: .center) {
-                                if event.type == EVENT_TYPES.Competitive {
-                                    Image(systemName: "trophy.fill")
-                                        .foregroundStyle(Color.Brand.tertiary)
-                                }
-                                ForEach(event.sports, id: \.self) { sport in
-                                    Text(sport)
-                                        .italic()
-                                        .font(.caption)
-                                        .textCase(.uppercase)
-                                }
-                            }
-                            .padding(.bottom)
+            KFImage(imageURL)
+                .placeholder {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(.gray)
+                        .overlay {
+                            Image(systemName: "photo")
+                                .foregroundStyle(Color(Color.Background.secondary))
                         }
+                }
+                .resizable()
+                .scaledToFill()
+                .clipped()
+                .zIndex(1)
+                .frame(height: 250)
+//                .overlay(alignment: .top) {
+//                    HStack {
+//                        Spacer()
+//                        HStack {
+//                            Image(systemName: "dollarsign")
+//                                .imageScale(.small)
+//                                .fontWeight(.medium)
+//                                .foregroundStyle(.yellow)
+//                                .padding(.trailing, -4)
+//                            Text("20")
+//                                .font(.callout)
+//                                .fontWeight(.medium)
+//                                .padding(.trailing, 2.5)
+//                                .foregroundStyle(.yellow)
+//                        }
+//                        .padding(5)
+//                        .background(
+//                            Color.black
+//                                .opacity(0.21)
+//                        )
+//                        .border(Color.black.opacity(0.15), width: 1)
+//                        .clipShape(Capsule())
+//                    }
+//                    .padding(5)
+//                }
+                .overlay(alignment: .bottom) {
+                    VStack(spacing: 5) {
                         Spacer()
-                        _TrailingView(event: $event)
+                        HStack {
+                            
+                            // MARK: - Title and Location
+                            VStack(alignment: .leading) {
+                                Text(event.title)
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+                                
+                                Text("At \(venueLocationName)")
+                                    .font(.body)
+                                    .foregroundStyle(.gray)
+                            }
+                            
+                            Spacer()
+                            
+                            // MARK: - Participants
+                            HStack {
+                                Image(systemName: "person.3.fill")
+                                    .imageScale(.small)
+                                Text("\(event.participants.count) Participants")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .padding(.trailing, 2.5)
+                            }
+                            .padding(5)
+                            .background(
+                                Color.black
+                                    .opacity(0.21)
+                            )
+                            .border(Color.black.opacity(0.15), width: 1)
+                            .clipShape(Capsule())
+                            .offset(x: 3, y: 8)
+                        }
+                        
+                        HStack(alignment: .center, spacing: 5) {
+                            
+                            // MARK: - Date
+                            HStack {
+                                Image(systemName: "calendar")
+                                    .imageScale(.small)
+                                Text(eventStartDate)
+                                    .font(.callout)
+                            }
+                            
+                            Spacer()
+
+                            // MARK: - Competition Tag
+                            if event.isCompetition() {
+                                HStack {
+                                    Text("Tournament")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                        .padding([.leading, .trailing], 2.5)
+                                        .foregroundStyle(Color.Brand.quaternary)
+                                }
+                                .padding(5)
+                                .background(
+                                    Color.black
+                                        .opacity(0.21)
+                                )
+                                .border(Color.black.opacity(0.15), width: 1)
+                                .clipShape(Capsule())
+                            }
+                            
+                            
+                            // MARK: - Primary Sport Tag
+                            HStack {
+                                Text(eventSport)
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    
+                                    .padding([.leading, .trailing], 2.5)
+                            }
+                            .padding(5)
+                            .background(
+                                Color.black
+                                    .opacity(0.21)
+                            )
+                            .border(Color.black.opacity(0.15), width: 1)
+                            .clipShape(Capsule())
+                            
+                            // MARK: - Start Time
+                            HStack {
+                                Image(systemName: "clock")
+                                    .imageScale(.small)
+                                Text(event.getStartHourAndMinute())
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .padding(.trailing, 2.5)
+                            }
+                            .padding(5)
+                            .background(
+                                Color.black
+                                    .opacity(0.21)
+                            )
+                            .border(Color.black.opacity(0.15), width: 1)
+                            .clipShape(Capsule())
+                        }
                     }
-                }.padding(.horizontal)
-            }.frame(height: 100)
-        }
-        .clipShape(Rectangle())
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color.Background.secondary)
+                    .padding([.leading, .trailing], 7)
+                    .padding(.bottom, 6)
+                    .frame(height: 100)
+                    .background {
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
+                            .opacity(0.95)
+                            .mask(gradient)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .fullScreenCover(isPresented: $showDetails) {
             EventView(event: event)
@@ -134,17 +245,14 @@ struct _TrailingView: View {
     @State private var isBlinking: Bool = false
     
     var participantsCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        return participants.count
+        return event.participants.count
     }
     
     var minParticipantsCount: Int {
-        guard let minParticipants = event.minParticipants else {
+        guard let minParticipants = event.participantsConfig?.minParticipants else {
             return 0
         }
-        return minParticipants
+        return Int(minParticipants)
     }
     
     var iconColor: Color {

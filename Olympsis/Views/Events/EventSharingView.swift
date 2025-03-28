@@ -25,10 +25,7 @@ struct EventSharingView: View {
     @Environment(\.displayScale) private var displayScale
     
     private var imageURL: URL? {
-        guard let link = event.imageURL else {
-            return nil
-        }
-        return generateImageURL(link)
+        return generateImageURL(event.mediaURL)
     }
     private var imageView: some View {
         return ZStack {

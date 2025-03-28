@@ -192,14 +192,12 @@ struct NewEvent: View {
                 NewEventTopView(
                     showTypePicker: $showTypePicker,
                     showVisibilityPicker: $showVisibilityPicker,
-                    showSkillLevelPicker: $showSkillLevelPicker,
                     eventType: $manager.type,
-                    eventSkilLevel: $manager.skillLevel,
                     eventVisibility: $manager.visibility
                 )
                 
                 // MARK: - Sport picker
-                NewEventSportsPicker(selectedSport: $manager.sport)
+                NewEventSportsPicker(sports: [], selectedSport: $manager.sports)
                     .padding(.horizontal)
                 
                 // MARK: - Organizers Picker

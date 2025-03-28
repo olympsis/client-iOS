@@ -67,7 +67,6 @@ struct MapView: View {
             }
         }
         .ignoresSafeArea(edges: .all)
-        .toolbar(.hidden, for: .navigationBar)
         .mapStyle(.standard(elevation: .realistic))
         .alert(isPresented: $showError){
             Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {

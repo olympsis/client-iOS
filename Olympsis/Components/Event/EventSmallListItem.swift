@@ -17,10 +17,7 @@ struct EventSmallListItem: View {
     }
     
     private var imageURL: String {
-        guard let img = event.imageURL else {
-            return ""
-        }
-        return img
+        return event.mediaURL
     }
     
     private var fieldName: String {
@@ -29,17 +26,14 @@ struct EventSmallListItem: View {
     }
     
     var participantsCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        return participants.count
+        return event.participants.count
     }
     
     var minParticipantsCount: Int {
-        guard let minParticipants = event.minParticipants else {
+        guard let minParticipants = event.participantsConfig?.minParticipants else {
             return 0
         }
-        return minParticipants
+        return Int(minParticipants)
     }
     
     var iconColor: Color {

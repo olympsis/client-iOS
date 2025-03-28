@@ -20,7 +20,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
     @Published var comments: [Comment]
     let externalLink: String?
     @Published var isSensitive: Bool
-    let createdAt: Int?
+    let createdAt: Date
     
     /// Complete initializer for the post class
     init(id: String?,
@@ -33,7 +33,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
          comments: [Comment] = [],
          externalLink: String?,
          isSensitive: Bool = false,
-         createdAt: Int?) {
+         createdAt: Date) {
         
         self.id = id
         self.type = type
@@ -73,7 +73,7 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
         likes = try container.decodeIfPresent([Like].self, forKey: .likes) ?? [Like]()
         comments = try container.decodeIfPresent([Comment].self, forKey: .comments) ?? [Comment]()
         externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
-        createdAt = try container.decodeIfPresent(Int.self, forKey: .createdAt)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
     }
 
@@ -117,9 +117,9 @@ struct PostDTO: Codable {
     var images: [String]?
     var isSensitive: Bool
     var externalLink: String?
-    var createdAt: Int64?
+    var createdAt: Date?
     
-    init(type: String? = nil, poster: String? = nil, groupID: String? = nil, body: String? = nil, eventID: String? = nil, images: [String]? = nil, isSensitive: Bool = false, externalLink: String? = nil, createdAt: Int64? = nil) {
+    init(type: String? = nil, poster: String? = nil, groupID: String? = nil, body: String? = nil, eventID: String? = nil, images: [String]? = nil, isSensitive: Bool = false, externalLink: String? = nil, createdAt: Date? = nil) {
         self.type = type
         self.poster = poster
         self.groupID = groupID

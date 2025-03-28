@@ -184,7 +184,7 @@ class SessionStore {
                     platform: .ios,
                     model: model,
                     active: true,
-                    createdAt: Int64(Date().timeIntervalSince1970),
+                    createdAt: Date(),
                     updatedAt: nil
                 )
                 
@@ -220,7 +220,7 @@ class SessionStore {
                 }
                 
                 devices[idx].token = dToken
-                devices[idx].updatedAt = Int64(Date().timeIntervalSince1970)
+                devices[idx].updatedAt = Date()
                 let dao = UserDao(notificationDevices: devices)
                 guard let user = await userObserver.UpdateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
@@ -400,7 +400,7 @@ class SessionStore {
                    let country = loc.country {
                     fetchedVenues.append(
                         Venue(
-                            name: desc.name,
+                            name: desc.name ?? "Custom Venue",
                             location: cod,
                             city: city,
                             state: state,

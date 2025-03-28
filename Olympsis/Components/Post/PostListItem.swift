@@ -316,10 +316,7 @@ struct PostFooter: View {
     }
     
     private var timestamp: String {
-        guard let time = post.createdAt else {
-            return "0 seconds ago"
-        }
-        return calculateTimeAgo(from: time)
+        return calculateTimeAgo(from: post.createdAt)
     }
     
     private var hasExternalLink: Bool {

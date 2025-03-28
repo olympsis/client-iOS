@@ -33,7 +33,7 @@ class FeedViewModel: ObservableObject {
         // if the club has a pinned post then that takes priority #2
         // then the rest of the posts are sorted by when they were created
         let condition: (Post, Post) -> Bool = { p, p2 in
-            return p.createdAt ?? 0 > p2.createdAt ?? 0
+            return p.createdAt > p2.createdAt
         }
         
         // make query to backend for posts

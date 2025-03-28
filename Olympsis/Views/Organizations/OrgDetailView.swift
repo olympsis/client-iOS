@@ -136,12 +136,10 @@ struct OrgDetailView: View {
                         .padding(.bottom)
                     
                     HStack {
-                        if let createdAt = organization.createdAt {
-                            Text("Established ")
-                                .bold()
-                            +
-                            Text(timeAgo(from: createdAt))
-                        }
+                        Text("Established ")
+                            .bold()
+                        +
+                        Text(calculateTimeAgo(from: organization.createdAt))
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 40)

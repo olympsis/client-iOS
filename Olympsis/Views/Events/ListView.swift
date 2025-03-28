@@ -16,8 +16,6 @@ struct ListView: View {
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
     
-    @State private var pastEvents: Bool = false
-    
     @State private var state: VIEW_STATE = .pending
     
     @Environment(SessionStore.self) private var session
@@ -25,14 +23,7 @@ struct ListView: View {
     @AppStorage("searchRadius") private var radius: Double?
     
     private var events: [Event] {
-        guard pastEvents else {
-            return session.events
-        }
-        return session.pastEvents
-            .filter {
-                searchText.isEmpty ||
-                $0.title.lowercased().contains(searchText.lowercased())
-            }
+        return session.events
     }
     
     private var eventsGrouped: [DayGroup] {
@@ -63,7 +54,7 @@ struct ListView: View {
                 latitude: location.latitude,
                 radius: Int(radius ?? 8050),
                 sports: sports.joined(separator: ","),
-                status: pastEvents ? "completed" : "pending,live") else {
+                status: "pending,live") else {
                 state = .failure
                 return
             }
@@ -78,7 +69,7 @@ struct ListView: View {
             latitude: fallbackLocation.center.latitude,
             radius: Int(radius ?? 8050),
             sports: sports.joined(separator: ","),
-            status: pastEvents ? "completed" : "pending,live") else {
+            status: "pending,live") else {
             state = .failure
             return
         }
@@ -126,48 +117,53 @@ struct ListView: View {
         state = .success
     }
     
+    private func findClosestDate(to targetDate: Date, in groups: [DayGroup]) -> Date? {
+        let calendar = Calendar.current
+        
+        // Convert the target date to the start of day
+        let startOfTargetDate = calendar.startOfDay(for: targetDate)
+        
+        // Find groups whose dates are within one day of the selected date
+        let groupsWithinOneDay = groups.filter { group in
+            let startOfGroupDate = calendar.startOfDay(for: group.date)
+            let components = calendar.dateComponents([.day], from: startOfGroupDate, to: startOfTargetDate)
+            return abs(components.day ?? Int.max) <= 1
+        }
+        
+        // If we found groups within a day, pick the closest
+        if !groupsWithinOneDay.isEmpty {
+            return groupsWithinOneDay.min { group1, group2 in
+                let startOfDate1 = calendar.startOfDay(for: group1.date)
+                let startOfDate2 = calendar.startOfDay(for: group2.date)
+                
+                let diff1 = abs(calendar.dateComponents([.day], from: startOfDate1, to: startOfTargetDate).day ?? Int.max)
+                let diff2 = abs(calendar.dateComponents([.day], from: startOfDate2, to: startOfTargetDate).day ?? Int.max)
+                
+                return diff1 < diff2
+            }?.date
+        }
+        
+        // If no group is within a day, find the absolute closest
+        return groups.min { group1, group2 in
+            let startOfDate1 = calendar.startOfDay(for: group1.date)
+            let startOfDate2 = calendar.startOfDay(for: group2.date)
+            
+            let diff1 = abs(calendar.dateComponents([.day], from: startOfDate1, to: startOfTargetDate).day ?? Int.max)
+            let diff2 = abs(calendar.dateComponents([.day], from: startOfDate2, to: startOfTargetDate).day ?? Int.max)
+            
+            return diff1 < diff2
+        }?.date
+    }
+    
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                Button(action: {
-                    if pastEvents {
-                        state = .pending
-                        pastEvents = false
-                    } else {
-                        Task {
-                            pastEvents = true
-                            await fetchEvents()
-                        }
-                    }
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(pastEvents ? Color.gray : Color.Background.secondary)
-                        HStack {
-                            Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                            Text("Past Events")
-                        }
-                    }
-                }.frame(width: 140)
-                
-                DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                    .frame(width: 120)
-            }
-            .frame(height: 35)
-            .padding(.horizontal)
-            .padding(.top, 50)
-            
-            SearchBar(text: $searchText)
-                .padding(.horizontal, 10)
-            
             switch state {
             case .pending, .success:
                 if events.isEmpty {
                     VStack {
                         Spacer()
                         
-                        Text(pastEvents ? "No Past Events. Go Find some events or..." : "No Events found")
+                        Text("No Events found")
                         Button(action: { self.showNewEvent.toggle() }) {
                             SimpleButtonLabel(text: "Create One")
                         }
@@ -177,19 +173,38 @@ struct ListView: View {
                 } else {
                     ScrollViewReader { proxy in
                         List {
+                            HStack {
+                                Spacer()
+                                DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                                    .frame(width: 120)
+                            }
+                            .frame(height: 35)
+                            .padding(.horizontal)
+                            .padding(.top, 50)
+                            .listRowBackground(Color.Background.primary)
+                            
+                            SearchBar(text: $searchText)
+                                .padding(.horizontal, 10)
+                                .listRowBackground(Color.Background.primary)
+                            
                             ForEach(eventsGrouped, id: \.id) { group in
                                 Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
                                     ForEach(group.events, id: \.id) { event in
                                         EventListItem(event: event)
-                                            .listRowBackground(Color.clear)
+                                            .scrollContentBackground(.hidden)
                                     }
-                                }.id(String(group.timestamp))
+                                }
+                                .id(group.date)
+                                .listRowBackground(Color.Background.primary)
                             }
                         }
                         .listStyle(.plain)
+                        .listRowBackground(Color.Background.primary)
                         .onChange(of: selectedDate) { oldValue, newValue in
-                            withAnimation {
-                                proxy.scrollTo(Int(newValue.timeIntervalSince1970), anchor: .top)
+                            if let closestDate = findClosestDate(to: newValue, in: eventsGrouped) {
+                                withAnimation {
+                                    proxy.scrollTo(closestDate, anchor: .top)
+                                }
                             }
                         }
                     }
@@ -217,9 +232,7 @@ struct ListView: View {
                 }
             }
         }
-        .background {
-            Color.Background.primary
-        }
+        .background { Color.Background.primary }
     }
 }
 

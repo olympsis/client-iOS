@@ -30,10 +30,7 @@ struct CommentView: View {
     }
     
     var timeStamp: String {
-        guard let time = comment.createdAt else {
-            return "0 seconds ago"
-        }
-        return calculateTimeAgo(from: time)
+        return calculateTimeAgo(from: comment.createdAt)
     }
     
     var body: some View {

@@ -24,18 +24,18 @@ struct NewEventParticipantsLimit: View {
                     .font(.subheadline)
                 
                 HStack {
-                    Slider(
-                        value: $manager.minParticipants,
-                        in: 0...100,
-                        step: 1.0,
-                        onEditingChanged: { editing in
-                            isEditing = editing
-                        }).padding(.horizontal)
+//                    Slider(
+//                        value: $manager.minParticipants,
+//                        in: 0...100,
+//                        step: 1.0,
+//                        onEditingChanged: { editing in
+//                            isEditing = editing
+//                        }).padding(.horizontal)
                     
-                    Text("\(Int(manager.minParticipants))")
+                    Text("TODO")
                         .foregroundColor(isEditing ? .red : .green)
-                    Stepper("", value: $manager.minParticipants, in: 0...100)
-                        .padding(.trailing)
+//                    Stepper("", value: $manager.minParticipants, in: 0...100)
+//                        .padding(.trailing)
                 }.modifier(InputField())
                 
             }
@@ -52,18 +52,18 @@ struct NewEventParticipantsLimit: View {
                     .font(.subheadline)
                 
                 HStack {
-                    Slider(
-                        value: $manager.maxParticipants,
-                        in: 0...1000,
-                        step: 5.0,
-                        onEditingChanged: { editing in
-                            isEditing = editing
-                        }).padding(.horizontal)
-                    
-                    Text("\(Int(manager.maxParticipants))")
-                        .foregroundColor(isEditing ? .red : .green)
-                    Stepper("", value: $manager.maxParticipants, in: 0...1000)
-                        .padding(.trailing)
+//                    Slider(
+//                        value: $manager.maxParticipants,
+//                        in: 0...1000,
+//                        step: 5.0,
+//                        onEditingChanged: { editing in
+//                            isEditing = editing
+//                        }).padding(.horizontal)
+//                    
+//                    Text("\(Int(manager.maxParticipants))")
+//                        .foregroundColor(isEditing ? .red : .green)
+//                    Stepper("", value: $manager.maxParticipants, in: 0...1000)
+//                        .padding(.trailing)
                 }.modifier(InputField())
             }
             .padding(.top)

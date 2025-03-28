@@ -11,8 +11,8 @@ import CoreLocation
 
 struct EventsOptions: View {
     
-    @State var availableSports:[SPORTS]
-    @State var selectedSports: [SPORTS] = [SPORTS]()
+    @State var availableSports:[Sport]
+    @State var selectedSports: [Sport] = [Sport]()
     @State private var status: LOADING_STATE = .pending
     @State private var sliderValue = 1.0
     
@@ -59,14 +59,14 @@ struct EventsOptions: View {
     }
     
     func NewSearch() async {
-        if let location = session.locationManager.location {
-            await session.getNearbyData(location: location, selectedSports: selectedSports.map { $0.rawValue })
-            return
-        } else if let hometown = session.user?.hometown {
-            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), selectedSports: selectedSports.map { $0.rawValue })
-        } else {
-            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 40.76553, longitude: -73.97770), selectedSports: selectedSports.map { $0.rawValue })
-        }
+//        if let location = session.locationManager.location {
+//            await session.getNearbyData(location: location, selectedSports: selectedSports.map { $0.rawValue })
+//            return
+//        } else if let hometown = session.user?.hometown {
+//            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), selectedSports: selectedSports.map { $0.rawValue })
+//        } else {
+//            await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 40.76553, longitude: -73.97770), selectedSports: selectedSports.map { $0.rawValue })
+//        }
     }
     
     var body: some View {
@@ -117,7 +117,7 @@ struct EventsOptions: View {
                         .bold()
                         .padding(.leading)
                     
-                    SportsPicker(selectedSports: $selectedSports, multiSelection: true)
+                    SportsPicker(sports: [], selectedSports: $selectedSports, multiSelection: true)
                 }
             }.background(Color.Background.primary)
         }
@@ -162,7 +162,7 @@ struct EventsOptions: View {
 
 #Preview {
     NavigationStack {
-        EventsOptions(availableSports: [SPORTS.soccer, SPORTS.basketball, SPORTS.golf], selectedSports: [.soccer, .basketball, .pickleball])
+        EventsOptions(availableSports: [], selectedSports: [])
             .environmentObject(EventRouter())
             .environment(SessionStore())
             .navigationBarBackButtonHidden(false)

@@ -50,13 +50,13 @@ struct NewOrganization: View {
                         id: UUID().uuidString,
                         role: "owner",
                         user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
-                        joinedAt: Int64(Date().timeIntervalSince1970)
+                        joinedAt: Date()
                     )
                 ],
                 blackList: nil,
                 pinnedPosts: nil,
                 isVerified: false,
-                createdAt: Int(Date().timeIntervalSince1970)
+                createdAt: Date()
             )
             
             let group = GroupSelection(type: GROUP_TYPE.Organization, club: nil, organization: org, posts: nil)

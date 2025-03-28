@@ -54,8 +54,7 @@ struct PostComments: View {
         }
         status = .success
         
-        let timestamp = Int(Date.now.timeIntervalSince1970)
-        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: timestamp)
+        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: Date())
         
         withAnimation {
             text = ""
@@ -97,7 +96,7 @@ struct PostComments: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if post.comments.count != 0 {
-                        ForEach(post.comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
+                        ForEach(post.comments.sorted{ $0.createdAt > $1.createdAt }, id: \.id){ comment in
                             Menu {
                                 Group {
                                     Button(action:{}){

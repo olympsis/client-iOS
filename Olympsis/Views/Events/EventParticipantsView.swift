@@ -25,23 +25,7 @@ struct EventParticipantsView: View {
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
     var participants: [Participant] {
-        guard var ptps = event.participants else {
-            return [
-                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0),
-                Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0)
-            ]
-        }
-        if ptps.count < 5 {
-            let remainder = 5 - ptps.count
-            for _ in 1...remainder {
-                ptps.append(Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS.Yes, createdAt: 0))
-            }
-        } else {
-            return ptps.dropLast(ptps.count - 5)
-        }
-        return ptps
+        return event.participants
     }
     
     var body: some View {
@@ -69,39 +53,32 @@ struct EventRSVPChart: View {
     @EnvironmentObject private var event: Event
     
     var yesCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        let yesNum = participants.filter { p in
+        let yesNum = event.participants.filter { p in
             return p.status == EVENT_RSVP_STATUS.Yes
         }
         return yesNum.count
     }
     
     var maybeCount: Int {
-        guard let participants = event.participants else {
-            return 0
-        }
-        let maybeNum = participants.filter { p in
+        let maybeNum = event.participants .filter { p in
             return p.status == EVENT_RSVP_STATUS.Maybe
         }
         return maybeNum.count
     }
     
     var body: some View {
-        if event.participants != nil {
-            Chart {
-                BarMark(
-                    x: .value("Responses", "yes"),
-                    y: .value("Total Count", yesCount)
-                ).foregroundStyle(Color("color-prime"))
-                BarMark(
-                    x: .value("Responses", "Maybe"),
-                    y: .value("Total Count", maybeCount)
-                ).foregroundStyle(Color("color-secnd"))
-            }.padding(.horizontal)
-                .padding(.top)
+        Chart {
+            BarMark(
+                x: .value("Responses", "yes"),
+                y: .value("Total Count", yesCount)
+            ).foregroundStyle(Color("color-prime"))
+            BarMark(
+                x: .value("Responses", "Maybe"),
+                y: .value("Total Count", maybeCount)
+            ).foregroundStyle(Color("color-secnd"))
         }
+        .padding(.top)
+        .padding(.horizontal)
     }
 }
 
@@ -117,10 +94,7 @@ struct EventParticipantsViewExt: View {
     @Environment(SessionStore.self) private var session
     
     var participants: [Participant] {
-        guard let ptps = event.participants else {
-            return []
-        }
-        return ptps
+        return event.participants
     }
     
     var isPosterOrAdmin: Bool {
@@ -163,7 +137,7 @@ struct EventParticipantsViewExt: View {
         guard await session.eventObserver.removeParticipant(id: event.id, pid: participant.id) else {
             return
         }
-        event.participants?.removeAll { $0.id == participant.id }
+        event.participants.removeAll { $0.id == participant.id }
     }
     
     var body: some View {

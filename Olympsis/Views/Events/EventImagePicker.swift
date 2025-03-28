@@ -15,11 +15,11 @@ struct EventImagePicker: View {
     
     var imageURLs: [URL] {
         var urls = [URL]()
-        for image in manager.sport.images() {
-            if let url = URL(string: GenerateImageURL(image)) {
-                urls.append(url)
-            }
-        }
+//        for image in manager.sport.images() {
+//            if let url = URL(string: GenerateImageURL(image)) {
+//                urls.append(url)
+//            }
+//        }
         return urls
     }
     
@@ -97,7 +97,7 @@ struct EventImagePicker: View {
                                     }
                                 }
                                 .onChange(of: manager.selectedImageIndex) { _, newValue in
-                                    manager.image = manager.sport.images()[newValue]
+//                                    manager.image = ""
                                 }
                         }
                     }
@@ -105,7 +105,7 @@ struct EventImagePicker: View {
             }
         }
         .task {
-            manager.image = manager.sport.images()[manager.selectedImageIndex]
+//            manager.image = manager.sport.images()[manager.selectedImageIndex]
         }
         .fullScreenCover(isPresented: $showImagePicker, content: {
             MediaPicker(pickerType: .eventImage) { images in

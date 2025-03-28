@@ -31,7 +31,7 @@ struct NotificationItem: Decodable {
     var category: String
 //    var data: [String: Any]
     var isRead: Bool
-    var createdAt: Int64
+    var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id

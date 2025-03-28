@@ -361,7 +361,6 @@
 		9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD208FF29344498007A62C4 /* ClubApplicationListItem.swift */; };
 		9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20901293444A4007A62C4 /* MemberListItem.swift */; };
 		9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20905293446A4007A62C4 /* UserPeek.swift */; };
-		9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD209102935791D007A62C4 /* ParticipantDao.swift */; };
 		9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */; };
 		9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DC432974A095009B6120 /* ClubsList2.swift */; };
 		9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD949296A74D700245CCE /* RoomsSearch.swift */; };
@@ -758,7 +757,6 @@
 		9AD208FF29344498007A62C4 /* ClubApplicationListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubApplicationListItem.swift; sourceTree = "<group>"; };
 		9AD20901293444A4007A62C4 /* MemberListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListItem.swift; sourceTree = "<group>"; };
 		9AD20905293446A4007A62C4 /* UserPeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPeek.swift; sourceTree = "<group>"; };
-		9AD209102935791D007A62C4 /* ParticipantDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantDao.swift; sourceTree = "<group>"; };
 		9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantResponse.swift; sourceTree = "<group>"; };
 		9AD4DC432974A095009B6120 /* ClubsList2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsList2.swift; sourceTree = "<group>"; };
 		9ADDD949296A74D700245CCE /* RoomsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsSearch.swift; sourceTree = "<group>"; };
@@ -947,33 +945,6 @@
 				5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */,
 			);
 			path = Toast;
-			sourceTree = "<group>";
-		};
-		5D73480E2C0A4AE30003AB41 /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				5D18BD202B3A190000F90777 /* Edit Event */,
-				5DBB94C32B028D310031876D /* New Event */,
-				5D6749492A73339E00AEC868 /* EventView.swift */,
-				9A69FE5429724C9200EBC5F9 /* EventsList.swift */,
-				5D90A9D82D53CD8C00D7B168 /* EventTypePicker.swift */,
-				5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */,
-				5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */,
-				5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */,
-				5DC733FE2B2A8B050051BE21 /* EventSkillLevelPickerView.swift */,
-				5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */,
-				5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */,
-				5D18BD0F2B35F85800F90777 /* EventDatePickerView.swift */,
-				5D78BDE92C0D48C000F170D6 /* EventImagePicker.swift */,
-				9A81B64C2925EED1009CA6ED /* EventsModalView.swift */,
-				9A35370329289396005EC806 /* ParticipantView.swift */,
-				9A3536FD29282CDA005EC806 /* EventTemplateView.swift */,
-				5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */,
-				5D9572392C326D8B004D5318 /* EventSharingView.swift */,
-				5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */,
-				5D8958F82C76E4B000AAF374 /* ShareMenu.swift */,
-			);
-			path = Event;
 			sourceTree = "<group>";
 		};
 		5D76D36D2C79631D00846382 /* Routers */ = {
@@ -1303,7 +1274,6 @@
 		9A81B6472925EB6F009CA6ED /* Event */ = {
 			isa = PBXGroup;
 			children = (
-				9AD209102935791D007A62C4 /* ParticipantDao.swift */,
 				9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */,
 			);
 			path = Event;
@@ -1369,7 +1339,6 @@
 			isa = PBXGroup;
 			children = (
 				5D8B4A942C1CF1D90030FF3E /* Venue */,
-				5D73480E2C0A4AE30003AB41 /* Event */,
 				5D6C013D2C07BB12006A264C /* Onboarding */,
 				5DF8C8762BF18E92002FE392 /* System */,
 				5D0CC93D2BAD033900E16B95 /* Viewers */,
@@ -1596,6 +1565,26 @@
 				9AB02F5829024D24008C07F1 /* MapView.swift */,
 				5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */,
 				5D9DB7F32D5E628800438FA7 /* Events.swift */,
+				5D18BD202B3A190000F90777 /* Edit Event */,
+				5DBB94C32B028D310031876D /* New Event */,
+				5D6749492A73339E00AEC868 /* EventView.swift */,
+				9A69FE5429724C9200EBC5F9 /* EventsList.swift */,
+				5D90A9D82D53CD8C00D7B168 /* EventTypePicker.swift */,
+				5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */,
+				5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */,
+				5DC733FC2B2A7F050051BE21 /* EventVisibilityPickerView.swift */,
+				5DC733FE2B2A8B050051BE21 /* EventSkillLevelPickerView.swift */,
+				5DC734022B2A98A90051BE21 /* EventOrganizersPickerView.swift */,
+				5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */,
+				5D18BD0F2B35F85800F90777 /* EventDatePickerView.swift */,
+				5D78BDE92C0D48C000F170D6 /* EventImagePicker.swift */,
+				9A81B64C2925EED1009CA6ED /* EventsModalView.swift */,
+				9A35370329289396005EC806 /* ParticipantView.swift */,
+				9A3536FD29282CDA005EC806 /* EventTemplateView.swift */,
+				5DCAEA2C2B01958F00B9C22A /* EventParticipantsView.swift */,
+				5D9572392C326D8B004D5318 /* EventSharingView.swift */,
+				5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */,
+				5D8958F82C76E4B000AAF374 /* ShareMenu.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2203,7 +2192,6 @@
 				9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */,
 				5DBA3AFA2B95532100B67CFB /* EventReportView.swift in Sources */,
 				9ADDD952296A89C300245CCE /* RoomSettings.swift in Sources */,
-				9AD209112935791D007A62C4 /* ParticipantDao.swift in Sources */,
 				5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */,
 				9AECDA4C295452BB007956FB /* People.swift in Sources */,
 				5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */,

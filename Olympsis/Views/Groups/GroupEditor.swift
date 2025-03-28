@@ -274,10 +274,8 @@ struct GroupEditor: View {
 }
 
 #Preview {
-    let session = SessionStore()
-    session.selectedGroup = GroupSelection(type: .Club, club: CLUBS[1])
-    return NavigationStack {
+    NavigationStack {
         GroupEditor()
-            .environment(session)
+            .environment(SessionStore())
     }
 }

@@ -87,8 +87,7 @@ struct ClubDetailView: View {
         return name
     }
     
-    func timeAgo(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+    func timeAgo(from date: Date) -> String {
         let now = Date()
         let calendar = Calendar.current
 

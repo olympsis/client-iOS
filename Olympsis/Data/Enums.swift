@@ -603,3 +603,78 @@ enum MESSAGE_TOAST_TYPES: String {
     case addedToGroup = "added_to_group"
     case removedFromGroup = "removed_from_group"
 }
+
+enum MEDIA_TYPES: String {
+    case image = "image"
+    case video = "video"
+}
+
+// MARK: - Competition Formats
+enum CompetitionFormats: String, Codable {
+    // General Team Sports (Soccer, Basketball, Volleyball, Football, Flag Football, Padel, Pickleball, Badminton, Ping-Pong, Racketball)
+    case bracket = "bracket"                        // Knockout-style tournament
+    case league = "league"                          // Regular season format
+    case roundRobin = "round_robin"                 // Each team plays all other teams
+    case singleElimination = "single_elimination"   // One loss and you're out
+    case doubleElimination = "double_elimination"   // Two losses before elimination
+    case bestOf3 = "best_of_3"                      // First to win 2 games
+    case bestOf5 = "best_of_5"                      // First to win 3 games
+    case winnerStaysOn = "winner_stays_on"          // Winners keep playing, losers rotate out
+    
+    // Team Formats (Soccer, Basketball, Volleyball, Football, Flag Football, Padel, Pickleball, Badminton, Ping-Pong, Racketball)
+    case versus2 = "2v2"
+    case versus3 = "3v3"
+    case versus5 = "5v5"
+    case versus6 = "6v6"
+    case versus7 = "7v7"
+    case versus8 = "8v8"
+    case versus9 = "9v9"
+    case versus10 = "10v10"
+    case versus11 = "11v11"
+    
+    // Individual Sports (Running, Cycling)
+    case timeTrial = "time_trial"                   // Athletes race against the clock
+    
+    // Running
+    case sprint = "sprint"                          // Short-distance race (e.g., 100m, 200m)
+    case longDistance = "long_distance"             // Longer races (e.g., 5K, 10K, marathon)
+    case relay = "relay"                            // Team race with baton passing
+    
+    // Cycling
+    case roadRace = "road_race"                     // Mass-start long-distance race
+    case criterium = "criterium"                    // Short circuit, multiple laps
+    case stageRace = "stage_race"                   // Multi-day competition (e.g., Tour de France)
+    
+    // Golf
+    case strokePlay = "stroke_play"                 // Total strokes over the round(s) determine the winner
+    case matchPlay = "match_play"                   // Head-to-head format, winning holes instead of strokes
+    case scramble = "scramble"                      // Teams play the best shot among their members
+    case bestBall = "best_ball"                     // Each player plays their ball, best score counts for the team
+    case stableford = "stableford"                  // Points awarded based on score per hole
+    case skinsGame = "skins_game"                   // Each hole has a prize (skin), won outright by lowest score
+    case alternateShot = "alternate_shot"           // Two-player teams alternate shots on the same ball
+    case shamble = "shamble"                        // Similar to scramble but players play from the best tee shot
+    case modifiedStableford = "modified_stableford" // Variation of Stableford with adjusted point values
+    case scratch = "scratch"                        // No handicaps, raw stroke count matters
+    
+    // Climbing
+    case bouldering = "bouldering"                  // Short, difficult climbing routes, no ropes
+    case leadClimbing = "lead_climbing"             // Climbing as high as possible on a tall wall
+    case speedClimbing = "speed_climbing"           // Race to the top
+}
+
+enum RSVPStatus: String, Codable {
+    case going = "going"
+    case notGoing = "not_going"
+    case maybe = "maybe"
+    case waitlist = "waitlist"
+    case invited = "invited"
+    case pending = "pending"
+}
+
+enum DevicePlatform: String, Codable {
+    case ios = "ios"
+    case watchOS = "watchOS"
+    case android = "android"
+    case web = "web"
+}

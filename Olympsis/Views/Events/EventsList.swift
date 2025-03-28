@@ -14,19 +14,8 @@ struct EventsList: View {
     @State private var selectedDate = Date()
     @State private var state: LOADING_STATE = .pending
     
-    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
-    
-    /// Struct for filtering events by the day they are to start
-    struct DayGroup: Identifiable {
-        let id = UUID()
-        let timestamp: Int
-        var events: [Event]
-        
-        var dayInString: String {
-            return events[0].timeToString()
-        }
-    }
+    @Environment(SessionStore.self) private var session
     
     /// Groups the events by date
     var eventsGrouped: [DayGroup] {
@@ -36,8 +25,8 @@ struct EventsList: View {
 
             let index = groups.firstIndex(where: {
                 areDatesOnSameDay(
-                    date1: Date(timeIntervalSince1970: TimeInterval($0.timestamp)),
-                    date2: Date(timeIntervalSince1970: TimeInterval(e.startTime))
+                    date1: $0.date,
+                    date2: e.startTime
                 )}
             )
             
@@ -45,18 +34,18 @@ struct EventsList: View {
                 groups[index!].events.append(e)
                 return
             } else {
-                let newGroup = DayGroup(timestamp: e.startTime, events: [e])
+                let newGroup = DayGroup(date: e.startTime, events: [e])
                 groups.append(newGroup)
                 return
             }
         }
         return groups.sorted { (group1: DayGroup, group2: DayGroup) in
-            if areDatesOnSameDay(date1: Date(timeIntervalSince1970: TimeInterval(group1.timestamp)), date2: Date(timeIntervalSince1970: TimeInterval(group2.timestamp))) {
+            if areDatesOnSameDay(date1: group1.date, date2: group2.date) {
                 // If dates are on the same day, prioritize item1
                 return true
             } else {
                 // If dates are not on the same day, sort by timestamp
-                return group1.timestamp < group2.timestamp
+                return group1.date < group2.date
             }
         }
     }
@@ -72,12 +61,13 @@ struct EventsList: View {
                                     .listRowBackground(Color.clear)
                             }
                         }
-                        .id(group.timestamp)
+                        .id(group.date)
                     }
                 }.listStyle(.plain)
-            }.toolbar {
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{dismiss()}){
+                    Button(action: { dismiss() }){
                         Image(systemName: "chevron.left")
                     }
                 }

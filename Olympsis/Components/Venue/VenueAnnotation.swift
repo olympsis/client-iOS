@@ -19,14 +19,14 @@ struct VenueAnnotation: View {
     
     var hasEvents: Bool {
         let events = session.events.filter { 
-            $0.venues?.contains(where: { desc in
+            $0.venues.contains(where: { desc in
                 if desc.id == venue.id {
                     return true
                 } else if desc.name == venue.name {
                     return true
                 }
                 return false
-            }) ?? false
+            })
         }
         
         return events.count > 0

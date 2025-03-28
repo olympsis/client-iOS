@@ -204,7 +204,7 @@ class NewPostViewModel: ObservableObject {
             comments: [Comment](),
             externalLink: dto.externalLink,
             isSensitive: false,
-            createdAt: Int(Date().timeIntervalSince1970)
+            createdAt: Date()
         )
     }
     

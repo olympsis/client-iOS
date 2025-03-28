@@ -41,14 +41,14 @@ struct GroupFeed: View {
                 guard let club = selectedGroup.club else {
                     return false
                 }
-                return event.organizers?.contains(where: { $0.id == club.id  || club.parent?.id == $0.id}) ?? false
+                return event.organizers.contains(where: { $0.id == club.id  || club.parent?.id == $0.id})
             }
         case .Organization:
             return session.events.filter { event in
                 guard let org = selectedGroup.organization else {
                     return false
                 }
-                return event.organizers?.contains(where: { $0.id == org.id }) ?? false
+                return event.organizers.contains(where: { $0.id == org.id })
             }
         }
     }

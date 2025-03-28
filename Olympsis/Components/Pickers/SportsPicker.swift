@@ -9,12 +9,13 @@ import SwiftUI
 
 struct SportsPicker: View {
     
-    @Binding var selectedSports: [SPORTS]
+    var sports: [Sport]
+    @Binding var selectedSports: [Sport]
     @State var multiSelection = false
-    
-    private func handleTap(_ sport: SPORTS) {
+
+    private func handleTap(_ sport: Sport) {
         if (!multiSelection) { selectedSports.removeAll() }
-        guard let idx = selectedSports.firstIndex(where: { $0 == sport }) else {
+        guard let idx = selectedSports.firstIndex(where: { $0.name == sport.name }) else {
             selectedSports.append(sport)
             return
         }
@@ -24,12 +25,12 @@ struct SportsPicker: View {
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(SPORTS.allCases, id: \.self) { sport in
+                ForEach(sports, id: \.name) { sport in
                     Button(action: { handleTap(sport) }) {
                         SportView(sport: sport, scale: .Medium)
                             .padding(.horizontal, 3)
                             .overlay {
-                                if (selectedSports.contains(where: { $0 == sport})) {
+                                if (selectedSports.contains(where: { $0.name == sport.name })) {
                                     Circle().stroke(Color.Brand.secondary, lineWidth: 3)
                                 }
                             }
@@ -41,5 +42,5 @@ struct SportsPicker: View {
 }
 
 #Preview {
-    SportsPicker(selectedSports: .constant([]))
+    SportsPicker(sports: [], selectedSports: .constant([]))
 }

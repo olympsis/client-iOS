@@ -7,9 +7,9 @@
 
 import Foundation
 
-func calculateTimeAgo(from timestamp: Int, shortned: Bool = false) -> String {
-    let currentTime = Date().timeIntervalSince1970
-    let timeDifference = currentTime - Double(timestamp)
+func calculateTimeAgo(from date: Date, shortned: Bool = false) -> String {
+    let currentTime = Date()
+    let timeDifference = currentTime.timeIntervalSince(date)
     
     let secondsInAMinute: Double = 60
     let secondsInAnHour: Double = 3600
@@ -86,7 +86,7 @@ func calculateTimeAgo(from timestamp: Int, shortned: Bool = false) -> String {
     }
 }
 
-
+// No changes needed for this function as it already uses Date
 func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {
     let calendar = Calendar.current
     let components1 = calendar.dateComponents([.year, .month, .day], from: date1)
@@ -97,14 +97,12 @@ func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {
            components1.day == components2.day
 }
 
-func formatAbbreviatedTimestamp(_ timestamp: Int?) -> String {
-    // Safely unwrap the optional timestamp
-    guard let timestamp = timestamp else {
+func formatAbbreviatedTimestamp(_ date: Date?) -> String {
+    // Safely unwrap the optional date
+    guard let date = date else {
         return "Contact Me"
     }
     
-    // Convert the integer timestamp to a Date object
-    let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
     let formatter = DateFormatter()
     
     // Set the month abbreviation
@@ -120,10 +118,6 @@ func formatAbbreviatedTimestamp(_ timestamp: Int?) -> String {
     
     // Format the last two digits of the year
     let yearFormatted = String(year.suffix(2))
-    
-    // Set the MM.DD.YY format
-//    formatter.dateFormat = "MM.dd.yy"
-//    let mmddyy = formatter.string(from: date)
     
     // Set the time format to hh:mm
     formatter.dateFormat = "HH:mm a"
@@ -132,14 +126,12 @@ func formatAbbreviatedTimestamp(_ timestamp: Int?) -> String {
     return "\(month).\(day).\(yearFormatted) - \(time)"
 }
 
-func formatDateFromTimestamp(_ timestamp: Int?) -> String {
-    // Safely unwrap the optional timestamp
-    guard let timestamp = timestamp else {
+func formatDateFromTimestamp(_ date: Date?) -> String {
+    // Safely unwrap the optional date
+    guard let date = date else {
         return "Contact Me"
     }
     
-    // Convert the integer timestamp to a Date object
-    let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
     let formatter = DateFormatter()
     
     // Set the month abbreviation
@@ -156,30 +148,16 @@ func formatDateFromTimestamp(_ timestamp: Int?) -> String {
     // Format the last two digits of the year
     let yearFormatted = String(year.suffix(2))
     
-    // Set the MM.DD.YY format
-//    formatter.dateFormat = "MM.dd.yy"
-//    let mmddyy = formatter.string(from: date)
-    
-    // Set the time format to hh:mm
-//    formatter.dateFormat = "HH:mm a"
-//    let time = formatter.string(from: date)
-    
     return "\(month) \n\(day) \n\(yearFormatted)"
 }
 
-func formatTimeFromTimestamp(_ timestamp: Int?) -> String {
-    // Safely unwrap the optional timestamp
-    guard let timestamp = timestamp else {
+func formatTimeFromTimestamp(_ date: Date?) -> String {
+    // Safely unwrap the optional date
+    guard let date = date else {
         return "Contact Me"
     }
     
-    // Convert the integer timestamp to a Date object
-    let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
     let formatter = DateFormatter()
-    
-    // Set the time format to hh:mm
-//    formatter.dateFormat = "HH:mm a"
-//    let time = formatter.string(from: date)
     
     formatter.dateFormat = "HH"
     let hour = formatter.string(from: date)
@@ -191,4 +169,41 @@ func formatTimeFromTimestamp(_ timestamp: Int?) -> String {
     let am = formatter.string(from: date)
     
     return "\(hour) \n\(minutes) \n\(am)"
+}
+
+func parseDate(from dateString: String) throws -> Date {
+    // Create a standard ISO8601 formatter
+    let iso8601Formatter = ISO8601DateFormatter()
+    
+    // Try the ISO8601 formatter first
+    if let date = iso8601Formatter.date(from: dateString) {
+        return date
+    }
+    
+    // Create a more flexible DateFormatter
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    
+    // Array of date formats to try
+    let dateFormats = [
+        "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd'T'HH:mm:ssZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd"
+    ]
+    
+    // Try each format
+    for format in dateFormats {
+        dateFormatter.dateFormat = format
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        }
+    }
+    
+
+    throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Unable to parse date string: \(dateString)"))
 }

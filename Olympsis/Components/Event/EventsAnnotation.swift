@@ -54,51 +54,51 @@ struct EventsAnnotation: View {
 }
 
 #Preview {
-    func gen() -> [Event] {
-        func generateNearbyCoordinates(base: [Double], offset: Double) -> [Double] {
-            let randomLatOffset = Double.random(in: -offset...offset)
-            let randomLonOffset = Double.random(in: -offset...offset)
-            return [base[0] + randomLonOffset, base[1] + randomLatOffset]
-        }
-        let initialVenue = VenueDescriptor(name: "Initial Venue", city: "City", state: "State", country: "Country", location: GeoJSON(type: "point", coordinates: [-122.008988, 37.334886]))
-        // Generate 50 events
-        var events: [Event] = []
-
-        for i in 0..<50 {
-            let newVenue = VenueDescriptor(
-                name: "Venue \(i)",
-                city: "City", state: "State", country: "Country",
-                location: GeoJSON(type: "Point", coordinates: generateNearbyCoordinates(base: initialVenue.location!.coordinates, offset: 0.001))
-            )
-            
-            let event = Event(
-                id: UUID().uuidString,
-                type: EVENT_TYPES.Regular,
-                poster: USER_SNIPPETS[0],
-                organizers: [
-                    Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)
-                ],
-                venues: [i % 10 == 0 ? initialVenue : newVenue], // Add some events at the same venue
-                imageURL: "soccer-\(i % 5)",
-                title: "Pick Up Soccer International #\(i + 1)",
-                body: "Let's go play boys!!!",
-                sports: ["soccer"],
-                level: EVENT_SKILL_LEVELS.All,
-                startTime: 1699806600 + i * 3600, // Increment start time for each event
-                stopTime: 1699806615 + i * 3600,
-                maxParticipants: 10,
-                participants: [
-                    Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
-                ],
-                visibility: EVENT_VISIBILITY_TYPES.Public,
-                createdAt: 1639364780,
-                isSensitive: false
-            )
-            
-            events.append(event)
-        }
-        return events
-    }
+//    func gen() -> [Event] {
+//        func generateNearbyCoordinates(base: [Double], offset: Double) -> [Double] {
+//            let randomLatOffset = Double.random(in: -offset...offset)
+//            let randomLonOffset = Double.random(in: -offset...offset)
+//            return [base[0] + randomLonOffset, base[1] + randomLatOffset]
+//        }
+//        let initialVenue = VenueDescriptor(name: "Initial Venue", city: "City", state: "State", country: "Country", location: GeoJSON(type: "point", coordinates: [-122.008988, 37.334886]))
+//        // Generate 50 events
+//        var events: [Event] = []
+//
+//        for i in 0..<50 {
+//            let newVenue = VenueDescriptor(
+//                name: "Venue \(i)",
+//                city: "City", state: "State", country: "Country",
+//                location: GeoJSON(type: "Point", coordinates: generateNearbyCoordinates(base: initialVenue.location!.coordinates, offset: 0.001))
+//            )
+//            
+//            let event = Event(
+//                id: UUID().uuidString,
+//                type: EVENT_TYPES.Regular,
+//                poster: USER_SNIPPETS[0],
+//                organizers: [
+//                    Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)
+//                ],
+//                venues: [i % 10 == 0 ? initialVenue : newVenue], // Add some events at the same venue
+//                imageURL: "soccer-\(i % 5)",
+//                title: "Pick Up Soccer International #\(i + 1)",
+//                body: "Let's go play boys!!!",
+//                sports: ["soccer"],
+//                level: EVENT_SKILL_LEVELS.All,
+//                startTime: Date(timeIntervalSince1970: TimeInterval(1699806600 + i * 3600)), // Increment start time for each event
+//                stopTime: Date(timeIntervalSince1970: TimeInterval(1699806615 + i * 3600)),
+//                maxParticipants: 10,
+//                participants: [
+//                    Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364780))
+//                ],
+//                visibility: EVENT_VISIBILITY_TYPES.Public,
+//                createdAt: Date(timeIntervalSince1970: TimeInterval(1639364780)),
+//                isSensitive: false
+//            )
+//            
+//            events.append(event)
+//        }
+//        return events
+//    }
     
-    return EventsAnnotation(events: gen())
+    EventsAnnotation(events: [])
 }

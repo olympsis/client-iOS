@@ -86,7 +86,7 @@ struct NewEventRecurringSettings: View {
             guard !Calendar.current.isDate(recurrenceEndDate, inSameDayAs: Date()) else {
                 return
             }
-            manager.recurrenceOptions = EventRecurrenceOptions(pattern: recurrenceFrequency, endTime: Int(Double(recurrenceEndDate.timeIntervalSince1970)), interval: 1)
+            manager.recurrenceOptions = EventRecurrenceOptions(pattern: recurrenceFrequency, endTime: recurrenceEndDate, interval: 1)
         }
     }
 }

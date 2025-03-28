@@ -17,18 +17,18 @@ let USER_SNIPPETS = [
 ]
 
 let COMMENTS = [
-    Comment(id: UUID().uuidString, text: "Lets go!!!", user: USER_SNIPPETS[1], createdAt: 1639364779)
+    Comment(id: UUID().uuidString, text: "Lets go!!!", user: USER_SNIPPETS[1], createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779)))
 ]
 
 let POSTS = [
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Like(id: "", uuid: "", user: nil, createdAt: 0)], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: 1639364779),
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Like(id: "", uuid: "", user: nil, createdAt: 0)], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779))),
     Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: [
         "feed-images/9DC9A5CE-073E-4859-949C-9135D740DB85.jpeg",
         "feed-images/E9650FF7-5DE7-4D76-B886-7C3EC422A05E.jpeg",
         "feed-images/5D710804-0CAF-4371-8C88-0879B9FEF9F4.jpeg"
 
-        ], likes: [Like](), comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: 1639364779),
-    Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: 1639364779)
+        ], likes: [Like](), comments: [COMMENTS[0]], externalLink: nil, isSensitive:false, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779))),
+    Post(id: UUID().uuidString, type: "advertisement", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], likes: [Like](), comments: [COMMENTS[0]], externalLink: "google.com", isSensitive: true, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779)))
 ]
 
 let FIELDS = [
@@ -49,15 +49,15 @@ let CLUBS = [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779),
+    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: Date(timeIntervalSince1970: 1639364779)),
     Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: "", banner: "", sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: 1639364779)
+    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: Date(timeIntervalSince1970: 1639364779))
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: 0),
-    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: nil)
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: Date()),
+    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: Date())
 ]
 
 
@@ -81,50 +81,77 @@ let GROUP_SELECTIONS = [
 let EVENTS = [
     Event(
         id: UUID().uuidString,
-        type: EVENT_TYPES.Competitive,
         poster: USER_SNIPPETS[0],
         organizers: [Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)],
         venues: VENUE_DESCRIPTORS,
-        imageURL: "event-images/soccer-0.jpg",
+        mediaURL: "event-images/soccer-0.jpg",
+        mediaType: .image,
         title: "Pick Up Soccer International",
-        body: "Lets go play boys!!!", 
+        body: "Lets go play boys!!!",
+        tags: [],
         sports: ["soccer"],
-        level: EVENT_SKILL_LEVELS.All,
-        startTime: 1720696495,
-        stopTime: 1699806615,
-        maxParticipants: 10, 
+        formatConfig: nil,
+        startTime: Date(timeIntervalSince1970: 1720696495),
+        stopTime: Date(timeIntervalSince1970: 1699806615),
         participants: [
-            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
+            Participant(
+                id: UUID().uuidString,
+                user: USER_SNIPPETS[0],
+                status: .Yes,
+                createdAt: Date(timeIntervalSince1970: 1639364780)
+            )
         ],
-        visibility: EVENT_VISIBILITY_TYPES.Public,
-        createdAt: 1639364780,
-        isSensitive: false
+        participantsWaitlist: [],
+        participantsConfig: ParticipantsConfig(
+            hasWaitlist: false,
+            minParticipants: nil,
+            maxParticipants: 10
+        ),
+        teams: [],
+        teamsWaitlist: [],
+        teamsConfig: nil,
+        comments: [],
+        visibility: .Public,
+        externalLink: nil,
+        isSensitive: false,
+        createdAt: Date(timeIntervalSince1970: 1639364780)
     ),
     Event(
         id: UUID().uuidString,
-        type: EVENT_TYPES.Regular,
         poster: USER_SNIPPETS[0],
-        organizers: [
-            Organizer(
-                type: GROUP_TYPE.Club, 
-                id: CLUBS[0].id
-            )
-        ],
+        organizers: [Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)],
         venues: VENUE_DESCRIPTORS,
-        imageURL: "soccer-0",
+        mediaURL: "soccer-0",
+        mediaType: .image,
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!",
+        tags: [],
         sports: ["soccer"],
-        level: EVENT_SKILL_LEVELS.All,
-        startTime: 1699806600,
-        stopTime: 1699806615,
-        maxParticipants: 10,
+        formatConfig: nil,
+        startTime: Date(timeIntervalSince1970: 1699806600),
+        stopTime: Date(timeIntervalSince1970: 1699806615),
         participants: [
-            Participant(id: UUID().uuidString, user: USER_SNIPPETS[0], status: EVENT_RSVP_STATUS.Yes, createdAt: 1639364780)
+            Participant(
+                id: UUID().uuidString,
+                user: USER_SNIPPETS[0],
+                status: .Yes,
+                createdAt: Date(timeIntervalSince1970: 1639364780)
+            )
         ],
-        visibility: EVENT_VISIBILITY_TYPES.Public,
-        createdAt: 1639364780,
-        isSensitive: true
+        participantsWaitlist: [],
+        participantsConfig: ParticipantsConfig(
+            hasWaitlist: false,
+            minParticipants: nil,
+            maxParticipants: 10
+        ),
+        teams: [],
+        teamsWaitlist: [],
+        teamsConfig: nil,
+        comments: [],
+        visibility: .Public,
+        externalLink: nil,
+        isSensitive: true,
+        createdAt: Date(timeIntervalSince1970: 1639364780)
     ),
 ]
 
@@ -140,7 +167,7 @@ let ANNOUCEMENTS = [
 ]
 
 let CLUB_APPLICATIONS = [
-    ClubApplication(id: UUID().uuidString, applicant: USERS_DATA[0], status: "pending", createdAt: 1685813111)
+    ClubApplication(id: UUID().uuidString, applicant: USERS_DATA[0], status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1685813111)))
 ]
 
 // Preview data
@@ -155,19 +182,19 @@ let ROOMS = [
 ]
 
 let INVITATIONS = [
-    Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id ?? UUID().uuidString, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Int(Date().timeIntervalSinceNow))
+    Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id ?? UUID().uuidString, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Date())
 ]
 
 let POST_REPORTS = [
-    PostReport(id: UUID().uuidString, post: POSTS[0], type: "Sensitive Content", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+    PostReport(id: UUID().uuidString, post: POSTS[0], type: "Sensitive Content", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 let EVENT_REPORTS = [
-    EventReport(id: UUID().uuidString, type: "Other Issue", event: EVENTS[0], notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+    EventReport(id: UUID().uuidString, type: "Other Issue", event: EVENTS[0], notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 let MEMBER_REPORTS = [
-    MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: 1711060275)
+    MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 let SHARING_TEMPLATES = [

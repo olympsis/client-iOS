@@ -9,17 +9,18 @@ import SwiftUI
 
 struct NewEventSportsPicker: View {
     
-    @Binding var selectedSport: SPORTS
+    var sports: [Sport]
+    @Binding var selectedSport: [Sport]
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(SPORTS.allCases, id: \.self) { sport in
-                    Button(action: { selectedSport = sport }) {
+                ForEach(sports, id: \.name) { sport in
+                    Button(action: { selectedSport.append(sport) }) {
                         SportView(sport: sport, scale: .Medium)
                             .padding(.horizontal, 3)
                             .overlay {
-                                if (selectedSport == sport) {
+                                if (selectedSport.contains(where: { $0.name == sport.name })) {
                                     Circle().stroke(Color.Brand.secondary, lineWidth: 2)
                                 }
                             }
@@ -32,5 +33,5 @@ struct NewEventSportsPicker: View {
 }
 
 #Preview {
-    NewEventSportsPicker(selectedSport: .constant(.soccer))
+    NewEventSportsPicker(sports: [], selectedSport: .constant([]))
 }

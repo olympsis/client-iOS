@@ -43,5 +43,5 @@ struct ParticipantView: View {
 }
 
 #Preview {
-    ParticipantView(participant: EVENTS[0].participants![0])
+    ParticipantView(participant: EVENTS[0].participants[0])
 }

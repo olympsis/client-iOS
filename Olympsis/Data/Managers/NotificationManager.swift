@@ -88,7 +88,7 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             content.sound = UNNotificationSound.default
             
             // Calculate the time 'minutesBefore' minutes before the specified date
-            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: Date(timeIntervalSince1970: TimeInterval(event.startTime)))!
+            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: event.startTime)!
             
             // Extract date components from the early reminder time
             let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: earlyReminderTime)

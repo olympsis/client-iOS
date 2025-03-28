@@ -248,23 +248,23 @@ struct UserDataCreation: View {
                     .padding(.bottom)
                 
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75))], alignment: .center) {
-                        ForEach(SPORTS.allCases, id: \.self) { sport in
-                            SportView(sport: sport, scale: .Medium)
-                                .overlay {
-                                    if (selectedSports.contains(sport)) {
-                                        Circle().stroke(Color.Brand.secondary, lineWidth: 3)
-                                    }
-                                }
-                                .onTapGesture {
-                                    if (selectedSports.contains(sport)) {
-                                        selectedSports.removeAll(where: { $0 == sport })
-                                    } else {
-                                        self.selectedSports.append(sport)
-                                    }
-                                }
-                        }.padding(.top, 5)
-                    }
+//                    LazyVGrid(columns: [GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75)), GridItem(.fixed(75))], alignment: .center) {
+//                        ForEach(SPORTS.allCases, id: \.self) { sport in
+//                            SportView(sport: sport, scale: .Medium)
+//                                .overlay {
+//                                    if (selectedSports.contains(sport)) {
+//                                        Circle().stroke(Color.Brand.secondary, lineWidth: 3)
+//                                    }
+//                                }
+//                                .onTapGesture {
+//                                    if (selectedSports.contains(sport)) {
+//                                        selectedSports.removeAll(where: { $0 == sport })
+//                                    } else {
+//                                        self.selectedSports.append(sport)
+//                                    }
+//                                }
+//                        }.padding(.top, 5)
+//                    }
                 }
             }.padding(.all)
             

@@ -158,6 +158,6 @@ struct RoomView: View {
 #Preview {
     let room = Room(id: UUID().uuidString, name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
 
-    return RoomView(club: CLUBS[0], room: room, rooms: .constant([room]))
+    RoomView(club: CLUBS[0], room: room, rooms: .constant([room]))
         .environment(SessionStore())
 }

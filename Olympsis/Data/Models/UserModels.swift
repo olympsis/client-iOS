@@ -161,7 +161,6 @@ struct LocationResponse: Decodable {
     let events: [Event]?
 }
 
-
 struct UserSnippet: Codable, Hashable {
     var uuid: String?
     var username: String?
@@ -177,7 +176,56 @@ struct UserSnippet: Codable, Hashable {
 struct NotificationPreference: Codable, Hashable {
     var types: [String: Bool]       // push, email, phone
     var categories: [String: Bool]  // groups, events
-    let updatedAt: Int64
+    let updatedAt: Date
+    
+    init(types: [String: Bool] = [:], categories: [String: Bool] = [:], updatedAt: Date = Date()) {
+        self.types = types
+        self.categories = categories
+        self.updatedAt = updatedAt
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode regular properties
+        types = try container.decodeIfPresent([String: Bool].self, forKey: .types) ?? [:]
+        categories = try container.decodeIfPresent([String: Bool].self, forKey: .categories) ?? [:]
+        
+        // Custom date decoding
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let updatedAtString = try container.decodeIfPresent(String.self, forKey: .updatedAt) {
+            if let date = dateFormatter.date(from: updatedAtString) {
+                updatedAt = date
+            } else {
+                // If date parsing fails, use current date as fallback
+                updatedAt = Date()
+            }
+        } else {
+            // If updatedAt is missing, use current date as default
+            updatedAt = Date()
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            // Encode regular properties
+            try container.encode(types, forKey: .types)
+            try container.encode(categories, forKey: .categories)
+            
+            // Custom date encoding to ISO 8601 string
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            
+            // Convert Date object to ISO string
+            let updatedAtString = dateFormatter.string(from: updatedAt)
+            try container.encode(updatedAtString, forKey: .updatedAt)
+        }
     
     enum CodingKeys: String, CodingKey {
         case types
@@ -192,14 +240,84 @@ struct NotificationDevice: Codable, Hashable {
     var platform: DevicePlatform?  // ios, android, web
     var model: String?
     var active: Bool?
-    let createdAt: Int64?
-    var updatedAt: Int64?
+    let createdAt: Date
+    var updatedAt: Date?
     
-    enum DevicePlatform: String, Codable {
-        case ios = "ios"
-        case watchOS = "watchOS"
-        case android = "android"
-        case web = "web"
+    init(deviceID: String?, token: String?, platform: DevicePlatform?, model: String?, active: Bool?, createdAt: Date, updatedAt: Date?) {
+        self.deviceID = deviceID
+        self.token = token
+        self.platform = platform
+        self.model = model
+        self.active = active
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode regular properties normally
+        deviceID = try container.decodeIfPresent(String.self, forKey: .deviceID)
+        token = try container.decodeIfPresent(String.self, forKey: .token)
+        platform = try container.decodeIfPresent(DevicePlatform.self, forKey: .platform)
+        model = try container.decodeIfPresent(String.self, forKey: .model)
+        active = try container.decodeIfPresent(Bool.self, forKey: .active)
+        
+        // Custom date decoding
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt) {
+            createdAt = dateFormatter.date(from: createdAtString) ?? Date()
+        } else {
+            createdAt = Date()
+        }
+        
+        if let updatedAtString = try container.decodeIfPresent(String.self, forKey: .updatedAt) {
+            updatedAt = dateFormatter.date(from: updatedAtString)
+        } else {
+            updatedAt = nil
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        // Encode regular properties
+        try container.encodeIfPresent(deviceID, forKey: .deviceID)
+        try container.encodeIfPresent(token, forKey: .token)
+        try container.encodeIfPresent(platform, forKey: .platform)
+        try container.encodeIfPresent(model, forKey: .model)
+        try container.encodeIfPresent(active, forKey: .active)
+        
+        // Custom date encoding to ISO 8601 string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        // Convert Date objects to ISO strings
+        let createdAtString = dateFormatter.string(from: createdAt)
+        try container.encode(createdAtString, forKey: .createdAt)
+        
+        if let updatedAt = updatedAt {
+            let updatedAtString = dateFormatter.string(from: updatedAt)
+            try container.encode(updatedAtString, forKey: .updatedAt)
+        }
+    }
+    
+    static func == (lhs: NotificationDevice, rhs: NotificationDevice) -> Bool {
+        return
+            lhs.token == rhs.token &&
+            lhs.model == rhs.model &&
+            lhs.platform == rhs.platform
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(token)
+        hasher.combine(model)
+        hasher.combine(platform)
     }
     
     enum CodingKeys: String, CodingKey {

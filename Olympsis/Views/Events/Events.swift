@@ -28,18 +28,19 @@ struct Events: View {
     
     @Environment(SessionStore.self) private var session
     
-    private var sports: [SPORTS] {
-        guard let user = session.user,
-              let sports = user.sports else {
-            return [SPORTS]()
-        }
-        var arr = [SPORTS]()
-        sports.forEach {
-            if let s = SPORTS(rawValue: $0) {
-                arr.append(s)
-            }
-        }
-        return arr
+    private var sports: [Sport] {
+//        guard let user = session.user,
+//              let sports = user.sports else {
+//            return [SPORTS]()
+//        }
+//        var arr = [SPORTS]()
+//        sports.forEach {
+//            if let s = SPORTS(rawValue: $0) {
+//                arr.append(s)
+//            }
+//        }
+//        return arr
+        return []
     }
     
     var body: some View {
@@ -54,93 +55,93 @@ struct Events: View {
                         .environment(session)
                 }
             }
-            .overlay(alignment: .topTrailing) {
-                HStack {
+
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
                     Text("Events")
                         .font(.title)
                         .bold()
-                    
-                    Spacer()
-
-                    HStack {
-                        Button(action:{ self.showNewEvent = true }){
-                            switch state {
-                            case .list:
+                }
+                
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action:{ self.showNewEvent = true }){
+                        switch state {
+                        case .list:
+                            Image(systemName: "plus")
+                                .imageScale(.large)
+                        case .map:
+                            ZStack {
+                                Circle()
+                                    .tint(Color.colorPrime)
+                                    .frame(width: 40, height: 40)
                                 Image(systemName: "plus")
                                     .imageScale(.large)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    }.frame(width: 41)
+                    
+                    Button(action:{
+                        withAnimation(.easeInOut) {
+                            switch state {
+                            case .list:
+                                state = .map
                             case .map:
-                                ZStack {
-                                    Circle()
-                                        .tint(Color.colorPrime)
-                                    Image(systemName: "plus")
-                                        .imageScale(.large)
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundColor(.white)
-                                }
+                                state = .list
                             }
-                        }.frame(width: 41)
-                        
-                        Button(action:{
-                            withAnimation(.easeInOut) {
-                                switch state {
-                                case .list:
-                                    state = .map
-                                case .map:
-                                    state = .list
-                                }
-                            }
-                        }){
-                            Group {
-                                switch state {
-                                case .list:
-                                    Image(systemName: "map")
-                                        .imageScale(.large)
-                                case .map:
-                                    Circle()
-                                        .tint(Color.colorPrime)
-                                        .overlay {
-                                            Image(systemName: "line.3.horizontal.decrease")
-                                                .imageScale(.large)
-                                                .symbolRenderingMode(.palette)
-                                                .foregroundColor(.white)
-                                            
-                                        }
-                                }
-                            }
-                            .frame(width: 41)
-                            .overlay(alignment: .topTrailing) {
-                                if session.events.count > 0 {
-                                    Circle()
-                                        .foregroundStyle(.red)
-                                        .frame(width: 15, height: 15)
-                                }
+                        }
+                    }){
+                        Group {
+                            switch state {
+                            case .list:
+                                Image(systemName: "map")
+                                    .imageScale(.large)
+                            case .map:
+                                Circle()
+                                    .tint(Color.colorPrime)
+                                    .frame(width: 40, height: 40)
+                                    .overlay {
+                                        Image(systemName: "line.3.horizontal.decrease")
+                                            .imageScale(.large)
+                                            .symbolRenderingMode(.palette)
+                                            .foregroundColor(.white)
+                                        
+                                    }
                             }
                         }
                         .frame(width: 41)
-                        .padding(.top, 2)
-                        
-                        Button(action:{ self.router.navigate(to: .settings) }){
-                            switch state {
-                            case .list:
-                                Image(systemName: "slider.horizontal.3")
-                                    .imageScale(.large)
-                            case .map:
-                                ZStack {
-                                    Circle()
-                                        .tint(Color.colorPrime)
-                                        .frame(width: 41, height: 41)
-                                    Image(systemName: "slider.vertical.3")
-                                        .imageScale(.large)
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundColor(.white)
-                                }
+                        .overlay(alignment: .topTrailing) {
+                            if session.events.count > 0 {
+                                Circle()
+                                    .foregroundStyle(.red)
+                                    .frame(width: 15, height: 15)
                             }
-                        }.frame(width: 41)
-                    }.frame(height: 41)
+                        }
+                    }
+                    .frame(width: 41)
+                    .padding(.top, 2)
+                    
+                    Button(action:{ self.router.navigate(to: .settings) }){
+                        switch state {
+                        case .list:
+                            Image(systemName: "slider.horizontal.3")
+                                .imageScale(.large)
+                        case .map:
+                            ZStack {
+                                Circle()
+                                    .tint(Color.colorPrime)
+                                    .frame(width: 40, height: 40)
+                                Image(systemName: "slider.vertical.3")
+                                    .imageScale(.large)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    }.frame(width: 41)
                 }
-                .frame(height: 35)
-                .padding(.horizontal)
             }
+            .toolbarBackground(state == .list ? .visible : .hidden, for: .navigationBar)
             .background {
                 Color.Background.primary
                     .edgesIgnoringSafeArea(.all)
@@ -166,7 +167,7 @@ struct Events: View {
                         EventsList(events: session.events)
                     }
                 case .settings:
-                    EventsOptions(availableSports: SPORTS.allCases, selectedSports: sports)
+                    EventsOptions(availableSports: [], selectedSports: sports)
                         .environmentObject(router)
                 }
             })

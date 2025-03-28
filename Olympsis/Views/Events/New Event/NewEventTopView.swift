@@ -11,10 +11,8 @@ struct NewEventTopView: View {
 
     @Binding var showTypePicker: Bool
     @Binding var showVisibilityPicker: Bool
-    @Binding var showSkillLevelPicker: Bool
 
     @Binding var eventType: EVENT_TYPES
-    @Binding var eventSkilLevel: EVENT_SKILL_LEVELS
     @Binding var eventVisibility: EVENT_VISIBILITY_TYPES
     
     var body: some View {
@@ -70,23 +68,6 @@ struct NewEventTopView: View {
                         }
                 }
                 
-                Button(action: { self.showSkillLevelPicker.toggle() }){
-                    HStack {
-                        Image(systemName: "star.fill")
-                            .foregroundStyle(.white)
-                        Text(eventSkilLevel.rawValue)
-                            .foregroundStyle(.white)
-                        Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                            .foregroundStyle(.white)
-                    }.padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("color-prime"))
-                        }
-                }
-                
                 Spacer()
             }
             .padding(.horizontal)
@@ -97,13 +78,10 @@ struct NewEventTopView: View {
             .fullScreenCover(isPresented: $showVisibilityPicker) {
                 EventVisibilityPickerView(visibility: $eventVisibility)
             }
-            .fullScreenCover(isPresented: $showSkillLevelPicker) {
-                EventSkillLevelPickerView(level: $eventSkilLevel)
-            }
         }
     }
 }
 
 #Preview {
-    NewEventTopView(showTypePicker: .constant(false), showVisibilityPicker: .constant(false), showSkillLevelPicker: .constant(false), eventType: .constant(.Regular), eventSkilLevel: .constant(.All), eventVisibility: .constant(.Public))
+    NewEventTopView(showTypePicker: .constant(false), showVisibilityPicker: .constant(false), eventType: .constant(.Regular), eventVisibility: .constant(.Public))
 }

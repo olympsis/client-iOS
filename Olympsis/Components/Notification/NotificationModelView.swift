@@ -84,6 +84,6 @@ struct NotificationModelView: View {
 }
 
 #Preview {
-    NotificationModelView(notification: NotificationItem(id: "", title: "Welcome to Olympsis!", body: "You've Joined a great community!", type: "", category: "", isRead: false, createdAt: 0))
+    NotificationModelView(notification: NotificationItem(id: "", title: "Welcome to Olympsis!", body: "You've Joined a great community!", type: "", category: "", isRead: false, createdAt: Date()))
         .environment(SessionStore())
 }

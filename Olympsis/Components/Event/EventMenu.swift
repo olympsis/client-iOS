@@ -15,13 +15,13 @@ struct EventMenu: View {
     @State private var loadingState: LOADING_STATE = .pending
     
     @State private var showReport: Bool = false
-    @State private var showEditEvent: Bool = false
+//    @State private var showEditEvent: Bool = false
     @State private var showRecurring: Bool = false
     @State private var showNotification: Bool = false
     
     @EnvironmentObject private var event: Event
-    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
+    @Environment(SessionStore.self) private var session
     
     func deleteEvent(deleteAll: Bool = false) async {
         let res = await session.eventObserver.deleteEvent(id: event.id, deleteAll: deleteAll)
@@ -64,34 +64,34 @@ struct EventMenu: View {
     
     var body: some View {
         VStack {
-            Group {
-                if isPosterOrAdmin {
-    // TODO: - Disabling for now
-    //                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
-    //                    self.showEditEvent.toggle()
-    //                })
-                }
-                
-                MenuButton(
-                    icon: Image(systemName: "exclamationmark.shield.fill"),
-                    text: "Report an Issue",
-                    action: { showReport.toggle() }
-                )
-                .padding(.top)
-                
-                
-                if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
-                    MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
-                        if (event.isRecurring != nil && !event.isRecurring!) {
-                            Task {
-                                await deleteEvent()
-                            }
-                        } else {
-                            showRecurring.toggle()
-                        }
-                    }, type: .destructive)
-                }
-            }
+//            Group {
+//                if isPosterOrAdmin {
+//    // TODO: - Disabling for now
+//    //                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
+//    //                    self.showEditEvent.toggle()
+//    //                })
+//                }
+//                
+//                MenuButton(
+//                    icon: Image(systemName: "exclamationmark.shield.fill"),
+//                    text: "Report an Issue",
+//                    action: { showReport.toggle() }
+//                )
+//                .padding(.top)
+//                
+//                
+//                if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
+//                    MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
+//                        if (event.isRecurring != nil && !event.isRecurring!) {
+//                            Task {
+//                                await deleteEvent()
+//                            }
+//                        } else {
+//                            showRecurring.toggle()
+//                        }
+//                    }, type: .destructive)
+//                }
+//            }
             
             Spacer()
         }
@@ -121,15 +121,14 @@ struct EventMenu: View {
         .fullScreenCover(isPresented: $showReport, content: {
             EventReportView(event: event)
         })
-        .fullScreenCover(isPresented: $showEditEvent, content: {
-            if event.type == EVENT_TYPES.Regular {
-                EditPickUpEvent()
-                    .environmentObject(event)
-            } else {
-                EditTournamentEvent()
-                    .environmentObject(event)
-            }
-        })
+//        .fullScreenCover(isPresented: $showEditEvent, content: {
+//            if event.type == EVENT_TYPES.Regular {
+//                
+//            } else {
+//                EditTournamentEvent()
+//                    .environmentObject(event)
+//            }
+//        })
         
     }
 }

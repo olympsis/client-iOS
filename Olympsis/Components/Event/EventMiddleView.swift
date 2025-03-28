@@ -14,29 +14,26 @@ struct EventMiddleView: View {
     @State private var timeDifference: String = ""
     @EnvironmentObject private var event: Event
     
-    var startTime: Int {
+    var startTime: Date {
         return event.startTime;
     }
     
     var participantsCount: Int {
-        guard let partcipants = event.participants else {
-            return 0
-        }
-        return partcipants.count
+        return event.participants.count
     }
     
     var minParticipantsCount: Int {
-        guard let min = event.minParticipants else {
+        guard let min = event.participantsConfig?.minParticipants else {
             return 0
         }
-        return min
+        return Int(min)
     }
     
     var maxParticipantsCount: Int {
-        guard let max = event.maxParticipants else {
+        guard let max = event.participantsConfig?.maxParticipants else {
             return 0
         }
-        return max
+        return Int(max)
     }
     
     var participantsCountString: String {
@@ -48,8 +45,7 @@ struct EventMiddleView: View {
     }
     
     func getTimeDifference() -> Int {
-        let startDate = Date(timeIntervalSince1970: TimeInterval(event.startTime))
-        let time = Calendar.current.dateComponents([.minute], from: startDate, to: Date.now)
+        let time = Calendar.current.dateComponents([.minute], from: event.startTime, to: Date.now)
         if let min = time.minute {
             return min
         }
@@ -57,7 +53,7 @@ struct EventMiddleView: View {
     }
     
     var eventLevel: Int {
-        return event.level.toInt()
+        return 0
     }
     
     var body: some View {
@@ -73,7 +69,7 @@ struct EventMiddleView: View {
                         VStack {
                             Text("Pending")
                                 .foregroundColor(.yellow)
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
+                            Text(startTime.formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.green)
                                 .bold()
                         }
@@ -106,7 +102,7 @@ struct EventMiddleView: View {
                             Text("Ended")
                                 .foregroundColor(.gray)
                                 .bold()
-                            Text(Date(timeIntervalSince1970: TimeInterval(event.stopTime)).formatted(.dateTime.hour().minute()))
+                            Text(event.stopTime.formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.primary)
                                 .bold()
                         }

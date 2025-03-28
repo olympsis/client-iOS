@@ -20,10 +20,7 @@ struct EventOrganizersView: View {
     
     /// The list of the associated groups that are organizing this event
     private var organizers: [Organizer] {
-        guard let organizers = event.organizers else {
-            return [Organizer]()
-        }
-        return organizers
+        return event.organizers
     }
     
     /// The first group that is organizing this event

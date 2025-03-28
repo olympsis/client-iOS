@@ -39,31 +39,19 @@ struct EventView: View {
     }
     
     private var eventImage: URL? {
-        guard let img = event.imageURL else {
-            return nil
-        }
-        return generateImageURL(img)
+        return generateImageURL(event.mediaURL)
     }
     
     private var eventBody: String {
-        guard let body = event.body else {
-            return ""
-        }
-        return body
+        return event.body
     }
     
     private var organizers: [Organizer] {
-        guard let organizers = event.organizers else {
-            return [Organizer]()
-        }
-        return organizers
+        return event.organizers
     }
     
     private var venueDescriptors: [VenueDescriptor] {
-        guard let venues = event.venues else {
-            return [VenueDescriptor]()
-        }
-        return venues
+        return event.venues
     }
     
     init(event: Event) {
@@ -76,7 +64,7 @@ struct EventView: View {
             handleFailure()
             return
         }
-        event.update(resp)
+        event.update(from: resp)
         
         handleSuccess()
     }
@@ -168,7 +156,7 @@ struct EventView: View {
                                         .textCase(.uppercase)
                                 }
                             }
-                            if event.type == EVENT_TYPES.Competitive {
+                            if (event.formatConfig?.isCompetition ?? false) {
                                 HStack {
                                     Image(systemName: "trophy.fill")
                                         .imageScale(.small)
