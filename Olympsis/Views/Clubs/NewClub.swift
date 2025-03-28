@@ -67,7 +67,7 @@ struct NewClub: View {
                         joinedAt: Date()
                     )
                 ],
-                pinnedPosts: nil,
+                pinnedPosts: [],
                 isVerified: false,
                 createdAt: Date()
             )

@@ -10,8 +10,8 @@ import Foundation
 
 class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, Decodable {
     
-    let id: String?
-    let type: String?
+    let id: String
+    let type: String
     let poster: UserSnippet?
     let body: String
     var event: Event?
@@ -23,8 +23,8 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
     let createdAt: Date
     
     /// Complete initializer for the post class
-    init(id: String?,
-         type: String?,
+    init(id: String,
+         type: String,
          poster: UserSnippet?,
          body: String,
          event: Event? = nil,
@@ -64,8 +64,8 @@ class Post: Identifiable, RandomAccessCollection, Equatable, ObservableObject, D
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-        type = try container.decodeIfPresent(String.self, forKey: .type)
+        id = try container.decode(String.self, forKey: .id)
+        type = try container.decode(String.self, forKey: .type)
         poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
         body = try container.decode(String.self, forKey: .body)
         event = try container.decodeIfPresent(Event.self, forKey: .event)

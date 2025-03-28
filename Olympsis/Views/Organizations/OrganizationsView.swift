@@ -19,18 +19,17 @@ struct OrganizationsView: View {
     
     var organizationID: String {
         guard let selectedGroup = session.selectedGroup,
-              let organization = selectedGroup.organization,
-              let id = organization.id else {
+              let organization = selectedGroup.organization else {
             return ""
         }
-        return id
+        return organization.id
     }
     
     private var filteredOrganizations: [Organization] {
         if text == "" {
             return organizations
         } else {
-            return organizations.filter{ $0.name!.lowercased().contains(text.lowercased()) }
+            return organizations.filter { $0.name.lowercased().contains(text.lowercased()) }
         }
     }
     

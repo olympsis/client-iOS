@@ -9,6 +9,18 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
+enum EventError: Error {
+    case unknown
+    case unsafeMedia
+    case failedToAddParticipant
+    case failedToRemoveParticipant
+    case failedToAddTeam
+    case failedToRemoveTeam
+    case failedToAddComment
+    case failedToRemoveComment
+}
+
+
 class Event: Decodable, Identifiable, ObservableObject {
     let id: String
     let poster: UserSnippet?
@@ -1054,52 +1066,34 @@ class EventComment: Codable {
     var id: String
     var user: UserSnippet?
     var text: String
-    var eventID: String
     var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case user
         case text
-        case eventID = "event_id"
         case createdAt = "created_at"
     }
     
     init(id: String,
          user: UserSnippet? = nil,
          text: String,
-         eventID: String,
          createdAt: Date) {
         self.id = id
         self.user = user
         self.text = text
-        self.eventID = eventID
         self.createdAt = createdAt
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        // Create date formatter for ISO8601 format
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
         id = try container.decode(String.self, forKey: .id)
         user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
         text = try container.decode(String.self, forKey: .text)
-        eventID = try container.decode(String.self, forKey: .eventID)
         
-        // Handle date decoding with string support
-        if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt),
-           let parsedDate = dateFormatter.date(from: createdAtString) {
-            createdAt = parsedDate
-        } else if let createdAtInt = try container.decodeIfPresent(Int.self, forKey: .createdAt) {
-            createdAt = Date(timeIntervalSince1970: TimeInterval(createdAtInt))
-        } else {
-            createdAt = try container.decode(Date.self, forKey: .createdAt)
-        }
+        let createdAtString = try container.decode(String.self, forKey: .createdAt)
+        createdAt = try parseDate(from: createdAtString)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -1107,7 +1101,6 @@ class EventComment: Codable {
         try container.encode(id, forKey: .id)
         try container.encodeIfPresent(user, forKey: .user)
         try container.encode(text, forKey: .text)
-        try container.encode(eventID, forKey: .eventID)
         try container.encode(createdAt, forKey: .createdAt)
     }
 }

@@ -8,37 +8,36 @@
 import Foundation
 
 /// A group that can be the parent of many clubs and post announcements that will be show in the clubs.
-class Organization: Codable, Identifiable, ObservableObject {
+class Organization: Decodable, Identifiable, ObservableObject {
 
-    let id: String?
-    var name: String?
+    let id: String
+    var name: String
     var description: String?
-    var sports: [String]?
-    let city: String?
-    let state: String?
-    let country: String?
+    var sports: [String]
+    let city: String
+    let state: String
+    let country: String
     var logo: String?
     var banner: String?
     let members: [Member]
-    let blackList: [String]?
-    var pinnedPosts: [String]?
-    let data: ClubData?
-    let isVerified: Bool?
+    let blackList: [String]
+    var pinnedPosts: [String]
+    let isVerified: Bool
     let createdAt: Date
     
-    init(id: String?,
-         name: String?,
+    init(id: String,
+         name: String,
          description: String?,
-         sports: [String]?,
-         city: String?,
-         state: String?,
-         country: String?,
+         sports: [String],
+         city: String,
+         state: String,
+         country: String,
          logo: String?,
          banner: String?,
          members: [Member],
-         blackList: [String]?,
-         pinnedPosts: [String]?,
-         isVerified: Bool?,
+         blackList: [String],
+         pinnedPosts: [String],
+         isVerified: Bool,
          createdAt: Date) {
         
         self.id = id
@@ -53,7 +52,6 @@ class Organization: Codable, Identifiable, ObservableObject {
         self.members = members
         self.blackList = blackList
         self.pinnedPosts = pinnedPosts
-        self.data = nil
         self.isVerified = isVerified
         self.createdAt = createdAt
     }
@@ -68,20 +66,19 @@ class Organization: Codable, Identifiable, ObservableObject {
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
         // Decode regular properties
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
         description = try container.decodeIfPresent(String.self, forKey: .description)
-        sports = try container.decodeIfPresent([String].self, forKey: .sports)
-        city = try container.decodeIfPresent(String.self, forKey: .city)
-        state = try container.decodeIfPresent(String.self, forKey: .state)
-        country = try container.decodeIfPresent(String.self, forKey: .country)
+        sports = try container.decode([String].self, forKey: .sports)
+        city = try container.decode(String.self, forKey: .city)
+        state = try container.decode(String.self, forKey: .state)
+        country = try container.decode(String.self, forKey: .country)
         logo = try container.decodeIfPresent(String.self, forKey: .logo)
         banner = try container.decodeIfPresent(String.self, forKey: .banner)
         members = try container.decodeIfPresent([Member].self, forKey: .members) ?? []
-        blackList = try container.decodeIfPresent([String].self, forKey: .blackList)
-        pinnedPosts = try container.decodeIfPresent([String].self, forKey: .pinnedPosts)
-        data = try container.decodeIfPresent(ClubData.self, forKey: .data)
-        isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified)
+        blackList = try container.decodeIfPresent([String].self, forKey: .blackList) ?? []
+        pinnedPosts = try container.decodeIfPresent([String].self, forKey: .pinnedPosts) ?? []
+        isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         
         // Handle date decoding with multiple formats
         if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt) {
@@ -100,11 +97,7 @@ class Organization: Codable, Identifiable, ObservableObject {
     }
     
     static func == (lhs: Organization, rhs: Organization) -> Bool {
-        guard let lhsID = lhs.id,
-              let rhsID = rhs.id else {
-            return false
-        }
-        return lhsID == rhsID
+        return lhs.id == rhs.id
     }
     
     enum CodingKeys: String, CodingKey {
@@ -134,7 +127,7 @@ struct OrganizationData: Decodable {
     }
 }
 
-struct OrganizationsResponse: Codable {
+struct OrganizationsResponse: Decodable {
     let totalOrganizations: Int
     let organizations: [Organization]
     

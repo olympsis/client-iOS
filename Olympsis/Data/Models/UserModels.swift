@@ -164,11 +164,33 @@ struct LocationResponse: Decodable {
 struct UserSnippet: Codable, Hashable {
     var uuid: String?
     var username: String?
+    var firstName: String?
+    var lastName: String?
     var imageURL: String?
+    
+    init(uuid: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, imageURL: String? = nil) {
+        self.uuid = uuid
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.imageURL = imageURL
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        self.username = try container.decodeIfPresent(String.self, forKey: .username)
+        self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+    }
     
     enum CodingKeys: String, CodingKey {
         case uuid
         case username
+        case firstName = "first_name"
+        case lastName = "last_name"
         case imageURL = "image_url"
     }
 }

@@ -15,11 +15,10 @@ struct OrgApplications: View {
     
     var organizationID: String {
         guard let selectedGroup = session.selectedGroup,
-              let organization = selectedGroup.organization,
-              let id = organization.id else {
+              let organization = selectedGroup.organization else {
             return ""
         }
-        return id
+        return organization.id
     }
     
     var body: some View {

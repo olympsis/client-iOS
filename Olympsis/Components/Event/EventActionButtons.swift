@@ -48,46 +48,61 @@ struct EventActionButtons: View {
         return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
-    func rsvp(status: String) async {
-        state = .loading
-        guard let user = session.user,
-              let _ = user.uuid else {
-            handleFailure()
-            return
-        }
+    @MainActor
+    private func rsvp(status: String) {
+        guard state != .loading else { return }
         
-        let participant = Participant(id: UUID().uuidString, user: nil, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: Date())
-        let resp = await session.eventObserver.addParticipant(id: event.id, participant)
-        
-        guard resp == true,
-              let update = await session.eventObserver.fetchEvent(id: event.id) else {
-            handleFailure()
-            return
+        Task {
+            guard let user = session.user,
+                  let _ = user.uuid else {
+                handleFailure()
+                return
+            }
+            
+            do {
+                state = .loading
+                let id = try await session.eventObserver.addParticipant(id: event.id)
+                
+                let snippet = UserSnippet(uuid: user.uuid,firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
+                let participant = Participant(id: id, user: snippet, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: Date())
+                event.participants.append(participant)
+                
+                handleSuccess()
+                await notificationManager.setEventLocalNotification(event)
+                guard let extLink = event.externalLink,
+                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+                    return
+                }
+                openURL(url)
+            } catch {
+                handleFailure()
+            }
         }
-        
-        event.update(from: update)
-        handleSuccess()
-        await notificationManager.setEventLocalNotification(event)
-        guard let extLink = event.externalLink,
-              let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-            await session.notificationsManager.requestAuthorization()
-            return
-        }
-        openURL(url)
     }
     
-    func cancel() async {
-        state = .loading
+    @MainActor
+    func cancel() {
+        guard state != .loading else { return }
         
-        let resp = await session.eventObserver.removeParticipant(id: event.id)
-        guard resp == true,
-              let update = await session.eventObserver.fetchEvent(id: event.id) else {
-            handleFailure()
-            return
+        Task {
+            state = .loading
+            
+            guard let user = session.user,
+                  let uuid = user.uuid else {
+                handleFailure()
+                return
+            }
+            
+            let resp = await session.eventObserver.removeParticipant(id: event.id)
+            guard resp == true else {
+                handleFailure()
+                return
+            }
+            
+            event.participants.removeAll(where: { $0.user?.uuid == uuid })
+            await notificationManager.removeEventLocalNotification(event.id)
+            handleSuccess()
         }
-        event.update(from: update)
-        await notificationManager.removeEventLocalNotification(event.id)
-        handleSuccess()
     }
     
     func handleSuccess() {
@@ -127,13 +142,15 @@ struct EventActionButtons: View {
                         
                         VStack {
                             VStack {
-                                Image(systemName: "car.fill")
+                                Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
                                     .resizable()
-                                    .frame(width: 25, height: 20)
+                                    .frame(width: 23, height: 23)
                                 .imageScale(.large)
-                            }.frame(height: 25)
+                            }
                             
-                            Text("Route")
+                            Text("Directions")
+                                .font(.callout)
+                                .fontWeight(.medium)
                         }.foregroundStyle(Color("foreground"))
                     }.redacted(reason: venueState != .success ? .placeholder : [])
                 }.disabled(venueState != .success ? true : false)
@@ -151,17 +168,21 @@ struct EventActionButtons: View {
                         
                         VStack {
                             VStack {
-                                Image(systemName: "car.fill")
+                                Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
                                     .resizable()
-                                    .frame(width: 25, height: 20)
+                                    .frame(width: 23, height: 23)
                                 .imageScale(.large)
-                            }.frame(height: 25)
+                            }
                             
                             if let venue = venues.first {
                                 Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
+                                    .font(.callout)
+                                    .fontWeight(.medium)
                                     .redacted(reason: venueState != .success ? .placeholder : [])
                             } else {
-                                Text("Venue")
+                                Text("Directionns")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
                             }
                         }.foregroundStyle(Color("foreground"))
                     }
@@ -180,13 +201,17 @@ struct EventActionButtons: View {
                                 .resizable()
                                 .frame(width: 20, height: 25)
                             Text("Private")
+                                .font(.callout)
+                                .fontWeight(.medium)
                         }.foregroundColor(.white)
                     } else {
                         VStack {
                             Image(systemName: "globe")
                                 .resizable()
-                                .frame(width: 25, height: 25)
+                                .frame(width: 23, height: 23)
                             Text("Public")
+                                .font(.callout)
+                                .fontWeight(.medium)
                         }.foregroundStyle(Color("foreground"))
                     }
                 }
@@ -195,10 +220,10 @@ struct EventActionButtons: View {
             // MARK: - RSVP/Cancel Buttons
             if !hasRSVP {
                 Menu {
-                    Button(action: { Task{  await rsvp(status: "maybe") } }) {
+                    Button(action: { rsvp(status: "maybe") }) {
                         Text("Maybe")
                     }
-                    Button(action:{ Task { await rsvp(status: "yes") } }){
+                    Button(action:{ rsvp(status: "yes") }){
                         Text("I'm In")
                     }
                 } label: {
@@ -214,9 +239,11 @@ struct EventActionButtons: View {
                                 VStack {
                                     Image(systemName: "envelope.fill")
                                         .resizable()
-                                        .frame(width: 30, height: 20)
-                                }.frame(height: 25)
+                                        .frame(width: 23, height: 17)
+                                }.frame(height: 23)
                                 Text("RSVP")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
                             }
                         }
                     }.foregroundStyle(.white)
@@ -228,18 +255,20 @@ struct EventActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("color-prime"))
+                            .foregroundColor(Color.red)
                         VStack {
                             if state == .loading {
                                 ProgressView()
-                                    .frame(width: 30)
+                                    .frame(width: 23)
                             } else {
                                 VStack {
-                                    Image(systemName: "envelope.open")
+                                    Image(systemName: "xmark")
                                         .resizable()
-                                        .frame(width: 30, height: 25)
-                                }.frame(height: 25)
+                                        .frame(width: 20, height: 20)
+                                }
                                 Text("Cancel")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
                             }
                         }
                     }.foregroundStyle(.white)
@@ -259,6 +288,8 @@ struct EventActionButtons: View {
                             .frame(width: 25, height: 5)
                         }.frame(height: 25)
                         Text("More")
+                            .font(.callout)
+                            .fontWeight(.medium)
                     }.foregroundStyle(Color("foreground"))
                 }
             }.sheet(isPresented: $showMenu) {
@@ -267,8 +298,9 @@ struct EventActionButtons: View {
                     .presentationDetents([.medium])
             }
             
-        }.padding(.horizontal)
-            .frame(height: 80)
+        }
+        .frame(height: 70)
+        .padding(.horizontal)
     }
 }
 

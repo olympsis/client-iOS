@@ -66,13 +66,12 @@ struct GroupFeed: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return club.pinnedPosts?.contains(post.id ?? "") ?? false
+            return club.pinnedPosts.contains(post.id)
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     

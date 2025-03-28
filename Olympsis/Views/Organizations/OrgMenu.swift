@@ -47,10 +47,7 @@ struct OrgMenu: View {
     }
     
     var name: String {
-        guard let orgName = organization.name else {
-            return "Organization"
-        }
-        return orgName
+        return organization.name
     }
     
     var imageURL: String {
@@ -161,10 +158,7 @@ struct OrgMenu: View {
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        guard let id = organization.id else {
-                                            return
-                                        }
-                                        _ = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: organization.id)
                                     }
                                 })
                             );
@@ -176,10 +170,7 @@ struct OrgMenu: View {
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    guard let id = organization.id else {
-                                        return
-                                    }
-                                    _ = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: organization.id)
                                 }
                             })
                         );
@@ -191,13 +182,10 @@ struct OrgMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                guard let id = organization.id else {
-                                    return
-                                }
-                                let res = await session.orgObserver.deleteOrganization(id: id)
+                                let res = await session.orgObserver.deleteOrganization(id: organization.id)
                                 if res {
                                     session.selectedGroup = session.groups.first
-                                    session.groups.removeAll(where: { $0.organization?.id == id })
+                                    session.groups.removeAll(where: { $0.organization?.id == organization.id })
                                 }
                                 dismiss()
                             }

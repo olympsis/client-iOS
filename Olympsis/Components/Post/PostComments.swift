@@ -38,7 +38,6 @@ struct PostComments: View {
         status = .loading
         keyboardFocused = false
         guard let user = session.user,
-              let id = post.id,
               let uuid = user.uuid,
               let username = user.username,
               let imageURL = user.imageURL,
@@ -47,7 +46,7 @@ struct PostComments: View {
             return
         }
         let dao = CommentDao(id: nil, text: text, uuid: uuid, createdAt: nil)
-        let resp = await session.postObserver.addComment(id: id, comment: dao)
+        let resp = await session.postObserver.addComment(id: post.id, comment: dao)
         guard resp != nil else {
             handleFailure()
             return
@@ -64,10 +63,7 @@ struct PostComments: View {
     
     func deleteComment(_ comment: Comment) {
         Task {
-            guard let id = post.id else {
-                return
-            }
-            let res = await session.postObserver.deleteComment(id: id, cid: comment.id)
+            let res = await session.postObserver.deleteComment(id: post.id, cid: comment.id)
             if res {
                 post.comments.removeAll(where: { $0.id == comment.id })
             }
@@ -131,8 +127,7 @@ struct PostComments: View {
                 .padding(.bottom, 50)
                 .listStyle(.plain)
                 .refreshable {
-                    guard let id = post.id,
-                            let resp = await session.postObserver.getPost(id: id) else {
+                    guard let resp = await session.postObserver.getPost(id: post.id) else {
                         return
                     }
                     post.comments = resp.comments

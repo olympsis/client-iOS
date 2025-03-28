@@ -24,10 +24,7 @@ struct OrgDetailView: View {
     
     // organization name
     private var name: String {
-        guard let n = organization.name else {
-            return "name"
-        }
-        return n
+        return organization.name
     }
     
     // organization imageurl
@@ -48,25 +45,17 @@ struct OrgDetailView: View {
     
     // used to search region for map
     private var location: String {
-        guard let city = organization.city,
-              let state = organization.state else {
-            return "Unknown, Location"
-        }
-        return city + " " + state
+        return organization.city + " " + organization.state
     }
     
     func updatePosition() {
         let geocoder = CLGeocoder()
         
-        if let city = organization.city,
-           let state = organization.state,
-           let country = organization.country {
-            geocoder.geocodeAddressString("\(city), \(state) \(country)") { (placemarks, error) in
-                if let placemark = placemarks?.first, let location = placemark.location {
-                    self.camera = MapCameraPosition.camera(
-                        MapCamera(centerCoordinate: location.coordinate, distance: 10000)
-                    )
-                }
+        geocoder.geocodeAddressString("\(organization.city), \(organization.state) \(organization.country)") { (placemarks, error) in
+            if let placemark = placemarks?.first, let location = placemark.location {
+                self.camera = MapCameraPosition.camera(
+                    MapCamera(centerCoordinate: location.coordinate, distance: 10000)
+                )
             }
         }
     }

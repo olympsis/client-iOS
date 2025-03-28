@@ -195,7 +195,7 @@ class NewPostViewModel: ObservableObject {
         let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
         return Post(
             id: id,
-            type: dto.type,
+            type: dto.type ?? "post",
             poster: snippet,
             body: dto.body ?? "",
             event: nil,

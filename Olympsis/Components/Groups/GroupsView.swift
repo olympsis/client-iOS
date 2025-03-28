@@ -52,9 +52,8 @@ struct GroupsView: View {
                                             .foregroundStyle(Color.foreground)
                                     }
                                 VStack {
-                                    if let org = organizations.first(where: { $0.id == organizer.id }),
-                                       let name = org.name {
-                                        Text(name)
+                                    if let org = organizations.first(where: { $0.id == organizer.id }){
+                                        Text(org.name)
                                             .fullScreenCover(isPresented: $showOrg, content: {
                                                 OrgDetailView(organization: org)
                                             })

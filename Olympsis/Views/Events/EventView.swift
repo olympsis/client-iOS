@@ -22,7 +22,6 @@ struct EventView: View {
     @State private var venuesTarget: Int = 0
     
     @State private var showToast: Bool = false
-    @State private var showFullImage: Bool = false
     @State private var showSharingMenu: Bool = false
     
     @State private var state: LOADING_STATE = .pending
@@ -32,7 +31,7 @@ struct EventView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
-    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_view")
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_view")
     
     private var eventTitle: String {
         return event.title
@@ -85,33 +84,6 @@ struct EventView: View {
         }
     }
     
-    /// Opens maps for the given coordinates
-    /// - Parameter coordinates: `[Double]` of positional meters
-    /// - Parameter venueName: `String` of venue name
-    func openMapsForCoordinates(coordinates: [Double], venueName: String) {
-        guard coordinates.count == 2 else {
-            log.error("Error: Coordinates array must contain exactly 2 elements (latitude and longitude)")
-            return
-        }
-        
-        let latitude = coordinates[0]
-        let longitude = coordinates[1]
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
-        let placemark = MKPlacemark(coordinate: coordinate)
-        let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = venueName
-        
-        let regionDistance: CLLocationDistance = 1000
-        let regionSpan = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
-        let options = [
-            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
-            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
-        ]
-        
-        mapItem.openInMaps(launchOptions: options)
-    }
-    
     var body: some View {
         VStack {
             
@@ -143,76 +115,24 @@ struct EventView: View {
 
             }.padding([.top, .horizontal])
             
+            
             ScrollView(showsIndicators: false) {
                 ScrollViewReader { proxy in
-                    VStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading) {
                         
-                        VStack(alignment: .leading) {
-                            HStack {
-                                ForEach(event.sports, id: \.self) { sport in
-                                    Text(sport)
-                                        .italic()
-                                        .font(.caption)
-                                        .textCase(.uppercase)
-                                }
-                            }
-                            if (event.formatConfig?.isCompetition ?? false) {
-                                HStack {
-                                    Image(systemName: "trophy.fill")
-                                        .imageScale(.small)
-                                        .foregroundStyle(Color.Brand.tertiary)
-                                    Text("Tournament")
-                                        .bold()
-                                        .font(.caption)
-                                        .padding(.leading, -5)
-                                        .foregroundStyle(Color.Brand.tertiary)
-                                }
-                            }
-                        }.padding(.leading)
+                        // MARK: - Event Quick Info
+                        EventQuickInfo(
+                            event: event,
+                            venues: $venues,
+                            venuesTarget: $venuesTarget,
+                            venuesState: $venueState
+                        )
+                        .padding(.bottom, 10)
+                        .id(1)
                         
-                        // MARK: - Organizers Names
-                        EventOrganizersView(event: event, clubs: $clubs, organizations: $organizations)
-                            .padding(.horizontal)
-                            .padding(.bottom, 3)
-                            .redacted(reason: organizersState != .success ? .placeholder : [])
-                            .zIndex(1)
-                            .id(0)
-                        
-                        // MARK: - Field Info
-                        VenueInfo(venues: $venues, venuesTarget: $venuesTarget, state: $venueState)
-                            .zIndex(1)
-                            .id(1)
-                        
-                        // MARK: - Event Image
-                        if let url = eventImage {
-                            KFImage(url)
-                                .placeholder {
-                                    Rectangle()
-                                        .frame(height: 300)
-                                        .foregroundStyle(.gray)
-                                        .overlay {
-                                            Image(systemName: "photo")
-                                                .foregroundStyle(Color("foreground"))
-                                        }
-                                }
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 300)
-                                .clipped()
-                                .onTapGesture {
-                                    self.showFullImage.toggle()
-                                }
-                                .zIndex(0)
-                                .id(2)
-                        } else {
-                            Rectangle()
-                                .frame(height: 300)
-                                .foregroundStyle(.gray)
-                                .overlay {
-                                    Image(systemName: "photo")
-                                        .foregroundStyle(Color("foreground"))
-                                }
-                        }
+                        // MARK: - Event Media
+                        EventMedia(event: event)
+                            .id(2)
                         
                         // MARK: - Detail/Body
                         VStack(alignment: .leading) {
@@ -220,20 +140,14 @@ struct EventView: View {
                                 Text("Details")
                                     .font(.title2)
                                     .bold()
-                                Rectangle()
-                                    .frame(height: 1)
-                                Text(event.timeToString())
-                                    .font(.callout)
+                                
+                               Spacer()
                             }
                             Text(eventBody)
                         }
-                        .padding(.all)
+                        .padding(.top, 10)
+                        .padding([.horizontal, .bottom])
                         .id(3)
-                        
-                        // MARK: - Middle View
-                        EventMiddleView()
-                            .id(4)
-                            .environmentObject(event)
                         
                         // MARK: - Action Buttons
                         EventActionButtons(
@@ -242,44 +156,45 @@ struct EventView: View {
                             clubs: $clubs,
                             organizations: $organizations
                         )
+                        .id(4)
+                        .environmentObject(event)
+                        
+                        // MARK: - Organizers
+                        EventOrganizers(event: event, clubs: $clubs, organizations: $organizations)
+                            .padding(.horizontal)
+                            .padding(.bottom, 3)
+                            .padding(.top)
+                            .redacted(reason: organizersState != .success ? .placeholder : [])
+                            .zIndex(1)
                             .id(5)
-                            .environmentObject(event)
+      
                         
                         // MARK: - Participants View
-                        EventParticipantsView(clubs: $clubs, organizations: $organizations)
-                            .id(6)
+                        EventParticipants(clubs: $clubs, organizations: $organizations)
                             .environmentObject(event)
+                            .id(6)
                         
-                        if !venues.isEmpty {
-                            Group {
-                                HStack {
-                                    Text("Venue(s)")
-                                        .font(.title2)
-                                        .bold()
-                                }
-                                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
-                                    ForEach(venueDescriptors, id: \.self) {
-                                        VenueDescriptorView(item: $0)
-                                    }
-                                }
-                            }
+                        // MARK: - Locations
+                        EventLocation(venues: $venues)
+                            .redacted(reason: venueState != .success ? .placeholder : [])
+                            .environmentObject(event)
                             .id(7)
-                            .padding(.horizontal)
-                        }
+                        
+                        // MARK: - Comments
+                        EventComments()
+                            .id(8)
+                            .padding(.top)
+                            .environmentObject(event)
                         
                         Spacer(minLength: 50)
                     }
                     .onChange(of: venuesTarget) { _, newValue in
                         proxy.scrollTo(newValue, anchor: .top)
                     }
-                    .fullScreenCover(isPresented: $showFullImage, content: {
-                        if let img = eventImage {
-                            FullImageViewer(imageURL: img)
-                        }
-                    })
                 }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .toast(isPresenting: $showToast, alert: {
             AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
         })

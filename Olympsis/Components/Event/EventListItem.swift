@@ -85,31 +85,6 @@ struct EventListItem: View {
                 .clipped()
                 .zIndex(1)
                 .frame(height: 250)
-//                .overlay(alignment: .top) {
-//                    HStack {
-//                        Spacer()
-//                        HStack {
-//                            Image(systemName: "dollarsign")
-//                                .imageScale(.small)
-//                                .fontWeight(.medium)
-//                                .foregroundStyle(.yellow)
-//                                .padding(.trailing, -4)
-//                            Text("20")
-//                                .font(.callout)
-//                                .fontWeight(.medium)
-//                                .padding(.trailing, 2.5)
-//                                .foregroundStyle(.yellow)
-//                        }
-//                        .padding(5)
-//                        .background(
-//                            Color.black
-//                                .opacity(0.21)
-//                        )
-//                        .border(Color.black.opacity(0.15), width: 1)
-//                        .clipShape(Capsule())
-//                    }
-//                    .padding(5)
-//                }
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 5) {
                         Spacer()
@@ -145,7 +120,7 @@ struct EventListItem: View {
                             )
                             .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
-                            .offset(x: 3, y: 8)
+                            .offset(x: 2, y: 8)
                         }
                         
                         HStack(alignment: .center, spacing: 5) {
@@ -184,7 +159,6 @@ struct EventListItem: View {
                                 Text(eventSport)
                                     .font(.caption)
                                     .fontWeight(.bold)
-                                    
                                     .padding([.leading, .trailing], 2.5)
                             }
                             .padding(5)

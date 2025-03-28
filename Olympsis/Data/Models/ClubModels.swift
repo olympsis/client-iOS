@@ -22,9 +22,9 @@ class Club: Decodable, Identifiable, ObservableObject {
     let visibility: String
     @Published var members: [Member]
     var blackList: [String]?
-    let rules: [String]?
-    var tags: [String]?
-    var pinnedPosts: [String]?
+    let rules: [String]
+    var tags: [String]
+    var pinnedPosts: [String]
     let isVerified: Bool
     let createdAt: Date
     
@@ -40,10 +40,10 @@ class Club: Decodable, Identifiable, ObservableObject {
          country: String,
          visibility: String,
          members: [Member] = [Member](),
-         blackList: [String]?=nil,
-         rules: [String]?=nil,
-         tags: [String]?=nil,
-         pinnedPosts: [String]?,
+         blackList: [String] = [],
+         rules: [String] = [],
+         tags: [String] = [],
+         pinnedPosts: [String] = [],
          isVerified: Bool=false,
          createdAt: Date) {
         
@@ -90,9 +90,9 @@ class Club: Decodable, Identifiable, ObservableObject {
         self.visibility = try container.decode(String.self, forKey: .visibility)
         self.members = try container.decode([Member].self, forKey: .members)
         self.blackList = try container.decodeIfPresent([String].self, forKey: .blackList)
-        self.rules = try container.decodeIfPresent([String].self, forKey: .rules)
-        self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
-        self.pinnedPosts = try container.decodeIfPresent([String].self, forKey: .pinnedPosts)
+        self.rules = try container.decodeIfPresent([String].self, forKey: .rules) ?? []
+        self.tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
+        self.pinnedPosts = try container.decodeIfPresent([String].self, forKey: .pinnedPosts) ?? []
         self.isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         
         // Handle date decoding with multiple formats
@@ -434,7 +434,7 @@ class ClubInvitation: Decodable, Identifiable {
 }
 
 /// Holds extra club data such as the parent organization data. Eventually i will add club metrics in this struct
-struct ClubData: Codable {
+struct ClubData: Decodable {
     let parent: Organization?
     
     enum CodingKeys: String, CodingKey {

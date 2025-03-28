@@ -143,13 +143,12 @@ struct PostHeader: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return club.pinnedPosts?.contains(post.id ?? "") ?? false
+            return club.pinnedPosts.contains(post.id)
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -193,10 +192,8 @@ struct PostHeader: View {
                     VStack(alignment: .leading) {
                         Text(orgName)
                             .bold()
-                        if let type = post.type {
-                            Text(type.capitalized)
-                                .font(.caption)
-                        }
+                        Text(post.type.capitalized)
+                            .font(.caption)
                             
                     }.padding(.leading, 5)
                 } else {
@@ -210,9 +207,7 @@ struct PostHeader: View {
                 }
             case "advertisement":
                 EmptyView()
-            case .none:
-                EmptyView()
-            case .some(_):
+            default:
                 EmptyView()
             }
             
@@ -328,13 +323,12 @@ struct PostFooter: View {
     }
     
     private func like() async {
-        guard let id = post.id,
-            let user = session.user,
+        guard let user = session.user,
             let uuid = user.uuid else {
             return
         }
         let dao = ReactionDao(uuid: uuid)
-        guard let id = await session.postObserver.addLike(id: id, like: dao) else {
+        guard let id = await session.postObserver.addLike(id: post.id, like: dao) else {
             return
         }
         let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
@@ -344,10 +338,9 @@ struct PostFooter: View {
     }
     
     private func removeLike() async {
-        guard let id = post.id,
-                let user = session.user, let uuid = user.uuid,
-              let like = post.likes.first(where: {$0.uuid == uuid }),
-              await session.postObserver.deleteLike(id: id, likeID: like.id) else {
+        guard let user = session.user, let uuid = user.uuid,
+              let like = post.likes.first(where: { $0.uuid == uuid }),
+              await session.postObserver.deleteLike(id: post.id, likeID: like.id) else {
             return
         }
         post.likes.removeAll(where: {$0.uuid == like.uuid})

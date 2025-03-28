@@ -29,8 +29,7 @@ struct PostMenu: View {
             return false
         }
         if group.type == GROUP_TYPE.Club {
-            guard let type = post.type,
-                  type == "post",
+            guard post.type == "post",
                   let club = group.club,
                   let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
                 if post.type == "post" {
@@ -62,13 +61,12 @@ struct PostMenu: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return ((club.pinnedPosts?.contains(where: { $0 == post.id ?? ""})) != nil)
+            return ((club.pinnedPosts.contains(where: { $0 == post.id })) != nil)
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -77,25 +75,22 @@ struct PostMenu: View {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club,
-                  let postId = post.id else {
+            guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: club.id, postId: postId)
+            let resp = await session.clubObserver.pinPost(id: club.id, postId: post.id)
             if resp {
-                club.pinnedPosts?.append(postId)
+                club.pinnedPosts.append(post.id)
                 pinned = true
             }
             return
         } else {
-            guard let org = selectedGroup.organization,
-                  let id = org.id,
-                  let postId = post.id else {
+            guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.pinPost(id: id, postId: postId)
+            let resp = await session.orgObserver.pinPost(id: org.id, postId: post.id)
             if resp {
-                org.pinnedPosts?.append(postId)
+                org.pinnedPosts.append(post.id)
                 pinned = true
             }
             return
@@ -112,32 +107,30 @@ struct PostMenu: View {
             }
             let resp = await session.clubObserver.unPinPost(id: club.id)
             if resp {
-                club.pinnedPosts?.removeAll(where: { $0 == club.id})
+                club.pinnedPosts.removeAll(where: { $0 == club.id})
                 pinned = false
             }
             return
         } else {
-            guard let org = selectedGroup.organization,
-                  let id = org.id else {
+            guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.unPinPost(id: id)
+            let resp = await session.orgObserver.unPinPost(id: org.id)
             if resp {
-                org.pinnedPosts?.removeAll(where: { $0 == id })
+                org.pinnedPosts.removeAll(where: { $0 == org.id })
                 pinned = false
             }
         }
     }
     
     private func deletePost() async {
-        guard let selectedGroup = session.selectedGroup,
-            let id = post.id else {
+        guard let selectedGroup = session.selectedGroup else {
             return
         }
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver.deletePost(postID: id) else {
+                  await session.postObserver.deletePost(postID: post.id) else {
                 return
             }
 
@@ -153,7 +146,7 @@ struct PostMenu: View {
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver.deletePost(postID: id) else {
+                  await session.postObserver.deletePost(postID: post.id) else {
                 return
             }
             

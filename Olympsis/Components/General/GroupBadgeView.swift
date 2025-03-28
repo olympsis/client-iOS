@@ -1,18 +1,20 @@
 //
-//  UserProfileView.swift
+//  GroupBadgeView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 7/30/24.
+//  Created by Joel Joseph on 3/28/25.
 //
 
 import SwiftUI
 import Kingfisher
 
-struct UserBadgeView: View {
+struct GroupBadgeView: View {
     
     var size: BADGE_SIZE
+    var type: GROUP_TYPE
     var imageURL: URL?
     @State private var imageFailed: Bool = false
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         switch size {
@@ -38,10 +40,18 @@ struct UserBadgeView: View {
                             .frame(width: 35, height: 35)
                             .foregroundStyle(Color.Background.primary)
                             .overlay {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .frame(width: 18, height: 18)
-                                    .foregroundStyle(Color.foreground)
+                                switch type {
+                                case .Club:
+                                    Image(systemName: "person.2.fill")
+                                        .resizable()
+                                        .frame(width: 18, height: 13)
+                                        .foregroundStyle(Color.foreground)
+                                case .Organization:
+                                    Image(systemName: "building.fill")
+                                        .resizable()
+                                        .frame(width: 10, height: 18)
+                                        .foregroundStyle(Color.foreground)
+                                }
                             }
                     }
                 }
@@ -69,10 +79,18 @@ struct UserBadgeView: View {
                             .frame(width: 65, height: 65)
                             .foregroundStyle(Color.Background.primary)
                             .overlay {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundStyle(Color.foreground)
+                                switch type {
+                                case .Club:
+                                    Image(systemName: "person.2.fill")
+                                        .resizable()
+                                        .frame(width: 30, height: 20)
+                                        .foregroundStyle(Color.foreground)
+                                case .Organization:
+                                    Image(systemName: "building.fill")
+                                        .resizable()
+                                        .frame(width: 20, height: 30)
+                                        .foregroundStyle(Color.foreground)
+                                }
                             }
                     }
                 }
@@ -100,10 +118,18 @@ struct UserBadgeView: View {
                             .frame(width: 100, height: 100)
                             .foregroundStyle(Color.Background.primary)
                             .overlay {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundStyle(Color.foreground)
+                                switch type {
+                                case .Club:
+                                    Image(systemName: "person.2.fill")
+                                        .resizable()
+                                        .frame(width: 50, height: 35)
+                                        .foregroundStyle(Color.foreground)
+                                case .Organization:
+                                    Image(systemName: "building.fill")
+                                        .resizable()
+                                        .frame(width: 35, height: 50)
+                                        .foregroundStyle(Color.foreground)
+                                }
                             }
                     }
                 }
@@ -114,5 +140,6 @@ struct UserBadgeView: View {
 }
 
 #Preview {
-    UserBadgeView(size: .small)
+    GroupBadgeView(size: .large, type: .Club)
+        .environment(SessionStore())
 }

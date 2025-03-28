@@ -62,10 +62,8 @@ class FeedViewModel: ObservableObject {
                     pinned.append(resp)
                 }
             }
-            if let pinnedPosts = club.pinnedPosts {
-                if let resp = sorted.first(where: { pinnedPosts.contains($0.id ?? "") }) {
-                    pinned.append(resp)
-                }
+            if let resp = sorted.first(where: { club.pinnedPosts.contains($0.id) }) {
+                pinned.append(resp)
             }
             
             sorted.removeAll { p in
@@ -80,15 +78,14 @@ class FeedViewModel: ObservableObject {
             }
             self.posts[club.id] = sorted
         } else {
-            guard let org = selectedGroup.organization,
-                let id = org.id else {
+            guard let org = selectedGroup.organization else {
                 if !refresh {
                     status = .failure
                 }
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver.getPosts(clubId: id, parentId: nil) else {
+            guard let response: [Post] = await session.postObserver.getPosts(clubId: org.id, parentId: nil) else {
                 if !refresh {
                     status = .failure
                 }
@@ -99,10 +96,9 @@ class FeedViewModel: ObservableObject {
             var pinned = [Post]()
             var sorted = response.sorted(by: condition)
             
-            if let org = selectedGroup.organization,
-                let pinnedPosts = org.pinnedPosts {
+            if let org = selectedGroup.organization {
                 if let resp = sorted.first(where: { post in
-                    return pinnedPosts.contains(where: { $0 == post.id })
+                    return org.pinnedPosts.contains(where: { $0 == post.id })
                 }) {
                     pinned.append(resp)
                 }
@@ -118,7 +114,7 @@ class FeedViewModel: ObservableObject {
             if !refresh {
                 status = .success
             }
-            self.posts[id] = sorted
+            self.posts[org.id] = sorted
         }
     }
     

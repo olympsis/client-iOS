@@ -17,10 +17,7 @@ struct OrgListItem: View {
     @Environment(SessionStore.self) private var session
     
     var name: String {
-        guard let name = organization.name else {
-            return ""
-        }
-        return name
+        return organization.name
     }
     
     var description: String {
@@ -31,24 +28,16 @@ struct OrgListItem: View {
     }
     
     var sports: [String] {
-        guard let sports = organization.sports else {
-            return ["unknown"]
-        }
-        return sports
+        return organization.sports
     }
     
     var location: String {
-        guard let state = organization.state,
-              let country = organization.country else {
-            return "Unknown, World"
-        }
-        return state + ", " + country
+        return organization.state + ", " + organization.country
     }
     
     func Apply() async {
         status = .loading
-        guard let id = organization.id,
-            let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = session.selectedGroup,
               let clubID = selectedGroup.club?.id else {
             status = .failure
             DispatchQueue.main.asyncAfter(deadline: .now()+1) {
@@ -56,7 +45,7 @@ struct OrgListItem: View {
             }
             return
         }
-        let app = OrganizationApplicationDao(organizationID: id, clubID: clubID, status: "pending")
+        let app = OrganizationApplicationDao(organizationID: organization.id, clubID: clubID, status: "pending")
         let res = await session.orgObserver.createOrganizationApplication(app: app)
         if res {
             status = .success

@@ -319,9 +319,7 @@ class GroupEditorViewModel: ObservableObject {
     }
     
     func loadOrganization(_ org: Organization) {
-        guard let name = org.name,
-              let description = org.description,
-              let sports = org.sports else {
+        guard let description = org.description else {
             return
         }
         
@@ -333,9 +331,9 @@ class GroupEditorViewModel: ObservableObject {
             self.bannerURL = banner
         }
         
-        self.clubName = name
+        self.clubName = org.name
         self.description = description
-        self.selectedSports.formUnion(sports)
+        self.selectedSports.formUnion(org.sports)
         
     }
     
@@ -373,14 +371,13 @@ class GroupEditorViewModel: ObservableObject {
     
     @MainActor
     func updateOrganization(_ org: Organization) async -> Bool {
-        guard let dto = await self.updateOrganizationDTO(),
-              let id = org.id else {
+        guard let dto = await self.updateOrganizationDTO() else {
             handleFailure()
             log.error("Failed to create org DTO")
             return false
         }
         
-        guard await OrgObserver.shared.updateOrganization(id: id, dto: dto) else {
+        guard await OrgObserver.shared.updateOrganization(id: org.id, dto: dto) else {
             handleFailure()
             log.error("Failed to update club")
             return false
@@ -388,11 +385,16 @@ class GroupEditorViewModel: ObservableObject {
         
         status = .success
         
-        org.name = dto.name
+        guard let name = dto.name,
+              let sports = dto.sports else {
+            return false
+        }
+        
+        org.name = name
         org.logo = dto.logo
         org.banner = dto.banner
         org.description = dto.description
-        org.sports = dto.sports
+        org.sports = sports
         
         return true
     }

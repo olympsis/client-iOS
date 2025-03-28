@@ -37,12 +37,12 @@ struct NewOrganization: View {
             
             let org = Organization(
                 id: id,
-                name: dto.name,
+                name: dto.name!,
                 description: dto.description,
-                sports: dto.sports,
-                city: dto.city,
-                state: dto.state,
-                country: dto.country,
+                sports: dto.sports!,
+                city: dto.city!,
+                state: dto.state!,
+                country: dto.country!,
                 logo: dto.logo,
                 banner: dto.banner,
                 members: [
@@ -53,8 +53,8 @@ struct NewOrganization: View {
                         joinedAt: Date()
                     )
                 ],
-                blackList: nil,
-                pinnedPosts: nil,
+                blackList: [],
+                pinnedPosts: [],
                 isVerified: false,
                 createdAt: Date()
             )

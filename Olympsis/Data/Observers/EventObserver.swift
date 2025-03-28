@@ -119,17 +119,25 @@ class EventObserver: ObservableObject{
         return false
     }
     
-    func addParticipant(id: String, _ participant: Participant) async -> Bool {
+    // MARK: - Participants
+    
+    func addParticipant(id: String) async throws -> String {
         do {
-            let res = try await eventService.addParticipant(id: id, participant)
-            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
-                return false
+            let (data, resp) = try await eventService.addParticipant(id: id)
+            guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
+                throw EventError.failedToAddParticipant
             }
-            return true
+            
+            let object = try decoder.decode(CreateResponse.self, from: data)
+            guard let id = object.id else {
+                throw EventError.failedToAddParticipant
+            }
+            
+            return id
         } catch {
-            log.error("\(error)")
+            log.error("Failed to add participant: \(error)")
+            throw EventError.failedToAddParticipant
         }
-        return false
     }
     
     func removeParticipant(id: String, pid: String?=nil) async -> Bool {
@@ -140,10 +148,46 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to remove participant: \(error)")
         }
         return false
     }
+    
+    // MARK: - Comments
+    
+    func addComment(id: String, _ comment: EventCommentDao) async throws -> String {
+        do {
+            let (data, resp) = try await eventService.addComment(id: id, comment)
+            guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
+                throw EventError.failedToAddComment
+            }
+            
+            let object = try decoder.decode(CreateResponse.self, from: data)
+            guard let id = object.id else {
+                throw EventError.failedToAddComment
+            }
+            
+            return id
+        } catch {
+            log.error("Failed to add comment: \(error)")
+            throw EventError.failedToAddComment
+        }
+    }
+    
+    func removeComment(id: String, cid: String) async -> Bool {
+        do {
+            let res = try await eventService.removeComment(id: id, cid: cid)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+            return true
+        } catch {
+            log.error("Failed to remove comment: \(error)")
+        }
+        return false
+    }
+    
+    // MARK: - Notifications
     
     func notifyParticipants(id: String, title: String, body: String) async -> Bool {
         do {
@@ -154,7 +198,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to notify participants: \(error)")
         }
         return false
     }
@@ -168,7 +212,7 @@ class EventObserver: ObservableObject{
             }
             return true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to notify club members: \(error)")
         }
         return false
     }

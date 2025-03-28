@@ -87,12 +87,13 @@ class EventService {
         return resp
     }
     
-    func addParticipant(id: String, _ participant: Participant) async throws -> URLResponse {
+    // MARK: - Participants
+    
+    func addParticipant(id: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        let (_,resp) = try await http.Request(.POST, endpoint, body: nil, headers: ["Authorization": token ?? ""])
-        return resp
+        return try await http.Request(.POST, endpoint, body: nil, headers: ["Authorization": token ?? ""])
     }
     
     func removeParticipant(id: String, pid: String?=nil) async throws -> URLResponse {
@@ -109,6 +110,25 @@ class EventService {
             return resp
         }
     }
+    
+    // MARK: - Comments
+    
+    func addComment(id: String, _ comment: EventCommentDao) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/\(id)/comments", queryItems: [URLQueryItem]())
+        
+        return try await http.Request(.POST, endpoint, body: EncodeToData(comment), headers: ["Authorization": token ?? ""])
+    }
+    
+    func removeComment(id: String, cid: String) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
+        
+        let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
+        return resp
+    }
+    
+    // MARK: - Notifications
     
     func notifyParticipants(id: String, notif: OlympsisNotification) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()

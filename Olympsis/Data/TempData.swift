@@ -12,12 +12,16 @@ let _one_hr = Calendar.current.date(byAdding: .hour, value: 1, to: _current_date
 let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
 let USER_SNIPPETS = [
-    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", imageURL: "feed-images/5439973E-7695-48F4-B611-8371B8BDF767.jpeg"),
-    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", imageURL: "feed-images/2E64B83A-FCF7-4589-8E17-923F496085E4.jpeg")
+    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", firstName: "John", lastName: "Doe", imageURL: "feed-images/5439973E-7695-48F4-B611-8371B8BDF767.jpeg"),
+    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", firstName: "Jane", lastName: "Doe", imageURL: "feed-images/2E64B83A-FCF7-4589-8E17-923F496085E4.jpeg")
 ]
 
 let COMMENTS = [
     Comment(id: UUID().uuidString, text: "Lets go!!!", user: USER_SNIPPETS[1], createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779)))
+]
+
+let EVENT_COMMENTS = [
+    EventComment(id: UUID().uuidString, user: USER_SNIPPETS[1], text: "Lets go!!!", createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779)))
 ]
 
 let POSTS = [
@@ -49,15 +53,15 @@ let CLUBS = [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: Date(timeIntervalSince1970: 1639364779)),
-    Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: "", banner: "", sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
+    ], rules: [], pinnedPosts: [POSTS[0].id], createdAt: Date(timeIntervalSince1970: 1639364779)),
+    Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: nil, banner: nil, sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: nil, pinnedPosts: [POSTS[0].id ?? ""], createdAt: Date(timeIntervalSince1970: 1639364779))
+    ], rules: [], pinnedPosts: [POSTS[0].id], createdAt: Date(timeIntervalSince1970: 1639364779))
 ]
 
 let ORGANIZATIONS = [
-    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: Date()),
-    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: [], blackList: nil, pinnedPosts: nil, isVerified: false, createdAt: Date())
+    Organization(id: UUID().uuidString, name: "Utah Soccer", description: "Organization that organizes soccer all over utah.", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States", logo: "club-images/E8ABDD5D-7E87-475A-8095-6D42676DC1E0.jpeg", banner: nil, members: [], blackList: [], pinnedPosts: [], isVerified: false, createdAt: Date()),
+    Organization(id: UUID().uuidString, name: "SLC Run Club", description: "Organization that organizes soccer all over utah.", sports: ["running"], city: "Salt Lake City", state: "Utah", country: "United States", logo: nil, banner: nil, members: [], blackList: [], pinnedPosts: [], isVerified: false, createdAt: Date())
 ]
 
 
@@ -66,7 +70,7 @@ let CLUB_SNIPPETS = [
 ]
 
 let ORG_SNIPPETS = [
-    OrgSnippet(id: ORGANIZATIONS[0].id ?? UUID().uuidString, name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States")
+    OrgSnippet(id: ORGANIZATIONS[0].id, name: "Utah Soccer", description: "Club in salt lake for people to come together and play soccer", sports: ["soccer", "tennis"], city: "Salt Lake City", state: "Utah", country: "United States")
 ]
 
 let ORGANIZATION_APPLICATIONS = [
@@ -82,7 +86,10 @@ let EVENTS = [
     Event(
         id: UUID().uuidString,
         poster: USER_SNIPPETS[0],
-        organizers: [Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id)],
+        organizers: [
+            Organizer(type: GROUP_TYPE.Club, id: CLUBS[0].id),
+            Organizer(type: GROUP_TYPE.Club, id: CLUBS[1].id)
+        ],
         venues: VENUE_DESCRIPTORS,
         mediaURL: "event-images/soccer-0.jpg",
         mediaType: .image,
@@ -182,7 +189,7 @@ let ROOMS = [
 ]
 
 let INVITATIONS = [
-    Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id ?? UUID().uuidString, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Date())
+    Invitation(id: UUID().uuidString, type: "organization", sender: UUID().uuidString, recipient: UUID().uuidString, subjectID: ORGANIZATIONS[0].id, status: "pending", data: InvitationData(club: nil, event: nil, organization: ORGANIZATIONS[0]), createdAt:Date())
 ]
 
 let POST_REPORTS = [

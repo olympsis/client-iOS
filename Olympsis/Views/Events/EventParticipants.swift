@@ -12,7 +12,7 @@ import SwiftUI
 import Charts
 
 /// A view that shows a quick glance of the top participants in an event
-struct EventParticipantsView: View {
+struct EventParticipants: View {
     
     @Binding var clubs: [Club]
     @Binding var organizations: [Organization]
@@ -29,20 +29,76 @@ struct EventParticipantsView: View {
     }
     
     var body: some View {
-        HStack(spacing: -30) {
-            ForEach(participants, id: \.self) { p in
-                ParticipantView(participant: p)
+        VStack(alignment: .leading) {
+            Text("\(event.participants.count) Going")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            ForEach(event.participants.prefix(3), id: \.id) { ptp in
+                HStack {
+                    if let url = ptp.user?.imageURL {
+                        UserBadgeView(size: .small, imageURL: generateImageURL(url))
+                        
+                        VStack(alignment: .leading) {
+                            if let firstName = ptp.user?.firstName,
+                               let lastName = ptp.user?.lastName {
+                                Text("\(firstName) \(lastName)")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                            } else {
+                                Text("Olympsis User")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                            }
+                            
+                            if let username = ptp.user?.username {
+                                Text("@\(username)")
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            } else {
+                                Text("olympsis-user")
+                                    .font(.caption)
+                            }
+                        }
+                    } else {
+                        UserBadgeView(size: .small)
+                        
+                        VStack(alignment: .leading) {
+                            if let firstName = ptp.user?.firstName,
+                               let lastName = ptp.user?.lastName {
+                                Text("\(firstName) \(lastName)")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                            } else {
+                                Text("Olympsis User")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                            }
+                            
+                            if let username = ptp.user?.username {
+                                Text("@\(username)")
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            } else {
+                                Text("olympsis-user")
+                                    .font(.caption)
+                            }
+                        }
+                    }
+                }
             }
-            Button(action: { self.showParticipants.toggle() }) {
-                Text("See who's going...")
+            
+            if (event.participants.count > 3) {
+                Button(action: { showParticipants.toggle() }) {
+                    Text("+\(event.participants.count-3) more...")
+                }.padding(.top)
             }
-            .padding(.leading, 45)
-            .tint(Color.foreground)
-        }.padding(.all)
-            .sheet(isPresented: $showParticipants, content: {
-                EventParticipantsViewExt(clubs: $clubs, organizations: $organizations)
-                    .environmentObject(event)
-            })
+        }
+        .padding(.all)
+        .sheet(isPresented: $showParticipants, content: {
+            EventParticipantsViewExt(clubs: $clubs, organizations: $organizations)
+                .environmentObject(event)
+        })
     }
 }
 
@@ -179,7 +235,7 @@ struct EventParticipantsViewExt: View {
 }
 
 #Preview {
-    EventParticipantsView(clubs: .constant([]), organizations: .constant([]))
+    EventParticipants(clubs: .constant([]), organizations: .constant([]))
         .environment(SessionStore())
         .environmentObject(EVENTS[0])
 }

@@ -118,9 +118,7 @@ struct EventOrganizersPickerView: View {
                             }
                             
                             if let org = session.orgs.first(where: { $0.id == organizer.organization?.id }) {
-                                if let name = org.name {
-                                    Text(name)
-                                }
+                                Text(org.name)
                             }
                             Spacer()
                         }.padding(.horizontal)
