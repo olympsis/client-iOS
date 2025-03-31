@@ -57,7 +57,6 @@ struct RoomsSearch: View {
                     }
                 }
             }
-            .background(Color.Background.primary)
             .refreshable {
                 state = .loading
                 let resp = await observer.GetRooms(id: club.id)

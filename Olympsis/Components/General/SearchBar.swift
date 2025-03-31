@@ -19,10 +19,12 @@ struct SearchBar: View {
             TextField("Search...", text: $text, onCommit: onCommit)
                 .foregroundColor(.primary)
                 .keyboardType(.webSearch)
+                .submitLabel(.search)
         }
         .padding(8)
         .background(
-            Color.Background.secondary
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.regularMaterial)
                 .cornerRadius(radius: 10, corners: .allCorners)
         )
     }

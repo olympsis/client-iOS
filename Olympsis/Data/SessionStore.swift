@@ -44,6 +44,9 @@ class SessionStore {
     var events: [Event] = []
     var pastEvents: [Event] = []
     
+    var tags: [Tag] = []
+    var sports: [Sport] = []
+    
     var venues = [Venue]()           // Venues Cache
     var hotEvents = [Event]()        // Hot Events Cache
     var invitations = [Invitation]() // Invitations Cache
@@ -76,6 +79,7 @@ class SessionStore {
     var fieldObserver = FieldObserver()
     var eventObserver = EventObserver()
     var locationManager = LocationManager()
+    var managementObserver = ManagementObserver()
     var notificationService = NotificationService()
     var notificationsManager = NotificationManager()
 
@@ -145,6 +149,16 @@ class SessionStore {
         #if targetEnvironment(simulator)
         events = EVENTS
         #endif
+        
+        Task {
+            do {
+                let config = try await managementObserver.config()
+                tags = config.tags
+                sports = config.sports
+            } catch {
+                fatalError("Failed to fetch application config. Error: \(error)")
+            }
+        }
     }
     
     func listenToAuthStateChanges() {

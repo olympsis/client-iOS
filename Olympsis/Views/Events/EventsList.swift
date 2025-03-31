@@ -77,7 +77,6 @@ struct EventsList: View {
 //                        .datePickerStyle(.compact)
 //                }
             }
-            .background(Color.Background.primary)
             .navigationTitle("Events")
             .navigationBarTitleDisplayMode(.inline)
         }

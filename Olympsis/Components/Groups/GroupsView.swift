@@ -24,7 +24,7 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
-                                    .foregroundStyle(Color.Background.primary)
+                                    .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "person.3.fill")
                                             .foregroundStyle(Color.foreground)
@@ -46,7 +46,7 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
-                                    .foregroundStyle(Color.Background.primary)
+                                    .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "building.fill")
                                             .foregroundStyle(Color.foreground)

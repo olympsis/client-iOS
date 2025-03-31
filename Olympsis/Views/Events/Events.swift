@@ -13,6 +13,8 @@ struct Events: View {
     
     @State private var state: EVENTS_PAGE_STATE = .list
     
+    @State private var numFiltersActive = 0
+    @State private var showMenu: Bool = false
     @State private var showError: Bool = false
     @State private var showBottomSheet: Bool = false
     @State private var showFieldDetail: Bool = false
@@ -26,21 +28,11 @@ struct Events: View {
     
     @State private var searchText = ""
     
+    @State private var manager = SearchManager()
     @Environment(SessionStore.self) private var session
     
     private var sports: [Sport] {
-//        guard let user = session.user,
-//              let sports = user.sports else {
-//            return [SPORTS]()
-//        }
-//        var arr = [SPORTS]()
-//        sports.forEach {
-//            if let s = SPORTS(rawValue: $0) {
-//                arr.append(s)
-//            }
-//        }
-//        return arr
-        return []
+        return session.sports
     }
     
     var body: some View {
@@ -48,7 +40,7 @@ struct Events: View {
             Group {
                 switch state {
                 case .list:
-                    ListView(showNewEvent: $showNewEvent)
+                    ListView(showNewEvent: $showNewEvent, showMenu: $showMenu, numFiltersActive: $numFiltersActive)
                         .environment(session)
                 case .map:
                     MapView(showNewEvent: $showNewEvent, selectedVenue: $selectedVenue)
@@ -121,31 +113,10 @@ struct Events: View {
                     }
                     .frame(width: 41)
                     .padding(.top, 2)
-                    
-                    Button(action:{ self.router.navigate(to: .settings) }){
-                        switch state {
-                        case .list:
-                            Image(systemName: "slider.horizontal.3")
-                                .imageScale(.large)
-                        case .map:
-                            ZStack {
-                                Circle()
-                                    .tint(Color.colorPrime)
-                                    .frame(width: 40, height: 40)
-                                Image(systemName: "slider.vertical.3")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
-                            }
-                        }
-                    }.frame(width: 41)
+                    .padding(.trailing)
                 }
             }
             .toolbarBackground(state == .list ? .visible : .hidden, for: .navigationBar)
-            .background {
-                Color.Background.primary
-                    .edgesIgnoringSafeArea(.all)
-            }
             .sheet(item: $selectedVenue) { field in
                 VenueView(venue: field)
                     .presentationDetents([.height(250), .large])
@@ -157,6 +128,14 @@ struct Events: View {
             }) {
                 NewEvent(manager: NewEventManager())
             }
+            .sheet(isPresented: $showMenu, onDismiss: {
+                withAnimation(.easeInOut) {
+                    numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
+                }
+            }, content: {
+                FilterView(manager: manager)
+                    .environment(session)
+            })
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                 switch route {
                 case .events(let eventId, let openEvents):
@@ -171,6 +150,10 @@ struct Events: View {
                         .environmentObject(router)
                 }
             })
+            .task {
+                manager.tags = session.tags
+                manager.sports = session.sports
+            }
         }
     }
 }

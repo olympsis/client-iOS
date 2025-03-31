@@ -54,13 +54,12 @@ struct Profile: View {
                             VStack {
                                 Text("Awards")
                                     .font(.callout)
-                                    .padding(.vertical, 10)
                                     .fontWeight(.medium)
                                     
                                 
                                 Rectangle()
                                     .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.Background.primary)
+                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
                             }
                         }
                         
@@ -79,7 +78,7 @@ struct Profile: View {
                                 
                                 Rectangle()
                                     .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.Background.primary)
+                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
                             }
                         }
                         
@@ -97,10 +96,11 @@ struct Profile: View {
                                 
                                 Rectangle()
                                     .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .pastEvents ? Color.foreground : Color.Background.primary)
+                                    .foregroundStyle(selectedTab == .pastEvents ? Color.foreground : Color.clear)
                             }
                         }
-                    }.padding(.horizontal)
+                    }
+                    .padding(.horizontal)
                     
                     switch selectedTab {
                     case .achievements:
@@ -134,7 +134,7 @@ struct Profile: View {
                         }
                     }
                 }
-            }.background(Color.Background.primary)
+            }
         }
     }
 }

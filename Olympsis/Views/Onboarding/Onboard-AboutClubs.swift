@@ -49,9 +49,6 @@ struct Onboard_AboutClubs: View {
             
             Spacer()
         }
-        .background {
-            Color.Background.primary
-        }
     }
 }
 

@@ -95,7 +95,7 @@ struct EventSharingTemplateView: View {
         }
         .frame(width: 85, height: 85)
         .background {
-            Color.Background.primary
+            Color.gray.opacity(0.2)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }

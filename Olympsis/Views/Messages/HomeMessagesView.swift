@@ -22,7 +22,6 @@ struct HomeMessagesView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color.Background.primary)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { router.navigateBack() }) {

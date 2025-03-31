@@ -61,7 +61,7 @@ struct NewEventAdvancedSettings: View {
                     .presentationDetents([.height(250)])
             }
             
-        }.background(Color.Background.primary)
+        }
     }
 }
 

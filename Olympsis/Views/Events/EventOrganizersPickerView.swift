@@ -126,7 +126,6 @@ struct EventOrganizersPickerView: View {
                 }
             }
         }
-        .background(Color.Background.primary)
     }
 }
 

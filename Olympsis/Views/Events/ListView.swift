@@ -10,14 +10,18 @@ import SwiftUI
 
 struct ListView: View {
     
+    
     @Binding var showNewEvent: Bool
+    
+    @Binding var showMenu: Bool
+    @Binding var numFiltersActive: Int
     
     @State private var searchText = ""
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
     
     @State private var state: VIEW_STATE = .pending
-    
+
     @Environment(SessionStore.self) private var session
     
     @AppStorage("searchRadius") private var radius: Double?
@@ -175,18 +179,20 @@ struct ListView: View {
                 } else {
                     ScrollViewReader { proxy in
                         List {
-                            HStack {
-                                Spacer()
-                                DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                                    .frame(width: 120)
+                            VStack(spacing: 0) {
+                                SearchBar(text: $searchText)
+                                    .padding(.horizontal, 10)
+                                
+                                HStack(alignment: .bottom) {
+                                    Spacer()
+                                    DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                                        .frame(width: 120)
+                                    
+                                    FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                                }
+                                .frame(height: 40)
+                                .padding(.horizontal)
                             }
-                            .frame(height: 40)
-                            .padding(.horizontal)
-                            .listRowBackground(Color.Background.primary)
-                            
-                            SearchBar(text: $searchText)
-                                .padding(.horizontal, 10)
-                                .listRowBackground(Color.Background.primary)
                             
                             ForEach(eventsGrouped, id: \.id) { group in
                                 Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
@@ -196,11 +202,9 @@ struct ListView: View {
                                     }
                                 }
                                 .id(group.date)
-                                .listRowBackground(Color.Background.primary)
                             }
                         }
                         .listStyle(.plain)
-                        .listRowBackground(Color.Background.primary)
                         .onChange(of: selectedDate) { oldValue, newValue in
                             if let closestDate = findClosestDate(to: newValue, in: eventsGrouped) {
                                 withAnimation {
@@ -233,11 +237,10 @@ struct ListView: View {
                 }
             }
         }
-        .background { Color.Background.primary }
     }
 }
 
 #Preview {
-    ListView(showNewEvent: .constant(false))
+    ListView(showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: .constant(0))
         .environment(SessionStore())
 }

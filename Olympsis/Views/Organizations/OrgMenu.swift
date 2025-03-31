@@ -127,7 +127,6 @@ struct OrgMenu: View {
                     }
                 }
             }
-            .background(Color.Background.primary)
             .navigationBarBackButtonHidden()
             .navigationTitle(name)
             .navigationBarTitleDisplayMode(.inline)

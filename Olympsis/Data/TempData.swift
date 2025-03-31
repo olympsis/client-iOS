@@ -229,3 +229,21 @@ let SHARING_TEMPLATES = [
         venuePosition: .bottom_center
     )
 ]
+
+let SPORTS_TEMP = [
+    Sport(name: "⚽️ soccer", images: []),
+    Sport(name: "🏀 basketball", images: []),
+    Sport(name: "🏈 football", images: []),
+    Sport(name: "🏊‍♂️ swimming", images: []),
+    Sport(name: "🏃‍♂️ running", images: []),
+    Sport(name: "🏋️‍♂️ strength", images: []),
+    Sport(name: "🧘‍♂️ yoga", images: [])
+]
+
+let TAGS_TEMP = [
+    Tag(name: "beginner-friendly"),
+    Tag(name: "family-friendly"),
+    Tag(name: "indoor"),
+    Tag(name: "outdoor"),
+    Tag(name: "open-to-all"),
+]

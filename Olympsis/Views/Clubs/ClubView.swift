@@ -41,7 +41,6 @@ struct ClubView: View {
             .sheet(isPresented: $showEULA, content: {
                 EndUserLicenseAgreement()
             })
-            .background(Color.Background.primary)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack(alignment: .center) {

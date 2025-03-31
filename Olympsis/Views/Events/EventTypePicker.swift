@@ -48,7 +48,6 @@ struct EventTypePicker: View {
                 
             }
             .padding(.top)
-            .background(Color.Background.primary)
             .navigationTitle("Type")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

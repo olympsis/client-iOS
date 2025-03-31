@@ -16,7 +16,6 @@ struct ClubsList2: View {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action:{ dismiss() }){
                             Image(systemName: "chevron.left")
-                                .foregroundColor(Color("color-prime"))
                         }
                     }
                 }

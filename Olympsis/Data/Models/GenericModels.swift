@@ -338,6 +338,11 @@ class Sport: Codable {
     }
 }
 
+class ApplicationConfiguration: Codable {
+    var sports: [Sport]
+    var tags: [Tag]
+}
+
 struct DayGroup: Identifiable {
     let id = UUID()
     let date: Date

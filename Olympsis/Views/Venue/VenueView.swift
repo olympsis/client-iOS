@@ -78,7 +78,6 @@ struct VenueView: View {
                 
             }       
         }
-        .background(Color.Background.primary)
         .padding(.top)
     }
 }

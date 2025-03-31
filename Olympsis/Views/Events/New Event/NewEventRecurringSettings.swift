@@ -81,7 +81,6 @@ struct NewEventRecurringSettings: View {
             Spacer()
         }
         .padding(.top)
-        .background(Color.Background.primary)
         .onDisappear {
             guard !Calendar.current.isDate(recurrenceEndDate, inSameDayAs: Date()) else {
                 return

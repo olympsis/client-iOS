@@ -70,7 +70,7 @@ struct NewEventParticipantsLimit: View {
             .padding(.horizontal)
             
             Spacer()
-        }.background(Color.Background.primary)
+        }
     }
 }
 

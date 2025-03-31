@@ -95,7 +95,6 @@ struct OrganizationsView: View {
                     }
                 }
             }
-            .background(Color.Background.primary)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){

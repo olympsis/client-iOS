@@ -38,9 +38,6 @@ struct Onboard_AboutEvents: View {
             
             Spacer()
         }
-        .background {
-            Color.Background.primary
-        }
     }
 }
 

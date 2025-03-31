@@ -40,10 +40,6 @@ struct Onboarding: View {
             .indexViewStyle(.page(backgroundDisplayMode: .interactive))
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .background {
-            Color.Background.primary
-                .ignoresSafeArea()
-        }
     }
 }
 

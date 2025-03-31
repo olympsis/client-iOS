@@ -276,7 +276,7 @@ struct UserDataCreation: View {
             }
             .padding(.bottom)
             .disabled(!(status == .success && uStatus == .available) || continueStatus == .loading)
-        }.background(Color.Background.primary)
+        }
     }
 }
 

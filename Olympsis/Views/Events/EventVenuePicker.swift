@@ -160,7 +160,6 @@ struct EventVenuePicker: View {
                     }
                 }
                 .tag(0)
-                .background(Color.Background.primary)
                 .onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
                     venues = Set(session.venues)
                     if (!newValue.isEmpty) {
@@ -217,10 +216,8 @@ struct EventVenuePicker: View {
 //                    })
 //                }
 //                .tag(1)
-//                .background(Color.Background.primary)
             }.tabViewStyle(.automatic)
         }
-        .background(Color.Background.primary)
         .onAppear {
             venues = Set(session.venues)
         }

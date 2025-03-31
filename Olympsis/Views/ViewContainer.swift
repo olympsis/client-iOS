@@ -75,7 +75,6 @@ struct ViewContainer: View {
                 profileRouter: profileRouter
             )
             .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground), alignment: .top)
-            .background(Color.Background.primary)
             .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {

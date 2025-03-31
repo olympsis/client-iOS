@@ -24,12 +24,20 @@ class ClubService {
         #endif
     }
     
-    func getClubs(c: String, s: String) async throws -> (Data, URLResponse) {
+    func getClubs(c: String, s: String, l: GeoJSON?=nil) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/clubs", queryItems: [
+        var queries = [
             URLQueryItem(name: "country", value: c),
             URLQueryItem(name: "state", value: s)
-        ])
+        ]
+        
+        if let location = l {
+            queries.append(
+                URLQueryItem(name: "location", value: "\(location.coordinates[1]),\(location.coordinates[0])")
+            )
+        }
+        
+        let endpoint = Endpoint("/v1/clubs", queryItems: queries)
         let (data, resp) = try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
         return (data, resp)
     }

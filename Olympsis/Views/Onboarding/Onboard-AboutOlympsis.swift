@@ -49,9 +49,6 @@ struct Onboard_AboutOlympsis: View {
             
             Spacer()
         }
-        .background {
-            Color.Background.primary
-        }
     }
 }
 

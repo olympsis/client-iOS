@@ -143,7 +143,7 @@ struct OrgDetailView: View {
                         }
                     }
                 }
-            }.background(Color.Background.primary)
+            }
         }.onAppear {
             updatePosition()
         }

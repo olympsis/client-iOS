@@ -142,7 +142,6 @@ struct GroupMessages: View {
                                     .frame(height: 100)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.horizontal)
-                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
@@ -182,7 +181,6 @@ struct GroupMessages: View {
                                     .frame(height: 100)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.horizontal)
-                                    .foregroundStyle(Color.Background.primary)
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
@@ -223,7 +221,7 @@ struct GroupMessages: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 100)
                             .padding(.horizontal)
-                            .foregroundStyle(Color.Background.primary)
+                            .foregroundStyle(Color.gray.opacity(0.3))
                             .overlay(alignment: .center) {
                                 VStack {
                                     Text("😞")
@@ -243,7 +241,6 @@ struct GroupMessages: View {
                     }
                 }
             }
-            .background(Color.Background.primary)
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -318,7 +318,6 @@ struct NewClub: View {
             .padding(.top)
         }
         .frame(width: SCREEN_WIDTH-25)
-        .background(Color.Background.primary)
         .navigationTitle("Create Club")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {

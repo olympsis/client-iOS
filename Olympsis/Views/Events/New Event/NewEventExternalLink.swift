@@ -57,7 +57,6 @@ struct NewEventExternalLink: View {
         }
         .padding(.top)
         .padding(.horizontal)
-        .background(Color.Background.primary)
     }
 }
 

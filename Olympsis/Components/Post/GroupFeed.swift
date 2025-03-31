@@ -130,7 +130,7 @@ struct GroupFeed: View {
                                 .frame(height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .padding(.horizontal)
-                                .foregroundStyle(Color.Background.primary)
+                                .foregroundStyle(Color.gray.opacity(0.3))
                                 .overlay {
                                     VStack {
                                         Text("No posts found")
@@ -158,7 +158,7 @@ struct GroupFeed: View {
                             .frame(height: 150)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
-                            .foregroundStyle(Color.Background.primary)
+                            .foregroundStyle(Color.gray.opacity(0.3))
                             .overlay {
                                 VStack {
                                     Text("😣")

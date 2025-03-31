@@ -433,7 +433,7 @@ struct NewEvent: View {
             .sheet(isPresented: $showPostViolation, content: {
                 PostMediaViolation()
             })
-        }.background(Color.Background.primary)
+        }
     }
 }
 

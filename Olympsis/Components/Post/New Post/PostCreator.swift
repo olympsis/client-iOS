@@ -125,7 +125,7 @@ struct PostCreator: View {
             }.sheet(isPresented: $showPostViolation, onDismiss: { dismiss() }, content: {
                 PostMediaViolation()
             })
-        }.background(Color.Background.primary)
+        }
     }
 }
 

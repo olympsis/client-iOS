@@ -17,8 +17,9 @@ struct FilterButton: View {
             HStack(spacing: 5) {
                 if (numActive > 0) {
                     Text("\(numActive)")
+                        .font(.caption)
                         .fontWeight(.bold)
-                        .padding(.vertical, 2.5)
+                        .padding(.vertical, 2)
                         .padding(.horizontal, 7)
                         .background(Color.blue.opacity(0.3))
                         .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -29,16 +30,17 @@ struct FilterButton: View {
                 }
                 
                 Text("Filters")
+                    .font(.callout)
                     .fontWeight(.medium)
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 10)
+        .padding(.vertical, 8)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
 #Preview {
-    FilterButton(numActive: .constant(0), action: {})
+    FilterButton(numActive: .constant(5), action: {})
 }

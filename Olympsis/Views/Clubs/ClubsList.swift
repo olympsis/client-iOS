@@ -6,24 +6,26 @@
 //
 
 import os
+import MapKit
 import SwiftUI
 import CoreLocation
 
 struct ClubsList: View {
 
     @State private var text: String = ""
+    @State private var numFiltersActive = 0
     @State private var showMenu: Bool = false
     @State private var showEULA: Bool = false
     @State private var hasLoaded: Bool = false
     @State private var showCancel: Bool = false
     @State private var showNewClub: Bool = false
     @State private var status: LOADING_STATE = .pending
-    @State private var customCoordinates: [Double] = []
     @State private var showCompletedApplicationToast:Bool = false
+    
+    @State private var manager = SearchManager()
     
     @Environment(SessionStore.self) private var session
     
-    private var geoCoder = CLGeocoder()
     private var log = Logger(subsystem: "com.olympsis.client", category: "clubs_list_view")
     
     private var acceptedEULA: Bool {
@@ -39,6 +41,23 @@ struct ClubsList: View {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
         return CLLocation(latitude: hometown[0], longitude: hometown[1])
+    }
+    
+    private var currentLocation: CLLocation {
+        guard CLLocationManager.locationServicesEnabled(),
+            let location = session.locationManager.location else {
+            return fallbackLocation
+        }
+        
+        return CLLocation(latitude: location.latitude, longitude: location.longitude)
+    }
+    
+    private var tags: [Tag] {
+        return session.tags;
+    }
+    
+    private var sports: [Sport] {
+        return session.sports;
     }
     
     private var filteredClubs: [Club] {
@@ -62,68 +81,24 @@ struct ClubsList: View {
         }
     }
     
+    private func handleShowNewClub() {
+        guard acceptedEULA else {
+            self.showEULA.toggle()
+            return
+        }
+        self.showNewClub.toggle()
+    }
+    
     @MainActor
-    private func fetchClubs(_ customLocation: [Double]) async {
-        guard customLocation.isEmpty else {
-            // Fetch clubs using location recieved
-            let l = CLLocation(latitude: customLocation[0], longitude: customLocation[1])
-            do {
-                status = .loading
-                let locale = Locale(identifier: "en_US")
-                let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
-                guard let country = pk.first?.country,
-                      let state = pk.first?.administrativeArea,
-                      let resp = await session.clubObserver.getClubs(country: country, state: state) else {
-                    status = .failure
-                    session.clubs = []
-                    return
-                }
-                
-                session.clubs = resp
-                status = .success
-                hasLoaded = true
-            } catch {
-                log.error("\(error)")
-                status = .failure
-                return
-            }
-            return
-        }
-        
-        // If we have location access and have a location
-        guard session.locationManager.isAuthorized,
-              let location = session.locationManager.location else {
-            do { // Use fallback location fetch clubs
-                status = .loading
-                let locale = Locale(identifier: "en_US")
-                let l = CLLocation(latitude: fallbackLocation.coordinate.latitude, longitude: fallbackLocation.coordinate.longitude)
-                let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
-                guard let country = pk.first?.country,
-                      let state = pk.first?.administrativeArea,
-                      let resp = await session.clubObserver.getClubs(country: country, state: state) else {
-                    status = .failure
-                    return
-                }
-                
-                session.clubs = resp
-                status = .success
-                hasLoaded = true
-            } catch {
-                log.error("\(error)")
-                status = .failure
-            }
-            return
-        }
-        
-        // Fetch clubs using location recieved
-        let l = CLLocation(latitude: location.latitude, longitude: location.longitude)
+    private func fetchClubs() async {
         do {
             status = .loading
+            let geoCoder = CLGeocoder()
             let locale = Locale(identifier: "en_US")
-            let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
+            let pk = try await geoCoder.reverseGeocodeLocation(currentLocation, preferredLocale: locale)
             guard let country = pk.first?.country,
                   let state = pk.first?.administrativeArea,
-                  let resp = await session.clubObserver.getClubs(country: country, state: state) else {
+                  let resp = await session.clubObserver.getClubs(country: country, state: stateAbbreviationToFullName[state] ?? state, location: GeoJSON(type: "Point", coordinates: [currentLocation.coordinate.latitude, currentLocation.coordinate.longitude])) else {
                 status = .failure
                 return
             }
@@ -132,57 +107,92 @@ struct ClubsList: View {
             status = .success
             hasLoaded = true
         } catch {
-            log.error("\(error)")
+            log.error("Failed to get clubs. Error: \(error)")
             status = .failure
-            return
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                status = .pending
+            }
         }
     }
     
     var body: some View {
         NavigationStack {
             VStack {
-                HStack {
-                    SearchBar(text: $text, onCommit: {
-                        showCancel = false
-                    }).onTapGesture {
-                            if !showCancel {
-                                showCancel = true
+                ScrollView(.vertical, showsIndicators: false){
+                    VStack(alignment: .trailing) {
+                        
+                        // MARK: - Search
+                        HStack {
+                            SearchBar(text: $text, onCommit: {
+                                showCancel = false
+                            }).onTapGesture {
+                                    if !showCancel {
+                                        showCancel = true
+                                    }
+                                }
+                            .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
+                            .padding(.horizontal)
+                            .padding(.top)
+                            .onChange(of: text) { _, new in
+                                if !new.isEmpty {
+                                    withAnimation(.easeInOut) {
+                                        showCancel = true
+                                    }
+                                } else {
+                                    withAnimation(.easeInOut) {
+                                        showCancel = false
+                                    }
+                                }
+                            }
+                            
+                            if showCancel {
+                                Button(action:{
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                                    withAnimation(.easeInOut) {
+                                        text = ""
+                                        showCancel = false
+                                    }
+                                }){
+                                    Text("Cancel")
+                                        .foregroundColor(.gray)
+                                        .frame(height: 40)
+                                        .padding(.top)
+                                }.padding(.trailing)
                             }
                         }
-                    .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                    .padding(.horizontal)
-                    .padding(.top)
-                    if showCancel {
-                        Button(action:{
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                            showCancel = false
-                        }){
-                            Text("Cancel")
-                                .foregroundColor(.gray)
-                                .frame(height: 40)
-                                .padding(.top)
+                        
+                        // MARK: - Actions
+                        HStack {
+                            Button(action: handleShowNewClub) {
+                                Image(systemName: "plus")
+                                
+                                Text("Create a Club")
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal)
+                            .background(.regularMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            
+                            FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
                         }.padding(.trailing)
                     }
-                }
-                ScrollView(.vertical, showsIndicators: false){
+                    
+                    // MARK: - List View
                     if self.status == .loading {
                         ProgressView()
                             .padding(.top)
                     } else {
                         VStack{
                             if filteredClubs.isEmpty {
-                                Text("No clubs found. Broaden your search or...")
+                                Text("No clubs found. Change your filters or...")
                                     .font(.caption)
                                     .padding(.top, 50)
-                                Button(action:{
-                                    guard acceptedEULA else {
-                                        self.showEULA.toggle()
-                                        return
-                                    }
-                                    self.showNewClub.toggle()
-                                }){
+                                
+                                Button(action: handleShowNewClub){
                                     Text("Create One?")
                                         .font(.caption)
+                                        .fontWeight(.bold)
                                 }
                             } else {
                                 ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
@@ -194,20 +204,22 @@ struct ClubsList: View {
                     }
                 }
                 .refreshable {
-                    await fetchClubs(customCoordinates)
+                    await fetchClubs()
                 }
             }
-            .background(Color.Background.primary)
             .task {
                 guard !hasLoaded else {
                     return
                 }
-                await fetchClubs(customCoordinates)
+                await fetchClubs()
             }
-            .onChange(of: customCoordinates, { _, newValue in
-                Task {
-                    await fetchClubs(newValue)
+            .sheet(isPresented: $showMenu, onDismiss: {                
+                withAnimation(.easeInOut) {
+                    numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
                 }
+            }, content: {
+                FilterView(manager: manager)
+                    .environment(session)
             })
             .sheet(isPresented: $showEULA, content: {
                 EndUserLicenseAgreement()
@@ -217,18 +229,18 @@ struct ClubsList: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("Groups")
+                    Text("Clubs")
                         .font(.title)
                         .fontWeight(.bold)
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: NoClubMenu(location: $customCoordinates)) {
-                        Image(systemName: "slider.horizontal.3")
-                            .foregroundStyle(Color.foreground)
-                            .imageScale(.large)
-                    }
-                }
+            }
+            .task {
+                manager.tags = session.tags
+                manager.sports = session.sports
+                #if targetEnvironment(simulator)
+                manager.tags = TAGS_TEMP
+                manager.sports = SPORTS_TEMP
+                #endif
             }
         }
     }

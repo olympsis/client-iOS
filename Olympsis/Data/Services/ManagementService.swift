@@ -37,6 +37,11 @@ class ManagementService {
         return true
     }
     
+    func config() async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/v1/system/config")
+        return  try await http.Request(.GET, endpoint)
+    }
+    
     /// HTTP request to create a bug report
     ///
     /// The dao object is the data needed to create the report

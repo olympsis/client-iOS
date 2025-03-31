@@ -45,7 +45,7 @@ struct OrgBanner: View {
                     .frame(width: SCREEN_WIDTH, height: 250)
                     .overlay {
                         Image(systemName: "photo.fill")
-                            .foregroundStyle(Color.Background.primary)
+                            .foregroundStyle(Color.gray.opacity(0.3))
                             .imageScale(.large)
                     }
             }

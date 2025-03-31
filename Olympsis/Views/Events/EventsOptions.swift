@@ -119,7 +119,7 @@ struct EventsOptions: View {
                     
                     SportsPicker(sports: [], selectedSports: $selectedSports, multiSelection: true)
                 }
-            }.background(Color.Background.primary)
+            }
         }
         .task {
             cameraPosition = .userLocation(fallback: .region(fallbackLocation))

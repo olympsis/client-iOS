@@ -62,7 +62,6 @@ struct VenuesList: View {
                     }
                 }
             }
-            .background(Color.Background.primary)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){

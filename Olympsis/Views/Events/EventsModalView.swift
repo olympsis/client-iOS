@@ -68,7 +68,6 @@ struct EventsModalView: View {
             }
         }
         .presentationDragIndicator(.visible)
-        .background(Color.Background.primary)
     }
 }
 

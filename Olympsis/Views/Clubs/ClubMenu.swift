@@ -246,7 +246,6 @@ struct ClubMenu: View {
                     );
                 }
             }
-            .background(Color.Background.primary)
         }
         .gesture(
             DragGesture()
