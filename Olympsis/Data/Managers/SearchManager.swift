@@ -6,6 +6,7 @@
 //
 
 import MapKit
+import SwiftUI
 import Foundation
 
 @Observable
@@ -14,10 +15,24 @@ class SearchManager {
     var tags: [Tag] = []
     var sports: [Sport] = []
     
-    var radius: Double = 0
+    var radius: Double = 10
     var selectedTags: [String] = []
     var selectedSports: [String] = []
     var mapRegion: MKCoordinateRegion?
+    
+    @ObservationIgnored
+    @AppStorage("searchRadius") private var searchRadius: Double? // search radius for fields/events in meters
+    
+    init() {
+        guard let r = searchRadius else { return }
+        // Lets cap radius at 100 miles for now
+        if r <= 100 {
+            radius = r
+        } else {
+            radius = 100
+            searchRadius = 100
+        }
+    }
     
     func selectSport(_ sport: Sport) {
         let name = sport.name.components(separatedBy: " ")[1]

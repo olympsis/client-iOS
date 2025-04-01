@@ -291,7 +291,7 @@
 		9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A429668CC90042F0A6 /* RoomView.swift */; };
 		9A8162A729669A370042F0A6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A629669A370042F0A6 /* MessageView.swift */; };
 		9A81B60B2924254D009CA6ED /* FieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* FieldObserver.swift */; };
-		9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* FieldService.swift */; };
+		9A81B60D292425B8009CA6ED /* VenueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* VenueService.swift */; };
 		9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* VenueListItem.swift */; };
 		9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */; };
 		9A81B619292472B3009CA6ED /* ClubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B618292472B3009CA6ED /* ClubService.swift */; };
@@ -699,7 +699,7 @@
 		9A8162A429668CC90042F0A6 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		9A8162A629669A370042F0A6 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		9A81B60A2924254D009CA6ED /* FieldObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldObserver.swift; sourceTree = "<group>"; };
-		9A81B60C292425B8009CA6ED /* FieldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldService.swift; sourceTree = "<group>"; };
+		9A81B60C292425B8009CA6ED /* VenueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueService.swift; sourceTree = "<group>"; };
 		9A81B61129242EBA009CA6ED /* VenueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItem.swift; sourceTree = "<group>"; };
 		9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItemTemplate.swift; sourceTree = "<group>"; };
 		9A81B618292472B3009CA6ED /* ClubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubService.swift; sourceTree = "<group>"; };
@@ -1456,7 +1456,7 @@
 				9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */,
 				9A39ED3928BDD4BA00ACB20A /* UserService.swift */,
 				9AAAA6B22903BE2F0003D501 /* CacheService.swift */,
-				9A81B60C292425B8009CA6ED /* FieldService.swift */,
+				9A81B60C292425B8009CA6ED /* VenueService.swift */,
 				9A81B618292472B3009CA6ED /* ClubService.swift */,
 				9A81B6392925D0F3009CA6ED /* UploadService.swift */,
 				9A81B64A2925EC79009CA6ED /* EventService.swift */,
@@ -2187,7 +2187,7 @@
 				5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */,
 				5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */,
 				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
-				9A81B60D292425B8009CA6ED /* FieldService.swift in Sources */,
+				9A81B60D292425B8009CA6ED /* VenueService.swift in Sources */,
 				5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,

@@ -44,7 +44,7 @@ struct ClubsList: View {
     }
     
     private var currentLocation: CLLocation {
-        guard CLLocationManager.locationServicesEnabled(),
+        guard session.locationManager.isLocationAuthorized,
             let location = session.locationManager.location else {
             return fallbackLocation
         }
@@ -61,24 +61,63 @@ struct ClubsList: View {
     }
     
     private var filteredClubs: [Club] {
-        if text == "" {
+        guard !text.isEmpty else {
             guard let user = session.user,
                   let userClubs = user.clubs else {
                 return session.clubs
+                    // Check if any selected tag is in the club's tags
+                    .filter { club in
+                        manager.selectedTags.isEmpty ||
+                        manager.selectedTags.contains { selectedTag in club.tags.contains(selectedTag) }
+                    }
+                    // Check if any selected sport is in the club's sports
+                    .filter { club in
+                        manager.selectedSports.isEmpty ||
+                        manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
+                    }
             }
-            return session.clubs.filter { club in
-                !userClubs.contains(where: { club.id == $0 })
-            }
-        } else {
-            guard let user = session.user,
-                  let userClubs = user.clubs else {
-                return session.clubs
-            }
-            let newClubs = session.clubs.filter { club in
-                !userClubs.contains(where: { club.id == $0 })
-            }
-            return newClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }
+            return session.clubs
+                .filter { club in !userClubs.contains(where: { club.id == $0 }) }
+                // Check if any selected tag is in the club's tags
+                .filter { club in
+                    manager.selectedTags.isEmpty ||
+                    manager.selectedTags.contains { selectedTag in club.tags.contains(selectedTag) }
+                }
+                // Check if any selected sport is in the club's sports
+                .filter { club in
+                    manager.selectedSports.isEmpty ||
+                    manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
+                }
         }
+        
+        guard let user = session.user,
+              let userClubs = user.clubs else {
+            return session.clubs
+                // Check if any selected tag is in the club's tags
+                .filter { club in
+                    manager.selectedTags.isEmpty ||
+                    manager.selectedTags.contains { selectedTag in club.tags.contains(selectedTag) }
+                }
+                // Check if any selected sport is in the club's sports
+                .filter { club in
+                    manager.selectedSports.isEmpty ||
+                    manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
+                }
+                .filter { $0.name.localizedLowercase.contains(text.localizedLowercase) }
+        }
+        return session.clubs
+            .filter { club in !userClubs.contains(where: { club.id == $0 }) }
+            // Check if any selected tag is in the club's tags
+            .filter { club in
+                manager.selectedTags.isEmpty ||
+                manager.selectedTags.contains { selectedTag in club.tags.contains(selectedTag) }
+            }
+            // Check if any selected sport is in the club's sports
+            .filter { club in
+                manager.selectedSports.isEmpty ||
+                manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
+            }
+            .filter { $0.name.localizedLowercase.contains(text.localizedLowercase) }
     }
     
     private func handleShowNewClub() {
@@ -91,27 +130,45 @@ struct ClubsList: View {
     
     @MainActor
     private func fetchClubs() async {
+        guard status != .loading else { return }
         do {
             status = .loading
             let geoCoder = CLGeocoder()
             let locale = Locale(identifier: "en_US")
             let pk = try await geoCoder.reverseGeocodeLocation(currentLocation, preferredLocale: locale)
+            
+            var tags: String? = nil
+            var sports: String? = nil
+            
+            if (!manager.tags.isEmpty) {
+                tags = manager.getTagsString()
+            }
+            
+            if (!manager.sports.isEmpty) {
+                sports = manager.getSportsString()
+            }
+            
             guard let country = pk.first?.country,
                   let state = pk.first?.administrativeArea,
-                  let resp = await session.clubObserver.getClubs(country: country, state: stateAbbreviationToFullName[state] ?? state, location: GeoJSON(type: "Point", coordinates: [currentLocation.coordinate.latitude, currentLocation.coordinate.longitude])) else {
+                  let resp = await session.clubObserver.getClubs(
+                    country: country,
+                    state: stateAbbreviationToFullName[state] ?? state,
+                    location: GeoJSON(type: "Point", coordinates: [currentLocation.coordinate.latitude, currentLocation.coordinate.longitude]),
+                    radius: manager.radius,
+                    tags: tags,
+                    sports: sports
+                  ) else {
                 status = .failure
                 return
             }
             
-            session.clubs = resp
+            resp.forEach { session.clubs.insert($0) }
+            
             status = .success
             hasLoaded = true
         } catch {
             log.error("Failed to get clubs. Error: \(error)")
             status = .failure
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                status = .pending
-            }
         }
     }
     
@@ -179,47 +236,75 @@ struct ClubsList: View {
                     }
                     
                     // MARK: - List View
-                    if self.status == .loading {
-                        ProgressView()
-                            .padding(.top)
-                    } else {
+                    switch status {
+                    case .pending, .success:
                         VStack{
                             if filteredClubs.isEmpty {
-                                Text("No clubs found. Change your filters or...")
-                                    .font(.caption)
-                                    .padding(.top, 50)
                                 
-                                Button(action: handleShowNewClub){
-                                    Text("Create One?")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                }
+                                Spacer(minLength: 50)
+                                
+                                Image("illustrations/search")
+                                    .resizable()
+                                    .padding(.top)
+                                    .frame(width: 150, height: 110)
+                                
+                                Text("No clubs found in your area... YET! 🚀")
+                                    .font(.body)
+                                    .padding(.top)
+                                    .fontWeight(.bold)
+                                    .padding(.bottom, 5)
+                                
+                                Text("It looks like there aren’t any clubs that match your search. Why not start your own and bring the community together? Or try adjusting your filters to discover more clubs nearby!")
+                                    .font(.callout)
+                                    .padding(.horizontal)
+                                    .padding(.bottom)
+                                    .multilineTextAlignment(.center)
                             } else {
                                 ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
                                     ClubListItem(club: club, showToast: $showCompletedApplicationToast)
                                         .clipShape(Rectangle())
+                                        .padding(.horizontal, 10)
                                 }
                             }
                         }
+                    case .loading:
+                        ProgressView()
+                            .padding(.top)
+                    case .failure:
+                        VStack {
+                            Image("illustrations/error")
+                                .resizable()
+                                .frame(width: 170, height: 150)
+                            Text("Oops! Something went wrong. 🚧")
+                                .padding(.top)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 5)
+                            
+                            Text("We hit a snag fetching clubs. Give it another shot in a moment!")
+                                .padding(.horizontal)
+                                .multilineTextAlignment(.center)
+                            Spacer()
+                        }.padding(.top, 50)
                     }
                 }
                 .refreshable {
-                    await fetchClubs()
+                    Task {
+                        await fetchClubs()
+                    }
                 }
-            }
-            .task {
-                guard !hasLoaded else {
-                    return
-                }
-                await fetchClubs()
             }
             .sheet(isPresented: $showMenu, onDismiss: {                
                 withAnimation(.easeInOut) {
                     numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
+                    
+                    Task {
+                        await fetchClubs()
+                    }
                 }
             }, content: {
                 FilterView(manager: manager)
                     .environment(session)
+                    .presentationDragIndicator(.visible)
             })
             .sheet(isPresented: $showEULA, content: {
                 EndUserLicenseAgreement()
@@ -235,12 +320,31 @@ struct ClubsList: View {
                 }
             }
             .task {
+                // Grab sports and tags from session
                 manager.tags = session.tags
                 manager.sports = session.sports
+                
+                // Add user's sports on the filter by default
+                if let user = session.user {
+                    if let sports = user.sports {
+                        manager.selectedSports = sports
+                        
+                        withAnimation(.easeInOut) {
+                            numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
+                        }
+                    }
+                }
+                
+                // For development
                 #if targetEnvironment(simulator)
                 manager.tags = TAGS_TEMP
                 manager.sports = SPORTS_TEMP
                 #endif
+                
+                // Fetch clubs
+                if !hasLoaded {
+                    await fetchClubs()
+                }
             }
         }
     }

@@ -23,6 +23,7 @@ struct MapView: View {
     @State private var cameraPosition: MapCameraPosition = .automatic
     
     @Environment(SessionStore.self) private var session
+    @Environment(SearchManager.self) private var manager
     
     var visibleRegion: MKCoordinateRegion?
     
@@ -32,6 +33,12 @@ struct MapView: View {
             return [String]()
         }
         return sports
+    }
+    
+    private var events: [Event] {
+        return session.events
+            .filter { $0.tags.contains(manager.selectedTags) }
+            .filter { $0.sports.contains(manager.selectedSports) }
     }
     
     // This fallback location is a second location in case we are unable to find the user's current location
@@ -74,7 +81,7 @@ struct MapView: View {
             }))
         }
         .fullScreenCover(isPresented: $showNearbyEvents) {
-            EventsList(events: session.events)
+            EventsList(events: events)
         }
         .task {
             cameraPosition = .userLocation(fallback: .region(fallbackLocation))
@@ -85,4 +92,5 @@ struct MapView: View {
 #Preview {
     MapView(showNewEvent: .constant(false), selectedVenue: .constant(nil))
         .environment(SessionStore())
+        .environment(SearchManager())
 }

@@ -12,7 +12,7 @@ struct QuickActions: View {
     private var showEvents: Bool {
         guard let user = session.user,
               let uuid = user.uuid else { return true }
-        return session.events.mostRecentForUser(uuid: uuid) == nil
+        return Array(session.events).mostRecentForUser(uuid: uuid) == nil
     }
     
     private var showGroups: Bool {

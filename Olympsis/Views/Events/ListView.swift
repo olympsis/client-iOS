@@ -11,118 +11,105 @@ import SwiftUI
 struct ListView: View {
     
     
+    @Binding var state: VIEW_STATE
+    @Binding var searchText: String
     @Binding var showNewEvent: Bool
-    
     @Binding var showMenu: Bool
     @Binding var numFiltersActive: Int
     
-    @State private var searchText = ""
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
-    
-    @State private var state: VIEW_STATE = .pending
 
     @Environment(SessionStore.self) private var session
-    
+    @Environment(SearchManager.self) private var manager
     @AppStorage("searchRadius") private var radius: Double?
     
     private var events: [Event] {
-        return session.events
+        guard !searchText.isEmpty else {
+            return Array(session.events)
+                // Check if any selected tag is in the event's tags
+                .filter { event in
+                    manager.selectedTags.isEmpty ||
+                    manager.selectedTags.contains { tag in event.tags.contains(tag) }
+                }
+                // Check if any selected sport is in the event's sports
+                .filter { event in
+                    manager.selectedSports.isEmpty ||
+                    manager.selectedSports.contains { sport in event.sports.contains(sport) }
+                }
+        }
+        return Array(session.events)
+            // Check if any selected tag is in the event's tags
+            .filter { event in
+                manager.selectedTags.isEmpty ||
+                manager.selectedTags.contains { selectedTag in event.tags.contains(selectedTag) }
+            }
+            // Check if any selected sport is in the event's sports
+            .filter { event in
+                manager.selectedSports.isEmpty ||
+                manager.selectedSports.contains { selectedSport in event.sports.contains(selectedSport) }
+            }
+            // Filter by search text in the title
+            .filter { $0.title.localizedLowercase.contains(searchText.localizedLowercase) }
     }
     
     private var eventsGrouped: [DayGroup] {
         return events
-            .filter { searchText.isEmpty ? true : $0.title.lowercased().contains(searchText.lowercased()) }
             .eventsGroupedByDay()
     }
     
-    private var fallbackLocation: MKCoordinateRegion {
+    private var fallbackLocation: CLLocation {
         guard let user = session.user, let hometown = user.hometown else {
-            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.76553, longitude: -73.97770), latitudinalMeters: 4000, longitudinalMeters: 4000)
+            return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
-        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 4000, longitudinalMeters: 4000)
+        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+    }
+    
+    private var currentLocation: CLLocation {
+        guard session.locationManager.isLocationAuthorized,
+            let location = session.locationManager.location else {
+            return fallbackLocation
+        }
+        
+        return CLLocation(latitude: location.latitude, longitude: location.longitude)
     }
     
     @MainActor
     private func fetchEvents() async {
         state = .loading
         
-        guard let user = session.user,
-              let sports = user.sports else {
-            state = .failure
-            return
+        var tags: String? = nil
+        var sports: String? = nil
+        
+        if (!manager.tags.isEmpty) {
+            tags = manager.getTagsString()
         }
         
-        // If user has location on
-        if let location = session.locationManager.location {
-            guard let resp = await session.eventObserver.fetchEvents(
-                longitude: location.longitude,
-                latitude: location.latitude,
-                radius: Int(radius ?? 8050),
-                sports: sports.joined(separator: ","),
-                status: "pending,live") else {
-                state = .failure
-                return
-            }
-            session.pastEvents = resp
-            state = .success
-            return
+        if (!manager.sports.isEmpty) {
+            sports = manager.getSportsString()
         }
         
         // Use fallback location
         guard let resp = await session.eventObserver.fetchEvents(
-            longitude: fallbackLocation.center.longitude,
-            latitude: fallbackLocation.center.latitude,
-            radius: Int(radius ?? 8050),
-            sports: sports.joined(separator: ","),
-            status: "pending,live") else {
+            longitude: currentLocation.coordinate.longitude,
+            latitude: currentLocation.coordinate.latitude,
+            radius: manager.radius,
+            tags: tags,
+            sports: sports) else {
             state = .failure
             return
         }
-        session.pastEvents = resp
+        
+        resp.forEach { event in
+            if (session.events.contains(where: { $0.id != event.id })) {
+                session.events.insert(event)
+            }
+        }
+        
         state = .success
     }
     
     @MainActor
-    private func fetchPastEvents() async {
-        state = .loading
-        
-        guard let user = session.user,
-              let sports = user.sports else {
-            state = .failure
-            return
-        }
-        
-        // If user has location on
-        if let location = session.locationManager.location {
-            guard let resp = await session.eventObserver.fetchEvents(
-                longitude: location.longitude,
-                latitude: location.latitude,
-                radius: Int(radius ?? 8050),
-                sports: sports.joined(separator: ","),
-                status: "completed") else {
-                state = .failure
-                return
-            }
-            session.pastEvents = resp
-            state = .success
-            return
-        }
-        
-        // Use fallback location
-        guard let resp = await session.eventObserver.fetchEvents(
-            longitude: fallbackLocation.center.longitude,
-            latitude: fallbackLocation.center.latitude,
-            radius: Int(radius ?? 8050),
-            sports: sports.joined(separator: ","),
-            status: "completed") else {
-            state = .failure
-            return
-        }
-        session.pastEvents = resp
-        state = .success
-    }
-    
     private func findClosestDate(to targetDate: Date, in groups: [DayGroup]) -> Date? {
         let calendar = Calendar.current
         
@@ -166,15 +153,47 @@ struct ListView: View {
             switch state {
             case .pending, .success:
                 if events.isEmpty {
-                    VStack {
-                        Spacer()
-                        
-                        Text("No Events found")
-                        Button(action: { self.showNewEvent.toggle() }) {
-                            SimpleButtonLabel(text: "Create One")
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            SearchBar(text: $searchText)
+                                .padding(.horizontal, 10)
+                            
+                            HStack(alignment: .bottom) {
+                                Spacer()
+                                DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                                    .frame(width: 120)
+                                
+                                FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                            }
+                            .padding(.top, 10)
+                            .frame(height: 40)
+                            .padding(.horizontal)
                         }
+                        .padding(.top)
+                        .padding(.bottom, 50)
                         
-                        Spacer()
+                        Image("illustrations/search")
+                            .resizable()
+                            .padding(.top)
+                            .frame(width: 150, height: 110)
+                        
+                        Text("No events found—time to make one happen! ⚡")
+                            .font(.body)
+                            .padding(.top)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 5)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Looks like there aren’t any sports events in your area right now. Why not be the first to start one? Gather players, set the time, and get the game going! Or try adjusting your filters to see more events nearby.")
+                            .font(.callout)
+                            .padding(.bottom)
+                            .padding(.horizontal)
+                            .multilineTextAlignment(.center)
+                    }
+                    .refreshable {
+                        Task {
+                            await fetchEvents()
+                        }
                     }
                 } else {
                     ScrollViewReader { proxy in
@@ -215,25 +234,71 @@ struct ListView: View {
                     }
                     .refreshable {
                         Task {
+                            guard state != .loading else { return }
                             await self.fetchEvents()
                         }
                     }
                 }
             case .loading:
-                VStack {
-                    Spacer()
+                ScrollView {
+                    VStack(spacing: 0) {
+                        SearchBar(text: $searchText)
+                            .padding(.horizontal, 10)
+                        
+                        HStack(alignment: .bottom) {
+                            Spacer()
+                            DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                                .frame(width: 120)
+                            
+                            FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                        }
+                        .padding(.top, 10)
+                        .frame(height: 40)
+                        .padding(.horizontal)
+                    }
+                    .padding(.top)
+                    .padding(.bottom, 50)
+                    
                     ProgressView()
-                    Spacer()
                 }
             case .failure:
-                VStack {
-                    Spacer()
-                    Image("illustrations/404")
+                ScrollView {
+                    VStack(spacing: 0) {
+                        SearchBar(text: $searchText)
+                            .padding(.horizontal, 10)
+                        
+                        HStack(alignment: .bottom) {
+                            Spacer()
+                            DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                                .frame(width: 120)
+                            
+                            FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                        }
+                        .padding(.top, 10)
+                        .frame(height: 40)
+                        .padding(.horizontal)
+                    }
+                    .padding(.top)
+                    .padding(.bottom, 50)
+                    
+                    Image("illustrations/error")
                         .resizable()
-                        .frame(width: SCREEN_WIDTH/1.3, height: SCREEN_WIDTH/1.3)
-                    Text("Failed to load events")
-                        .font(.title3)
+                        .frame(width: 170, height: 150)
+                    Text("Whoops! Error loading events. ⚠️")
+                        .padding(.top)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 5)
+                    
+                    Text("We ran into an issue pulling up events. Try again in a bit!")
+                        .padding(.horizontal)
+                        .multilineTextAlignment(.center)
+                    
                     Spacer()
+                }
+                .refreshable {
+                    Task {
+                        await fetchEvents()
+                    }
                 }
             }
         }
@@ -241,6 +306,7 @@ struct ListView: View {
 }
 
 #Preview {
-    ListView(showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: .constant(0))
+    ListView(state: .constant(.pending), searchText: .constant(""), showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: .constant(0))
         .environment(SessionStore())
+        .environment(SearchManager())
 }

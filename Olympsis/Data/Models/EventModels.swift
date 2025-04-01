@@ -21,7 +21,7 @@ enum EventError: Error {
 }
 
 
-class Event: Decodable, Identifiable, ObservableObject {
+class Event: Decodable, Identifiable, ObservableObject, Hashable {
     let id: String
     let poster: UserSnippet?
     var organizers: [Organizer]
@@ -257,6 +257,14 @@ class Event: Decodable, Identifiable, ObservableObject {
         self.teams = event.teams
         self.teamsConfig = event.teamsConfig
         self.comments = event.comments
+    }
+    
+    static func == (lhs: Event, rhs: Event) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
     }
 }
 
@@ -1273,14 +1281,15 @@ extension [Event] {
         guard self.count > 0 else {
             return nil
         }
-        var filtered = self.filter{ $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
-        filtered = filtered.sorted { ($0.startTime) < ($1.startTime) }
+        var filtered = self
+            .filter { $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
+            .sorted { ($0.startTime) < ($1.startTime) }
         
         guard filtered.count > 0 else {
             return nil
         }
         
-        return filtered[0]
+        return filtered.first
     }
     
     /// Returns a filtered array of the events by club ID

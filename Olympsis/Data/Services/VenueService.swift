@@ -10,7 +10,7 @@ import SwiftUI
 import Foundation
 import FirebaseAuth
 
-class FieldService {
+class VenueService {
     
     private var http: Courrier
     
@@ -25,7 +25,7 @@ class FieldService {
     
     func getVenues(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/fields", queryItems: [
+        let endpoint = Endpoint("/v1/venues", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius)),
@@ -37,7 +37,7 @@ class FieldService {
     
     func getVenue(id: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/fields/\(id)")
+        let endpoint = Endpoint("/v1/venues/\(id)")
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
 }

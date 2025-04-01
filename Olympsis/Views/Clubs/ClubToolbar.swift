@@ -49,10 +49,10 @@ struct ClubToolbar: ToolbarContent {
             } else {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Menu {
-                        ForEach(session.clubs) { club in
+                        ForEach(Array(session.clubs)) { club in
                             Button(action:{
                                 Task {
-                                    guard let i = session.clubs.firstIndex(where: { $0.id == club.id }) else {
+                                    guard let i = Array(session.clubs).firstIndex(where: { $0.id == club.id }) else {
                                         return
                                     }
                                     index = i

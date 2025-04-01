@@ -11,7 +11,6 @@ import SwiftUI
 struct FilterView: View {
     @Bindable var manager: SearchManager
     
-    @AppStorage("searchRadius") private var searchRadius: Double? // search radius for fields/events in meters
     @State private var cameraPosition: MapCameraPosition = .automatic
     
     private var fallbackLocation: MKCoordinateRegion {
@@ -23,14 +22,14 @@ struct FilterView: View {
     
     @Environment(SessionStore.self) private var session
     
+    @AppStorage("searchRadius") private var searchRadius: Double?
+    
     private func updateMapRegion() {
-        guard let currentRadius = searchRadius else { return }
-        
         // Get the current center
         let center = session.locationManager.location ?? fallbackLocation.center
         
         // Calculate the span to show the radius with padding
-        let radiusInDegrees = (currentRadius * 1.5) / 111320  // Convert meters to degrees with 50% padding
+        let radiusInDegrees = (manager.radius * 1.5) / 69.2  // Convert meters to degrees with 50% padding
         
         // Account for longitude distortion at different latitudes
         let latitudinalPadding = radiusInDegrees
@@ -50,11 +49,11 @@ struct FilterView: View {
         }
     }
     
-    private var SportsHeaderString: String {
+    private var sportsHeaderString: String {
         return manager.selectedSports.isEmpty ? "Sports" : "Sports (\(manager.selectedSports.count))"
     }
     
-    private var TagsHeaderString: String {
+    private var tagsHeaderString: String {
         return manager.selectedTags.isEmpty ? "Tags" : "Tags (\(manager.selectedTags.count))"
     }
     
@@ -68,7 +67,7 @@ struct FilterView: View {
                     // Add a MapCircle for precise radius visualization
                     MapCircle(
                         center: session.locationManager.location ?? fallbackLocation.center,
-                        radius: searchRadius ?? 5000
+                        radius: manager.radius * 1609.34  // Convert miles to meters (1 mile = 1609.34 meters)
                     )
                     .strokeStyle(style: .init(lineWidth: 2, dash: [6, 6]))
                     .foregroundStyle(.blue.opacity(0.3))
@@ -102,7 +101,7 @@ struct FilterView: View {
                         Text("\(Int(manager.radius)) miles")
                             .padding(.trailing)
                             .onChange(of: manager.radius) { _, newValue in
-                                searchRadius = milesToMeters(radius: manager.radius)
+                                searchRadius = newValue
                             }
                     }
                 }
@@ -121,7 +120,7 @@ struct FilterView: View {
             .padding(.horizontal, 10)
             
             VStack(alignment: .leading) {
-                Text(SportsHeaderString)
+                Text(sportsHeaderString)
                     .fontWeight(.medium)
                 Text("Only include the sports you like")
                     .font(.callout)
@@ -155,7 +154,7 @@ struct FilterView: View {
             .padding(.horizontal, 10)
             
             VStack(alignment: .leading) {
-                Text(TagsHeaderString)
+                Text(tagsHeaderString)
                     .fontWeight(.medium)
                 Text("Add some keywords to find your club!")
                     .font(.callout)
@@ -193,6 +192,8 @@ struct FilterView: View {
             manager.tags = TAGS_TEMP
             manager.sports = SPORTS_TEMP
             #endif
+            
+            
         }
     }
 }

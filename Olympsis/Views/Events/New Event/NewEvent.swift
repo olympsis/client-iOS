@@ -157,7 +157,7 @@ struct NewEvent: View {
             return
         }
         
-        session.events.append(e)
+        session.events.insert(e)
         await notificationsManager.setEventLocalNotification(e)
         dismiss()
     }

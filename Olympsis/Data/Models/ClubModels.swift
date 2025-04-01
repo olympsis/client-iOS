@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Club: Decodable, Identifiable, ObservableObject {
+class Club: Decodable, Identifiable, ObservableObject, Hashable {
 
     let id: String
     let parent: OrganizationDao?
@@ -113,6 +113,10 @@ class Club: Decodable, Identifiable, ObservableObject {
     
     static func == (lhs: Club, rhs: Club) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     enum CodingKeys: String, CodingKey {

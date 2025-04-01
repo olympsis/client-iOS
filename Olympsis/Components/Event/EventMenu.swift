@@ -27,7 +27,7 @@ struct EventMenu: View {
         let res = await session.eventObserver.deleteEvent(id: event.id, deleteAll: deleteAll)
         if res {
             await MainActor.run {
-                session.events.removeAll(where: {$0.id == event.id})
+                session.events.remove(event)
                 dismiss()
             }
         }
@@ -60,7 +60,6 @@ struct EventMenu: View {
         
         return false
     }
-
     
     var body: some View {
         VStack {

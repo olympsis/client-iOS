@@ -23,9 +23,9 @@ class ClubObserver: ObservableObject{
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
-    func getClubs(country: String, state: String, location: GeoJSON? = nil) async -> [Club]? {
+    func getClubs(country: String, state: String, location: GeoJSON? = nil, radius: Double? = nil, tags: String? = nil, sports: String? = nil) async -> [Club]? {
         do {
-            let (data, res) = try await clubService.getClubs(c: country, s: state, l: location)
+            let (data, res) = try await clubService.getClubs(c: country, s: state, l: location, r: radius, tags: tags, sports: sports)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }

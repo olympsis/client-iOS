@@ -8,7 +8,7 @@
 import Foundation
 
 /// A group that can be the parent of many clubs and post announcements that will be show in the clubs.
-class Organization: Decodable, Identifiable, ObservableObject {
+class Organization: Decodable, Identifiable, ObservableObject, Hashable {
 
     let id: String
     var name: String
@@ -98,6 +98,10 @@ class Organization: Decodable, Identifiable, ObservableObject {
     
     static func == (lhs: Organization, rhs: Organization) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     enum CodingKeys: String, CodingKey {

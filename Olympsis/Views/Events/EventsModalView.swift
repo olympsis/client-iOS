@@ -15,8 +15,9 @@ struct EventsModalView: View {
     @Environment(SessionStore.self) private var session
     
     private var events: [Event] {
-        return session.events
+        return Array(session.events)
     }
+    
     private var eventsGrouped: [DayGroup] {
         return events.eventsGroupedByDay()
     }

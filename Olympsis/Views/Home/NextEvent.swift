@@ -17,7 +17,7 @@ struct NextEvent: View {
             return nil
         }
         
-        return session.events.mostRecentForUser(uuid: uuid)
+        return Array(session.events).mostRecentForUser(uuid: uuid)
     }
     
     var body: some View {

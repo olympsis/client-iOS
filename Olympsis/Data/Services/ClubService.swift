@@ -24,16 +24,30 @@ class ClubService {
         #endif
     }
     
-    func getClubs(c: String, s: String, l: GeoJSON?=nil) async throws -> (Data, URLResponse) {
+    func getClubs(c: String, s: String, l: GeoJSON?=nil, r: Double?=nil, tags: String?=nil, sports: String?=nil) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         var queries = [
             URLQueryItem(name: "country", value: c),
             URLQueryItem(name: "state", value: s)
         ]
         
+        if tags != nil && !tags!.isEmpty {
+            queries.append(URLQueryItem(name: "tags", value: tags))
+        }
+        
+        if sports != nil && !sports!.isEmpty {
+            queries.append(URLQueryItem(name: "sports", value: sports))
+        }
+        
         if let location = l {
             queries.append(
                 URLQueryItem(name: "location", value: "\(location.coordinates[1]),\(location.coordinates[0])")
+            )
+        }
+        
+        if let radius = r {
+            queries.append(
+                URLQueryItem(name: "radius", value: String(radius))
             )
         }
         

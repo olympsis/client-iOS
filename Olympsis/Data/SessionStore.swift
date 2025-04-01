@@ -38,11 +38,12 @@ class SessionStore {
     var clubsState: LOADING_STATE = .pending
     
     var user: UserData?              // User data Cache
-    var clubs = [Club]()             // Clubs Cache
-    var orgs = [Organization]()      // Organizations Cache
     
-    var events: [Event] = []
-    var pastEvents: [Event] = []
+    var clubs: Set<Club> = []
+    var orgs: Set<Organization> = []
+    
+    var events: Set<Event> = []
+    var pastEvents: Set<Event> = []
     
     var tags: [Tag] = []
     var sports: [Sport] = []
@@ -146,17 +147,15 @@ class SessionStore {
         authStatus = .unknown
         user = cacheService.fetchUser()
         
-        #if targetEnvironment(simulator)
-        events = EVENTS
-        #endif
-        
         Task {
             do {
                 let config = try await managementObserver.config()
                 tags = config.tags
                 sports = config.sports
             } catch {
+                #if !targetEnvironment(simulator)
                 fatalError("Failed to fetch application config. Error: \(error)")
+                #endif
             }
         }
     }
@@ -271,8 +270,8 @@ class SessionStore {
                 user = cacheService.fetchUser()
             }
             if let c = resp.clubs {
-                self.clubs = c
                 c.forEach { c in
+                    self.clubs.insert(c)
                     let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
                     self.groups.append(group)
                     
@@ -282,8 +281,8 @@ class SessionStore {
                 }
             }
             if let o = resp.organizations {
-                self.orgs = o
                 o.forEach { o in
+                    self.orgs.insert(o)
                     let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
                     self.groups.append(group)
                     
@@ -356,7 +355,8 @@ class SessionStore {
         
         await MainActor.run {
             self.venues = resp.venues ?? [Venue]()
-            self.events = resp.events ?? [Event]()
+            resp.venues?.forEach { self.venues.append($0) }
+            resp.events?.forEach { self.events.insert($0) }
         }
     }
     

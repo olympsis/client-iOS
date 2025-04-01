@@ -5,49 +5,96 @@
 //  Created by Joel Joseph on 2/13/25.
 //
 
+import MapKit
 import SwiftUI
 
 struct Events: View {
     
     @StateObject var router: EventRouter = EventRouter()
     
-    @State private var state: EVENTS_PAGE_STATE = .list
+    @State private var isLoaded: Bool = false
+    @State private var searchText: String = ""
+    
+    @State private var state: VIEW_STATE = .pending
+    @State private var page: EVENTS_PAGE_STATE = .list
     
     @State private var numFiltersActive = 0
     @State private var showMenu: Bool = false
-    @State private var showError: Bool = false
-    @State private var showBottomSheet: Bool = false
-    @State private var showFieldDetail: Bool = false
     @State private var showNewEvent: Bool = false
-    @State private var showOptions: Bool = false
     @State private var selectedVenue: Venue?
-    @State private var selectedEvent: Event?
-    
-    @State private var todayDate = Date()
-    @State private var selectedDate = Date()
-    
-    @State private var searchText = ""
     
     @State private var manager = SearchManager()
     @Environment(SessionStore.self) private var session
+    
+    private var fallbackLocation: CLLocation {
+        guard let user = session.user, let hometown = user.hometown else {
+            return CLLocation(latitude: 37.334886, longitude: -122.008988)
+        }
+        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+    }
+    
+    private var currentLocation: CLLocation {
+        guard session.locationManager.isLocationAuthorized,
+            let location = session.locationManager.location else {
+            return fallbackLocation
+        }
+        
+        return CLLocation(latitude: location.latitude, longitude: location.longitude)
+    }
     
     private var sports: [Sport] {
         return session.sports
     }
     
+    private func fetchEvents() async {
+        state = .loading
+        
+        var tags: String? = nil
+        var sports: String? = nil
+        
+        if (!manager.tags.isEmpty) {
+            tags = manager.getTagsString()
+        }
+        
+        if (!manager.sports.isEmpty) {
+            sports = manager.getSportsString()
+        }
+        
+        guard let resp = await session.eventObserver.fetchEvents(
+            longitude: currentLocation.coordinate.longitude,
+            latitude: currentLocation.coordinate.latitude,
+            radius: manager.radius,
+            tags: tags,
+            sports: sports) else {
+            state = .failure
+            return
+        }
+        
+        resp.forEach { session.events.insert($0) }
+        
+        state = .success
+    }
+    
     var body: some View {
         NavigationStack(path: $router.navPath) {
             Group {
-                switch state {
+                switch page {
                 case .list:
-                    ListView(showNewEvent: $showNewEvent, showMenu: $showMenu, numFiltersActive: $numFiltersActive)
+                    ListView(
+                        state: $state,
+                        searchText: $searchText,
+                        showNewEvent: $showNewEvent,
+                        showMenu: $showMenu,
+                        numFiltersActive: $numFiltersActive
+                    )
                         .environment(session)
+                        .environment(manager)
                 case .map:
                     MapView(showNewEvent: $showNewEvent, selectedVenue: $selectedVenue)
                         .environment(session)
+                        .environment(manager)
                 }
             }
-
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Text("Events")
@@ -57,7 +104,7 @@ struct Events: View {
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button(action:{ self.showNewEvent = true }){
-                        switch state {
+                        switch page {
                         case .list:
                             Image(systemName: "plus")
                                 .imageScale(.large)
@@ -76,16 +123,16 @@ struct Events: View {
                     
                     Button(action:{
                         withAnimation(.easeInOut) {
-                            switch state {
+                            switch page {
                             case .list:
-                                state = .map
+                                page = .map
                             case .map:
-                                state = .list
+                                page = .list
                             }
                         }
                     }){
                         Group {
-                            switch state {
+                            switch page {
                             case .list:
                                 Image(systemName: "map")
                                     .imageScale(.large)
@@ -116,14 +163,14 @@ struct Events: View {
                     .padding(.trailing)
                 }
             }
-            .toolbarBackground(state == .list ? .visible : .hidden, for: .navigationBar)
+            .toolbarBackground(page == .list ? .visible : .hidden, for: .navigationBar)
             .sheet(item: $selectedVenue) { field in
                 VenueView(venue: field)
                     .presentationDetents([.height(250), .large])
             }
             .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
                 Task {
-                    await session.getNearbyData(location: session.currentLocation.center)
+                    await fetchEvents()
                 }
             }) {
                 NewEvent(manager: NewEventManager())
@@ -131,10 +178,15 @@ struct Events: View {
             .sheet(isPresented: $showMenu, onDismiss: {
                 withAnimation(.easeInOut) {
                     numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
+                    
+                    Task {
+                        await fetchEvents()
+                    }
                 }
             }, content: {
                 FilterView(manager: manager)
                     .environment(session)
+                    .presentationDragIndicator(.visible)
             })
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                 switch route {
@@ -143,7 +195,7 @@ struct Events: View {
                         AsyncEventView(eventId: eventId)
                             .toolbar(.hidden, for: .navigationBar)
                     } else if openEvents != nil && openEvents == true {
-                        EventsList(events: session.events)
+                        EventsList(events: Array(session.events))
                     }
                 case .settings:
                     EventsOptions(availableSports: [], selectedSports: sports)
@@ -151,8 +203,24 @@ struct Events: View {
                 }
             })
             .task {
+                // Grab sports and tags from session
                 manager.tags = session.tags
                 manager.sports = session.sports
+                
+                // Add user's sports on the filter by default
+                if let user = session.user {
+                    if let sports = user.sports {
+                        manager.selectedSports = sports
+                        
+                        withAnimation(.easeInOut) {
+                            numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
+                        }
+                    }
+                }
+                
+                if !isLoaded {
+                    await fetchEvents()
+                }
             }
         }
     }
