@@ -14,6 +14,10 @@ import Foundation
 class NewEventManager {
     
     var type: EVENT_TYPES = .Regular
+    
+    var selectedTags: [Tag]
+    var selectedSports: [Sport]
+    
     var title: String
     var body: String
     var externalLink: String
@@ -79,6 +83,8 @@ class NewEventManager {
         venues: [Venue] = [Venue](),
         organizers: [GroupSelection] = [GroupSelection]()
     ) {
+        self.selectedTags = []
+        self.selectedSports = []
         self.title = ""
         self.body = ""
         self.selectedVenues = venues

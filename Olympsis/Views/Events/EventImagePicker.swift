@@ -15,18 +15,19 @@ struct EventImagePicker: View {
     
     var imageURLs: [URL] {
         var urls = [URL]()
-//        for image in manager.sport.images() {
-//            if let url = URL(string: GenerateImageURL(image)) {
-//                urls.append(url)
-//            }
-//        }
+        guard let selectedSport = manager.selectedSports.first else { return urls }
+        for image in selectedSport.images {
+            if let url = URL(string: GenerateImageURL(image)) {
+                urls.append(url)
+            }
+        }
         return urls
     }
     
     var body: some View {
         VStack(alignment: .leading){
             Text("Event Image")
-                .font(.title3)
+                .font(.headline)
                 .bold()
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
@@ -34,10 +35,14 @@ struct EventImagePicker: View {
                         if manager.selectedImage == nil {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 100, height: 150)
-                                .foregroundStyle(Color(Color.Background.secondary))
+                                .foregroundStyle(Color.gray.opacity(0.2))
                                 .overlay {
                                     Image(systemName: "plus")
                                         .foregroundStyle(Color("foreground"))
+                                }
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
                                 }
                         } else {
                             if let image = manager.selectedImage {

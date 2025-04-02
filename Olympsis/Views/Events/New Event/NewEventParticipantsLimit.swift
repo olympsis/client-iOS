@@ -9,71 +9,88 @@ import SwiftUI
 
 struct NewEventParticipantsLimit: View {
     
-    @Bindable var manager: NewEventManager
     @State private var isEditing: Bool = false
+    @State private var allowWaitlist: Bool = false
+    @State private var minParticipants: Double = 0
+    @State private var maxParticipants: Double = 0
+    
+    private let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .none
+        return formatter
+    }()
+    
+    @Environment(NewEventManager.self) private var manager
     
     var body: some View {
         VStack {
             // MARK: - Min Participants slider
             VStack(alignment: .leading){
                 Text("Min Participants")
-                    .font(.title3)
+                    .font(.headline)
                     .bold()
-                Text("The minimum number of participants")
+                Text("Least number of participants required")
                     .foregroundColor(.gray)
                     .font(.subheadline)
                 
                 HStack {
-//                    Slider(
-//                        value: $manager.minParticipants,
-//                        in: 0...100,
-//                        step: 1.0,
-//                        onEditingChanged: { editing in
-//                            isEditing = editing
-//                        }).padding(.horizontal)
-                    
-                    Text("TODO")
-                        .foregroundColor(isEditing ? .red : .green)
-//                    Stepper("", value: $manager.minParticipants, in: 0...100)
-//                        .padding(.trailing)
+                    TextField("Limit", value: $minParticipants, formatter: formatter)
+                        .keyboardType(.numberPad)
+                        .padding(.leading)
+
+                    Stepper("", value: $minParticipants, in: 0...100)
+                        .padding(.trailing)
                 }.modifier(InputField())
                 
-            }
-            .padding(.top)
-            .padding(.horizontal)
+            }.padding([.top, .horizontal])
             
             // MARK: - Max Participants slider
             VStack(alignment: .leading){
                 Text("Max Participants")
-                    .font(.title3)
+                    .font(.headline)
                     .bold()
-                Text("Limit the headcount")
+                Text("Set the event's participants capacity")
                     .foregroundColor(.gray)
                     .font(.subheadline)
                 
                 HStack {
-//                    Slider(
-//                        value: $manager.maxParticipants,
-//                        in: 0...1000,
-//                        step: 5.0,
-//                        onEditingChanged: { editing in
-//                            isEditing = editing
-//                        }).padding(.horizontal)
-//                    
-//                    Text("\(Int(manager.maxParticipants))")
-//                        .foregroundColor(isEditing ? .red : .green)
-//                    Stepper("", value: $manager.maxParticipants, in: 0...1000)
-//                        .padding(.trailing)
+                    TextField("Limit", value: $maxParticipants, formatter: formatter)
+                        .keyboardType(.numberPad)
+                        .padding(.leading)
+
+                    Stepper("", value: $maxParticipants, in: 0...1000)
+                        .padding(.trailing)
                 }.modifier(InputField())
-            }
-            .padding(.top)
-            .padding(.horizontal)
+            }.padding([.top, .horizontal])
+            
+            
+            // MARK: - Allow Waitlist
+            VStack(alignment: .leading){
+                Toggle(isOn: $allowWaitlist) {
+                    Text("Allow Waitlist")
+                        .font(.headline)
+                        .bold()
+                }
+                Text("If the number of participants exceeds the capacity, allow them to join a waitlist")
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+            }.padding([.top, .horizontal])
             
             Spacer()
+        }
+        .onDisappear {
+            if (minParticipants != 0 || maxParticipants != 0 || allowWaitlist) {
+                manager.participantsConfig = ParticipantsConfig(
+                    hasWaitlist: allowWaitlist,
+                    minParticipants: Int(minParticipants),
+                    maxParticipants: Int(maxParticipants)
+                )
+            }
         }
     }
 }
 
 #Preview {
-    NewEventParticipantsLimit(manager: NewEventManager())
+    NewEventParticipantsLimit()
+        .environment(NewEventManager())
 }

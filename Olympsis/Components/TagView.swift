@@ -1,32 +1,27 @@
 //
-//  SportView.swift
+//  TagView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 6/2/24.
+//  Created by Joel Joseph on 4/1/24.
 //
 
 import SwiftUI
 
 
 /// A view to visualize a sport by it's associated icon and name
-struct SportView: View {
+struct TagView: View {
     
-    var sport: Sport
+    var tag: Tag
     
     private var name: String {
-        var text = sport.name
-        if let firstIndex = text.firstIndex(where: { $0.isLetter }) {
-            text.replaceSubrange(firstIndex...firstIndex, with: text[firstIndex].uppercased())
-        }
-        
-        return text
+        return tag.name.replacingOccurrences(of: "-", with: " ").capitalized
     }
     
     var body: some View {
         VStack {
             Text(name)
                 .padding(5)
-                .padding(.trailing, 5)
+                .padding(.horizontal, 5)
                 .background(
                     Color.gray
                         .opacity(0.21)
@@ -42,5 +37,5 @@ struct SportView: View {
 }
 
 #Preview {
-    SportView(sport: Sport(name: "🎾 tennis", images: []))
+    TagView(tag: Tag(name: "beginner-friendly"))
 }

@@ -9,35 +9,24 @@ import SwiftUI
 
 struct NewEventAdvancedSettings: View {
     
-    @Bindable var manager: NewEventManager
-    
+    @State private var showEventFormat: Bool = false
     @State private var showLimitParticipants: Bool = false
     @State private var showExternalLinkField: Bool = false
     @State private var showRecurringEventSettings: Bool = false
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(SessionStore.self) private var session
+    @Environment(NewEventManager.self) private var manager
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .imageScale(.large)
-                }.padding(.leading)
-                
-                Spacer()
-                Spacer()
-                
-                Text("Advanced Settings")
-                    .fontWeight(.bold)
-                
-                Spacer()
-                Spacer()
-                Spacer()
-            }
-            
             ScrollView {
-                MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: "Limit Participants") { showLimitParticipants.toggle()
+                MenuButton(icon: Image(systemName: "slider.vertical.3"), text: "Event Formatting") {
+                    showEventFormat.toggle()
+                }.padding(.top)
+                
+                MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: "Limit Participants") {
+                    showLimitParticipants.toggle()
                 }
                 
                 MenuButton(icon: Image(systemName: "link"), text: "External Link") {
@@ -48,23 +37,37 @@ struct NewEventAdvancedSettings: View {
                     showRecurringEventSettings.toggle()
                 }
             }
+            .sheet(isPresented: $showEventFormat) {
+                NewEventFormatting()
+                    .environment(manager)
+                    .presentationDragIndicator(.visible)
+            }
             .sheet(isPresented: $showLimitParticipants) {
-                NewEventParticipantsLimit(manager: manager)
-                    .presentationDetents([.height(250)])
+                NewEventParticipantsLimit()
+                    .environment(manager)
+                    .presentationDetents([.height(350)])
+                    .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showExternalLinkField) {
-                NewEventExternalLink(manager: manager)
+                NewEventExternalLink()
+                    .environment(manager)
                     .presentationDetents([.height(250)])
+                    .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showRecurringEventSettings) {
-                NewEventRecurringSettings(manager: manager)
+                NewEventRecurringSettings()
+                    .environment(manager)
                     .presentationDetents([.height(250)])
+                    .presentationDragIndicator(.visible)
             }
             
         }
+        .navigationTitle("Advanced Settings")
     }
 }
 
 #Preview {
-    NewEventAdvancedSettings(manager: NewEventManager())
+    NewEventAdvancedSettings()
+        .environment(SessionStore())
+        .environment(NewEventManager())
 }

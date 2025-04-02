@@ -126,7 +126,7 @@ struct FilterView: View {
                     .font(.callout)
                     .foregroundStyle(.gray)
 
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading) {
+                WrappingHStack(alignment: .bottomLeading) {
                     ForEach(manager.sports, id: \.name) { sport in
                         Button(action: { manager.selectSport(sport) }) {
                             Text("\(sport.name.capitalized.replacingOccurrences(of: "-", with: " "))")
@@ -160,7 +160,7 @@ struct FilterView: View {
                     .font(.callout)
                     .foregroundStyle(.gray)
 
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading) {
+                WrappingHStack(alignment: .bottomLeading) {
                     ForEach(manager.tags, id: \.name) { tag in
                         Button(action: { manager.selectTag(tag) }) {
                             Text("\(tag.name.capitalized.replacingOccurrences(of: "-", with: " "))")

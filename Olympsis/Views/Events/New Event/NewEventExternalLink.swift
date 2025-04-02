@@ -9,10 +9,10 @@ import SwiftUI
 
 struct NewEventExternalLink: View {
     
-    @Bindable var manager: NewEventManager
-    
     @State private var link: String = ""
     @State private var isValidURL: Bool = false
+    
+    @Environment(NewEventManager.self) private var manager
     
     private func isValidURLFormat(_ urlString: String) -> Bool {
         guard let url = URL(string: urlString),
@@ -29,9 +29,9 @@ struct NewEventExternalLink: View {
     var body: some View {
         VStack(alignment: .leading){
             Text("External Link")
-                .font(.title3)
+                .font(.headline)
                 .bold()
-            Text("Send the user to this link after RSVP")
+            Text("Redirect participants to this URL after RSVP")
                 .foregroundColor(.gray)
                 .font(.subheadline)
             
@@ -49,17 +49,24 @@ struct NewEventExternalLink: View {
                         return
                     }
                     self.isValidURL = true
-                    manager.externalLink = newValue.contains("https://") ? newValue : "https://" + newValue
+                    
                 }
             }.modifier(InputField())
             
             Spacer()
         }
-        .padding(.top)
-        .padding(.horizontal)
+        .padding([.top, .horizontal])
+        .onDisappear {
+            guard !link.isEmpty,
+                  isValidURL else { return }
+            
+            manager.externalLink = link
+        }
     }
 }
 
 #Preview {
-    NewEventExternalLink(manager: NewEventManager())
+    NewEventExternalLink()
+        .environment(NewEventManager())
+    
 }

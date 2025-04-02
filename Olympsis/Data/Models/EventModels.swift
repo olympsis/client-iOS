@@ -882,8 +882,8 @@ class ParticipantDao: Codable {
 
 class ParticipantsConfig: Codable {
     var hasWaitlist: Bool?
-    var minParticipants: Int32?
-    var maxParticipants: Int32?
+    var minParticipants: Int?
+    var maxParticipants: Int?
     
     enum CodingKeys: String, CodingKey {
         case hasWaitlist = "has_waitlist"
@@ -892,8 +892,8 @@ class ParticipantsConfig: Codable {
     }
     
     init(hasWaitlist: Bool? = nil,
-         minParticipants: Int32? = nil,
-         maxParticipants: Int32? = nil) {
+         minParticipants: Int? = nil,
+         maxParticipants: Int? = nil) {
         self.hasWaitlist = hasWaitlist
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
@@ -902,8 +902,8 @@ class ParticipantsConfig: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         hasWaitlist = try container.decodeIfPresent(Bool.self, forKey: .hasWaitlist)
-        minParticipants = try container.decodeIfPresent(Int32.self, forKey: .minParticipants)
-        maxParticipants = try container.decodeIfPresent(Int32.self, forKey: .maxParticipants)
+        minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
+        maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
     }
     
     func encode(to encoder: Encoder) throws {

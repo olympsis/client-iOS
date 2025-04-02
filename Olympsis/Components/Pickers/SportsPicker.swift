@@ -23,21 +23,19 @@ struct SportsPicker: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(sports, id: \.name) { sport in
-                    Button(action: { handleTap(sport) }) {
-                        SportView(sport: sport, scale: .Medium)
-                            .padding(.horizontal, 3)
-                            .overlay {
-                                if (selectedSports.contains(where: { $0.name == sport.name })) {
-                                    Circle().stroke(Color.Brand.secondary, lineWidth: 3)
-                                }
+        WrappingHStack(alignment: .bottomLeading) {
+            ForEach(sports, id: \.name) { sport in
+                Button(action: { handleTap(sport) }) {
+                    SportView(sport: sport)
+                        .padding(.horizontal, 3)
+                        .overlay {
+                            if (selectedSports.contains(where: { $0.name == sport.name })) {
+                                Circle().stroke(Color.Brand.secondary, lineWidth: 3)
                             }
-                    }.buttonStyle(PlainButtonStyle())
-                }.frame(height: 103)
-            }
-        }.scrollIndicators(.hidden)
+                        }
+                }.buttonStyle(PlainButtonStyle())
+            }.frame(height: 103)
+        }
     }
 }
 

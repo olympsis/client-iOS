@@ -10,28 +10,54 @@ import SwiftUI
 struct NewEventSportsPicker: View {
     
     var sports: [Sport]
-    @Binding var selectedSport: [Sport]
+    @Binding var selectedSports: [Sport]
+    @State private var showSports: Bool = false
+    
+    private var sportName: String {
+        var text = "Select Sport"
+        guard let firstSport = selectedSports.first else { return text }
+        text = firstSport.name
+        guard let firstIndex = text.firstIndex(where: { $0.isLetter }) else { return text }
+        text.replaceSubrange(firstIndex...firstIndex, with: text[firstIndex].uppercased())
+        return text
+    }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(sports, id: \.name) { sport in
-                    Button(action: { selectedSport.append(sport) }) {
-                        SportView(sport: sport, scale: .Medium)
-                            .padding(.horizontal, 3)
-                            .overlay {
-                                if (selectedSport.contains(where: { $0.name == sport.name })) {
-                                    Circle().stroke(Color.Brand.secondary, lineWidth: 2)
-                                }
-                            }
-                    }.buttonStyle(PlainButtonStyle())
-                }.frame(height: 103)
-            }
-        }.scrollIndicators(.hidden)
+        VStack(alignment: .leading) {
+            Text("Sport")
+                .font(.headline)
+                .bold()
+            Text("Pick your event's sports activity")
+                .foregroundColor(.gray)
+                .font(.subheadline)
             
+            Button(action: { showSports.toggle() }) {
+                Text(sportName)
+            }
+            .modifier(InputField())
+            .scrollIndicators(.hidden)
+                
+        }
+        .sheet(isPresented: $showSports) {
+            ScrollView(.vertical) {
+                Spacer(minLength: 20)
+                WrappingHStack(alignment: .bottomLeading) {
+                    ForEach(sports, id: \.name) { sport in
+                        Button(action: {
+                            selectedSports = [sport]
+                            showSports.toggle()
+                        }) {
+                            SportView(sport: sport)
+                        }.buttonStyle(PlainButtonStyle())
+                    }
+                }.padding(.horizontal)
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
     }
 }
 
 #Preview {
-    NewEventSportsPicker(sports: [], selectedSport: .constant([]))
+    NewEventSportsPicker(sports: SPORTS_TEMP, selectedSports: .constant([]))
 }

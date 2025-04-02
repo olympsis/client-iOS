@@ -9,15 +9,17 @@ import SwiftUI
 
 struct NewEventRecurringSettings: View {
     
-    @Bindable var manager: NewEventManager
+    @State private var frequency: Int = 1
     @State private var recurrenceEndDate: Date = Date()
     @State private var recurrenceFrequency: EVENT_RECURRENCE_FREQUENCY = .weekly
+    
+    @Environment(NewEventManager.self) private var manager
     
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
                 Text("Recurrence Frequency")
-                    .font(.title3)
+                    .font(.headline)
                     .bold()
                     .padding(.leading)
                 Text("How often do you want this event to happen?")
@@ -52,11 +54,22 @@ struct NewEventRecurringSettings: View {
                     
                     Spacer()
                 }.padding(.leading)
+                
+                Stepper(value: $frequency) {
+                    VStack(alignment: .leading) {
+                        Text("Every \(frequency)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Text("How frequently should this event cycle?")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }.padding([.top, .horizontal])
             }
             
             VStack(alignment: .leading) {
                 Text("End Date")
-                    .font(.title3)
+                    .font(.headline)
                     .bold()
                     .padding(.leading)
                 Text("When do you want the recurrence to stop?")
@@ -85,11 +98,16 @@ struct NewEventRecurringSettings: View {
             guard !Calendar.current.isDate(recurrenceEndDate, inSameDayAs: Date()) else {
                 return
             }
-            manager.recurrenceOptions = EventRecurrenceOptions(pattern: recurrenceFrequency, endTime: recurrenceEndDate, interval: 1)
+            manager.recurrenceOptions = EventRecurrenceOptions(
+                pattern: recurrenceFrequency,
+                endTime: recurrenceEndDate,
+                interval: frequency
+            )
         }
     }
 }
 
 #Preview {
-    NewEventRecurringSettings(manager: NewEventManager())
+    NewEventRecurringSettings()
+        .environment(NewEventManager())
 }

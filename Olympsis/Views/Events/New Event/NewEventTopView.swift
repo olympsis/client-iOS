@@ -17,31 +17,7 @@ struct NewEventTopView: View {
     
     var body: some View {
         ScrollView(.horizontal) {
-            HStack {
-                Button(action: { self.showTypePicker.toggle() }){
-                    HStack {
-                        switch eventType {
-                        case .Regular:
-                            Image(systemName: "octagon.fill")
-                                .foregroundStyle(.white)
-                        case .Competitive:
-                            Image(systemName: "trophy.fill")
-                                .foregroundStyle(.white)
-                        }
-                        Text(eventType.rawValue.prefix(1).capitalized + eventType.rawValue.dropFirst())
-                            .foregroundStyle(.white)
-                        Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                            .foregroundStyle(.white)
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 5)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("color-prime"))
-                    }
-                }
-                
+            HStack {                
                 Button(action: { self.showVisibilityPicker.toggle() }){
                     HStack {
                         switch eventVisibility {
