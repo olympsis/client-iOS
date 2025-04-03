@@ -102,15 +102,13 @@ struct EventImagePicker: View {
                                     }
                                 }
                                 .onChange(of: manager.selectedImageIndex) { _, newValue in
-//                                    manager.image = ""
+                                    guard let selectedSport = manager.selectedSports.first else { return }
+                                    manager.image = selectedSport.images[newValue]
                                 }
                         }
                     }
                 }
             }
-        }
-        .task {
-//            manager.image = manager.sport.images()[manager.selectedImageIndex]
         }
         .fullScreenCover(isPresented: $showImagePicker, content: {
             MediaPicker(pickerType: .eventImage) { images in

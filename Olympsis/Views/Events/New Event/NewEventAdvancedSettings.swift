@@ -40,6 +40,7 @@ struct NewEventAdvancedSettings: View {
             .sheet(isPresented: $showEventFormat) {
                 NewEventFormatting()
                     .environment(manager)
+                    .presentationDetents([.height(150)])
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showLimitParticipants) {
@@ -51,13 +52,13 @@ struct NewEventAdvancedSettings: View {
             .sheet(isPresented: $showExternalLinkField) {
                 NewEventExternalLink()
                     .environment(manager)
-                    .presentationDetents([.height(250)])
+                    .presentationDetents([.height(150)])
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showRecurringEventSettings) {
                 NewEventRecurringSettings()
                     .environment(manager)
-                    .presentationDetents([.height(250)])
+                    .presentationDetents([.height(350)])
                     .presentationDragIndicator(.visible)
             }
             

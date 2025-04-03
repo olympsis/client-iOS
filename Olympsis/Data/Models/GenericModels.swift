@@ -328,13 +328,18 @@ class Tag: Codable {
     }
 }
 
-class Sport: Codable {
+class Sport: Codable, Equatable {
+    
     var name: String
     var images: [String]
     
     init(name: String, images: [String]) {
         self.name = name
         self.images = images
+    }
+    
+    static func == (lhs: Sport, rhs: Sport) -> Bool {
+        return lhs.name == rhs.name
     }
 }
 

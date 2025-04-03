@@ -198,7 +198,7 @@ struct NewEvent: View {
                     )
                     
                     // MARK: - Sport picker
-                    NewEventSportsPicker(sports: session.sports, selectedSports: $manager.sports)
+                    NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
                         .padding([.bottom, .horizontal])
                     
                     // MARK: - Organizers Picker
@@ -418,7 +418,7 @@ struct NewEvent: View {
                                 log.error("Failed to create event: \(reason)")
                             }
                         } }) {
-                            LoadingButton(text: "Create", width: 150, status: $manager.status)
+                            LoadingButton(text: "Create Event", width: 150, status: $manager.status)
                                 .padding(.horizontal, 40)
                         }
                     }.padding(.vertical, 50)
