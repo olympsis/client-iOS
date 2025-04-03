@@ -27,8 +27,15 @@ struct NewEventFormatting: View {
             }.padding([.top, .horizontal])
             
             Spacer()
-        }.onDisappear {
-            guard isTournament else { return }
+        }
+        .onAppear {
+            // Load data from the manager if we already ahve some
+            guard let config = manager.formatConfig,
+                  let isCompetition = config.isCompetition else { return }
+            isTournament = isCompetition
+        }
+        .onDisappear {
+            // Make sure we update the manager config on dissmiss of this view
             manager.formatConfig = EventFormatConfig(isCompetition: isTournament)
         }
     }

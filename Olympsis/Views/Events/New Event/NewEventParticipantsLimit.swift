@@ -78,7 +78,24 @@ struct NewEventParticipantsLimit: View {
             
             Spacer()
         }
+        .onAppear {
+            // Setup with data from the manager if we already have set them.
+            guard let config = manager.participantsConfig else { return }
+            
+            if let waitlist = config.hasWaitlist {
+                allowWaitlist = waitlist
+            }
+            
+            if let min = config.minParticipants {
+                minParticipants = Double(min)
+            }
+            
+            if let max = config.maxParticipants {
+                maxParticipants = Double(max)
+            }
+        }
         .onDisappear {
+            // Make sure we update the manager on dismissal of this view
             if (minParticipants != 0 || maxParticipants != 0 || allowWaitlist) {
                 manager.participantsConfig = ParticipantsConfig(
                     hasWaitlist: allowWaitlist,

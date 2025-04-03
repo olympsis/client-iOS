@@ -94,7 +94,15 @@ struct NewEventRecurringSettings: View {
             Spacer()
         }
         .padding(.top)
+        .onAppear {
+            // Load in data from manager if it exists
+            guard let config = manager.recurrenceOptions else { return }
+            recurrenceFrequency = config.pattern
+            recurrenceEndDate = config.endTime
+            frequency = config.interval
+        }
         .onDisappear {
+            // Make sure we update the manager on dismissal of this view
             guard !Calendar.current.isDate(recurrenceEndDate, inSameDayAs: Date()) else {
                 return
             }

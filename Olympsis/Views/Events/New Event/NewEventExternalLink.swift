@@ -56,7 +56,13 @@ struct NewEventExternalLink: View {
             Spacer()
         }
         .padding([.top, .horizontal])
+        .onAppear {
+            // Set up using data from the manager if we already have it
+            guard !manager.externalLink.isEmpty else { return }
+            link = manager.externalLink
+        }
         .onDisappear {
+            // Make sure we update the manager on dismissal of this view
             guard !link.isEmpty,
                   isValidURL else { return }
             
