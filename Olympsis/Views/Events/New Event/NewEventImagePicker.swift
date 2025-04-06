@@ -21,6 +21,8 @@ struct NewEventImagePicker: View {
                 urls.append(url)
             }
         }
+        
+        manager.image = selectedSport.images.first
         return urls
     }
     

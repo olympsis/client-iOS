@@ -7,10 +7,13 @@
 
 import os
 import SwiftUI
+import AlertToast
 
 struct NewEvent: View {
     
     @State var manager: NewEventManager
+    
+    @State private var showToast: Bool = false
     
     @State private var showTypePicker: Bool = false
     @State private var showVisibilityPicker: Bool = false
@@ -151,11 +154,13 @@ struct NewEvent: View {
         }
         
         guard let id = try await manager.createEvent(user: user),
-            let url = URL(string: "olympsis://event?id=\(id)") else {
+            let url = URL(string: "olympsis://events?id=\(id)") else {
+            log.error("Failed to create event. No ID or failed to construct URL.")
             dismiss()
             return
         }
         openURL(url)
+        dismiss()
     }
     
     var body: some View {
@@ -405,12 +410,13 @@ struct NewEvent: View {
                 // MARK: - Action Button
                 VStack(alignment: .center){
                     Button(action: { Task {
+                        guard manager.status != .loading else { return }
                         do {
                             try await createEvent(value: value)
-                        } catch MediaUploadError.innapropriateContent {
+                        } catch NewEventError.unsafeMedia {
                             self.showPostViolation.toggle()
-                        } catch MediaUploadError.unexpected(let reason) {
-                            log.error("Failed to create event: \(reason)")
+                        } catch {
+                            showToast.toggle()
                         }
                     } }) {
                         LoadingButton(text: "Create Event", width: 150, status: $manager.status)
@@ -430,6 +436,9 @@ struct NewEvent: View {
                     manager.endDate = v
                 }
             }
+            .sheet(isPresented: $showPostViolation, content: {
+                PostMediaViolation()
+            })
             .task {
                 guard let select = session.selectedGroup else {
                     return
@@ -438,8 +447,8 @@ struct NewEvent: View {
                     manager.organizers.append(select)
                 }
             }
-            .sheet(isPresented: $showPostViolation, content: {
-                PostMediaViolation()
+            .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
+                AlertToast(displayMode: .hud, type: .regular, title: "Something went wrong", style: .style(backgroundColor: .red, titleColor: .white))
             })
         }
     }

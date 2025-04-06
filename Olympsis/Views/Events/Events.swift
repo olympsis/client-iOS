@@ -193,7 +193,7 @@ struct Events: View {
                 case .events(let id, let openEvents):
                     if let id {
                         AsyncEventView(eventId: id)
-                    } else if openEvents != nil && openEvents == true {
+                    } else {
                         EventsList(events: Array(session.events))
                     }
                 case .settings:

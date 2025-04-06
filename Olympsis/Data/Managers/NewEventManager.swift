@@ -62,10 +62,9 @@ class NewEventManager {
     var teamsConfig: TeamsConfig?
     var participantsConfig: ParticipantsConfig?
     
-    // Sport
+    var image: String?
     var tags: [Tag] = []
     var sports: [Sport] = []
-    var image: String?
     
     // More Options
     var formatConfig: EventFormatConfig?
@@ -104,7 +103,7 @@ class NewEventManager {
     
     func createEvent(user: User) async throws -> String? {
         guard let dto = generateEventDTO() else {
-            return nil
+            throw NewEventError.invalidData
         }
         
         if let data = selectedImageData {
@@ -113,7 +112,7 @@ class NewEventManager {
             }
             if resp.score > 4 {
                 status = .pending
-                throw MediaUploadError.innapropriateContent
+                throw NewEventError.unsafeMedia
             }
             if resp.score > 3 {
                 dto.event.isSensitive = true
@@ -121,7 +120,7 @@ class NewEventManager {
             
             guard let url = resp.url else {
                 status = .pending
-                return nil
+                throw NewEventError.serverError(message: "failed to get uploaded image url")
             }
             dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
@@ -129,20 +128,13 @@ class NewEventManager {
                 if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
-                return nil
+                throw NewEventError.serverError(message: "Failed to create event.")
             }
             
             return id
         } else {
             guard let id = await eventObserver.createEvent(dao: dto) else {
-                
-                // Only delete uploaded media data
-                if selectedImageData != nil {
-                    if let img = dto.event.mediaURL {
-                        await deleteImage(image: img)
-                    }
-                }
-                return nil
+                throw NewEventError.unknown(message: "Failed to create event.")
             }
             
             return id
@@ -208,82 +200,6 @@ class NewEventManager {
         )
         
         return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)
-    }
-    
-    /// Generates a new event object
-    ///
-    /// This function creates a new event object locally so that the user can see their event immediately after it's been created
-    ///
-    /// - Parameter id: The string identifier of the newly created event
-    /// - Parameter dto: The DTO object that was used to create the event
-    /// - Parameter user: The user's information to add in a new participant
-    ///
-    /// - Returns:  An optional `Event` object
-    func generateNewEvent(id: String, dao: EventDao, user: User) -> Event? {
-        guard let organizers = dao.organizers,
-              let venues = dao.venues,
-              let mediaURL = dao.mediaURL,
-              let mediaType = dao.mediaType,
-              let title = dao.title,
-              let body = dao.body,
-              let sports = dao.sports,
-              let startTime = dao.startTime,
-              let stopTime = dao.stopTime,
-              let visibility = dao.visibility,
-              let sensitivity = dao.isSensitive else {
-            log.error("Failed to validate dto data for new event")
-            return nil
-        }
-        
-        guard let uuid = user.uuid,
-              let username = user.username else {
-            return nil
-        }
-        
-        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
-        let participant = Participant(
-            id: UUID().uuidString,
-            user: snippet,
-            status: .Yes,
-            createdAt: Date()
-        )
-        
-        // Create ParticipantsConfig from the DAO or use provided one
-        let participantsConfig = dao.participantsConfig ?? ParticipantsConfig(
-            hasWaitlist: false,
-            minParticipants: dao.participantsConfig?.minParticipants,
-            maxParticipants: dao.participantsConfig?.maxParticipants
-        )
-        
-        return Event(
-            id: id,
-            poster: snippet,
-            organizers: organizers,
-            venues: venues,
-            mediaURL: mediaURL,
-            mediaType: mediaType,
-            title: title,
-            body: body,
-            tags: dao.tags ?? [],
-            sports: sports,
-            formatConfig: dao.formatConfig,
-            startTime: startTime,
-            stopTime: stopTime,
-            participants: [participant],
-            participantsWaitlist: [],
-            participantsConfig: participantsConfig,
-            teams: [],
-            teamsWaitlist: [],
-            teamsConfig: dao.teamsConfig,
-            comments: [],
-            visibility: visibility,
-            externalLink: (dao.externalLink != nil && dao.externalLink != "") ? dao.externalLink : nil,
-            isSensitive: sensitivity,
-            createdAt: Date(),
-            updatedAt: nil,
-            canceledAt: nil,
-            recurrenceConfig: dao.recurrenceConfig
-        )
     }
     
     /// Handles uploading an image to a bucket

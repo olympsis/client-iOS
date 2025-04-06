@@ -60,6 +60,7 @@ struct AsyncEventView: View {
             case .success:
                 if let event {
                     EventView(event: event)
+                        .toolbar(.hidden, for: .navigationBar)
                 }
             case .failure:
                 VStack {
@@ -91,6 +92,7 @@ struct AsyncEventView: View {
                 .navigationTitle(title)
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar(event != nil ? .hidden : .visible, for: .tabBar)
             }
         }
         .task {

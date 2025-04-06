@@ -73,12 +73,12 @@ struct EventMenu: View {
             
             if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
-                    if (event.recurrenceConfig != nil) {
-                        Task {
-                            await deleteEvent()
-                        }
-                    } else {
+                    guard event.recurrenceConfig == nil else {
                         showRecurring.toggle()
+                        return
+                    }
+                    Task {
+                        await deleteEvent()
                     }
                 }, type: .destructive)
             }

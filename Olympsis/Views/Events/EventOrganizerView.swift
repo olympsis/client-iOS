@@ -19,6 +19,10 @@ struct EventOrganizerView: View {
                         if let club = o.club {
                             Text(club.name)
                         }
+                    } else {
+                        if let organization = o.organization {
+                            Text(organization.name)
+                        }
                     }
                 }
             } else {
@@ -26,6 +30,10 @@ struct EventOrganizerView: View {
                     if o.type == GROUP_TYPE.Club {
                         if let club = o.club {
                             Text(club.name + " ...")
+                        }
+                    } else {
+                        if let organization = o.organization {
+                            Text(organization.name + " ...")
                         }
                     }
                 }
