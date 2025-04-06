@@ -163,290 +163,288 @@ struct NewEvent: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollViewReader { value in
-                HStack {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
-                            .imageScale(.large)
-                            .padding(.horizontal)
-                    }.clipShape(Rectangle())
-                    
-                    Spacer()
-                    Spacer()
-                    
-                    Text("NEW EVENT")
-                        .italic()
-                        .fontWeight(.bold)
-                    
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    
-                }
-                .frame(height: 43)
-                .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground), alignment: .bottom)
+        ScrollViewReader { value in
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                        .padding(.horizontal)
+                }.clipShape(Rectangle())
                 
-                ScrollView(showsIndicators: false) {
+                Spacer()
+                Spacer()
+                
+                Text("NEW EVENT")
+                    .italic()
+                    .fontWeight(.bold)
+                
+                Spacer()
+                Spacer()
+                Spacer()
+                
+            }
+            .frame(height: 43)
+            .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground), alignment: .bottom)
+            
+            ScrollView(showsIndicators: false) {
+                
+                // MARK: - Top Options
+                NewEventTopView(
+                    showTypePicker: $showTypePicker,
+                    showVisibilityPicker: $showVisibilityPicker,
+                    eventType: $manager.type,
+                    eventVisibility: $manager.visibility
+                )
+                
+                // MARK: - Sport picker
+                NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
+                    .padding([.bottom, .horizontal])
+                
+                // MARK: - Organizers Picker
+                VStack(alignment: .leading){
+                    Text("Organizer(s)")
+                        .font(.headline)
+                        .bold()
+                    Text("The clubs/organizations affiliated with this event")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
                     
-                    // MARK: - Top Options
-                    NewEventTopView(
-                        showTypePicker: $showTypePicker,
-                        showVisibilityPicker: $showVisibilityPicker,
-                        eventType: $manager.type,
-                        eventVisibility: $manager.visibility
-                    )
-                    
-                    // MARK: - Sport picker
-                    NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
-                        .padding([.bottom, .horizontal])
-                    
-                    // MARK: - Organizers Picker
-                    VStack(alignment: .leading){
-                        Text("Organizer(s)")
-                            .font(.headline)
-                            .bold()
-                        Text("The clubs/organizations affiliated with this event")
-                            .foregroundColor(.gray)
-                            .font(.subheadline)
-                        
-                        Button(action: { self.showOrganizersPicker.toggle() }) {
-                            EventOrganizerView(organizers: $manager.organizers)
-                                .modifier(InputField())
-                        }
-                        
-                        Text("*required")
-                            .foregroundStyle(.gray)
-                    }
-                    .padding(.horizontal)
-                    .fullScreenCover(isPresented: $showOrganizersPicker) {
-                        EventOrganizersPickerView(
-                            selectedOrganizers: $manager.organizers
-                        ).environment(session)
-                    }
-                    
-                    // MARK: - Title
-                    VStack(alignment: .leading){
-                        Text("Title")
-                            .font(.headline)
-                            .bold()
-                        Text("What to call the event")
-                            .font(.subheadline)
-                            .foregroundColor(validationStatus == .noTitle ? .red : .gray)
-                        
-                        TextField("", text: $manager.title)
-                            .focused($titleFocus)
-                            .padding(.leading)
+                    Button(action: { self.showOrganizersPicker.toggle() }) {
+                        EventOrganizerView(organizers: $manager.organizers)
                             .modifier(InputField())
-                        
-                        Text("*required")
-                            .foregroundStyle(.gray)
                     }
-                    .padding(.top)
-                    .padding(.horizontal)
-                    .id(1)
                     
-                    // MARK: - Description
-                    VStack(alignment: .leading){
-                        Text("Description")
-                            .font(.headline)
-                            .bold()
-                        Text("Give details about the event")
-                            .foregroundColor(validationStatus == .noDescription ? .red : .gray)
-                            .font(.subheadline)
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.gray.opacity(0.2))
-                                .frame(height: 100)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                                }
-                            TextEditor(text: $manager.body)
-                                .focused($descriptionFocus)
-                                .frame(height: 95)
-                                .scrollContentBackground(.hidden)
-                                .padding(.horizontal, 5)
-                        }
-                        
-                        Text("*required")
-                            .foregroundStyle(.gray)
-                    }
-                    .padding(.top)
-                    .padding(.horizontal)
-                    .id(2)
+                    Text("*required")
+                        .foregroundStyle(.gray)
+                }
+                .padding(.horizontal)
+                .fullScreenCover(isPresented: $showOrganizersPicker) {
+                    EventOrganizersPickerView(
+                        selectedOrganizers: $manager.organizers
+                    ).environment(session)
+                }
+                
+                // MARK: - Title
+                VStack(alignment: .leading){
+                    Text("Title")
+                        .font(.headline)
+                        .bold()
+                    Text("What to call the event")
+                        .font(.subheadline)
+                        .foregroundColor(validationStatus == .noTitle ? .red : .gray)
                     
-                    // MARK: - Venue Picker
-                    VStack(alignment: .leading) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Venue(s)")
-                                    .font(.headline)
-                                    .bold()
-                                Text("Location(s) of the event")
-                                    .font(.subheadline)
-                                    .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
+                    TextField("", text: $manager.title)
+                        .focused($titleFocus)
+                        .padding(.leading)
+                        .modifier(InputField())
+                    
+                    Text("*required")
+                        .foregroundStyle(.gray)
+                }
+                .padding(.top)
+                .padding(.horizontal)
+                .id(1)
+                
+                // MARK: - Description
+                VStack(alignment: .leading){
+                    Text("Description")
+                        .font(.headline)
+                        .bold()
+                    Text("Give details about the event")
+                        .foregroundColor(validationStatus == .noDescription ? .red : .gray)
+                        .font(.subheadline)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color.gray.opacity(0.2))
+                            .frame(height: 100)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
                             }
-                            
-                            Spacer()
-                            
-                            
-                            if hasSelectedVenue {
-                                Button(action: { self.showVenuePicker.toggle() }) {
-                                    Text("Edit Venue(s)")
-                                        .italic()
-                                        .padding(.horizontal, 10)
-                                        .padding(.vertical, 2.5)
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .foregroundStyle(Color.gray.opacity(0.2))
-                                        }
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                                        }
-                                }
-                            }
-                        }
-                        
-                        if hasSelectedVenue {
-                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
-                                ForEach(manager.selectedVenueDescriptors, id: \.self) {
-                                    VenueDescriptorView(item: $0)
-                                }
-                            }
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.gray.opacity(0.2))
-                                .frame(height: 100)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                                }
-                                .overlay {
-                                    Text("Pick a location")
-                                }
-                                .onTapGesture {
-                                    self.showVenuePicker.toggle()
-                                }
-                        }
-                        
-                        if !hasSelectedVenue {
-                            Text("*required")
-                                .foregroundStyle(.gray)
-                        }
+                        TextEditor(text: $manager.body)
+                            .focused($descriptionFocus)
+                            .frame(height: 95)
+                            .scrollContentBackground(.hidden)
+                            .padding(.horizontal, 5)
                     }
-                    .padding(.top)
-                    .padding(.horizontal)
-                    .fullScreenCover(isPresented: $showVenuePicker) {
-                        EventVenuePickerView(manager: manager)
-                            .environment(session)
-                    }
-                    .id(3)
                     
-                    // MARK: - Start Date/Time picker
-                    VStack(alignment: .leading){
-                        Text("Start Date/Time")
-                            .font(.headline)
-                            .bold()
-                        
-                        Button(action: {
-                            titleFocus = false
-                            descriptionFocus = false
-                            self.showStartTimePicker.toggle()
-                        }) {
-                            Text(startTimeString)
-                                .modifier(InputField())
-                        }
-                    }
-                    .padding()
-                    .sheet(isPresented: $showStartTimePicker, content: {
-                        EventDatePickerView(eventTime: $manager.startDate)
-                            .presentationDetents([.medium])
-                    })
-                    .id(4)
-                    
-                    // MARK: - End Date/Time picker
-                    VStack(alignment: .leading){
-                        Text("End Date/Time")
-                            .font(.headline)
-                            .bold()
-                        
-                        Button(action: {
-                            titleFocus = false
-                            descriptionFocus = false
-                            self.showStopTimePicker.toggle()
-                        }) {
-                            Text(stopTimeString)
-                                .modifier(InputField())
-                        }
-                    }
-                    .padding(.horizontal)
-                    .sheet(isPresented: $showStopTimePicker, content: {
-                        EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
-                            .presentationDetents([.medium])
-                    })
-                    
-                    // MARK: - Background Image picker
-                    EventImagePicker()
-                        .padding([.top, .horizontal])
-                        .environment(manager)
-                    
-                    // MARK: - Event Tags Picker
-                    NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
-                        .padding([.top, .horizontal])
-                    
+                    Text("*required")
+                        .foregroundStyle(.gray)
+                }
+                .padding(.top)
+                .padding(.horizontal)
+                .id(2)
+                
+                // MARK: - Venue Picker
+                VStack(alignment: .leading) {
                     HStack {
+                        VStack(alignment: .leading) {
+                            Text("Venue(s)")
+                                .font(.headline)
+                                .bold()
+                            Text("Location(s) of the event")
+                                .font(.subheadline)
+                                .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
+                        }
+                        
                         Spacer()
                         
-                        NavigationLink(destination: NewEventAdvancedSettings().environment(manager)) {
-                            Text("Advanced Settings")
-                                .fontWeight(.bold)
-                            Image(systemName: "gearshape.fill")
-                        }.padding()
-                    }
-                    
-                    
-                    // MARK: - Action Button
-                    VStack(alignment: .center){
-                        Button(action: { Task {
-                            do {
-                                try await createEvent(value: value)
-                            } catch MediaUploadError.innapropriateContent {
-                                self.showPostViolation.toggle()
-                            } catch MediaUploadError.unexpected(let reason) {
-                                log.error("Failed to create event: \(reason)")
+                        
+                        if hasSelectedVenue {
+                            Button(action: { self.showVenuePicker.toggle() }) {
+                                Text("Edit Venue(s)")
+                                    .italic()
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 2.5)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundStyle(Color.gray.opacity(0.2))
+                                    }
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                    }
                             }
-                        } }) {
-                            LoadingButton(text: "Create Event", width: 150, status: $manager.status)
-                                .padding(.horizontal, 40)
                         }
-                    }.padding(.vertical, 50)
-                }
-                .onChange(of: manager.startDate) { _, v in
-                    if v > manager.endDate {
-                        manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
                     }
-                }
-                .onChange(of: manager.endDate) { _, v in
-                    if v < manager.startDate {
-                        manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
+                    
+                    if hasSelectedVenue {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
+                            ForEach(manager.selectedVenueDescriptors, id: \.self) {
+                                VenueDescriptorView(item: $0)
+                            }
+                        }
                     } else {
-                        manager.endDate = v
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.gray.opacity(0.2))
+                            .frame(height: 100)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            }
+                            .overlay {
+                                Text("Pick a location")
+                            }
+                            .onTapGesture {
+                                self.showVenuePicker.toggle()
+                            }
+                    }
+                    
+                    if !hasSelectedVenue {
+                        Text("*required")
+                            .foregroundStyle(.gray)
                     }
                 }
-                .task {
-                    guard let select = session.selectedGroup else {
-                        return
-                    }
-                    if !manager.organizers.contains(where: { $0.id == select.id }) {
-                        manager.organizers.append(select)
+                .padding(.top)
+                .padding(.horizontal)
+                .fullScreenCover(isPresented: $showVenuePicker) {
+                    EventVenuePickerView(manager: manager)
+                        .environment(session)
+                }
+                .id(3)
+                
+                // MARK: - Start Date/Time picker
+                VStack(alignment: .leading){
+                    Text("Start Date/Time")
+                        .font(.headline)
+                        .bold()
+                    
+                    Button(action: {
+                        titleFocus = false
+                        descriptionFocus = false
+                        self.showStartTimePicker.toggle()
+                    }) {
+                        Text(startTimeString)
+                            .modifier(InputField())
                     }
                 }
-                .sheet(isPresented: $showPostViolation, content: {
-                    PostMediaViolation()
+                .padding()
+                .sheet(isPresented: $showStartTimePicker, content: {
+                    EventDatePickerView(eventTime: $manager.startDate)
+                        .presentationDetents([.medium])
                 })
+                .id(4)
+                
+                // MARK: - End Date/Time picker
+                VStack(alignment: .leading){
+                    Text("End Date/Time")
+                        .font(.headline)
+                        .bold()
+                    
+                    Button(action: {
+                        titleFocus = false
+                        descriptionFocus = false
+                        self.showStopTimePicker.toggle()
+                    }) {
+                        Text(stopTimeString)
+                            .modifier(InputField())
+                    }
+                }
+                .padding(.horizontal)
+                .sheet(isPresented: $showStopTimePicker, content: {
+                    EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
+                        .presentationDetents([.medium])
+                })
+                
+                // MARK: - Background Image picker
+                NewEventImagePicker()
+                    .padding([.top, .horizontal])
+                    .environment(manager)
+                
+                // MARK: - Event Tags Picker
+                NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
+                    .padding([.top, .horizontal])
+                
+                HStack {
+                    Spacer()
+                    
+                    NavigationLink(destination: NewEventAdvancedSettings().environment(manager)) {
+                        Text("Advanced Settings")
+                            .fontWeight(.bold)
+                        Image(systemName: "gearshape.fill")
+                    }.padding()
+                }
+                
+                
+                // MARK: - Action Button
+                VStack(alignment: .center){
+                    Button(action: { Task {
+                        do {
+                            try await createEvent(value: value)
+                        } catch MediaUploadError.innapropriateContent {
+                            self.showPostViolation.toggle()
+                        } catch MediaUploadError.unexpected(let reason) {
+                            log.error("Failed to create event: \(reason)")
+                        }
+                    } }) {
+                        LoadingButton(text: "Create Event", width: 150, status: $manager.status)
+                            .padding(.horizontal, 40)
+                    }
+                }.padding(.vertical, 50)
             }
+            .onChange(of: manager.startDate) { _, v in
+                if v > manager.endDate {
+                    manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
+                }
+            }
+            .onChange(of: manager.endDate) { _, v in
+                if v < manager.startDate {
+                    manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
+                } else {
+                    manager.endDate = v
+                }
+            }
+            .task {
+                guard let select = session.selectedGroup else {
+                    return
+                }
+                if !manager.organizers.contains(where: { $0.id == select.id }) {
+                    manager.organizers.append(select)
+                }
+            }
+            .sheet(isPresented: $showPostViolation, content: {
+                PostMediaViolation()
+            })
         }
     }
 }

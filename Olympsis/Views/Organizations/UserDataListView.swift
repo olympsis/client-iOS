@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserDataListView: View {
     
-    @State var data: UserData
+    @State var data: User
     @State private var status: LOADING_STATE = .pending
     @Environment(SessionStore.self) private var session
     

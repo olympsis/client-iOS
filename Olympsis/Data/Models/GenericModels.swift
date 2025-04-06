@@ -8,6 +8,13 @@
 import Foundation
 import MapKit
 
+enum Gender: String, CaseIterable {
+    case Male = "male"
+    case Female = "female"
+    case NonBinary = "non_binary"
+    case PreferNotToSay = "prefer_not_to_say"
+}
+
 struct Invitation: Decodable {
     var id: String?
     var type: String
@@ -245,7 +252,7 @@ class Member: Codable, Identifiable, ObservableObject {
         }
     }
     
-    func checkBlockStatus(_ user: UserData) {
+    func checkBlockStatus(_ user: User) {
         guard let blockedUsers = user.blockedUsers,
               let data = self.user,
               let memberUID = data.uuid else {
@@ -270,13 +277,13 @@ class MemberDao: Codable, Identifiable {
     let id: String?
     let uuid: String
     let role: String
-    let data: UserData?
+    let data: User?
     let joinedAt: Date?
     
     init(id: String?,
          uuid: String,
          role: String,
-         data: UserData?,
+         data: User?,
          joinedAt: Date?) {
         
         self.id = id
@@ -301,7 +308,7 @@ class MemberDao: Codable, Identifiable {
         id = try container.decodeIfPresent(String.self, forKey: .id)
         uuid = try container.decode(String.self, forKey: .uuid)
         role = try container.decode(String.self, forKey: .role)
-        data = try container.decodeIfPresent(UserData.self, forKey: .data)
+        data = try container.decodeIfPresent(User.self, forKey: .data)
         
         // Create date formatter for ISO8601 format
         let dateFormatter = DateFormatter()

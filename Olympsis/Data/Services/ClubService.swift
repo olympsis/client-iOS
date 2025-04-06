@@ -24,6 +24,7 @@ class ClubService {
         #endif
     }
     
+    @MainActor
     func getClubs(c: String, s: String, l: GeoJSON?=nil, r: Double?=nil, tags: String?=nil, sports: String?=nil) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         var queries = [

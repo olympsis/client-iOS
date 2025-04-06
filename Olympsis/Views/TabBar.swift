@@ -53,14 +53,14 @@ struct TabBar: View {
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .map
-                        if currentTab == .map {
+                        currentTab = .events
+                        if currentTab == .events {
                             eventRouter.navigateToRoot()
                         }
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .map ? "calendar.circle.fill" : "calendar")
+                        Image(systemName: currentTab == .events ? "calendar.circle.fill" : "calendar")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
                             .foregroundColor(.foreground)

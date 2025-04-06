@@ -102,7 +102,7 @@ class NewEventManager {
         }
     }
     
-    func createEvent(user: UserData) async throws -> Event? {
+    func createEvent(user: User) async throws -> Event? {
         guard let dto = generateEventDTO() else {
             return nil
         }
@@ -179,6 +179,7 @@ class NewEventManager {
     func generateEventDTO() -> NewEventDao? {
         guard !self.title.isEmpty,
               !self.body.isEmpty,
+              (self.selectedImageData != nil || self.image != ""),
               !self.selectedVenueDescriptors.isEmpty,
               self.organizers.count > 0 else {
             log.error("Failed to generate new event: invalid data")
@@ -192,8 +193,8 @@ class NewEventManager {
             mediaType: .image,
             title: self.title,
             body: self.body,
-            tags: self.tags.map { $0.name },
-            sports: self.sports.map { $0.name.components(separatedBy: " ")[1] },
+            tags: self.selectedTags.map { $0.name },
+            sports: self.selectedSports.map { $0.name.components(separatedBy: " ")[1] },
             formatConfig: self.formatConfig,
             startTime: self.startDate,
             stopTime: self.endDate,
@@ -214,7 +215,7 @@ class NewEventManager {
     /// - Parameter user: The user's information to add in a new participant
     ///
     /// - Returns:  An optional `Event` object
-    func generateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
+    func generateNewEvent(id: String, dao: EventDao, user: User) -> Event? {
         guard let organizers = dao.organizers,
               let venues = dao.venues,
               let mediaURL = dao.mediaURL,

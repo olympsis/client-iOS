@@ -190,9 +190,9 @@ struct Events: View {
             })
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                 switch route {
-                case .events(let eventId, let openEvents):
-                    if let eventId {
-                        AsyncEventView(eventId: eventId)
+                case .events(let id, let openEvents):
+                    if let id {
+                        AsyncEventView(eventId: id)
                             .toolbar(.hidden, for: .navigationBar)
                     } else if openEvents != nil && openEvents == true {
                         EventsList(events: Array(session.events))

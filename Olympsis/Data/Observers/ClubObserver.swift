@@ -11,7 +11,7 @@ import Foundation
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class ClubObserver: ObservableObject{
     
-    static let shared = ClubObserver()
+    @MainActor static let shared = ClubObserver()
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "club_observer")
     private let decoder = JSONDecoder()
@@ -23,6 +23,7 @@ class ClubObserver: ObservableObject{
     /// Calls the club service to get fields based on certain params
     /// - Parameter location: `[String]` latitude, longitude
     /// - Parameter descritiveLocation: `[String]` city, state, country
+    @MainActor
     func getClubs(country: String, state: String, location: GeoJSON? = nil, radius: Double? = nil, tags: String? = nil, sports: String? = nil) async -> [Club]? {
         do {
             let (data, res) = try await clubService.getClubs(c: country, s: state, l: location, r: radius, tags: tags, sports: sports)

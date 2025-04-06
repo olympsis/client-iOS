@@ -19,7 +19,7 @@ struct NotificationModel: Decodable {
     var event: Event?
     var organization: Organization?
     var invite: Invitation?
-    var user: UserData?
+    var user: User?
     var body: String
 }
 

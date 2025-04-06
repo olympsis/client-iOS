@@ -319,11 +319,11 @@ struct ApplicationUpdateRequest: Codable {
 
 class ClubApplication: Codable, Identifiable {
     let id: String
-    let applicant: UserData?
+    let applicant: User?
     let status: String
     let createdAt: Date
     
-    init(id: String, applicant: UserData?, status: String, createdAt: Date) {
+    init(id: String, applicant: User?, status: String, createdAt: Date) {
         self.id = id
         self.applicant = applicant
         self.status = status
@@ -341,7 +341,7 @@ class ClubApplication: Codable, Identifiable {
         
         // Decode regular properties
         id = try container.decode(String.self, forKey: .id)
-        applicant = try container.decodeIfPresent(UserData.self, forKey: .applicant)
+        applicant = try container.decodeIfPresent(User.self, forKey: .applicant)
         status = try container.decode(String.self, forKey: .status)
         
         // Handle date decoding with multiple formats

@@ -37,7 +37,7 @@ class SessionStore {
     
     var clubsState: LOADING_STATE = .pending
     
-    var user: UserData?              // User data Cache
+    var user: User?              // User data Cache
     
     var clubs: Set<Club> = []
     var orgs: Set<Organization> = []

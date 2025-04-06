@@ -452,13 +452,13 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(tags, forKey: .tags)
         try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
-        try container.encodeIfPresent(startTime, forKey: .startTime)
-        try container.encodeIfPresent(stopTime, forKey: .stopTime)
+        try container.encodeIfPresent(startTime?.ISO8601Format(), forKey: .startTime)
+        try container.encodeIfPresent(stopTime?.ISO8601Format(), forKey: .stopTime)
         try container.encodeIfPresent(participantsConfig, forKey: .participantsConfig)
         try container.encodeIfPresent(participants, forKey: .participants)
         try container.encodeIfPresent(teamsConfig, forKey: .teamsConfig)
         try container.encodeIfPresent(teams, forKey: .teams)
-        try container.encodeIfPresent(visibility?.rawValue, forKey: .visibility)
+        try container.encodeIfPresent(visibility?.toInt(), forKey: .visibility)
         try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
         try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
         try container.encodeIfPresent(canceledAt?.ISO8601Format(), forKey: .canceledAt)
@@ -558,7 +558,7 @@ class EventRecurrenceOptions: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(pattern.rawValue, forKey: .pattern)
-        try container.encode(endTime, forKey: .endTime)
+        try container.encode(endTime.ISO8601Format(), forKey: .endTime)
         try container.encode(interval, forKey: .interval)
     }
     
@@ -703,8 +703,8 @@ class EventFormatConfig: Codable {
             try container.encode(jsonString, forKey: .bracketData)
         }
         
-        try container.encodeIfPresent(registrationStart, forKey: .registrationStart)
-        try container.encodeIfPresent(registrationEnd, forKey: .registrationEnd)
+        try container.encodeIfPresent(registrationStart?.ISO8601Format(), forKey: .registrationStart)
+        try container.encodeIfPresent(registrationEnd?.ISO8601Format(), forKey: .registrationEnd)
         try container.encodeIfPresent(allowLateRegistration, forKey: .allowLateRegistration)
     }
 }
@@ -734,23 +734,11 @@ class EventRecurrenceConfig: Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Create date formatter for ISO8601 format
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
         recurrenceRule = try container.decodeIfPresent(String.self, forKey: .recurrenceRule)
         
         // Handle date decoding with string support
-        if let endString = try container.decodeIfPresent(String.self, forKey: .recurrenceEnd),
-           let parsedDate = dateFormatter.date(from: endString) {
-            recurrenceEnd = parsedDate
-        } else if let endInt = try container.decodeIfPresent(Int.self, forKey: .recurrenceEnd) {
-            recurrenceEnd = Date(timeIntervalSince1970: TimeInterval(endInt))
-        } else {
-            recurrenceEnd = try container.decodeIfPresent(Date.self, forKey: .recurrenceEnd)
+        if let endString = try container.decodeIfPresent(String.self, forKey: .recurrenceEnd) {
+            recurrenceEnd = try parseDate(from: endString)
         }
         
         parentEventID = try container.decodeIfPresent(String.self, forKey: .parentEventID)
@@ -760,7 +748,7 @@ class EventRecurrenceConfig: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(recurrenceRule, forKey: .recurrenceRule)
-        try container.encodeIfPresent(recurrenceEnd, forKey: .recurrenceEnd)
+        try container.encodeIfPresent(recurrenceEnd?.ISO8601Format(), forKey: .recurrenceEnd)
         try container.encodeIfPresent(parentEventID, forKey: .parentEventID)
         try container.encodeIfPresent(deletedInstances, forKey: .deletedInstances)
     }
@@ -1281,7 +1269,7 @@ extension [Event] {
         guard self.count > 0 else {
             return nil
         }
-        var filtered = self
+        let filtered = self
             .filter { $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
             .sorted { ($0.startTime) < ($1.startTime) }
         

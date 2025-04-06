@@ -106,9 +106,9 @@ func handleEventsURL(_ route: ROUTES, router: EventRouter) {
     switch route {
     case .home, .groups, .profile:
         return
-    case .events(let eventId, _):
-        if let eventId {
-            router.navigate(to: .events(eventId: eventId))
+    case .events(let id, _):
+        if let id {
+            router.navigate(to: .events(ID: id))
         }
         return
     }

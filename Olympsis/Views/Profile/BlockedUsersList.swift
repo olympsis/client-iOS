@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BlockedUsersList: View {
     
-    @State private var blockedUsers = [UserData]()
+    @State private var blockedUsers = [User]()
     @State private var state: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
@@ -18,7 +18,7 @@ struct BlockedUsersList: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "blocked_users_list_view")
     
-    func unBlock(usr: UserData) async {
+    func unBlock(usr: User) async {
         guard let user = session.user,
               let uuid = usr.uuid else {
             log.error("Failed to get required data from session store to un-block user")

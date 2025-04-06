@@ -24,25 +24,33 @@ class AuthObserver: ObservableObject {
     
     func Register(firstName:String, lastName:String, email:String, token: String) async throws {
         let req = AuthRequest(firstName: firstName, lastName: lastName, email: email, token: token)
-        let (_, resp) = try await authService.Register(request: req)
+        let (_, resp) = try await authService.register(request: req)
         guard (resp as? HTTPURLResponse)?.statusCode == 200  else {
-            log.error("Failed to register user")
             return
         }
     }
     
     func Login(token: String) async throws {
         let req = AuthRequest(token: token)
-        let (data, _) = try await authService.LogIn(request: req)
-        let object = try decoder.decode(UserData.self, from: data)
+        let (data, _) = try await authService.login(request: req)
+        let object = try decoder.decode(User.self, from: data)
         
         // store user data
         cacheService.cacheUser(user: object)
     }
     
+    func updateUser(_ dao: AuthUserDao) async throws -> Bool {
+        let (_, resp) = try await authService.modify(request: dao)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return false
+        }
+        
+        return true
+    }
+    
     func deleteAccount() async throws -> Bool {
         // clear server data
-        let (_, resp) = try await authService.DeleteAccount()
+        let (_, resp) = try await authService.deleteAccount()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             log.error("Failed to delete remote user data")
             return false
@@ -88,7 +96,7 @@ class AuthObserver: ObservableObject {
                         }
                         
                         try await Register(firstName: firstName, lastName: lastName, email: email, token: token)
-                        cacheService.cacheUser(user: UserData(firstName: firstName, lastName: lastName))
+                        cacheService.cacheUser(user: User(firstName: firstName, lastName: lastName))
                         
                         return USER_STATUS.new
                     } catch {

@@ -11,7 +11,7 @@ import SwiftUI
 struct OrgManagerInvite: View {
     
     @State private var text = ""
-    @State private var users: [UserData] = [UserData]()
+    @State private var users: [User] = [User]()
     @State private var log = Logger(subsystem: "com.olympsis.client", category: "org_manager_invite_view")
     
     @Environment(\.dismiss) private var dismiss

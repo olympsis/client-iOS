@@ -34,7 +34,7 @@ struct ViewContainer: View {
             currentTab = .club
             handleGroupsURL(route, router: groupRouter)
         case .events:
-            currentTab = .map
+            currentTab = .events
             handleEventsURL(route, router: eventRouter)
         case .profile:
             currentTab = .profile
@@ -54,7 +54,7 @@ struct ViewContainer: View {
                     .toolbar(.hidden, for: .tabBar)
                 
                 Events(router: eventRouter)
-                    .tag(ViewTab.map)
+                    .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Activity()

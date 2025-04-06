@@ -43,17 +43,15 @@ enum USER_STATUS: String, CaseIterable {
 enum ViewTab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
-    case map = "Map"
+    case events = "Events"
     case activity = "Activity"
     case profile = "Setting"
 }
 
 enum AuthTab: String, CaseIterable {
     case auth = "AUTH"
-    case username = "USERNAME"
-    case sports = "SPORTS"
-    case location = "LOCATION"
-    case notifications = "NOTIFICATIONS"
+    case info = "USER_INFO"
+    case sports = "USER_SPORTS"
 }
 
 enum EVENTS_PAGE_STATE: String, CaseIterable {
@@ -131,7 +129,7 @@ enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
 
 enum EVENT_ROUTES: Codable, Hashable {
     case events(
-        eventId: String?=nil,
+        ID: String?=nil,
         openEvents: Bool?=nil
     )
     case settings

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserData: Codable, Hashable {
+struct User: Codable, Hashable {
     var uuid: String?
     var username: String?
     let firstName: String?
@@ -27,7 +27,7 @@ struct UserData: Codable, Hashable {
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
     
-    static func == (lhs: UserData, rhs: UserData) -> Bool {
+    static func == (lhs: User, rhs: User) -> Bool {
         guard let lhsID = lhs.uuid,
               let rhsID = rhs.uuid else {
             return false
@@ -141,7 +141,7 @@ struct UsernameAvailabilityResponse: Codable {
 
 struct UsersDataResponse: Codable {
     let totalUsers: Int
-    let users: [UserData]
+    let users: [User]
     
     enum CodingKeys: String, CodingKey {
         case totalUsers = "total_users"
@@ -150,7 +150,7 @@ struct UsersDataResponse: Codable {
 }
 
 struct CheckIn: Decodable {
-    let user: UserData?
+    let user: User?
     let clubs: [Club]?
     let organizations: [Organization]?
     let invitations: [Invitation]?

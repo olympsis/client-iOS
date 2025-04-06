@@ -14,7 +14,7 @@ struct FindingEvents: View {
             VStack {
                 Text("Finding Events")
                     .bold()
-                    .font(.custom("ITCAvantGardeStd-Bold", size: 25, relativeTo: .largeTitle))
+                    .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                 Text("Where's pickup at?")
                     .font(.subheadline)
                 

@@ -64,9 +64,8 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Text("Olympsis")
-                        .italic()
-                        .font(.largeTitle)
-                        .fontWeight(.black)
+                        .textCase(.uppercase)
+                        .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {

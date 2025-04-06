@@ -20,9 +20,9 @@ struct AuthView: View {
     @State private var state: LOADING_STATE = .pending
     @State private var nonce: String = randomNonceString()
     
-    @StateObject private var observer = AuthObserver()
-    @StateObject private var cacheService = CacheService()
-    @State private var managementService = ManagementService()
+    private let observer = AuthObserver()
+    private let cacheService = CacheService()
+    private let managementService = ManagementService()
     
     @Environment(SessionStore.self) var session
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
@@ -42,16 +42,16 @@ struct AuthView: View {
             VStack {
                 VStack {
                     Text("Olympsis")
-                        .bold()
-                        .font(.title)
-                        .foregroundColor(.white)
                         .padding(.top, 25)
                         .padding(.bottom, 5)
-                    Text(String(localized: "Slogan", table: "General"))
-                        .padding(.horizontal)
-                        .multilineTextAlignment(.center)
-                        .font(.title3)
                         .foregroundColor(.white)
+                        .font(.custom("Archivo-Black", size: 25, relativeTo: .title))
+                    
+                    Text(String(localized: "Slogan", table: "General"))
+                        .font(.title3)
+                        .padding(.horizontal)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                 }.frame(width: SCREEN_WIDTH)
                 
                 
@@ -72,7 +72,7 @@ struct AuthView: View {
                                     let resp = try await observer.handleSignInWithApple(result: result, nonce: nonce)
                                     if resp == USER_STATUS.new {
                                         withAnimation {
-                                            currentView = .username
+                                            currentView = .info
                                         }
                                     } else if resp == USER_STATUS.returning {
                                         withAnimation {

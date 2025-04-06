@@ -23,17 +23,22 @@ class AuthService {
         #endif
     }
     
-    func Register(request: AuthRequest) async throws -> (Data, URLResponse) {
+    func register(request: AuthRequest) async throws -> (Data, URLResponse) {
         let endpoint = Endpoint("/v1/auth/register")
         return try await http.Request(.POST, endpoint, body: EncodeToData(request))
     }
     
-    func LogIn(request: AuthRequest) async throws -> (Data, URLResponse){
+    func login(request: AuthRequest) async throws -> (Data, URLResponse){
         let endpoint = Endpoint("/v1/auth/login")
         return try await http.Request(.POST, endpoint, body: EncodeToData(request))
     }
     
-    func DeleteAccount() async throws -> (Data, URLResponse){
+    func modify(request: AuthUserDao) async throws -> (Data, URLResponse){
+        let endpoint = Endpoint("/v1/auth/modify")
+        return try await http.Request(.POST, endpoint, body: EncodeToData(request))
+    }
+    
+    func deleteAccount() async throws -> (Data, URLResponse){
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/auth/delete")
         return try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])

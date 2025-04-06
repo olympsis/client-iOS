@@ -50,7 +50,7 @@ class NewPostViewModel: ObservableObject {
      - Returns:
         an optional `Post` object in case we fail to create the post
      */
-    func createPost(groupId: String, user: UserData) async throws -> Post? {
+    func createPost(groupId: String, user: User) async throws -> Post? {
         
         await MainActor.run {
             self.status = .loading
@@ -187,7 +187,7 @@ class NewPostViewModel: ObservableObject {
      - Returns:
         an optional `Post`object if the user data is valid
      */
-    func generateNewPost(id: String, user: UserData, dto: PostDTO) -> Post? {
+    func generateNewPost(id: String, user: User, dto: PostDTO) -> Post? {
         guard let uuid = user.uuid,
               let username = user.username else {
                   return nil
