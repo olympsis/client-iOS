@@ -399,7 +399,7 @@ struct NewEvent: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink(destination: NewEventAdvancedSettings().environment(manager)) {
+                    Button(action: { self.showAdvancedSettings.toggle() }) {
                         Text("Advanced Settings")
                             .fontWeight(.bold)
                         Image(systemName: "gearshape.fill")
@@ -436,6 +436,10 @@ struct NewEvent: View {
                     manager.endDate = v
                 }
             }
+            .fullScreenCover(isPresented: $showAdvancedSettings, content: {
+                NewEventAdvancedSettings()
+                    .environment(manager)
+            })
             .sheet(isPresented: $showPostViolation, content: {
                 PostMediaViolation()
             })

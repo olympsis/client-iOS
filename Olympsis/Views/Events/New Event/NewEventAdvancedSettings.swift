@@ -20,6 +20,19 @@ struct NewEventAdvancedSettings: View {
     
     var body: some View {
         VStack {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                }
+                
+                Spacer()
+                
+                Text("Advanced Settings")
+                    .fontWeight(.medium)
+                
+            }.padding(.horizontal)
+            
             ScrollView {
                 MenuButton(icon: Image(systemName: "slider.vertical.3"), text: "Event Formatting") {
                     showEventFormat.toggle()
@@ -63,7 +76,6 @@ struct NewEventAdvancedSettings: View {
             }
             
         }
-        .navigationTitle("Advanced Settings")
     }
 }
 
