@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ClubToolbar: ToolbarContent {
     
@@ -16,6 +17,31 @@ struct ClubToolbar: ToolbarContent {
     @Binding var showMessages: Bool
     @Binding var status: LOADING_STATE
     @Environment(SessionStore.self) private var session
+    
+    private var selectedGroupType: GROUP_TYPE {
+        guard let selectedGroup = session.selectedGroup else {
+            return .Club
+        }
+        
+        return selectedGroup.club != nil ? .Club : .Organization
+    }
+    
+    private var selectedGroupName: String {
+        guard let selectedGroup = session.selectedGroup,
+                let name = selectedGroup.club?.name ?? selectedGroup.organization?.name else {
+            return "Clubs"
+        }
+        
+        return name
+    }
+    
+    private var selecteGroupLogo: URL? {
+        guard let selectedGroup = session.selectedGroup,
+              let logo = selectedGroup.club?.logo ?? selectedGroup.organization?.logo else {
+            return nil
+        }
+        return URL(string: GenerateImageURL(logo))
+    }
     
     var body: some ToolbarContent {
         if status == .loading {
@@ -65,11 +91,11 @@ struct ClubToolbar: ToolbarContent {
                     } label: {
                         HStack {
                             VStack {
-                                Text(myClubs[index].name)
-                                    .font(.title)
+                                Text(selectedGroupName)
                                     .bold()
-                                    .minimumScaleFactor(0.5)
+                                    .font(.title)
                                     .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             }
                             Image(systemName: "chevron.down")
                                 .fontWeight(.bold)
@@ -92,19 +118,7 @@ struct ClubToolbar: ToolbarContent {
                     }
                     
                     Button(action:{ self.showMenu.toggle() }) {
-                        AsyncImage(url: URL(string: GenerateImageURL((myClubs[index].logo ?? "")))){ image in
-                            image.resizable()
-                                .clipShape(Circle())
-                                .frame(width: 30, height: 30)
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                                
-                        } placeholder: {
-                            Circle()
-                                .foregroundColor(.gray)
-                                .opacity(0.3)
-                                .frame(width: 30)
-                        }
+                        GroupBadgeView(size: .small, type: selectedGroupType)
                     }
                 }
             }

@@ -47,7 +47,7 @@ struct OrganizationView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         HStack {
-                            Text(org.name ?? "")
+                            Text(org.name)
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .lineLimit(1)

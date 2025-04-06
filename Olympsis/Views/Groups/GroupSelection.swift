@@ -8,12 +8,13 @@
 import SwiftUI
 import Foundation
 
-class GroupSelection: ObservableObject, Identifiable, Equatable {
+@Observable
+class GroupSelection: Identifiable, Equatable {
     let id = UUID()
     let type: GROUP_TYPE
     let club: Club?
     let organization: Organization?
-    @Published var posts: [Post]?
+    var posts: [Post]?
     
     init(type: GROUP_TYPE, club: Club?=nil, organization: Organization?=nil, posts: [Post]? = nil) {
         self.type = type

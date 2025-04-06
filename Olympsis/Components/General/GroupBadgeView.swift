@@ -45,7 +45,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "person.2.fill")
                                         .resizable()
                                         .frame(width: 18, height: 13)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Brand.primary)
                                 case .Organization:
                                     Image(systemName: "building.fill")
                                         .resizable()
@@ -84,7 +84,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "person.2.fill")
                                         .resizable()
                                         .frame(width: 30, height: 20)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Brand.primary)
                                 case .Organization:
                                     Image(systemName: "building.fill")
                                         .resizable()
@@ -123,7 +123,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "person.2.fill")
                                         .resizable()
                                         .frame(width: 50, height: 35)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Brand.primary)
                                 case .Organization:
                                     Image(systemName: "building.fill")
                                         .resizable()
