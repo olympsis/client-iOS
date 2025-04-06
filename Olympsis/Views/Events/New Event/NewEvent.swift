@@ -150,16 +150,12 @@ struct NewEvent: View {
             return
         }
         
-        let event = try await manager.createEvent(user: user)
-        
-        guard let e = event else {
-            handleFailure()
+        guard let id = try await manager.createEvent(user: user),
+            let url = URL(string: "olympsis://event?id=\(id)") else {
+            dismiss()
             return
         }
-        
-        session.events.insert(e)
-        await notificationsManager.setEventLocalNotification(e)
-        dismiss()
+        openURL(url)
     }
     
     var body: some View {

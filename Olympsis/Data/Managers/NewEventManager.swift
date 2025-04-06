@@ -102,7 +102,7 @@ class NewEventManager {
         }
     }
     
-    func createEvent(user: User) async throws -> Event? {
+    func createEvent(user: User) async throws -> String? {
         guard let dto = generateEventDTO() else {
             return nil
         }
@@ -132,16 +132,20 @@ class NewEventManager {
                 return nil
             }
             
-            return generateNewEvent(id: id, dao: dto.event, user: user)
+            return id
         } else {
             guard let id = await eventObserver.createEvent(dao: dto) else {
-                if let img = dto.event.mediaURL {
-                    await deleteImage(image: img)
+                
+                // Only delete uploaded media data
+                if selectedImageData != nil {
+                    if let img = dto.event.mediaURL {
+                        await deleteImage(image: img)
+                    }
                 }
                 return nil
             }
             
-            return generateNewEvent(id: id, dao: dto.event, user: user)
+            return id
         }
     }
     

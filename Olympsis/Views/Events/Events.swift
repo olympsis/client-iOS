@@ -193,7 +193,6 @@ struct Events: View {
                 case .events(let id, let openEvents):
                     if let id {
                         AsyncEventView(eventId: id)
-                            .toolbar(.hidden, for: .navigationBar)
                     } else if openEvents != nil && openEvents == true {
                         EventsList(events: Array(session.events))
                     }

@@ -66,7 +66,7 @@ struct AsyncEventView: View {
                     Image("illustrations/sorry")
                         .resizable()
                         .frame(width: 250, height: 250)
-                    Text("Failed to get post.")
+                    Text("Failed to get Event.")
                         .fontWeight(.bold)
                     Button(action: { Task { await fetchEvent() }}) {
                         Text("Try again")
