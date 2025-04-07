@@ -29,7 +29,7 @@ struct EventsModalView: View {
                     .font(.system(.headline))
                 
                 Spacer()
-
+                
                 Button(action:{ self.showMoreEvents.toggle() }){
                     HStack {
                         Text("More")
@@ -59,7 +59,7 @@ struct EventsModalView: View {
                         .font(.callout)
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
-                        
+                    
                     Button(action: { self.showNewEvent.toggle() }) {
                         SimpleButtonLabel(text: "Create One")
                     }

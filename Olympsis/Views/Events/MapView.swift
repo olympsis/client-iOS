@@ -69,7 +69,7 @@ struct MapView: View {
                 UserAnnotation()
             }
             
-            DraggableCard(detents: [.height(50), .height(250), .fraction(0.5)]) {
+            DraggableCard(detents: [.height(50), .fraction(0.45), .fraction(0.75)]) {
                 EventsModalView(showNewEvent: $showNewEvent, showMoreEvents: $showNearbyEvents)
             }
         }

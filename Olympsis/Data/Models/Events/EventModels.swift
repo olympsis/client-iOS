@@ -595,38 +595,24 @@ extension [Event] {
     
     /// Returns the most recent event for the user
     func mostRecentForUser(uuid: String) -> Event? {
-        guard self.count > 0 else {
-            return nil
-        }
-        let filtered = self
+        return self
             .filter { $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
-            .sorted { ($0.startTime) < ($1.startTime) }
-        
-        guard filtered.count > 0 else {
-            return nil
-        }
-        
-        return filtered.first
+            .sorted { $0.startTime < $1.startTime }
+            .first
     }
     
     /// Returns a filtered array of the events by club ID
-    func filterByGroupID(id: String) -> [Event]? {
-        guard self.count > 0 else {
-            return nil
-        }
-        
-        let filtered = self.filter { $0.organizers.contains(where: { $0.id == id }) }
-        guard filtered.count > 0 else {
-            return nil
-        }
-        
-        return filtered.sorted { $0.startTime < $1.startTime }
+    func filterByGroupID(id: String) -> [Event] {
+        return self
+            .filter { $0.organizers.contains(where: { $0.id == id }) }
+            .sorted { $0.startTime < $1.startTime }
     }
     
     /// Returns an array of Day Group structs that groups events by their start dates
     func eventsGroupedByDay() -> [DayGroup] {
         var groups: [DayGroup] = [DayGroup]();
         self
+            .sorted { $0.startTime < $1.startTime }
             .forEach { e in
                 let index = groups.firstIndex(where: {
                     areDatesOnSameDay(

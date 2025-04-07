@@ -32,25 +32,12 @@ struct GroupFeed: View {
     }
     
     var groupEvents: [Event] {
-        guard let selectedGroup = session.selectedGroup else {
-            return [Event]()
+        guard let selectedGroup = session.selectedGroup,
+              let id = selectedGroup.club?.id ?? selectedGroup.organization?.id else {
+            return []
         }
-        switch selectedGroup.type {
-        case .Club:
-            return session.events.filter { event in
-                guard let club = selectedGroup.club else {
-                    return false
-                }
-                return event.organizers.contains(where: { $0.id == club.id  || club.parent?.id == $0.id})
-            }
-        case .Organization:
-            return session.events.filter { event in
-                guard let org = selectedGroup.organization else {
-                    return false
-                }
-                return event.organizers.contains(where: { $0.id == org.id })
-            }
-        }
+        
+        return Array(session.events).filterByGroupID(id: id)
     }
     
     func isPinned(post: Post) -> Bool {

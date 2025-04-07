@@ -81,6 +81,8 @@ struct DraggableCard<Content: View>: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: currentHeight)
+                .background(Color(.systemBackground))
+                .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
                 .gesture(
                     DragGesture(minimumDistance: 5, coordinateSpace: .global)
                         .updating($isDragging) { _, state, _ in
