@@ -251,7 +251,7 @@ struct EventActionButtons: View {
                 .disabled(state == .loading ? true : false)
                 .disabled(event.getEventStatus() == .ended ? true : false)
             } else {
-                Button(action: { Task { await cancel() }}) {
+                Button(action: { cancel() }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 80)

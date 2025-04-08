@@ -21,7 +21,7 @@ struct UserBadgeView: View {
                 .placeholder({
                     Circle()
                         .frame(width: 35, height: 35)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.Background.secondary)
                         .overlay {
                             ProgressView()
                         }
@@ -36,7 +36,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 35, height: 35)
-                            .foregroundStyle(Color.gray.opacity(0.3))
+                            .foregroundStyle(Color.Background.secondary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -47,12 +47,16 @@ struct UserBadgeView: View {
                 }
                 .clipShape(Circle())
                 .frame(width: 35, height: 35)
+                .overlay {
+                    Circle()
+                        .stroke(Color.primary.opacity(0.3), lineWidth: 1)
+                }
         case .medium:
             KFImage(imageURL)
                 .placeholder({
                     Circle()
                         .frame(width: 65, height: 65)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.Background.secondary)
                         .overlay {
                             ProgressView()
                         }
@@ -67,7 +71,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 65, height: 65)
-                            .foregroundStyle(Color.gray.opacity(0.3))
+                            .foregroundStyle(Color.Background.secondary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -78,12 +82,16 @@ struct UserBadgeView: View {
                 }
                 .clipShape(Circle())
                 .frame(width: 65, height: 65)
+                .overlay {
+                    Circle()
+                        .stroke(Color.primary.opacity(0.3), lineWidth: 1)
+                }
         case .large:
             KFImage(imageURL)
                 .placeholder({
                     Circle()
                         .frame(width: 100, height: 100)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.Background.secondary)
                         .overlay {
                             ProgressView()
                         }
@@ -98,7 +106,7 @@ struct UserBadgeView: View {
                     if imageFailed {
                         Circle()
                             .frame(width: 100, height: 100)
-                            .foregroundStyle(Color.gray.opacity(0.3))
+                            .foregroundStyle(Color.Background.secondary)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -109,6 +117,10 @@ struct UserBadgeView: View {
                 }
                 .clipShape(Circle())
                 .frame(width: 100, height: 100)
+                .overlay {
+                    Circle()
+                        .stroke(Color.primary.opacity(0.3), lineWidth: 1)
+                }
         }
     }
 }

@@ -47,7 +47,7 @@ struct ClubListItemMedia: View {
     var body: some View {
         KFImage(bannerURL)
             .placeholder {
-                Rectangle()
+                Circle()
                     .foregroundStyle(Color.Background.secondary)
                     .overlay(alignment: .center) {
                         Image(systemName: "photo")
@@ -56,12 +56,12 @@ struct ClubListItemMedia: View {
             }
             .resizable()
             .scaledToFill()
-            .frame(height: 200)
+            .frame(height: 150)
             .clipped()
             .overlay(alignment: .topLeading) {
                 KFImage(logoURL)
                     .placeholder {
-                        Rectangle()
+                        Circle()
                             .foregroundStyle(Color.Background.tertiary)
                             .overlay(alignment: .center) {
                                 Image(systemName: "person.2.fill")
@@ -71,12 +71,12 @@ struct ClubListItemMedia: View {
                     .resizable()
                     .scaledToFill()
                     .clipped()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 70, height: 70)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 10)
+                        Circle()
                             .stroke(.thinMaterial, lineWidth: 5)
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .clipShape(Circle())
                     .padding()
             }
             .overlay(alignment: .bottomTrailing) {

@@ -190,7 +190,7 @@ struct Events: View {
             })
             .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                 switch route {
-                case .events(let id, let openEvents):
+                case .events(let id, _):
                     if let id {
                         AsyncEventView(eventId: id)
                     } else {

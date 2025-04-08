@@ -52,7 +52,7 @@ struct ClubMenu: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                     
-                ClubBanner()
+                ClubLogoBanner()
                     .environmentObject(club)
                 
                 VStack {

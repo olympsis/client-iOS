@@ -183,7 +183,7 @@ struct GroupFeed: View {
                     PostCreator(type: .Post, groupId: club.id)
                         .environmentObject(viewModel)
                 } else if let org = group.organization {
-                    PostCreator(type: .Post, groupId: org.id ?? "")
+                    PostCreator(type: .Post, groupId: org.id)
                         .environmentObject(viewModel)
                 }
             }

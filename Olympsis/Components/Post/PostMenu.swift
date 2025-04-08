@@ -61,7 +61,7 @@ struct PostMenu: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return ((club.pinnedPosts.contains(where: { $0 == post.id })) != nil)
+            return (club.pinnedPosts.contains(where: { $0 == post.id }))
         } else {
             guard let org = selectedGroup.organization else {
                 return false

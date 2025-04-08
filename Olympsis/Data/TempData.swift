@@ -60,7 +60,7 @@ let CLUBS = [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
-    ], rules: [], pinnedPosts: [POSTS[0].id], createdAt: Date(timeIntervalSince1970: 1639364779)),
+    ], rules: [], tags: ["casual", "beginner-friendly", "outdoor", "indoor"], pinnedPosts: [POSTS[0].id], createdAt: Date(timeIntervalSince1970: 1639364779)),
     Club(id: UUID().uuidString, parent: nil, name: "Lehi Soccer", logo: nil, banner: nil, sports: ["soccer"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil)
     ], rules: [], pinnedPosts: [POSTS[0].id], createdAt: Date(timeIntervalSince1970: 1639364779))

@@ -36,7 +36,7 @@ struct MemberReportView: View {
             groupID = club.id
         }
         if let org = selectedGroup.organization {
-            groupID = org.id ?? ""
+            groupID = org.id
         }
         state = .loading
         let report = MemberReportDao(memberID: member.id, groupID: groupID, type: issue, notes: notes)

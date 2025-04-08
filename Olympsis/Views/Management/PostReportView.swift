@@ -35,7 +35,7 @@ struct PostReportView: View {
             groupID = club.id
         }
         if let org = selectedGroup.organization {
-            groupID = org.id ?? ""
+            groupID = org.id
         }
         state = .loading
         let report = PostReportDao(postID: post.id, groupID: groupID, type: issue, notes: notes)
