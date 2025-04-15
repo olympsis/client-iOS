@@ -24,13 +24,32 @@ struct EventParticipants: View {
     
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
-    var participants: [Participant] {
+    private var participants: [Participant] {
         return event.participants
+    }
+    
+    private var eventState: EVENT_STATUS {
+        if (event.stopTime < Date()) {
+            return EVENT_STATUS.ended
+        }
+        
+        return event.startTime < Date() ? .pending : .live
+    }
+    
+    private var participantsStatus: String {
+        switch eventState {
+        case .ended:
+            return "Attended"
+        case .live:
+            return "Attending"
+        case .pending:
+            return "Going"
+        }
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(event.participants.count) Going")
+            Text("\(event.participants.count) \(participantsStatus)")
                 .font(.title2)
                 .fontWeight(.bold)
             

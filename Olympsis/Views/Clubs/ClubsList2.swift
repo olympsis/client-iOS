@@ -10,17 +10,16 @@ import SwiftUI
 struct ClubsList2: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
-        NavigationStack {
-            ClubsList()
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{ dismiss() }){
-                            Image(systemName: "chevron.left")
-                        }
-                    }
+        VStack {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Text("Back")
+                        .fontWeight(.medium)
                 }
-                .navigationBarBackButtonHidden()
-                .navigationBarTitleDisplayMode(.inline)
+                
+                Spacer()
+            }.padding(.horizontal)
+            ClubsList()
         }
     }
 }

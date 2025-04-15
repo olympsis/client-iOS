@@ -71,7 +71,7 @@ struct OrgMenu: View {
                     VStack {
                         HStack {
                             Image(systemName: "building.fill")
-                                .foregroundStyle(Color("color-prime"))
+                                .foregroundStyle(.primary)
                             Text("Organization")
                                 .font(.callout)
                             Spacer()
@@ -80,7 +80,7 @@ struct OrgMenu: View {
                             .padding(.top)
                         
                         HStack {
-                            Text("\(members.count)").foregroundColor(Color("color-prime"))
+                            Text("\(members.count)").foregroundStyle(.primary)
                             if (members.count > 1) {
                                 Text("managers")
                                     .font(.callout)
@@ -103,6 +103,14 @@ struct OrgMenu: View {
                     
                     MenuButton(icon: Image(systemName: "person.3.fill"), text: "Managers", action: {
                         self.showMembers.toggle()
+                    })
+                    
+                    MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
+                        self.showNewClub.toggle()
+                    })
+                    
+                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
+                        self.showClubs.toggle()
                     })
 
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Organization", action: {
@@ -138,6 +146,9 @@ struct OrgMenu: View {
             }
             .fullScreenCover(isPresented: $showMembers) {
                 ManagersListView(organization: organization)
+            }
+            .fullScreenCover(isPresented: $showClubs) {
+                ClubsList2()
             }
             .alert(isPresented: $showAlert) {
                 switch alertType {

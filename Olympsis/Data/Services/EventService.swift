@@ -75,6 +75,13 @@ class EventService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
+    func getUserPastEvents(uuid: String) async throws -> (Data, URLResponse){
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/past/user/\(uuid)", queryItems: [URLQueryItem]())
+        
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+    }
+    
     func createEvent(dao: NewEventDao) async throws -> (Data,URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events")

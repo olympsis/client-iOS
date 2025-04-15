@@ -41,8 +41,15 @@ struct GroupsEnrolled: View {
                 if (clubs.isEmpty) {
                     HStack {
                         Spacer()
-                        Text("No Clubs Enrolled")
-                            .padding(.top)
+                        VStack {
+                            Text("No Clubs Enrolled")
+                                .padding(.top)
+                            
+                            Text("Go join one!")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.gray)
+                        }
                         Spacer()
                     }
                 } else {
@@ -56,26 +63,20 @@ struct GroupsEnrolled: View {
             .padding()
             .frame(minHeight: 200)
             
-            VStack(alignment: .leading) {
-                Text("Organizations")
-                    .font(.title)
-                    .bold()
-                
-                if (organizations.isEmpty) {
-                    HStack {
-                        Spacer()
-                        Text("No Organizations Enrolled")
-                            .padding(.top)
-                        Spacer()
-                    }
-                } else {
+            if !organizations.isEmpty {
+                VStack(alignment: .leading) {
+                    Text("Organizations")
+                        .font(.title)
+                        .bold()
+                    
                     ForEach(organizations, id: \.id) { organization in
                         OrgListItem(organization: organization, showToast: .constant(false), showActions: false)
                     }
                 }
+                .padding()
+                .frame(minHeight: 200)
             }
-            .padding()
-            .frame(minHeight: 200)
+            
         }.frame(maxWidth: SCREEN_WIDTH)
     }
 }

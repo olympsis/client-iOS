@@ -48,6 +48,14 @@ struct EventActionButtons: View {
         return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
+    private var eventState: EVENT_STATUS {
+        if (event.stopTime < Date()) {
+            return EVENT_STATUS.ended
+        }
+        
+        return event.startTime < Date() ? .pending : .live
+    }
+    
     @MainActor
     private func rsvp(status: String) {
         guard state != .loading else { return }
@@ -105,6 +113,7 @@ struct EventActionButtons: View {
         }
     }
     
+    @MainActor
     func handleSuccess() {
         state = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -112,6 +121,7 @@ struct EventActionButtons: View {
         }
     }
     
+    @MainActor
     func handleFailure() {
         state = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -218,61 +228,98 @@ struct EventActionButtons: View {
             }
             
             // MARK: - RSVP/Cancel Buttons
-            if !hasRSVP {
-                Menu {
-                    Button(action: { rsvp(status: "maybe") }) {
-                        Text("Maybe")
-                    }
-                    Button(action:{ rsvp(status: "yes") }){
-                        Text("I'm In")
-                    }
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color("color-prime"))
-                        VStack {
-                            if state == .loading {
-                                ProgressView()
-                                    .frame(width: 30)
-                            } else {
-                                VStack {
-                                    Image(systemName: "envelope.fill")
-                                        .resizable()
-                                        .frame(width: 23, height: 17)
-                                }.frame(height: 23)
-                                Text("RSVP")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
+            switch eventState {
+            case .pending:
+                if !hasRSVP {
+                    Menu {
+                        Button(action: { rsvp(status: "maybe") }) {
+                            Text("Maybe")
                         }
-                    }.foregroundStyle(.white)
-                }
-                .disabled(state == .loading ? true : false)
-                .disabled(event.getEventStatus() == .ended ? true : false)
-            } else {
-                Button(action: { cancel() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 80)
-                            .foregroundColor(Color.red)
-                        VStack {
-                            if state == .loading {
-                                ProgressView()
-                                    .frame(width: 23)
-                            } else {
-                                VStack {
-                                    Image(systemName: "xmark")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
+                        Button(action:{ rsvp(status: "yes") }){
+                            Text("I'm In")
+                        }
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(maxWidth: .infinity, idealHeight: 80)
+                                .foregroundColor(Color("color-prime"))
+                            VStack {
+                                if state == .loading {
+                                    ProgressView()
+                                        .frame(width: 30)
+                                } else {
+                                    VStack {
+                                        Image(systemName: "envelope.fill")
+                                            .resizable()
+                                            .frame(width: 23, height: 17)
+                                    }.frame(height: 23)
+                                    Text("RSVP")
+                                        .font(.callout)
+                                        .fontWeight(.medium)
                                 }
-                                Text("Cancel")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
                             }
-                        }
-                    }.foregroundStyle(.white)
+                        }.foregroundStyle(.white)
+                    }
+                    .disabled(state == .loading ? true : false)
+                    .disabled(event.getEventStatus() == .ended ? true : false)
+                } else {
+                    Button(action: { cancel() }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(maxWidth: .infinity, idealHeight: 80)
+                                .foregroundColor(Color.red)
+                            VStack {
+                                if state == .loading {
+                                    ProgressView()
+                                        .frame(width: 23)
+                                } else {
+                                    VStack {
+                                        Image(systemName: "xmark")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    Text("Cancel")
+                                        .font(.callout)
+                                        .fontWeight(.medium)
+                                }
+                            }
+                        }.foregroundStyle(.white)
+                    }
                 }
+            case .live:
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color.red)
+                        .frame(maxWidth: .infinity, idealHeight: 80)
+                        
+                    VStack {
+                        VStack {
+                            Image(systemName: "circle")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                        }
+                        Text("Live")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                    }
+                }.foregroundStyle(.white)
+            case .ended:
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color.gray)
+                        .frame(maxWidth: .infinity, idealHeight: 80)
+
+                    VStack {
+                        VStack {
+                            Image(systemName: "circle.slash")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                        }
+                        Text("Ended")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                    }
+                }.foregroundStyle(.white)
             }
             
             // MARK: - Menu Button

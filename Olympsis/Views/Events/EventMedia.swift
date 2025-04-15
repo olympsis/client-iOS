@@ -69,10 +69,11 @@ struct EventMedia: View {
                     HStack {
                         ForEach(tags, id: \.self) { tag in
                             Text(tag.prefix(1).capitalized + tag.dropFirst())
+                                .padding(5)
                                 .font(.caption)
                                 .fontWeight(.bold)
-                                .padding(5)
                                 .padding(.horizontal, 5)
+                                .foregroundStyle(Color.white)
                                 .background(
                                     Color.black
                                         .opacity(0.21)

@@ -273,7 +273,7 @@ struct PostBody: View {
                 .overlay(alignment: .topTrailing) {
                     if imagesURL.count > 1 {
                         Text("\(index+1)/\(imagesURL.count)")
-                            .font(.callout)
+                            .font(.caption)
                             .fontWeight(.bold)
                             .padding(.vertical, 5)
                             .padding(.horizontal, 10)

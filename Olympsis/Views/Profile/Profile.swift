@@ -134,6 +134,15 @@ struct Profile: View {
                         }
                     }
                 }
+                .task {
+                    Task {
+                        guard let uuid = session.user?.uuid else {
+                            return
+                        }
+                        let pastEvents = await session.eventObserver.getUserPastEvents(uuid: uuid)
+                        session.pastEvents = Set(pastEvents)
+                    }
+                }
             }
         }
     }

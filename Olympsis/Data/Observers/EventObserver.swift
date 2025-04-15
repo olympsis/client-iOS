@@ -79,6 +79,20 @@ class EventObserver: ObservableObject{
         return nil
     }
     
+    func getUserPastEvents(uuid: String) async -> [Event] {
+        do {
+            let (data, resp) = try await eventService.getUserPastEvents(uuid: uuid)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                return []
+            }
+            let object = try decoder.decode([Event].self, from: data)
+            return object
+        } catch {
+            log.error("\(error)")
+            return []
+        }
+    }
+    
     func createEvent(dao: NewEventDao) async -> String? {
         do {
             let (data, resp) = try await eventService.createEvent(dao: dao)

@@ -22,7 +22,7 @@ struct EventComments: View {
     @EnvironmentObject private var event: Event
     @Environment(SessionStore.self) private var session
     
-    var isPosterOrAdmin: Bool {
+    private var isPosterOrAdmin: Bool {
         
         // check to see if you're the poster
         guard let user = session.user,
@@ -48,6 +48,14 @@ struct EventComments: View {
         }
         
         return false
+    }
+    
+    private var eventState: EVENT_STATUS {
+        if (event.stopTime < Date()) {
+            return EVENT_STATUS.ended
+        }
+        
+        return event.startTime < Date() ? .pending : .live
     }
     
     @MainActor
@@ -96,6 +104,7 @@ struct EventComments: View {
         }
     }
     
+    @MainActor
     private func handleFailure() {
         state = .failure
         fieldIsFocused = false
@@ -105,44 +114,55 @@ struct EventComments: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Comments")
-                .font(.title2)
-                .bold()
+        VStack(alignment: .leading) {            
+            switch eventState {
+            case .pending, .live:
+                Text("Comments")
+                    .font(.title2)
+                    .bold()
+            case .ended:
+                if !event.comments.isEmpty {
+                    Text("Comments")
+                        .font(.title2)
+                        .bold()
+                }
+            }
             
-            HStack {
-                TextField("Add a comment...", text: $text)
-                    .padding(10)
-                    .padding(.horizontal, 5)
-                    .focused($fieldIsFocused)
-                    .background {
-                        Color.Background.secondary
-                    }
-                    .clipShape(Capsule())
-                
-                Button(action: { addComment() }) {
-                    switch state {
-                    case .pending, .success:
-                        Image(systemName: "paperplane.fill")
-                            .padding(10)
-                            .background {
-                                Color.Brand.primary
-                            }
-                            .clipShape(Circle())
-                    case .loading:
-                        ProgressView()
-                            .padding(10)
-                            .background {
-                                Color.Brand.primary
-                            }
-                            .clipShape(Circle())
-                    case .failure:
-                        Image(systemName: "xmark")
-                            .padding(10)
-                            .background {
-                                Color.red
-                            }
-                            .clipShape(Circle())
+            if eventState != .ended {
+                HStack {
+                    TextField("Add a comment...", text: $text)
+                        .padding(10)
+                        .padding(.horizontal, 5)
+                        .focused($fieldIsFocused)
+                        .background {
+                            Color.Background.secondary
+                        }
+                        .clipShape(Capsule())
+                    
+                    Button(action: { addComment() }) {
+                        switch state {
+                        case .pending, .success:
+                            Image(systemName: "paperplane.fill")
+                                .padding(10)
+                                .background {
+                                    Color.Brand.primary
+                                }
+                                .clipShape(Circle())
+                        case .loading:
+                            ProgressView()
+                                .padding(10)
+                                .background {
+                                    Color.Brand.primary
+                                }
+                                .clipShape(Circle())
+                        case .failure:
+                            Image(systemName: "xmark")
+                                .padding(10)
+                                .background {
+                                    Color.red
+                                }
+                                .clipShape(Circle())
+                        }
                     }
                 }
             }
