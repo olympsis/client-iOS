@@ -105,7 +105,7 @@ struct GroupFeed: View {
                     }
                     
                     if viewModel.posts[groupID]?.count ?? 0 > 0 {
-                        ForEach(viewModel.posts[groupID] ?? [Post]()) { post in
+                        ForEach(viewModel.posts[groupID]?.sorted(by: { $0.createdAt > $1.createdAt }) ?? [Post]()) { post in
                             Spacer(minLength: 10)
                             
                             PostListItem(post: post)
@@ -183,7 +183,7 @@ struct GroupFeed: View {
                     PostCreator(type: .Post, groupId: club.id)
                         .environmentObject(viewModel)
                 } else if let org = group.organization {
-                    PostCreator(type: .Post, groupId: org.id)
+                    PostCreator(type: .Announcement, groupId: org.id)
                         .environmentObject(viewModel)
                 }
             }

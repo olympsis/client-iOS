@@ -14,16 +14,15 @@ struct PostCreator: View {
     var groupId: String
     
     @FocusState private var bodyFocused: Bool
-    @State private var showMediaPicker: Bool = false
-    @State private var showPostViolation: Bool = false
-    @StateObject private var viewModel: NewPostViewModel
+    @State private var mediaPickerVisible: Bool = false
+    @State private var postViolationVisible: Bool = false
+    @StateObject private var viewModel: NewPostManager
     
     @Environment(\.dismiss) private var dismiss
-    
     @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     
-    var log: Logger = Logger(subsystem: "com.olympsis.client", category: "post_creator_view")
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "post_creator_view")
     
     init(type: NEW_POST_TYPE, groupId: String) {
         self.type = type
@@ -32,16 +31,21 @@ struct PostCreator: View {
         switch type {
         case .Post:
             self._viewModel = StateObject(wrappedValue:
-                NewPostViewModel(type: .Post)
+                NewPostManager(type: .Post)
             )
         case .Announcement:
             self._viewModel = StateObject(wrappedValue:
-                NewPostViewModel(type: .Announcement)
+                NewPostManager(type: .Announcement)
             )
         }
     }
     
-    func createPost() async throws {
+    private func showMediaPicker() {
+        bodyFocused = false
+        mediaPickerVisible.toggle()
+    }
+    
+    private func createPost() async throws {
         guard let user = session.user,
               let post = try await viewModel.createPost(groupId: groupId, user: user) else {
             return
@@ -50,31 +54,36 @@ struct PostCreator: View {
         dismiss()
     }
     
+    private func handlePostCreation() {
+        guard viewModel.status != .loading else { return }
+        
+        Task {
+            do {
+                try await createPost()
+            } catch MediaUploadError.innapropriateContent {
+                self.postViolationVisible.toggle()
+            } catch MediaUploadError.unexpected(let reason) {
+                log.error("Failed to create post: \(reason)")
+            }
+        }
+    }
+    
     var body: some View {
         VStack {
             HStack {
                 Button(action: { dismiss() }) {
-                    Image(systemName: "xmark")
+                    Text("Cancel")
+                        .fontWeight(.medium)
                 }
                 
                 Spacer()
                 
-                Button(action:{
-                    Task {
-                        do {
-                            try await createPost()
-                        } catch MediaUploadError.innapropriateContent {
-                            self.showPostViolation.toggle()
-                        } catch MediaUploadError.unexpected(let reason) {
-                            log.error("Failed to create post: \(reason)")
-                        }
-                    }
-                }){
-                    LoadingButton(text: "Create", width: 70, status: $viewModel.status)
+                Button(action:{ handlePostCreation() }){
+                    LoadingButton(text: "Create", status: $viewModel.status)
                 }
+                .frame(maxWidth: 150)
                 .disabled(viewModel.status == .loading ? true : false)
-            }
-            .padding(.horizontal)
+            }.padding(.horizontal)
             
             ScrollView {
                 VStack {
@@ -104,26 +113,49 @@ struct PostCreator: View {
                 
                 HStack {
                     Spacer()
-                    Button(action: {
-                        bodyFocused = false
-                        showMediaPicker.toggle()
-                    }) {
+//                    Button(action: { }) {
+//                        Image(systemName: "chart.bar.fill")
+//                            .imageScale(.large)
+//                    }
+//                    .padding(.all)
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .opacity(0.3)
+//                            .foregroundStyle(Color(Color.gray))
+//                    }
+//                    
+//                    Button(action: { }) {
+//                        Image(systemName: "calendar")
+//                            .imageScale(.large)
+//                    }
+//                    .padding(.all)
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .opacity(0.3)
+//                            .foregroundStyle(Color(Color.gray))
+//                    }
+                    
+                    Button(action: { showMediaPicker() }) {
                         Image(systemName: "photo")
                             .imageScale(.large)
                     }
                     .padding(.all)
                     .background {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color(Color.Background.secondary))
+                            .opacity(0.3)
+                            .foregroundStyle(Color(Color.gray))
                     }
-                    .fullScreenCover(isPresented: $showMediaPicker, content: {
-                        MediaPicker(pickerType: .newPost) { images in
-                            viewModel.selectedImages = images
-                        }
-                    })
+                    
+                    
                 }.padding(.horizontal)
-            }.sheet(isPresented: $showPostViolation, onDismiss: { dismiss() }, content: {
+            }
+            .sheet(isPresented: $postViolationVisible, onDismiss: { dismiss() }, content: {
                 PostMediaViolation()
+            })
+            .fullScreenCover(isPresented: $mediaPickerVisible, content: {
+                MediaPicker(pickerType: .newPost) { images in
+                    viewModel.selectedImages = images
+                }
             })
         }
     }

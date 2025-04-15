@@ -163,6 +163,20 @@ struct NewEvent: View {
         dismiss()
     }
     
+    func handleEventCreation(_ value: ScrollViewProxy) {
+        Task {
+            guard manager.status != .loading else { return }
+            
+            do {
+                try await createEvent(value: value)
+            } catch MediaUploadError.innapropriateContent {
+                self.showPostViolation.toggle()
+            } catch {
+                showToast.toggle()
+            }
+        }
+    }
+    
     var body: some View {
         ScrollViewReader { value in
             HStack {
@@ -409,16 +423,7 @@ struct NewEvent: View {
                 
                 // MARK: - Action Button
                 VStack(alignment: .center){
-                    Button(action: { Task {
-                        guard manager.status != .loading else { return }
-                        do {
-                            try await createEvent(value: value)
-                        } catch NewEventError.unsafeMedia {
-                            self.showPostViolation.toggle()
-                        } catch {
-                            showToast.toggle()
-                        }
-                    } }) {
+                    Button(action: { handleEventCreation(value) }) {
                         LoadingButton(text: "Create Event", width: 150, status: $manager.status)
                             .padding(.horizontal, 40)
                     }

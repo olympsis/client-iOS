@@ -123,8 +123,7 @@ struct ClubApplicationListItem: View {
                 Text(dateTimeInString)
                     .font(.caption)
                     .italic()
-            }.padding(.leading)
-                .padding(.bottom)
+            }.padding([.leading, .bottom])
             
             HStack {
                 Button(action:{
@@ -155,10 +154,13 @@ struct ClubApplicationListItem: View {
                             .font(.caption)
                             .textCase(.uppercase)
                     }
-                }.frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
-                    .padding(.leading)
-            }.padding(.horizontal)
-                .padding(.bottom, 20)
+                }
+                .padding(.leading)
+                .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
+                    
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 20)
         }.background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color(Color.Background.secondary))
@@ -167,8 +169,7 @@ struct ClubApplicationListItem: View {
     }
 }
 
-struct ClubApplicationView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubApplicationListItem(club: CLUBS[0], application: CLUB_APPLICATIONS[0], applications: .constant([ClubApplication]()))
-    }
+#Preview {
+    ClubApplicationListItem(club: CLUBS[0], application: CLUB_APPLICATIONS[0], applications: .constant([ClubApplication]()))
+        .environment(SessionStore())
 }

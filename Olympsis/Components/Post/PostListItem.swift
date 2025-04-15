@@ -270,20 +270,35 @@ struct PostBody: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: SCREEN_WIDTH)
-                
-                HStack {
-                    Spacer()
-                    ForEach(0..<imagesURL.count, id: \.self) { index in
-                        Circle()
-                            .frame(width: index == index ? 5 : 8,
-                                   height: index == index ? 5 : 8)
-                            .foregroundColor(index == self.index ? .blue : .gray)
-                            .scaleEffect(index == index ? 1.2 : 1.0)
-                            .animation(.easeInOut, value: index)
+                .overlay(alignment: .topTrailing) {
+                    if imagesURL.count > 1 {
+                        Text("\(index+1)/\(imagesURL.count)")
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
+                            .foregroundStyle(.white)
+                            .background {
+                                Color.black
+                                    .opacity(0.5)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(10)
                     }
-                    Spacer()
                 }
                 
+//                HStack {
+//                    Spacer()
+//                    ForEach(0..<imagesURL.count, id: \.self) { index in
+//                        Circle()
+//                            .frame(width: index == index ? 5 : 8,
+//                                   height: index == index ? 5 : 8)
+//                            .foregroundColor(index == self.index ? .blue : .gray)
+//                            .scaleEffect(index == index ? 1.2 : 1.0)
+//                            .animation(.easeInOut, value: index)
+//                    }
+//                    Spacer()
+//                }
             }
             
             HStack {

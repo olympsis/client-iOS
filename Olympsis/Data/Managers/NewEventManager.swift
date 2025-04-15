@@ -112,7 +112,7 @@ class NewEventManager {
             }
             if resp.score > 4 {
                 status = .pending
-                throw NewEventError.unsafeMedia
+                throw MediaUploadError.innapropriateContent
             }
             if resp.score > 3 {
                 dto.event.isSensitive = true
@@ -120,7 +120,7 @@ class NewEventManager {
             
             guard let url = resp.url else {
                 status = .pending
-                throw NewEventError.serverError(message: "failed to get uploaded image url")
+                throw MediaUploadError.unexpected("failed to get uploaded image url")
             }
             dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             

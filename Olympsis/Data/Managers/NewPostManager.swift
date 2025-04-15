@@ -10,7 +10,7 @@ import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
 
-class NewPostViewModel: ObservableObject {
+class NewPostManager: ObservableObject {
     
     @Published var type: POST_TYPE
     @Published var body: String = ""

@@ -22,7 +22,7 @@ struct PostMenu: View {
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private var isPosterOrAdmin: Bool {
+    private var isAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
               let group = session.selectedGroup else {
@@ -32,20 +32,20 @@ struct PostMenu: View {
             guard post.type == "post",
                   let club = group.club,
                   let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
-                if post.type == "post" {
-                    return (post.poster?.uuid == uuid)
-                } else {
-                    return false
-                }
+                return false
             }
-            if member.role != "member" {
-                return true
-            } else {
-                return (post.poster?.uuid == uuid)
-            }
+            return member.role != "member"
         } else {
             return true
         }
+    }
+    
+    private var isPoster: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return false
+        }
+        return post.poster?.uuid == uuid
     }
     
     private var isPinned: Bool {
@@ -172,7 +172,7 @@ struct PostMenu: View {
                 .padding(.bottom, 1)
                 .padding(.top, 7)
             
-            if isPosterOrAdmin {
+            if isAdmin {
                 if pinned {
                     MenuButton(icon: Image(systemName: "pin.fill"), text: "Unpin Post", action: {
                         Task {
@@ -195,7 +195,7 @@ struct PostMenu: View {
                     .environmentObject(post)
             })
             
-            if !isBlocked {
+            if !isPoster && !isBlocked {
                 MenuButton(icon: Image(systemName: "person.slash"), text: "Block User", action:  {
                     showBlocking.toggle()
                 }, type: .destructive)
@@ -211,7 +211,7 @@ struct PostMenu: View {
                 })
             }
             
-            if isPosterOrAdmin {
+            if isAdmin || isPoster {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {
                     Task {
                         await deletePost()
