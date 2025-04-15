@@ -50,14 +50,6 @@ struct EventComments: View {
         return false
     }
     
-    private var eventState: EVENT_STATUS {
-        if (event.stopTime < Date()) {
-            return EVENT_STATUS.ended
-        }
-        
-        return event.startTime < Date() ? .pending : .live
-    }
-    
     @MainActor
     private func addComment() {
         guard state != .loading else { return }
@@ -114,8 +106,8 @@ struct EventComments: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {            
-            switch eventState {
+        VStack(alignment: .leading) {
+            switch event.getEventStatus() {
             case .pending, .live:
                 Text("Comments")
                     .font(.title2)
@@ -128,7 +120,7 @@ struct EventComments: View {
                 }
             }
             
-            if eventState != .ended {
+            if event.getEventStatus() != .ended {
                 HStack {
                     TextField("Add a comment...", text: $text)
                         .padding(10)

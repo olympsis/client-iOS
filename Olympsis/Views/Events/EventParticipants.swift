@@ -28,16 +28,8 @@ struct EventParticipants: View {
         return event.participants
     }
     
-    private var eventState: EVENT_STATUS {
-        if (event.stopTime < Date()) {
-            return EVENT_STATUS.ended
-        }
-        
-        return event.startTime < Date() ? .pending : .live
-    }
-    
     private var participantsStatus: String {
-        switch eventState {
+        switch event.getEventStatus() {
         case .ended:
             return "Attended"
         case .live:

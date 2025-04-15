@@ -48,14 +48,6 @@ struct EventActionButtons: View {
         return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
-    private var eventState: EVENT_STATUS {
-        if (event.stopTime < Date()) {
-            return EVENT_STATUS.ended
-        }
-        
-        return event.startTime < Date() ? .pending : .live
-    }
-    
     @MainActor
     private func rsvp(status: String) {
         guard state != .loading else { return }
@@ -228,7 +220,7 @@ struct EventActionButtons: View {
             }
             
             // MARK: - RSVP/Cancel Buttons
-            switch eventState {
+            switch event.getEventStatus() {
             case .pending:
                 if !hasRSVP {
                     Menu {
@@ -294,7 +286,7 @@ struct EventActionButtons: View {
                         
                     VStack {
                         VStack {
-                            Image(systemName: "circle")
+                            Image(systemName: "circle.fill")
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
