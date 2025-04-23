@@ -226,7 +226,7 @@ struct NewEvent: View {
                     
                     Button(action: { self.showOrganizersPicker.toggle() }) {
                         EventOrganizerView(organizers: $manager.organizers)
-                            .modifier(InputField())
+                            .modifier(InputFieldModifier())
                     }
                     
                     Text("*required")
@@ -251,7 +251,7 @@ struct NewEvent: View {
                     TextField("", text: $manager.title)
                         .focused($titleFocus)
                         .padding(.leading)
-                        .modifier(InputField())
+                        .modifier(InputFieldModifier())
                     
                     Text("*required")
                         .foregroundStyle(.gray)
@@ -370,7 +370,7 @@ struct NewEvent: View {
                         self.showStartTimePicker.toggle()
                     }) {
                         Text(startTimeString)
-                            .modifier(InputField())
+                            .modifier(InputFieldModifier())
                     }
                 }
                 .padding()
@@ -392,7 +392,7 @@ struct NewEvent: View {
                         self.showStopTimePicker.toggle()
                     }) {
                         Text(stopTimeString)
-                            .modifier(InputField())
+                            .modifier(InputFieldModifier())
                     }
                 }
                 .padding(.horizontal)

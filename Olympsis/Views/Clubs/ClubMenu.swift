@@ -157,7 +157,7 @@ struct ClubMenu: View {
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
-                NewGroup()
+                NewClub()
             }
             .fullScreenCover(isPresented: $showApplications) {
                 ClubApplications(club: club)

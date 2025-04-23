@@ -34,7 +34,7 @@ struct NewEventSportsPicker: View {
             Button(action: { showSports.toggle() }) {
                 Text(sportName)
             }
-            .modifier(InputField())
+            .modifier(InputFieldModifier())
             .scrollIndicators(.hidden)
                 
         }

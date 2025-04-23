@@ -51,7 +51,7 @@ struct NewEventTagsPicker: View {
                         }
                 }
                 .padding(.trailing, 5)
-            }.modifier(InputField())
+            }.modifier(InputFieldModifier())
         }
         .sheet(isPresented: $showTags) {
             ScrollView(.vertical) {

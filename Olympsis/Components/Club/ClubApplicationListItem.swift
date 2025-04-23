@@ -39,12 +39,12 @@ struct ClubApplicationListItem: View {
         return bio;
     }
     
-    var userImageURL: String {
+    var userImageURL: URL? {
         guard let data = application.applicant,
               let imageURL = data.imageURL else {
-            return ""
+            return nil
         }
-        return GenerateImageURL(imageURL)
+        return URL(string: GenerateImageURL(imageURL))
     }
     
     var dateTimeInString: String {
@@ -74,32 +74,11 @@ struct ClubApplicationListItem: View {
     var body: some View {
         VStack (alignment: .leading){
             HStack {
-                AsyncImage(url: URL(string: userImageURL)){ phase in
-                    if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .clipShape(Circle())
-                                .scaledToFill()
-                                .frame(width: 80, height: 80)
-                                .clipped()
-                        } else if phase.error != nil {
-                            ZStack {
-                                Color.gray // Indicates an error.
-                                    .clipShape(Circle())
-                                .opacity(0.3)
-                                Image(systemName: "exclamationmark.circle")
-                                    .foregroundColor(Color("foreground"))
-                            }
-                        } else {
-                            ZStack {
-                                Color.gray // Acts as a placeholder.
-                                    .clipShape(Circle())
-                                    .opacity(0.3)
-                                ProgressView()
-                            }
-                        }
-                }.frame(width: 80, height: 80)
-                    .padding(.all)
+                UserBadgeView(size: .large, imageURL: userImageURL)
+                    .padding(.vertical)
+                    .padding(.leading)
+                    .padding(.trailing, 10)
+                
                 VStack (alignment: .leading){
                     Text(fullName)
                         .font(.headline)

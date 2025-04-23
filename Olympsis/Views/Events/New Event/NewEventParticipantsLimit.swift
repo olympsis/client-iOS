@@ -40,7 +40,7 @@ struct NewEventParticipantsLimit: View {
 
                     Stepper("", value: $minParticipants, in: 0...100)
                         .padding(.trailing)
-                }.modifier(InputField())
+                }.modifier(InputFieldModifier())
                 
             }.padding([.top, .horizontal])
             
@@ -60,7 +60,7 @@ struct NewEventParticipantsLimit: View {
 
                     Stepper("", value: $maxParticipants, in: 0...1000)
                         .padding(.trailing)
-                }.modifier(InputField())
+                }.modifier(InputFieldModifier())
             }.padding([.top, .horizontal])
             
             

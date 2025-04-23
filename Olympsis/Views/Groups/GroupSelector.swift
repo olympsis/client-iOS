@@ -59,7 +59,7 @@ struct GroupSelector: View {
             .padding(.all)
         }
         .fullScreenCover(isPresented: $showNewGroup, content: {
-            NewGroup()
+            NewClub()
         })
         .onChange(of: selection) { _, _ in
             Task { @MainActor in

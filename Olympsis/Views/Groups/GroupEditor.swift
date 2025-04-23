@@ -10,7 +10,7 @@ import Kingfisher
 
 struct GroupEditor: View {
     
-    @StateObject private var viewModel = GroupEditorViewModel()
+    @State private var viewModel = NewGroupManager()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
@@ -217,8 +217,10 @@ struct GroupEditor: View {
                 }
                 .padding(.top)
                 .frame(width: SCREEN_WIDTH-25)
-                .fullScreenCover(isPresented: $viewModel.showSportsPicker, content: {
-                    MultiSportsPicker(selectedSports: $viewModel.selectedSports)
+                .sheet(isPresented: $viewModel.showSportsPicker, content: {
+                    MultiSportsPicker(sports: session.sports, selectedSports: $viewModel.selectedSports)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
                 })
                 
                 VStack(alignment: .leading){

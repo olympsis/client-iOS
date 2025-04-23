@@ -11,15 +11,28 @@ import PhotosUI
 
 struct NewClub: View {
     
-    @State private var showLocationPicker = false
+    enum Field {
+        case title
+        case description
+    }
     
-    @StateObject private var viewModel = GroupEditorViewModel()
+    @FocusState private var focus: Field?
+    @State private var showLocationPicker = false
+    @State private var viewModel = NewGroupManager()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
+    private var locationText: String {
+        guard viewModel.selectedCountry != nil,
+              let state = viewModel.selectedAdminArea,
+              let city = viewModel.selectedSubAdminArea else {
+            return "N/A"
+        }
+        return "\(city.name), \(state.name)"
+    }
     
-    private var log = Logger(subsystem: "com.olympsis.client", category: "new_club_view")
+    private let log = Logger(subsystem: "com.olympsis.client", category: "new_club_view")
     
     @MainActor
     func CreateClub() async {
@@ -43,6 +56,7 @@ struct NewClub: View {
                   let city = dto.city,
                   let state = dto.state,
                   let country = dto.country,
+                  let location = dto.location,
                   let visibility = dto.visibility else {
                 log.error("Failed to validate DTO data before creating club locally")
                 return
@@ -58,6 +72,7 @@ struct NewClub: View {
                 city: city,
                 state: state,
                 country: country,
+                location: location,
                 visibility: visibility,
                 members: [
                     Member(
@@ -86,243 +101,263 @@ struct NewClub: View {
     }
     
     var body: some View {
-        ScrollView(showsIndicators: false){
-            VStack (alignment: .leading){
-                ZStack(alignment: .top) {
-                    Group {
-                        if let img = viewModel.bannerPhoto {
-                            Image(uiImage: img)
-                                .resizable()
-                                .frame(height: 200)
-                        } else {
-                            Rectangle()
-                                .frame(height: 200)
-                                .foregroundStyle(.gray)
-                                .overlay {
-                                    Image(systemName: "photo.fill")
-                                        .imageScale(.large)
-                                        .foregroundStyle(Color(Color.Background.secondary))
-                                }
-                                
-                        }
-                    }
-                    .overlay(alignment: .topTrailing) {
-                        Image(systemName: "pencil.circle.fill")
-                            .padding(.all, 5)
-                            .foregroundStyle(Color(Color.Background.secondary))
-                    }
-                    .fullScreenCover(isPresented: $viewModel.showBannerMediaPicker) {
-                        MediaPicker(pickerType: .other) { images in
-                            if let img = images.first {
-                                DispatchQueue.main.async {
-                                    viewModel.bannerPhoto = img
-                                }
-                            }
-                        }
-                    }
-                    .onTapGesture {
-                        viewModel.showBannerMediaPicker.toggle()
-                    }
-                    
-                    VStack {
-                        Spacer()
-                        if let img = viewModel.logoPhoto {
-                            Image(uiImage: img)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .border(Color(Color.Background.secondary), width: 3)
-                                .overlay(alignment: .topTrailing) {
-                                    Image(systemName: "pencil.circle.fill")
-                                        .padding(.all, 5)
-                                        .foregroundStyle(Color(Color.Background.secondary))
-                                }
-                                .onTapGesture {
-                                    viewModel.showLogoMediaPicker.toggle()
-                                }
-                        } else {
-                            Rectangle()
-                                .foregroundStyle(.gray)
-                                .frame(width: 100, height: 100)
-                                .border(Color(Color.Background.secondary), width: 3)
-                                .overlay {
-                                    Image(systemName: "person.3.fill")
-                                        .foregroundStyle(Color(Color.Background.secondary))
-                                }
-                                .overlay(alignment: .topTrailing) {
-                                    Image(systemName: "pencil.circle.fill")
-                                        .padding(.all, 5)
-                                        .foregroundStyle(Color(Color.Background.secondary))
-                                }
-                                .onTapGesture {
-                                    viewModel.showLogoMediaPicker.toggle()
-                                }
-                        }
-                    }.fullScreenCover(isPresented: $viewModel.showLogoMediaPicker) {
-                        MediaPicker(pickerType: .newEvent) { images in
-                            if let img = images.first {
-                                DispatchQueue.main.async {
-                                    viewModel.logoPhoto = img
-                                }
-                            }
-                        }
-                    }
-                }.frame(height: 250)
-                
-                // MARK: - Name
-                Group {
-                    VStack (alignment: .leading){
-                        Text("Club Name:")
-                            .font(.title3)
-                            .bold()
-                        Text("What your club will be known by")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        TextField("", text: $viewModel.clubName)
-                            .padding(.leading)
-                            .frame(height: 40)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color(Color.Background.secondary))
-                            }
-                        Text("*required")
-                            .foregroundStyle(.gray)
-                    }
+        VStack {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Text("Cancel")
+                        .fontWeight(.medium)
                 }
                 
-                // MARK: - Description
-                Group {
-                    VStack(alignment: .leading){
-                        Text("Description:")
-                            .font(.title3)
-                            .bold()
-                            .padding(.top)
-                        Text("What your club is about?")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                Spacer()
+            }.padding(.horizontal)
+            
+            ScrollView(showsIndicators: false){
+                VStack (alignment: .leading){
+                    ZStack(alignment: .top) {
+                        Group {
+                            if let img = viewModel.bannerPhoto {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .frame(height: 200)
+                            } else {
+                                Rectangle()
+                                    .opacity(0.3)
+                                    .frame(height: 200)
+                                    .foregroundStyle(.gray)
+                                    .overlay {
+                                        Image(systemName: "photo.fill")
+                                            .imageScale(.large)
+                                    }
+                                
+                            }
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            Image(systemName: "pencil.circle.fill")
+                                .padding(.all, 10)
+                        }
+                        .fullScreenCover(isPresented: $viewModel.showBannerMediaPicker) {
+                            MediaPicker(pickerType: .other) { images in
+                                if let img = images.first {
+                                    DispatchQueue.main.async {
+                                        viewModel.bannerPhoto = img
+                                    }
+                                }
+                            }
+                        }
+                        .onTapGesture {
+                            viewModel.showBannerMediaPicker.toggle()
+                        }
+                        
+                        VStack {
+                            Spacer()
+                            if let img = viewModel.logoPhoto {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .border(Color(Color.Background.secondary), width: 3)
+                                    .overlay(alignment: .topTrailing) {
+                                        Image(systemName: "pencil.circle.fill")
+                                            .padding(.all, 5)
+                                    }
+                                    .onTapGesture {
+                                        viewModel.showLogoMediaPicker.toggle()
+                                    }
+                            } else {
+                                Rectangle()
+                                    .opacity(0.9)
+                                    .foregroundStyle(.gray)
+                                    .frame(width: 100, height: 100)
+                                    .border(Color.primary, width: 2)
+                                    .overlay {
+                                        Image(systemName: "person.3.fill")
+                                    }
+                                    .overlay(alignment: .topTrailing) {
+                                        Image(systemName: "pencil.circle.fill")
+                                            .padding(.all, 5)
+                                    }
+                                    .onTapGesture {
+                                        viewModel.showLogoMediaPicker.toggle()
+                                    }
+                            }
+                        }.fullScreenCover(isPresented: $viewModel.showLogoMediaPicker) {
+                            MediaPicker(pickerType: .newEvent) { images in
+                                if let img = images.first {
+                                    DispatchQueue.main.async {
+                                        viewModel.logoPhoto = img
+                                    }
+                                }
+                            }
+                        }
+                    }.frame(height: 250)
+                    
+                    // MARK: - Name
+                    Group {
+                        VStack (alignment: .leading){
+                            HStack(alignment: .top) {
+                                Text("Club Name:")
+                                    .font(.title3)
+                                    .bold()
+                                
+                                Text("*required")
+                                    .font(.caption)
+                                    .foregroundStyle(.yellow)
+                            }
+                            Text("What your club will be known by")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }.padding(.top)
+                        
+                        VStack(alignment: .leading) {
+                            TextField("", text: $viewModel.clubName)
+                                .padding(.leading)
+                                .font(.title2)
+                                .modifier(InputFieldModifier())
+                                .focused($focus, equals: .title)
+                            
+                        }
                     }
                     
-                    VStack(alignment: .leading) {
+                    // MARK: - Description
+                    Group {
+                        VStack(alignment: .leading){
+                            HStack(alignment: .top) {
+                                Text("Description:")
+                                    .font(.title3)
+                                    .bold()
+                                
+                                Text("*required")
+                                    .font(.caption)
+                                    .foregroundStyle(.yellow)
+                            }.padding(.top)
+                            
+                            Text("What your club is about?")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                        
                         TextEditor(text: $viewModel.description)
                             .scrollContentBackground(.hidden)
                             .frame(height: 200)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color(Color.Background.secondary))
-                            }
-                        
-                        Text("*required")
-                            .foregroundStyle(.gray)
+                            .padding(.all, 10)
+                            .focused($focus, equals: .description)
+                            .modifier(BackgroundPillModifier())
                     }
-                }
-                
-                
-                // MARK: - Sports picker
-                VStack(alignment: .leading){
+                    
+                    
+                    // MARK: - Sports picker
                     VStack(alignment: .leading){
-                        Text("Sport")
-                            .font(.title3)
-                            .bold()
-                        Text("The sport(s) your club will focus on")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-
-                    VStack(alignment: .leading) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color(Color.Background.secondary))
-                                .frame(height: 40)
+                        VStack(alignment: .leading){
+                            HStack(alignment: .top) {
+                                Text("Sport")
+                                    .font(.title3)
+                                    .bold()
+                                
+                                Text("*required")
+                                    .font(.caption)
+                                    .foregroundStyle(.yellow)
+                            }
+                            
+                            Text("The sport(s) your club will focus on")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        HStack {
                             Button(action: {
+                                focus = nil
                                 viewModel.showSportsPicker.toggle()
                             }) {
                                 if !viewModel.selectedSports.isEmpty {
                                     ScrollView(.horizontal) {
                                         HStack(alignment: .center) {
                                             ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
-                                                Text(sport)
+                                                Text(sport.capitalized)
+                                                    .padding(.vertical, 5)
                                                     .foregroundStyle(.white)
                                                     .padding(.horizontal, 10)
-                                                    .padding(.vertical, 5)
                                                     .background {
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(Color("color-prime"))
                                                     }
                                             }
                                         }
-                                    }.scrollIndicators(.never)
+                                    }
+                                    .frame(height: 40)
+                                    .scrollIndicators(.never)
+                                    .contentMargins(10, for: .scrollContent)
                                 } else {
-                                    Text("N/A")
+                                    HStack {
+                                        Spacer()
+                                        Text("N/A")
+                                        Spacer()
+                                    }.frame(height: 40)
                                 }
                             }
+                            .frame(maxWidth: .infinity, idealHeight: 40)
+                            .modifier(BackgroundPillModifier())
                         }
-                        Text("*required")
-                            .foregroundStyle(.gray)
                     }
-                }
-                .padding(.top)
-                .frame(width: SCREEN_WIDTH-25)
-                .fullScreenCover(isPresented: $viewModel.showSportsPicker, content: {
-                    MultiSportsPicker(selectedSports: $viewModel.selectedSports)
-                })
-                
-                // MARK: - Hometown picker
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        Text("Hometown")
-                        HStack(alignment: .top) {
-                            Text("Where does this club call home?")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                        }.foregroundStyle(.gray)
-                    }
+                    .padding(.top)
+                    .sheet(isPresented: $viewModel.showSportsPicker, content: {
+                        MultiSportsPicker(sports: session.sports, selectedSports: $viewModel.selectedSports)
+                            .presentationDetents([.medium])
+                            .presentationDragIndicator(.visible)
+                    })
                     
+                    // MARK: - Hometown picker
                     VStack(alignment: .leading) {
-                        Button(action: { self.showLocationPicker.toggle() }) {
-                            if (viewModel.latitude == 0 && viewModel.longitude == 0 || viewModel.city == "") {
-                                Text("N/A")
-                            } else {
-                                Text("\(viewModel.city), \(viewModel.state) (\(viewModel.country))")
+                        VStack(alignment: .leading) {
+                            HStack(alignment: .top) {
+                                Text("Location")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                Text("*required")
+                                    .font(.caption)
+                                    .foregroundStyle(.yellow)
                             }
+                            HStack(alignment: .top) {
+                                Text("Where does this club call home?")
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            }.foregroundStyle(.gray)
                         }
-                        .frame(maxWidth: .infinity, idealHeight: 40)
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 40)
-                                .foregroundColor(Color(Color.Background.secondary))
+                        
+                        VStack(alignment: .leading) {
+                            Button(action: {
+                                focus = nil
+                                self.showLocationPicker.toggle()
+                            }) {
+                                Text(locationText)
+                            }
+                            .frame(maxWidth: .infinity, idealHeight: 40)
+                            .modifier(BackgroundPillModifier())
                         }
-                        Text("*required")
-                            .foregroundStyle(.gray)
+                    }.padding(.top)
+                    
+                    VStack(alignment: .leading){
+                        VStack(alignment: .center){
+                            Button(action: { Task { await CreateClub() } }) {
+                                LoadingButton(text: "Create", width: 150, status: $viewModel.status)
+                            }.disabled(viewModel.status == .pending ? false : true)
+                        }
+                        .frame(width: SCREEN_WIDTH-25)
+                        .padding(.top, 50)
                     }
+                }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 }
                 .padding(.top)
-                .fullScreenCover(isPresented: $showLocationPicker, content: {
-                    ProfileHometownPicker(city: $viewModel.city, state: $viewModel.state, country: $viewModel.country, latitude: $viewModel.latitude, longitude: $viewModel.longitude)
-                })
-                
-                VStack(alignment: .leading){
-                    VStack(alignment: .center){
-                        Button(action: { Task { await CreateClub() } }) {
-                            LoadingButton(text: "Create", width: 150, status: $viewModel.status)
-                        }.disabled(viewModel.status == .pending ? false : true)
-                    }
-                    .frame(width: SCREEN_WIDTH-25)
-                    .padding(.top, 50)
-                }
             }
-            .onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-            }
-            .padding(.top)
+            .padding(.horizontal, 10)
+            .sheet(isPresented: $showLocationPicker, content: {
+                LocalesPicker(selectedCountry: $viewModel.selectedCountry, selectedAdministrativeArea: $viewModel.selectedAdminArea, selectedSubAdministrativeArea: $viewModel.selectedSubAdminArea)
+                    .presentationDetents([.height(300)])
+            })
+            .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {
+                GroupMediaViolation()
+            })
         }
-        .frame(width: SCREEN_WIDTH-25)
-        .navigationTitle("Create Club")
-        .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $viewModel.showMediaWarning, onDismiss: { viewModel.status = .pending }, content: {
-            GroupMediaViolation()
-        })
     }
 }
 

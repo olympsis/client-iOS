@@ -1,5 +1,5 @@
 //
-//  NewClubViewModel.swift
+//  NewGroupManager.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 5/27/24.
@@ -10,7 +10,8 @@ import UIKit
 import Foundation
 import CoreLocation
 
-class GroupEditorViewModel: ObservableObject {
+@Observable
+class NewGroupManager {
     
     enum GROUP_CREATION_ERROR: Error {
         case unexpected
@@ -18,45 +19,49 @@ class GroupEditorViewModel: ObservableObject {
         case noSport
     }
     
-    @Published var city: String = ""
-    @Published var state: String = ""
-    @Published var country: String = ""
-    @Published var latitude: Double = 0
-    @Published var longitude: Double = 0
+    var city: String = ""
+    var state: String = ""
+    var country: String = ""
+    var latitude: Double = 0
+    var longitude: Double = 0
     
-    @Published var logoPhoto: UIImage? {
+    var logoPhoto: UIImage? {
         didSet {
             DispatchQueue.main.async {
                 self.logoPhotoData = self.logoPhoto?.jpegData(compressionQuality: 0.5)
             }
         }
     }
-    @Published private var logoPhotoData: Data?
+    private var logoPhotoData: Data?
     
     
-    @Published var bannerPhoto: UIImage? {
+    var bannerPhoto: UIImage? {
         didSet {
             DispatchQueue.main.async {
                 self.bannerPhotoData = self.bannerPhoto?.jpegData(compressionQuality: 0.5)
             }
         }
     }
-    @Published private var bannerPhotoData: Data?
+    private var bannerPhotoData: Data?
     
-    @Published var logoURL: String = ""
-    @Published var bannerURL: String = ""
+    var logoURL: String = ""
+    var bannerURL: String = ""
     
-    @Published var clubName: String = ""
-    @Published var description: String = ""
-    @Published var status: LOADING_STATE = .pending
-    @Published var selectedSports: Set<String> = []
+    var clubName: String = ""
+    var description: String = ""
+    var status: LOADING_STATE = .pending
+    var selectedSports: Set<String> = []
     
-    @Published var showToast = false
+    var selectedCountry: Country?
+    var selectedAdminArea: AdministrativeArea?
+    var selectedSubAdminArea: SubAdministrativeArea?
     
-    @Published var showMediaWarning: Bool = false
-    @Published var showSportsPicker: Bool = false
-    @Published var showLogoMediaPicker: Bool = false
-    @Published var showBannerMediaPicker: Bool = false
+    var showToast = false
+    
+    var showMediaWarning: Bool = false
+    var showSportsPicker: Bool = false
+    var showLogoMediaPicker: Bool = false
+    var showBannerMediaPicker: Bool = false
     
     var uploadObserver = UploadObserver()
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_group_view_model")
@@ -128,8 +133,8 @@ class GroupEditorViewModel: ObservableObject {
             log.error("Failed to validate new group. No sports selection selected.")
             return .noSport
         }
-        if state == "" || country == "" {
-            log.error("Failed to validate new group. No loca")
+        if selectedCountry == nil && selectedAdminArea == nil && selectedSubAdminArea == nil {
+            log.error("Failed to validate new group. No location provided!")
             return .unexpected
         }
         log.info("Group validated successfully")
@@ -172,15 +177,23 @@ class GroupEditorViewModel: ObservableObject {
             return nil
         }
         
+        guard let country = selectedCountry,
+              let state = selectedAdminArea,
+              let city = selectedSubAdminArea else {
+            log.error("Failed to create club DTO. Missing location data.")
+            return nil
+        }
+        
         return ClubDao(
             name: clubName,
             logo: logoURL != "" ? logoURL : nil,
             banner: bannerURL != "" ? bannerURL : nil,
             description: description,
             sports: Array(selectedSports),
-            city: city != "" ? city : nil,
-            state: state != "" ? state : nil,
-            country: country != "" ? country : nil,
+            city: city.name,
+            state: state.name,
+            country: country.name,
+            location: city.location,
             visibility: "public"
         )
     }

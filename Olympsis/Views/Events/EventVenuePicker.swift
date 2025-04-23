@@ -115,7 +115,7 @@ struct EventVenuePicker: View {
                 VStack {
                     TextField("Location name", text: $searchModel.searchText)
                         .padding(.leading)
-                        .modifier(InputField())
+                        .modifier(InputFieldModifier())
                         .submitLabel(.search)
                         .padding([.horizontal, .vertical])
                     

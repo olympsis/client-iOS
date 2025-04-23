@@ -25,6 +25,7 @@
 		5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD232B3A1A6A00F90777 /* EditTournamentEvent.swift */; };
 		5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD252B3BC1CF00F90777 /* Generic.swift */; };
 		5D18BD282B3F8FB300F90777 /* GroupFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD272B3F8FB300F90777 /* GroupFeed.swift */; };
+		5D18DE9B2DB14A44005CD3E4 /* LocalesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18DE9A2DB14A44005CD3E4 /* LocalesPicker.swift */; };
 		5D19052D2DA1C7F50051990F /* Archivo_SemiExpanded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050B2DA1C7F50051990F /* Archivo_SemiExpanded-Bold.ttf */; };
 		5D19052E2DA1C7F50051990F /* Archivo_SemiExpanded-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905192DA1C7F50051990F /* Archivo_SemiExpanded-Thin.ttf */; };
 		5D19052F2DA1C7F50051990F /* Archivo-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905252DA1C7F50051990F /* Archivo-LightItalic.ttf */; };
@@ -219,7 +220,7 @@
 		5D67494A2A73339E00AEC868 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventView.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01352C04EA75006A264C /* OrgBanner.swift */; };
-		5D6C01382C054D6A006A264C /* GroupEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* GroupEditorViewModel.swift */; };
+		5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* NewGroupManager.swift */; };
 		5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */; };
 		5D6C013F2C07BB45006A264C /* Onboard-AboutOlympsis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013E2C07BB45006A264C /* Onboard-AboutOlympsis.swift */; };
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
@@ -529,6 +530,7 @@
 		5D18BD232B3A1A6A00F90777 /* EditTournamentEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTournamentEvent.swift; sourceTree = "<group>"; };
 		5D18BD252B3BC1CF00F90777 /* Generic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		5D18BD272B3F8FB300F90777 /* GroupFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupFeed.swift; sourceTree = "<group>"; };
+		5D18DE9A2DB14A44005CD3E4 /* LocalesPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalesPicker.swift; sourceTree = "<group>"; };
 		5D1904C12DA1C7F50051990F /* Archivo_Condensed-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Archivo_Condensed-Black.ttf"; sourceTree = "<group>"; };
 		5D1904C22DA1C7F50051990F /* Archivo_Condensed-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Archivo_Condensed-BlackItalic.ttf"; sourceTree = "<group>"; };
 		5D1904C32DA1C7F50051990F /* Archivo_Condensed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Archivo_Condensed-Bold.ttf"; sourceTree = "<group>"; };
@@ -721,7 +723,7 @@
 		5D6749492A73339E00AEC868 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D6C01352C04EA75006A264C /* OrgBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgBanner.swift; sourceTree = "<group>"; };
-		5D6C01372C054D6A006A264C /* GroupEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditorViewModel.swift; sourceTree = "<group>"; };
+		5D6C01372C054D6A006A264C /* NewGroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupManager.swift; sourceTree = "<group>"; };
 		5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMediaViolation.swift; sourceTree = "<group>"; };
 		5D6C013E2C07BB45006A264C /* Onboard-AboutOlympsis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutOlympsis.swift"; sourceTree = "<group>"; };
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
@@ -1082,6 +1084,7 @@
 			children = (
 				5D9DB7F72D5E716900438FA7 /* DraggableCard.swift */,
 				5D38BDA12C169FF4003EEF90 /* LogListItem.swift */,
+				5D18DE9A2DB14A44005CD3E4 /* LocalesPicker.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1933,7 +1936,7 @@
 				9A81B626292485A3009CA6ED /* ClubDetailView.swift */,
 				5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */,
 				5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */,
-				5D6C01372C054D6A006A264C /* GroupEditorViewModel.swift */,
+				5D6C01372C054D6A006A264C /* NewGroupManager.swift */,
 				5D5170E22C2749D10035C1F1 /* EditClub.swift */,
 				5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */,
 				5D5170E62C2756840035C1F1 /* EditorClubViewModel.swift */,
@@ -2371,7 +2374,7 @@
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */,
-				5D6C01382C054D6A006A264C /* GroupEditorViewModel.swift in Sources */,
+				5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
 				5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */,
 				5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */,
@@ -2557,6 +2560,7 @@
 				5D4B0A732D974B4200475A0C /* ClubListItemMedia.swift in Sources */,
 				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D78BDE82C0D387500F170D6 /* SportView.swift in Sources */,
+				5D18DE9B2DB14A44005CD3E4 /* LocalesPicker.swift in Sources */,
 				5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */,
 				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
 				5D63AF742C31212A005D431F /* NextEvent.swift in Sources */,

@@ -153,7 +153,12 @@ struct ClubsList: View {
                   let resp = await session.clubObserver.getClubs(
                     country: country,
                     state: stateAbbreviationToFullName[state] ?? state,
-                    location: GeoJSON(type: "Point", coordinates: [currentLocation.coordinate.latitude, currentLocation.coordinate.longitude]),
+                    location: GeoJSON(
+                        type: "Point",
+                        coordinates: [
+                            currentLocation.coordinate.latitude,
+                            currentLocation.coordinate.longitude
+                        ]),
                     radius: manager.radius,
                     tags: tags,
                     sports: sports

@@ -187,7 +187,6 @@ struct EditProfile: View {
                     
                     Button(action: { self.showMediaPicker.toggle() }) {
                         Text("Edit Picture")
-                            .foregroundColor(Color("color-prime"))
                     }.fullScreenCover(isPresented: $showMediaPicker, content: {
                         MediaPicker(pickerType: .profile) { images in
                             if let img = images.first {
@@ -282,7 +281,7 @@ struct EditProfile: View {
                             ScrollView(.horizontal) {
                                 HStack(alignment: .center) {
                                     ForEach(Array(selectedSports), id: \.self) { sport in
-                                        Text(sport)
+                                        Text(sport.capitalized)
                                             .foregroundStyle(.white)
                                             .padding(.horizontal, 10)
                                                 .padding(.vertical, 5)
@@ -302,12 +301,14 @@ struct EditProfile: View {
                             .frame(height: 40)
                             .foregroundColor(Color(Color.Background.secondary))
                     }
-                }.padding(.horizontal)
-                    .padding(.top)
-                    .fullScreenCover(isPresented: $showSportsPicker, content: {
-                        MultiSportsPicker(selectedSports: $selectedSports)
-                            .presentationDetents([.medium])
-                    })
+                }
+                .padding(.horizontal)
+                .padding(.top)
+                .sheet(isPresented: $showSportsPicker, content: {
+                    MultiSportsPicker(sports: session.sports, selectedSports: $selectedSports)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                })
                 
                 // MARK: - Hometown Picker
                 VStack(alignment: .leading) {
@@ -360,7 +361,8 @@ struct EditProfile: View {
                             }
                         }
                     }){
-                        LoadingButton(text: "Save", width: 50, status: $status)
+                        LoadingButton(text: "Save", width: 40, status: $status)
+                            .frame(width: 50)
                     }
                 }
             }

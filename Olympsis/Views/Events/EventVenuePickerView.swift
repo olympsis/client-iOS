@@ -41,7 +41,7 @@ struct EventVenuePickerView: View {
                         Image(systemName: "plus")
                         Text("Add a Location")
                     }
-                    .modifier(InputField())
+                    .modifier(InputFieldModifier())
                     .padding(.horizontal)
                 }.padding(.vertical)
                 

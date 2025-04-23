@@ -364,3 +364,82 @@ struct DayGroup: Identifiable {
         return events[0].timeToString()
     }
 }
+
+struct Country: Codable, Identifiable, Hashable {
+    
+    let id: String
+    let name: String
+    
+    init(id: String, name: String) {
+        self.id = id
+        self.name = name
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+    }
+    
+    static func == (lhs: Country, rhs: Country) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+}
+
+struct AdministrativeArea: Codable, Identifiable, Hashable {
+    
+    let id: String
+    let name: String
+    let countryID: String
+    
+    init(id: String, name: String, countryID: String) {
+        self.id = id
+        self.name = name
+        self.countryID = countryID
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case countryID = "country_id"
+    }
+    
+    static func == (lhs: AdministrativeArea, rhs: AdministrativeArea) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+struct SubAdministrativeArea: Codable, Identifiable, Hashable {
+    
+    let id: String
+    let name: String
+    let adminAreaID: String
+    let location: GeoJSON
+    
+    init(id: String, name: String, adminAreaID: String, location: GeoJSON) {
+        self.id = id
+        self.name = name
+        self.adminAreaID = adminAreaID
+        self.location = location
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case adminAreaID = "admin_area_id"
+        case location
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        adminAreaID = try container.decode(String.self, forKey: .adminAreaID)
+        location = try container.decode(GeoJSON.self, forKey: .location)
+    }
+    
+    static func == (lhs: SubAdministrativeArea, rhs: SubAdministrativeArea) -> Bool {
+        lhs.id == rhs.id
+    }
+}

@@ -19,6 +19,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
     let city: String
     let state: String
     let country: String
+    let location: GeoJSON
     let visibility: String
     @Published var members: [Member]
     var blackList: [String]?
@@ -38,6 +39,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
          city: String,
          state: String,
          country: String,
+         location: GeoJSON,
          visibility: String,
          members: [Member] = [Member](),
          blackList: [String] = [],
@@ -57,6 +59,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
         self.city = city
         self.state = state
         self.country = country
+        self.location = location
         self.visibility = visibility
         self.members = members
         self.blackList = blackList
@@ -87,6 +90,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
         self.city = try container.decode(String.self, forKey: .city)
         self.state = try container.decode(String.self, forKey: .state)
         self.country = try container.decode(String.self, forKey: .country)
+        self.location = try container.decode(GeoJSON.self, forKey: .location)
         self.visibility = try container.decode(String.self, forKey: .visibility)
         self.members = try container.decode([Member].self, forKey: .members)
         self.blackList = try container.decodeIfPresent([String].self, forKey: .blackList)
@@ -130,6 +134,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
         case city
         case state
         case country
+        case location
         case visibility
         case members
         case blackList
@@ -153,6 +158,7 @@ class ClubDao: Codable, Identifiable {
     var city: String?
     var state: String?
     var country: String?
+    var location: GeoJSON?
     var visibility: String?
     var members: [Member]?
     var blackList: [String]?
@@ -170,6 +176,7 @@ class ClubDao: Codable, Identifiable {
          city: String?=nil,
          state: String?=nil,
          country: String?=nil,
+         location: GeoJSON?=nil,
          visibility: String?=nil,
          members: [Member]?=nil,
          blackList: [String]?=nil,
@@ -187,6 +194,7 @@ class ClubDao: Codable, Identifiable {
         self.city = city
         self.state = state
         self.country = country
+        self.location = location
         self.visibility = visibility
         self.blackList = blackList
         self.members = members
@@ -206,6 +214,7 @@ class ClubDao: Codable, Identifiable {
         case city
         case state
         case country
+        case location
         case visibility
         case members
         case blackList

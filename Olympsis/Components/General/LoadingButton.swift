@@ -17,58 +17,60 @@ struct LoadingButton: View {
     @Binding var status: LOADING_STATE
     
     var body: some View {
-        if (self.status == .loading) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(color)
-                    .frame(width: 40, height: 40)
-                ProgressView()
-            }
-        } else if (self.status == .pending) {
-            if (image == nil) {
-                ZStack{
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(color)
-                        .frame(minWidth: width, minHeight: 40, maxHeight: 40)
-                    Text(text ?? "")
-                        .italic()
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .textCase(.uppercase)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                }
-            } else {
+        Group {
+            if (self.status == .loading) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(color)
-                        .frame(width: width, height: height)
-                    image
-                        .foregroundStyle(.white)
+                        .frame(width: 40)
+                    ProgressView()
+                }
+            } else if (self.status == .pending) {
+                if (image == nil) {
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(color)
+                            .frame(minWidth: width)
+                        Text(text ?? "")
+                            .italic()
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .textCase(.uppercase)
+                            .foregroundColor(.white)
+                            .padding(.horizontal)
+                    }
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(color)
+                            .frame(width: width, height: height)
+                        image
+                            .foregroundStyle(.white)
+                    }
+                }
+            } else if (self.status == .success) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 40)
+                        .foregroundColor(color)
+                    Image(systemName: "checkmark")
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .foregroundColor(.green)
+                }
+                   
+            } else if (self.status == .failure) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 40)
+                        .foregroundColor(color)
+                    Image(systemName: "xmark")
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
                 }
             }
-        } else if (self.status == .success) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(color)
-                Image(systemName: "checkmark")
-                    .imageScale(.large)
-                    .fontWeight(.bold)
-                    .foregroundColor(.green)
-            }
-               
-        } else if (self.status == .failure) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(color)
-                Image(systemName: "xmark")
-                    .imageScale(.large)
-                    .fontWeight(.bold)
-                    .foregroundColor(.red)
-            }
-        }
+        }.frame(height: 40)
     }
 }
 

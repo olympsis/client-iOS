@@ -12,7 +12,7 @@ import PhotosUI
 struct NewOrganization: View {
     
     @State private var showLocationPicker = false
-    @StateObject private var viewModel = GroupEditorViewModel()
+    @State private var viewModel = NewGroupManager()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
@@ -246,14 +246,17 @@ struct NewOrganization: View {
                     }
                     .padding(.top)
                     .frame(width: SCREEN_WIDTH-25)
-                    .fullScreenCover(isPresented: $viewModel.showSportsPicker, content: {
-                        MultiSportsPicker(selectedSports: $viewModel.selectedSports)
+                    .sheet(isPresented: $viewModel.showSportsPicker, content: {
+                        MultiSportsPicker(sports: session.sports, selectedSports: $viewModel.selectedSports)
+                            .presentationDetents([.medium])
+                            .presentationDragIndicator(.visible)
                     })
                     
                     // MARK: - Hometown picker
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
                             Text("Hometown")
+                            
                             HStack(alignment: .top) {
                                 Text("Where does this club call home?")
                                     .font(.caption)
@@ -273,8 +276,7 @@ struct NewOrganization: View {
                                 .foregroundColor(Color(Color.Background.secondary))
                         }
                         
-                        Text("*required")
-                            .foregroundStyle(.gray)
+                        
                     }
                     .padding(.top)
                     .fullScreenCover(isPresented: $showLocationPicker, content: {

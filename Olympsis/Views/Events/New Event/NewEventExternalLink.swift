@@ -51,7 +51,7 @@ struct NewEventExternalLink: View {
                     self.isValidURL = true
                     
                 }
-            }.modifier(InputField())
+            }.modifier(InputFieldModifier())
             
             Spacer()
         }
