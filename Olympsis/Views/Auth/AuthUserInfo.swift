@@ -201,10 +201,7 @@ struct AuthUserInfo: View {
                     
                     TextField("Type username here", text: $viewModel.searchText)
                         .padding(.all)
-                        .background(.regularMaterial)
-                        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(.gray).opacity(0.7))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 2))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .modifier(InputFieldModifier())
                         .overlay(alignment: .trailing) {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundColor(Color("background"))
