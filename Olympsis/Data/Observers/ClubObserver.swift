@@ -28,6 +28,9 @@ class ClubObserver: ObservableObject{
         do {
             let (data, res) = try await clubService.getClubs(c: country, s: state, l: location, r: radius, tags: tags, sports: sports)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                if ((res as? HTTPURLResponse)?.statusCode == 204) {
+                    return []
+                }
                 return nil
             }
             let object = try decoder.decode(ClubsResponse.self, from: data)
