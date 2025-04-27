@@ -12,6 +12,8 @@ struct User: Codable, Hashable {
     var username: String?
     let firstName: String?
     let lastName: String?
+    let gender: Gender?
+    let birthdate: Date?
     var imageURL: String?
     var bio: String?
     var sports: [String]?
@@ -40,6 +42,8 @@ struct User: Codable, Hashable {
         case username
         case firstName = "first_name"
         case lastName = "last_name"
+        case gender
+        case birthdate
         case imageURL = "image_url"
         case bio
         case sports
@@ -55,16 +59,122 @@ struct User: Codable, Hashable {
         case notificationDevices = "notification_devices"
         case notificationPreference = "notification_preference"
     }
+    
+    init(
+        uuid: String?=nil,
+        username: String?=nil,
+        firstName: String?=nil,
+        lastName: String?=nil,
+        gender: Gender?=nil,
+        birthdate: Date?=nil,
+        imageURL: String?=nil,
+        bio: String?=nil,
+        sports: [String]?=nil,
+        visibility: String?=nil,
+        clubs: [String]?=nil,
+        organizations: [String]?=nil,
+        acceptedEULA: Bool?=nil,
+        hasOnboarded: Bool?=nil,
+        blockedUsers: [String]?=nil,
+        reportedPosts: [String]?=nil,
+        reportedEvents: [String]?=nil,
+        hometown: [Double]?=nil,
+        notificationDevices: [NotificationDevice]? = nil,
+        notificationPreference: NotificationPreference? = nil
+    ){
+        self.uuid = uuid
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.bio = bio
+        self.gender = gender
+        self.birthdate = birthdate
+        self.imageURL = imageURL
+        self.sports = sports
+        self.visibility = visibility
+        self.clubs = clubs
+        self.organizations = organizations
+        self.acceptedEULA = acceptedEULA
+        self.hasOnboarded = hasOnboarded
+        self.blockedUsers = blockedUsers
+        self.reportedPosts = reportedPosts
+        self.reportedEvents = reportedEvents
+        self.hometown = hometown
+        self.notificationDevices = notificationDevices
+        self.notificationPreference = notificationPreference
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        username = try container.decodeIfPresent(String.self, forKey: .username)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        
+        if let genderString = try container.decodeIfPresent(String.self, forKey: .gender) {
+           gender = Gender(rawValue: genderString)
+        } else {
+            gender = nil
+        }
+        
+        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        sports = try container.decodeIfPresent([String].self, forKey: .sports)
+        visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
+        clubs = try container.decodeIfPresent([String].self, forKey: .clubs)
+        organizations = try container.decodeIfPresent([String].self, forKey: .organizations)
+        acceptedEULA = try container.decodeIfPresent(Bool.self, forKey: .acceptedEULA)
+        hasOnboarded = try container.decodeIfPresent(Bool.self, forKey: .hasOnboarded)
+        blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
+        reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
+        reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
+        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
+        notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
+    }
+        
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(uuid, forKey: .uuid)
+        try container.encodeIfPresent(username, forKey: .username)
+        try container.encodeIfPresent(firstName, forKey: .firstName)
+        try container.encodeIfPresent(lastName, forKey: .lastName)
+        
+        if let genderString = gender?.rawValue {
+            try container.encodeIfPresent(genderString, forKey: .gender)
+        }
+        
+        try container.encodeIfPresent(birthdate, forKey: .birthdate)
+        try container.encodeIfPresent(imageURL, forKey: .imageURL)
+        try container.encodeIfPresent(bio, forKey: .bio)
+        try container.encodeIfPresent(sports, forKey: .sports)
+        try container.encodeIfPresent(visibility, forKey: .visibility)
+        try container.encodeIfPresent(clubs, forKey: .clubs)
+        try container.encodeIfPresent(organizations, forKey: .organizations)
+        try container.encodeIfPresent(acceptedEULA, forKey: .acceptedEULA)
+        try container.encodeIfPresent(hasOnboarded, forKey: .hasOnboarded)
+        try container.encodeIfPresent(blockedUsers, forKey: .blockedUsers)
+        try container.encodeIfPresent(reportedPosts, forKey: .reportedPosts)
+        try container.encodeIfPresent(reportedEvents, forKey: .reportedEvents)
+        try container.encodeIfPresent(hometown, forKey: .hometown)
+        try container.encodeIfPresent(notificationDevices, forKey: .notificationDevices)
+        try container.encodeIfPresent(notificationPreference, forKey: .notificationPreference)
+    }
 }
 
 struct UserDao: Codable {
-    let uuid: String?
-    let username: String?
-    let bio: String?
-    let imageURL: String?
-    let sports: [String]?
-    let visibility: String?
-    let clubs: [String]?
+    var uuid: String?
+    var username: String?
+    var bio: String?
+    var gender: Gender?
+    var birthdate: Date?
+    var imageURL: String?
+    var sports: [String]?
+    var visibility: String?
+    var clubs: [String]?
     var organizations: [String]?
     var acceptedEULA: Bool?
     var hasOnboarded: Bool?
@@ -79,6 +189,8 @@ struct UserDao: Codable {
         uuid: String?=nil, 
         username: String?=nil,
         bio: String?=nil,
+        gender: Gender?=nil,
+        birthdate: Date?=nil,
         imageURL: String?=nil,
         sports: [String]?=nil,
         visibility: String?=nil,
@@ -96,6 +208,8 @@ struct UserDao: Codable {
         self.uuid = uuid
         self.username = username
         self.bio = bio
+        self.gender = gender
+        self.birthdate = birthdate
         self.imageURL = imageURL
         self.sports = sports
         self.visibility = visibility
@@ -115,6 +229,8 @@ struct UserDao: Codable {
         case uuid
         case username
         case bio
+        case gender
+        case birthdate
         case imageURL = "image_url"
         case visibility
         case clubs
@@ -128,6 +244,140 @@ struct UserDao: Codable {
         case hometown
         case notificationDevices = "notification_devices"
         case notificationPreference = "notification_preference"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        username = try container.decodeIfPresent(String.self, forKey: .username)
+        bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        
+        if let genderString = try container.decodeIfPresent(String.self, forKey: .gender) {
+           gender = Gender(rawValue: genderString)
+        } else {
+            gender = nil
+        }
+        
+        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        sports = try container.decodeIfPresent([String].self, forKey: .sports)
+        visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
+        clubs = try container.decodeIfPresent([String].self, forKey: .clubs)
+        organizations = try container.decodeIfPresent([String].self, forKey: .organizations)
+        acceptedEULA = try container.decodeIfPresent(Bool.self, forKey: .acceptedEULA)
+        hasOnboarded = try container.decodeIfPresent(Bool.self, forKey: .hasOnboarded)
+        blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
+        reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
+        reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
+        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
+        notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
+    }
+        
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(uuid, forKey: .uuid)
+        try container.encodeIfPresent(username, forKey: .username)
+        try container.encodeIfPresent(bio, forKey: .bio)
+        
+        if let genderString = gender?.rawValue {
+            try container.encodeIfPresent(genderString, forKey: .gender)
+        }
+        
+        try container.encodeIfPresent(birthdate, forKey: .birthdate)
+        try container.encodeIfPresent(imageURL, forKey: .imageURL)
+        try container.encodeIfPresent(sports, forKey: .sports)
+        try container.encodeIfPresent(visibility, forKey: .visibility)
+        try container.encodeIfPresent(clubs, forKey: .clubs)
+        try container.encodeIfPresent(organizations, forKey: .organizations)
+        try container.encodeIfPresent(acceptedEULA, forKey: .acceptedEULA)
+        try container.encodeIfPresent(hasOnboarded, forKey: .hasOnboarded)
+        try container.encodeIfPresent(blockedUsers, forKey: .blockedUsers)
+        try container.encodeIfPresent(reportedPosts, forKey: .reportedPosts)
+        try container.encodeIfPresent(reportedEvents, forKey: .reportedEvents)
+        try container.encodeIfPresent(hometown, forKey: .hometown)
+        try container.encodeIfPresent(notificationDevices, forKey: .notificationDevices)
+        try container.encodeIfPresent(notificationPreference, forKey: .notificationPreference)
+    }
+}
+
+struct UserData: Codable, Hashable {
+    let uuid: String
+    let firstName: String
+    let lastName: String
+    let username: String
+    let gender: Gender?
+    let birthday: Date?
+    let imageURL: String?
+    let bio: String?
+    let sports: [String]
+    let visibility: String
+    let clubs: [String]
+    let organizations: [String]
+    
+    static func == (lhs: UserData, rhs: UserData) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case uuid
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case username
+        case gender
+        case birthday
+        case imageURL = "image_url"
+        case bio
+        case sports
+        case visibility
+        case clubs
+        case organizations
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        uuid = try container.decode(String.self, forKey: .uuid)
+        firstName = try container.decode(String.self, forKey: .firstName)
+        lastName = try container.decode(String.self, forKey: .lastName)
+        username = try container.decode(String.self, forKey: .username)
+        
+        if let genderString = try container.decodeIfPresent(String.self, forKey: .gender) {
+           gender = Gender(rawValue: genderString)
+        } else {
+            gender = nil
+        }
+        
+        birthday = try container.decodeIfPresent(Date.self, forKey: .birthday)
+        imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        sports = try container.decode([String].self, forKey: .sports)
+        visibility = try container.decode(String.self, forKey: .visibility)
+        clubs = try container.decode([String].self, forKey: .clubs)
+        organizations = try container.decode([String].self, forKey: .organizations)
+    }
+        
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(uuid, forKey: .uuid)
+        try container.encode(firstName, forKey: .firstName)
+        try container.encode(lastName, forKey: .lastName)
+        try container.encode(username, forKey: .username)
+        
+        if let genderString = gender?.rawValue {
+            try container.encodeIfPresent(genderString, forKey: .gender)
+        }
+        
+        try container.encodeIfPresent(birthday, forKey: .birthday)
+        try container.encodeIfPresent(imageURL, forKey: .imageURL)
+        try container.encodeIfPresent(bio, forKey: .bio)
+        try container.encode(sports, forKey: .sports)
+        try container.encode(visibility, forKey: .visibility)
+        try container.encode(clubs, forKey: .clubs)
+        try container.encode(organizations, forKey: .organizations)
     }
 }
 

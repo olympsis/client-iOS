@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AuthContainer: View {
     
-    @State var currentView = AuthTab.sports
+    @State var currentView = AuthTab.auth
     @Environment(SessionStore.self) private var session
     
     var body: some View {

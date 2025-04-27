@@ -14,7 +14,7 @@ struct AuthUserInfo: View {
     @Binding var currentView: AuthTab
     @FocusState private var isFocused: Bool
     
-    @State private var username: String = ""
+
     @State private var birthdate: Date = Date()
     @State private var selectedGender: Gender? = nil
     
@@ -31,7 +31,7 @@ struct AuthUserInfo: View {
     )
     
     private var minimumAge: Date {
-        Calendar.current.date(byAdding: .year, value: -18, to: Date()) ?? Date()
+        Calendar.current.date(byAdding: .year, value: -12, to: Date()) ?? Date()
     }
     
     @Environment(SessionStore.self) private var session
@@ -53,46 +53,43 @@ struct AuthUserInfo: View {
     func updateUser() {
         guard state != .loading else { return }
         
-        Task {
-            do {
-                guard usernameStatus == .success,
-                      birthdate > minimumAge,
-                      selectedGender != nil else {
-                    infoError = nil
-                    if birthdate > minimumAge {
-                        infoError = .birthday
-                        return
-                    }
-                    
-                    if selectedGender == nil {
-                        infoError = .gender
-                        return
-                    }
-                    
-                    if username.isEmpty {
-                        handleUsernameStatus(.invalid)
-                    }
+        Task(priority: .userInitiated) { @MainActor in
+            guard usernameStatus == .success,
+                  birthdate < minimumAge,
+                  selectedGender != nil else {
+                infoError = nil
+                
+                if birthdate > minimumAge {
+                    infoError = .birthday
                     return
                 }
                 
-                state = .loading
-                
-                // Update auth data
-                var dao = AuthUserDao()
-                dao.birthdate = birthdate
-                dao.gender = selectedGender
-                _ = try await session.authObserver.updateUser(dao)
-                
-                let dao2 = UserDao(username: username.lowercased())
-                _ = await session.userObserver.UpdateUserData(update: dao2)
-                
-                currentView = .sports
-            } catch {
-                state = .failure
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    state = .pending
+                if selectedGender == nil {
+                    infoError = .gender
+                    return
                 }
+                
+                if viewModel.debouncedSearchText.isEmpty {
+                    handleUsernameStatus(.invalid)
+                }
+                return
             }
+            
+            state = .loading
+            
+            // Update user data
+            var dao = UserDao()
+            dao.birthdate = birthdate
+            dao.gender = selectedGender
+            dao.username = viewModel.debouncedSearchText
+                .lowercased()
+                .trimmingCharacters(in: .newlines)
+                .trimmingCharacters(in: .illegalCharacters)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            _ = await session.userObserver.UpdateUserData(update: dao)
+            
+            state = .success
+            currentView = .sports
         }
     }
     
@@ -144,7 +141,7 @@ struct AuthUserInfo: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 5) {
                 Text("Let's get to know you better!")
                     .font(.custom("Archivo-Bold", size: 25, relativeTo: .title))
@@ -204,7 +201,7 @@ struct AuthUserInfo: View {
                         .modifier(InputFieldModifier())
                         .overlay(alignment: .trailing) {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color("background"))
+                                .foregroundStyle(Color.clear)
                                 .frame(width: 45, height: 45)
                                 .overlay {
                                     switch usernameStatus {
@@ -231,7 +228,7 @@ struct AuthUserInfo: View {
                                             .animation(.easeInOut, value: usernameStatus)
                                     }
                                 }
-                                .padding(.trailing)
+                                .padding(.trailing, 10)
                         }
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.never)

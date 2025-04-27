@@ -177,8 +177,8 @@ let EVENTS = [
 
 @MainActor
 let USERS_DATA = [
-    User(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", bio: "Love to play soccer", sports: nil, visibility: "public", clubs: nil),
-    User(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil)
+    User(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", gender: Gender.Male, birthdate: nil, imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", bio: "Love to play soccer", sports: nil, visibility: "public", clubs: nil),
+    User(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", gender: Gender.Female, birthdate: nil, imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil)
 ]
 
 @MainActor
