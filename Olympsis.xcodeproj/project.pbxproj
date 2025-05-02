@@ -161,6 +161,7 @@
 		5D2AF5E32CEED1FB0026A526 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */; };
 		5D2DEFC62B27EF060082FE73 /* EventOrganizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC52B27EF060082FE73 /* EventOrganizers.swift */; };
 		5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2DEFC72B280E850082FE73 /* VenueInfo.swift */; };
+		5D2EA5FC2DC538D70016C934 /* CalendarEventEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */; };
 		5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */; };
 		5D2F19A12C13E38B00D98222 /* ImageLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */; };
 		5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */; };
@@ -667,6 +668,7 @@
 		5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		5D2DEFC52B27EF060082FE73 /* EventOrganizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizers.swift; sourceTree = "<group>"; };
 		5D2DEFC72B280E850082FE73 /* VenueInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueInfo.swift; sourceTree = "<group>"; };
+		5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventEditView.swift; sourceTree = "<group>"; };
 		5D2F199D2C12CB1200D98222 /* FullImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullImageViewer.swift; sourceTree = "<group>"; };
 		5D2F19A02C13E38B00D98222 /* ImageLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingView.swift; sourceTree = "<group>"; };
 		5D2F19A22C13E39700D98222 /* ImageLoadingFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingFailedView.swift; sourceTree = "<group>"; };
@@ -1893,6 +1895,7 @@
 				5D4B0A632D96F41600475A0C /* EventLocation.swift */,
 				5D4B0A652D96F87400475A0C /* EventMedia.swift */,
 				5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */,
+				5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2593,6 +2596,7 @@
 				5D76D3732C79634B00846382 /* EventRouter.swift in Sources */,
 				5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */,
 				5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */,
+				5D2EA5FC2DC538D70016C934 /* CalendarEventEditView.swift in Sources */,
 				5D92BA9E2C840CFF00B19BD4 /* MessageNotificationToast.swift in Sources */,
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
 				5DD751BE2D5E9727000B0640 /* SportsPicker.swift in Sources */,
@@ -2819,7 +2823,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.7;
+				MARKETING_VERSION = 0.8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2872,7 +2876,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.7;
+				MARKETING_VERSION = 0.8.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

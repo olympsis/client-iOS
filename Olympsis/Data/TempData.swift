@@ -111,14 +111,14 @@ let EVENTS = [
         tags: [],
         sports: ["soccer"],
         formatConfig: nil,
-        startTime: Date(timeIntervalSince1970: 1720696495),
-        stopTime: Date(timeIntervalSince1970: 1699806615),
+        startTime: Date(),
+        stopTime: Date().addingTimeInterval(TimeInterval(60 * 60 * 24)),
         participants: [
             Participant(
                 id: UUID().uuidString,
                 user: USER_SNIPPETS[0],
                 status: .Yes,
-                createdAt: Date(timeIntervalSince1970: 1639364780)
+                createdAt: Date()
             )
         ],
         participantsWaitlist: [],
@@ -134,7 +134,7 @@ let EVENTS = [
         visibility: .Public,
         externalLink: nil,
         isSensitive: false,
-        createdAt: Date(timeIntervalSince1970: 1639364780)
+        createdAt: Date()
     ),
     Event(
         id: UUID().uuidString,

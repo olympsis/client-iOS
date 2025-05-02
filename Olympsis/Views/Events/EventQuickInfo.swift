@@ -8,6 +8,8 @@
 import os
 import MapKit
 import SwiftUI
+import EventKit
+import EventKitUI
 import CoreLocation
 
 struct EventQuickInfo: View {
@@ -16,6 +18,9 @@ struct EventQuickInfo: View {
     @Binding var venues: [Venue]
     @Binding var venuesTarget: Int
     @Binding var venuesState: LOADING_STATE
+    @State private var showCalendarEditor: Bool = false
+    
+    private let store = EKEventStore()
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_quick_info_view")
     
@@ -46,8 +51,27 @@ struct EventQuickInfo: View {
         mapItem.openInMaps(launchOptions: options)
     }
     
+    /// Creates a calendar event for the sports event
+    private func createCalendarEvent() -> EKEvent {
+        let _event = EKEvent(eventStore: store)
+        _event.title = "Olympsis: \(event.title)"
+        _event.startDate = event.startTime
+        _event.endDate = event.stopTime
+        _event.notes = event.body
+        _event.url = URL(string: "https://olympsis.com/events/\(event.id)")
+        _event.alarms = [EKAlarm(relativeOffset: -30 * 60)]
+        _event.calendar = store.defaultCalendarForNewEvents
+        
+        // Add the event's first venue location
+        if let location = venues.first?.location {
+            _event.structuredLocation = EKStructuredLocation(mapItem: MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: location.coordinates[1], longitude: location.coordinates[0]))))
+        }
+        
+        return _event
+    }
+    
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Image(systemName: "calendar")
                     .imageScale(.large)
@@ -57,12 +81,29 @@ struct EventQuickInfo: View {
                         .fontWeight(.bold)
                     Text("\(event.getStartHourAndMinute()) - \(event.getStopHourAndMinute())")
                 }
-            }.padding(.bottom, 5)
+            }
             
             VenueInfo(venues: $venues, venuesTarget: $venuesTarget, state: $venuesState)
                 .zIndex(1)
                 .id(1)
-        }.padding(.horizontal)
+            
+            // Only show the add to calendar button if the event is pending
+            if (event.getEventStatus() != .ended || event.getEventStatus() != .live) {
+                Button(action: { self.showCalendarEditor.toggle() }) {
+                    Text("Add to Calendar")
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .modifier(BackgroundPillModifier())
+            }
+        }
+        .padding(.horizontal)
+        .sheet(isPresented: $showCalendarEditor) {
+            CalendarEventEditView(eventStore: self.store, event: self.createCalendarEvent()) { _ in
+                showCalendarEditor.toggle()
+            }
+        }
+        
     }
 }
 
