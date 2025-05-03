@@ -68,5 +68,5 @@ struct ShareMenu: View {
 }
 
 #Preview {
-    ShareMenu(event: EVENTS[0], venue: FIELDS[0], showToast: .constant(false))
+    ShareMenu(event: EVENTS[0], venue: VENUES[0], showToast: .constant(false))
 }

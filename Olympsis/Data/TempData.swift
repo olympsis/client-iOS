@@ -40,8 +40,8 @@ let POSTS = [
 ]
 
 @MainActor
-let FIELDS = [
-    Venue(id: UUID().uuidString, name: "Richard Building Fields", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The Richard Building fields is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["field-images/22aa23f7-5fb5-4c2e-b4fb-3a2943d492fc.jpg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
+let VENUES = [
+    Venue(id: UUID().uuidString, name: "Richard Building Fields", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The Richard Building fields is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["field-images/22aa23f7-5fb5-4c2e-b4fb-3a2943d492fc.jpg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America", bookingURL: "https://www.olympsis.com/signin", requiresBooking: true),
     Venue(id: UUID().uuidString, name: "Indoor Practice Facility", owner: Ownership(name: "Brigham Young University", type: "private"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Provo", state: "UT", country: "United States of America"),
     Venue(id: UUID().uuidString, name: "11th Ave Park", owner: Ownership(name: "Salt Lake City", type: "public"), description: "The 11th ave park is a newly built park in the avenues. It is a multi-purposed park, featuring basketball, volleyball and tennis courts. It also features a walking trail and a drinking fountain.", sports: ["soccer", "pickleball"], images: ["feed-images/B7671402-A924-4C92-966D-7531B1C6D71F.jpeg"], location: GeoJSON(type: "point", coordinates: [-111.655317, 40.24948]), city: "Salt Lake City", state: "UT", country: "United States of America")
 ]
@@ -49,8 +49,8 @@ let FIELDS = [
 @MainActor
 let VENUE_DESCRIPTORS = [
     VenueDescriptor(name: "Faultline Gardens Park", city: "New York", state: "New York", country: "United States", location: GeoJSON(type: "point", coordinates: [-111.861028, 40.760891])),
-    VenueDescriptor(id: FIELDS[0].id, name: "Richard Building Fields", city: "Provo", state: "Utah", country: "United States"),
-    VenueDescriptor(id: FIELDS[1].id, name: "Indoor Practice Facility", city: "Provo", state: "Utah", country: "United States")
+    VenueDescriptor(id: VENUES[0].id, name: "Richard Building Fields", city: "Provo", state: "Utah", country: "United States"),
+    VenueDescriptor(id: VENUES[1].id, name: "Indoor Practice Facility", city: "Provo", state: "Utah", country: "United States")
 ]
 
 @MainActor

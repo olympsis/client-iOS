@@ -184,7 +184,7 @@ struct VenueListItem: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        VenueListItem(venue: FIELDS[0])
+        VenueListItem(venue: VENUES[0])
             .environment(SessionStore())
     }
 }

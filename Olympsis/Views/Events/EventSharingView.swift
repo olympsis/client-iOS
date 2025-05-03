@@ -268,5 +268,5 @@ struct EventSharingView: View {
 }
 
 #Preview {
-    EventSharingView(event: EVENTS[0], venue: FIELDS[0], method: .image)
+    EventSharingView(event: EVENTS[0], venue: VENUES[0], method: .image)
 }

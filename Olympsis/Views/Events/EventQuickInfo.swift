@@ -9,7 +9,6 @@ import os
 import MapKit
 import SwiftUI
 import EventKit
-import EventKitUI
 import CoreLocation
 
 struct EventQuickInfo: View {
@@ -52,6 +51,7 @@ struct EventQuickInfo: View {
     }
     
     /// Creates a calendar event for the sports event
+    /// - Returns:  an `EKEvent` object to pass to the `EventKitUI` view to create the calendar event
     private func createCalendarEvent() -> EKEvent {
         let _event = EKEvent(eventStore: store)
         _event.title = "Olympsis: \(event.title)"

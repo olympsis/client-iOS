@@ -344,7 +344,7 @@ struct EventActionButtons: View {
 }
 
 #Preview {
-    EventActionButtons(venues: .constant(FIELDS), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
+    EventActionButtons(venues: .constant(VENUES), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
         .environmentObject(EVENTS[0])
         .environment(SessionStore())
 }

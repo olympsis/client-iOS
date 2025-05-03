@@ -21,20 +21,25 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
     let state: String
     let country: String
     
+    let bookingURL: String?
+    let requiresBooking: Bool
+    
     private enum CodingKeys: String, CodingKey {
-       case id
-       case name
-       case owner
-       case description
-       case sports
-       case images
-       case location
-       case city
-       case state
-       case country
+        case id
+        case name
+        case owner
+        case description
+        case sports
+        case images
+        case location
+        case city
+        case state
+        case country
+        case bookingURL = "booking_url"
+        case requiresBooking = "requires_booking"
     }
     
-    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String) {
+    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String, bookingURL: String?=nil, requiresBooking: Bool=false) {
         self.id = id
         self.name = name
         self.owner = owner
@@ -45,6 +50,9 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
         self.city = city
         self.state = state
         self.country = country
+        
+        self.bookingURL = bookingURL
+        self.requiresBooking = requiresBooking
     }
     
     convenience init(name: String, location: GeoJSON, city: String, state: String, country: String) {
@@ -57,8 +65,26 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
             location: location,
             city: city,
             state: state,
-            country: country
+            country: country,
+            bookingURL: nil,
+            requiresBooking: false
         )
+    }
+    
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.owner = try container.decode(Ownership.self, forKey: .owner)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.sports = try container.decode([String].self, forKey: .sports)
+        self.images = try container.decode([String].self, forKey: .images)
+        self.location = try container.decode(GeoJSON.self, forKey: .location)
+        self.city = try container.decode(String.self, forKey: .city)
+        self.state = try container.decode(String.self, forKey: .state)
+        self.country = try container.decode(String.self, forKey: .country)
+        self.bookingURL = try container.decodeIfPresent(String.self, forKey: .bookingURL)
+        self.requiresBooking = try container.decodeIfPresent(Bool.self, forKey: .requiresBooking) ?? false
     }
     
     static func == (lhs: Venue, rhs: Venue) -> Bool {

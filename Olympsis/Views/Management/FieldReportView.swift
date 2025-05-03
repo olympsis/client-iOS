@@ -158,5 +158,5 @@ struct FieldReportView: View {
 }
 
 #Preview {
-    FieldReportView(field: FIELDS[0])
+    FieldReportView(field: VENUES[0])
 }

@@ -68,6 +68,6 @@ struct VenueAnnotation: View {
 }
 
 #Preview {
-    VenueAnnotation(venue: FIELDS[0])
+    VenueAnnotation(venue: VENUES[0])
         .environment(SessionStore())
 }
