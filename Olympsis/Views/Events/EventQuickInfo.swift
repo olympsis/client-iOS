@@ -72,6 +72,11 @@ struct EventQuickInfo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+
+            VenueInfo(venues: $venues, venuesTarget: $venuesTarget, state: $venuesState)
+                .zIndex(1)
+                .id(1)
+            
             HStack {
                 Image(systemName: "calendar")
                     .imageScale(.large)
@@ -83,13 +88,11 @@ struct EventQuickInfo: View {
                 }
             }
             
-            VenueInfo(venues: $venues, venuesTarget: $venuesTarget, state: $venuesState)
-                .zIndex(1)
-                .id(1)
-            
             // Only show the add to calendar button if the event is pending
             if (event.getEventStatus() != .ended || event.getEventStatus() != .live) {
                 Button(action: { self.showCalendarEditor.toggle() }) {
+                    Image(systemName: "calendar")
+                        .imageScale(.large)
                     Text("Add to Calendar")
                 }
                 .padding(.horizontal)
