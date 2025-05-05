@@ -14,7 +14,7 @@ struct AddParticipantResponse: Decodable {
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case uuid
         case status
         case createdAt

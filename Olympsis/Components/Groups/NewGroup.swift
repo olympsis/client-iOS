@@ -23,7 +23,7 @@ struct NewGroup: View {
                 NavigationLink(destination: NewClub()) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                         VStack {
                             Image(systemName: "person.3.fill")
                                 .imageScale(.large)
@@ -46,7 +46,7 @@ struct NewGroup: View {
                 NavigationLink(destination: NewOrganization()) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                         VStack {
                             Image(systemName: "globe.americas.fill")
                                 .imageScale(.large)
@@ -82,5 +82,5 @@ struct NewGroup: View {
 
 #Preview {
     NewGroup()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

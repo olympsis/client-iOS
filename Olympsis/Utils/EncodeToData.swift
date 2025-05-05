@@ -7,7 +7,7 @@
 
 import Foundation
 
-func EncodeToData<T: Codable>(_ value: T) -> Data? {
+func EncodeToData<T: Encodable>(_ value: T) -> Data? {
     let encoder = JSONEncoder()
     
     return try? encoder.encode(value)

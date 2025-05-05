@@ -14,10 +14,7 @@ struct ManagersListView: View {
     @Environment(\.dismiss) private var dismiss
     
     var members: [Member] {
-        guard var members = organization.members else {
-            return [Member]()
-        }
-        
+        var members = organization.members;
         members.sort(by: { (member1, member2) -> Bool in
             if member1.role == MEMBER_ROLES.Owner.rawValue {
                 return true

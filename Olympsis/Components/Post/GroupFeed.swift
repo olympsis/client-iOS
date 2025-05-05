@@ -15,7 +15,7 @@ struct GroupFeed: View {
     @State private var showEvents: Bool = false
     
     @StateObject private var viewModel = FeedViewModel()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
@@ -32,25 +32,12 @@ struct GroupFeed: View {
     }
     
     var groupEvents: [Event] {
-        guard let selectedGroup = session.selectedGroup else {
-            return [Event]()
+        guard let selectedGroup = session.selectedGroup,
+              let id = selectedGroup.club?.id ?? selectedGroup.organization?.id else {
+            return []
         }
-        switch selectedGroup.type {
-        case .Club:
-            return session.events.filter { event in
-                guard let club = selectedGroup.club else {
-                    return false
-                }
-                return event.organizers?.contains(where: { $0.id == club.id  || club.parent?.id == $0.id}) ?? false
-            }
-        case .Organization:
-            return session.events.filter { event in
-                guard let org = selectedGroup.organization else {
-                    return false
-                }
-                return event.organizers?.contains(where: { $0.id == org.id }) ?? false
-            }
-        }
+        
+        return Array(session.events).filterByGroupID(id: id)
     }
     
     func isPinned(post: Post) -> Bool {
@@ -66,13 +53,12 @@ struct GroupFeed: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return club.pinnedPosts?.contains(post.id ?? "") ?? false
+            return club.pinnedPosts.contains(post.id)
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -92,7 +78,7 @@ struct GroupFeed: View {
                     }
                 }
             case .pending, .success:
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     if groupEvents.count > 0  {
                         VStack{
                             HStack {
@@ -105,7 +91,7 @@ struct GroupFeed: View {
                                             .lineLimit(1)
                                         Image(systemName: "chevron.down")
                                     }
-                                }
+                                }.foregroundStyle(Color.foreground)
                             }.fullScreenCover(isPresented: $showEvents, content: {
                                 EventsList(events: groupEvents)
                             })
@@ -119,7 +105,9 @@ struct GroupFeed: View {
                     }
                     
                     if viewModel.posts[groupID]?.count ?? 0 > 0 {
-                        ForEach(viewModel.posts[groupID] ?? [Post]()) { post in
+                        ForEach(viewModel.posts[groupID]?.sorted(by: { $0.createdAt > $1.createdAt }) ?? [Post]()) { post in
+                            Spacer(minLength: 10)
+                            
                             PostListItem(post: post)
                                 .environmentObject(viewModel)
                         }
@@ -129,7 +117,7 @@ struct GroupFeed: View {
                                 .frame(height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .padding(.horizontal)
-                                .foregroundStyle(Color.background)
+                                .foregroundStyle(Color.gray.opacity(0.3))
                                 .overlay {
                                     VStack {
                                         Text("No posts found")
@@ -157,7 +145,7 @@ struct GroupFeed: View {
                             .frame(height: 150)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.gray.opacity(0.3))
                             .overlay {
                                 VStack {
                                     Text("😣")
@@ -195,7 +183,7 @@ struct GroupFeed: View {
                     PostCreator(type: .Post, groupId: club.id)
                         .environmentObject(viewModel)
                 } else if let org = group.organization {
-                    PostCreator(type: .Post, groupId: org.id ?? "")
+                    PostCreator(type: .Announcement, groupId: org.id)
                         .environmentObject(viewModel)
                 }
             }
@@ -208,6 +196,6 @@ struct GroupFeed: View {
 
 #Preview {
     GroupFeed(showNewPost: .constant(false), showNewEvent: .constant(false))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

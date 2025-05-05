@@ -9,12 +9,13 @@ import SwiftUI
 
 struct Venues: View {
     
-    @Binding var venues: [Venue]
-    @Binding var status: LOADING_STATE
+    var venues: [Venue]
+    var status: LOADING_STATE
     
+    @State private var showNewEvent: Bool = false
     @State private var showRequestLocation: Bool = false
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var hasLocation: Bool {
         return session.locationManager.isAuthorized
@@ -32,7 +33,8 @@ struct Venues: View {
                                 .imageScale(.small)
                             Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
                                 .font(.caption2)
-                        }.foregroundStyle(.gray)
+                        }
+                        .foregroundStyle(.gray)
                         
                         if !hasLocation {
                             HStack {
@@ -49,6 +51,15 @@ struct Venues: View {
                                 Spacer()
                             }.padding(.top)
                         }
+                        
+                        HStack {
+                            Spacer()
+                            Button(action: { showNewEvent.toggle() }) {
+                                SimpleButtonLabel(text: "Create an Event")
+                            }
+                            Spacer()
+                        }
+                        .padding(.top)
                     }
                     .frame(height: 200)
                     .padding(.horizontal)
@@ -64,15 +75,23 @@ struct Venues: View {
             } else {
                 VenueListItemTemplate()
             }
-        }.fullScreenCover(isPresented: $showRequestLocation, content: {
+        }
+        .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+            Task {
+                await session.updateNotifications()
+            }
+        }){
             LocationRequestView()
-        })
+        }
+        .fullScreenCover(isPresented: $showNewEvent) {
+            NewEvent(manager: NewEventManager(venues: session.venues))
+        }
     }
 }
 
 struct FieldsView_Previews: PreviewProvider {
     static var previews: some View {
-        Venues(venues: .constant([]), status: .constant(.success))
-            .environmentObject(SessionStore())
+        Venues(venues: [], status: .success)
+            .environment(SessionStore())
     }
 }

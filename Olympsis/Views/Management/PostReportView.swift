@@ -18,7 +18,7 @@ struct PostReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "post_report_view")
     
@@ -35,7 +35,7 @@ struct PostReportView: View {
             groupID = club.id
         }
         if let org = selectedGroup.organization {
-            groupID = org.id ?? ""
+            groupID = org.id
         }
         state = .loading
         let report = PostReportDao(postID: post.id, groupID: groupID, type: issue, notes: notes)
@@ -91,7 +91,7 @@ struct PostReportView: View {
                         Button(action: { showProblems.toggle() }){
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(lineWidth: 1)
                                     .foregroundStyle(.gray)
@@ -111,7 +111,7 @@ struct PostReportView: View {
                             .foregroundStyle(.gray)
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(lineWidth: 1)
                                 .foregroundStyle(.gray)

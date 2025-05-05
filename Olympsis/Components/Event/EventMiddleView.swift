@@ -14,32 +14,26 @@ struct EventMiddleView: View {
     @State private var timeDifference: String = ""
     @EnvironmentObject private var event: Event
     
-    var startTime: Int {
-        guard let time = event.startTime else {
-            return 0
-        }
-        return time
+    var startTime: Date {
+        return event.startTime;
     }
     
     var participantsCount: Int {
-        guard let partcipants = event.participants else {
-            return 0
-        }
-        return partcipants.count
+        return event.participants.count
     }
     
     var minParticipantsCount: Int {
-        guard let min = event.minParticipants else {
+        guard let min = event.participantsConfig?.minParticipants else {
             return 0
         }
-        return min
+        return Int(min)
     }
     
     var maxParticipantsCount: Int {
-        guard let max = event.maxParticipants else {
+        guard let max = event.participantsConfig?.maxParticipants else {
             return 0
         }
-        return max
+        return Int(max)
     }
     
     var participantsCountString: String {
@@ -51,11 +45,7 @@ struct EventMiddleView: View {
     }
     
     func getTimeDifference() -> Int {
-        guard let startTime = event.actualStartTime else {
-            return 2
-        }
-        let startDate = Date(timeIntervalSince1970: TimeInterval(startTime))
-        let time = Calendar.current.dateComponents([.minute], from: startDate, to: Date.now)
+        let time = Calendar.current.dateComponents([.minute], from: event.startTime, to: Date.now)
         if let min = time.minute {
             return min
         }
@@ -63,10 +53,7 @@ struct EventMiddleView: View {
     }
     
     var eventLevel: Int {
-        guard let level = event.level else {
-            return 0
-        }
-        return level
+        return 0
     }
     
     var body: some View {
@@ -74,21 +61,19 @@ struct EventMiddleView: View {
             RoundedRectangle(cornerRadius: 10)
                 .padding(.horizontal)
                 .frame(height: 70)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color.Background.secondary)
             HStack (alignment: .center) {
                 VStack(alignment: .center){
-                    if event.actualStopTime != nil {
+                    switch event.getEventStatus() {
+                    case .pending:
                         VStack {
-                            Text("Ended")
-                                .foregroundColor(.gray)
+                            Text("Pending")
+                                .foregroundColor(.yellow)
+                            Text(startTime.formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.green)
                                 .bold()
-                            if let sT = event.actualStopTime {
-                                Text(Date(timeIntervalSince1970: TimeInterval(sT)).formatted(.dateTime.hour().minute()))
-                                    .foregroundColor(.primary)
-                                    .bold()
-                            }
                         }
-                    } else if event.actualStartTime != nil {
+                    case .live:
                         HStack {
                             Circle()
                                 .frame(width: 10, height: 10)
@@ -112,20 +97,13 @@ struct EventMiddleView: View {
                                     timeDifference = event.timeDifferenceToString()
                                 }
                             }
-                    } else if minParticipantsCount != 0 && participantsCount < minParticipantsCount {
+                    case .ended:
                         VStack {
-                            Text("Pending")
-                                .foregroundColor(.yellow)
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.green)
+                            Text("Ended")
+                                .foregroundColor(.gray)
                                 .bold()
-                        }
-                    } else {
-                        VStack {
-                            Text("Game On!")
-                                .foregroundColor(Color("color-prime"))
-                            Text(Date(timeIntervalSince1970: TimeInterval(startTime)).formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.green)
+                            Text(event.stopTime.formatted(.dateTime.hour().minute()))
+                                .foregroundColor(.primary)
                                 .bold()
                         }
                     }
@@ -139,7 +117,6 @@ struct EventMiddleView: View {
                         Image(systemName: "person.2.fill")
                         Text(participantsCountString)
                     }
-                    .disabled(event.actualStopTime != nil)
                 }
                 
                 Spacer()

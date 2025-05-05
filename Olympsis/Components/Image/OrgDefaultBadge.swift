@@ -10,7 +10,7 @@ import SwiftUI
 struct OrgDefaultBadge: View {
     var body: some View {
         Circle()
-            .foregroundStyle(Color("background"))
+            .foregroundStyle(Color(Color.Background.secondary))
             .frame(width: 40, height: 40)
             .overlay {
                 Image(systemName: "building")

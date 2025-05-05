@@ -11,7 +11,7 @@ import Kingfisher
 struct VenueAnnotation: View {
     
     var venue: Venue
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var imageURL: URL? {
         return generateImageURL(venue.images[0])
@@ -19,14 +19,14 @@ struct VenueAnnotation: View {
     
     var hasEvents: Bool {
         let events = session.events.filter { 
-            $0.venues?.contains(where: { desc in
+            $0.venues.contains(where: { desc in
                 if desc.id == venue.id {
                     return true
                 } else if desc.name == venue.name {
                     return true
                 }
                 return false
-            }) ?? false
+            })
         }
         
         return events.count > 0
@@ -68,6 +68,6 @@ struct VenueAnnotation: View {
 }
 
 #Preview {
-    VenueAnnotation(venue: FIELDS[0])
-        .environmentObject(SessionStore())
+    VenueAnnotation(venue: VENUES[0])
+        .environment(SessionStore())
 }

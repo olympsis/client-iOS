@@ -13,17 +13,16 @@ struct EventNotification: View {
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var status: LOADING_STATE = .pending
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) private var presentationMode
     
     func notifyParticipants() async {
         status = .loading
         guard title != "",
-            content != "",
-              let id = event.id else {
+            content != "" else {
             return
         }
-        let resp = await session.eventObserver.notifyParticipants(id: id, title: title, body: content)
+        let resp = await session.eventObserver.notifyParticipants(id: event.id, title: title, body: content)
         if resp {
             status = .success
             self.presentationMode.wrappedValue.dismiss()
@@ -80,5 +79,5 @@ struct EventNotification: View {
 
 #Preview {
     EventNotification(event: EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

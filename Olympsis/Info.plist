@@ -2,23 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string></string>
-	</dict>
-	<key>CHAT</key>
-	<string>chat.olympsis.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.olympsis.client</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>olympsis</string>
+			</array>
+		</dict>
+	</array>
 	<key>DEBUG_HOST</key>
 	<string>localhost</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>STORAGE</key>
-	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSPrivacyAccessedAPITypes</key>
@@ -36,34 +40,30 @@
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Olympsis requires your location to show you the venues and events that are happening in close proximity to you.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Olympsis requires access to your photos library to allow you to share images of the activites you&apos;re participating in with your friends.</string>
+	<key>STORAGE</key>
+	<string>storage-p3dy744wqq-uc.a.run.app</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>ITCAvantGardeStd-Bk.ttf</string>
-		<string>ITCAvantGardeStd-BkCn.ttf</string>
-		<string>ITCAvantGardeStd-BkCnObl.ttf</string>
-		<string>ITCAvantGardeStd-BkObl.ttf</string>
-		<string>ITCAvantGardeStd-Bold.ttf</string>
-		<string>ITCAvantGardeStd-BoldCn.ttf</string>
-		<string>ITCAvantGardeStd-BoldCnObl.ttf</string>
-		<string>ITCAvantGardeStd-BoldObl.ttf</string>
-		<string>ITCAvantGardeStd-Demi.ttf</string>
-		<string>ITCAvantGardeStd-DemiCn.ttf</string>
-		<string>ITCAvantGardeStd-DemiCnObl.ttf</string>
-		<string>ITCAvantGardeStd-DemiObl.ttf</string>
-		<string>ITCAvantGardeStd-Md.ttf</string>
-		<string>ITCAvantGardeStd-MdCn.ttf</string>
-		<string>ITCAvantGardeStd-MdCnObl.ttf</string>
-		<string>ITCAvantGardeStd-MdObl.ttf</string>
-		<string>ITCAvantGardeStd-XLt.ttf</string>
-		<string>ITCAvantGardeStd-XLtCn.ttf</string>
-		<string>ITCAvantGardeStd-XLtCnObl.ttf</string>
-		<string>ITCAvantGardeStd-XLtObl.ttf</string>
+		<string>Archivo-Black.ttf</string>
+		<string>Archivo-BlackItalic.ttf</string>
+		<string>Archivo-Bold.ttf</string>
+		<string>Archivo-BoldItalic.ttf</string>
+		<string>Archivo-ExtraBold.ttf</string>
+		<string>Archivo-ExtraBoldItalic.ttf</string>
+		<string>Archivo-ExtraLight.ttf</string>
+		<string>Archivo-ExtraLightItalic.ttf</string>
+		<string>Archivo-Italic.ttf</string>
+		<string>Archivo-Light.ttf</string>
+		<string>Archivo-LightItalic.ttf</string>
+		<string>Archivo-Medium.ttf</string>
+		<string>Archivo-MediumItalic.ttf</string>
+		<string>Archivo-Regular.ttf</string>
+		<string>Archivo-SemiBold.ttf</string>
+		<string>Archivo-SemiBoldItalic.ttf</string>
+		<string>Archivo-Thin.ttf</string>
+		<string>Archivo-ThinItalic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -76,7 +76,10 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>UIRequiresFullScreen</key>
-	<true/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string></string>
+	</dict>
 </dict>
 </plist>

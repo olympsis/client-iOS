@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class Venue: Codable, Identifiable, Equatable {
+class Venue: Codable, Identifiable, Equatable, Hashable {
     
     let id: String
     let name: String
@@ -21,20 +21,25 @@ class Venue: Codable, Identifiable, Equatable {
     let state: String
     let country: String
     
+    let bookingURL: String?
+    let requiresBooking: Bool
+    
     private enum CodingKeys: String, CodingKey {
-       case id = "id"
-       case name
-       case owner
-       case description
-       case sports
-       case images
-       case location
-       case city
-       case state
-       case country
+        case id
+        case name
+        case owner
+        case description
+        case sports
+        case images
+        case location
+        case city
+        case state
+        case country
+        case bookingURL = "booking_url"
+        case requiresBooking = "requires_booking"
     }
     
-    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String) {
+    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String, bookingURL: String?=nil, requiresBooking: Bool=false) {
         self.id = id
         self.name = name
         self.owner = owner
@@ -45,6 +50,9 @@ class Venue: Codable, Identifiable, Equatable {
         self.city = city
         self.state = state
         self.country = country
+        
+        self.bookingURL = bookingURL
+        self.requiresBooking = requiresBooking
     }
     
     convenience init(name: String, location: GeoJSON, city: String, state: String, country: String) {
@@ -57,12 +65,35 @@ class Venue: Codable, Identifiable, Equatable {
             location: location,
             city: city,
             state: state,
-            country: country
+            country: country,
+            bookingURL: nil,
+            requiresBooking: false
         )
     }
     
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.owner = try container.decode(Ownership.self, forKey: .owner)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.sports = try container.decode([String].self, forKey: .sports)
+        self.images = try container.decode([String].self, forKey: .images)
+        self.location = try container.decode(GeoJSON.self, forKey: .location)
+        self.city = try container.decode(String.self, forKey: .city)
+        self.state = try container.decode(String.self, forKey: .state)
+        self.country = try container.decode(String.self, forKey: .country)
+        self.bookingURL = try container.decodeIfPresent(String.self, forKey: .bookingURL)
+        self.requiresBooking = try container.decodeIfPresent(Bool.self, forKey: .requiresBooking) ?? false
+    }
+    
     static func == (lhs: Venue, rhs: Venue) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id || (lhs.name == rhs.name && lhs.location == rhs.location)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(location)
     }
     
     func isPublic() -> Bool {
@@ -71,11 +102,24 @@ class Venue: Codable, Identifiable, Equatable {
 }
 
 struct GeoJSON: Codable, Hashable {
-    static func == (lhs: GeoJSON, rhs: GeoJSON) -> Bool {
-        return (lhs.coordinates[0] == rhs.coordinates[0]) && (lhs.coordinates[1] == rhs.coordinates[1])
-    }
     let type: String
     let coordinates: [Double]
+    
+    static func == (lhs: GeoJSON, rhs: GeoJSON) -> Bool {
+        let threshold = 0.0005
+        return (abs(lhs.coordinates[0] - rhs.coordinates[0]) <= threshold &&
+        abs(lhs.coordinates[1] - rhs.coordinates[1]) <= threshold)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        // Round coordinates to the nearest threshold bucket
+        let threshold = 0.0005
+        let bucketLong = (coordinates[0] / threshold).rounded() * threshold
+        let bucketLat = (coordinates[1] / threshold).rounded() * threshold
+        hasher.combine(type)
+        hasher.combine(bucketLong)
+        hasher.combine(bucketLat)
+    }
 }
 
 struct Ownership: Codable, Hashable {
@@ -124,11 +168,17 @@ extension [Venue] {
 struct VenueDescriptor: Codable, Hashable {
     let id: String?
     var name: String?
+    var city: String?
+    var state: String?
+    var country: String?
     var location: GeoJSON?
     
-    init(id: String?=nil, name: String?=nil, location: GeoJSON?=nil) {
+    init(id: String?=nil, name: String?, city: String?, state: String?, country: String?, location: GeoJSON?=nil) {
         self.id = id
         self.name = name
+        self.city = city
+        self.state = state
+        self.country = country
         self.location = location
     }
     

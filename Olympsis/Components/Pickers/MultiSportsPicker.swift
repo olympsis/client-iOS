@@ -9,71 +9,45 @@ import SwiftUI
 
 struct MultiSportsPicker: View {
     
+    var sports: [Sport]
     @Binding var selectedSports: Set<String>
     @Environment(\.dismiss) private var dismiss
     
-    var body: some View {
-        NavigationStack {
-            VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 40, maxHeight: 40)
-                        .padding(.horizontal)
-                        .foregroundStyle(Color("background"))
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(Array(selectedSports), id: \.self) { sport in
-                                HStack {
-                                    Text(sport)
-                                        .foregroundStyle(.white)
-                                    Button(action: {
-                                        selectedSports.remove(sport)
-                                    }) {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundStyle(Color("background"))
-                                    }
-                                }.padding(.horizontal, 10)
-                                    .padding(.vertical, 5)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .foregroundStyle(Color("color-prime"))
-                                    }
-                            }
-                        }
-                    }.scrollIndicators(.never)
-                    .padding(.horizontal, 20)
-                }.padding(.top)
-                
-                ScrollView {
-                    ForEach(SPORTS.allCases, id: \.self){ _sport in
-                        HStack {
-                            Button(action: { selectedSports.insert(_sport.rawValue) }){
-                                Text(_sport.rawValue)
-                                    .font(.body)
-                            }
-                            Spacer()
-                        }.padding(.top)
-                    }
-                }.scrollIndicators(.never)
-                .padding(.horizontal)
-                
-            }.toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { dismiss() }) {
-                        Text("Done")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 5)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                            }
-                    }
-                }
-            }
+    func toggleSport(_ sport: Sport) {
+        let name = sport.name.components(separatedBy: " ")[1]
+        guard !selectedSports.contains(name) else {
+            selectedSports.remove(name)
+            return
         }
+        selectedSports.insert(name)
+    }
+    
+    func isSelected(_ sport: Sport) -> Bool {
+        let name = sport.name.components(separatedBy: " ")[1]
+        return selectedSports.contains(name)
+    }
+    
+    var body: some View {
+        ScrollView(.vertical) {
+            Spacer(minLength: 20)
+            WrappingHStack(alignment: .bottomLeading) {
+                ForEach(sports, id: \.name) { sport in
+                    Button(action: { toggleSport(sport) }) {
+                        SportView(sport: sport)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(isSelected(sport) ? Color.primary : Color.black.opacity(0.2), lineWidth: 1)
+                            )
+                    }.buttonStyle(PlainButtonStyle())
+                }
+            }.padding(.horizontal)
+        }
+        .padding(.top)
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
     }
 }
 
 #Preview {
-    MultiSportsPicker(selectedSports: .constant(["soccer", "tennis"]))
+    MultiSportsPicker(sports: SPORTS_TEMP, selectedSports: .constant(["soccer", "tennis"]))
 }

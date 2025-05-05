@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentView: View {
     
     @State var comment: Comment
-    @EnvironmentObject var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
 
     var imageURL: String {
@@ -30,10 +30,7 @@ struct CommentView: View {
     }
     
     var timeStamp: String {
-        guard let time = comment.createdAt else {
-            return "0 seconds ago"
-        }
-        return calculateTimeAgo(from: time)
+        return calculateTimeAgo(from: comment.createdAt)
     }
     
     var body: some View {
@@ -82,6 +79,6 @@ struct CommentView: View {
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        CommentView(comment: COMMENTS[0]).environmentObject(SessionStore())
+        CommentView(comment: COMMENTS[0]).environment(SessionStore())
     }
 }

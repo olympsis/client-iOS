@@ -54,5 +54,5 @@ struct VenueMediumListItem: View {
 }
 
 #Preview {
-    VenueMediumListItem(item: FIELDS[0])
+    VenueMediumListItem(item: VENUES[0])
 }

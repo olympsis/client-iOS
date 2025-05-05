@@ -71,12 +71,12 @@ struct MemberReportListItem: View {
             }
         }.padding(.all).background{
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
         }
     }
 }
 
 #Preview {
     MemberReportListItem(club: CLUBS[0], report: MEMBER_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

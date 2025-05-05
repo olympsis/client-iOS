@@ -16,8 +16,8 @@ class GroupViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(session: SessionStore) {
-        session.$clubsState
-            .assign(to: \.state, on: self)
-            .store(in: &cancellables)
+//        session.clubsState
+//            .assign(to: \.state, on: self)
+//            .store(in: &cancellables)
     }
 }

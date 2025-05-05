@@ -23,7 +23,7 @@ class CacheService: ObservableObject {
         return self.defaults.object(forKey: "clubs") as? [String] ?? [String]()
     }
     
-    func cacheUser(user: UserData) {
+    func cacheUser(user: User) {
         do {
             
             let encoder = JSONEncoder()
@@ -35,11 +35,11 @@ class CacheService: ObservableObject {
         }
     }
     
-    func fetchUser() -> UserData? {
+    func fetchUser() -> User? {
         do {
             if let data = self.defaults.data(forKey: "user") {
                 let decoder = JSONDecoder()
-                let usr = try decoder.decode(UserData.self, from: data)
+                let usr = try decoder.decode(User.self, from: data)
                 return usr
             }
         } catch {

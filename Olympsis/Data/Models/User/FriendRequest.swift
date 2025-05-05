@@ -16,7 +16,7 @@ struct FriendRequest: Decodable, Identifiable {
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case requestor
         case requestee
         case requestorData

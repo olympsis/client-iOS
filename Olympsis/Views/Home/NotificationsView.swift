@@ -11,33 +11,50 @@ struct NotificationsView: View {
     
     @State private var notifications: [NotificationModel] = []
     
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(HomeRouter.self) private var router
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
-        VStack {
-            if notifications.count > 0 {
-                ScrollView(showsIndicators: false) {
-                    ForEach(notifications, id: \.id){ note in
+        ScrollView {
+            if session.notifications.count > 0 {
+                ForEach(session.notifications, id: \.id){ note in
+                    LazyVStack {
                         NotificationModelView(notification: note)
+                            .environment(session)
                     }
                 }
             } else {
-                Spacer()
-                Text("No new notifications")
-                Spacer()
-            }
-        }.toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action:{ dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(Color("color-prime"))
-                }
+                VStack {
+                    Text("No new notifications")
+                    HStack {
+                        Spacer()
+                    }
+                }.padding(.top, 50)
             }
         }
-        .navigationBarBackButtonHidden()
-        .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action:{ router.navigateBack() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color.foreground)
+                }
+                .id(UUID())
+            }
+            
+            ToolbarItem(placement: .principal) {
+                Text("Notifications")
+            }
+        }
+        .toolbarRole(.navigationStack)
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        router.navigateBack()
+                    }
+                }
+        )
         .task {
             notifications = session.invitations.map({ i in
                 NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
@@ -47,6 +64,9 @@ struct NotificationsView: View {
 }
 
 #Preview {
-    NotificationsView()
-        .environmentObject(SessionStore())
+    NavigationStack {
+        NotificationsView()
+            .environment(HomeRouter())
+            .environment(SessionStore())
+    }
 }

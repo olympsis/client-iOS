@@ -15,7 +15,7 @@ struct NewClubApplication: Decodable {
     let createdAt: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id = "id"
         case uuid
         case clubId
         case status

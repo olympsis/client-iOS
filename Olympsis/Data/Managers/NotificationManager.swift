@@ -8,24 +8,23 @@
 import os
 import SwiftUI
 import Foundation
-import SwiftToast
 import NotificationCenter
 
 class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
 
     let center = UNUserNotificationCenter.current()
     
-    @Published var showToast: Bool = false {
-        didSet {
-            
-        }
-    }
+    @Published var showToast: Bool = false
     @Published var inMessageView: Bool = false
     @Published var toastPosition: DisplayPosition = .bottom
-    @Published var toastContent: () -> any View = { EmptyView() }
+    @Published var toastContent: ToastContent = ToastContent(view: { AnyView(EmptyView()) })
+    
+    @AppStorage("deviceToken") private var dToken: String?
     
     private var userObserver = UserObserver()
-    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
+    private var cacheService = CacheService()
+    
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
     
     override init() {
         super.init()
@@ -42,7 +41,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             log.error("Failed to request authorization: \(error.localizedDescription)")
         }
     }
-
     
     // checks and makes sure all the notification authorizations are there
     func checkAuthorizationStatus() async throws -> Bool {
@@ -65,6 +63,60 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
     }
     
+    // Sets a local notification to remind users to head to the event
+    func setEventLocalNotification(_ event: Event, minutesBefore: Int = 30) async {
+        do {
+            guard try await checkAuthorizationStatus() else { return }
+            
+            let subtitles = [
+                "Time to make your way to the venue. ",
+                "Get ready—the event kicks off shortly!",
+                "The countdown is almost over—see you there!",
+                "Don’t be late! Head to the event now.",
+                "It’s almost game time—make your way over!",
+                "The action begins soon—get moving!",
+                "Your event is about to start—let’s go!",
+                "Final call—time to head out!",
+                "The excitement is about to begin!",
+                "See you soon—the event starts shortly!"
+            ]
+            
+            // Create notification content
+            let content = UNMutableNotificationContent()
+            content.title = "\(event.title) is starting soon!"
+            content.body = subtitles.randomElement() ?? "Get ready—the event starts soon!"
+            content.sound = UNNotificationSound.default
+            
+            // Calculate the time 'minutesBefore' minutes before the specified date
+            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: event.startTime)!
+            
+            // Extract date components from the early reminder time
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: earlyReminderTime)
+            
+            // Create trigger with the date components
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            
+            // Create request with a unique identifier
+            let identifier = event.id
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            try await center.add(request)
+        } catch {
+            log.error("Error scheduling local notification: \(error)")
+        }
+    }
+    
+    // Removes the local notification
+    func removeEventLocalNotification(_ id: String) async {
+        do {
+            guard try await checkAuthorizationStatus() else { return }
+            // Remove the specific notification with the given identifier
+            center.removePendingNotificationRequests(withIdentifiers: [id])
+        } catch {
+            log.error("Error removing local notification: \(error)")
+        }
+    }
+    
     // This method is called when the user interacts with a notification (taps on it).
     // You can use this method to handle actions associated with the notification.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -79,91 +131,14 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        let userInfo = notification.request.content.userInfo
-        guard let type = userInfo["type"] as? String else {
-            return
-        }
-        switch type {
-            // NEW EVENT
-        case "new_event":
-            guard let title = userInfo["title"] as? String,
-                  let actor = userInfo["actor"] as? String,
-                  let message = userInfo["message"] as? String else {
-                return
-            }
-            if let user = userInfo["user_img"] as? String,
-               let event = userInfo["event_img"] as? String {
-                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message, profileImg: user, eventImg: event ) }
-            } else {
-                self.toastContent = { NewEventNotificationToast(title: title, name: actor, content: message) }
-            }
-            self.showToast = true
-            self.toastPosition = .top
-            
-            // NEW POST
-        case "new_post":
-            guard let title = userInfo["title"] as? String,
-                  let actor = userInfo["actor"] as? String,
-                  let message = userInfo["message"] as? String else {
-                return
-            }
-            
-            if let user = userInfo["user_img"] as? String {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
-            } else {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
-            }
-            self.showToast = true
-            self.toastPosition = .top
-            
-            // MESSAGE
-        case "message":
-            guard !inMessageView else { // dont want to show toasts if you are in a message view
-                break
-            }
-            guard let title = userInfo["title"] as? String,
-                  let actor = userInfo["actor"] as? String,
-                  let message = userInfo["message"] as? String else {
-                return
-            }
-            
-            if let user = userInfo["user_img"] as? String {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message, profileImg: user) }
-            } else {
-                self.toastContent = { UserNotificationToast(title: title, name: actor, content: message) }
-            }
-            self.showToast = true
-            self.toastPosition = .top
-            
-            // EVENT STATUS
-        case "event_status":
-            guard let title = userInfo["title"] as? String,
-                  let message = userInfo["message"] as? String else {
-                return
-            }
-            
-            if let event = userInfo["event_img"] as? String {
-                self.toastContent = { EventNotificationToast(title: title, content: message, eventImg: event) }
-            } else {
-                self.toastContent = { EventNotificationToast(title: title, content: message) }
-            }
-            self.showToast = true
-            self.toastPosition = .top
-            
-        default:
-            guard let _ = userInfo["title"] as? String,
-                  let _ = userInfo["message"] as? String else {
-                return
-            }
-        }
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
         } else {
             completionHandler([.sound])
+            // Handle Notifications in App
+//            let userInfo = notification.request.content.userInfo
+//            let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: userInfo)
+//            ToastManager.shared.sendNotification(note: note)
         }
-        
     }
-        
-
 }

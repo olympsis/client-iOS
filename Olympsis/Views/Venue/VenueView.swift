@@ -14,14 +14,14 @@ struct VenueView: View {
     
     @State var venue: Venue
     @State private var status: LOADING_STATE = .loading
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) private var presentationMode
     
-    var fieldLocation: String {
+    private var fieldLocation: String {
         return venue.city + ", " + venue.state
     }
     
-    var hasClubs: Bool {
+    private var hasClubs: Bool {
         guard let user = session.user,
               let clubs = user.clubs,
               !clubs.isEmpty else {
@@ -47,8 +47,8 @@ struct VenueView: View {
                         Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
                             Image(systemName: "xmark.circle.fill")
                                 .imageScale(.large)
-                                .foregroundColor(Color("color-prime"))
-                        }.clipShape(Circle())
+                        }
+                        .clipShape(Circle())
                     }.padding(.horizontal)
                     
                     Text(fieldLocation)
@@ -59,7 +59,7 @@ struct VenueView: View {
                 VenueImages(venue: venue)
                 
                 // MARK: - Description
-                Text(String(localized: "About this Venue", table: "General"))
+                Text(String(localized: "About this Location", table: "General"))
                     .bold()
                     .font(.title2)
                     .padding(.leading)
@@ -77,10 +77,10 @@ struct VenueView: View {
                 VenueEventsView(venue: $venue)
                 
             }       
-        }.padding(.top)
+        }
+        .padding(.top)
     }
 }
-
 
 struct VenueImages: View {
     
@@ -128,9 +128,19 @@ struct VenueActionButtons: View {
     @State private var showReport: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showVisibility: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    
+    @Environment(\.openURL) private var openURL
+    @Environment(SessionStore.self) private var session
     
     var joinGroupTip = JoinGroupTip()
+    
+    private var bookingURL: URL? {
+        guard let string = venue.bookingURL,
+              let url = URL(string: string) else {
+            return nil
+        }
+        return url
+    }
     
     private var canCreateEvent: Bool {
         guard let user = session.user,
@@ -175,119 +185,167 @@ struct VenueActionButtons: View {
     }
     
     var body: some View {
-        HStack {
-            Button(action:{ leadToMaps() }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("color-prime"))
+        VStack {
+            if (venue.requiresBooking) {
+                HStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.yellow)
                     
-                    VStack {
-                        VStack {
-                            Image(systemName: "car.fill")
-                                .resizable()
-                                .frame(width: 25, height: 20)
-                            .imageScale(.large)
-                        }.frame(height: 25)
-                        Text(estimatedTimeToField)
-                    }.foregroundColor(.white)
-                }
+                    Text("This location may require an external reservation before you can host an event")
+                        .font(.caption)
+                }.padding(.bottom, 10)
             }
             
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(maxWidth: .infinity, idealHeight: 80)
-                    .foregroundColor(Color("background"))
-                VStack {
-                    if venue.isPublic() {
-                        VStack {
-                            Image(systemName: "globe")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                            Text("Public")
-                        }.foregroundColor(Color("foreground"))
-                    } else {
-                        VStack {
-                            Image(systemName: "lock.fill")
-                                .resizable()
-                                .frame(width: 20, height: 25)
-                            Text("Private")
-                        }.foregroundColor(Color("foreground"))
+            HStack {
+                
+                // MARK: - Directions Button
+                Button(action:{ leadToMaps() }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
+                            .foregroundColor(bookingURL != nil ? Color.Background.secondary : Color.Brand.primary)
+                        
+                        VStack(spacing: 6) {
+                            VStack {
+                                Image(systemName: "car.fill")
+                                    .resizable()
+                                    .frame(width: 20, height: 15)
+                            }
+                            
+                            Text(estimatedTimeToField)
+                                .font(.caption)
+                                .fontWeight(.bold)
+                        }.foregroundColor(bookingURL != nil ? Color.foreground : .white)
                     }
                 }
-            }.onTapGesture {
-                showVisibility.toggle()
-            }
-            .popover(isPresented: $showVisibility, attachmentAnchor: .point(.top), arrowEdge: .top, content: {
-                VStack {
-                    if venue.isPublic() {
-                        Text("Public")
-                            .fontWeight(.bold)
-                        Text("This venue is owned by your state/local government.")
-                            .font(.callout)
-                            .multilineTextAlignment(.center)
-                    } else {
-                        Text("Private")
-                            .fontWeight(.bold)
-                        Text("This venue is privately owned by \(venue.owner.name)")
-                            .font(.callout)
-                            .multilineTextAlignment(.center)
+                
+                // MARK: - Visibility/Booking
+                if let url = bookingURL {
+                    Button(action: { openURL(url) }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(maxWidth: .infinity, idealHeight: 60)
+                                .foregroundStyle(Color.Brand.primary)
+                            VStack {
+                                Image(systemName: "calendar.badge.clock")
+                                    .resizable()
+                                    .frame(width: 20, height: 17)
+                                Text("Schedule")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                            }.foregroundStyle(.white)
+                        }
                     }
-                }.presentationCompactAdaptation(.popover)
-                    .presentationBackground(content: {
-                        Color("background")
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
+                            .foregroundColor(Color(Color.Background.secondary))
+                        VStack {
+                            if venue.isPublic() {
+                                VStack {
+                                    Image(systemName: "globe")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                    Text("Public")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                }.foregroundColor(Color("foreground"))
+                            } else {
+                                VStack {
+                                    Image(systemName: "lock.fill")
+                                        .resizable()
+                                        .frame(width: 15, height: 20)
+                                    Text("Private")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                }.foregroundColor(Color("foreground"))
+                            }
+                        }
+                    }
+                    .onTapGesture {
+                        showVisibility.toggle()
+                    }
+                    .popover(isPresented: $showVisibility, attachmentAnchor: .point(.top), arrowEdge: .top, content: {
+                        VStack {
+                            if venue.isPublic() {
+                                Text("Public")
+                                    .fontWeight(.bold)
+                                Text("This venue is owned by your state/local government.")
+                                    .font(.callout)
+                                    .multilineTextAlignment(.center)
+                            } else {
+                                Text("Private")
+                                    .fontWeight(.bold)
+                                Text("This venue is privately owned by \(venue.owner.name)")
+                                    .font(.callout)
+                                    .multilineTextAlignment(.center)
+                            }
+                        }
+                        .presentationCompactAdaptation(.popover)
+                        .presentationBackground(content: {
+                            Color(Color.Background.secondary)
+                        })
+                        .frame(width: 200)
+                        .padding(.vertical)
                     })
-                    .frame(width: 200)
-                    .padding(.vertical)
-            })
-            
-            Button(action: { self.showNewEvent.toggle() }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
-                    VStack {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                        Text("Event")
-                    }.foregroundStyle(canCreateEvent == false ? .gray : Color("foreground"))
                 }
-            }.disabled(canCreateEvent == false ? true : false)
-                .popoverTip(joinGroupTip)
-            .sheet(isPresented: $showNewEvent) {
-                NewEvent(manager: NewEventManager(venues: [venue]))
-            }
-            
-            Menu{
-                Button(action:{ showReport.toggle() }){
-                    Label("Report an Issue", systemImage: "exclamationmark.shield")
-                }
-            }label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
-                        .foregroundColor(Color("background"))
-                    VStack {
+                
+                // MARK: - New Event
+                Button(action: { self.showNewEvent.toggle() }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
+                            .foregroundColor(Color(Color.Background.secondary))
                         VStack {
-                            Image(systemName: "ellipsis")
+                            Image(systemName: "plus")
                                 .resizable()
-                            .frame(width: 25, height: 5)
-                        }.frame(height: 25)
-                        Text("More")
-                    }.foregroundColor(Color("foreground"))
+                                .frame(width: 15, height: 15)
+                            Text("Event")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                        }.foregroundStyle(canCreateEvent == false ? .gray : Color("foreground"))
+                    }
                 }
-            }.fullScreenCover(isPresented: $showReport, content: {
-                FieldReportView(field: venue)
-            })
-            
-        }.padding(.horizontal)
-            .task {
-                try? Tips.configure([
-                    .displayFrequency(.immediate),
-                    .datastoreLocation(.applicationDefault)
-                ])
+                .disabled(canCreateEvent == false ? true : false)
+                .popoverTip(joinGroupTip)
+                .fullScreenCover(isPresented: $showNewEvent) {
+                    NewEvent(manager: NewEventManager(venues: [venue]))
+                }
+                
+                // MARK: - More
+                Menu{
+                    Button(action:{ showReport.toggle() }){
+                        Label("Report an Issue", systemImage: "exclamationmark.shield")
+                    }
+                }label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
+                            .foregroundColor(Color(Color.Background.secondary))
+                        VStack {
+                            VStack {
+                                Image(systemName: "ellipsis")
+                                    .resizable()
+                                    .frame(width: 20, height: 5)
+                            }.frame(height: 15)
+                            Text("More")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                        }.foregroundColor(Color("foreground"))
+                    }
+                }.fullScreenCover(isPresented: $showReport, content: {
+                    FieldReportView(field: venue)
+                })
             }
+        }
+        .padding(.horizontal)
+        .task {
+            try? Tips.configure([
+                .displayFrequency(.immediate),
+                .datastoreLocation(.applicationDefault)
+            ])
+        }
     }
 }
 
@@ -295,10 +353,10 @@ struct VenueEventsView: View {
     
     @Binding var venue: Venue
     @State private var status: LOADING_STATE = .pending
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var fieldEvents: [Event] {
-        return session.events.filter({ $0.venues?.contains(where: { $0.id == venue.id }) ?? false })
+        return session.events.filter({ $0.venues.contains(where: { $0.id == venue.id }) })
     }
     
     func reloadEvents() async {
@@ -309,9 +367,7 @@ struct VenueEventsView: View {
             return
         }
         
-        // remove existing events and we will append the newly requested events
-        session.events.removeAll(where: { $0.venues?.contains(where: { $0.id == venue.id }) ?? false })
-        session.events.append(contentsOf: events)
+        events.forEach { session.events.insert($0) }
         handleReloadSuccess()
     }
     
@@ -369,7 +425,7 @@ struct VenueEventsView: View {
             }
             if fieldEvents.isEmpty {
                 VStack(alignment: .center){
-                    Text("There are no events at this field. 🥹")
+                    Text("There are no events at this location 🥹")
                         .padding(.all)
                 }.frame(maxWidth: .infinity)
             } else {
@@ -393,8 +449,7 @@ struct VenueEventsView: View {
     }
 }
 
-struct FieldViewExt_Previews: PreviewProvider {
-    static var previews: some View {
-        VenueView(venue: FIELDS[0]).environmentObject(SessionStore())
-    }
+#Preview {
+    VenueView(venue: VENUES[0])
+        .environment(SessionStore())
 }

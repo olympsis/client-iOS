@@ -14,7 +14,7 @@ struct MemberListItem: View {
     
     @StateObject var member: Member
     @EnvironmentObject private var club: Club
-    @EnvironmentObject private var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var username: String {
         guard let data = member.user, let username = data.username else {
@@ -146,5 +146,5 @@ struct MemberListItem: View {
 #Preview("Club Member") {
     MemberListItem(member: CLUBS[0].members.first!)
         .environmentObject(CLUBS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

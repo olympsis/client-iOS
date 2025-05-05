@@ -20,7 +20,7 @@ struct GroupToolbar: ToolbarContent {
     @Binding var showMessages: Bool
     @Binding var groupState: LOADING_STATE
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var acceptedEULA: Bool {
         guard let user = session.user,
@@ -60,7 +60,7 @@ struct GroupToolbar: ToolbarContent {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 35)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             Image(systemName: "slider.horizontal.3")
                                 .foregroundStyle(Color("foreground"))
                         }
@@ -108,25 +108,25 @@ struct GroupToolbar: ToolbarContent {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
                                         .imageScale(.medium)
                                 }
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action:{ self.showMessages.toggle() }){
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 45, height: 35)
-                                        .foregroundStyle(Color("background"))
-                                    Image(systemName: "bubble.left.and.bubble.right")
-                                        .foregroundStyle(Color("foreground"))
-                                        .imageScale(.medium)
-                                }
-                            }
-                        }
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            Button(action:{ self.showMessages.toggle() }){
+//                                ZStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 45, height: 35)
+//                                        .foregroundStyle(Color(Color.Background.secondary))
+//                                    Image(systemName: "bubble.left.and.bubble.right")
+//                                        .foregroundStyle(Color("foreground"))
+//                                        .imageScale(.medium)
+//                                }
+//                            }
+//                        }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
                                 if let logo = group.club?.logo,
@@ -186,25 +186,25 @@ struct GroupToolbar: ToolbarContent {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 40, height: 35)
-                                        .foregroundStyle(Color("background"))
+                                        .foregroundStyle(Color(Color.Background.secondary))
                                     Image(systemName: "plus.square.dashed")
                                         .foregroundStyle(Color("foreground"))
                                         .imageScale(.medium)
                                 }
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action:{ self.showMessages.toggle() }){
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 45, height: 35)
-                                        .foregroundStyle(Color("background"))
-                                    Image(systemName: "bubble.left.and.bubble.right")
-                                        .foregroundStyle(Color("foreground"))
-                                        .imageScale(.medium)
-                                }
-                            }
-                        }
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            Button(action:{ self.showMessages.toggle() }){
+//                                ZStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 45, height: 35)
+//                                        .foregroundStyle(Color(Color.Background.secondary))
+//                                    Image(systemName: "bubble.left.and.bubble.right")
+//                                        .foregroundStyle(Color("foreground"))
+//                                        .imageScale(.medium)
+//                                }
+//                            }
+//                        }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action:{ self.showMenu.toggle() }) {
                                 if let logo = group.organization?.logo,
@@ -243,7 +243,7 @@ struct GroupToolbar: ToolbarContent {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 40, height: 35)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             Image(systemName: "arrow.clockwise")
                                 .foregroundStyle(Color("foreground"))
                         }
@@ -259,6 +259,6 @@ struct GroupToolbar: ToolbarContent {
         VStack {}.toolbar {
             GroupToolbar(showEULA: .constant(false), showMenu: .constant(false), showNewPost: .constant(false), showNewEvent: .constant(false), showSelector: .constant(false), showMessages: .constant(false), groupState: .constant(.pending))
         }
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
     }
 }

@@ -15,9 +15,8 @@ struct TrophiesView: View {
                     .font(.title)
                     .bold()
                     .padding(.leading, 25)
-                Rectangle()
-                    .frame(height: 1)
-                    .padding(.trailing, 25)
+                
+                Spacer()
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .center){

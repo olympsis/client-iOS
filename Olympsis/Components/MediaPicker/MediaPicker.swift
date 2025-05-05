@@ -44,10 +44,10 @@ struct MediaPicker: View {
             maskShape = .square
         case .other:
             maxSelection = 1
-            maskShape = .rectangle
+            maskShape = .landscape
         case .eventImage:
             maxSelection = 1
-            maskShape = .rectangleV
+            maskShape = .portrait
         }
         
         _viewModel = StateObject(wrappedValue:
@@ -141,7 +141,7 @@ struct MediaPicker: View {
                             Spacer()
                             Button(action: {
                                 if maskShape == CropMaskShape.square {
-                                    maskShape = CropMaskShape.rectangleV
+                                    maskShape = CropMaskShape.portrait
                                 } else {
                                     maskShape = .square
                                 }
@@ -160,7 +160,7 @@ struct MediaPicker: View {
                             .padding(.horizontal, 5)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                                     .frame(width: 27, height: 25)
                             }
                             
@@ -170,7 +170,7 @@ struct MediaPicker: View {
                             .padding(.horizontal, 3)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                             .padding(.horizontal)
                         }

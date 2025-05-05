@@ -48,7 +48,7 @@ struct EditProfile: View {
     private var userObserver: UserObserver = UserObserver()
     private var uploadObserver: UploadObserver = UploadObserver()
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     @Environment(\.dismiss) private var dismiss
     
@@ -158,7 +158,7 @@ struct EditProfile: View {
                                         .scaledToFit()
                                 } else if phase.error != nil {
                                     ZStack {
-                                        Color("background") // Acts as a placeholder.
+                                        Color(Color.Background.secondary) // Acts as a placeholder.
                                             .clipShape(Circle())
                                         Image(systemName: "person.fill")
                                             .resizable()
@@ -167,7 +167,7 @@ struct EditProfile: View {
                                     }.frame(width: 100, height: 100)
                                 } else {
                                     ZStack {
-                                        Color("background") // Acts as a placeholder.
+                                        Color(Color.Background.secondary) // Acts as a placeholder.
                                             .clipShape(Circle())
                                         ProgressView()
                                     }.frame(width: 100, height: 100)
@@ -175,7 +175,7 @@ struct EditProfile: View {
                             }.frame(width: 100, height: 100)
                         } else {
                             ZStack {
-                                Color("background")
+                                Color(Color.Background.secondary)
                                     .clipShape(Circle())
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -187,7 +187,6 @@ struct EditProfile: View {
                     
                     Button(action: { self.showMediaPicker.toggle() }) {
                         Text("Edit Picture")
-                            .foregroundColor(Color("color-prime"))
                     }.fullScreenCover(isPresented: $showMediaPicker, content: {
                         MediaPicker(pickerType: .profile) { images in
                             if let img = images.first {
@@ -214,7 +213,7 @@ struct EditProfile: View {
                         .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 40)
-                                .foregroundColor(Color("background"))
+                                .foregroundColor(Color(Color.Background.secondary))
                         }
                         .padding(.top, 5)
                 }.padding(.horizontal)
@@ -235,7 +234,7 @@ struct EditProfile: View {
                         .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 100)
-                                .foregroundColor(Color("background"))
+                                .foregroundColor(Color(Color.Background.secondary))
                         }
                 }.padding(.horizontal)
                     .padding(.bottom, 15)
@@ -282,7 +281,7 @@ struct EditProfile: View {
                             ScrollView(.horizontal) {
                                 HStack(alignment: .center) {
                                     ForEach(Array(selectedSports), id: \.self) { sport in
-                                        Text(sport)
+                                        Text(sport.capitalized)
                                             .foregroundStyle(.white)
                                             .padding(.horizontal, 10)
                                                 .padding(.vertical, 5)
@@ -300,14 +299,16 @@ struct EditProfile: View {
                     .background {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 40)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                     }
-                }.padding(.horizontal)
-                    .padding(.top)
-                    .fullScreenCover(isPresented: $showSportsPicker, content: {
-                        MultiSportsPicker(selectedSports: $selectedSports)
-                            .presentationDetents([.medium])
-                    })
+                }
+                .padding(.horizontal)
+                .padding(.top)
+                .sheet(isPresented: $showSportsPicker, content: {
+                    MultiSportsPicker(sports: session.sports, selectedSports: $selectedSports)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                })
                 
                 // MARK: - Hometown Picker
                 VStack(alignment: .leading) {
@@ -329,7 +330,7 @@ struct EditProfile: View {
                     .background {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 40)
-                            .foregroundColor(Color("background"))
+                            .foregroundColor(Color(Color.Background.secondary))
                     }
                 }.padding(.horizontal)
                     .padding(.vertical, 15)
@@ -360,7 +361,8 @@ struct EditProfile: View {
                             }
                         }
                     }){
-                        LoadingButton(text: "Save", width: 50, status: $status)
+                        LoadingButton(text: "Save", width: 40, status: $status)
+                            .frame(width: 50)
                     }
                 }
             }
@@ -396,5 +398,5 @@ struct EditProfile: View {
 
 #Preview {
     EditProfile()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

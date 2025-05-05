@@ -12,7 +12,6 @@ struct RoomListItemTemplate: View {
         HStack {
             Circle()
                 .frame(width: 50)
-                .foregroundColor(Color.background)
                 .overlay(alignment: .center) {
                     Image(systemName: "rectangle.3.group.fill")
                         .foregroundStyle(Color.foreground)

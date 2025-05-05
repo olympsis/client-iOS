@@ -12,41 +12,119 @@ import NotificationCenter
 
 struct Home: View {
     
+    @State public var router: HomeRouter
+    
     @State private var showDetail = false
     @State private var showMoreFields = false
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
+    init(router: HomeRouter = HomeRouter()) {
+        self._router = .init(initialValue: router)
+    }
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.navPath) {
             ScrollView(.vertical) {
                 
                 //MARK: - Welcome message
                 WelcomeCard()
                     .padding(.top, 25)
-                    .environmentObject(session)
+                    .environment(session)
+                
+                // MARK: - Next Event
+                NextEvent()
+                    .padding(.top)
+                    .environment(session)
+                
+                // MARK: - Quick Actions
+                QuickActions()
+                    .padding(.top)
+                    .environment(session)
                 
                 // MARK: - Announcements
                 AnnouncementsView()
-                    .environmentObject(session)
-                
-                // MARK: - Next Events
-                NextEvents()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Hot Events
                 HotEvents()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 // MARK: - Nearby Venues
                 NearbyVenues()
-                    .environmentObject(session)
+                    .environment(session)
                 
                 Spacer(minLength: 100)
                 
             }
+            .disabled(session.state == .loading)
+            .redacted(reason: session.state == .loading ? .placeholder : [])
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Olympsis")
+                        .textCase(.uppercase)
+                        .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                }
+                
+                ToolbarItemGroup(placement: .topBarTrailing) {
+// DISABLED FOR NOW
+//                    Button(action: { router.navigate(to: .messages) }) {
+//                        ZStack(alignment: .topTrailing) {
+//                            Image(systemName: "bubble.left.and.bubble.right")
+//                                .foregroundStyle(Color.foreground)
+//                            
+//                            if session.invitations.count > 0 {
+//                                NotificationCountView(value: $session.invitations.count)
+//                            }
+//                        }
+//                    }
+//                    .id(UUID())
+//                    .disabled(session.state == .loading)
+//                    .redacted(reason: session.state == .loading ? .placeholder : [])
+                    
+                    Button(action: { router.navigate(to: .notifications) }) {
+                        ZStack(alignment: .topTrailing) {
+                            Image(systemName: "bell")
+                                .foregroundStyle(Color.foreground)
+                                
+                            if session.notifications.contains(where: { !$0.isRead }) {
+                                NotificationCountView(value: session.notifications.count(where: { !$0.isRead }))
+                            }
+                        }
+                    }
+                    .id(UUID())
+                    .disabled(session.state == .loading)
+                    .redacted(reason: session.state == .loading ? .placeholder : [])
+                }
+            }
+            .toolbarRole(.navigationStack)
+            .ignoresSafeArea(.keyboard)
+            .ignoresSafeArea(.container, edges: .bottom)
+            .navigationDestination(for: HOME_ROUTES.self, destination: { route in
+                switch route {
+                case .notifications:
+                    NotificationsView()
+                        .id(HOME_ROUTES.notifications)
+                        .environment(router)
+                        .environment(session)
+                        .navigationBarBackButtonHidden()
+                    
+                case .messages:
+                    HomeMessagesView()
+                        .id(HOME_ROUTES.messages)
+                        .environment(router)
+                        .environment(session)
+                        .navigationBarBackButtonHidden()
+                    
+                case .full_post_view(let id):
+                    AsyncPostView(postId: id)
+                        .id(HOME_ROUTES.full_post_view(id))
+                        .environment(session)
+                        .navigationBarBackButtonHidden()
+                }
+            })
             .onReceive(session.locationManager.$location) { newLoc in
                 
                 // make sure new location is valid
@@ -64,32 +142,11 @@ struct Home: View {
                 session.locationRecieved = true
                 
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Olympsis")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        NotificationsView()
-                            .environmentObject(session)
-                    } label: {
-                        Image(systemName: "bell")
-                            .foregroundStyle(Color("foreground"))
-                            .overlay {
-                                if session.invitations.count > 0 {
-                                    NotificationCountView(value: $session.invitations.count)
-                                }
-                            }
-                    }
-                }
-            }
         }
     }
 }
 
 #Preview {
     Home()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

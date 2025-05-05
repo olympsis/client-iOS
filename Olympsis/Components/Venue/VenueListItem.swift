@@ -13,7 +13,7 @@ struct VenueListItem: View {
     @State var venue: Venue
     @State var showDetail = false // show field view detail
     @State var showReport = false // show make a report view
-    @EnvironmentObject var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     var fieldCityString: String {
         return venue.city + ", " + venue.state
@@ -184,7 +184,7 @@ struct VenueListItem: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        VenueListItem(venue: FIELDS[0])
-            .environmentObject(SessionStore())
+        VenueListItem(venue: VENUES[0])
+            .environment(SessionStore())
     }
 }

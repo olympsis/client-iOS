@@ -22,7 +22,7 @@ struct GroupMessages: View {
     @StateObject private var chatObserver = ChatObserver()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     
     private var joinedRooms: [Room] {
@@ -142,7 +142,6 @@ struct GroupMessages: View {
                                     .frame(height: 100)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.horizontal)
-                                    .foregroundStyle(Color.background)
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
@@ -182,7 +181,6 @@ struct GroupMessages: View {
                                     .frame(height: 100)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.horizontal)
-                                    .foregroundStyle(Color.background)
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
@@ -202,7 +200,7 @@ struct GroupMessages: View {
                                             .padding(.bottom)
                                     }
                                     .fullScreenCover(isPresented: $showDetail) {
-                                        GroupRoomView(room: room, rooms: $rooms, observer: chatObserver)
+                                        GroupRoomView(room: room, rooms: $rooms)
                                     }
                                 }
                             }
@@ -223,7 +221,7 @@ struct GroupMessages: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 100)
                             .padding(.horizontal)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.gray.opacity(0.3))
                             .overlay(alignment: .center) {
                                 VStack {
                                     Text("😞")
@@ -272,7 +270,7 @@ struct GroupMessages: View {
                 GroupNewRoom(rooms: $rooms)
             }
             .fullScreenCover(item: $selectedRoom, content: { r in
-                GroupRoomView(room: r, rooms: $rooms, observer: chatObserver)
+                GroupRoomView(room: r, rooms: $rooms)
             })
         }
     }
@@ -280,5 +278,5 @@ struct GroupMessages: View {
 
 #Preview {
     GroupMessages(rooms: ROOMS)
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

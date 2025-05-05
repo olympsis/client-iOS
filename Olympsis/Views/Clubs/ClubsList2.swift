@@ -10,18 +10,16 @@ import SwiftUI
 struct ClubsList2: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
-        NavigationStack {
-            ClubsList()
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{ dismiss() }){
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(Color("color-prime"))
-                        }
-                    }
+        VStack {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Text("Back")
+                        .fontWeight(.medium)
                 }
-                .navigationBarBackButtonHidden()
-                .navigationBarTitleDisplayMode(.inline)
+                
+                Spacer()
+            }.padding(.horizontal)
+            ClubsList()
         }
     }
 }
@@ -29,6 +27,6 @@ struct ClubsList2: View {
 struct ClubsList2_Previews: PreviewProvider {
     static var previews: some View {
         ClubsList2()
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

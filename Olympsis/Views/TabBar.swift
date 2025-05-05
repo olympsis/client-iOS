@@ -9,8 +9,13 @@ import SwiftUI
 
 struct TabBar: View {
     
-    @Binding var currentTab: Tab
-    @EnvironmentObject var session: SessionStore
+    @Binding var currentTab: ViewTab
+    @State public var homeRouter = HomeRouter()
+    @StateObject public var groupRouter = GroupRouter()
+    @StateObject public var eventRouter = EventRouter()
+    @StateObject public var profileRouter = ProfileRouter()
+    
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         GeometryReader { proxy in
@@ -18,47 +23,47 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .home
+                        if currentTab == .home {
+                            homeRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
                         Image(systemName: currentTab == .home ? "house.fill" : "house")
-                            .frame(width: 20, height: 20)
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
-                        Text("HOME")
-                            .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
                 
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .club
+                        if currentTab == .club {
+                            groupRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .club ? "person.3.fill" : "person.3")
-                            .frame(width: 20, height: 20)
+                        Image(systemName: currentTab == .club ? "person.2.fill" : "person.2")
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
-                        Text("GROUPS")
-                            .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .map
+                        currentTab = .events
+                        if currentTab == .events {
+                            eventRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .map ? "map.fill" : "map")
-                            .frame(width: 20, height: 20)
+                        Image(systemName: currentTab == .events ? "calendar.circle.fill" : "calendar")
+                            .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
-                        Text("EVENTS")
-                            .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundColor(.foreground)
                     }
                 }
 //                Button() {
@@ -75,16 +80,19 @@ struct TabBar: View {
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){
                         currentTab = .profile
+                        if currentTab == .profile {
+                            profileRouter.navigateToRoot()
+                        }
                     }
                 } label: {
                     VStack {
                         TabBarProfileLabel(currentTab: $currentTab)
-                            .environmentObject(session)
+                            .environment(session)
                             .frame(maxWidth: .infinity)
-                        
-                        Text("PROFILE")
-                            .font(.caption2)
-                            .foregroundColor(.white )
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.foreground, lineWidth: currentTab == .profile ? 3 : 1)
+                            )
                     }
                 }
             }
@@ -98,8 +106,6 @@ struct TabBar: View {
 }
 
 #Preview {
-    return TabBar(currentTab: .constant(.home))
-        .background(Color.dark)
-        .environmentObject(SessionStore())
-        
+    TabBar(currentTab: .constant(.home))
+        .environment(SessionStore())
 }

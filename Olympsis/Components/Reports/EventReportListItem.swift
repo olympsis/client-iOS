@@ -71,7 +71,7 @@ struct EventReportListItem: View {
             }.padding(.vertical)
         }.padding(.all).background{
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
         }
         .fullScreenCover(isPresented: $showEvent, content: {
             if let e = report.event {
@@ -83,5 +83,5 @@ struct EventReportListItem: View {
 
 #Preview {
     EventReportListItem(report: EVENT_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

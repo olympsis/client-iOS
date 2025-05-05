@@ -9,53 +9,73 @@ import MapKit
 import SwiftUI
 import Firebase
 import Security
-import SwiftToast
+import AlertToast
 import AuthenticationServices
 
 struct ViewContainer: View {
     
-    @State var currentTab: Tab = .home
+    @State var currentTab: ViewTab = .home
     @State private var showOnboarding: Bool = false
     
-    @EnvironmentObject private var session: SessionStore
+    private var homeRouter = HomeRouter()
+    @StateObject private var groupRouter = GroupRouter()
+    @StateObject private var eventRouter = EventRouter()
+    @StateObject private var profileRouter = ProfileRouter()
     
-    init() {
-        UITabBar.appearance().isHidden = true
-    }
+    @StateObject private var toastManager = ToastManager()
+    @Environment(SessionStore.self) private var session
 
+    func handleRoute(_ route: ROUTES) {
+        switch route {
+        case .home:
+            currentTab = .home
+            handleHomeURL(route, router: homeRouter)
+        case .groups:
+            currentTab = .club
+            handleGroupsURL(route, router: groupRouter)
+        case .events:
+            currentTab = .events
+            handleEventsURL(route, router: eventRouter)
+        case .profile:
+            currentTab = .profile
+            handleProfileURL(route, router: profileRouter)
+        }
+    }
+    
     var body: some View {
         VStack {
             TabView(selection: $currentTab) {
-                Home()
-                    .tag(Tab.home)
+                Home(router: homeRouter)
+                    .tag(ViewTab.home)
                     .toolbar(.hidden, for: .tabBar)
                 
-                GroupView()
-                    .tag(Tab.club)
+                GroupView(router: groupRouter)
+                    .tag(ViewTab.club)
                     .toolbar(.hidden, for: .tabBar)
                 
-                MapView()
-                    .tag(Tab.map)
+                Events(router: eventRouter)
+                    .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Activity()
-                    .tag(Tab.activity)
+                    .tag(ViewTab.activity)
                     .toolbar(.hidden, for: .tabBar)
                 
                 Profile()
-                    .tag(Tab.profile)
+                    .tag(ViewTab.profile)
                     .toolbar(.hidden, for: .tabBar)
             }
-            .toast(
-                isPresented: session.$notificationsManager.showToast,
-                position: session.$notificationsManager.toastPosition,
-                content: session.$notificationsManager.toastContent
-            )
             .padding(.bottom, -10)
             
-            TabBar(currentTab: $currentTab)
-                .background(Color("dark-color"))
-                .ignoresSafeArea(.keyboard)
+            TabBar(
+                currentTab: $currentTab,
+                homeRouter: homeRouter,
+                groupRouter: groupRouter,
+                eventRouter: eventRouter,
+                profileRouter: profileRouter
+            )
+            .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground), alignment: .top)
+            .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {
@@ -65,6 +85,21 @@ struct ViewContainer: View {
         }, content: {
             Onboarding()
         })
+        .environment(\.openURL, OpenURLAction { url in // Handles internal URLS
+            guard let route = handleIncomingURL(url) else {
+                return .systemAction
+            }
+            
+            handleRoute(route)
+            return .handled
+        })
+        .onOpenURL(perform: { url in
+            guard let route = handleIncomingURL(url) else {
+                return
+            }
+            
+            handleRoute(route)
+        })
         .task {
             session.state = .loading
             await session.CheckIn()
@@ -72,6 +107,9 @@ struct ViewContainer: View {
                 await session.logout()
                 return
             }
+            
+            await session.updateNotifications()
+            await session.getNotifications()
             
             // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
             if (!session.locationRecieved) {
@@ -95,5 +133,5 @@ struct ViewContainer: View {
 
 #Preview {
     ViewContainer()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

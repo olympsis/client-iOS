@@ -72,7 +72,7 @@ struct PostReportListItem: View {
             }.padding(.vertical)
         }.padding(.all).background{
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
         }
         .fullScreenCover(isPresented: $showPost, content: {
             if let p = report.post {
@@ -84,5 +84,5 @@ struct PostReportListItem: View {
 
 #Preview {
     PostReportListItem(report: POST_REPORTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

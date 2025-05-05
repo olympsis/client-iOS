@@ -176,11 +176,11 @@ struct CropView: View {
                         .frame(width: configuration.screenWidth, height: configuration.screenWidth)
                         // We use the screen width here since we want a square and not a rectangle
                     
-                case .rectangle:
+                case .landscape:
                     Rectangle()
                         .frame(width: configuration.screenWidth, height: configuration.screenWidth * (566.0 / 1080.0)) // resolution 1080x566 TODO: - I need to make this more dynamic
                         // We multiply by the aspect ratio that we want for a rectangle image
-                case .rectangleV:
+                case .portrait:
                     Rectangle()
                         .frame(width: configuration.screenWidth, height: configuration.screenWidth * (1350.0 / 1080.0)) // resolution 1080x566 TODO: - I need to make this more dynamic
                 }
@@ -190,5 +190,5 @@ struct CropView: View {
 }
 
 #Preview {
-    CropView(images: [UIImage(named: "volleyball-1")!, UIImage(named: "soccer-1")!, UIImage(named: "tennis-1")!], configuration: .init(rotateImage: false, maskShape: .rectangleV), onComplete: { _ in })
+    CropView(images: [UIImage(named: "volleyball-1")!, UIImage(named: "soccer-1")!, UIImage(named: "tennis-1")!], configuration: .init(rotateImage: false, maskShape: .portrait), onComplete: { _ in })
 }

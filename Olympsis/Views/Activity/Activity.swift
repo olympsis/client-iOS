@@ -11,7 +11,7 @@ import SwiftUI
 struct Activity: View {
     
     @State private var selectedFilter: Int = 0
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         NavigationStack {
@@ -163,6 +163,6 @@ struct Activity: View {
 
 struct Activity_Previews: PreviewProvider {
     static var previews: some View {
-        Activity().environmentObject(SessionStore())
+        Activity().environment(SessionStore())
     }
 }

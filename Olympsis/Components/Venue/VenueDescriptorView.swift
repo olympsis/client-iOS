@@ -19,7 +19,7 @@ struct VenueDescriptorView: View {
     @State private var camera: MapCameraPosition
     @State private var location: CLLocationCoordinate2D
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "venue_small_list_item")
     
@@ -144,5 +144,5 @@ struct VenueDescriptorView: View {
 
 #Preview {
     VenueDescriptorView(item: VENUE_DESCRIPTORS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

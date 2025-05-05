@@ -1,0 +1,58 @@
+//
+//  CustomLocationPicker.swift
+//  Olympsis
+//
+//  Created by Joel Joseph on 5/4/25.
+//
+
+import MapKit
+import SwiftUI
+
+struct CustomLocationPicker: View {
+    
+    @State private var position: MapCameraPosition = .automatic
+    @Environment(CustomLocationViewModel.self) private var viewModel
+    
+    private func handleLocationTap(_ coordinate: CLLocationCoordinate2D) {
+        // Update camera position to center on the tapped location
+        withAnimation {
+            position = .region(
+                MKCoordinateRegion(
+                    center: coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                )
+            )
+        }
+        
+        // Lookup location information
+        viewModel.lookupLocationInfo(for: coordinate)
+    }
+    
+    var body: some View {
+        MapReader { proxy in
+            Map(position: $position) {
+                // Show a marker if a location is selected
+                if let coordinate = viewModel.selectedCoordinate {
+                    Marker("Selected Location", coordinate: coordinate)
+                }
+            }
+            .mapStyle(.standard)
+            .mapControls {
+                MapCompass()
+                MapPitchToggle()
+                MapUserLocationButton()
+            }
+            // Use onTapGesture with the map proxy to convert tap coordinates
+            .onTapGesture { screenCoord in
+                if let coordinate = proxy.convert(screenCoord, from: .local) {
+                    handleLocationTap(coordinate)
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    CustomLocationPicker()
+        .environment(CustomLocationViewModel())
+}

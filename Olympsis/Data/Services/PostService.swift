@@ -26,16 +26,11 @@ class PostService {
     
     func getPosts(id: String, parentId: String?) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        var endpoint = Endpoint("/v1/posts", queryItems: [
-            URLQueryItem(name: "groupID", value: id),
-        ])
-        if (parentId != nil) {
-            endpoint = Endpoint("/v1/posts", queryItems: [
-                URLQueryItem(name: "groupID", value: id),
-                URLQueryItem(name: "parentID", value: parentId)
-            ])
+        var queries = [URLQueryItem(name: "groupID", value: id)]
+        if (parentId != nil && !parentId!.isEmpty) {
+            queries.append(URLQueryItem(name: "parentID", value: parentId))
         }
-        
+        let endpoint = Endpoint("/v1/posts", queryItems: queries)
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
@@ -61,7 +56,7 @@ class PostService {
         return resp
     }
     
-    func addLike(id: String, like: LikeDao) async throws -> (Data, URLResponse) {
+    func addLike(id: String, like: ReactionDao) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/posts/\(id)/likes")
         return try await http.Request(.POST, endpoint, body: EncodeToData(like), headers: [

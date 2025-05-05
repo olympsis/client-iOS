@@ -14,7 +14,7 @@ struct RSVP: View {
             VStack {
                 Text("RSVP!!")
                     .bold()
-                    .font(.custom("ITCAvantGardeStd-Bold", size: 25, relativeTo: .largeTitle))
+                    .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                 Text("It is polite to RSVP to your club’s events ")
                     .font(.subheadline)
                 

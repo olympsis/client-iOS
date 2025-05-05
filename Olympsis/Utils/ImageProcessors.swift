@@ -39,3 +39,11 @@ func groupLogoImageProcessor(size: CGSize) -> ImageProcessor {
 func groupBannerImageProcessor(size: CGSize) -> ImageProcessor {
     return DownsamplingImageProcessor(size: size)
 }
+
+func postImageNotificationProcessor() -> ImageProcessor {
+    DownsamplingImageProcessor(size: CGSize(width: 80, height: 80))
+}
+
+func postUserImageNotificationProcessor() -> ImageProcessor {
+    DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))
+}

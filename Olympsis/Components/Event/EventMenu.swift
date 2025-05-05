@@ -13,22 +13,21 @@ struct EventMenu: View {
     @Binding var organizations: [Organization]
     
     @State private var loadingState: LOADING_STATE = .pending
+    
     @State private var showReport: Bool = false
-    @State private var showEditEvent: Bool = false
+//    @State private var showEditEvent: Bool = false
+    @State private var showRecurring: Bool = false
     @State private var showNotification: Bool = false
     
     @EnvironmentObject private var event: Event
-    @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
+    @Environment(SessionStore.self) private var session
     
-    func deleteEvent() async {
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.deleteEvent(id: id)
+    func deleteEvent(deleteAll: Bool = false) async {
+        let res = await session.eventObserver.deleteEvent(id: event.id, deleteAll: deleteAll)
         if res {
             await MainActor.run {
-                session.events.removeAll(where: {$0.id == event.id})
+                session.events.remove(event)
                 dismiss()
             }
         }
@@ -54,7 +53,7 @@ struct EventMenu: View {
         
         
         if organizations.first(where: { e in
-            e.members?.contains { $0.user?.uuid == uuid } ?? false
+            e.members.contains { $0.user?.uuid == uuid }
         }) != nil {
             return true
         }
@@ -62,88 +61,22 @@ struct EventMenu: View {
         return false
     }
     
-    func startEvent() async {
-        let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStartTime: now)
-        loadingState = .loading
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
-        if res {
-            await MainActor.run {
-                withAnimation(.easeInOut){
-                    event.actualStartTime = now
-                    loadingState = .success
-                }
-            }
-        }
-    }
-    
-    func stopEvent() async {
-        let now = Int(Date.now.timeIntervalSince1970)
-        let dao = EventDao(actualStopTime: now)
-        loadingState = .loading
-        guard let id = event.id else {
-            return
-        }
-        let res = await session.eventObserver.updateEvent(id: id, dao: dao)
-        if res {
-            await MainActor.run {
-                withAnimation(.easeInOut){
-                    event.actualStopTime = now
-                    loadingState = .success
-                }
-            }
-        }
-    }
-    
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 35, height: 5)
-                .foregroundColor(.gray)
-                .opacity(0.3)
-                .padding(.top, 5)
-            
-            if isPosterOrAdmin {
-// TODO: - Disabling for now
-//                MenuButton(icon: Image(systemName: "pencil"), text: "Edit Event", action:  {
-//                    self.showEditEvent.toggle()
-//                })
-                
-                if event.actualStopTime == nil {
-                    HStack {
-                        if event.actualStartTime == nil {
-                            if loadingState == .loading {
-                                ProgressView()
-                            } else {
-                                MenuButton(icon: Image(systemName: "play.fill"), text: "Start Event", action:  {
-                                    Task {
-                                        await startEvent()
-                                    }
-                                }, type: .start)
-                            }
-                        } else if event.actualStartTime != nil {
-                            if loadingState == .loading {
-                                ProgressView()
-                            } else {
-                                MenuButton(icon: Image(systemName: "square.fill"), text: "Stop Event", action:  {
-                                    Task {
-                                        await stopEvent()
-                                    }
-                                }, type: .destructive)
-                            }
-                        }
-                    }.disabled(loadingState == .loading ? true : false)
-                }
-            }
-            
-            MenuButton(icon: Image(systemName: "exclamationmark.shield.fill"), text: "Report an Issue", action: { showReport.toggle() })
+            MenuButton(
+                icon: Image(systemName: "exclamationmark.shield.fill"),
+                text: "Report an Issue",
+                action: { showReport.toggle() }
+            )
+            .padding(.top)
             
             
-            if isPosterOrAdmin {
+            if isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Event", action: {
+                    guard event.recurrenceConfig == nil else {
+                        showRecurring.toggle()
+                        return
+                    }
                     Task {
                         await deleteEvent()
                     }
@@ -151,27 +84,38 @@ struct EventMenu: View {
             }
             
             Spacer()
-        }.sheet(isPresented: $showNotification, content: {
+        }
+        .presentationDragIndicator(.visible)
+        .alert("Recurring Event", isPresented: $showRecurring, actions: {
+            Button(role: .destructive) {
+                Task {
+                    await deleteEvent()
+                }
+            } label: {
+                Text("Delete This")
+            }
+            
+            Button(role: .destructive) {
+                Task {
+                    await deleteEvent(deleteAll: true)
+                }
+            } label: {
+                Text("Delete All")
+            }
+        }, message: {
+            Text("This event is part of a recurring event. Would you like to delete the individual event or the entire series?")
+        })
+        .sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)
         })
         .fullScreenCover(isPresented: $showReport, content: {
             EventReportView(event: event)
         })
-        .fullScreenCover(isPresented: $showEditEvent, content: {
-            if event.type == "pickup" {
-                EditPickUpEvent()
-                    .environmentObject(event)
-            } else {
-                EditTournamentEvent()
-                    .environmentObject(event)
-            }
-        })
-        
     }
 }
 
 #Preview {
     EventMenu(clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
         .environmentObject(EVENTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

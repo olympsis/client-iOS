@@ -10,16 +10,15 @@ import SwiftUI
 struct OrgApplications: View {
     
     @State var applications = [OrganizationApplication]()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     var organizationID: String {
         guard let selectedGroup = session.selectedGroup,
-              let organization = selectedGroup.organization,
-              let id = organization.id else {
+              let organization = selectedGroup.organization else {
             return ""
         }
-        return id
+        return organization.id
     }
     
     var body: some View {
@@ -62,5 +61,5 @@ struct OrgApplications: View {
 
 #Preview {
     OrgApplications()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

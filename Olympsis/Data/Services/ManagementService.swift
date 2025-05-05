@@ -23,6 +23,67 @@ class ManagementService {
         #endif
     }
     
+    func wsg() async -> Bool {
+        do {
+            let endpoint = Endpoint("/v1/health/wsg")
+            let (_, res) = try await http.Request(.GET, endpoint)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return false
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+    
+    func config() async throws -> (Data, URLResponse) {
+        let endpoint = Endpoint("/v1/system/config")
+        return try await http.Request(.GET, endpoint)
+    }
+    
+    func getCountries() async throws -> [Country] {
+        do {
+            let endpoint = Endpoint("/v1/locales/countries")
+            let (data, res) = try await http.Request(.GET, endpoint)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return []
+            }
+            
+            return try JSONDecoder().decode([Country].self, from: data)
+        } catch {
+            return []
+        }
+    }
+    
+    func getAdministrativeAreas(_ country: Country) async throws -> [AdministrativeArea] {
+        do {
+            let endpoint = Endpoint("/v1/locales/countries/\(country.id)/administrativeAreas")
+            let (data, res) = try await http.Request(.GET, endpoint)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return []
+            }
+            
+            return try JSONDecoder().decode([AdministrativeArea].self, from: data)
+        } catch {
+            return []
+        }
+    }
+    
+    func getSubAdministrativeAreas(_ admin: AdministrativeArea) async throws -> [SubAdministrativeArea] {
+        do {
+            let endpoint = Endpoint("/v1/locales/administrativeAreas/\(admin.id)/subAdministrativeAreas")
+            let (data, res) = try await http.Request(.GET, endpoint)
+            guard (res as? HTTPURLResponse)?.statusCode == 200 else {
+                return []
+            }
+            
+            return try JSONDecoder().decode([SubAdministrativeArea].self, from: data)
+        } catch {
+            return []
+        }
+    }
+    
     /// HTTP request to create a bug report
     ///
     /// The dao object is the data needed to create the report

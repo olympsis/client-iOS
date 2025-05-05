@@ -29,7 +29,7 @@ struct EventReportView: View {
             return
         }
         state = .loading
-        let report = EventReportDao(type: issue, eventID: event.id, groups: event.organizers?.map{ return $0.id }, notes: notes)
+        let report = EventReportDao(type: issue, eventID: event.id, groups: event.organizers.map { return $0.id }, notes: notes)
         do {
             let resp = try await managementObserver.createEventReport(report: report)
             guard resp else {
@@ -83,7 +83,7 @@ struct EventReportView: View {
                         Button(action: { showProblems.toggle() }){
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(lineWidth: 1)
                                     .foregroundStyle(.gray)
@@ -103,7 +103,7 @@ struct EventReportView: View {
                             .foregroundStyle(.gray)
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(lineWidth: 1)
                                 .foregroundStyle(.gray)

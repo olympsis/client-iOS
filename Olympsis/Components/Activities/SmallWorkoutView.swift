@@ -15,8 +15,7 @@ struct SmallWorkoutView: View {
     
     /// Computed property of the workout's name
     var workoutName: Text {
-        guard let e = event,
-              let title = e.title else {
+        guard let e = event else {
             let calendar = Calendar.current
             let hour = calendar.component(.hour, from: workout.startDate)
             var timeOfDay: String
@@ -35,7 +34,7 @@ struct SmallWorkoutView: View {
 
             return Text("\(dayOfWeek) \(timeOfDay) \(sportInString())").foregroundColor(.gray)
         }
-        return Text("\(title)").foregroundColor(.gray)
+        return Text("\(e.title)").foregroundColor(.gray)
     }
     
     var sportIcon: some View {
@@ -48,7 +47,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.walk")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .running:
             return ZStack {
@@ -58,7 +57,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.run")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         case .soccer:
             return ZStack {
@@ -68,7 +67,7 @@ struct SmallWorkoutView: View {
                 Image(systemName: "figure.soccer")
                     .resizable()
                     .frame(width: 30, height: 40)
-                    .foregroundColor(.background)
+                    .foregroundColor(Color.Background.primary)
             }
         }
     }
@@ -151,7 +150,7 @@ struct SmallWorkoutView: View {
             .padding(.vertical, 10)
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .foregroundColor(Color("background"))
+                    .foregroundColor(Color(Color.Background.secondary))
             }
             .padding(.horizontal, 5)
             .onTapGesture {

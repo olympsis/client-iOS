@@ -11,7 +11,7 @@ struct VenuesList: View {
     
     @State var venues:[Venue]
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     @State private var showRequestLocation: Bool = false
     
@@ -52,16 +52,20 @@ struct VenuesList: View {
                             }.foregroundStyle(.gray)
                         }
                         .padding(.all)
-                        .fullScreenCover(isPresented: $showRequestLocation, content: {
+                        .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+                            Task {
+                                await session.updateNotifications()
+                            }
+                        }) {
                             LocationRequestView()
-                        })
+                        }
                     }
                 }
-            }.toolbar {
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
                     }
                 }
                 if !hasLocation {
@@ -79,12 +83,20 @@ struct VenuesList: View {
                 EmptyView()
             })
         }
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        dismiss()
+                    }
+                }
+        )
     }
 }
 
 struct FieldsList_Previews: PreviewProvider {
     static var previews: some View {
         VenuesList(venues: [Venue]())
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

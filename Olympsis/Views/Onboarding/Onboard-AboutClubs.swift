@@ -18,25 +18,32 @@ struct Onboard_AboutClubs: View {
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
+                .foregroundStyle(Color.foreground)
             
-            Text("Create groups with your friends and make new friends to reach new heights together")
+            Text("Build your sports community - create groups, bring friends, and meet new players")
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+                .foregroundStyle(Color.foreground)
             
-            Image("Team goals-amico")
+            Image("illustrations/goals")
                 .resizable()
                 .frame(width: SCREEN_WIDTH/1.2, height: SCREEN_WIDTH/1.2)
             
             Spacer()
             
-            Button(action: { index += 1 }) {
+            Button(action: {
+                withAnimation(.easeIn) {
+                    index += 1
+                }
+            }) {
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(Color("background"))
+                    .foregroundStyle(Color(Color.Background.secondary))
                     .background {
                         Circle()
                             .frame(width: 50, height: 50)
+                            .foregroundStyle(Color.foreground)
                     }
             }
             

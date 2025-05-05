@@ -20,11 +20,11 @@ struct GroupsView: View {
             VStack(alignment: .leading) {
                 ScrollView {
                     ForEach(organizers) { organizer in
-                        if organizer.type == GROUP_TYPE.Club.rawValue {
+                        if organizer.type == GROUP_TYPE.Club {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "person.3.fill")
                                             .foregroundStyle(Color.foreground)
@@ -46,15 +46,14 @@ struct GroupsView: View {
                             HStack {
                                 Circle()
                                     .frame(width: 60)
-                                    .foregroundStyle(Color.background)
+                                    .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "building.fill")
                                             .foregroundStyle(Color.foreground)
                                     }
                                 VStack {
-                                    if let org = organizations.first(where: { $0.id == organizer.id }),
-                                       let name = org.name {
-                                        Text(name)
+                                    if let org = organizations.first(where: { $0.id == organizer.id }){
+                                        Text(org.name)
                                             .fullScreenCover(isPresented: $showOrg, content: {
                                                 OrgDetailView(organization: org)
                                             })
@@ -75,5 +74,5 @@ struct GroupsView: View {
 }
 
 #Preview {
-    GroupsView(organizers: EVENTS[0].organizers ?? [Organizer](), clubs: CLUBS, organizations: ORGANIZATIONS)
+    GroupsView(organizers: EVENTS[0].organizers, clubs: CLUBS, organizations: ORGANIZATIONS)
 }

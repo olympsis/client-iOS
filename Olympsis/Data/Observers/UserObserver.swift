@@ -40,50 +40,50 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func createUserData(username: String, sports:[String]) async throws -> UserData? {
+    func createUserData(username: String, sports:[String]) async throws -> User? {
         let (data,_) = try await userService.createUserData(userName: username, sports: sports)
-        let object = try decoder.decode(UserData.self, from: data)
+        let object = try decoder.decode(User.self, from: data)
         return object
     }
     
-    func GetUserData() async throws -> UserData {
+    func GetUserData() async throws -> User {
         let (data, resp) = try await userService.GetUserData()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             throw UserObserverError.NotFound
         }
-        let object = try decoder.decode(UserData.self, from: data)
+        let object = try decoder.decode(User.self, from: data)
         return object
     }
     
     // have this return a bool if status 200
-    func UpdateUserData(update: UserDao) async -> UserData? {
+    func UpdateUserData(update: UserDao) async -> User? {
         do {
             let (data, resp) = try await userService.UpdateUserData(update: update)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }
-            let object = try decoder.decode(UserData.self, from: data)
+            let object = try decoder.decode(User.self, from: data)
             return object
         } catch {
             return nil
         }
     }
     
-    func SearchUsersByUsername(username: String) async throws -> [UserData] {
+    func SearchUsersByUsername(username: String) async throws -> [User] {
         let (data, resp) = try await userService.SearchUsersByUsername(username: username)
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
-            return [UserData]()
+            return [User]()
         }
         let object = try decoder.decode(UsersDataResponse.self, from: data)
         return object.users
     }
     
-    func getUserByUUID(uuid: String) async throws -> UserData? {
+    func getUserByUUID(uuid: String) async throws -> User? {
         let (data, resp) = try await userService.getUserByUUID(uuid: uuid)
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             return nil
         }
-        let object = try decoder.decode(UserData.self, from: data)
+        let object = try decoder.decode(User.self, from: data)
         return object
     }
     

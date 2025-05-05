@@ -14,7 +14,7 @@ struct GroupNewRoom: View {
     @State private var state: LOADING_STATE = .pending
     
     @StateObject private var chatObserver = ChatObserver()
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     func CreateRoom() async {
@@ -94,7 +94,8 @@ struct GroupNewRoom: View {
                         .padding(.bottom, 50)
                         .padding(.horizontal, 50)
                 }
-            }.padding(.horizontal)
+            }
+            .padding(.horizontal)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){

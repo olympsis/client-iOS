@@ -15,7 +15,7 @@ struct MemberBlockingConfirmation: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var member: Member
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "member_blocking_confirmation_view")
     
@@ -80,7 +80,6 @@ struct MemberBlockingConfirmation: View {
     
     var body: some View {
         VStack {
-            
             ScrollView {
                 Group {
                     if let url = imageURL {
@@ -96,7 +95,7 @@ struct MemberBlockingConfirmation: View {
                                 .resizable()
                                 .frame(width: 35, height: 35)
                                 .foregroundColor(.red)
-                            Color("background") // Acts as a placeholder.
+                            Color(Color.Background.secondary) // Acts as a placeholder.
                                 .clipShape(Circle())
                                 .opacity(0.3)
                         }.frame(width: 100, height: 100)
@@ -150,14 +149,16 @@ struct MemberBlockingConfirmation: View {
                     LoadingButton(text: "Block", status: $status)
                 }
             }
-        }.presentationDragIndicator(.visible)
-            .padding(.top)
-            .scrollIndicators(.never)
+        }
+        .padding(.top)
+        .scrollIndicators(.never)
+        .presentationDragIndicator(.visible)
+        .background(Color.Background.secondary)
     }
 }
 
 #Preview {
     MemberBlockingConfirmation()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(CLUBS[0].members.first!)
 }

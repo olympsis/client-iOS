@@ -15,6 +15,16 @@ class ManagementObserver: ObservableObject {
     private let service = ManagementService()
     private let cacheService = CacheService()
     
+    func config() async throws -> ApplicationConfiguration {
+        let (data, resp) = try await service.config()
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            throw NSError(domain: "com.olympsis.client", code: 1001, userInfo: [NSLocalizedDescriptionKey : "Failed to fetch config"])
+        }
+        
+        let object = try decoder.decode(ApplicationConfiguration.self, from: data)
+        return object
+    }
+    
     func createBugReport(report: BugReportDao) async throws -> Bool {
         let (_, resp) = try await service.createBugReport(dao: report)
         guard (resp as? HTTPURLResponse)?.statusCode == 201 else {

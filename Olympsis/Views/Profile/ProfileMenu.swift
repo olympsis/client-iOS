@@ -21,7 +21,7 @@ struct ProfileMenu: View {
     @State private var alertType: AlertType = .logout
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session:SessionStore
+    @Environment(SessionStore.self) private var session
     
     @AppStorage("app_mode") private var appMode: APP_MODE?
     @AppStorage("app_state") private var appState: APP_STATE?
@@ -38,7 +38,7 @@ struct ProfileMenu: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    NavigationLink(destination: NotificationSettings()) {
+                    NavigationLink(destination: NotificationSettings().environment(session)) {
                         MenuLabel(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
                     }
                     
@@ -144,5 +144,5 @@ struct ProfileMenu: View {
 
 #Preview("Profile Menu") {
     ProfileMenu()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

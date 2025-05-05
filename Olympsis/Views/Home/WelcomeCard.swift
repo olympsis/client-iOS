@@ -13,7 +13,7 @@ import SwiftUI
 
 struct WelcomeCard: View {
     
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var name: String {
         guard let user = session.user, let name = user.firstName else {
@@ -47,7 +47,6 @@ struct WelcomeCard: View {
                 }
             }
             .padding(.leading)
-            .redacted(reason: session.state != .success ? .placeholder : [])
             
             Spacer()
         }
@@ -56,5 +55,5 @@ struct WelcomeCard: View {
 
 #Preview {
     WelcomeCard()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

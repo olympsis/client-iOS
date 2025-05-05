@@ -50,9 +50,9 @@ struct Message: Codable, Identifiable, Equatable {
     let type: String
     let sender: String
     let body: String
-    let timestamp: Int64?
+    let timestamp: Date?
     
-    init(id: String?=nil, type: String, sender: String, body: String, timestamp: Int64?=nil) {
+    init(id: String?=nil, type: String, sender: String, body: String, timestamp: Date?=nil) {
         self.id = id
         self.type = type
         self.sender = sender

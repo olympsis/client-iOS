@@ -62,7 +62,7 @@ struct GroupSelectionListItem: View {
                 .overlay {
                     if imageFailed {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("background"))
+                            .foregroundStyle(Color(Color.Background.secondary))
                             .opacity(0.3)
                             .overlay {
                                 Image(systemName: "person.2")
@@ -82,7 +82,8 @@ struct GroupSelectionListItem: View {
                 .fontWeight(selectionID == selectedGroup.id ? .bold : .regular)
             
             Spacer()
-        }.padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
 }
 

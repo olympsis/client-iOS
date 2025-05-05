@@ -20,12 +20,33 @@ struct SettingButton: ViewModifier {
 }
 
 
-struct InputField: ViewModifier {
+struct InputFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .opacity(0.2)
+                .foregroundStyle(Color.gray)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                }
             content
+                
         }.frame(height: 50)
+    }
+}
+
+struct BackgroundPillModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .opacity(0.2)
+                    .foregroundStyle(Color.gray)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    }
+            }
     }
 }

@@ -18,35 +18,34 @@ struct PostMenu: View {
     @StateObject private var uploadObserver = UploadObserver()
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private var isPosterOrAdmin: Bool {
+    private var isAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
               let group = session.selectedGroup else {
             return false
         }
         if group.type == GROUP_TYPE.Club {
-            guard let type = post.type,
-                  type == "post",
+            guard post.type == "post",
                   let club = group.club,
                   let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
-                if post.type == "post" {
-                    return (post.poster?.uuid == uuid)
-                } else {
-                    return false
-                }
+                return false
             }
-            if member.role != "member" {
-                return true
-            } else {
-                return (post.poster?.uuid == uuid)
-            }
+            return member.role != "member"
         } else {
             return true
         }
+    }
+    
+    private var isPoster: Bool {
+        guard let user = session.user,
+              let uuid = user.uuid else {
+            return false
+        }
+        return post.poster?.uuid == uuid
     }
     
     private var isPinned: Bool {
@@ -62,13 +61,12 @@ struct PostMenu: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return ((club.pinnedPosts?.contains(where: { $0 == post.id ?? ""})) != nil)
+            return (club.pinnedPosts.contains(where: { $0 == post.id }))
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -77,25 +75,22 @@ struct PostMenu: View {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
-            guard let club = selectedGroup.club,
-                  let postId = post.id else {
+            guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: club.id, postId: postId)
+            let resp = await session.clubObserver.pinPost(id: club.id, postId: post.id)
             if resp {
-                club.pinnedPosts?.append(postId)
+                club.pinnedPosts.append(post.id)
                 pinned = true
             }
             return
         } else {
-            guard let org = selectedGroup.organization,
-                  let id = org.id,
-                  let postId = post.id else {
+            guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.pinPost(id: id, postId: postId)
+            let resp = await session.orgObserver.pinPost(id: org.id, postId: post.id)
             if resp {
-                org.pinnedPosts?.append(postId)
+                org.pinnedPosts.append(post.id)
                 pinned = true
             }
             return
@@ -112,32 +107,30 @@ struct PostMenu: View {
             }
             let resp = await session.clubObserver.unPinPost(id: club.id)
             if resp {
-                club.pinnedPosts?.removeAll(where: { $0 == club.id})
+                club.pinnedPosts.removeAll(where: { $0 == club.id})
                 pinned = false
             }
             return
         } else {
-            guard let org = selectedGroup.organization,
-                  let id = org.id else {
+            guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.unPinPost(id: id)
+            let resp = await session.orgObserver.unPinPost(id: org.id)
             if resp {
-                org.pinnedPosts?.removeAll(where: { $0 == id })
+                org.pinnedPosts.removeAll(where: { $0 == org.id })
                 pinned = false
             }
         }
     }
     
     private func deletePost() async {
-        guard let selectedGroup = session.selectedGroup,
-            let id = post.id else {
+        guard let selectedGroup = session.selectedGroup else {
             return
         }
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver.deletePost(postID: id) else {
+                  await session.postObserver.deletePost(postID: post.id) else {
                 return
             }
 
@@ -153,7 +146,7 @@ struct PostMenu: View {
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver.deletePost(postID: id) else {
+                  await session.postObserver.deletePost(postID: post.id) else {
                 return
             }
             
@@ -179,7 +172,7 @@ struct PostMenu: View {
                 .padding(.bottom, 1)
                 .padding(.top, 7)
             
-            if isPosterOrAdmin {
+            if isAdmin {
                 if pinned {
                     MenuButton(icon: Image(systemName: "pin.fill"), text: "Unpin Post", action: {
                         Task {
@@ -202,7 +195,7 @@ struct PostMenu: View {
                     .environmentObject(post)
             })
             
-            if !isBlocked {
+            if !isPoster && !isBlocked {
                 MenuButton(icon: Image(systemName: "person.slash"), text: "Block User", action:  {
                     showBlocking.toggle()
                 }, type: .destructive)
@@ -218,7 +211,7 @@ struct PostMenu: View {
                 })
             }
             
-            if isPosterOrAdmin {
+            if isAdmin || isPoster {
                 MenuButton(icon: Image(systemName: "trash.fill"), text: "Remove Post", action:  {
                     Task {
                         await deletePost()
@@ -235,6 +228,6 @@ struct PostMenu: View {
 #Preview("Post Menu") {
     PostMenu(pinned: .constant(false))
         .environmentObject(POSTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

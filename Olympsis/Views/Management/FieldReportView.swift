@@ -80,7 +80,7 @@ struct FieldReportView: View {
                         Button(action: { showProblems.toggle() }){
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(lineWidth: 1)
                                     .foregroundStyle(.gray)
@@ -100,7 +100,7 @@ struct FieldReportView: View {
                             .foregroundStyle(.gray)
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("background"))
+                                .foregroundStyle(Color(Color.Background.secondary))
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(lineWidth: 1)
                                 .foregroundStyle(.gray)
@@ -158,5 +158,5 @@ struct FieldReportView: View {
 }
 
 #Preview {
-    FieldReportView(field: FIELDS[0])
+    FieldReportView(field: VENUES[0])
 }

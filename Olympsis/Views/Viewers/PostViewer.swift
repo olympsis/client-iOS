@@ -11,7 +11,7 @@ struct PostViewer: View {
     
     var post: Post
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         NavigationStack {
@@ -33,6 +33,6 @@ struct PostViewer: View {
 
 #Preview {
     PostViewer(post: POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

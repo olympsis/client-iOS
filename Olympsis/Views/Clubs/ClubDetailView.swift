@@ -87,31 +87,13 @@ struct ClubDetailView: View {
         return name
     }
     
-    func timeAgo(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        let now = Date()
-        let calendar = Calendar.current
-
-        let components = calendar.dateComponents([.year, .month, .day], from: date, to: now)
-
-        if let years = components.year, years > 0 {
-            return years == 1 ? "1 year ago" : "\(years) years ago"
-        } else if let months = components.month, months > 0 {
-            return months == 1 ? "1 month ago" : "\(months) months ago"
-        } else if let days = components.day, days > 0 {
-            return days == 1 ? "1 day ago" : "\(days) days ago"
-        } else {
-            return "Today"
-        }
-    }
-    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     
                     // MARK: - Image
-                    ClubBanner()
+                    ClubLogoBanner()
                         .environmentObject(club)
                     
                     // MARK: Details
@@ -119,12 +101,10 @@ struct ClubDetailView: View {
                         HStack {
                             if isPublic {
                                 Image(systemName: "globe.americas.fill")
-                                    .foregroundStyle(Color("color-prime"))
                                 Text("Public club")
                                     .font(.callout)
                             } else {
                                 Image(systemName: "lock.fill")
-                                    .foregroundStyle(Color("color-prime"))
                                 Text("Private club")
                                     .font(.callout)
                             }
@@ -132,49 +112,21 @@ struct ClubDetailView: View {
                         HStack {
                             if membersCount > 1 {
                                 Text("\(membersCount)")
-                                    .foregroundStyle(Color("color-prime"))
                                     .bold()
                                 Text("members")
                             } else {
                                 Text("\(membersCount)")
-                                    .foregroundStyle(Color("color-prime"))
                                     .bold()
                                 Text("member")
                             }
                         }
                         
-                        HStack(spacing: -20) {
+                        HStack(spacing: -10) {
                             ForEach(members, id: \.id) { m in
-                                AsyncImage(url: URL(string: GenerateImageURL(m.user?.imageURL ?? "https://api.olympsis.com"))){ phase in
-                                    if let image = phase.image {
-                                        image // Displays the loaded image.
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 50, height: 50, alignment: .center)
-                                            .clipped()
-                                            .clipShape(Circle())
-                                    } else if phase.error != nil {
-                                        ZStack {
-                                            Circle()
-                                                .foregroundStyle(.gray)
-                                            Image(systemName: "person.fill")
-                                                .imageScale(.large)
-                                                .foregroundStyle(.white)
-                                        }
-                                    } else {
-                                        ZStack {
-                                            Circle()
-                                                .foregroundStyle(.gray)
-                                            Image(systemName: "person.fill")
-                                                .imageScale(.large)
-                                                .foregroundStyle(.primary)
-                                        }
-                                    }
-                                }.frame(height: 50, alignment: .center)
+                                UserBadgeView(size: .small, imageURL: URL(string: m.user?.imageURL ?? ""))
                             }
                         }
-                    }.padding(.horizontal)
-                        .padding(.vertical)
+                    }.padding()
                     
                     // MARK: - Organizations
                     if hasParent {
@@ -217,11 +169,24 @@ struct ClubDetailView: View {
                     
                     // MARK: - Description
                     VStack(alignment: .leading) {
+                        Text("Group Tags")
+                            .font(.title2)
+                            .bold()
+                        
+                        WrappingHStack(alignment: .bottomLeading) {
+                            ForEach(club.tags, id: \.self) { tag in
+                                TagView(tag: Tag(name: tag))
+                            }
+                        }
+                        
+                    }.padding([.horizontal, .bottom])
+                    
+                    // MARK: - Description
+                    VStack(alignment: .leading) {
                         Text("About")
                             .font(.title2)
                             .bold()
                         Text(description)
-                            .font(.callout)
                     }.padding(.horizontal)
                     
                     
@@ -234,10 +199,9 @@ struct ClubDetailView: View {
                                 .font(.caption)
                                 .bold()
                         }
-                    }.padding(.horizontal)
-                        .padding(.top)
+                    }.padding([.top, .horizontal])
                     
-                    Map(position: $camera, interactionModes: .pan)
+                    Map(position: $camera, interactionModes: .zoom)
                         .frame(height: 200)
                         .padding(.bottom)
                     
@@ -245,7 +209,7 @@ struct ClubDetailView: View {
                         Text("Established ")
                             .bold()
                         +
-                        Text(timeAgo(from: club.createdAt))
+                        Text(calculateTimeAgo(from: club.createdAt))
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 40)
@@ -259,7 +223,8 @@ struct ClubDetailView: View {
                         }
                     }
                 }
-            }.onAppear {
+            }
+            .onAppear {
                 updatePosition()
             }
         }

@@ -13,7 +13,7 @@ struct GroupSelector: View {
     @State private var selection: UUID?
     @State private var showNewGroup = false
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         VStack {
@@ -41,22 +41,25 @@ struct GroupSelector: View {
                         Text("Organizations")
                     }
                 }
-            }.listStyle(.plain)
+            }
+            .listStyle(.plain)
             
             Button(action:{ self.showNewGroup.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color.colorPrime)
                     HStack {
                         Image(systemName: "plus.circle.fill")
                         Text("Create a new Group")
-                    }.foregroundStyle(.white)
+                    }
+                    .foregroundStyle(Color.white)
                 }
             }
             .frame(height: 50)
             .padding(.all)
         }
         .fullScreenCover(isPresented: $showNewGroup, content: {
-            NewGroup()
+            NewClub()
         })
         .onChange(of: selection) { _, _ in
             Task { @MainActor in
@@ -65,13 +68,8 @@ struct GroupSelector: View {
                       selectedGroup.id != selection.id else {
                     return
                 }
-                session.clubsState = .loading
                 session.selectedGroup = selection
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    session.clubsState = .success
-                    dismiss()
-                }
+                dismiss()
             }
         }
         .task {
@@ -87,5 +85,5 @@ struct GroupSelector: View {
     let session = SessionStore()
     session.groups = GROUP_SELECTIONS
     return GroupSelector()
-        .environmentObject(session)
+        .environment(session)
 }

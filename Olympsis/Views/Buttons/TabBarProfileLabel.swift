@@ -10,9 +10,9 @@ import Kingfisher
 
 struct TabBarProfileLabel: View {
     
-    @Binding var currentTab: Tab
+    @Binding var currentTab: ViewTab
     @State private var imageFailed: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var imageURL: URL? {
         guard let user = session.user,
@@ -26,7 +26,7 @@ struct TabBarProfileLabel: View {
         KFImage(imageURL)
             .placeholder({
                 Circle()
-                    .frame(width: 20, height: 20)
+                    .frame(width: 25, height: 25)
                     .foregroundStyle(.white)
                     .overlay {
                         ProgressView()
@@ -42,22 +42,22 @@ struct TabBarProfileLabel: View {
                 if imageFailed {
                     if currentTab == .profile {
                         Circle()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 25, height: 25)
                             .foregroundStyle(.white)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
-                                    .frame(width: 10, height: 10)
+                                    .frame(width: 15, height: 15)
                                     .foregroundStyle(Color.dark)
                             }
                     } else {
                         Circle()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 25, height: 25)
                             .foregroundStyle(Color.dark)
                             .overlay {
                                 Image(systemName: "person.fill")
                                     .resizable()
-                                    .frame(width: 10, height: 10)
+                                    .frame(width: 15, height: 15)
                                     .foregroundStyle(.white)
                             }
                             .overlay {
@@ -68,7 +68,7 @@ struct TabBarProfileLabel: View {
                 }
             }
             .clipShape(Circle())
-            .frame(width: 20, height: 20)
+            .frame(width: 25, height: 25)
     }
 }
 
@@ -78,6 +78,6 @@ struct TabBarProfileLabel: View {
             .foregroundStyle(Color.dark)
             .frame(width: 40, height: 40)
         TabBarProfileLabel(currentTab: .constant(.home))
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

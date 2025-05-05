@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LaunchScreen: View {
     
+    @Environment(SessionStore.self) private var session
     var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
@@ -37,7 +38,8 @@ struct LaunchScreen: View {
                         .font(.caption)
                 }.padding(.bottom)
             }.frame(maxWidth: .infinity)
-            
+        }.task {
+            session.listenToAuthStateChanges()
         }
     }
 }

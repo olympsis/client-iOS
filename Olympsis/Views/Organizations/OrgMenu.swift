@@ -29,13 +29,12 @@ struct OrgMenu: View {
     @StateObject private var postObserver = PostObserver()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var organization: Organization
     
     var role: String {
         guard let user = session.user,
-              let members = organization.members,
-              let member = members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = organization.members.first(where: {$0.user?.uuid == user.uuid}) else {
             return "member"
         }
         return member.role ?? ""
@@ -43,18 +42,12 @@ struct OrgMenu: View {
     
     // this will be handled in the backend as well
     var isOnlyOwner: Bool {
-        guard let members = organization.members else {
-            return false
-        }
-        let owners = members.filter({ $0.role == "owner" })
+        let owners = organization.members.filter({ $0.role == "owner" })
         return owners.count < 2
     }
     
     var name: String {
-        guard let orgName = organization.name else {
-            return "Organization"
-        }
-        return orgName
+        return organization.name
     }
     
     var imageURL: String {
@@ -65,10 +58,7 @@ struct OrgMenu: View {
     }
     
     var members: [Member] {
-        guard let members = organization.members else {
-            return [Member]()
-        }
-        return members
+        return organization.members
     }
     
     var body: some View {
@@ -81,7 +71,7 @@ struct OrgMenu: View {
                     VStack {
                         HStack {
                             Image(systemName: "building.fill")
-                                .foregroundStyle(Color("color-prime"))
+                                .foregroundStyle(.primary)
                             Text("Organization")
                                 .font(.callout)
                             Spacer()
@@ -90,7 +80,7 @@ struct OrgMenu: View {
                             .padding(.top)
                         
                         HStack {
-                            Text("\(members.count)").foregroundColor(Color("color-prime"))
+                            Text("\(members.count)").foregroundStyle(.primary)
                             if (members.count > 1) {
                                 Text("managers")
                                     .font(.callout)
@@ -113,6 +103,14 @@ struct OrgMenu: View {
                     
                     MenuButton(icon: Image(systemName: "person.3.fill"), text: "Managers", action: {
                         self.showMembers.toggle()
+                    })
+                    
+                    MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
+                        self.showNewClub.toggle()
+                    })
+                    
+                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
+                        self.showClubs.toggle()
                     })
 
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Organization", action: {
@@ -149,6 +147,9 @@ struct OrgMenu: View {
             .fullScreenCover(isPresented: $showMembers) {
                 ManagersListView(organization: organization)
             }
+            .fullScreenCover(isPresented: $showClubs) {
+                ClubsList2()
+            }
             .alert(isPresented: $showAlert) {
                 switch alertType {
                 case .LeaveClub:
@@ -167,10 +168,7 @@ struct OrgMenu: View {
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        guard let id = organization.id else {
-                                            return
-                                        }
-                                        _ = await session.clubObserver.leaveClub(id: id)
+                                        _ = await session.clubObserver.leaveClub(id: organization.id)
                                     }
                                 })
                             );
@@ -182,10 +180,7 @@ struct OrgMenu: View {
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    guard let id = organization.id else {
-                                        return
-                                    }
-                                    _ = await session.clubObserver.leaveClub(id: id)
+                                    _ = await session.clubObserver.leaveClub(id: organization.id)
                                 }
                             })
                         );
@@ -197,13 +192,10 @@ struct OrgMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                guard let id = organization.id else {
-                                    return
-                                }
-                                let res = await session.orgObserver.deleteOrganization(id: id)
+                                let res = await session.orgObserver.deleteOrganization(id: organization.id)
                                 if res {
                                     session.selectedGroup = session.groups.first
-                                    session.groups.removeAll(where: { $0.organization?.id == id })
+                                    session.groups.removeAll(where: { $0.organization?.id == organization.id })
                                 }
                                 dismiss()
                             }
@@ -220,6 +212,6 @@ struct OrgMenu: View {
     NavigationStack {
         OrgMenu()
             .environmentObject(ORGANIZATIONS[0])
-            .environmentObject(SessionStore())
+            .environment(SessionStore())
     }
 }

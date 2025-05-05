@@ -16,7 +16,7 @@ struct BugReportDao: Codable {
     var videos: [String]?
     var blobs: [String]?
     var messages: [Message]?
-    var createdAt: Int?
+    var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -39,7 +39,7 @@ struct FieldReportDao: Codable {
     var notes: String?
     var status: String?
     var messages: [Message]?
-    var createdAt: Int?
+    var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -62,7 +62,7 @@ struct EventReportDao: Codable {
     var notes: String?
     var status: String?
     var messages: [Message]?
-    var createdAt: Int?
+    var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -77,7 +77,7 @@ struct EventReportDao: Codable {
     }
 }
 
-struct EventReport: Codable, Identifiable {
+struct EventReport: Decodable, Identifiable {
     var id: String
     var user: UserSnippet?
     var type: String
@@ -85,7 +85,7 @@ struct EventReport: Codable, Identifiable {
     var notes: String?
     var status: String
     var messages: [Message]?
-    var createdAt: Int
+    var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -107,7 +107,7 @@ struct PostReportDao: Codable {
     var notes: String?
     var status: String?
     var messages: [Message]?
-    var createdAt: Int?
+    var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -121,14 +121,14 @@ struct PostReportDao: Codable {
     }
 }
 
-struct PostReport: Codable, Identifiable {
+struct PostReport: Decodable, Identifiable {
     var id: String
     var post: Post?
     var type: String
     var notes: String?
     var status: String
     var messages: [Message]?
-    var createdAt: Int
+    var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -149,7 +149,7 @@ struct MemberReportDao: Codable {
     var notes: String?
     var status: String?
     var messages: [Message]?
-    var createdAt: Int?
+    var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -170,7 +170,7 @@ struct MemberReport: Codable, Identifiable {
     var notes: String?
     var status: String
     var messages: [Message]?
-    var createdAt: Int
+    var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id

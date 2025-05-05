@@ -16,7 +16,7 @@ struct PostComments: View {
     @State private var status: LOADING_STATE = .pending
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     
     func canDelete(_ comment: Comment) -> Bool {
@@ -38,7 +38,6 @@ struct PostComments: View {
         status = .loading
         keyboardFocused = false
         guard let user = session.user,
-              let id = post.id,
               let uuid = user.uuid,
               let username = user.username,
               let imageURL = user.imageURL,
@@ -47,15 +46,14 @@ struct PostComments: View {
             return
         }
         let dao = CommentDao(id: nil, text: text, uuid: uuid, createdAt: nil)
-        let resp = await session.postObserver.addComment(id: id, comment: dao)
+        let resp = await session.postObserver.addComment(id: post.id, comment: dao)
         guard resp != nil else {
             handleFailure()
             return
         }
         status = .success
         
-        let timestamp = Int(Date.now.timeIntervalSince1970)
-        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: timestamp)
+        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: Date())
         
         withAnimation {
             text = ""
@@ -65,13 +63,9 @@ struct PostComments: View {
     
     func deleteComment(_ comment: Comment) {
         Task {
-            guard let id = post.id,
-            let commentID = comment.id else {
-                return
-            }
-            let res = await session.postObserver.deleteComment(id: id, cid: commentID)
+            let res = await session.postObserver.deleteComment(id: post.id, cid: comment.id)
             if res {
-                post.comments.removeAll(where: { $0.id == commentID })
+                post.comments.removeAll(where: { $0.id == comment.id })
             }
         }
     }
@@ -97,7 +91,7 @@ struct PostComments: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     if post.comments.count != 0 {
-                        ForEach(post.comments.sorted{$0.createdAt! > $1.createdAt!}, id: \.id){ comment in
+                        ForEach(post.comments.sorted{ $0.createdAt > $1.createdAt }, id: \.id){ comment in
                             Menu {
                                 Group {
                                     Button(action:{}){
@@ -133,8 +127,7 @@ struct PostComments: View {
                 .padding(.bottom, 50)
                 .listStyle(.plain)
                 .refreshable {
-                    guard let id = post.id,
-                            let resp = await session.postObserver.getPost(id: id) else {
+                    guard let resp = await session.postObserver.getPost(id: post.id) else {
                         return
                     }
                     post.comments = resp.comments
@@ -159,7 +152,7 @@ struct PostComments: View {
                             .background {
                                 Rectangle()
                                     .frame(height: 50)
-                                    .foregroundStyle(Color("background"))
+                                    .foregroundStyle(Color(Color.Background.secondary))
                             }
                     }
                 }
@@ -180,5 +173,5 @@ struct PostComments: View {
 #Preview("Post Comments") {
     PostComments(club: CLUBS[0])
         .environmentObject(POSTS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

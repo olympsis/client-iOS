@@ -34,7 +34,7 @@ struct ClubLoadingView: View {
             
             ForEach(0..<3, id: \.self) { _ in
                 PostTemplateView()
-                    .environmentObject(SessionStore())
+                    .environment(SessionStore())
             }
         }
     }

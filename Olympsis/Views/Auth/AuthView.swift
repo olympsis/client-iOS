@@ -7,18 +7,24 @@
 
 import os
 import SwiftUI
+import AlertToast
 import AuthenticationServices
 
 struct AuthView: View {
     
     @Binding var currentView: AuthTab
+    
+    @State private var showToast: Bool = false
+    @State private var enableLogin: Bool = false
+    
     @State private var state: LOADING_STATE = .pending
     @State private var nonce: String = randomNonceString()
     
-    @StateObject private var observer = AuthObserver()
-    @StateObject private var cacheService = CacheService()
+    private let observer = AuthObserver()
+    private let cacheService = CacheService()
+    private let managementService = ManagementService()
     
-    @EnvironmentObject var sessionStore: SessionStore
+    @Environment(SessionStore.self) var session
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     var log = Logger(subsystem: "com.olympsis.client", category: "auth_view")
@@ -36,16 +42,16 @@ struct AuthView: View {
             VStack {
                 VStack {
                     Text("Olympsis")
-                        .bold()
-                        .font(.title)
-                        .foregroundColor(.white)
                         .padding(.top, 25)
                         .padding(.bottom, 5)
-                    Text(String(localized: "Slogan", table: "General"))
-                        .padding(.horizontal)
-                        .multilineTextAlignment(.center)
-                        .font(.title3)
                         .foregroundColor(.white)
+                        .font(.custom("Archivo-Black", size: 25, relativeTo: .title))
+                    
+                    Text(String(localized: "Slogan", table: "General"))
+                        .font(.title3)
+                        .padding(.horizontal)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                 }.frame(width: SCREEN_WIDTH)
                 
                 
@@ -66,7 +72,7 @@ struct AuthView: View {
                                     let resp = try await observer.handleSignInWithApple(result: result, nonce: nonce)
                                     if resp == USER_STATUS.new {
                                         withAnimation {
-                                            currentView = .username
+                                            currentView = .info
                                         }
                                     } else if resp == USER_STATUS.returning {
                                         withAnimation {
@@ -93,9 +99,15 @@ struct AuthView: View {
                     )
                     .signInWithAppleButtonStyle(.white)
                     .frame(height: 50)
+                    .overlay {
+                        Color.gray
+                            .opacity(enableLogin ? 0.0 : 0.9)
+                            .cornerRadius(radius: 5, corners: .allCorners)
+                    }
                     .padding(.horizontal, 50)
                     .padding(.bottom, 50)
                     .padding(.top)
+                    .disabled(!enableLogin)
                 case .loading:
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 50)
@@ -116,16 +128,29 @@ struct AuthView: View {
                     .opacity(0.6)
                     .ignoresSafeArea(edges: .bottom)
             }
-        }.background {
+        }
+        .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
+            AlertToast(displayMode: .hud, type: .regular, title: "Server Unavailable", style: .style(backgroundColor: .red, titleColor: .white))
+        })
+        .background {
             Image("basketball-bw")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
                 .blur(radius: 2, opaque: true)
         }
+        .task {
+            // If server is down we don't want people signing up
+            guard await managementService.wsg() else {
+                showToast = true
+                return
+            }
+            enableLogin = true
+        }
     }
 }
 
 #Preview {
     AuthView(currentView: .constant(.auth))
+        .environment(SessionStore())
 }

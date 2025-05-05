@@ -31,7 +31,7 @@ struct ClubMenu: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var club: Club
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     // user's role
     var role: String {
@@ -52,7 +52,7 @@ struct ClubMenu: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                     
-                ClubBanner()
+                ClubLogoBanner()
                     .environmentObject(club)
                 
                 VStack {
@@ -68,19 +68,21 @@ struct ClubMenu: View {
                     } else {
                         HStack {
                             Image(systemName: "globe.americas.fill")
-                                .foregroundStyle(Color("color-prime"))
                             Text("Public group")
                                 .font(.callout)
                             Spacer()
-                        }.frame(height: 20)
+                        }
+                        .frame(height: 20)
+                        .foregroundStyle(Color.foreground)
                     }
                     
                     HStack {
-                        Text("\(club.members.count)").foregroundColor(Color("color-prime")) +
+                        Text("\(club.members.count)") +
                         Text(" members")
                             .font(.callout)
                         Spacer()
                     }
+                    .foregroundStyle(Color.foreground)
                     
                 }.padding(.vertical)
                     .padding(.horizontal)
@@ -90,7 +92,7 @@ struct ClubMenu: View {
                         NavigationLink {
                             ClubEditor()
                                 .environmentObject(club)
-                                .environmentObject(session)
+                                .environment(session)
                         } label: {
                             MenuLabel(icon: Image(systemName: "pencil"), text: "Edit Club")
                         }
@@ -155,7 +157,7 @@ struct ClubMenu: View {
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showNewClub) {
-                NewGroup()
+                NewClub()
             }
             .fullScreenCover(isPresented: $showApplications) {
                 ClubApplications(club: club)
@@ -245,11 +247,19 @@ struct ClubMenu: View {
                 }
             }
         }
+        .gesture(
+            DragGesture()
+                .onEnded { gesture in
+                    if gesture.translation.width > 100 {
+                        dismiss()
+                    }
+                }
+        )
     }
 }
 
 #Preview("Club Menu") {
     ClubMenu()
         .environmentObject(CLUBS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -11,7 +11,7 @@ struct OrgApplicationListItem: View {
     
     @State var application: OrganizationApplication
     @Binding var applications: [OrganizationApplication]
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var clubName: String {
         guard let club = application.club else {
@@ -47,7 +47,7 @@ struct OrgApplicationListItem: View {
         guard let club = application.club else {
             return "Created at: unknown"
         }
-        return Date(timeIntervalSince1970: TimeInterval(club.createdAt)).formatted(.dateTime.day().month().year());
+        return club.createdAt.formatted(.dateTime.day().month().year());
     }
     
     func accept() async {
@@ -55,7 +55,7 @@ struct OrgApplicationListItem: View {
             let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "accepted")
+        let dto = OrganizationApplicationDao(organizationID: org.id, clubID: "\(club.id)", status: "accepted")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
@@ -69,7 +69,7 @@ struct OrgApplicationListItem: View {
             let club = application.club else {
             return
         }
-        let dto = OrganizationApplicationDao(organizationID: "\(org.id ?? "")", clubID: "\(club.id)", status: "denied")
+        let dto = OrganizationApplicationDao(organizationID: org.id, clubID: "\(club.id)", status: "denied")
         let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
@@ -168,7 +168,7 @@ struct OrgApplicationListItem: View {
         }
         .background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color("background"))
+                .foregroundStyle(Color(Color.Background.secondary))
                 .padding(.horizontal, 5)
         }
     }
@@ -176,5 +176,5 @@ struct OrgApplicationListItem: View {
 
 #Preview {
     OrgApplicationListItem(application: ORGANIZATION_APPLICATIONS[0], applications: .constant(ORGANIZATION_APPLICATIONS))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

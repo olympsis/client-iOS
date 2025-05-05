@@ -87,8 +87,6 @@ class UserService {
     
     func CheckIn() async throws -> (Data, URLResponse){
         let token = try await Auth.auth().currentUser?.getIDToken()
-        // TODO: REMOVE THIS 
-        print(token ?? "")
         let endpoint = Endpoint("/v1/users/check-in")
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }

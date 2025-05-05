@@ -61,10 +61,10 @@ class CropViewModel: ObservableObject {
         case .circle, .square:
             self.maskWidthRadius = configuration.screenWidth / 2
             self.maskHeightRadius = configuration.screenWidth / 2
-        case .rectangle:
+        case .landscape:
             self.maskWidthRadius = configuration.screenWidth / 2
             self.maskHeightRadius = configuration.screenWidth * ((566.0 / 1080.0) / 2)
-        case .rectangleV:
+        case .portrait:
             self.maskWidthRadius = configuration.screenWidth / 2
             self.maskHeightRadius = configuration.screenWidth * ((1350.0 / 1080.0) / 2)
         }
@@ -133,7 +133,7 @@ class CropViewModel: ObservableObject {
             }
 
             return UIImage(cgImage: result)
-        case .rectangle, .rectangleV:
+        case .landscape, .portrait:
             guard let orientedImage = image.correctlyOriented else {
                 return nil
             }

@@ -30,6 +30,8 @@ struct SimpleButtonLabel: View {
                     .foregroundColor(.white)
                     .textCase(.uppercase)
                     .font(.caption)
+                    .fontWeight(.bold)
+                    .italic()
             }
         case .outline:
             ZStack {
@@ -40,6 +42,8 @@ struct SimpleButtonLabel: View {
                     .foregroundColor(.primary)
                     .textCase(.uppercase)
                     .font(.caption)
+                    .fontWeight(.bold)
+                    .italic()
             }
         }
     }

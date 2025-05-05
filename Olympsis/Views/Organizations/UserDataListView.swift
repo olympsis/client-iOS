@@ -9,9 +9,9 @@ import SwiftUI
 
 struct UserDataListView: View {
     
-    @State var data: UserData
+    @State var data: User
     @State private var status: LOADING_STATE = .pending
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var imageURL: String {
         guard let imageURL = data.imageURL else {
@@ -112,5 +112,5 @@ struct UserDataListView: View {
 
 #Preview {
     UserDataListView(data: USERS_DATA[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

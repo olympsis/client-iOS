@@ -9,18 +9,15 @@ import SwiftUI
 
 struct OrgListItem: View {
     
-    @State var organization: Organization
-    
+    var organization: Organization
+    @Binding var showToast: Bool
+    @State var showActions: Bool = true
     @State private var status: LOADING_STATE = .pending
     @State private var showDetails: Bool = false
-    @Binding var showToast: Bool
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     var name: String {
-        guard let name = organization.name else {
-            return ""
-        }
-        return name
+        return organization.name
     }
     
     var description: String {
@@ -31,24 +28,16 @@ struct OrgListItem: View {
     }
     
     var sports: [String] {
-        guard let sports = organization.sports else {
-            return ["unknown"]
-        }
-        return sports
+        return organization.sports
     }
     
     var location: String {
-        guard let state = organization.state,
-              let country = organization.country else {
-            return "Unknown, World"
-        }
-        return state + ", " + country
+        return organization.state + ", " + organization.country
     }
     
     func Apply() async {
         status = .loading
-        guard let id = organization.id,
-            let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = session.selectedGroup,
               let clubID = selectedGroup.club?.id else {
             status = .failure
             DispatchQueue.main.asyncAfter(deadline: .now()+1) {
@@ -56,7 +45,7 @@ struct OrgListItem: View {
             }
             return
         }
-        let app = OrganizationApplicationDao(organizationID: id, clubID: clubID, status: "pending")
+        let app = OrganizationApplicationDao(organizationID: organization.id, clubID: clubID, status: "pending")
         let res = await session.orgObserver.createOrganizationApplication(app: app)
         if res {
             status = .success
@@ -70,22 +59,29 @@ struct OrgListItem: View {
     
     var body: some View {
         VStack (alignment: .leading){
+            OrgListItemMedia(org: organization)
+            
             HStack {
-                
-                OrgLogo(organization: organization)
-                
                 VStack(alignment:.leading){
                     Text(name)
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
                         .foregroundColor(Color("foreground"))
                         .minimumScaleFactor(0.8)
                         .lineLimit(1)
-                    Text(location)
-                        .foregroundColor(.gray)
-                }.padding(.leading, 5)
-                
-            }.padding(.all)
+                    
+                    HStack {
+                        Image(systemName: "mappin.and.ellipse")
+                            .foregroundColor(.gray)
+                        
+                        Text(location)
+                            .foregroundColor(.gray)
+                    }
+                    
+                }
+                .padding(.leading, 5)
+            }
+            .padding(.all)
             
             HStack {
                 Text(description)
@@ -94,39 +90,34 @@ struct OrgListItem: View {
                     .lineLimit(nil)
                     .font(.callout)
             }
+            .padding(.bottom)
             
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(sports, id: \.self) { sport in
-                        ClubTag(isSport: true, tagName: sport)
+            if showActions {
+                HStack(spacing: 15) {
+                    Button(action: { self.showDetails.toggle() }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.gray)
+                                .opacity(0.5)
+                                .frame(height: 35)
+                            Text("Details")
+                                .foregroundStyle(Color("foreground"))
+                        }
                     }
+                    .contentShape(Rectangle())
+                    
+                    Button(action:{ Task { await Apply() } }) {
+                        LoadingButton(text: "Request", height: 35, status: $status)
+                    }
+                    .contentShape(Rectangle())
                 }
+                .padding([.horizontal, .bottom])
             }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            HStack(spacing: 15) {
-                Button(action: { self.showDetails.toggle() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.gray)
-                            .opacity(0.5)
-                            .frame(height: 35)
-                        Text("Details")
-                            .foregroundStyle(Color("foreground"))
-                    }
-                }
-                .contentShape(Rectangle())
-                .frame(width: (SCREEN_WIDTH/2)-25)
-                
-                Button(action:{ Task { await Apply() } }) {
-                    LoadingButton(text: "Request", width: (SCREEN_WIDTH/2)-25, height: 35, status: $status)
-                }.contentShape(Rectangle())
-            }.padding(.all)
-        }.background {
+        }
+        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+        .background {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color("background"))
-                .padding(.horizontal, 5)
+                .foregroundColor(Color(Color.Background.secondary))
         }
         .fullScreenCover(isPresented: $showDetails, content: {
             OrgDetailView(organization: organization)
@@ -136,5 +127,5 @@ struct OrgListItem: View {
 
 #Preview {
     OrgListItem(organization: ORGANIZATIONS[1], showToast: .constant(false))
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -12,8 +12,6 @@ import FirebaseAuth
 class ChatObserver: ObservableObject {
     
     private let host: String
-    private var timer = Timer()
-    private var intervals: Double = 15
     private let cache = CacheService()
     private let decoder = JSONDecoder()
     private let service = ChatService()
@@ -24,10 +22,10 @@ class ChatObserver: ObservableObject {
     private let log = Logger(subsystem: "com.olympsis.client", category: "chat_observer")
     
     init() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             host = "localhost:8082"
         #else
-            host = Bundle.main.object(forInfoDictionaryKey: "CHAT") as? String ?? ""
+            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
         #endif
     }
     
@@ -130,52 +128,51 @@ class ChatObserver: ObservableObject {
     }
     
     func initiateSocketConnection(id: String) async {
+        #if targetEnvironment(simulator)
+            self.request = URLRequest(url: URL(string: "ws://\(host)/v1/chats/\(id)/ws")!)
+        #else
+            self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
+        #endif
+
+        guard var request = request else {
+            return
+        }
+
+        // Set up request headers
+        request.setValue("Upgrade", forHTTPHeaderField: "Connection")
+        request.setValue("websocket", forHTTPHeaderField: "Upgrade")
+        request.setValue(host, forHTTPHeaderField: "Host")
+        request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
+        request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
+
+        self.webSocketTask = session.webSocketTask(with: request)
+        self.webSocketTask?.maximumMessageSize = 1024 * 1024 // 1MB
+        webSocketTask?.resume()
+
+        log.info("Socket Connection Initiated!")
+        await self.authenticateWebSocket()
+    }
+    
+    func authenticateWebSocket() async {
         do {
+            let encoder = JSONEncoder()
             let token = try await Auth.auth().currentUser?.getIDToken()
-            
-            #if DEBUG
-                self.request = URLRequest(url: URL(string: "ws://\(host)/v1/chats/\(id)/ws")!)
-            #else
-                self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
-            #endif
-            
-            guard var request = request else {
-                return
+            if let data = try? encoder.encode(["token": token]) {
+                let message = URLSessionWebSocketTask.Message.data(data)
+                try await self.webSocketTask?.send(message)
+                log.info("Socket Connection Authenticated!")
             }
-            request.setValue(token ?? "", forHTTPHeaderField: "Authorization")
-            request.setValue("Upgrade", forHTTPHeaderField: "Connection")
-            request.setValue("websocket", forHTTPHeaderField: "Upgrade")
-            request.setValue(host, forHTTPHeaderField: "Host")
-            request.setValue("permessage-deflate; client_max_window_bits", forHTTPHeaderField: "Sec-WebSocket-Extensions")
-            request.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
-            self.webSocketTask = session.webSocketTask(with: request)
-            webSocketTask?.resume()
-            log.info("Socket Connection Initiated")
         } catch {
-            log.error("Failed to initiate socket connection: \(error.localizedDescription)")
+            log.error("Failed to authenticate websocket: \(error.localizedDescription)")
         }
     }
     
-    func Ping() {
-        timer = Timer.scheduledTimer(withTimeInterval: intervals, repeats: true) {[weak self] _ in
-            self?.log.log("PING")
-            self?.webSocketTask?.sendPing { err in
-                if let e = err {
-                    print("Failed to send Ping: \(e)")
-                } else {
-                    self?.log.log("PONG")
-                }
-            }
-        }
-    }
-    
-    func CloseSocketConnection() async {
-        timer.invalidate()
+    func closeSocketConnection() async {
         webSocketTask?.cancel(with: .goingAway, reason: nil)
-        log.info("Socket Connection Closed")
+        log.info("Socket Connection Closed!")
     }
     
-    func SendMessage(msg: Message) async -> Bool {
+    func sendMessage(msg: Message) async -> Bool {
         let encoder = JSONEncoder()
         if let data = try? encoder.encode(msg) {
             let message = URLSessionWebSocketTask.Message.data(data)
@@ -183,14 +180,14 @@ class ChatObserver: ObservableObject {
                 try await webSocketTask?.send(message)
                 return true
             } catch {
-                log.error("failed to send message: \(error.localizedDescription)")
+                log.error("Failed to send message: \(error.localizedDescription)")
                 return false
             }
         }
         return false
     }
     
-    func ReceiveMessage() async -> Message? {
+    func receiveMessage() async -> Message? {
         do {
             let message = try await webSocketTask?.receive()
             let decoder = JSONDecoder()
@@ -210,7 +207,6 @@ class ChatObserver: ObservableObject {
                 fatalError("Did not recieve string or data from socket.")
             }
         } catch {
-            timer.invalidate()
             log.error("RecieveError: \(error.localizedDescription)")
         }
         return nil

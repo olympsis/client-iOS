@@ -16,7 +16,7 @@ struct PostListItem: View {
     @State private var showAlert: Bool = false
     
     @StateObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @EnvironmentObject private var feedModel: FeedViewModel
     
     init(post: Post, pinned: Bool = false, showMenu: Bool = false, showComments: Bool = false) {
@@ -83,7 +83,7 @@ struct PostHeader: View {
     @Binding var showMenu: Bool
     
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var isOrg: Bool {
         guard let selectedGroup = session.selectedGroup,
@@ -143,13 +143,12 @@ struct PostHeader: View {
                     return ((parent.pinnedPosts?.contains(where: { $0 == post.id })) != nil)
                 }
             }
-            return club.pinnedPosts?.contains(post.id ?? "") ?? false
+            return club.pinnedPosts.contains(post.id)
         } else {
-            guard let org = selectedGroup.organization,
-                  let pinnedPosts = org.pinnedPosts else {
+            guard let org = selectedGroup.organization else {
                 return false
             }
-            return pinnedPosts.contains(where: { $0 == post.id })
+            return org.pinnedPosts.contains(where: { $0 == post.id })
         }
     }
     
@@ -193,10 +192,8 @@ struct PostHeader: View {
                     VStack(alignment: .leading) {
                         Text(orgName)
                             .bold()
-                        if let type = post.type {
-                            Text(type.capitalized)
-                                .font(.caption)
-                        }
+                        Text(post.type.capitalized)
+                            .font(.caption)
                             
                     }.padding(.leading, 5)
                 } else {
@@ -210,9 +207,7 @@ struct PostHeader: View {
                 }
             case "advertisement":
                 EmptyView()
-            case .none:
-                EmptyView()
-            case .some(_):
+            default:
                 EmptyView()
             }
             
@@ -275,20 +270,35 @@ struct PostBody: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: SCREEN_WIDTH)
-                
-                HStack {
-                    Spacer()
-                    ForEach(0..<imagesURL.count, id: \.self) { index in
-                        Circle()
-                            .frame(width: index == index ? 5 : 8,
-                                   height: index == index ? 5 : 8)
-                            .foregroundColor(index == self.index ? .blue : .gray)
-                            .scaleEffect(index == index ? 1.2 : 1.0)
-                            .animation(.easeInOut, value: index)
+                .overlay(alignment: .topTrailing) {
+                    if imagesURL.count > 1 {
+                        Text("\(index+1)/\(imagesURL.count)")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
+                            .foregroundStyle(.white)
+                            .background {
+                                Color.black
+                                    .opacity(0.5)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(10)
                     }
-                    Spacer()
                 }
                 
+//                HStack {
+//                    Spacer()
+//                    ForEach(0..<imagesURL.count, id: \.self) { index in
+//                        Circle()
+//                            .frame(width: index == index ? 5 : 8,
+//                                   height: index == index ? 5 : 8)
+//                            .foregroundColor(index == self.index ? .blue : .gray)
+//                            .scaleEffect(index == index ? 1.2 : 1.0)
+//                            .animation(.easeInOut, value: index)
+//                    }
+//                    Spacer()
+//                }
             }
             
             HStack {
@@ -309,17 +319,14 @@ struct PostFooter: View {
     
     @Environment(\.openURL) private var openURL
     @EnvironmentObject private var post: Post
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     private var likeCount: Int {
         return post.likes.count
     }
     
     private var timestamp: String {
-        guard let time = post.createdAt else {
-            return "0 seconds ago"
-        }
-        return calculateTimeAgo(from: time)
+        return calculateTimeAgo(from: post.createdAt)
     }
     
     private var hasExternalLink: Bool {
@@ -331,27 +338,24 @@ struct PostFooter: View {
     }
     
     private func like() async {
-        guard let id = post.id,
-            let user = session.user,
+        guard let user = session.user,
             let uuid = user.uuid else {
             return
         }
-        let dao = LikeDao(uuid: uuid)
-        guard let id = await session.postObserver.addLike(id: id, like: dao) else {
+        let dao = ReactionDao(uuid: uuid)
+        guard let id = await session.postObserver.addLike(id: post.id, like: dao) else {
             return
         }
         let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
-        let like = Like(id: id, uuid: uuid, user: snippet, createdAt: Int(Date.now.timeIntervalSince1970))
+        let like = Reaction(id: id, uuid: uuid, user: snippet, createdAt: Date())
         isLiked = true
         post.likes.append(like)
     }
     
     private func removeLike() async {
-        guard let id = post.id,
-                let user = session.user, let uuid = user.uuid,
-              let like = post.likes.first(where: {$0.uuid == uuid }),
-              let likeID = like.id,
-              await session.postObserver.deleteLike(id: id, likeID: likeID) else {
+        guard let user = session.user, let uuid = user.uuid,
+              let like = post.likes.first(where: { $0.uuid == uuid }),
+              await session.postObserver.deleteLike(id: post.id, likeID: like.id) else {
             return
         }
         post.likes.removeAll(where: {$0.uuid == like.uuid})
@@ -422,7 +426,7 @@ struct PostFooter: View {
             
             Rectangle()
                 .frame(height: 1)
-                .foregroundStyle(Color.background)
+                .foregroundStyle(Color.gray.opacity(0.3))
         }
     }
 }
@@ -430,7 +434,7 @@ struct PostFooter: View {
 #Preview("Header") {
     PostHeader(pinned: .constant(false), showMenu: .constant(false))
         .environmentObject(POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
 
 #Preview("Body") {
@@ -441,11 +445,11 @@ struct PostFooter: View {
 #Preview("Footer") {
     PostFooter(showComments: .constant(false))
         .environmentObject(POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
 
 #Preview {
     PostListItem(post: POSTS[1])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
         .environmentObject(FeedViewModel())
 }

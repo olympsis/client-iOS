@@ -12,7 +12,7 @@ struct InvitationView: View {
     @State var invitation: Invitation
     @State private var acceptState: LOADING_STATE = .pending
     @State private var denyState: LOADING_STATE = .pending
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     
     func handleAcceptSuccess() {
         acceptState = .success
@@ -126,5 +126,5 @@ struct InvitationView: View {
 
 #Preview {
     InvitationView(invitation: INVITATIONS[0])
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }

@@ -14,7 +14,7 @@ struct ManageEvents: View {
             VStack {
                 Text("Game Time!!")
                     .bold()
-                    .font(.custom("ITCAvantGardeStd-Bold", size: 25, relativeTo: .largeTitle))
+                    .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                 Text("When it’s time or whenever everyone shows up. Let’s start the event and end after they’re done")
                     .font(.subheadline)
                     .multilineTextAlignment(.center)

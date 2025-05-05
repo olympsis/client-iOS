@@ -23,7 +23,7 @@ class EventService {
         #endif
     }
     
-    func location(long: Double, lat: Double, radius: Int, sports: String, status: String) async throws -> (Data, URLResponse) {
+    func location(long: Double, lat: Double, radius: Int, sports: String, status: String, limit: Int) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Hermes.Endpoint("/v1/events/location", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
@@ -31,21 +31,33 @@ class EventService {
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sports", value: sports),
             URLQueryItem(name: "status", value: status),
+            URLQueryItem(name: "limit", value: String(limit)),
         ])
         
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
-    func getEvents(long: Double, lat: Double, radius: Int, sports: String, status: String) async throws -> (Data, URLResponse) {
+    func getEvents(long: Double, lat: Double, radius: Double, tags: String? = nil, sports: String? = nil, status: String, skip: Int, limit: Int) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Hermes.Endpoint("/v1/events", queryItems: [
-            URLQueryItem(name: "longitude", value: String(long)),
-            URLQueryItem(name: "latitude", value: String(lat)),
-            URLQueryItem(name: "radius", value: String(radius)),
-            URLQueryItem(name: "sports", value: sports),
-            URLQueryItem(name: "status", value: status),
-        ])
         
+        var queries = [
+            URLQueryItem(name: "location", value: "\(long),\(lat)"),
+            URLQueryItem(name: "radius", value: String(radius)),
+        ]
+        
+        if (tags != nil && !tags!.isEmpty) {
+            queries.append(URLQueryItem(name: "tags", value: tags))
+        }
+        
+        if (sports != nil && !sports!.isEmpty) {
+            queries.append(URLQueryItem(name: "sports", value: sports))
+        }
+        
+        queries.append(URLQueryItem(name: "status", value: status))
+        queries.append(URLQueryItem(name: "skip", value: String(0)))
+        queries.append(URLQueryItem(name: "limit", value: String(limit)))
+        
+        let endpoint = Hermes.Endpoint("/v1/events", queryItems: queries)
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
@@ -63,10 +75,17 @@ class EventService {
         return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
     }
     
-    func createEvent(event: EventDao) async throws -> (Data,URLResponse) {
+    func getUserPastEvents(uuid: String) async throws -> (Data, URLResponse){
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/past/user/\(uuid)", queryItems: [URLQueryItem]())
+        
+        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+    }
+    
+    func createEvent(dao: NewEventDao) async throws -> (Data,URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(event), headers: ["Authorization": token ?? ""])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
@@ -77,31 +96,58 @@ class EventService {
         return resp
     }
     
-    func deleteEvent(id: String) async throws -> URLResponse {
+    func deleteEvent(id: String, deleteAll: Bool = false) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/events/\(id)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint("/v1/events/\(id)", queryItems: deleteAll ? [URLQueryItem(name: "deleteAll", value: "true")] : [])
         
         let (_, resp) = try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
         return resp
     }
     
-    func addParticipant(id: String, _ participant: Participant) async throws -> URLResponse {
+    // MARK: - Participants
+    
+    func addParticipant(id: String) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        let (_,resp) = try await http.Request(.POST, endpoint, body: EncodeToData(participant), headers: ["Authorization": token ?? ""])
-        return resp
+        return try await http.Request(.POST, endpoint, body: nil, headers: ["Authorization": token ?? ""])
     }
     
-    func removeParticipant(id: String, pid: String) async throws -> URLResponse {
+    func removeParticipant(id: String, pid: String?=nil) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
-        let endpoint = Endpoint("/v1/events/\(id)/participants/\(pid)", queryItems: [URLQueryItem]())
+        if ((pid) != nil && pid != "") {
+            let endpoint = Endpoint("/v1/events/\(id)/participants/\(pid!)", queryItems: [URLQueryItem]())
+            
+            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
+            return resp
+        } else {
+            let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+            
+            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
+            return resp
+        }
+    }
+    
+    // MARK: - Comments
+    
+    func addComment(id: String, _ comment: EventCommentDao) async throws -> (Data, URLResponse) {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/\(id)/comments", queryItems: [URLQueryItem]())
+        
+        return try await http.Request(.POST, endpoint, body: EncodeToData(comment), headers: ["Authorization": token ?? ""])
+    }
+    
+    func removeComment(id: String, cid: String) async throws -> URLResponse {
+        let token = try await Auth.auth().currentUser?.getIDToken()
+        let endpoint = Endpoint("/v1/events/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
         
         let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: ["Authorization": token ?? ""])
         return resp
     }
     
-    func notifyParticipants(id: String, notif: Notification) async throws -> URLResponse {
+    // MARK: - Notifications
+    
+    func notifyParticipants(id: String, notif: OlympsisNotification) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/notify/participants", queryItems: [URLQueryItem]())
         
@@ -109,7 +155,7 @@ class EventService {
         return resp
     }
     
-    func notifyClubMembers(id: String, notif: Notification) async throws -> URLResponse {
+    func notifyClubMembers(id: String, notif: OlympsisNotification) async throws -> URLResponse {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/notify/club", queryItems: [URLQueryItem]())
         

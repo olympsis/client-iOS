@@ -12,7 +12,7 @@ import Foundation
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class FieldObserver: ObservableObject{
     private let decoder = JSONDecoder()
-    private let fieldService = FieldService()
+    private let fieldService = VenueService()
     private let log = Logger(subsystem: "com.olympsis.client", category: "field_observer")
     
     /// Calls the venue service to get venues based on certain params

@@ -10,36 +10,42 @@ import MapKit
 import SwiftUI
 import Foundation
 
-class NewEventManager: ObservableObject {
+@Observable
+class NewEventManager {
     
-    @Published var type: EVENT_TYPES
-    @Published var title: String
-    @Published var body: String
-    @Published var externalLink: String
-    @Published var status: LOADING_STATE = .pending
+    var type: EVENT_TYPES = .Regular
+    
+    var selectedTags: [Tag]
+    var selectedSports: [Sport]
+    
+    var title: String
+    var body: String
+    var externalLink: String
+    var status: LOADING_STATE = .pending
+    
     // Organizers
-    @Published var organizers: [GroupSelection]
+    var organizers: [GroupSelection]
     
     // Timestamps
-    @Published var startDate: Date
-    @Published var endDate: Date
+    var startDate: Date
+    var endDate: Date
     
     // Location
-    @Published var selectedVenues = [Venue]() {
+    var selectedVenues = [Venue]() {
         didSet {
             selectedVenueDescriptors = selectedVenues.map {
                 if $0.description == "external" {
-                    return VenueDescriptor(name: $0.name, location: $0.location)
+                    return VenueDescriptor(name: $0.name, city: $0.city, state: $0.state, country: $0.country, location: $0.location)
                 } else {
-                    return VenueDescriptor(id: $0.id)
+                    return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
                 }
             }
         }
     }
-    @Published var selectedVenueDescriptors = [VenueDescriptor]()
+    var selectedVenueDescriptors = [VenueDescriptor]()
     
     // Image
-    @Published var selectedImage: UIImage? {
+    var selectedImage: UIImage? {
         didSet {
             guard let image = selectedImage,
                   let data = image.jpegData(compressionQuality: 0.5) else {
@@ -49,88 +55,55 @@ class NewEventManager: ObservableObject {
             selectedImageData = data
         }
     }
-    @Published var selectedImageData: Data?
-    @Published var selectedImageIndex: Int = 0
+    var selectedImageData: Data?
+    var selectedImageIndex: Int = 0
     
     // Participants
-    @Published var minParticipants: Double
-    @Published var maxParticipants: Double
+    var teamsConfig: TeamsConfig?
+    var participantsConfig: ParticipantsConfig?
     
-    // Sport
-    @Published var sport: SPORTS
-    @Published var image: String?
+    var image: String?
+    var tags: [Tag] = []
+    var sports: [Sport] = []
     
     // More Options
-    @Published var skillLevel: EVENT_SKILL_LEVELS = .All
-    @Published var visibility: EVENT_VISIBILITY_TYPES = .Public
+    var formatConfig: EventFormatConfig?
+    var visibility: EVENT_VISIBILITY_TYPES = .Public
     
-    @Published var customVenueSearch: String = ""
+    var customVenueSearch: String = ""
     
+    var recurrenceOptions: EventRecurrenceOptions?
+
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
-    
     init(
-        type: EVENT_TYPES = .PickUp,
-        title: String = "",
-        body: String = "",
         venues: [Venue] = [Venue](),
-        organizers: [GroupSelection] = [GroupSelection](),
-        startDate: Date = Date(),
-        endDate: Date = Date().addingTimeInterval(30 * 60),
-        minParticipants: Double = 0,
-        maxParticipants: Double = 0,
-        sport: SPORTS = .soccer,
-        image: String? = nil,
-        skillLevel: EVENT_SKILL_LEVELS = .All,
-        visibility: EVENT_VISIBILITY_TYPES = .Public,
-        externalLink: String = ""
+        organizers: [GroupSelection] = [GroupSelection]()
     ) {
-        self.type = type
-        self.title = title
-        self.body = body
+        self.selectedTags = []
+        self.selectedSports = []
+        self.title = ""
+        self.body = ""
         self.selectedVenues = venues
         self.organizers = organizers
-        self.startDate = startDate
-        self.endDate = endDate
-        self.minParticipants = minParticipants
-        self.maxParticipants = maxParticipants
-        self.sport = sport
-        self.image = sport.images().first
-        self.skillLevel = skillLevel
-        self.visibility = visibility
-        self.externalLink = externalLink
+        
+        self.startDate = Date()
+        self.endDate = Date().addingTimeInterval(60 * 60 * 24)
+        
+        self.externalLink = ""
         
         if venues.count > 0 {
             selectedVenueDescriptors = venues.map {
-                return VenueDescriptor(id: $0.id)
+                return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
             }
         }
     }
     
-    convenience init(type: EVENT_TYPES = .PickUp) {
-        self.init(
-            type: type, 
-            title: "",
-            body: "",
-            venues: [Venue](),
-            organizers: [GroupSelection](),
-            startDate: Date(),
-            endDate: Date().addingTimeInterval(30 * 60),
-            minParticipants: 0,
-            maxParticipants: 0,
-            sport: .soccer,
-            image: SPORTS.soccer.images().first,
-            skillLevel: .All,
-            visibility: .Public,
-            externalLink: ""
-        )
-    }
-    
-    func createEvent(user: UserData) async throws -> Event? {
+    func createEvent(user: User) async throws -> String? {
         guard let dto = generateEventDTO() else {
-            return nil
+            throw NewEventError.invalidData
         }
         
         if let data = selectedImageData {
@@ -142,32 +115,29 @@ class NewEventManager: ObservableObject {
                 throw MediaUploadError.innapropriateContent
             }
             if resp.score > 3 {
-                dto.isSensitive = true
+                dto.event.isSensitive = true
             }
             
             guard let url = resp.url else {
                 status = .pending
-                return nil
+                throw MediaUploadError.unexpected("failed to get uploaded image url")
             }
-            dto.imageURL = url.replacingOccurrences(of: "olympsis-", with: "")
+            dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
-            guard let id = await eventObserver.createEvent(event: dto) else {
-                if let img = dto.imageURL {
+            guard let id = await eventObserver.createEvent(dao: dto) else {
+                if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
-                return nil
+                throw NewEventError.serverError(message: "Failed to create event.")
             }
             
-            return generateNewEvent(id: id, dao: dto, user: user)
+            return id
         } else {
-            guard let id = await eventObserver.createEvent(event: dto) else {
-                if let img = dto.imageURL {
-                    await deleteImage(image: img)
-                }
-                return nil
+            guard let id = await eventObserver.createEvent(dao: dto) else {
+                throw NewEventError.unknown(message: "Failed to create event.")
             }
             
-            return generateNewEvent(id: id, dao: dto, user: user)
+            return id
         }
     }
     
@@ -180,9 +150,9 @@ class NewEventManager: ObservableObject {
         return self.organizers.map { o in
             switch (o.type) {
             case .Club:
-                return Organizer(type: o.type.rawValue, id: o.club?.id ?? "")
+                return Organizer(type: o.type, id: o.club?.id ?? "")
             case .Organization:
-                return Organizer(type: o.type.rawValue, id: o.organization?.id ?? "")
+                return Organizer(type: o.type, id: o.organization?.id ?? "")
             }
         }
     }
@@ -202,89 +172,34 @@ class NewEventManager: ObservableObject {
     /// We want the data to be complete before we attempt to make a request to the server
     ///
     /// - Returns: an optional `EventDao` object
-    func generateEventDTO() -> EventDao? {
+    func generateEventDTO() -> NewEventDao? {
         guard !self.title.isEmpty,
               !self.body.isEmpty,
+              (self.selectedImageData != nil || self.image != ""),
               !self.selectedVenueDescriptors.isEmpty,
               self.organizers.count > 0 else {
             log.error("Failed to generate new event: invalid data")
             return nil
         }
         
-        return EventDao(
-            type: self.type.rawValue,
+        let event = EventDao(
             organizers: self.generateOrganizers(),
             venues: self.selectedVenueDescriptors,
-            imageURL: self.image,
+            mediaURL: self.image,
+            mediaType: .image,
             title: self.title,
             body: self.body,
-            sport: self.sport.rawValue,
-            level: self.skillLevel.toInt(),
-            startTime: Int(self.startDate.timeIntervalSince1970),
-            stopTime: Int(self.endDate.timeIntervalSince1970),
-            minParticipants: Int(self.minParticipants),
-            maxParticipants: Int(self.maxParticipants),
-            visibility: self.visibility.rawValue,
-            isSensitive: false,
+            tags: self.selectedTags.map { $0.name },
+            sports: self.selectedSports.map { $0.name.components(separatedBy: " ")[1] },
+            formatConfig: self.formatConfig,
+            startTime: self.startDate,
+            stopTime: self.endDate,
+            participantsConfig: self.participantsConfig,
+            visibility: self.visibility,
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )
-    }
-    
-    /// Generates a new event object
-    ///
-    /// This function creates a new event object locally so that the user can see their event immediately after it's been created
-    ///
-    /// - Parameter id: The string identifier of the newly created event
-    /// - Parameter dto: The DTO object that was used to create the event
-    /// - Parameter user: The user's information to add in a new participant
-    ///
-    /// - Returns:  An optional `Event` object
-    func generateNewEvent(id: String, dao: EventDao, user: UserData) -> Event? {
-        guard let type = dao.type,
-              let organizers = dao.organizers,
-              let venues = dao.venues,
-              let imageURL = dao.imageURL,
-              let title = dao.title,
-              let body = dao.body,
-              let sport = dao.sport,
-              let level = dao.level,
-              let startTime = dao.startTime,
-              let minParticipants = dao.minParticipants,
-              let maxParticipants = dao.maxParticipants,
-              let visibility = dao.visibility,
-              let sensitivity = dao.isSensitive else {
-            log.error("Failed to validate dto data for new event")
-            return nil
-        }
         
-        guard let uuid = user.uuid,
-              let username = user.username else {
-            return nil
-        }
-        
-        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
-        let participant = Participant(id: UUID().uuidString, user: snippet, status: RSVP_STATUS.Going.rawValue, createdAt: Int(Date.now.timeIntervalSince1970))
-        
-        return Event(
-            id: id, 
-            type: type,
-            poster: snippet,
-            organizers: organizers,
-            venues: venues,
-            imageURL: imageURL,
-            title: title,
-            body: body,
-            sport: sport,
-            level: level,
-            startTime: startTime,
-            minParticipants: minParticipants,
-            maxParticipants: maxParticipants,
-            participants: [participant],
-            visibility: visibility,
-            createdAt: Int(Date().timeIntervalSince1970), 
-            isSensitive: sensitivity,
-            externalLink: dao.externalLink != "" ? dao.externalLink : nil
-        )
+        return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)
     }
     
     /// Handles uploading an image to a bucket

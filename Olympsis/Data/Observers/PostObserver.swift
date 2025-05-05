@@ -44,7 +44,7 @@ class PostObserver: ObservableObject{
         return nil
     }
     
-    func addLike(id: String, like: LikeDao) async -> String? {
+    func addLike(id: String, like: ReactionDao) async -> String? {
         do {
             let (data, res) = try await postService.addLike(id: id, like: like)
             guard (res as? HTTPURLResponse)?.statusCode == 200 else {

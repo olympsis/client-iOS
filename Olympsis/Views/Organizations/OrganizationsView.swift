@@ -14,23 +14,22 @@ struct OrganizationsView: View {
     @State private var text: String = ""
     @State var organizations = [Organization]()
     @State private var showCancel: Bool = false
-    @EnvironmentObject private var session: SessionStore
+    @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
     var organizationID: String {
         guard let selectedGroup = session.selectedGroup,
-              let organization = selectedGroup.organization,
-              let id = organization.id else {
+              let organization = selectedGroup.organization else {
             return ""
         }
-        return id
+        return organization.id
     }
     
     private var filteredOrganizations: [Organization] {
         if text == "" {
             return organizations
         } else {
-            return organizations.filter{ $0.name!.lowercased().contains(text.lowercased()) }
+            return organizations.filter { $0.name.lowercased().contains(text.lowercased()) }
         }
     }
     
@@ -95,7 +94,8 @@ struct OrganizationsView: View {
                         log.error("\(error)")
                     }
                 }
-            }.toolbar {
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{self.presentationMode.wrappedValue.dismiss()}){
                         Image(systemName: "chevron.left")
@@ -135,5 +135,5 @@ struct OrganizationsView: View {
 
 #Preview {
     OrganizationsView()
-        .environmentObject(SessionStore())
+        .environment(SessionStore())
 }
