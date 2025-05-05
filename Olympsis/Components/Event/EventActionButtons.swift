@@ -139,21 +139,20 @@ struct EventActionButtons: View {
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 80)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
                         
                         VStack {
                             VStack {
                                 Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
                                     .resizable()
-                                    .frame(width: 23, height: 23)
-                                .imageScale(.large)
+                                    .frame(width: 20, height: 20)
                             }
                             
                             Text("Directions")
-                                .font(.callout)
-                                .fontWeight(.medium)
-                        }.foregroundStyle(Color("foreground"))
+                                .font(.caption)
+                                .fontWeight(.bold)
+                        }.foregroundStyle(Color.foreground)
                     }.redacted(reason: venueState != .success ? .placeholder : [])
                 }.disabled(venueState != .success ? true : false)
 
@@ -165,28 +164,28 @@ struct EventActionButtons: View {
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 80)
+                            .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
                         
                         VStack {
                             VStack {
                                 Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
                                     .resizable()
-                                    .frame(width: 23, height: 23)
+                                    .frame(width: 20, height: 20)
                                 .imageScale(.large)
                             }
                             
                             if let venue = venues.first {
                                 Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
+                                    .font(.caption)
+                                    .fontWeight(.bold)
                                     .redacted(reason: venueState != .success ? .placeholder : [])
                             } else {
                                 Text("Directionns")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
+                                    .font(.caption)
+                                    .fontWeight(.bold)
                             }
-                        }.foregroundStyle(Color("foreground"))
+                        }.foregroundStyle(Color.foreground)
                     }
                 }.disabled(venueState != .success ? true : false)
             }
@@ -194,27 +193,27 @@ struct EventActionButtons: View {
             // MARK: - Event Visibility
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .frame(maxWidth: .infinity, idealHeight: 80)
+                    .frame(maxWidth: .infinity, idealHeight: 60)
                     .foregroundColor(Color.Background.secondary)
                 VStack {
                     if event.visibility == EVENT_VISIBILITY_TYPES.Private {
                         VStack {
                             Image(systemName: "lock.fill")
                                 .resizable()
-                                .frame(width: 20, height: 25)
+                                .frame(width: 15, height: 20)
                             Text("Private")
-                                .font(.callout)
-                                .fontWeight(.medium)
+                                .font(.caption)
+                                .fontWeight(.bold)
                         }.foregroundColor(.white)
                     } else {
                         VStack {
                             Image(systemName: "globe")
                                 .resizable()
-                                .frame(width: 23, height: 23)
+                                .frame(width: 20, height: 20)
                             Text("Public")
-                                .font(.callout)
-                                .fontWeight(.medium)
-                        }.foregroundStyle(Color("foreground"))
+                                .font(.caption)
+                                .fontWeight(.bold)
+                        }.foregroundStyle(Color.foreground)
                     }
                 }
             }
@@ -233,8 +232,8 @@ struct EventActionButtons: View {
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(maxWidth: .infinity, idealHeight: 80)
-                                .foregroundColor(Color("color-prime"))
+                                .frame(maxWidth: .infinity, idealHeight: 60)
+                                .foregroundColor(Color.Brand.primary)
                             VStack {
                                 if state == .loading {
                                     ProgressView()
@@ -244,10 +243,11 @@ struct EventActionButtons: View {
                                         Image(systemName: "envelope.fill")
                                             .resizable()
                                             .frame(width: 23, height: 17)
-                                    }.frame(height: 23)
+                                    }.frame(height: 20)
+                                    
                                     Text("RSVP")
-                                        .font(.callout)
-                                        .fontWeight(.medium)
+                                        .font(.caption)
+                                        .fontWeight(.bold)
                                 }
                             }
                         }.foregroundStyle(.white)
@@ -258,7 +258,7 @@ struct EventActionButtons: View {
                     Button(action: { cancel() }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(maxWidth: .infinity, idealHeight: 80)
+                                .frame(maxWidth: .infinity, idealHeight: 60)
                                 .foregroundColor(Color.red)
                             VStack {
                                 if state == .loading {
@@ -271,8 +271,8 @@ struct EventActionButtons: View {
                                             .frame(width: 20, height: 20)
                                     }
                                     Text("Cancel")
-                                        .font(.callout)
-                                        .fontWeight(.medium)
+                                        .font(.caption)
+                                        .fontWeight(.bold)
                                 }
                             }
                         }.foregroundStyle(.white)
@@ -282,7 +282,7 @@ struct EventActionButtons: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(Color.red)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
+                        .frame(maxWidth: .infinity, idealHeight: 60)
                         
                     VStack {
                         VStack {
@@ -291,15 +291,15 @@ struct EventActionButtons: View {
                                 .frame(width: 20, height: 20)
                         }
                         Text("Live")
-                            .font(.callout)
-                            .fontWeight(.medium)
+                            .font(.caption)
+                            .fontWeight(.bold)
                     }
                 }.foregroundStyle(.white)
             case .ended:
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(Color.gray)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
+                        .frame(maxWidth: .infinity, idealHeight: 60)
 
                     VStack {
                         VStack {
@@ -308,8 +308,8 @@ struct EventActionButtons: View {
                                 .frame(width: 20, height: 20)
                         }
                         Text("Ended")
-                            .font(.callout)
-                            .fontWeight(.medium)
+                            .font(.caption)
+                            .fontWeight(.bold)
                     }
                 }.foregroundStyle(.white)
             }
@@ -318,18 +318,18 @@ struct EventActionButtons: View {
             Button(action:{ self.showMenu.toggle() }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 80)
+                        .frame(maxWidth: .infinity, idealHeight: 60)
                         .foregroundColor(Color.Background.secondary)
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")
                                 .resizable()
-                            .frame(width: 25, height: 5)
-                        }.frame(height: 25)
+                            .frame(width: 23, height: 5)
+                        }.frame(height: 20)
                         Text("More")
-                            .font(.callout)
-                            .fontWeight(.medium)
-                    }.foregroundStyle(Color("foreground"))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                    }.foregroundStyle(Color.foreground)
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(clubs: $clubs, organizations: $organizations)
