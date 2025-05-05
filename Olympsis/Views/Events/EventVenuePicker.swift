@@ -6,7 +6,7 @@
 //
 
 import os
-@preconcurrency import MapKit
+import MapKit
 import SwiftUI
 
 struct EventVenuePicker: View {
@@ -16,16 +16,23 @@ struct EventVenuePicker: View {
     @State private var search: String = ""
     @State private var venues: Set<Venue> = []
     @State private var customVenues = [Venue]()
+    @State private var isCustomLocation: Bool = false
     @State private var state: LOADING_STATE = .pending
     
+    @State private var customLocationName: String = ""
+    
+    @State private var mapViewModel = CustomLocationViewModel()
     @StateObject private var searchModel = VenueSearchViewModel()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
-    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
+    private let log: Logger = Logger(
+        subsystem: "com.olympsis.client",
+        category: "event_venue_picker"
+    )
 
-    func search(_ text: String) async {
+    private func search(_ text: String) async {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
@@ -99,20 +106,48 @@ struct EventVenuePicker: View {
         }
     }
     
+    private func saveCustomLocation() {
+        guard let locationInfo = mapViewModel.locationInfo,
+              !customLocationName.isEmpty && customLocationName.count > 1 else {
+            return
+        }
+
+        let venue = Venue(
+            id: UUID().uuidString,
+            name: customLocationName,
+            owner: Ownership(name: "", type: ""),
+            description: "external",
+            sports: [],
+            images: [],
+            location: GeoJSON(type: "Point", coordinates: [
+                locationInfo.coordinate.longitude,
+                locationInfo.coordinate.latitude
+            ]),
+            city: locationInfo.city, state: locationInfo.state, country: locationInfo.country)
+        
+        manager.selectedVenues.append(venue)
+        dismiss()
+    }
+    
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: { index = 0 }) {
-                    Text("Venues")
-                }
-                Spacer()
-//                Button(action: { index = 1 }) {
-//                    Text("Custom Location")
-//                }
-            }.padding([.top, .horizontal])
-            
-            TabView(selection: $index) {
+        Group {
+            if !isCustomLocation {
                 VStack {
+                    
+                    // MARK: - Actions
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.easeInOut) {
+                                isCustomLocation.toggle()
+                            }
+                        }) {
+                            Text("Set Custom Location")
+                                .font(.callout)
+                                .fontWeight(.medium)
+                        }
+                    }.padding([.top, .horizontal])
+                    
                     TextField("Location name", text: $searchModel.searchText)
                         .padding(.leading)
                         .modifier(InputFieldModifier())
@@ -152,14 +187,14 @@ struct EventVenuePicker: View {
                             } else {
                                 Text("No venues found near you")
                                 Button(action: { index = 1 }) {
-                                    Text("Search for a custom location")
+                                    Text("Set a custom location")
                                         .font(.callout)
+                                        .fontWeight(.medium)
                                 }
                             }
                         }
                     }
                 }
-                .tag(0)
                 .onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
                     venues = Set(session.venues)
                     if (!newValue.isEmpty) {
@@ -168,55 +203,81 @@ struct EventVenuePicker: View {
                         }
                     }
                 })
-
-//                VStack {
-//                    TextField("Location name", text: $searchModel.searchText)
-//                        .padding(.leading)
-//                        .modifier(InputField())
-//                        .submitLabel(.search)
-//                        .padding([.horizontal, .vertical])
-//                    
-//                    ScrollView {
-//                        switch state {
-//                        case .pending:
-//                            EmptyView()
-//                        case .loading:
-//                            ProgressView()
-//                        case .success:
-//                            if customVenues.count > 0 {
-//                                ForEach(customVenues, id: \.id) { venue in
-//                                    HStack {
-//                                        VStack(alignment: .leading) {
-//                                            Text(venue.name)
-//                                                .font(.title2)
-//                                                .lineLimit(1)
-//                                            Text("\(venue.city), \(venue.state)")
-//                                                .lineLimit(1)
-//                                                .foregroundStyle(.gray)
-//                                        }
-//                                        Spacer()
-//                                    }
-//                                    .padding(.all)
-//                                    .onTapGesture {
-//                                        manager.selectedVenues.append(venue)
-//                                        dismiss()
-//                                    }
-//                                }
-//                            }
-//                        case .failure:
-//                            Text("Failed to look up venues")
-//                        }
-//                    }.onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
-//                        customVenues = [Venue]()
-//                        if (!newValue.isEmpty) {
-//                            Task {
-//                                await search(newValue)
-//                            }
-//                        }
-//                    })
-//                }
-//                .tag(1)
-            }.tabViewStyle(.automatic)
+            } else {
+                VStack {
+                    
+                    // MARK: - Actions
+                    HStack {
+                        Button(action: {
+                            withAnimation(.easeInOut) {
+                                isCustomLocation.toggle()
+                            }
+                        }) {
+                            Image(systemName: "chevron.left")
+                            Text("Lookup")
+                        }
+                        
+                        Spacer()
+                        
+                        if mapViewModel.selectedCoordinate != nil {
+                            Button(action: { saveCustomLocation() }) {
+                                Text("Done")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                            }
+                        }
+                    }.padding([.top, .horizontal])
+                    
+                    Group {
+                        if mapViewModel.selectedCoordinate != nil {
+                            if let location = mapViewModel.locationInfo {
+                                HStack(alignment: .center) {
+                                    VStack(alignment: .leading, spacing: 20) {
+                                        TextField("Custom location name", text: $customLocationName)
+                                        Text("\(location.coordinate.latitude), \(location.coordinate.longitude)")
+                                    }
+                                    
+                                    Button(action: { mapViewModel.clearPin() }) {
+                                        Text("Clear")
+                                            .fontWeight(.medium)
+                                            .foregroundStyle(.red)
+                                            .padding(.vertical, 5)
+                                            .padding(.horizontal, 10)
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .stroke(style: StrokeStyle(lineWidth: 1))
+                                                    .opacity(0.5)
+                                            }
+                                    }
+                                }
+                                .padding(.all)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.gray)
+                                        .opacity(0.12)
+                                }
+                                .padding(.bottom)
+                            } else {
+                                ProgressView()
+                            }
+                        } else {
+                            HStack {
+                                Image(systemName: "mappin.and.ellipse")
+                                Text("Tap anywhere on the map to drop a pin")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                                    
+                                Spacer()
+                            }
+                            .foregroundStyle(.gray)
+                        }
+                    }.padding([.top, .horizontal])
+                    
+                    CustomLocationPicker()
+                        .environment(mapViewModel)
+                        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+                }
+            }
         }
         .onAppear {
             venues = Set(session.venues)

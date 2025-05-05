@@ -339,6 +339,8 @@
 		5DE67F662C87E2E9001A9861 /* AsyncEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
+		5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */; };
+		5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
 		5DF5CFC22C0450D5008F5374 /* ClubLogoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */; };
 		5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */; };
@@ -847,6 +849,8 @@
 		5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventView.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
+		5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationPicker.swift; sourceTree = "<group>"; };
+		5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewModel.swift; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
 		5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogoBanner.swift; sourceTree = "<group>"; };
 		5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogo.swift; sourceTree = "<group>"; };
@@ -1109,6 +1113,7 @@
 				5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */,
 				5DB4D0522C5F042D00F241BB /* GroupViewModel.swift */,
 				5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */,
+				5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1896,6 +1901,7 @@
 				5D4B0A652D96F87400475A0C /* EventMedia.swift */,
 				5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */,
 				5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */,
+				5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2288,6 +2294,7 @@
 				5DBB94D42B0A7F230031876D /* ClubTag.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
 				5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */,
+				5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */,
 				5D9F694D2BBA0B3A0057D205 /* HelpGuide.swift in Sources */,
 				9A81B6422925E50C009CA6ED /* EventListItem.swift in Sources */,
 				5D5170E72C2756840035C1F1 /* EditorClubViewModel.swift in Sources */,
@@ -2326,6 +2333,7 @@
 				5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */,
 				5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
+				5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */,
 				5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */,
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,

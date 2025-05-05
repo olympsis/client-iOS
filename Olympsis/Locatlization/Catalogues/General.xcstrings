@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "About this Location" : {
+
+    },
     "About this Venue" : {
       "extractionState" : "manual",
       "localizations" : {
