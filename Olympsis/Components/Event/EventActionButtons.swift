@@ -338,7 +338,7 @@ struct EventActionButtons: View {
             }
             
         }
-        .frame(height: 70)
+        .frame(height: 60)
         .padding(.horizontal)
     }
 }
