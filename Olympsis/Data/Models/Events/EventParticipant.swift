@@ -76,7 +76,7 @@ class Participant: Codable, Hashable {
 class ParticipantDao: Codable {
     var id: String?
     var userID: String?
-    var status: RSVPStatus?
+    var status: EVENT_RSVP_STATUS?
     var eventID: String?
     var createdAt: Date?
     
@@ -90,7 +90,7 @@ class ParticipantDao: Codable {
     
     init(id: String? = nil,
          userID: String? = nil,
-         status: RSVPStatus? = nil,
+         status: EVENT_RSVP_STATUS? = nil,
          eventID: String? = nil,
          createdAt: Date? = nil) {
         self.id = id
@@ -104,7 +104,10 @@ class ParticipantDao: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decodeIfPresent(String.self, forKey: .id)
         userID = try container.decodeIfPresent(String.self, forKey: .userID)
-        status = try container.decodeIfPresent(RSVPStatus.self, forKey: .status)
+        
+        let statusInt = try container.decodeIfPresent(Int.self, forKey: .status) ?? 0
+        status = numberToEventRSVPStatus(statusInt)
+        
         eventID = try container.decodeIfPresent(String.self, forKey: .eventID)
         createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
     }
@@ -113,7 +116,7 @@ class ParticipantDao: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(id, forKey: .id)
         try container.encodeIfPresent(userID, forKey: .userID)
-        try container.encodeIfPresent(status, forKey: .status)
+        try container.encodeIfPresent(status?.toInt(), forKey: .status)
         try container.encodeIfPresent(eventID, forKey: .eventID)
         try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }

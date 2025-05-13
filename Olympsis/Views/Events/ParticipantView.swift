@@ -27,9 +27,11 @@ struct ParticipantView: View {
         
         switch participant.status {
         case .Yes:
-            return Color("color-prime")
+            return Color.Brand.primary
         case .Maybe:
-            return Color("color-secnd")
+            return Color.Brand.secondary
+        case .Waitlist:
+            return Color.Brand.tertiary
         }
     }
     

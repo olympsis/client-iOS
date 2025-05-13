@@ -135,10 +135,10 @@ class EventObserver: ObservableObject{
     
     // MARK: - Participants
     
-    func addParticipant(id: String) async throws -> String {
+    func addParticipant(id: String, dao: ParticipantDao) async throws -> String {
         do {
-            let (data, resp) = try await eventService.addParticipant(id: id)
-            guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
+            let (data, resp) = try await eventService.addParticipant(id: id, dao: dao)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 throw EventError.failedToAddParticipant
             }
             

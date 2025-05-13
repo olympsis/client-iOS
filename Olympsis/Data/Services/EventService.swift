@@ -106,11 +106,11 @@ class EventService {
     
     // MARK: - Participants
     
-    func addParticipant(id: String) async throws -> (Data, URLResponse) {
+    func addParticipant(id: String, dao: ParticipantDao) async throws -> (Data, URLResponse) {
         let token = try await Auth.auth().currentUser?.getIDToken()
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         
-        return try await http.Request(.POST, endpoint, body: nil, headers: ["Authorization": token ?? ""])
+        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: ["Authorization": token ?? ""])
     }
     
     func removeParticipant(id: String, pid: String?=nil) async throws -> URLResponse {

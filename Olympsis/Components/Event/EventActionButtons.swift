@@ -61,10 +61,11 @@ struct EventActionButtons: View {
             
             do {
                 state = .loading
-                let id = try await session.eventObserver.addParticipant(id: event.id)
+                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
+                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
                 
-                let snippet = UserSnippet(uuid: user.uuid,firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
-                let participant = Participant(id: id, user: snippet, status: EVENT_RSVP_STATUS(rawValue: status) ?? .Yes, createdAt: Date())
+                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
+                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
                 event.participants.append(participant)
                 
                 handleSuccess()
@@ -222,38 +223,66 @@ struct EventActionButtons: View {
             switch event.getEventStatus() {
             case .pending:
                 if !hasRSVP {
-                    Menu {
-                        Button(action: { rsvp(status: "maybe") }) {
-                            Text("Maybe")
-                        }
-                        Button(action:{ rsvp(status: "yes") }){
-                            Text("I'm In")
-                        }
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(maxWidth: .infinity, idealHeight: 60)
-                                .foregroundColor(Color.Brand.primary)
-                            VStack {
-                                if state == .loading {
-                                    ProgressView()
-                                        .frame(width: 30)
-                                } else {
-                                    VStack {
-                                        Image(systemName: "envelope.fill")
-                                            .resizable()
-                                            .frame(width: 23, height: 17)
-                                    }.frame(height: 20)
-                                    
-                                    Text("RSVP")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
+                    if let maxPtp = event.participantsConfig?.maxParticipants,
+                       let hasWaitlist = event.participantsConfig?.hasWaitlist,
+                       hasWaitlist && (event.participants.count >= maxPtp) {
+                        Button(action: { rsvp(status: "waitlist") }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(maxWidth: .infinity, idealHeight: 60)
+                                    .foregroundColor(Color.Brand.tertiary)
+                                VStack {
+                                    if state == .loading {
+                                        ProgressView()
+                                            .frame(width: 30)
+                                    } else {
+                                        VStack {
+                                            Image(systemName: "hourglass.bottomhalf.filled")
+                                                .resizable()
+                                                .frame(width: 23, height: 17)
+                                        }.frame(height: 20)
+                                        
+                                        Text("Waitlist")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                    }
                                 }
+                            }.foregroundStyle(.white)
+                        }
+                    } else {
+                        Menu {
+                            Button(action: { rsvp(status: "maybe") }) {
+                                Text("Maybe")
                             }
-                        }.foregroundStyle(.white)
+                            Button(action:{ rsvp(status: "yes") }){
+                                Text("I'm In")
+                            }
+                        } label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(maxWidth: .infinity, idealHeight: 60)
+                                    .foregroundColor(Color.Brand.primary)
+                                VStack {
+                                    if state == .loading {
+                                        ProgressView()
+                                            .frame(width: 30)
+                                    } else {
+                                        VStack {
+                                            Image(systemName: "envelope.fill")
+                                                .resizable()
+                                                .frame(width: 23, height: 17)
+                                        }.frame(height: 20)
+                                        
+                                        Text("RSVP")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                    }
+                                }
+                            }.foregroundStyle(.white)
+                        }
+                        .disabled(state == .loading ? true : false)
+                        .disabled(event.getEventStatus() == .ended ? true : false)
                     }
-                    .disabled(state == .loading ? true : false)
-                    .disabled(event.getEventStatus() == .ended ? true : false)
                 } else {
                     Button(action: { cancel() }) {
                         ZStack {
