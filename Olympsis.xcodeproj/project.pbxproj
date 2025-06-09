@@ -307,6 +307,7 @@
 		5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DE2B128D920031876D /* GroupToolbar.swift */; };
 		5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */; };
 		5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */; };
+		5DC24B752DF7392D00DAF87F /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */; };
 		5DC468C42B9E1A4C0023353D /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C32B9E1A4C0023353D /* BugReportView.swift */; };
 		5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C52B9FCE7D0023353D /* ManagementService.swift */; };
 		5DC468C82B9FD6830023353D /* ManagementModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C72B9FD6830023353D /* ManagementModels.swift */; };
@@ -815,6 +816,7 @@
 		5DBB94DE2B128D920031876D /* GroupToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupToolbar.swift; sourceTree = "<group>"; };
 		5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventManager.swift; sourceTree = "<group>"; };
 		5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostManager.swift; sourceTree = "<group>"; };
+		5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		5DC468C32B9E1A4C0023353D /* BugReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5DC468C52B9FCE7D0023353D /* ManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementService.swift; sourceTree = "<group>"; };
 		5DC468C72B9FD6830023353D /* ManagementModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementModels.swift; sourceTree = "<group>"; };
@@ -1398,6 +1400,7 @@
 				9A81B6332925C0E7009CA6ED /* TrophiesView.swift */,
 				5D78BDE72C0D387500F170D6 /* SportView.swift */,
 				5D45B5B52D9CE36600AB24AC /* TagView.swift */,
+				5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2405,6 +2408,7 @@
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */,
+				5DC24B752DF7392D00DAF87F /* ExpandableTextView.swift in Sources */,
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
 				9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,

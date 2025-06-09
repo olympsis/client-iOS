@@ -186,7 +186,7 @@ struct ClubDetailView: View {
                         Text("About")
                             .font(.title2)
                             .bold()
-                        Text(description)
+                        ExpandableTextView(text: description)
                     }.padding(.horizontal)
                     
                     

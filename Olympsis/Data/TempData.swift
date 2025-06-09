@@ -55,7 +55,35 @@ let VENUE_DESCRIPTORS = [
 
 @MainActor
 let CLUBS = [
-    Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/2660b86a-47ef-4c9e-83ee-58824f7b77ce.jpeg", banner: "club-images/02f070c5-3b49-4f0c-9719-e005aae895db.jpeg", sports: ["soccer", "basketball", "tennis"], description: "Club in salt lake for people to come together and play soccer", city: "Salt Lake City", state: "UT", country: "United States", location: GeoJSON(type: "Point", coordinates: []), visibility: "public", members: [
+    Club(id: "609f6db90c34d41863a0e721", parent: nil, name: "International Soccer Club", logo: "club-images/2660b86a-47ef-4c9e-83ee-58824f7b77ce.jpeg", banner: "club-images/02f070c5-3b49-4f0c-9719-e005aae895db.jpeg", sports: ["soccer", "basketball", "tennis"], description: """
+    G⚽️AL 🥅:
+    - This group is for pickup soccer games 😄🤙🏻
+    - Our goal is to bring everyone together for some fun, friendships and sportsmanship.
+    - No trash talking. No provoking. No discriminating. No harassing.
+    - We watch for each other and we help each other.
+    (When things are out of control, we will need to contact the authorities. Some of the buildings/ fields may require student ID / driver license occasionally)
+    ======
+    🛑 SAFETY 🛑
+    No weapon. No harassment. No violence. No alcohol/drug. No racism.
+    If seen, please report immediately
+    🚔 BYU police are on campus 24/7, the main office is in JKB building - just one street away from the RB (next traffic light, opposite the Visiting Center)
+    👮 If you need assistance outside of BYU campus, contact the Provo police
+    =====
+    ⚠️ LIABILITY ⚠️
+    You are responsible for your own injury/risk and medical care (ACL etc)
+    You are responsible for any citation if you violate the law (carrying illegal item, creating a fight, parking on a wrong spot etc)
+    You are responsible for any fee if you damage public or private item that doesn’t belong to you (breaking a window etc)
+    You are responsible for own personal belongings (watch, wallet etc)
+    ====
+    ♻️ Field Rules ♻️
+    Try to keep the field clean.
+    Put your trashes in the trash cans.
+    Help cleaning up the field.
+    =====
+    🔈 Page Rules 🔈
+    No Spamming.
+    No Advertising (unless you are selling your own soccer gears or have the approval to promote something helpful to the community).
+""", city: "Salt Lake City", state: "UT", country: "United States", location: GeoJSON(type: "Point", coordinates: []), visibility: "public", members: [
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[1], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),
         Member(id: UUID().uuidString, role: "owner", user: USER_SNIPPETS[0], joinedAt: nil),

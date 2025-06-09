@@ -193,7 +193,8 @@ struct FilterView: View {
             manager.sports = SPORTS_TEMP
             #endif
             
-            
+            manager.tags = session.tags
+            manager.sports = session.sports
         }
     }
 }

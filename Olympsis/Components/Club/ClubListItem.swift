@@ -92,7 +92,7 @@ struct ClubListItem: View {
                 Text(description)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal)
-                    .lineLimit(nil)
+                    .lineLimit(3)
                     .font(.callout)
             }
             .padding(.bottom)

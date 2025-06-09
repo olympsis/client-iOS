@@ -101,17 +101,10 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
         
         // Handle date decoding with multiple formats
         if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt) {
-            if let date = dateFormatter.date(from: createdAtString) {
-                self.createdAt = date
-            } else {
-                // Fallback to timestamp if string parsing fails
-                self.createdAt = Date()
-            }
-        } else if let createdAtInt = try container.decodeIfPresent(Int.self, forKey: .createdAt) {
-            self.createdAt = Date(timeIntervalSince1970: TimeInterval(createdAtInt))
+            self.createdAt = try parseDate(from: createdAtString)
         } else {
             // Use standard Date decoding as last resort
-            self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+            self.createdAt = Date()
         }
     }
     

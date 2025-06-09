@@ -139,6 +139,7 @@ struct EventComments: View {
                                 .background {
                                     Color.Brand.primary
                                 }
+                                .foregroundStyle(.white)
                                 .clipShape(Circle())
                         case .loading:
                             ProgressView()
@@ -153,6 +154,7 @@ struct EventComments: View {
                                 .background {
                                     Color.red
                                 }
+                                .foregroundStyle(.white)
                                 .clipShape(Circle())
                         }
                     }
