@@ -25,9 +25,9 @@ struct PastEvents: View {
                 HStack {
                     Spacer()
                     VStack {
-                        Text("No Past Events Found")
+                        Text(String(localized: "no-past-events", table: "Profile"))
                             .padding(.top)
-                        Text("Go find some!")
+                        Text(String(localized: "go-find-some", table: "Profile"))
                             .font(.caption)
                             .fontWeight(.bold)
                             .foregroundStyle(.gray)

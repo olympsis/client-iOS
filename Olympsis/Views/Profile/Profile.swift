@@ -52,7 +52,7 @@ struct Profile: View {
                             }
                         }) {
                             VStack {
-                                Text("Awards")
+                                Text(String(localized: "awards", table: "Profile"))
                                     .font(.callout)
                                     .fontWeight(.medium)
                                     
@@ -72,7 +72,7 @@ struct Profile: View {
                             }
                         }) {
                             VStack {
-                                Text("Groups")
+                                Text(String(localized: "groups", table: "Profile"))
                                     .font(.callout)
                                     .fontWeight(.medium)
                                 
@@ -90,7 +90,7 @@ struct Profile: View {
                             }
                         }) {
                             VStack {
-                                Text("Past Events")
+                                Text(String(localized: "past-events", table: "Profile"))
                                     .font(.callout)
                                     .fontWeight(.medium)
                                 

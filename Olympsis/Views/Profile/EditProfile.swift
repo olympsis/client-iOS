@@ -121,7 +121,7 @@ struct EditProfile: View {
         VStack {
             HStack {
                 Button(action:{ dismiss() }){
-                    Text("Cancel")
+                    Text(String(localized: "Cancel", table: "General"))
                         .foregroundColor(.primary)
                 }
                 
@@ -135,7 +135,7 @@ struct EditProfile: View {
                         }
                     }
                 }){
-                    LoadingButton(text: "Save", width: 60, status: $status)
+                    LoadingButton(text: String(localized: "Save", table: "General"), width: 60, status: $status)
                 }
             }.padding(.horizontal)
             ScrollView(showsIndicators: false) {
@@ -186,7 +186,7 @@ struct EditProfile: View {
                     }
                     
                     Button(action: { self.showMediaPicker.toggle() }) {
-                        Text("Edit Picture")
+                        Text(String(localized: "Edit Picture", table: "Profile"))
                     }.fullScreenCover(isPresented: $showMediaPicker, content: {
                         MediaPicker(pickerType: .profile) { images in
                             if let img = images.first {
@@ -202,8 +202,8 @@ struct EditProfile: View {
                 // MARK: - Username Text Field
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("Username")
-                        Text("What would you like your nickname to be?")
+                        Text(String(localized: "username", table: "Profile"))
+                        Text(String(localized: "username-sub-text", table: "Profile"))
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
@@ -222,8 +222,8 @@ struct EditProfile: View {
                 // MARK: - Bio Text Box
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("Bio")
-                        Text("Share some information about yourself")
+                        Text(String(localized: "bio", table: "Profile"))
+                        Text(String(localized: "bio-sub-text", table: "Profile"))
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
@@ -249,7 +249,7 @@ struct EditProfile: View {
                 // MARK: - Profile Visibility Toggle
                 VStack(alignment: .leading){
                     Toggle(isOn: $isPublic) {
-                        Text("Profile Visibility")
+                        Text(String(localized: "profile-visibility", table: "Profile"))
                     }.frame(width: SCREEN_WIDTH-30, height: 40)
                         .tint(Color("color-secnd"))
                         .onChange(of: isPublic) { _, newValue in
@@ -259,17 +259,17 @@ struct EditProfile: View {
                                 visibility = "private"
                             }
                         }
-                    Text("Allow users not on your friends list to see your profile")
+                    Text(String(localized: "profile-visibility-sub-text", table: "Profile"))
                         .font(.caption)
                         .foregroundColor(.gray)
-                }
+                }.padding(.horizontal)
                 
                 // MARK: - Sports Picker
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("Sports")
+                        Text(String(localized: "sports", table: "Profile"))
                         HStack(alignment: .top) {
-                            Text("What athletic activites are you into?")
+                            Text(String(localized: "sports-sub-text", table: "Profile"))
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }.foregroundStyle(.gray)
@@ -313,9 +313,9 @@ struct EditProfile: View {
                 // MARK: - Hometown Picker
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("Hometown")
+                        Text(String(localized: "hometown", table: "Profile"))
                         HStack(alignment: .top) {
-                            Text("Where do you call home? We need a fall back location if we can’t find you through your location.")
+                            Text(String(localized: "hometown-sub-text", table: "Profile"))
                                 .font(.caption)
                                 .foregroundStyle(.gray)
                         }.foregroundStyle(.gray)
@@ -342,13 +342,13 @@ struct EditProfile: View {
                 Spacer()
                 
             }
-            .navigationTitle("Edit Profile")
+            .navigationTitle(String(localized: "edit-profile", table: "Profile"))
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
-                        Text("Cancel")
+                        Text(String(localized: "Cancel", table: "General"))
                             .foregroundColor(.primary)
                     }
                 }
@@ -361,7 +361,7 @@ struct EditProfile: View {
                             }
                         }
                     }){
-                        LoadingButton(text: "Save", width: 40, status: $status)
+                        LoadingButton(text: String(localized: "Save", table: "General"), width: 40, status: $status)
                             .frame(width: 50)
                     }
                 }

@@ -11,7 +11,7 @@ struct BadgesView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Badges")
+                Text(String(localized: "badges", table: "Profile"))
                     .font(.title)
                     .bold()
                     .padding(.leading, 25)
@@ -20,7 +20,7 @@ struct BadgesView: View {
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .center){
-                    Text("No Badges")
+                    Text(String(localized: "no-badges", table: "Profile"))
                 }.frame(width: SCREEN_WIDTH)
             }
             Spacer()

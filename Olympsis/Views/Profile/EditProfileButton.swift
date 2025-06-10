@@ -18,8 +18,8 @@ struct EditProfileButton: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 250, height: 35)
                         .foregroundColor(Color(Color.Background.secondary))
-                    Text("Edit Profile")
-                        .foregroundColor(Color("foreground"))
+                    Text(String(localized: "edit-profile", table: "Profile"))
+                        .foregroundColor(Color.foreground)
                         .bold()
                         .font(.callout)
                 }

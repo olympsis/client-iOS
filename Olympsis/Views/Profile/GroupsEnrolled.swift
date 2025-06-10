@@ -34,7 +34,7 @@ struct GroupsEnrolled: View {
     var body: some View {
         VStack(alignment: .center) {
             VStack(alignment: .leading) {
-                Text("Clubs")
+                Text(String(localized: "Clubs", table: "General"))
                     .font(.title)
                     .bold()
                 
@@ -42,10 +42,10 @@ struct GroupsEnrolled: View {
                     HStack {
                         Spacer()
                         VStack {
-                            Text("No Clubs Enrolled")
+                            Text(String(localized: "no-clubs-enrolled", table: "Profile"))
                                 .padding(.top)
                             
-                            Text("Go join one!")
+                            Text(String(localized: "go-join-one", table: "Profile"))
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.gray)
@@ -65,7 +65,7 @@ struct GroupsEnrolled: View {
             
             if !organizations.isEmpty {
                 VStack(alignment: .leading) {
-                    Text("Organizations")
+                    Text(String(localized: "organizations", table: "General"))
                         .font(.title)
                         .bold()
                     

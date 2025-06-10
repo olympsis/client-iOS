@@ -11,7 +11,7 @@ struct TrophiesView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Trophies")
+                Text(String(localized: "trophies", table: "Profile"))
                     .font(.title)
                     .bold()
                     .padding(.leading, 25)
@@ -20,7 +20,7 @@ struct TrophiesView: View {
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .center){
-                    Text("No Trophies")
+                    Text(String(localized: "no-trophies", table: "Profile"))
                 }.frame(width: SCREEN_WIDTH)
             }
             Spacer()
