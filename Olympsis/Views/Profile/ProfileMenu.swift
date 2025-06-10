@@ -39,31 +39,31 @@ struct ProfileMenu: View {
             ScrollView(showsIndicators: false) {
                 VStack {
                     NavigationLink(destination: NotificationSettings().environment(session)) {
-                        MenuLabel(icon: Image(systemName: "bell.fill"), text: "Notification Settings")
+                        MenuLabel(icon: Image(systemName: "bell.fill"), text: String(localized: "setting-notifications", table: "Settings"))
                     }
                     
                     NavigationLink(destination: BugReportView()) {
-                        MenuLabel(icon: Image(systemName: "ladybug"), text: "Report a bug")
+                        MenuLabel(icon: Image(systemName: "ladybug"), text: String(localized: "setting-bug-report", table: "Settings"))
                     }
                     
                     NavigationLink(destination: BlockedUsersList()) {
-                        MenuLabel(icon: Image(systemName: "person.slash"), text: "Blocked Users")
+                        MenuLabel(icon: Image(systemName: "person.slash"), text: String(localized: "setting-blocked-users", table: "Settings"))
                     }
                     
                     NavigationLink(destination: HelpGuide()) {
-                        MenuLabel(icon: Image(systemName: "lifepreserver.fill"), text: "Help")
+                        MenuLabel(icon: Image(systemName: "lifepreserver.fill"), text: String(localized: "setting-help", table: "Settings"))
                     }
 
                     NavigationLink(destination: TermsOfUse()) {
-                        MenuLabel(icon: Image(systemName: "text.viewfinder"), text: "Terms of Use")
+                        MenuLabel(icon: Image(systemName: "text.viewfinder"), text: String(localized: "setting-terms-of-use", table: "Settings"))
                     }
                     
                     NavigationLink(destination: PrivacyPolicy()) {
-                        MenuLabel(icon: Image(systemName: "lock.fill"), text: "Privacy Policy")
+                        MenuLabel(icon: Image(systemName: "lock.fill"), text: String(localized: "setting-privacy-policy", table: "Settings"))
                     }
 
                     NavigationLink(destination: AboutUs()) {
-                        MenuLabel(icon: Image(systemName: "info.circle.fill"), text: "About Us")
+                        MenuLabel(icon: Image(systemName: "info.circle.fill"), text: String(localized: "setting-about-us", table: "Settings"))
                     }
                     
                     if (appState != nil) && appState == .developer {
@@ -72,12 +72,12 @@ struct ProfileMenu: View {
                         }
                     }
                     
-                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Logout", action: {
+                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: String(localized: "setting-logout", table: "Settings"), action: {
                         alertType = .logout
                         self.showAlert.toggle()
                     }, type: .destructive)
                     
-                    MenuButton(icon: Image(systemName: "delete.forward"), text: "Delete Account", action: {
+                    MenuButton(icon: Image(systemName: "delete.forward"), text: String(localized: "setting-delete-account", table: "Settings"), action: {
                         alertType = .deletion
                         self.showAlert.toggle()
                     }, type: .destructive)
@@ -85,7 +85,7 @@ struct ProfileMenu: View {
                     Spacer(minLength: 80)
                     
                     VStack {
-                        Text("version")
+                        Text(String(localized: "Version", table: "General"))
                         Text(appVersion)
                     }
                     .font(.callout)
@@ -108,7 +108,7 @@ struct ProfileMenu: View {
                         }
                     }
                 }
-                .navigationTitle("Settings")
+                .navigationTitle(String(localized: "settings-title", table: "Settings"))
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
             }
@@ -116,10 +116,10 @@ struct ProfileMenu: View {
                 switch alertType {
                 case .logout:
                     return Alert(
-                        title: Text("Logging out?"),
-                        message: Text("Are you sure you want to logout?"),
+                        title: Text(String(localized: "logging-out-warning-title", table: "Settings")),
+                        message: Text(String(localized: "logging-out-warning-body", table: "Settings")),
                         primaryButton: .cancel(),
-                        secondaryButton: .destructive(Text("Logout"), action: {
+                        secondaryButton: .destructive(Text(String(localized: "setting-logout", table: "Settings")), action: {
                             Task {
                                 await session.logout()
                             }
@@ -127,10 +127,10 @@ struct ProfileMenu: View {
                     );
                 case .deletion:
                     return Alert(
-                        title: Text("Are you sure?"),
-                        message: Text("Deletin your account means that you will loose all of your info on Olympsis"),
+                        title: Text(String(localized: "delete-account-warning-title", table: "Settings")),
+                        message: Text(String(localized: "delete-account-warning-body", table: "Settings")),
                         primaryButton: .cancel(),
-                        secondaryButton: .destructive(Text("Delete"), action: {
+                        secondaryButton: .destructive(Text(String(localized: "setting-delete-account", table: "Settings")), action: {
                             Task {
                                 await session.deleteAccount()
                             }

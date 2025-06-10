@@ -56,7 +56,7 @@ struct BugReportView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center){
-                Text("If the app or a feature is not working as expected, please let us know the details so we can make Olympsis better")
+                Text(String(localized: "report-sub-title", table: "Settings"))
                     .font(.subheadline)
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
@@ -77,11 +77,11 @@ struct BugReportView: View {
             }.padding(.vertical)
             
             Button(action: { Task { await createReport() } }) {
-                LoadingButton(text: "Report", image: nil, width: 120, height: 40, color: Color("color-prime"), status: $state)
+                LoadingButton(text: String(localized: "report-button-text", table: "Settings"), image: nil, width: 120, height: 40, color: Color("color-prime"), status: $state)
             }.padding(.top, 50)
             
         }
-        .navigationTitle("Report a problem")
+        .navigationTitle(String(localized: "report-title", table: "Settings"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {

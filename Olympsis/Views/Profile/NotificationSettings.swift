@@ -68,7 +68,7 @@ struct NotificationSettings: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Toggle(isOn: $isEnabled) {
-                    Text("Allow Notifications")
+                    Text(String(localized: "notifications-setting-title", table: "Settings"))
                 }
                 .padding(.horizontal)
                 .onChange(of: isEnabled) { _, newValue in
@@ -78,7 +78,7 @@ struct NotificationSettings: View {
                     }
                 }
 
-                Text("Allow Olympsis to keep you up to date on what's happening in your community. This includes event updates, club notifications, and more.")
+                Text(String(localized: "notifications-setting-sub-title", table: "Settings"))
                     .font(.caption)
                     .padding(.horizontal)
                     .foregroundStyle(.gray)
@@ -87,7 +87,7 @@ struct NotificationSettings: View {
                     if (isEnabled) {
                         VStack(alignment: .leading) {
                             Toggle(isOn: $pushEnabled) {
-                                Text("Push Notifications")
+                                Text(String(localized: "notifications-push-title", table: "Settings"))
                             }
                             .padding(.horizontal)
                             .onChange(of: pushEnabled) { _, newValue in
@@ -108,7 +108,7 @@ struct NotificationSettings: View {
                                 }
                             }
                             
-                            Text("Allow Olympsis to send you push notifications to this device, like event updates and club notifications")
+                            Text(String(localized: "notifications-push-sub-title", table: "Settings"))
                                 .font(.caption)
                                 .padding(.horizontal)
                                 .foregroundStyle(.gray)
@@ -116,7 +116,7 @@ struct NotificationSettings: View {
                         
                         VStack(alignment: .leading) {
                             Toggle(isOn: $emailEnabled) {
-                                Text("Email Notifications")
+                                Text(String(localized: "notifications-email-title", table: "Settings"))
                             }
                             .padding(.horizontal)
                             .onChange(of: emailEnabled) { _, newValue in
@@ -125,7 +125,7 @@ struct NotificationSettings: View {
                                 }
                             }
                             
-                            Text("Allow Olympsis to send you email notifications of special announcements and other important updates")
+                            Text(String(localized: "notifications-email-sub-title", table: "Settings"))
                                 .font(.caption)
                                 .padding(.horizontal)
                                 .foregroundStyle(.gray)
@@ -137,7 +137,7 @@ struct NotificationSettings: View {
             Spacer()
         }
         .padding(.top)
-        .navigationTitle("Notifications")
+        .navigationTitle(String(localized: "notifications-title", table: "Settings"))
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

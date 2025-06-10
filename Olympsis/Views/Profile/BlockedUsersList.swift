@@ -103,7 +103,7 @@ struct BlockedUsersList: View {
                                         await unBlock(usr: usr)
                                     }
                                 }) {
-                                    Text("Unblock")
+                                    Text(String(localized: "Unblock", table: "General"))
                                 }
                             } label: {
                                 Image(systemName: "ellipsis")
@@ -111,7 +111,7 @@ struct BlockedUsersList: View {
                         }.padding(.horizontal)
                     }
                 } else {
-                    Text("No blocked users")
+                    Text(String(localized: "no-blocked-users-text", table: "Settings"))
                         .padding(.top, 100)
                 }
             case .loading:
@@ -119,15 +119,15 @@ struct BlockedUsersList: View {
                     .padding(.top, 100)
             case .failure:
                 VStack {
-                    Text("Failed to load list. Pull to refresh or")
+                    Text(String(localized: "failed-reports-load-text", table: "Settings"))
                     Button(action: { Task { await loadList() } } ) {
-                        Text("Click Here")
+                        Text(String(localized: "Click here", table: "General"))
                     }
                 }
                 .padding(.top, 100)
             }
         }
-        .navigationTitle("Blocked Users")
+        .navigationTitle(String(localized: "setting-blocked-users", table: "Settings"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {

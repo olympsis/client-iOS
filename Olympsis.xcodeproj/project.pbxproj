@@ -335,7 +335,7 @@
 		5DDD5E722C41095F00793FEB /* Groups.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E712C41095F00793FEB /* Groups.xcstrings */; };
 		5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E732C41099B00793FEB /* Profile.xcstrings */; };
 		5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E752C4109AF00793FEB /* Home.xcstrings */; };
-		5DDD5E782C4109EC00793FEB /* System.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E772C4109EC00793FEB /* System.xcstrings */; };
+		5DDD5E782C4109EC00793FEB /* Settings.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E772C4109EC00793FEB /* Settings.xcstrings */; };
 		5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F632C8758ED001A9861 /* AsyncPostView.swift */; };
 		5DE67F662C87E2E9001A9861 /* AsyncEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
@@ -846,7 +846,7 @@
 		5DDD5E712C41095F00793FEB /* Groups.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Groups.xcstrings; sourceTree = "<group>"; };
 		5DDD5E732C41099B00793FEB /* Profile.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Profile.xcstrings; sourceTree = "<group>"; };
 		5DDD5E752C4109AF00793FEB /* Home.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Home.xcstrings; sourceTree = "<group>"; };
-		5DDD5E772C4109EC00793FEB /* System.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = System.xcstrings; sourceTree = "<group>"; };
+		5DDD5E772C4109EC00793FEB /* Settings.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Settings.xcstrings; sourceTree = "<group>"; };
 		5DE67F632C8758ED001A9861 /* AsyncPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPostView.swift; sourceTree = "<group>"; };
 		5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventView.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
@@ -1137,7 +1137,7 @@
 				5DDD5E712C41095F00793FEB /* Groups.xcstrings */,
 				5DDD5E732C41099B00793FEB /* Profile.xcstrings */,
 				5DDD5E752C4109AF00793FEB /* Home.xcstrings */,
-				5DDD5E772C4109EC00793FEB /* System.xcstrings */,
+				5DDD5E772C4109EC00793FEB /* Settings.xcstrings */,
 			);
 			path = Catalogues;
 			sourceTree = "<group>";
@@ -2145,7 +2145,7 @@
 				5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */,
 				5DDD5E722C41095F00793FEB /* Groups.xcstrings in Resources */,
 				5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */,
-				5DDD5E782C4109EC00793FEB /* System.xcstrings in Resources */,
+				5DDD5E782C4109EC00793FEB /* Settings.xcstrings in Resources */,
 				5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */,
 				5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */,
 				5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */,

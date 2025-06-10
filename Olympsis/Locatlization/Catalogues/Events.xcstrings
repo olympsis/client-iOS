@@ -1,7 +1,54 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-
+    "Add a comment" : {
+      "extractionState" : "manual"
+    },
+    "Add to calendar" : {
+      "extractionState" : "manual"
+    },
+    "Comments" : {
+      "extractionState" : "manual"
+    },
+    "Details" : {
+      "extractionState" : "manual"
+    },
+    "Friday" : {
+      "extractionState" : "manual"
+    },
+    "Going" : {
+      "extractionState" : "manual"
+    },
+    "Hosted by" : {
+      "extractionState" : "manual"
+    },
+    "Location(s)" : {
+      "extractionState" : "manual"
+    },
+    "Monday" : {
+      "extractionState" : "manual"
+    },
+    "Nearby events" : {
+      "extractionState" : "manual"
+    },
+    "Saturday" : {
+      "extractionState" : "manual"
+    },
+    "Sunday" : {
+      "extractionState" : "manual"
+    },
+    "Thursday" : {
+      "extractionState" : "manual"
+    },
+    "Tomorrow" : {
+      "extractionState" : "manual"
+    },
+    "Tuesday" : {
+      "extractionState" : "manual"
+    },
+    "Wednesday" : {
+      "extractionState" : "manual"
+    }
   },
   "version" : "1.0"
 }

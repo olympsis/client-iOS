@@ -1,550 +1,580 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "About this Location" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About this location"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acerca de este lugar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "À propos de ce lieu"
-          }
-        }
-      }
-    },
-    "About this Venue" : {
+    "delete-account-warning-body" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About this venue"
+            "value" : "Deleting your account means that you will loose all of your info on Olympsis"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de este lugar"
+            "value" : "Eliminar tu cuenta significa que perderás toda tu información en Olympsis"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À propos de ce lieu"
+            "value" : "La suppression de votre compte signifie que vous perdrez toutes vos informations sur Olympsis"
           }
         }
       }
     },
-    "Accept" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accept"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acepte"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accepter"
-          }
-        }
-      }
-    },
-    "Allow" : {
+    "delete-account-warning-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Allow"
+            "value" : "Are you sure?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permitir"
+            "value" : "Estas seguro"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permettre"
+            "value" : "Es-tu sûr?"
           }
         }
       }
     },
-    "Announcements" : {
+    "failed-reports-load-text" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Announcements"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anuncios"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annonces"
+            "value" : "Failed to load list. Pull to refresh or"
           }
         }
       }
     },
-    "are you ready to play?" : {
+    "logging-out-warning-body" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "are you ready to play?"
+            "value" : "Are you sure you want to logout?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿estás listo para jugar?"
+            "value" : "¿Estás seguro de que quieres cerrar sesión?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "êtes-vous prêt à jouer?"
+            "value" : "Êtes-vous sûr de vouloir vous déconnecter?"
           }
         }
       }
     },
-    "Cancel" : {
-      "extractionState" : "manual"
-    },
-    "Click here" : {
-      "extractionState" : "manual"
-    },
-    "Club" : {
-      "extractionState" : "manual"
-    },
-    "Edit picture" : {
-      "extractionState" : "manual"
-    },
-    "Events can be created anywhere, venues are locations vetted by Olympsis" : {
+    "logging-out-warning-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Events can be created anywhere, venues are locations vetted by Olympsis"
+            "value" : "Logging out?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los eventos se pueden crear en cualquier lugar, los lugares son localizaciones examinadas por Olympsis"
+            "value" : "¿Cerrar sesión?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les événements peuvent être créés n'importe où, les lieux sont des lieux approuvés par Olympsis"
+            "value" : "Déconnexion ?"
           }
         }
       }
     },
-    "Filters" : {
-      "extractionState" : "manual"
-    },
-    "Hot Events" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hot Events"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eventos candentes"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Événements Marquants"
-          }
-        }
-      }
-    },
-    "How is my location used?" : {
+    "no-blocked-users-text" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How is my location used?"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Cómo se utiliza mi localización?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comment ma position est-elle utilisée ?"
+            "value" : "No blocked users"
           }
         }
       }
     },
-    "LOOKUP EVENTS" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BUSCAR EVENTOS"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RECHERCHE D'ÉVÉNEMENTS"
-          }
-        }
-      }
-    },
-    "More" : {
-      "extractionState" : "manual"
-    },
-    "Move and scale" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move and Scale"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover y escalar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacement et mise à l'échelle"
-          }
-        }
-      }
-    },
-    "Nearby Venues" : {
+    "notifications-email-sub-title" : {
+      "comment" : "Notify the user of what we are asking about in terms of notifications through emails",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nearby Venues"
+            "value" : "Allow Olympsis to send you email notifications of special announcements and other important updates"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lugares cercanos"
+            "value" : "Permita que Olympsis le envíe notificaciones por correo electrónico sobre anuncios especiales y otras actualizaciones importantes"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lieux à proximité"
+            "value" : "Autorisez Olympsis à vous envoyer des notifications par e-mail d'annonces spéciales et d'autres mises à jour importantes"
           }
         }
       }
     },
-    "No Thanks" : {
+    "notifications-email-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No Thanks"
+            "value" : "Email notifications"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No, gracias"
+            "value" : "Notificaciones por correo electrónico"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non merci"
+            "value" : "Notifications par e-mail"
           }
         }
       }
     },
-    "No venues near you" : {
+    "notifications-push-sub-title" : {
+      "comment" : "Notify the user of what we are asking about in terms of notifications through push notifications",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No venues near you"
+            "value" : "Allow Olympsis to send you push notifications to this device, like event updates and club notifications"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay sedes cerca de usted"
+            "value" : "Permita que Olympsis le envíe notificaciones push a este dispositivo, como actualizaciones de eventos y notificaciones del club."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aucun lieu a ta proximité"
+            "value" : "Autoriser Olympsis à vous envoyer des notifications push sur cet appareil, comme des mises à jour d'événements et des notifications de club"
           }
         }
       }
     },
-    "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity." : {
+    "notifications-push-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity."
+            "value" : "Push notifications"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olympsis necesita acceder a su ubicación para mostrarle los eventos deportivos y torneos que se celebran en su zona. Olympsis le ofrecerá una experiencia deportiva local óptima en función de su proximidad. Esto asegura que nunca te pierdas los partidos más importantes o que puedas descubrir fácilmente nuevos eventos deportivos en tu vecindad."
+            "value" : "Notificaciones push"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olympsis doit accéder à votre position pour vous montrer les événements sportifs et les tournois à proximité qui se déroulent dans votre région. Olympsis organisera pour vous l'expérience sportive locale optimale en fonction de votre proximité. Cela garantit que vous ne manquerez jamais les plus grands matchs et que vous pourrez facilement découvrir de nouveaux événements sportifs dans votre voisinage."
+            "value" : "Notification push"
           }
         }
       }
     },
-    "Private" : {
-      "extractionState" : "manual"
-    },
-    "Public" : {
-      "extractionState" : "manual"
-    },
-    "ready to play?" : {
+    "notifications-setting-sub-title" : {
+      "comment" : "Explain to the user why we want to send them notifications",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ready to play?"
+            "value" : "Allow Olympsis to keep you up to date on what's happening in your community. This includes event updates, club notifications, and more."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Listo para jugar?"
+            "value" : "Permite que Olympsis te mantenga al tanto de lo que ocurre en tu comunidad. Esto incluye actualizaciones de eventos, notificaciones del club y más."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "prêt à jouer?"
+            "value" : "Olympsis vous tient informé(e) de l'actualité de votre communauté : mises à jour d'événements, notifications de club, etc."
           }
         }
       }
     },
-    "Save" : {
-      "extractionState" : "manual"
-    },
-    "Search" : {
-      "extractionState" : "manual"
-    },
-    "SEARCH CLUBS" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BUSCAR CLUBES"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RECHERCHE DES CLUBS"
-          }
-        }
-      }
-    },
-    "Share Your Location" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share your location"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comparte tu localización"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Partagez votre position"
-          }
-        }
-      }
-    },
-    "Slogan" : {
+    "notifications-setting-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Join a community made by athletes for athletes."
+            "value" : "Allow notifications"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Únete a una comunidad hecha por atletas para atletas."
+            "value" : "Permitir notificaciones"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rejoignez une communauté créée par des athlètes pour des athlètes."
+            "value" : "Autoriser les notifications"
           }
         }
       }
     },
-    "Sorry there are no venues in your area" : {
+    "notifications-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sorry there are no venues in your area"
+            "value" : "Notifications"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lo sentimos, no hay locales en su zona"
+            "value" : "Notificaciones"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Désolé, il n'y a pas de lieux dans votre région."
+            "value" : "Notifications"
           }
         }
       }
     },
-    "Unblock" : {
-      "extractionState" : "manual"
-    },
-    "Version" : {
-      "extractionState" : "manual"
-    },
-    "View All" : {
+    "report-button-text" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "View All"
+            "value" : "Report"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ver todos"
+            "value" : "Informe"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voir tout"
+            "value" : "Rapport"
           }
         }
       }
     },
-    "Welcome back" : {
+    "report-sub-title" : {
+      "comment" : "Tell the user why we want them to report bugs and other issues",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome back"
+            "value" : "If the app or a feature is not working as expected, please let us know the details so we can make Olympsis better"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenido de nuevo"
+            "value" : "Si la aplicación o una función no funciona como se esperaba, háganos saber los detalles para que podamos mejorar Olympsis."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Content de te revoir"
+            "value" : "Si l'application ou une fonctionnalité ne fonctionne pas comme prévu, veuillez nous en informer afin que nous puissions améliorer Olympsis."
           }
         }
       }
     },
-    "Welcome!" : {
+    "report-title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome!"
+            "value" : "Report a problem"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenido!"
+            "value" : "Informar un problema"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue!"
+            "value" : "Signaler un problème"
+          }
+        }
+      }
+    },
+    "setting-about-us" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About us"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre nosotros"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A propos de nous"
+          }
+        }
+      }
+    },
+    "setting-blocked-users" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked users"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuarios bloqueados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateurs bloqués"
+          }
+        }
+      }
+    },
+    "setting-bug-report" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report a bug"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informar un error"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaler un problème"
+          }
+        }
+      }
+    },
+    "setting-delete-account" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar cuenta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer compte"
+          }
+        }
+      }
+    },
+    "setting-help" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayuda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aide"
+          }
+        }
+      }
+    },
+    "setting-logout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logout"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar sesión"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déconnexion"
+          }
+        }
+      }
+    },
+    "setting-notifications" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification settings"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración de notificaciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres de notification"
+          }
+        }
+      }
+    },
+    "setting-privacy-policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy policy"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de privacidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Règles de confidentialité"
+          }
+        }
+      }
+    },
+    "setting-terms-of-use" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of use"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condiciones de uso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conditions d'utilisation "
+          }
+        }
+      }
+    },
+    "settings-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres"
           }
         }
       }

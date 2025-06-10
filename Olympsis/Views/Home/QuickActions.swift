@@ -31,7 +31,7 @@ struct QuickActions: View {
                     HStack {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("LOOKUP EVENTS")
+                                Text(String(localized: "LOOKUP EVENTS", table: "General"))
                                     .italic()
                                     .font(.title2)
                                     .fontWeight(.black)
@@ -62,7 +62,7 @@ struct QuickActions: View {
                     HStack {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("SEARCH GROUPS")
+                                Text(String(localized: "SEARCH CLUBS", table: "General"))
                                     .italic()
                                     .font(.title2)
                                     .fontWeight(.black)

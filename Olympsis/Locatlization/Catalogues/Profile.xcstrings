@@ -1,7 +1,57 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-
+    "Allow users not on your friends list to see your profile" : {
+      "extractionState" : "manual"
+    },
+    "Awards" : {
+      "extractionState" : "manual"
+    },
+    "Badges" : {
+      "extractionState" : "manual"
+    },
+    "Bio" : {
+      "extractionState" : "manual"
+    },
+    "Edit profile" : {
+      "extractionState" : "manual"
+    },
+    "Groups" : {
+      "extractionState" : "manual"
+    },
+    "Hometown" : {
+      "extractionState" : "manual"
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "Past Events" : {
+      "extractionState" : "manual"
+    },
+    "Profile visibility" : {
+      "extractionState" : "manual"
+    },
+    "Share some information about yourself" : {
+      "extractionState" : "manual"
+    },
+    "Sports" : {
+      "extractionState" : "manual"
+    },
+    "Trophies" : {
+      "extractionState" : "manual"
+    },
+    "Username" : {
+      "extractionState" : "manual"
+    },
+    "What athletic activities are you into?" : {
+      "extractionState" : "manual"
+    },
+    "What would you like your nickname to be?" : {
+      "extractionState" : "manual"
+    },
+    "Where do you call home? We need a fall back location if we can’t find you through your location" : {
+      "extractionState" : "manual"
+    }
   },
   "version" : "1.0"
 }
