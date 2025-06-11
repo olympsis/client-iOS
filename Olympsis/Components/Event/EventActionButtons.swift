@@ -150,7 +150,7 @@ struct EventActionButtons: View {
                                     .frame(width: 20, height: 20)
                             }
                             
-                            Text("Directions")
+                            Text(String(localized: "event-action-directions", table: "Events"))
                                 .font(.caption)
                                 .fontWeight(.bold)
                         }.foregroundStyle(Color.foreground)
@@ -182,7 +182,7 @@ struct EventActionButtons: View {
                                     .fontWeight(.bold)
                                     .redacted(reason: venueState != .success ? .placeholder : [])
                             } else {
-                                Text("Directionns")
+                                Text(String(localized: "event-action-directions", table: "Events"))
                                     .font(.caption)
                                     .fontWeight(.bold)
                             }
@@ -202,7 +202,7 @@ struct EventActionButtons: View {
                             Image(systemName: "lock.fill")
                                 .resizable()
                                 .frame(width: 15, height: 20)
-                            Text("Private")
+                            Text(String(localized: "visibility-private", table: "Events"))
                                 .font(.caption)
                                 .fontWeight(.bold)
                         }.foregroundColor(.white)
@@ -211,7 +211,7 @@ struct EventActionButtons: View {
                             Image(systemName: "globe")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                            Text("Public")
+                            Text(String(localized: "visibility-public", table: "Events"))
                                 .font(.caption)
                                 .fontWeight(.bold)
                         }.foregroundStyle(Color.foreground)
@@ -242,7 +242,7 @@ struct EventActionButtons: View {
                                                 .frame(width: 23, height: 17)
                                         }.frame(height: 20)
                                         
-                                        Text("Waitlist")
+                                        Text(String(localized: "status-waitlist", table: "Events"))
                                             .font(.caption)
                                             .fontWeight(.bold)
                                     }
@@ -273,7 +273,7 @@ struct EventActionButtons: View {
                                                 .frame(width: 23, height: 17)
                                         }.frame(height: 20)
                                         
-                                        Text("RSVP")
+                                        Text(String(localized: "status-rsvp", table: "Events"))
                                             .font(.caption)
                                             .fontWeight(.bold)
                                     }
@@ -299,7 +299,7 @@ struct EventActionButtons: View {
                                             .resizable()
                                             .frame(width: 20, height: 20)
                                     }
-                                    Text("Cancel")
+                                    Text(String(localized: "status-cancel", table: "Events"))
                                         .font(.caption)
                                         .fontWeight(.bold)
                                 }
@@ -319,7 +319,7 @@ struct EventActionButtons: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
-                        Text("Live")
+                        Text(String(localized: "status-live", table: "Events"))
                             .font(.caption)
                             .fontWeight(.bold)
                     }
@@ -336,7 +336,7 @@ struct EventActionButtons: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
-                        Text("Ended")
+                        Text(String(localized: "status-ended", table: "Events"))
                             .font(.caption)
                             .fontWeight(.bold)
                     }
@@ -355,7 +355,7 @@ struct EventActionButtons: View {
                                 .resizable()
                             .frame(width: 23, height: 5)
                         }.frame(height: 20)
-                        Text("More")
+                        Text(String(localized: "more", table: "General"))
                             .font(.caption)
                             .fontWeight(.bold)
                     }.foregroundStyle(Color.foreground)

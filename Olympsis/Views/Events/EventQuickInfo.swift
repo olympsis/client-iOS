@@ -93,7 +93,7 @@ struct EventQuickInfo: View {
                 Button(action: { self.showCalendarEditor.toggle() }) {
                     Image(systemName: "calendar")
                         .imageScale(.large)
-                    Text("Add to Calendar")
+                    Text(String(localized: "add-to-calendar", table: "Events"))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 10)

@@ -141,13 +141,69 @@
       "extractionState" : "manual"
     },
     "Click here" : {
-      "extractionState" : "manual"
+
+    },
+    "click-here" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click Here"
+          }
+        }
+      }
     },
     "Club" : {
       "extractionState" : "manual"
     },
-    "Edit picture" : {
-      "extractionState" : "manual"
+    "Clubs" : {
+
+    },
+    "day-today" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aujourd'hui"
+          }
+        }
+      }
+    },
+    "day-tomorrow" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomorrow"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demain"
+          }
+        }
+      }
+    },
+    "edit-picture" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit picture"
+          }
+        }
+      }
     },
     "Events can be created anywhere, venues are locations vetted by Olympsis" : {
       "extractionState" : "manual",
@@ -237,8 +293,22 @@
         }
       }
     },
-    "More" : {
-      "extractionState" : "manual"
+    "more" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        }
+      }
     },
     "Move and scale" : {
       "localizations" : {
@@ -353,6 +423,9 @@
           }
         }
       }
+    },
+    "organizations" : {
+
     },
     "Private" : {
       "extractionState" : "manual"

@@ -494,18 +494,18 @@ extension Event {
         let calendar = Calendar.current
         
         if calendar.isDateInToday(self.startTime) {
-            return "Today"
+            return String(localized: "day-today", table: "General")
         } else if calendar.isDateInTomorrow(self.startTime) {
-            return "Tomorrow"
+            return String(localized: "day-tomorrow", table: "General")
         } else if calendar.isDate(self.startTime, equalTo: currentDate, toGranularity: .weekOfYear) {
             let formatter = DateFormatter()
             formatter.dateFormat = "EEEE"
-            formatter.locale = Locale(identifier: "en_US")
+            formatter.locale = Locale(identifier: Locale.current.identifier)
             return formatter.string(from: self.startTime)
         } else {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
-            formatter.locale = Locale(identifier: "en_US")
+            formatter.locale = Locale(identifier: Locale.current.identifier)
             return formatter.string(from: self.startTime)
         }
     }

@@ -20,7 +20,7 @@ struct EventLocation: View {
         if !venues.isEmpty {
             Group {
                 HStack {
-                    Text("Locations(s)")
+                    Text(String(localized: "new-event-location-title", table: "Events"))
                         .font(.title2)
                         .bold()
                 }

@@ -31,11 +31,11 @@ struct EventParticipants: View {
     private var participantsStatus: String {
         switch event.getEventStatus() {
         case .ended:
-            return "Attended"
+            return String(localized: "participants-status-attended", table: "Events")
         case .live:
-            return "Attending"
+            return String(localized: "participants-status-attending", table: "Events")
         case .pending:
-            return "Going"
+            return String(localized: "participants-status-going", table: "Events")
         }
     }
     
@@ -101,7 +101,7 @@ struct EventParticipants: View {
             
             if (event.participants.count > 3) {
                 Button(action: { showParticipants.toggle() }) {
-                    Text("+\(event.participants.count-3) more...")
+                    Text("+\(event.participants.count-3) \(String(localized: "more", table: "General"))...")
                 }.padding(.top)
             }
         }

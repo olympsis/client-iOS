@@ -109,12 +109,12 @@ struct EventComments: View {
         VStack(alignment: .leading) {
             switch event.getEventStatus() {
             case .pending, .live:
-                Text("Comments")
+                Text(String(localized: "event-comments-title", table: "Events"))
                     .font(.title2)
                     .bold()
             case .ended:
                 if !event.comments.isEmpty {
-                    Text("Comments")
+                    Text(String(localized: "event-comments-title", table: "Events"))
                         .font(.title2)
                         .bold()
                 }
@@ -122,7 +122,7 @@ struct EventComments: View {
             
             if event.getEventStatus() != .ended {
                 HStack {
-                    TextField("Add a comment...", text: $text)
+                    TextField("\(String(localized: "add-a-comment", table: "Events"))...", text: $text)
                         .padding(10)
                         .padding(.horizontal, 5)
                         .focused($fieldIsFocused)
@@ -168,7 +168,7 @@ struct EventComments: View {
                             Button(role: .destructive) {
                                 deleteComment(comment: comment)
                             } label: {
-                                Label("Remove Comment", systemImage: "trash.fill")
+                                Label(String(localized: "remove-a-comment", table: "Events"), systemImage: "trash.fill")
                             }
                         }
                     }

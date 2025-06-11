@@ -138,7 +138,7 @@ struct EventView: View {
                         // MARK: - Detail/Body
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Details")
+                                Text(String(localized: "event-details-title", table: "Events"))
                                     .font(.title2)
                                     .bold()
                                 

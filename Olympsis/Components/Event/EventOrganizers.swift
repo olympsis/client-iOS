@@ -51,7 +51,7 @@ struct EventOrganizers: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Hosted By")
+            Text(String(localized: "hosted-title", table: "Events"))
                 .font(.title2)
                 .bold()
             
