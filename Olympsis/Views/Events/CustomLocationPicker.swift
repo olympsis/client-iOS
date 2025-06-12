@@ -33,7 +33,7 @@ struct CustomLocationPicker: View {
             Map(position: $position) {
                 // Show a marker if a location is selected
                 if let coordinate = viewModel.selectedCoordinate {
-                    Marker("Selected Location", coordinate: coordinate)
+                    Marker(String(localized: "selected-location-text", table: "General"), coordinate: coordinate)
                 }
             }
             .mapStyle(.standard)

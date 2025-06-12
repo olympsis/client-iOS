@@ -26,10 +26,10 @@ struct NewEventParticipantsLimit: View {
         VStack {
             // MARK: - Min Participants slider
             VStack(alignment: .leading){
-                Text("Min Participants")
+                Text(String(localized: "advanced-settings-min-participants-title", table: "Events"))
                     .font(.headline)
                     .bold()
-                Text("Least number of participants required")
+                Text(String(localized: "advanced-settings-min-participants-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
                 
@@ -46,10 +46,10 @@ struct NewEventParticipantsLimit: View {
             
             // MARK: - Max Participants slider
             VStack(alignment: .leading){
-                Text("Max Participants")
+                Text(String(localized: "advanced-settings-max-participants-title", table: "Events"))
                     .font(.headline)
                     .bold()
-                Text("Set the event's participants capacity")
+                Text(String(localized: "advanced-settings-max-participants-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
                 
@@ -67,11 +67,11 @@ struct NewEventParticipantsLimit: View {
             // MARK: - Allow Waitlist
             VStack(alignment: .leading){
                 Toggle(isOn: $allowWaitlist) {
-                    Text("Allow Waitlist")
+                    Text(String(localized: "advanced-settings-waitlist-title", table: "Events"))
                         .font(.headline)
                         .bold()
                 }
-                Text("If the number of participants exceeds the capacity, allow them to join a waitlist")
+                Text(String(localized: "advanced-settings-waitlist-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
             }.padding([.top, .horizontal])

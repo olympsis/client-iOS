@@ -29,7 +29,7 @@ struct EventVenuePickerView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Pick a Location")
+                Text(String(localized: "pick-a-location-text", table: "Events"))
                 
                 Spacer()
                 Spacer()
@@ -39,7 +39,7 @@ struct EventVenuePickerView: View {
                 Button(action: { showPicker.toggle() }) {
                     HStack {
                         Image(systemName: "plus")
-                        Text("Add a Location")
+                        Text(String(localized: "add-a-location-text", table: "Events"))
                     }
                     .modifier(InputFieldModifier())
                     .padding(.horizontal)

@@ -189,8 +189,9 @@ struct NewEvent: View {
                 Spacer()
                 Spacer()
                 
-                Text("NEW EVENT")
+                Text(String(localized: "new-event-view-title", table: "Events"))
                     .italic()
+                    .textCase(.uppercase)
                     .fontWeight(.bold)
                 
                 Spacer()
@@ -217,10 +218,10 @@ struct NewEvent: View {
                 
                 // MARK: - Organizers Picker
                 VStack(alignment: .leading){
-                    Text("Organizer(s)")
+                    Text(String(localized: "new-event-organizer-title", table: "Events"))
                         .font(.headline)
                         .bold()
-                    Text("The clubs/organizations affiliated with this event")
+                    Text(String(localized: "new-event-organizer-sub-title", table: "Events"))
                         .foregroundColor(.gray)
                         .font(.subheadline)
                     
@@ -229,7 +230,7 @@ struct NewEvent: View {
                             .modifier(InputFieldModifier())
                     }
                     
-                    Text("*required")
+                    Text("*\(String(localized: "required-text", table: "General"))")
                         .foregroundStyle(.gray)
                 }
                 .padding(.horizontal)
@@ -241,10 +242,10 @@ struct NewEvent: View {
                 
                 // MARK: - Title
                 VStack(alignment: .leading){
-                    Text("Title")
+                    Text(String(localized: "new-event-title", table: "Events"))
                         .font(.headline)
                         .bold()
-                    Text("What to call the event")
+                    Text(String(localized: "new-event-sub-title", table: "Events"))
                         .font(.subheadline)
                         .foregroundColor(validationStatus == .noTitle ? .red : .gray)
                     
@@ -253,7 +254,7 @@ struct NewEvent: View {
                         .padding(.leading)
                         .modifier(InputFieldModifier())
                     
-                    Text("*required")
+                    Text("*\(String(localized: "required-text", table: "General"))")
                         .foregroundStyle(.gray)
                 }
                 .padding(.top)
@@ -262,10 +263,10 @@ struct NewEvent: View {
                 
                 // MARK: - Description
                 VStack(alignment: .leading){
-                    Text("Description")
+                    Text(String(localized: "new-event-description-title", table: "Events"))
                         .font(.headline)
                         .bold()
-                    Text("Give details about the event")
+                    Text(String(localized: "new-event-description-sub-title", table: "Events"))
                         .foregroundColor(validationStatus == .noDescription ? .red : .gray)
                         .font(.subheadline)
                     ZStack {
@@ -283,7 +284,7 @@ struct NewEvent: View {
                             .padding(.horizontal, 5)
                     }
                     
-                    Text("*required")
+                    Text("*\(String(localized: "required-text", table: "General"))")
                         .foregroundStyle(.gray)
                 }
                 .padding(.top)
@@ -294,10 +295,10 @@ struct NewEvent: View {
                 VStack(alignment: .leading) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Venue(s)")
+                            Text(String(localized: "new-event-location-title", table: "Events"))
                                 .font(.headline)
                                 .bold()
-                            Text("Location(s) of the event")
+                            Text(String(localized: "new-event-location-sub-title", table: "Events"))
                                 .font(.subheadline)
                                 .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
                         }
@@ -338,7 +339,7 @@ struct NewEvent: View {
                                     .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
                             }
                             .overlay {
-                                Text("Pick a location")
+                                Text(String(localized: "pick-a-location-text", table: "Events"))
                             }
                             .onTapGesture {
                                 self.showVenuePicker.toggle()
@@ -346,7 +347,7 @@ struct NewEvent: View {
                     }
                     
                     if !hasSelectedVenue {
-                        Text("*required")
+                        Text("*\(String(localized: "required-text", table: "General"))")
                             .foregroundStyle(.gray)
                     }
                 }
@@ -360,7 +361,7 @@ struct NewEvent: View {
                 
                 // MARK: - Start Date/Time picker
                 VStack(alignment: .leading){
-                    Text("Start Date/Time")
+                    Text(String(localized: "new-event-start-time-title", table: "Events"))
                         .font(.headline)
                         .bold()
                     
@@ -382,7 +383,7 @@ struct NewEvent: View {
                 
                 // MARK: - End Date/Time picker
                 VStack(alignment: .leading){
-                    Text("End Date/Time")
+                    Text(String(localized: "new-event-stop-time-title", table: "Events"))
                         .font(.headline)
                         .bold()
                     
@@ -414,7 +415,7 @@ struct NewEvent: View {
                     Spacer()
                     
                     Button(action: { self.showAdvancedSettings.toggle() }) {
-                        Text("Advanced Settings")
+                        Text(String(localized: "advanced-settings-title", table: "Events"))
                             .fontWeight(.bold)
                         Image(systemName: "gearshape.fill")
                     }.padding()
@@ -424,7 +425,7 @@ struct NewEvent: View {
                 // MARK: - Action Button
                 VStack(alignment: .center){
                     Button(action: { handleEventCreation(value) }) {
-                        LoadingButton(text: "Create Event", width: 150, status: $manager.status)
+                        LoadingButton(text: String(localized: "new-event-create-text", table: "Events"), width: 150, status: $manager.status)
                             .padding(.horizontal, 40)
                     }
                 }.padding(.vertical, 50)
@@ -457,7 +458,7 @@ struct NewEvent: View {
                 }
             }
             .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
-                AlertToast(displayMode: .hud, type: .regular, title: "Something went wrong", style: .style(backgroundColor: .red, titleColor: .white))
+                AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-error-text", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
             })
         }
     }

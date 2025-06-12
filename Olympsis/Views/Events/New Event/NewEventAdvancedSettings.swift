@@ -23,30 +23,30 @@ struct NewEventAdvancedSettings: View {
             HStack {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
-                    Text("Back")
+                    Text(String(localized: "back", table: "General"))
                 }
                 
                 Spacer()
                 
-                Text("Advanced Settings")
+                Text(String(localized: "advanced-settings-title", table: "Events"))
                     .fontWeight(.medium)
                 
             }.padding(.horizontal)
             
             ScrollView {
-                MenuButton(icon: Image(systemName: "slider.vertical.3"), text: "Event Formatting") {
+                MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
                     showEventFormat.toggle()
                 }.padding(.top)
                 
-                MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: "Limit Participants") {
+                MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: String(localized: "advanced-settings-participants", table: "Events")) {
                     showLimitParticipants.toggle()
                 }
                 
-                MenuButton(icon: Image(systemName: "link"), text: "External Link") {
+                MenuButton(icon: Image(systemName: "link"), text: String(localized: "advanced-settings-external-link", table: "Events")) {
                     showExternalLinkField.toggle()
                 }
                 
-                MenuButton(icon: Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90"), text: "Recurring Event") {
+                MenuButton(icon: Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90"), text: String(localized: "advanced-settings-recurring", table: "Events")) {
                     showRecurringEventSettings.toggle()
                 }
             }

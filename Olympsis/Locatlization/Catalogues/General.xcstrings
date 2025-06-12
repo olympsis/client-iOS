@@ -137,8 +137,22 @@
         }
       }
     },
+    "back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "extractionState" : "manual"
+    },
+    "clear" : {
+
     },
     "Click here" : {
 
@@ -194,6 +208,17 @@
         }
       }
     },
+    "done" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        }
+      }
+    },
     "edit-picture" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -230,6 +255,17 @@
     },
     "Filters" : {
       "extractionState" : "manual"
+    },
+    "generic-error-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        }
+      }
     },
     "Hot Events" : {
       "localizations" : {
@@ -272,6 +308,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comment ma position est-elle utilisée ?"
+          }
+        }
+      }
+    },
+    "lookup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lookup"
           }
         }
       }
@@ -456,6 +503,23 @@
         }
       }
     },
+    "required-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "required"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "requis"
+          }
+        }
+      }
+    },
     "Save" : {
       "extractionState" : "manual"
     },
@@ -475,6 +539,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "RECHERCHE DES CLUBS"
+          }
+        }
+      }
+    },
+    "selected-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emplacement sélectionné"
           }
         }
       }

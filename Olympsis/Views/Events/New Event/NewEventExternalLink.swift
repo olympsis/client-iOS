@@ -28,10 +28,10 @@ struct NewEventExternalLink: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text("External Link")
+            Text(String(localized: "advanced-settings-external-link", table: "Events"))
                 .font(.headline)
                 .bold()
-            Text("Redirect participants to this URL after RSVP")
+            Text(String(localized: "advanced-settings-external-link-sub-title", table: "Events"))
                 .foregroundColor(.gray)
                 .font(.subheadline)
             

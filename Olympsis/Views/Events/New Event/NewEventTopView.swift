@@ -24,18 +24,29 @@ struct NewEventTopView: View {
                         case .Public:
                             Image(systemName: "globe.americas.fill")
                                 .foregroundStyle(.white)
+                            Text(String(localized: "visibility-public", table: "Events"))
+                                .foregroundStyle(.white)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                                .foregroundStyle(.white)
                         case .Private:
                             Image(systemName: "lock.fill")
+                                .foregroundStyle(.white)
+                            Text(String(localized: "visibility-private", table: "Events"))
+                                .foregroundStyle(.white)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
                                 .foregroundStyle(.white)
                         case .Group:
                             Image(systemName: "person.3.fill")
                                 .foregroundStyle(.white)
+                            Text(String(localized: "visibility-group", table: "Events"))
+                                .foregroundStyle(.white)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                                .foregroundStyle(.white)
                         }
-                        Text(eventVisibility.rawValue.prefix(1).capitalized + eventVisibility.rawValue.dropFirst())
-                            .foregroundStyle(.white)
-                        Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                            .foregroundStyle(.white)
+                        
                     }.padding(.horizontal)
                         .padding(.vertical, 5)
                         .background {

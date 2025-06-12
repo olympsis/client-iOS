@@ -18,6 +18,23 @@
         }
       }
     },
+    "add-a-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un lieu"
+          }
+        }
+      }
+    },
     "add-to-calendar" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -222,6 +239,23 @@
         }
       }
     },
+    "advanced-settings-recurrence-frequency-monthly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "monthly"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "par mois"
+          }
+        }
+      }
+    },
     "advanced-settings-recurrence-frequency-sub-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -252,6 +286,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fréquence de récurrence"
+          }
+        }
+      }
+    },
+    "advanced-settings-recurrence-frequency-weekly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weekly"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "par semaine"
           }
         }
       }
@@ -354,6 +405,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autoriser la liste d'attente"
+          }
+        }
+      }
+    },
+    "edit-venues-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit location(s)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier le(s) lieu(x)"
           }
         }
       }
@@ -511,6 +579,23 @@
         }
       }
     },
+    "location-name-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom du lieu"
+          }
+        }
+      }
+    },
     "locations-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -541,6 +626,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Événements à proximité"
+          }
+        }
+      }
+    },
+    "new-event-create-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create event"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un événement"
           }
         }
       }
@@ -664,6 +766,23 @@
         }
       }
     },
+    "new-event-sport-action-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select sport"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionnez un sport"
+          }
+        }
+      }
+    },
     "new-event-sport-sub-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -687,7 +806,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sports"
+            "value" : "Sport"
           }
         },
         "fr" : {
@@ -800,6 +919,23 @@
         }
       }
     },
+    "new-event-view-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New event"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel événement"
+          }
+        }
+      }
+    },
     "new-events-view-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -813,6 +949,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Événements"
+          }
+        }
+      }
+    },
+    "no-venues-found-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No venues found near you"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun lieu trouvé près de chez vous"
           }
         }
       }
@@ -868,6 +1021,23 @@
         }
       }
     },
+    "pick-a-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un lieu"
+          }
+        }
+      }
+    },
     "remove-a-comment" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -881,6 +1051,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer le commentaire"
+          }
+        }
+      }
+    },
+    "set-custom-location-name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom location name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de lieu personnalisé"
+          }
+        }
+      }
+    },
+    "set-custom-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set custom location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir un lieu personnalisé"
           }
         }
       }
@@ -970,6 +1173,23 @@
         }
       }
     },
+    "tap-anywhere-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap anywhere on the map to drop a pin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appuyez n'importe où sur la carte pour déposer une épingle"
+          }
+        }
+      }
+    },
     "visibility-group" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -983,6 +1203,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Group"
+          }
+        }
+      }
+    },
+    "visibility-group-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any members associated to any of the hosting groups for this event will be able to interact with this event."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les membres associés à l'un des groupes d'hébergement de cet événement pourront interagir avec cet événement."
           }
         }
       }
@@ -1004,6 +1241,23 @@
         }
       }
     },
+    "visibility-private-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only you, the participants and those whom you have shared the event with can interact with this event."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seuls vous, les participants et ceux avec qui vous avez partagé l'événement pouvez interagir avec cet événement."
+          }
+        }
+      }
+    },
     "visibility-public" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1017,6 +1271,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Public"
+          }
+        }
+      }
+    },
+    "visibility-public-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anyone on olympsis can see this event and interact with it."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toute personne sur Olympsis peut voir cet événement et interagir avec lui."
+          }
+        }
+      }
+    },
+    "visibility-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibility"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibilité"
           }
         }
       }

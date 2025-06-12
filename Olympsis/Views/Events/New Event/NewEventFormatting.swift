@@ -16,12 +16,12 @@ struct NewEventFormatting: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Toggle(isOn: $isTournament) {
-                    Text("Is a Tournament?")
+                    Text(String(localized: "advanced-settings-tournament-title", table: "Events"))
                         .font(.headline)
                         .bold()
                 }
                 
-                Text("Toggle competition mode—casual or tournament?")
+                Text(String(localized: "advanced-settings-tournament-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
             }.padding([.top, .horizontal])

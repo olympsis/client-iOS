@@ -142,13 +142,13 @@ struct EventVenuePicker: View {
                                 isCustomLocation.toggle()
                             }
                         }) {
-                            Text("Set Custom Location")
+                            Text(String(localized: "set-custom-location-text", table: "Events"))
                                 .font(.callout)
                                 .fontWeight(.medium)
                         }
                     }.padding([.top, .horizontal])
                     
-                    TextField("Location name", text: $searchModel.searchText)
+                    TextField("\(String(localized: "location-name-text", table: "Events"))...", text: $searchModel.searchText)
                         .padding(.leading)
                         .modifier(InputFieldModifier())
                         .submitLabel(.search)
@@ -187,7 +187,7 @@ struct EventVenuePicker: View {
                             } else {
                                 Text("No venues found near you")
                                 Button(action: { index = 1 }) {
-                                    Text("Set a custom location")
+                                    Text(String(localized: "set-custom-location-text", table: "Events"))
                                         .font(.callout)
                                         .fontWeight(.medium)
                                 }
@@ -214,14 +214,14 @@ struct EventVenuePicker: View {
                             }
                         }) {
                             Image(systemName: "chevron.left")
-                            Text("Lookup")
+                            Text(String(localized: "lookup", table: "General"))
                         }
                         
                         Spacer()
                         
                         if mapViewModel.selectedCoordinate != nil {
                             Button(action: { saveCustomLocation() }) {
-                                Text("Done")
+                                Text(String(localized: "done", table: "General"))
                                     .font(.callout)
                                     .fontWeight(.medium)
                             }
@@ -233,12 +233,12 @@ struct EventVenuePicker: View {
                             if let location = mapViewModel.locationInfo {
                                 HStack(alignment: .center) {
                                     VStack(alignment: .leading, spacing: 20) {
-                                        TextField("Custom location name", text: $customLocationName)
+                                        TextField(String(localized: "set-custom-location-name", table: "Events"), text: $customLocationName)
                                         Text("\(location.coordinate.latitude), \(location.coordinate.longitude)")
                                     }
                                     
                                     Button(action: { mapViewModel.clearPin() }) {
-                                        Text("Clear")
+                                        Text(String(localized: "clear", table: "General"))
                                             .fontWeight(.medium)
                                             .foregroundStyle(.red)
                                             .padding(.vertical, 5)
@@ -263,7 +263,7 @@ struct EventVenuePicker: View {
                         } else {
                             HStack {
                                 Image(systemName: "mappin.and.ellipse")
-                                Text("Tap anywhere on the map to drop a pin")
+                                Text(String(localized: "tap-anywhere-text", table: "Events"))
                                     .font(.callout)
                                     .fontWeight(.medium)
                                     

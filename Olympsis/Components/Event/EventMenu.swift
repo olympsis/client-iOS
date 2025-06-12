@@ -65,7 +65,7 @@ struct EventMenu: View {
         VStack {
             MenuButton(
                 icon: Image(systemName: "exclamationmark.shield.fill"),
-                text: "Report an Issue",
+                text: String(localized: "event-menu-issue", table: "Events"),
                 action: { showReport.toggle() }
             )
             .padding(.top)
@@ -86,13 +86,13 @@ struct EventMenu: View {
             Spacer()
         }
         .presentationDragIndicator(.visible)
-        .alert("Recurring Event", isPresented: $showRecurring, actions: {
+        .alert(String(localized: "advanced-settings-recurring", table: "Events"), isPresented: $showRecurring, actions: {
             Button(role: .destructive) {
                 Task {
                     await deleteEvent()
                 }
             } label: {
-                Text("Delete This")
+                Text(String(localized: "event-delete-recurring-warning-title1", table: "Events"))
             }
             
             Button(role: .destructive) {
@@ -100,10 +100,10 @@ struct EventMenu: View {
                     await deleteEvent(deleteAll: true)
                 }
             } label: {
-                Text("Delete All")
+                Text(String(localized: "event-delete-recurring-warning-title2", table: "Events"))
             }
         }, message: {
-            Text("This event is part of a recurring event. Would you like to delete the individual event or the entire series?")
+            Text(String(localized: "event-delete-recurring-warning-sub-title", table: "Events"))
         })
         .sheet(isPresented: $showNotification, content: {
             EventNotification(event: event)

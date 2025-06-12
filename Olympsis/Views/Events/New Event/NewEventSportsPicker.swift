@@ -14,7 +14,7 @@ struct NewEventSportsPicker: View {
     @State private var showSports: Bool = false
     
     private var sportName: String {
-        var text = "Select Sport"
+        var text = String(localized: "new-event-sport-action-text", table: "Events")
         guard let firstSport = selectedSports.first else { return text }
         text = firstSport.name
         guard let firstIndex = text.firstIndex(where: { $0.isLetter }) else { return text }
@@ -24,10 +24,10 @@ struct NewEventSportsPicker: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Sport")
+            Text(String(localized: "new-event-sports-title", table: "Events"))
                 .font(.headline)
                 .bold()
-            Text("Pick your event's sports activity")
+            Text(String(localized: "new-event-sport-sub-title", table: "Events"))
                 .foregroundColor(.gray)
                 .font(.subheadline)
             

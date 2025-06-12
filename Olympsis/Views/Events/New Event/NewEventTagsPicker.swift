@@ -23,10 +23,10 @@ struct NewEventTagsPicker: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Tags")
+            Text(String(localized: "new-event-tags-title", table: "Events"))
                 .font(.headline)
                 .bold()
-            Text("Tags make your event easier to discover. Add a few!")
+            Text(String(localized: "new-event-tags-sub-title", table: "Events"))
                 .foregroundColor(.gray)
                 .font(.subheadline)
             

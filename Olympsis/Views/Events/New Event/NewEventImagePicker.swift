@@ -28,7 +28,7 @@ struct NewEventImagePicker: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text("Event Image")
+            Text(String(localized: "new-event-image", table: "Events"))
                 .font(.headline)
                 .bold()
             ScrollView(.horizontal, showsIndicators: false) {

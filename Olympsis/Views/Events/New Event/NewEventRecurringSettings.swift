@@ -18,18 +18,18 @@ struct NewEventRecurringSettings: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text("Recurrence Frequency")
+                Text(String(localized: "advanced-settings-recurrence-frequency-title", table: "Events"))
                     .font(.headline)
                     .bold()
                     .padding(.leading)
-                Text("How often do you want this event to happen?")
+                Text(String(localized: "advanced-settings-recurrence-frequency-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
                     .padding(.leading)
                 
                 HStack {
                     Button(action: { recurrenceFrequency = .weekly }) {
-                        Text("WEEKLY")
+                        Text(String(localized: "advanced-settings-recurrence-frequency-weekly", table: "Events"))
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 10)
@@ -41,7 +41,7 @@ struct NewEventRecurringSettings: View {
                     )
                     
                     Button(action: { recurrenceFrequency = .monthly }) {
-                        Text("MONTHLY")
+                        Text(String(localized: "advanced-settings-recurrence-frequency-monthly", table: "Events"))
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 10)
@@ -57,10 +57,10 @@ struct NewEventRecurringSettings: View {
                 
                 Stepper(value: $frequency) {
                     VStack(alignment: .leading) {
-                        Text("Every \(frequency)")
+                        Text("\(String(localized: "advanced-settings-recurrence-every-title", table: "Events")) \(frequency)")
                             .font(.title2)
                             .fontWeight(.bold)
-                        Text("How frequently should this event cycle?")
+                        Text(String(localized: "advanced-settings-recurrence-frequency-sub-title", table: "Events"))
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -68,11 +68,11 @@ struct NewEventRecurringSettings: View {
             }
             
             VStack(alignment: .leading) {
-                Text("End Date")
+                Text(String(localized: "advanced-settings-recurrence-end-date-title", table: "Events"))
                     .font(.headline)
                     .bold()
                     .padding(.leading)
-                Text("When do you want the recurrence to stop?")
+                Text(String(localized: "advanced-settings-recurrence-end-date-sub-title", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
                     .padding(.leading)

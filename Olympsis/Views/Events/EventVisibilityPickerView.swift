@@ -21,10 +21,10 @@ struct EventVisibilityPickerView: View {
                         Button(action: { visibility = .Public }) {
                             visibility.rawValue == EVENT_VISIBILITY_TYPES.Public.rawValue ? Image(systemName: "circle.fill") : Image(systemName: "circle")
                         }
-                        Text(EVENT_VISIBILITY_TYPES.Public.rawValue.prefix(1).capitalized + EVENT_VISIBILITY_TYPES.Public.rawValue.dropFirst())
+                        Text(String(localized: "visibility-public", table: "Events"))
                             .bold()
                     }
-                    Text("Anyone on olympsis can see this event and interact with it.")
+                    Text(String(localized: "visibility-public-details", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -34,10 +34,9 @@ struct EventVisibilityPickerView: View {
                         Button(action: { visibility = .Private }) {
                             visibility.rawValue == EVENT_VISIBILITY_TYPES.Private.rawValue ? Image(systemName: "circle.fill") : Image(systemName: "circle")
                         }
-                        Text(EVENT_VISIBILITY_TYPES.Private.rawValue.prefix(1).capitalized + EVENT_VISIBILITY_TYPES.Private.rawValue.dropFirst())
-                            .bold()
+                        Text(String(localized: "visibility-private", table: "Events"))
                     }
-                    Text("Only you, the participants and the others you invite will see this event.")
+                    Text(String(localized: "visibility-private-details", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.vertical)
@@ -48,10 +47,10 @@ struct EventVisibilityPickerView: View {
                         Button(action: { visibility = .Group }) {
                             visibility.rawValue == EVENT_VISIBILITY_TYPES.Group.rawValue ? Image(systemName: "circle.fill") : Image(systemName: "circle")
                         }
-                        Text(EVENT_VISIBILITY_TYPES.Group.rawValue.prefix(1).capitalized + EVENT_VISIBILITY_TYPES.Group.rawValue.dropFirst())
+                        Text(String(localized: "visibility-group", table: "Events"))
                             .bold()
                     }
-                    Text("Anyone that is a part of the groups associated with this event will be abe to see and interact with with it.")
+                    Text(String(localized: "visibility-group-details", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -59,13 +58,14 @@ struct EventVisibilityPickerView: View {
                 Spacer()
                 
             }.padding(.top)
-            .navigationTitle("Visibility")
+            .navigationTitle(String(localized: "visibility-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { dismiss() }) {
-                            Text("DONE")
+                            Text(String(localized: "done", table: "General"))
                                 .font(.caption)
+                                .textCase(.uppercase)
                                 .foregroundStyle(.white)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
