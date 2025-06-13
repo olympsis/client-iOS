@@ -348,6 +348,101 @@ class Sport: Codable, Equatable {
     static func == (lhs: Sport, rhs: Sport) -> Bool {
         return lhs.name == rhs.name
     }
+    
+    // Computed property that returns applicable competition formats
+    var applicableFormats: [CompetitionFormats] {
+        let sportName = name.lowercased().replacingOccurrences(of: "️", with: "").replacingOccurrences(of: "‍", with: "").replacingOccurrences(of: "♀", with: "").replacingOccurrences(of: "♂", with: "")
+        
+        switch sportName {
+        // Team Ball Sports
+        case let x where x.contains("soccer"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .doubleElimination, .winnerStaysOn, .versus3, .versus4, .versus5, .versus7, .versus8, .versus9, .versus10, .versus11]
+            
+        case let x where x.contains("basketball"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .doubleElimination, .winnerStaysOn, .bestOf3, .bestOf5, .versus3, .versus4, .versus5]
+            
+        case let x where x.contains("volleyball"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .doubleElimination, .winnerStaysOn, .versus3, .versus4, .bestOf3, .bestOf5, .versus5, .versus6]
+            
+        case let x where x.contains("football") && !x.contains("flag"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .versus11]
+            
+        case let x where x.contains("flag-football"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .versus5, .versus7, .versus8]
+            
+        case let x where x.contains("handball"):
+            return [.bracket, .league, .roundRobin, .singleElimination, .doubleElimination, .winnerStaysOn, .versus7]
+            
+        // Racket/Paddle Sports
+        case let x where x.contains("tennis"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .winnerStaysOn, .versus2]
+            
+        case let x where x.contains("badminton"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .winnerStaysOn, .versus2]
+            
+        case let x where x.contains("ping-pong"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .winnerStaysOn, .versus2]
+            
+        case let x where x.contains("racquetball"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .winnerStaysOn, .versus2]
+            
+        case let x where x.contains("padel"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .versus2]
+            
+        case let x where x.contains("pickleball"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .bestOf5, .versus2]
+            
+        // Golf
+        case let x where x.contains("golf"):
+            return [.strokePlay, .matchPlay, .scramble, .bestBall, .stableford, .skinsGame, .alternateShot, .shamble, .modifiedStableford, .scratch]
+            
+        // Individual Cardio Sports
+        case let x where x.contains("running"):
+            return [.timeTrial, .sprint, .longDistance, .relay]
+            
+        case let x where x.contains("biking"):
+            return [.timeTrial, .roadRace, .criterium, .stageRace]
+            
+        case let x where x.contains("swimming"):
+            return [.timeTrial, .sprint, .longDistance, .relay]
+            
+        case let x where x.contains("walking"):
+            return []
+            
+        // Climbing
+        case let x where x.contains("climbing"):
+            return [.bouldering, .leadClimbing, .speedClimbing, .bracket, .roundRobin]
+            
+        // Fitness/Wellness (limited competitive formats)
+        case let x where x.contains("yoga"):
+            return [] // For yoga challenges/competitions
+            
+        case let x where x.contains("pilates"):
+            return [] // For pilates challenges
+            
+        case let x where x.contains("weights"):
+            return [.bracket, .roundRobin, .timeTrial] // For weightlifting competitions
+            
+        // Other/Specialty Sports
+        case let x where x.contains("spike"):
+            return [.bracket, .roundRobin, .singleElimination, .doubleElimination, .bestOf3, .versus2]
+            
+        case let x where x.contains("hiking"):
+            return [.timeTrial, .longDistance]
+            
+        case let x where x.contains("skiing"):
+            return [.timeTrial, .bracket, .roundRobin] // For ski races
+            
+        case let x where x.contains("snowboarding"):
+            return [.timeTrial, .bracket, .roundRobin] // For snowboard races
+            
+        case let x where x.contains("kayaking"):
+            return [.timeTrial, .roadRace, .longDistance] // Water racing formats
+            
+        default:
+            return [] // No applicable formats
+        }
+    }
 }
 
 class ApplicationConfiguration: Codable {

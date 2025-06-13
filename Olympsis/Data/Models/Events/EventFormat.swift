@@ -15,7 +15,7 @@ class EventFormatConfig: Codable {
     var competitionState: String? // "not_started", "in_progress", "completed"
     
     // Format details
-    var format: CompetitionFormats?
+    var formats: [CompetitionFormats]?
     var rounds: Int32?
     var currentRound: Int32?
     var bracketData: [String: Any]?
@@ -31,7 +31,7 @@ class EventFormatConfig: Codable {
         case isCompetitionGame = "is_competition_game"
         case parentCompetitionID = "parent_competition_id"
         case competitionState = "competition_state"
-        case format
+        case formats
         case rounds
         case currentRound = "current_round"
         case bracketData = "bracket_data"
@@ -45,7 +45,7 @@ class EventFormatConfig: Codable {
          isCompetitionGame: Bool? = nil,
          parentCompetitionID: String? = nil,
          competitionState: String? = nil,
-         format: CompetitionFormats? = nil,
+         formats: [CompetitionFormats]? = nil,
          rounds: Int32? = nil,
          currentRound: Int32? = nil,
          bracketData: [String: Any]? = nil,
@@ -57,7 +57,7 @@ class EventFormatConfig: Codable {
         self.isCompetitionGame = isCompetitionGame
         self.parentCompetitionID = parentCompetitionID
         self.competitionState = competitionState
-        self.format = format
+        self.formats = formats
         self.rounds = rounds
         self.currentRound = currentRound
         self.bracketData = bracketData
@@ -81,7 +81,7 @@ class EventFormatConfig: Codable {
         parentCompetitionID = try container.decodeIfPresent(String.self, forKey: .parentCompetitionID)
         competitionState = try container.decodeIfPresent(String.self, forKey: .competitionState)
         
-        format = try container.decodeIfPresent(CompetitionFormats.self, forKey: .format)
+        formats = try container.decodeIfPresent([CompetitionFormats].self, forKey: .formats)
         rounds = try container.decodeIfPresent(Int32.self, forKey: .rounds)
         currentRound = try container.decodeIfPresent(Int32.self, forKey: .currentRound)
         
@@ -123,7 +123,7 @@ class EventFormatConfig: Codable {
         try container.encodeIfPresent(parentCompetitionID, forKey: .parentCompetitionID)
         try container.encodeIfPresent(competitionState, forKey: .competitionState)
         
-        try container.encodeIfPresent(format, forKey: .format)
+        try container.encodeIfPresent(formats.map { $0.map(\.rawValue) }, forKey: .formats)
         try container.encodeIfPresent(rounds, forKey: .rounds)
         try container.encodeIfPresent(currentRound, forKey: .currentRound)
         

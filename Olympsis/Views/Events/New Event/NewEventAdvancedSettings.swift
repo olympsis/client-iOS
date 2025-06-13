@@ -21,16 +21,14 @@ struct NewEventAdvancedSettings: View {
     var body: some View {
         VStack {
             HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                    Text(String(localized: "back", table: "General"))
-                }
-                
-                Spacer()
-                
                 Text(String(localized: "advanced-settings-title", table: "Events"))
                     .fontWeight(.medium)
                 
+                Spacer()
+                
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                }
             }.padding(.horizontal)
             
             ScrollView {
@@ -53,7 +51,7 @@ struct NewEventAdvancedSettings: View {
             .sheet(isPresented: $showEventFormat) {
                 NewEventFormatting()
                     .environment(manager)
-                    .presentationDetents([.height(150)])
+                    .presentationDetents([.height(350)])
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showLimitParticipants) {

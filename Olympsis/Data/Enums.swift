@@ -613,7 +613,7 @@ enum MEDIA_TYPES: String {
 }
 
 // MARK: - Competition Formats
-enum CompetitionFormats: String, Codable {
+enum CompetitionFormats: String, Codable, CaseIterable {
     // General Team Sports (Soccer, Basketball, Volleyball, Football, Flag Football, Padel, Pickleball, Badminton, Ping-Pong, Racketball)
     case bracket = "bracket"                        // Knockout-style tournament
     case league = "league"                          // Regular season format
@@ -627,6 +627,7 @@ enum CompetitionFormats: String, Codable {
     // Team Formats (Soccer, Basketball, Volleyball, Football, Flag Football, Padel, Pickleball, Badminton, Ping-Pong, Racketball)
     case versus2 = "2v2"
     case versus3 = "3v3"
+    case versus4 = "4v4"
     case versus5 = "5v5"
     case versus6 = "6v6"
     case versus7 = "7v7"

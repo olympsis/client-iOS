@@ -324,6 +324,23 @@
         }
       }
     },
+    "advanced-settings-select-formats" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Competition formats"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les formats de compétition"
+          }
+        }
+      }
+    },
     "advanced-settings-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -949,6 +966,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Événements"
+          }
+        }
+      }
+    },
+    "no-selected-sport" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a sport"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez sélectionner un sport"
           }
         }
       }

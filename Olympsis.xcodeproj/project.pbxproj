@@ -275,6 +275,8 @@
 		5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */; };
 		5D9DB7F82D5E716E00438FA7 /* DraggableCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F72D5E716900438FA7 /* DraggableCard.swift */; };
 		5D9E5AB82D09475800D3E814 /* HomeMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */; };
+		5D9E74592DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */; };
+		5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69402BB7653F0057D205 /* MapFunctions.swift */; };
@@ -784,6 +786,8 @@
 		5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		5D9DB7F72D5E716900438FA7 /* DraggableCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableCard.swift; sourceTree = "<group>"; };
 		5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMessagesView.swift; sourceTree = "<group>"; };
+		5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCompetitionFromatSelector.swift; sourceTree = "<group>"; };
+		5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionFormatView.swift; sourceTree = "<group>"; };
 		5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5D9F69402BB7653F0057D205 /* MapFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFunctions.swift; sourceTree = "<group>"; };
@@ -1257,6 +1261,7 @@
 				5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */,
 				5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */,
 				5D4A77A12D9CBD400017194D /* NewEventFormatting.swift */,
+				5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */,
 				5D45B5B32D9CE26300AB24AC /* NewEventTagsPicker.swift */,
 				5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */,
 			);
@@ -1419,6 +1424,7 @@
 				5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */,
 				5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */,
 				5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */,
+				5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -2284,6 +2290,7 @@
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
+				5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
 				5D204B4E2DA2C92300B67F5D /* EventTeam.swift in Sources */,
@@ -2313,6 +2320,7 @@
 				5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
+				5D9E74592DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift in Sources */,
 				5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */,
 				5DBB94CB2B03254C0031876D /* NewClub.swift in Sources */,
 				5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */,
