@@ -70,18 +70,15 @@ class EventFormatConfig: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        // Create date formatter for ISO8601 format
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
         isCompetition = try container.decodeIfPresent(Bool.self, forKey: .isCompetition)
         isCompetitionGame = try container.decodeIfPresent(Bool.self, forKey: .isCompetitionGame)
         parentCompetitionID = try container.decodeIfPresent(String.self, forKey: .parentCompetitionID)
         competitionState = try container.decodeIfPresent(String.self, forKey: .competitionState)
         
-        formats = try container.decodeIfPresent([CompetitionFormats].self, forKey: .formats)
+        if let formatStrings = try container.decodeIfPresent([String].self, forKey: .formats) {
+            formats = formatStrings.compactMap { CompetitionFormats.init(rawValue: $0) }
+        }
+        
         rounds = try container.decodeIfPresent(Int32.self, forKey: .rounds)
         currentRound = try container.decodeIfPresent(Int32.self, forKey: .currentRound)
         
@@ -92,23 +89,11 @@ class EventFormatConfig: Codable {
             bracketData = json
         }
         
-        // Handle date fields with string support
-        if let startString = try container.decodeIfPresent(String.self, forKey: .registrationStart),
-           let parsedDate = dateFormatter.date(from: startString) {
-            registrationStart = parsedDate
-        } else if let startInt = try container.decodeIfPresent(Int.self, forKey: .registrationStart) {
-            registrationStart = Date(timeIntervalSince1970: TimeInterval(startInt))
-        } else {
-            registrationStart = try container.decodeIfPresent(Date.self, forKey: .registrationStart)
+        if let startString = try container.decodeIfPresent(String.self, forKey: .registrationStart){
+            registrationStart = try parseDate(from: startString)
         }
-        
-        if let endString = try container.decodeIfPresent(String.self, forKey: .registrationEnd),
-           let parsedDate = dateFormatter.date(from: endString) {
-            registrationEnd = parsedDate
-        } else if let endInt = try container.decodeIfPresent(Int.self, forKey: .registrationEnd) {
-            registrationEnd = Date(timeIntervalSince1970: TimeInterval(endInt))
-        } else {
-            registrationEnd = try container.decodeIfPresent(Date.self, forKey: .registrationEnd)
+        if let endString = try container.decodeIfPresent(String.self, forKey: .registrationEnd){
+            registrationEnd = try parseDate(from: endString)
         }
         
         allowLateRegistration = try container.decodeIfPresent(Bool.self, forKey: .allowLateRegistration)

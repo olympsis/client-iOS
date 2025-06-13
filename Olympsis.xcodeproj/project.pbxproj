@@ -277,6 +277,7 @@
 		5D9E5AB82D09475800D3E814 /* HomeMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */; };
 		5D9E74592DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */; };
 		5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */; };
+		5D9E745D2DFCE72B0094C0D1 /* EventFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9E745C2DFCE72B0094C0D1 /* EventFormatView.swift */; };
 		5D9F693D2BB665630057D205 /* MultiSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */; };
 		5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */; };
 		5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69402BB7653F0057D205 /* MapFunctions.swift */; };
@@ -788,6 +789,7 @@
 		5D9E5AB72D09475800D3E814 /* HomeMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMessagesView.swift; sourceTree = "<group>"; };
 		5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCompetitionFromatSelector.swift; sourceTree = "<group>"; };
 		5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionFormatView.swift; sourceTree = "<group>"; };
+		5D9E745C2DFCE72B0094C0D1 /* EventFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFormatView.swift; sourceTree = "<group>"; };
 		5D9F693C2BB665630057D205 /* MultiSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSportsPicker.swift; sourceTree = "<group>"; };
 		5D9F693E2BB665700057D205 /* ProfileHometownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHometownPicker.swift; sourceTree = "<group>"; };
 		5D9F69402BB7653F0057D205 /* MapFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFunctions.swift; sourceTree = "<group>"; };
@@ -1911,6 +1913,7 @@
 				5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */,
 				5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */,
 				5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */,
+				5D9E745C2DFCE72B0094C0D1 /* EventFormatView.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2477,6 +2480,7 @@
 				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
+				5D9E745D2DFCE72B0094C0D1 /* EventFormatView.swift in Sources */,
 				5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */,
 				5D204B522DA2CA1800B67F5D /* EventComment.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,

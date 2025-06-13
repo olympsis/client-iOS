@@ -545,6 +545,23 @@
         }
       }
     },
+    "event-formats-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formats"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formats"
+          }
+        }
+      }
+    },
     "event-menu-delete" : {
       "extractionState" : "manual",
       "localizations" : {

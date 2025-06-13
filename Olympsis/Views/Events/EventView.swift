@@ -175,6 +175,11 @@ struct EventView: View {
                             .environmentObject(event)
                             .id(6)
                         
+                        // MARK: - Competiton formats
+                        if let formats = event.formatConfig?.formats, !formats.isEmpty {
+                            EventFormatView(event: event)
+                        }
+                        
                         // MARK: - Locations
                         EventLocation(venues: $venues)
                             .redacted(reason: venueState != .success ? .placeholder : [])

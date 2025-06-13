@@ -138,7 +138,7 @@ let EVENTS = [
         body: "Lets go play boys!!!",
         tags: [],
         sports: ["soccer"],
-        formatConfig: nil,
+        formatConfig: EventFormatConfig(formats: [.versus5, .winnerStaysOn]),
         startTime: Date(),
         stopTime: Date().addingTimeInterval(TimeInterval(60 * 60 * 24)),
         participants: [
