@@ -130,7 +130,7 @@ struct AuthView: View {
             }
         }
         .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
-            AlertToast(displayMode: .hud, type: .regular, title: "Server Unavailable", style: .style(backgroundColor: .red, titleColor: .white))
+            AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-server-error", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
         })
         .background {
             Image("basketball-bw")

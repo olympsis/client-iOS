@@ -63,7 +63,7 @@ struct QuickActions: View {
                     HStack {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text(String(localized: "quick-actions-text-2", table: "General"))
+                                Text(String(localized: "quick-action-text-2", table: "General"))
                                     .italic()
                                     .font(.title2)
                                     .fontWeight(.black)

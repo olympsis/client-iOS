@@ -143,10 +143,10 @@ struct AuthUserInfo: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Let's get to know you better!")
+                Text(String(localized: "auth-user-info-title", table: "Onboarding"))
                     .font(.custom("Archivo-Bold", size: 25, relativeTo: .title))
                 
-                Text("Share a few details to help us tailor Olympsis to your needs.")
+                Text(String(localized: "auth-user-info-sub-title", table: "Onboarding"))
                     .padding(.bottom)
                 
             }.padding(.horizontal)
@@ -157,16 +157,16 @@ struct AuthUserInfo: View {
             ScrollView {
                 
                 VStack(alignment: .leading) {
-                    Text("Birthdate")
+                    Text(String(localized: "auth-user-info-birthdate", table: "Onboarding"))
                         .font(.headline)
                         .foregroundStyle(infoError == .birthday ? Color.red : Color.primary)
                     
-                    DatePicker("Select your birthdate", selection: $birthdate, displayedComponents: [.date])
+                    DatePicker(String(localized: "select-your-birthdate", table: "Onboarding"), selection: $birthdate, displayedComponents: [.date])
                         
                 }.padding([.top, .horizontal])
                 
                 VStack(alignment: .leading) {
-                    Text("Gender")
+                    Text(String(localized: "gender", table: "General"))
                         .font(.headline)
                         .foregroundStyle(infoError == .gender ? Color.red : Color.primary)
                     
@@ -181,7 +181,7 @@ struct AuthUserInfo: View {
                                     .clipShape(Circle())
                             }
                             
-                            Text(gender.rawValue.replacingOccurrences(of: "_", with: " ").capitalized)
+                            Text(gender.displayName().capitalized)
                         }
                     }
                     
@@ -192,11 +192,11 @@ struct AuthUserInfo: View {
                 .padding([.top, .horizontal])
                 
                 VStack(alignment: .leading) {
-                    Text("Username")
+                    Text(String(localized: "username", table: "General"))
                         .font(.headline)
                         .foregroundStyle(usernameStatus == .failure ? Color.red : Color.primary)
                     
-                    TextField("Type username here", text: $viewModel.searchText)
+                    TextField(String(localized: "type-username-here", table: "Onboarding"), text: $viewModel.searchText)
                         .padding(.all)
                         .modifier(InputFieldModifier())
                         .overlay(alignment: .trailing) {
@@ -265,7 +265,7 @@ struct AuthUserInfo: View {
             }.padding(.top, -8)
             
             Button(action: { updateUser() }) {
-                LoadingButton(text: "continue", status: $state)
+                LoadingButton(text: String(localized: "continue", table: "General"), status: $state)
                     .padding(.top, -8)
                     .padding(.horizontal)
             }

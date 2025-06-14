@@ -59,13 +59,15 @@ struct AuthUserSports: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Which sports are you into?")
+                Text(String(localized: "auth-user-sports-title", table: "Onboarding"))
                     .font(.custom("Archivo-Bold", size: 25, relativeTo: .title))
                 
-                Text("Pick the sports you play or want to learn. We’re adding more soon. Let us know if there’s one you’d like to see!")
+                Text(String(localized: "auth-user-sports-sub-title", table: "Onboarding"))
                     .font(.subheadline)
                     .padding(.bottom)
-            }.padding(.vertical, 5)
+            }
+            .padding(.vertical, 5)
+            .padding(.horizontal)
             
             Rectangle()
                 .frame(height: 1)
@@ -89,7 +91,7 @@ struct AuthUserSports: View {
             }.padding(.top, -8)
             
             Button(action: { updateUser() }) {
-                LoadingButton(text: "done", status: $state)
+                LoadingButton(text: String(localized: "done", table: "General"), status: $state)
                     .padding(.top, -8)
                     .padding(.horizontal)
             }

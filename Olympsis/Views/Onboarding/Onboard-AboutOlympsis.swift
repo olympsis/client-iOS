@@ -13,14 +13,14 @@ struct Onboard_AboutOlympsis: View {
     
     var body: some View {
         VStack {
-            Text("Welcome to Olympsis")
+            Text(String(localized: "onboarding-about-title", table: "Onboarding"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.foreground)
             
-            Text("Your platform to build thriving communities around the sports that bring us together")
+            Text(String(localized: "onboarding-about-sub-title", table: "Onboarding"))
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)

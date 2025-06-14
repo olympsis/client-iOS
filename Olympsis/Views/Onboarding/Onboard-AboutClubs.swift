@@ -13,14 +13,14 @@ struct Onboard_AboutClubs: View {
     
     var body: some View {
         VStack {
-            Text("Get into groups with friends")
+            Text(String(localized: "onboarding-clubs-title", table: "Onboarding"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.foreground)
             
-            Text("Build your sports community - create groups, bring friends, and meet new players")
+            Text(String(localized: "onboarding-clubs-sub-title", table: "Onboarding"))
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)

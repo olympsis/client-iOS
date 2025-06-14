@@ -13,14 +13,14 @@ struct Onboard_AboutEvents: View {
     
     var body: some View {
         VStack {
-            Text("Create Sports Events")
+            Text(String(localized: "onboarding-events-title", table: "Onboarding"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.foreground)
             
-            Text("Make events exclusive to your group or share them with the community to inspire others")
+            Text(String(localized: "onboarding-events-sub-title", table: "Onboarding"))
                 .font(.title2)
                 .multilineTextAlignment(.center)
                 .padding([.horizontal, .vertical])
@@ -33,7 +33,7 @@ struct Onboard_AboutEvents: View {
             Spacer()
             
             Button(action: { dismiss() }) {
-                SimpleButtonLabel(text: "Let's go")
+                SimpleButtonLabel(text: String(localized: "lets-go", table: "General"))
             }
             
             Spacer()

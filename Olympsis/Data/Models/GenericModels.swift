@@ -13,6 +13,19 @@ enum Gender: String, CaseIterable {
     case Female = "female"
     case NonBinary = "non_binary"
     case PreferNotToSay = "prefer_not_to_say"
+    
+    func displayName() -> String {
+        switch self {
+        case .Male:
+            return String(localized: "gender-male", table: "General")
+        case .Female:
+            return String(localized: "gender-female", table: "General")
+        case .NonBinary:
+            return String(localized: "gender-non-binary", table: "General")
+        case .PreferNotToSay:
+            return String(localized: "gender-prefer-not-say", table: "General")
+        }
+    }
 }
 
 struct Invitation: Decodable {
