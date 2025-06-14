@@ -42,6 +42,7 @@ struct ClubListItem: View {
         return hasAccepted
     }
     
+    @MainActor
     func Apply() async {
         
         // You need to have accepted EULA before joining a group
@@ -69,11 +70,12 @@ struct ClubListItem: View {
             HStack {
                 VStack(alignment:.leading){
                     Text(clubName)
-                        .font(.title3)
                         .bold()
-                        .foregroundColor(Color("foreground"))
-                        .minimumScaleFactor(0.8)
+                        .font(.title3)
                         .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .foregroundColor(Color.foreground)
+                    
                     HStack {
                         Image(systemName: "mappin.and.ellipse")
                             .foregroundColor(.gray)
@@ -83,10 +85,8 @@ struct ClubListItem: View {
                             .foregroundColor(.gray)
                             .font(.callout)
                     }
-                }
-                .padding(.leading, 5)
-            }
-            .padding(.all)
+                }.padding(.leading, 5)
+            }.padding(.all)
             
             HStack {
                 Text(description)
@@ -103,29 +103,34 @@ struct ClubListItem: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 35)
-                                .foregroundStyle(.gray)
-                                .opacity(0.5)
-                            Text("Details")
-                                .textCase(.uppercase)
-                                .font(.caption)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color.Background.tertiary)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.primary.opacity(0.2), lineWidth: 1)
+                                }
+                            
+                            Text(String(localized: "details", table: "General"))
+                                .font(.callout)
+                                .foregroundStyle(.primary)
                         }
                     }.contentShape(RoundedRectangle(cornerRadius: 10))
                     
                     Spacer()
                     
                     Button(action:{ Task{ await Apply() } }) {
-                        LoadingButton(text: "Apply", height: 35, status: $status)
-                    }
-                    .contentShape(RoundedRectangle(cornerRadius: 10))
-                }
-                .padding([.horizontal, .bottom])
+                        LoadingButton(text: String(localized: "apply", table: "General"), height: 35, status: $status)
+                    }.contentShape(RoundedRectangle(cornerRadius: 10))
+                }.padding([.horizontal, .bottom])
             }
         }
         .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(Color(Color.Background.secondary))
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.primary.opacity(0.2), lineWidth: 1)
         }
         .fullScreenCover(isPresented: $showDetails, content: {
             ClubDetailView(club: club)
@@ -139,4 +144,5 @@ struct ClubListItem: View {
 #Preview {
     ClubListItem(club: CLUBS[0], showToast: .constant(false))
         .environment(SessionStore())
+        .padding(.horizontal, 10)
 }

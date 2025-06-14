@@ -50,3 +50,9 @@ extension View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
     }
 }
+
+let defaultClubImageURLS = [
+    "club-images/ab9cc0d0-320b-4320-917c-691768c71416.png",
+    "club-images/f7f28720-cfd3-4cfd-94b6-e54bc97f7089.png",
+    "club-images/b86df4d8-7e30-47e3-a7fd-ba7fa4296105.png"
+]

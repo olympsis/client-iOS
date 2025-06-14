@@ -19,6 +19,9 @@ struct ClubLogoBanner: View {
     
     private var banner: URL? {
         guard let banner = club.banner else {
+            if let rand = defaultClubImageURLS.randomElement() {
+                return URL(string: GenerateImageURL(rand))
+            }
             return nil
         }
         return URL(string: GenerateImageURL(banner))
@@ -100,12 +103,7 @@ struct ClubLogoBanner: View {
                                     .padding([.leading, .trailing], 2.5)
                             }
                             .padding(5)
-                            .background(
-                                Color.black
-                                    .opacity(0.21)
-                            )
-                            .border(Color.black.opacity(0.15), width: 1)
-                            .clipShape(Capsule())
+                            .modifier(SmallPillModifier())
                         }
                     }
                 }

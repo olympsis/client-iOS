@@ -20,6 +20,9 @@ struct ClubListItemMedia: View {
     
     var bannerURL: URL? {
         guard let banner = club.banner else {
+            if let rand = defaultClubImageURLS.randomElement() {
+                return URL(string: GenerateImageURL(rand))
+            }
             return nil
         }
         return URL(string: GenerateImageURL(banner))
@@ -30,7 +33,7 @@ struct ClubListItemMedia: View {
     }
     
     var membersCount: String {
-        return club.members.count > 1 ? "\(club.members.count) Members" : "\(club.members.count) Member"
+        return String(localized: "\(club.members.count) member", table: "General")
     }
     
     private let gradient = LinearGradient(
@@ -92,12 +95,7 @@ struct ClubListItemMedia: View {
                                         .padding([.leading, .trailing], 2.5)
                                 }
                                 .padding(5)
-                                .background(
-                                    Color.black
-                                        .opacity(0.21)
-                                )
-                                .border(Color.black.opacity(0.15), width: 1)
-                                .clipShape(Capsule())
+                                .modifier(SmallPillModifier())
                             }
                         }
                     }
@@ -114,12 +112,7 @@ struct ClubListItemMedia: View {
                             .padding(.trailing, 2.5)
                     }
                     .padding(5)
-                    .background(
-                        Color.black
-                            .opacity(0.21)
-                    )
-                    .border(Color.black.opacity(0.15), width: 1)
-                    .clipShape(Capsule())
+                    .modifier(SmallPillModifier())
                 }
                 .padding(.bottom, 4)
                 .padding(.horizontal, 5)
@@ -134,5 +127,5 @@ struct ClubListItemMedia: View {
 }
 
 #Preview {
-    ClubListItemMedia(club: CLUBS[0])
+    ClubListItemMedia(club: CLUBS[1])
 }

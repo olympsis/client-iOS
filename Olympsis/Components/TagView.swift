@@ -22,13 +22,11 @@ struct TagView: View {
             Text(name)
                 .padding(5)
                 .padding(.horizontal, 5)
-                .background(
-                    Color.gray
-                        .opacity(0.21)
-                )
+                .background(Color.Background.secondary)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.black.opacity(0.2), lineWidth: 1)
+                    Capsule()
+                        .stroke(style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+                        .opacity(0.15)
                 )
                 .clipShape(Capsule())
                 

@@ -304,7 +304,6 @@
 		5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94CC2B0326300031876D /* NewGroup.swift */; };
 		5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94CF2B05B1830031876D /* NotificationModels.swift */; };
 		5DBB94D22B05BEB10031876D /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D12B05BEB10031876D /* EventNotification.swift */; };
-		5DBB94D42B0A7F230031876D /* ClubTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D32B0A7F230031876D /* ClubTag.swift */; };
 		5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D52B0D27920031876D /* OrganizationModels.swift */; };
 		5DBB94DB2B125BF20031876D /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DA2B125BF20031876D /* GroupView.swift */; };
 		5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DC2B125C230031876D /* GroupSelection.swift */; };
@@ -348,11 +347,11 @@
 		5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */; };
 		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
 		5DF5CFC22C0450D5008F5374 /* ClubLogoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */; };
-		5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */; };
 		5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */; };
 		5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */; };
 		5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */; };
 		5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */; };
+		5DF8D1E02DFDFA08008D2788 /* Time.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DF8D1DF2DFDFA08008D2788 /* Time.xcstrings */; };
 		5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF945AB2BF9CCB500BE3C63 /* Kingfisher */; };
 		5DF945AE2BFAAFAD00BE3C63 /* PostMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945AD2BFAAFAD00BE3C63 /* PostMediaViolation.swift */; };
 		5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */; };
@@ -817,7 +816,6 @@
 		5DBB94CC2B0326300031876D /* NewGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroup.swift; sourceTree = "<group>"; };
 		5DBB94CF2B05B1830031876D /* NotificationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModels.swift; sourceTree = "<group>"; };
 		5DBB94D12B05BEB10031876D /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
-		5DBB94D32B0A7F230031876D /* ClubTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubTag.swift; sourceTree = "<group>"; };
 		5DBB94D52B0D27920031876D /* OrganizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationModels.swift; sourceTree = "<group>"; };
 		5DBB94DA2B125BF20031876D /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		5DBB94DC2B125C230031876D /* GroupSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelection.swift; sourceTree = "<group>"; };
@@ -863,11 +861,11 @@
 		5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewModel.swift; sourceTree = "<group>"; };
 		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
 		5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogoBanner.swift; sourceTree = "<group>"; };
-		5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogo.swift; sourceTree = "<group>"; };
 		5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgLogo.swift; sourceTree = "<group>"; };
 		5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRequestView.swift; sourceTree = "<group>"; };
 		5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSmallListItem.swift; sourceTree = "<group>"; };
 		5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndUserLicenseAgreement.swift; sourceTree = "<group>"; };
+		5DF8D1DF2DFDFA08008D2788 /* Time.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Time.xcstrings; sourceTree = "<group>"; };
 		5DF945AD2BFAAFAD00BE3C63 /* PostMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaViolation.swift; sourceTree = "<group>"; };
 		5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberBlockingConfirmation.swift; sourceTree = "<group>"; };
 		5DF945B12BFC706100BE3C63 /* UserBlockingConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockingConfirmation.swift; sourceTree = "<group>"; };
@@ -1147,6 +1145,7 @@
 				5DDD5E752C4109AF00793FEB /* Home.xcstrings */,
 				5DDD5E772C4109EC00793FEB /* Settings.xcstrings */,
 				5D9E745E2DFD0C9A0094C0D1 /* Onboarding.xcstrings */,
+				5DF8D1DF2DFDFA08008D2788 /* Time.xcstrings */,
 			);
 			path = Catalogues;
 			sourceTree = "<group>";
@@ -1463,9 +1462,7 @@
 			children = (
 				9AD208FF29344498007A62C4 /* ClubApplicationListItem.swift */,
 				9A81B62429247F87009CA6ED /* ClubListItem.swift */,
-				5DBB94D32B0A7F230031876D /* ClubTag.swift */,
 				5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */,
-				5DF5CFC32C045DF7008F5374 /* ClubLogo.swift */,
 				5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */,
 			);
 			path = Club;
@@ -2254,6 +2251,7 @@
 				5D1905842DA1C7F50051990F /* Archivo_SemiCondensed-Light.ttf in Resources */,
 				5D1905852DA1C7F50051990F /* Archivo_Expanded-ExtraLight.ttf in Resources */,
 				5D1905862DA1C7F50051990F /* Archivo_Condensed-Bold.ttf in Resources */,
+				5DF8D1E02DFDFA08008D2788 /* Time.xcstrings in Resources */,
 				5D1905872DA1C7F50051990F /* Archivo_Expanded-BlackItalic.ttf in Resources */,
 				5D1905882DA1C7F50051990F /* Archivo_ExtraCondensed-LightItalic.ttf in Resources */,
 				5D1905892DA1C7F50051990F /* Archivo_Expanded-SemiBoldItalic.ttf in Resources */,
@@ -2308,7 +2306,6 @@
 				9AC5BAC2295E6D26003E851B /* Activity.swift in Sources */,
 				5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */,
-				5DBB94D42B0A7F230031876D /* ClubTag.swift in Sources */,
 				9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */,
 				5DCB01B92ADE33BD00450F69 /* SmallWorkoutView.swift in Sources */,
 				5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */,
@@ -2485,7 +2482,6 @@
 				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
 				5D9E745D2DFCE72B0094C0D1 /* EventFormatView.swift in Sources */,
-				5DF5CFC42C045DF7008F5374 /* ClubLogo.swift in Sources */,
 				5D204B522DA2CA1800B67F5D /* EventComment.swift in Sources */,
 				5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */,
 				5D4B0A792D99F1B200475A0C /* FilterView.swift in Sources */,

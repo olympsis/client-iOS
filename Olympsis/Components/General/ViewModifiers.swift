@@ -50,3 +50,20 @@ struct BackgroundPillModifier: ViewModifier {
             }
     }
 }
+
+struct SmallPillModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(
+                Color.black
+                    .opacity(0.21)
+            )
+            .overlay {
+                Capsule()
+                    .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                    .foregroundStyle(.black)
+                    .opacity(0.15)
+            }
+            .clipShape(Capsule())
+    }
+}

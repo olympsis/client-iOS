@@ -13,7 +13,8 @@ struct LoadingButton: View {
     @State var image: Image?
     @State var width: CGFloat = 150
     @State var height: CGFloat = 40
-    @State var color: Color = Color("color-prime")
+    @State var color: Color = Color.Brand.primary
+    
     @Binding var status: LOADING_STATE
     
     var body: some View {
@@ -24,7 +25,7 @@ struct LoadingButton: View {
                         .foregroundColor(color)
                         .frame(width: 40)
                     ProgressView()
-                }
+                }.frame(height: 40)
             } else if (self.status == .pending) {
                 if (image == nil) {
                     ZStack{
@@ -38,7 +39,7 @@ struct LoadingButton: View {
                             .textCase(.uppercase)
                             .foregroundColor(.white)
                             .padding(.horizontal)
-                    }
+                    }.frame(height: height)
                 } else {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -46,7 +47,7 @@ struct LoadingButton: View {
                             .frame(width: width, height: height)
                         image
                             .foregroundStyle(.white)
-                    }
+                    }.frame(height: height)
                 }
             } else if (self.status == .success) {
                 ZStack {
@@ -57,7 +58,7 @@ struct LoadingButton: View {
                         .imageScale(.large)
                         .fontWeight(.bold)
                         .foregroundColor(.green)
-                }
+                }.frame(height: 40)
                    
             } else if (self.status == .failure) {
                 ZStack {
@@ -68,9 +69,9 @@ struct LoadingButton: View {
                         .imageScale(.large)
                         .fontWeight(.bold)
                         .foregroundColor(.red)
-                }
+                }.frame(height: 40)
             }
-        }.frame(height: 40)
+        }
     }
 }
 

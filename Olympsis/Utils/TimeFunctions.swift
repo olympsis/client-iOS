@@ -20,68 +20,44 @@ func calculateTimeAgo(from date: Date, shortned: Bool = false) -> String {
     if timeDifference < secondsInAMinute {
         let seconds = Int(timeDifference)
         if shortned {
-            return "\(seconds)s"
+            return String(localized: "\(seconds) second-shortened", table: "Time")
         } else {
-            if seconds == 1 {
-                return "\(seconds) second ago"
-            } else {
-                return "\(seconds) seconds ago"
-            }
+            return String(localized: "\(seconds) sec-ago", table: "Time")
         }
     } else if timeDifference < secondsInAnHour {
         let minutes = Int(timeDifference / secondsInAMinute)
         if shortned {
-            return "\(minutes)m"
+            return String(localized: "\(minutes) minutes-shortened", table: "Time")
         } else {
-            if minutes == 1 {
-                return "\(minutes) minute ago"
-            } else {
-                return "\(minutes) minutes ago"
-            }
+            return String(localized: "\(minutes) min-ago", table: "Time")
         }
     } else if timeDifference < secondsInADay {
         let hours = Int(timeDifference / secondsInAnHour)
         if shortned {
-            return "\(hours)h"
+            return String(localized: "\(hours) hour-shortened", table: "Time")
         } else {
-            if hours == 1 {
-                return "\(hours) hour ago"
-            } else {
-                return "\(hours) hours ago"
-            }
+            return String(localized: "\(hours) hr-ago", table: "Time")
         }
     } else if timeDifference < secondsInAMonth {
         let days = Int(timeDifference / secondsInADay)
         if shortned {
-            return "\(days)d"
+            return String(localized: "\(days) day-shortened", table: "Time")
         } else {
-            if days == 1 {
-                return "\(days) day ago"
-            } else {
-                return "\(days) days ago"
-            }
+            return String(localized: "\(days) day-ago", table: "Time")
         }
     } else if timeDifference < secondsInAYear {
         let months = Int(timeDifference / secondsInAMonth)
         if shortned {
-            return "\(months)m"
+            return String(localized: "\(months) month-shortened", table: "Time")
         } else {
-            if months == 1 {
-                return "\(months) month ago"
-            } else {
-                return "\(months) months ago"
-            }
+            return String(localized: "\(months) mo-ago", table: "Time")
         }
     } else {
         let years = Int(timeDifference / secondsInAYear)
         if shortned {
-            return "\(years)y"
+            return String(localized: "\(years) year-shortened", table: "Time")
         } else {
-            if years == 1 {
-                return "\(years) year ago"
-            } else {
-                return "\(years) years ago"
-            }
+            return String(localized: "\(years) yr-ago", table: "Time")
         }
     }
 }

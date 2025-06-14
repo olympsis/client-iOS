@@ -110,15 +110,7 @@ struct ClubDetailView: View {
                             }
                         }
                         HStack {
-                            if membersCount > 1 {
-                                Text("\(membersCount)")
-                                    .bold()
-                                Text("members")
-                            } else {
-                                Text("\(membersCount)")
-                                    .bold()
-                                Text("member")
-                            }
+                            Text(String(localized: "\(membersCount) member", table: "General"))
                         }
                         
                         HStack(spacing: -10) {
@@ -163,13 +155,12 @@ struct ClubDetailView: View {
                                 Text(parentName)
                                     .font(.callout)
                             }
-                        }.padding(.horizontal)
-                            .padding(.bottom)
+                        }.padding([.horizontal, .bottom])
                     }
                     
-                    // MARK: - Description
+                    // MARK: - Club Tags
                     VStack(alignment: .leading) {
-                        Text("Group Tags")
+                        Text(String(localized: "club-tags", table: "Groups"))
                             .font(.title2)
                             .bold()
                         
@@ -183,7 +174,7 @@ struct ClubDetailView: View {
                     
                     // MARK: - Description
                     VStack(alignment: .leading) {
-                        Text("About")
+                        Text(String(localized: "about", table: "General"))
                             .font(.title2)
                             .bold()
                         ExpandableTextView(text: description)
@@ -193,7 +184,7 @@ struct ClubDetailView: View {
                     // MARK: - Location Map
                     VStack {
                         HStack {
-                            Text("Located in")
+                            Text(String(localized: "located-in", table: "Groups"))
                                 .font(.caption)
                             Text(location)
                                 .font(.caption)
@@ -206,7 +197,7 @@ struct ClubDetailView: View {
                         .padding(.bottom)
                     
                     HStack {
-                        Text("Established ")
+                        Text("\(String(localized: "established", table: "Groups")) ")
                             .bold()
                         +
                         Text(calculateTimeAgo(from: club.createdAt))
