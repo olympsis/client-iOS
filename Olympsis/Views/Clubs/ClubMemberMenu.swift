@@ -60,21 +60,21 @@ struct ClubMemberMenu: View {
             if role != "member" {
                 Menu {
                     Button(action:{ Task{ await promote("owner") } }) {
-                        Text("Promote to Owner")
+                        Text(String(localized: "promote-owner", table: "Groups"))
                     }
                     Button(action:{ Task{ await promote("admin") } }) {
-                        Text("Promote to Admin")
+                        Text(String(localized: "promote-admin", table: "Groups"))
                     }
                     Button(action:{ Task{ await demote("member") } }) {
-                        Text("Demote to Member")
+                        Text(String(localized: "demote-member", table: "Groups"))
                     }
                     
                 } label: {
-                    MenuButton(icon: Image(systemName: "chevron.up.chevron.down"), text: "Change Role")
+                    MenuButton(icon: Image(systemName: "chevron.up.chevron.down"), text: String(localized: "change-role", table: "Groups"))
                 }
             }
             
-            MenuButton(icon: Image(systemName: "exclamationmark.bubble"), text: "Report Member") {
+            MenuButton(icon: Image(systemName: "exclamationmark.bubble"), text: String(localized: "report-member", table: "Groups")) {
                 showReport.toggle()
             }.fullScreenCover(isPresented: $showReport, content: {
                 MemberReportView(member: member)
@@ -89,7 +89,7 @@ struct ClubMemberMenu: View {
                     MemberReportView(member: member)
                 })
             } else {
-                MenuButton(icon: Image(systemName: "person.slash"), text: "Block Member", action:  {
+                MenuButton(icon: Image(systemName: "person.slash"), text: String(localized: "block-member", table: "Groups"), action:  {
                     showBlocking.toggle()
                 }, type: .destructive)
                 .sheet(isPresented: $showBlocking, content: {
@@ -100,7 +100,7 @@ struct ClubMemberMenu: View {
             }
             
             if role != "member" {
-                MenuButton(icon: Image(systemName: "door.right.hand.open"), text: "Remove Member from Club", action: {
+                MenuButton(icon: Image(systemName: "door.right.hand.open"), text: String(localized: "remove-from-blub", table: "Groups"), action: {
                     Task {
                         await kick()
                     }
@@ -109,9 +109,8 @@ struct ClubMemberMenu: View {
             
             Spacer()
         }
-        .background(Color.Background.secondary)
-        .presentationDragIndicator(.visible)
         .padding(.top)
+        .presentationDragIndicator(.visible)
         .onAppear {
             guard let user = session.user else {
                 return

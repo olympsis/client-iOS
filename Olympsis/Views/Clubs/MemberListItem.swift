@@ -38,13 +38,6 @@ struct MemberListItem: View {
         return uuid == member.user?.uuid
     }
     
-//    var isBlocked: Bool {
-//        guard let user = session.user else {
-//            return false
-//        }
-//        return self.member.checkBlockStatus(user)
-//    }
-    
     init(member: Member) {
         self._member = StateObject(
             wrappedValue: member
@@ -53,69 +46,40 @@ struct MemberListItem: View {
     
     var body: some View {
         HStack {
-            ZStack {
-                AsyncImage(url: URL(string: GenerateImageURL((member.user?.imageURL ?? "")))){ phase in
-                    if let image = phase.image {
-                            image // Displays the loaded image.
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 50)
-                                .clipShape(Circle())
-                                .clipped()
-                                
-                        } else if phase.error != nil {
-                            ZStack {
-                                Color.gray // Indicates an error.
-                                    .clipShape(Circle())
-                                .opacity(0.3)
-                                Image(systemName: "person.fill")
-                                    .foregroundStyle(.white)
-                                    .imageScale(.large)
-                            }
-                        } else {
-                            ZStack {
-                                Color.gray // Acts as a placeholder.
-                                    .clipShape(Circle())
-                                    .opacity(0.3)
-                                ProgressView()
-                            }
-                        }
-                }.frame(width: 50)
-            }.redacted(reason: member.isBlocked ? .placeholder : [])
-            
-            Group {
-                
-            }
+            UserBadgeView(size: .medium)
+                .redacted(reason: member.isBlocked ? .placeholder : [])
             
             VStack(alignment: .leading) {
                 Text(username)
                     .font(.subheadline)
                     .foregroundColor(.gray)
-            }.redacted(reason: member.isBlocked ? .placeholder : [])
-            
-            Spacer()
-            
-            if !member.isBlocked {
+                
                 switch member.role {
                 case "owner":
-                    Image(systemName: "o.circle.fill")
-                        .imageScale(.large)
-                        .foregroundColor(.yellow)
-                        .padding(.trailing, 5)
+                    Text(String(localized: "role-owner", table: "Groups"))
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color.Brand.tertiary)
+                    
                 case "admin":
-                    Image(systemName: "a.circle.fill")
-                        .imageScale(.large)
-                        .foregroundColor(Color("tertiary-color"))
-                        .padding(.trailing, 5)
+                    Text(String(localized: "role-admin", table: "Groups"))
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color.Brand.secondary)
+                    
                 case "moderator":
-                    Image(systemName: "a.circle.fill")
-                        .imageScale(.large)
-                        .foregroundColor(.orange)
-                        .padding(.trailing, 5)
+                    Text(String(localized: "role-moderator", table: "Groups"))
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .foregroundColor(Color.gray)
                 default:
                     EmptyView()
                 }
             }
+            .padding(.leading, 10)
+            .redacted(reason: member.isBlocked ? .placeholder : [])
+            
+            Spacer()
             
             if !memberIsUser {
                 Button(action:{self.showMenu.toggle()}){
@@ -132,18 +96,19 @@ struct MemberListItem: View {
                 .redacted(reason: member.isBlocked ? .placeholder : [])
                 .disabled(member.isBlocked)
             }
-        }.padding(.leading)
-            .frame(height: 60)
-            .onAppear {
-                guard let user = session.user else {
-                    return
-                }
-                member.checkBlockStatus(user)
+        }
+        .padding(.leading)
+        .frame(height: 60)
+        .onAppear {
+            guard let user = session.user else {
+                return
             }
+            member.checkBlockStatus(user)
+        }
     }
 }
 
-#Preview("Club Member") {
+#Preview {
     MemberListItem(member: CLUBS[0].members.first!)
         .environmentObject(CLUBS[0])
         .environment(SessionStore())
