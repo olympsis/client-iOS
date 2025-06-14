@@ -85,7 +85,7 @@ struct ProfileMenu: View {
                     Spacer(minLength: 80)
                     
                     VStack {
-                        Text(String(localized: "Version", table: "General"))
+                        Text(String(localized: "version", table: "General"))
                         Text(appVersion)
                     }
                     .font(.callout)

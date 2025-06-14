@@ -55,6 +55,18 @@
             "state" : "translated",
             "value" : "Failed to load list. Pull to refresh or"
           }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo cargar la lista. Tire para actualizar o"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du chargement de la liste. Tirer pour actualiser ou"
+          }
         }
       }
     },
@@ -111,6 +123,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No blocked users"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay usuarios bloqueados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun utilisateur bloqué"
           }
         }
       }

@@ -15,13 +15,13 @@ struct NearbyVenues: View {
     var body: some View {
         VStack(alignment: .leading){
             HStack {
-                Text(String(localized: "Nearby Venues", table: "General"))
+                Text(String(localized: "nearby-venues", table: "General"))
                     .font(.system(.headline))
                 
                 Spacer()
                 
                 Button(action:{ self.showMoreFields.toggle() }){
-                    Text(String(localized: "View All", table: "General"))
+                    Text(String(localized: "view-all", table: "General"))
                        .bold()
                     Image(systemName: "chevron.down")
                 }

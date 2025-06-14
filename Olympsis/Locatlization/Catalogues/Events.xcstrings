@@ -10,6 +10,12 @@
             "value" : "Add a comment"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un comentario"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25,6 +31,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add a location"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar una ubicación"
           }
         },
         "fr" : {
@@ -44,6 +56,12 @@
             "value" : "Add to calendar"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir al calendario"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,6 +77,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "External link"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace externo"
           }
         },
         "fr" : {
@@ -78,6 +102,12 @@
             "value" : "Redirect participants to this URL after RSVP"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redirigir a los participantes a esta URL después de RSVP"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93,6 +123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Event formatting"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato de eventos"
           }
         },
         "fr" : {
@@ -112,6 +148,12 @@
             "value" : "Set the event’s participant capacity"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer la capacidad de participantes del evento"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127,6 +169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Max participants"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máximo de participantes"
           }
         },
         "fr" : {
@@ -146,6 +194,12 @@
             "value" : "Least number of participants required"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere el menor número de participantes"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,6 +215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Min participants"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mínimo de participantes"
           }
         },
         "fr" : {
@@ -180,6 +240,12 @@
             "value" : "Limit participants"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limitar participantes"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -195,6 +261,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "When do you want the recurrence to stop?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuando quieres que se detenga la recurrencia?"
           }
         },
         "fr" : {
@@ -214,6 +286,12 @@
             "value" : "End date"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de finalización"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -229,6 +307,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Every"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada"
           }
         },
         "fr" : {
@@ -248,6 +332,12 @@
             "value" : "monthly"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mensual"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -263,6 +353,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How often do you want this event to happen"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Con qué frecuencia quieres que ocurra este evento?"
           }
         },
         "fr" : {
@@ -282,6 +378,12 @@
             "value" : "Recurrence frequency"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frecuencia de recurrencia"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -297,6 +399,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "weekly"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semanalmente"
           }
         },
         "fr" : {
@@ -316,6 +424,12 @@
             "value" : "Recurring event"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento recurrente"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -331,6 +445,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Competition formats"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos de competición"
           }
         },
         "fr" : {
@@ -350,6 +470,12 @@
             "value" : "Advanced settings"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración avanzada"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -365,6 +491,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toggle competition mode-casual or tournament?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar modo competición: ¿casual o torneo?"
           }
         },
         "fr" : {
@@ -384,6 +516,12 @@
             "value" : "Is a Tournament?"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Es un torneo?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -399,6 +537,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "If the number of participants exceeds the capacity, allow them to join a waitlist"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si el número de participantes excede la capacidad, permítales unirse a una lista de espera."
           }
         },
         "fr" : {
@@ -418,6 +562,12 @@
             "value" : "Allow Waitlist"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir lista de espera"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -433,6 +583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Edit location(s)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar ubicación(es)"
           }
         },
         "fr" : {
@@ -452,6 +608,12 @@
             "value" : "Directions"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instrucciones"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -467,6 +629,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comments"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comentarios"
           }
         },
         "fr" : {
@@ -486,6 +654,12 @@
             "value" : "This event is part of a recurring event. Would you like to delete the individual event or the entire series?"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este evento forma parte de un evento recurrente. ¿Quieres eliminarlo individualmente o toda la serie?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -501,6 +675,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete this event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar este evento"
           }
         },
         "fr" : {
@@ -520,6 +700,12 @@
             "value" : "Delete all events"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar todos los eventos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -535,6 +721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Details"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles"
           }
         },
         "fr" : {
@@ -554,6 +746,12 @@
             "value" : "Formats"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -569,6 +767,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar evento"
           }
         },
         "fr" : {
@@ -588,6 +792,12 @@
             "value" : "Report an issue"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informar un problema"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -603,6 +813,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hosted by"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizado por"
           }
         },
         "fr" : {
@@ -622,6 +838,12 @@
             "value" : "Location name"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la ubicación"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -639,6 +861,12 @@
             "value" : "Location(s)"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -653,7 +881,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nearby Events"
+            "value" : "Nearby events"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos cercanos"
           }
         },
         "fr" : {
@@ -673,6 +907,12 @@
             "value" : "Create event"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear evento"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -688,6 +928,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give details about the event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar detalles sobre el evento"
           }
         },
         "fr" : {
@@ -707,6 +953,12 @@
             "value" : "Description"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -722,6 +974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Image"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen"
           }
         },
         "fr" : {
@@ -741,6 +999,12 @@
             "value" : "Location(s) of the event"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es) del evento"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -756,6 +1020,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location(s)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es)"
           }
         },
         "fr" : {
@@ -775,6 +1045,12 @@
             "value" : "The clubs/organizations affiliated with this event"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los clubes/organizaciones afiliados a este evento"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -790,6 +1066,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Organizers(s)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizador(es)"
           }
         },
         "fr" : {
@@ -809,6 +1091,12 @@
             "value" : "Select sport"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccione el deporte"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -824,6 +1112,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pick your event’s sport activity"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige la actividad deportiva de tu evento"
           }
         },
         "fr" : {
@@ -843,6 +1137,12 @@
             "value" : "Sport"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deporte"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -858,6 +1158,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Date/Time"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha/hora de inicio"
           }
         },
         "fr" : {
@@ -877,6 +1183,12 @@
             "value" : "Stop Date/Time"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha/hora de parada"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -892,6 +1204,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "What to call the event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo llamar al evento?"
           }
         },
         "fr" : {
@@ -911,6 +1229,12 @@
             "value" : "Tags make your event easier to discover. Add a few!"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las etiquetas facilitan el descubrimiento de tu evento. ¡Añade algunas!"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -926,6 +1250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tags"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas"
           }
         },
         "fr" : {
@@ -945,6 +1275,12 @@
             "value" : "Title"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -960,6 +1296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "New event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo evento"
           }
         },
         "fr" : {
@@ -979,6 +1321,12 @@
             "value" : "Events"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -994,6 +1342,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please select a sport"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor seleccione un deporte"
           }
         },
         "fr" : {
@@ -1013,6 +1367,12 @@
             "value" : "No venues found near you"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron lugares cerca de ti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1028,6 +1388,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Attended"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistió"
           }
         },
         "fr" : {
@@ -1047,6 +1413,12 @@
             "value" : "Attending"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistente"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1062,6 +1434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Going"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yendo"
           }
         },
         "fr" : {
@@ -1081,6 +1459,12 @@
             "value" : "Pick a location"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elija una ubicación"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1098,6 +1482,12 @@
             "value" : "Remove comment"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar comentario"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1112,6 +1502,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Custom location name"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de ubicación personalizado"
           }
         },
         "fr" : {
@@ -1131,6 +1527,12 @@
             "value" : "Set custom location"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer ubicación personalizada"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1146,6 +1548,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         },
         "fr" : {
@@ -1165,6 +1573,12 @@
             "value" : "Ended"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminado"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1182,6 +1596,12 @@
             "value" : "Live"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vivir"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1194,6 +1614,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSVP"
+          }
+        },
+        "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "RSVP"
@@ -1216,6 +1642,12 @@
             "value" : "Waitlist"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de espera"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1231,6 +1663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap anywhere on the map to drop a pin"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque en cualquier lugar del mapa para colocar un pin."
           }
         },
         "fr" : {
@@ -1250,6 +1688,12 @@
             "value" : "Group"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1265,6 +1709,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Any members associated to any of the hosting groups for this event will be able to interact with this event."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier miembro asociado a cualquiera de los grupos anfitriones de este evento podrá interactuar con este evento."
           }
         },
         "fr" : {
@@ -1284,6 +1734,12 @@
             "value" : "Private"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privado"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1299,6 +1755,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Only you, the participants and those whom you have shared the event with can interact with this event."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sólo usted, los participantes y aquellos con quienes ha compartido el evento pueden interactuar con este evento."
           }
         },
         "fr" : {
@@ -1318,6 +1780,12 @@
             "value" : "Plublic"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Público"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1335,6 +1803,12 @@
             "value" : "Anyone on olympsis can see this event and interact with it."
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquiera en Olympsis puede ver este evento e interactuar con él."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1350,6 +1824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visibility"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibilidad"
           }
         },
         "fr" : {

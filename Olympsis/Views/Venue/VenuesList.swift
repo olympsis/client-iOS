@@ -31,23 +31,23 @@ struct VenuesList: View {
                 } else {
                     if hasLocation {
                         VStack {
-                            Text(String(localized: "No venues near you", table: "General"))
+                            Text(String(localized: "no-venues-text", table: "General"))
                             HStack(alignment: .top) {
                                 Image(systemName: "info.circle")
                                     .imageScale(.small)
-                                Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
+                                Text(String(localized: "olympsis-locations-text", table: "General"))
                                     .font(.caption2)
                             }.foregroundStyle(.gray)
                         }.padding(.all)
                     } else {
                         VStack {
-                            Text(String(localized: "No venues near you", table: "General"))
+                            Text(String(localized: "no-venues-text", table: "General"))
                                 .padding(.bottom, 5)
  
                             HStack(alignment: .top) {
                                 Image(systemName: "info.circle")
                                     .imageScale(.small)
-                                Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
+                                Text(String(localized: "olympsis-locations-text", table: "General"))
                                     .font(.caption2)
                             }.foregroundStyle(.gray)
                         }
@@ -77,7 +77,7 @@ struct VenuesList: View {
                     }
                 }
             }
-            .navigationTitle(String(localized: "Nearby Venues", table: "General"))
+            .navigationTitle(String(localized: "nearby-venues", table: "General"))
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showRequestLocation, content: {
                 EmptyView()

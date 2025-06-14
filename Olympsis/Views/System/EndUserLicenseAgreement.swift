@@ -174,7 +174,7 @@ struct EndUserLicenseAgreement: View {
                 }.padding(.vertical)
                 
                 Button(action: { dismiss() }) {
-                    Text(String(localized: "No Thanks", table: "General"))
+                    Text(String(localized: "no-thanks", table: "General"))
                         .font(.callout)
                 }.foregroundStyle(.gray)
                     

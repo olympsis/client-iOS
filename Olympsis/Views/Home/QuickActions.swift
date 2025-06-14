@@ -31,10 +31,11 @@ struct QuickActions: View {
                     HStack {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text(String(localized: "LOOKUP EVENTS", table: "General"))
+                                Text(String(localized: "quick-action-text-1", table: "General"))
                                     .italic()
                                     .font(.title2)
                                     .fontWeight(.black)
+                                    .textCase(.uppercase)
                                 Image(systemName: "calendar")
                                     .imageScale(.large)
                             }
@@ -62,10 +63,11 @@ struct QuickActions: View {
                     HStack {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text(String(localized: "SEARCH CLUBS", table: "General"))
+                                Text(String(localized: "quick-actions-text-2", table: "General"))
                                     .italic()
                                     .font(.title2)
                                     .fontWeight(.black)
+                                    .textCase(.uppercase)
                                 Image(systemName: "person.3.fill")
                                     .imageScale(.large)
                             }

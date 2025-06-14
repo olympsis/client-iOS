@@ -121,7 +121,7 @@ struct EditProfile: View {
         VStack {
             HStack {
                 Button(action:{ dismiss() }){
-                    Text(String(localized: "Cancel", table: "General"))
+                    Text(String(localized: "cancel", table: "General"))
                         .foregroundColor(.primary)
                 }
                 
@@ -135,7 +135,7 @@ struct EditProfile: View {
                         }
                     }
                 }){
-                    LoadingButton(text: String(localized: "Save", table: "General"), width: 60, status: $status)
+                    LoadingButton(text: String(localized: "save", table: "General"), width: 60, status: $status)
                 }
             }.padding(.horizontal)
             ScrollView(showsIndicators: false) {
@@ -186,7 +186,7 @@ struct EditProfile: View {
                     }
                     
                     Button(action: { self.showMediaPicker.toggle() }) {
-                        Text(String(localized: "Edit Picture", table: "Profile"))
+                        Text(String(localized: "edit-picture", table: "Profile"))
                     }.fullScreenCover(isPresented: $showMediaPicker, content: {
                         MediaPicker(pickerType: .profile) { images in
                             if let img = images.first {
@@ -348,7 +348,7 @@ struct EditProfile: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
-                        Text(String(localized: "Cancel", table: "General"))
+                        Text(String(localized: "cancel", table: "General"))
                             .foregroundColor(.primary)
                     }
                 }
@@ -361,7 +361,7 @@ struct EditProfile: View {
                             }
                         }
                     }){
-                        LoadingButton(text: String(localized: "Save", table: "General"), width: 40, status: $status)
+                        LoadingButton(text: String(localized: "save", table: "General"), width: 40, status: $status)
                             .frame(width: 50)
                     }
                 }

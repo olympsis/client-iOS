@@ -26,12 +26,12 @@ struct Venues: View {
             if status == .success {
                 if venues.isEmpty {
                     VStack(alignment: .leading){
-                        Text("😞 \(String(localized: "Sorry there are no venues in your area", table: "General"))")
+                        Text("😞 \(String(localized: "no-venues-text", table: "General"))")
                             .padding(.vertical, 5)
                         HStack(alignment: .top) {
                             Image(systemName: "info.circle")
                                 .imageScale(.small)
-                            Text(String(localized: "Events can be created anywhere, venues are locations vetted by Olympsis", table: "General"))
+                            Text(String(localized: "olympsis-locations-text", table: "General"))
                                 .font(.caption2)
                         }
                         .foregroundStyle(.gray)

@@ -14,7 +14,6 @@ func getPlacemark(from coordinates: CLLocationCoordinate2D, completion: @escapin
     
     geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
         if let error = error {
-            print("Reverse geocoding failed with error: \(error.localizedDescription)")
             completion(nil)
             return
         }
@@ -22,7 +21,6 @@ func getPlacemark(from coordinates: CLLocationCoordinate2D, completion: @escapin
         if let placemark = placemarks?.first {
             completion(placemark)
         } else {
-            print("No placemark found")
             completion(nil)
         }
     }

@@ -103,7 +103,7 @@ struct BlockedUsersList: View {
                                         await unBlock(usr: usr)
                                     }
                                 }) {
-                                    Text(String(localized: "Unblock", table: "General"))
+                                    Text(String(localized: "unblock", table: "General"))
                                 }
                             } label: {
                                 Image(systemName: "ellipsis")
@@ -121,7 +121,7 @@ struct BlockedUsersList: View {
                 VStack {
                     Text(String(localized: "failed-reports-load-text", table: "Settings"))
                     Button(action: { Task { await loadList() } } ) {
-                        Text(String(localized: "Click here", table: "General"))
+                        Text(String(localized: "click-here", table: "General"))
                     }
                 }
                 .padding(.top, 100)

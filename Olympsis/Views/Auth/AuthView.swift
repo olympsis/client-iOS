@@ -47,7 +47,7 @@ struct AuthView: View {
                         .foregroundColor(.white)
                         .font(.custom("Archivo-Black", size: 25, relativeTo: .title))
                     
-                    Text(String(localized: "Slogan", table: "General"))
+                    Text(String(localized: "slogan", table: "General"))
                         .font(.title3)
                         .padding(.horizontal)
                         .foregroundColor(.white)

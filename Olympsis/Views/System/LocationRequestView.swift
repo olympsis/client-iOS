@@ -53,7 +53,7 @@ struct LocationRequestView: View {
                     .frame(width: 100, height: 100)
                     .foregroundColor(Color("color-prime"))
             }
-            Text(String(localized: "Olympsis needs to access your location to show you nearby sports events and tournaments happening in your area. Olympsis will curate the optimal local sports experience for you based on your proximity. This ensures you never miss out on the biggest games or can easily discover new sporting events in your vicinity.", table: "General"))
+            Text(String(localized: "location-access-message", table: "General"))
                 .multilineTextAlignment(.center)
                 .padding(.all)
             Spacer()
@@ -64,7 +64,7 @@ struct LocationRequestView: View {
                 }
                 
                 Button(action:{ self.showHomeTown.toggle() }) {
-                    Text(String(localized: "No Thanks", table: "General"))
+                    Text(String(localized: "no-thanks", table: "General"))
                         .foregroundStyle(.gray)
                         .font(.callout)
                 }.padding(.top)

@@ -29,7 +29,7 @@ struct WelcomeCard: View {
         HStack {
             VStack(alignment: .leading){
                 if name == "" {
-                    Text(String(localized: "Welcome!", table: "General"))
+                    Text(String(localized: "welcome-text", table: "General"))
                         .font(.custom("Helvetica Neue", size: 25))
                         .fontWeight(.regular)
                     Text(String(localized: "are you ready to play?", table: "General"))
@@ -37,7 +37,7 @@ struct WelcomeCard: View {
                         .fontWeight(.light)
                         .foregroundColor(.gray)
                 } else {
-                    Text("\(String(localized: "Welcome back", table: "General")) \(name)")
+                    Text("\(String(localized: "welcome-text-2", table: "General")) \(name)")
                         .font(.custom("Helvetica Neue", size: 25))
                         .fontWeight(.regular)
                     Text(String(localized: "ready to play?", table: "General"))
