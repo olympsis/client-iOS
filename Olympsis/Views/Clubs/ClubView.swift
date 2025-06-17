@@ -75,7 +75,7 @@ struct ClubView: View {
                             Text("New Event")
                         }
                     } label: {
-                        Image(systemName: "plus.square.dashed")
+                        Image(systemName: "plus")
                             .foregroundStyle(Color.foreground)
                             .imageScale(.large)
                     }
