@@ -303,4 +303,5 @@ struct _TrailingView: View {
 #Preview {
     EventListItem(event: EVENTS[0])
         .environment(SessionStore())
+        .padding(.horizontal, 10)
 }

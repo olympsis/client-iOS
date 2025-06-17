@@ -20,6 +20,7 @@ struct PastEvents: View {
             if !pastEvents.isEmpty {
                 ForEach(pastEvents, id: \.id) { event in
                     EventListItem(event: event)
+                        .padding(.horizontal, 10)
                 }
             } else {
                 HStack {
