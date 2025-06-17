@@ -806,6 +806,52 @@
         }
       }
     },
+    "failed-events-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We ran into an issue pulling up events. Try again in a bit!"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuvimos un problema al abrir los eventos. ¡Inténtalo de nuevo en un momento!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous avons rencontré un problème lors de l'affichage des événements. Réessayez dans quelques instants !"
+          }
+        }
+      }
+    },
+    "failed-events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whoops! Error loading events. ⚠️"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Ups! Error al cargar eventos. ⚠️"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oups ! Erreur lors du chargement des événements. ⚠️"
+          }
+        }
+      }
+    },
     "hosted-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1331,6 +1377,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Événements"
+          }
+        }
+      }
+    },
+    "no-events-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looks like there aren’t any sports events in your area right now. Why not be the first to start one? Gather players, set the time, and get the game going! Or try adjusting your filters to see more events nearby."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece que no hay eventos deportivos en tu zona ahora mismo. ¿Por qué no ser el primero en empezar uno? ¡Reúne a los jugadores, fija la hora y que empiece el partido! O prueba a ajustar tus filtros para ver más eventos cerca."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il semble qu'il n'y ait aucun événement sportif dans votre région en ce moment. Pourquoi ne pas être le premier à en organiser un ? Rassemblez les joueurs, programmez l'heure et lancez la partie ! Ou ajustez vos filtres pour voir plus d'événements à proximité."
+          }
+        }
+      }
+    },
+    "no-events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No events found—time to make one happen! ⚡"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron eventos: ¡es hora de crear uno! ⚡"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun événement trouvé — il est temps d'en organiser un ! ⚡"
           }
         }
       }

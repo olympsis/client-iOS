@@ -9,53 +9,50 @@ import SwiftUI
 
 struct MembersListView: View {
     
+    @State private var text: String = ""
     @EnvironmentObject private var club: Club
-    @Environment(\.dismiss) private var dismiss
     
-//     MOVE SORTING TO FUNCTION
-//    var members: [Member] {
-//        guard var members = club.members else {
-//            return [Member]()
-//        }
-//        
-//        members.sort(by: { (member1, member2) -> Bool in
-//            if member1.role == MEMBER_ROLES.Owner.rawValue {
-//                return true
-//            } else if member2.role == MEMBER_ROLES.Owner.rawValue {
-//                return false
-//            } else if member1.role == MEMBER_ROLES.Admin.rawValue {
-//                return true
-//            } else if member2.role == MEMBER_ROLES.Admin.rawValue {
-//                return false
-//            } else {
-//                return member1.joinedAt! > member2.joinedAt!
-//            }
-//        })
-//        return members
-//    }
+    private var members: [Member] {
+        return club.members
+            .filter {
+                $0.user?.username != nil && text.isEmpty ||
+                $0.user?.username != nil && $0.user?.username!.lowercased().contains(text.lowercased()) ?? false
+            }
+            .sorted(by: { (member1, member2) -> Bool in
+                if member1.role == MEMBER_ROLES.Owner.rawValue {
+                    return true
+                } else if member2.role == MEMBER_ROLES.Owner.rawValue {
+                    return false
+                } else if member1.role == MEMBER_ROLES.Admin.rawValue {
+                    return true
+                } else if member2.role == MEMBER_ROLES.Admin.rawValue {
+                    return false
+                } else {
+                    return member1.joinedAt ?? Date() > member2.joinedAt ?? Date()
+                }
+            })
+    }
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            ForEach(club.members) { member in
-                MemberListItem(member: member)
-                    .environmentObject(club)
-            }.padding(.top)
-        }
-        .navigationTitle("Members")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                }
+            SearchBar(text: $text)
+                .padding(.top, 10)
+                .padding(.horizontal)
+            
+            VStack (spacing: 5) {
+                ForEach(members) { member in
+                    MemberListItem(member: member)
+                        .environmentObject(club)
+                }.padding(.top)
             }
         }
+        .navigationTitle(String(localized: "group-menu-members", table: "Groups"))
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct MembersListView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    NavigationStack {
         MembersListView()
             .environmentObject(CLUBS[0])
             .environment(SessionStore())

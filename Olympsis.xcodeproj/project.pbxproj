@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC93E2BAD035000E16B95 /* PostViewer.swift */; };
-		5D0CC9432BB0CC8700E16B95 /* MemberView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC9422BB0CC8700E16B95 /* MemberView2.swift */; };
 		5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */; };
 		5D17F9D82ADC6EA200E8B15C /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */; };
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
@@ -203,9 +202,7 @@
 		5D4B0A772D99E28700475A0C /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A762D99E28700475A0C /* FilterButton.swift */; };
 		5D4B0A792D99F1B200475A0C /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A782D99F1B200475A0C /* FilterView.swift */; };
 		5D5170E12C27270F0035C1F1 /* VenueAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */; };
-		5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E22C2749D10035C1F1 /* EditClub.swift */; };
 		5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */; };
-		5D5170E72C2756840035C1F1 /* EditorClubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E62C2756840035C1F1 /* EditorClubViewModel.swift */; };
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
 		5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */; };
 		5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF712C3120BB005D431F /* HotEvents.swift */; };
@@ -307,7 +304,6 @@
 		5DBB94D62B0D27920031876D /* OrganizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D52B0D27920031876D /* OrganizationModels.swift */; };
 		5DBB94DB2B125BF20031876D /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DA2B125BF20031876D /* GroupView.swift */; };
 		5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DC2B125C230031876D /* GroupSelection.swift */; };
-		5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DE2B128D920031876D /* GroupToolbar.swift */; };
 		5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */; };
 		5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */; };
 		5DC24B752DF7392D00DAF87F /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */; };
@@ -371,7 +367,6 @@
 		5F8D13AB2A1EDFF30054F631 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
 		5F8D13AD2A213C150054F631 /* VenueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* VenueModels.swift */; };
 		5FA350562A67352500669B2C /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA350552A67352500669B2C /* NotificationsView.swift */; };
-		5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */; };
 		5FF2A0272A380534009234AD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
 		5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
 		5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */; };
@@ -475,7 +470,6 @@
 		9AE36B1D2927390500C0C334 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36B1C2927390500C0C334 /* Friend.swift */; };
 		9AECDA4029540FE9007956FB /* LookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA3F29540FE9007956FB /* LookupView.swift */; };
 		9AECDA4229542108007956FB /* LookUpMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4129542108007956FB /* LookUpMenu.swift */; };
-		9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4329544CAB007956FB /* NoClubMenu.swift */; };
 		9AECDA4829545242007956FB /* LookUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4729545242007956FB /* LookUp.swift */; };
 		9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA492954528A007956FB /* FriendRequestsView.swift */; };
 		9AECDA4C295452BB007956FB /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AECDA4B295452BB007956FB /* People.swift */; };
@@ -521,7 +515,6 @@
 
 /* Begin PBXFileReference section */
 		5D0CC93E2BAD035000E16B95 /* PostViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewer.swift; sourceTree = "<group>"; };
-		5D0CC9422BB0CC8700E16B95 /* MemberView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberView2.swift; sourceTree = "<group>"; };
 		5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItemTemplate.swift; sourceTree = "<group>"; };
 		5D17F9D72ADC6EA200E8B15C /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
@@ -714,9 +707,7 @@
 		5D4B0A762D99E28700475A0C /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		5D4B0A782D99F1B200475A0C /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAnnotation.swift; sourceTree = "<group>"; };
-		5D5170E22C2749D10035C1F1 /* EditClub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClub.swift; sourceTree = "<group>"; };
 		5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorGroupViewModel.swift; sourceTree = "<group>"; };
-		5D5170E62C2756840035C1F1 /* EditorClubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorClubViewModel.swift; sourceTree = "<group>"; };
 		5D5BEF862BEFE894008648C5 /* General.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = General.xcstrings; sourceTree = "<group>"; };
 		5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyVenues.swift; sourceTree = "<group>"; };
 		5D63AF712C3120BB005D431F /* HotEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotEvents.swift; sourceTree = "<group>"; };
@@ -819,7 +810,6 @@
 		5DBB94D52B0D27920031876D /* OrganizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationModels.swift; sourceTree = "<group>"; };
 		5DBB94DA2B125BF20031876D /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		5DBB94DC2B125C230031876D /* GroupSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelection.swift; sourceTree = "<group>"; };
-		5DBB94DE2B128D920031876D /* GroupToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupToolbar.swift; sourceTree = "<group>"; };
 		5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventManager.swift; sourceTree = "<group>"; };
 		5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostManager.swift; sourceTree = "<group>"; };
 		5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
@@ -884,7 +874,6 @@
 		5F8D13AA2A1EDFF30054F631 /* UserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		5F8D13AC2A213C150054F631 /* VenueModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueModels.swift; sourceTree = "<group>"; };
 		5FA350552A67352500669B2C /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
-		5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubToolbar.swift; sourceTree = "<group>"; };
 		5FF2A0262A380534009234AD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		5FF49CB92A2BE92100FAA4DA /* PostModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModels.swift; sourceTree = "<group>"; };
 		5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFunctions.swift; sourceTree = "<group>"; };
@@ -990,7 +979,6 @@
 		9AE36B1C2927390500C0C334 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		9AECDA3F29540FE9007956FB /* LookupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupView.swift; sourceTree = "<group>"; };
 		9AECDA4129542108007956FB /* LookUpMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpMenu.swift; sourceTree = "<group>"; };
-		9AECDA4329544CAB007956FB /* NoClubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClubMenu.swift; sourceTree = "<group>"; };
 		9AECDA4729545242007956FB /* LookUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUp.swift; sourceTree = "<group>"; };
 		9AECDA492954528A007956FB /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		9AECDA4B295452BB007956FB /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
@@ -1078,6 +1066,7 @@
 			children = (
 				5DBB94CC2B0326300031876D /* NewGroup.swift */,
 				5DC733F82B2937D60051BE21 /* GroupsView.swift */,
+				9AD20901293444A4007A62C4 /* MemberListItem.swift */,
 				5DB4D04E2C5EF82C00F241BB /* GroupSelectionListItem.swift */,
 			);
 			path = Groups;
@@ -1308,7 +1297,6 @@
 				5D4499D42BABDAAA00F54D10 /* GroupReports.swift */,
 				5DBB94DA2B125BF20031876D /* GroupView.swift */,
 				5DBB94DC2B125C230031876D /* GroupSelection.swift */,
-				5DBB94DE2B128D920031876D /* GroupToolbar.swift */,
 				5D4942BD2B129AC800D19188 /* GroupSelector.swift */,
 				5DACA4C02C3351E7002E1655 /* GroupEditor.swift */,
 				5DB2C1862C338128007CE0B8 /* ClubEditor.swift */,
@@ -1950,20 +1938,14 @@
 				9AD208F7293429E3007A62C4 /* ClubsList.swift */,
 				9AD4DC432974A095009B6120 /* ClubsList2.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
-				9AD20901293444A4007A62C4 /* MemberListItem.swift */,
-				5D0CC9422BB0CC8700E16B95 /* MemberView2.swift */,
 				9AD208FD2934448D007A62C4 /* ClubApplications.swift */,
 				9A5CA4DC296F7DA300C63A32 /* ClubMemberMenu.swift */,
-				9AECDA4329544CAB007956FB /* NoClubMenu.swift */,
 				9A5CA4DA296F725C00C63A32 /* MembersListView.swift */,
 				5DBB94CA2B03254C0031876D /* NewClub.swift */,
 				9A81B626292485A3009CA6ED /* ClubDetailView.swift */,
-				5FE9875D2A2A3C9900B7936E /* ClubToolbar.swift */,
 				5DF945AF2BFC292D00BE3C63 /* MemberBlockingConfirmation.swift */,
 				5D6C01372C054D6A006A264C /* NewGroupManager.swift */,
-				5D5170E22C2749D10035C1F1 /* EditClub.swift */,
 				5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */,
-				5D5170E62C2756840035C1F1 /* EditorClubViewModel.swift */,
 				5D314C9F2C33A3F000F99676 /* ClubView.swift */,
 				5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */,
 			);
@@ -2311,7 +2293,6 @@
 				5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */,
 				5D9F694D2BBA0B3A0057D205 /* HelpGuide.swift in Sources */,
 				9A81B6422925E50C009CA6ED /* EventListItem.swift in Sources */,
-				5D5170E72C2756840035C1F1 /* EditorClubViewModel.swift in Sources */,
 				5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */,
 				5D45B5B22D9CE15C00AB24AC /* WrappingHStack.swift in Sources */,
 				5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */,
@@ -2374,7 +2355,6 @@
 				5D4B0A772D99E28700475A0C /* FilterButton.swift in Sources */,
 				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				5D4A77A22D9CBD400017194D /* NewEventFormatting.swift in Sources */,
-				9AECDA4429544CAB007956FB /* NoClubMenu.swift in Sources */,
 				5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,
 				5D38BDA42C16A036003EEF90 /* SystemModels.swift in Sources */,
@@ -2442,7 +2422,6 @@
 				9AD2090029344498007A62C4 /* ClubApplicationListItem.swift in Sources */,
 				9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */,
 				5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */,
-				5DBB94DF2B128D920031876D /* GroupToolbar.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */,
 				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
@@ -2450,7 +2429,6 @@
 				5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */,
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
-				5D0CC9432BB0CC8700E16B95 /* MemberView2.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */,
@@ -2560,7 +2538,6 @@
 				9A5CA4DB296F725C00C63A32 /* MembersListView.swift in Sources */,
 				5D38BD9D2C1699DF003EEF90 /* LoggingManagement.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
-				5FE9875E2A2A3C9900B7936E /* ClubToolbar.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
 				5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */,
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,
@@ -2575,7 +2552,6 @@
 				5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */,
 				5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */,
 				5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */,
-				5D5170E32C2749D10035C1F1 /* EditClub.swift in Sources */,
 				5D4B0A6A2D9704AE00475A0C /* EventCommentListItem.swift in Sources */,
 				5D18BD182B391D9000F90777 /* GenericModels.swift in Sources */,
 				5D18BD142B38E66A00F90777 /* OrgManagerInvite.swift in Sources */,

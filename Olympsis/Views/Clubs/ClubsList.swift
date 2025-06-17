@@ -215,7 +215,7 @@ struct ClubsList: View {
                                         showCancel = false
                                     }
                                 }){
-                                    Text("Cancel")
+                                    Text(String(localized: "cancel", table: "General"))
                                         .foregroundColor(.gray)
                                         .frame(height: 40)
                                         .padding(.top)
@@ -228,13 +228,12 @@ struct ClubsList: View {
                             Button(action: handleShowNewClub) {
                                 Image(systemName: "plus")
                                 
-                                Text("Create a Club")
+                                Text(String(localized: "create-club", table: "Groups"))
                             }
                             .padding(.vertical, 8)
                             .padding(.horizontal)
                             .background(.regularMaterial)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            
                             
                             FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
                         }.padding(.trailing)
@@ -280,12 +279,12 @@ struct ClubsList: View {
                             Image("illustrations/error")
                                 .resizable()
                                 .frame(width: 170, height: 150)
-                            Text("Oops! Something went wrong. 🚧")
+                            Text(String(localized: "generic-error-fun-text", table: "General"))
                                 .padding(.top)
                                 .fontWeight(.bold)
                                 .padding(.bottom, 5)
                             
-                            Text("We hit a snag fetching clubs. Give it another shot in a moment!")
+                            Text(String(localized: "generic-error-fetching-clubs", table: "General"))
                                 .padding(.horizontal)
                                 .multilineTextAlignment(.center)
                             Spacer()

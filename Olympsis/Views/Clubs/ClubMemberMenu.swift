@@ -100,11 +100,11 @@ struct ClubMemberMenu: View {
             }
             
             if role != "member" {
-                MenuButton(icon: Image(systemName: "door.right.hand.open"), text: String(localized: "remove-from-blub", table: "Groups"), action: {
+                MenuButton(icon: Image(systemName: "door.right.hand.open"), text: String(localized: "remove-from-club", table: "Groups"), action: {
                     Task {
                         await kick()
                     }
-                })
+                }, type: .destructive)
             }
             
             Spacer()

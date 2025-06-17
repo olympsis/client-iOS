@@ -50,11 +50,13 @@ struct FilterView: View {
     }
     
     private var sportsHeaderString: String {
-        return manager.selectedSports.isEmpty ? "Sports" : "Sports (\(manager.selectedSports.count))"
+        let text = String(localized: "sports", table: "General")
+        return manager.selectedSports.isEmpty ? text : "\(text) (\(manager.selectedSports.count))"
     }
     
     private var tagsHeaderString: String {
-        return manager.selectedTags.isEmpty ? "Tags" : "Tags (\(manager.selectedTags.count))"
+        let text = String(localized: "tags", table: "General")
+        return manager.selectedTags.isEmpty ? text : "\(text) (\(manager.selectedTags.count))"
     }
     
     var body: some View {
@@ -90,9 +92,9 @@ struct FilterView: View {
                 
                 
                 VStack(alignment: .leading) {
-                    Text("Radius:")
+                    Text("\(String(localized: "radius", table: "General")):")
                         .fontWeight(.medium)
-                    Text("Searching for clubs near you")
+                    Text(String(localized: "radius-sub-title", table: "General"))
                         .font(.callout)
                         .foregroundStyle(.gray)
                     HStack {
@@ -122,7 +124,7 @@ struct FilterView: View {
             VStack(alignment: .leading) {
                 Text(sportsHeaderString)
                     .fontWeight(.medium)
-                Text("Only include the sports you like")
+                Text(String(localized: "sports-sub-title", table: "General"))
                     .font(.callout)
                     .foregroundStyle(.gray)
 
@@ -156,7 +158,7 @@ struct FilterView: View {
             VStack(alignment: .leading) {
                 Text(tagsHeaderString)
                     .fontWeight(.medium)
-                Text("Add some keywords to find your club!")
+                Text(String(localized: "tags-sub-title", table: "General"))
                     .font(.callout)
                     .foregroundStyle(.gray)
 

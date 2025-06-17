@@ -16,6 +16,8 @@ struct NewClub: View {
         case description
     }
     
+    var hideTopBar: Bool = false
+    
     @FocusState private var focus: Field?
     @State private var showLocationPicker = false
     @State private var viewModel = NewGroupManager()
@@ -102,14 +104,16 @@ struct NewClub: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Text("Cancel")
-                        .fontWeight(.medium)
-                }
-                
-                Spacer()
-            }.padding(.horizontal)
+            if !hideTopBar {
+                HStack {
+                    Button(action: { dismiss() }) {
+                        Text(String(localized: "cancel", table: "General"))
+                            .fontWeight(.medium)
+                    }
+                    
+                    Spacer()
+                }.padding(.horizontal)
+            }
             
             ScrollView(showsIndicators: false){
                 VStack (alignment: .leading){
@@ -121,12 +125,15 @@ struct NewClub: View {
                                     .frame(height: 200)
                             } else {
                                 Rectangle()
-                                    .opacity(0.3)
                                     .frame(height: 200)
-                                    .foregroundStyle(.gray)
+                                    .foregroundStyle(Color.Background.secondary)
                                     .overlay {
                                         Image(systemName: "photo.fill")
                                             .imageScale(.large)
+                                    }
+                                    .overlay {
+                                        Rectangle()
+                                            .stroke(Color.primary.opacity(0.15))
                                     }
                                 
                             }
@@ -165,7 +172,7 @@ struct NewClub: View {
                             } else {
                                 Rectangle()
                                     .opacity(0.9)
-                                    .foregroundStyle(.gray)
+                                    .foregroundStyle(Color.Background.secondary)
                                     .frame(width: 100, height: 100)
                                     .border(Color.primary, width: 2)
                                     .overlay {
@@ -194,15 +201,15 @@ struct NewClub: View {
                     Group {
                         VStack (alignment: .leading){
                             HStack(alignment: .top) {
-                                Text("Club Name:")
+                                Text("\(String(localized: "new-club-name-title", table: "Groups")):")
                                     .font(.title3)
                                     .bold()
                                 
-                                Text("*required")
+                                Text("*\(String(localized: "required-text", table: "General"))")
                                     .font(.caption)
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(Color.Brand.tertiary)
                             }
-                            Text("What your club will be known by")
+                            Text(String(localized: "new-club-name-sub-title", table: "Groups"))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }.padding(.top)
@@ -215,22 +222,22 @@ struct NewClub: View {
                                 .focused($focus, equals: .title)
                             
                         }
-                    }
+                    }.padding(.horizontal, 10)
                     
                     // MARK: - Description
                     Group {
                         VStack(alignment: .leading){
                             HStack(alignment: .top) {
-                                Text("Description:")
+                                Text("\(String(localized: "new-club-description-title", table: "Groups")):")
                                     .font(.title3)
                                     .bold()
                                 
-                                Text("*required")
+                                Text("*\(String(localized: "required-text", table: "General"))")
                                     .font(.caption)
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(Color.Brand.tertiary)
                             }.padding(.top)
                             
-                            Text("What your club is about?")
+                            Text(String(localized: "new-club-description-sub-title", table: "Groups"))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
@@ -241,23 +248,23 @@ struct NewClub: View {
                             .padding(.all, 10)
                             .focused($focus, equals: .description)
                             .modifier(BackgroundPillModifier())
-                    }
+                    }.padding(.horizontal, 10)
                     
                     
                     // MARK: - Sports picker
                     VStack(alignment: .leading){
                         VStack(alignment: .leading){
                             HStack(alignment: .top) {
-                                Text("Sport")
+                                Text(String(localized: "new-club-sport-title", table: "Groups"))
                                     .font(.title3)
                                     .bold()
                                 
-                                Text("*required")
+                                Text("*\(String(localized: "required-text", table: "General"))")
                                     .font(.caption)
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(Color.Brand.tertiary)
                             }
                             
-                            Text("The sport(s) your club will focus on")
+                            Text(String(localized: "new-club-sport-sub-title", table: "Groups"))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
@@ -272,12 +279,12 @@ struct NewClub: View {
                                         HStack(alignment: .center) {
                                             ForEach(Array(viewModel.selectedSports), id: \.self) { sport in
                                                 Text(sport.capitalized)
-                                                    .padding(.vertical, 5)
+                                                    .padding(.vertical, 3)
                                                     .foregroundStyle(.white)
                                                     .padding(.horizontal, 10)
                                                     .background {
-                                                        RoundedRectangle(cornerRadius: 10)
-                                                            .foregroundStyle(Color("color-prime"))
+                                                        RoundedRectangle(cornerRadius: 5)
+                                                            .foregroundStyle(Color.Brand.primary)
                                                     }
                                             }
                                         }
@@ -297,6 +304,7 @@ struct NewClub: View {
                             .modifier(BackgroundPillModifier())
                         }
                     }
+                    .padding(.horizontal, 10)
                     .padding(.top)
                     .sheet(isPresented: $viewModel.showSportsPicker, content: {
                         MultiSportsPicker(sports: session.sports, selectedSports: $viewModel.selectedSports)
@@ -308,16 +316,16 @@ struct NewClub: View {
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
                             HStack(alignment: .top) {
-                                Text("Location")
+                                Text(String(localized: "new-club-location-title", table: "Groups"))
                                     .font(.title3)
                                     .fontWeight(.bold)
-                                Text("*required")
+                                Text("*\(String(localized: "required-text", table: "General"))")
                                     .font(.caption)
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(Color.Brand.tertiary)
                             }
                             HStack(alignment: .top) {
-                                Text("Where does this club call home?")
-                                    .font(.caption)
+                                Text(String(localized: "new-club-location-sub-title", table: "Groups"))
+                                    .font(.subheadline)
                                     .foregroundStyle(.gray)
                             }.foregroundStyle(.gray)
                         }
@@ -332,24 +340,21 @@ struct NewClub: View {
                             .frame(maxWidth: .infinity, idealHeight: 40)
                             .modifier(BackgroundPillModifier())
                         }
-                    }.padding(.top)
-                    
-                    VStack(alignment: .leading){
-                        VStack(alignment: .center){
-                            Button(action: { Task { await CreateClub() } }) {
-                                LoadingButton(text: "Create", width: 150, status: $viewModel.status)
-                            }.disabled(viewModel.status == .pending ? false : true)
-                        }
-                        .frame(width: SCREEN_WIDTH-25)
-                        .padding(.top, 50)
                     }
-                }
-                .onTapGesture {
+                    .padding(.top)
+                    .padding(.horizontal, 10)
+                    
+                    VStack(alignment: .center){
+                        Button(action: { Task { await CreateClub() } }) {
+                            LoadingButton(text: String(localized: "create-text", table: "General"), width: 150, status: $viewModel.status)
+                        }.disabled(viewModel.status == .pending ? false : true)
+                    }
+                    .padding(.horizontal, 50)
+                    .padding(.top, 50)
+                }.onTapGesture {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                }
-                .padding(.top)
+                }.padding(.top)
             }
-            .padding(.horizontal, 10)
             .sheet(isPresented: $showLocationPicker, content: {
                 LocalesPicker(selectedCountry: $viewModel.selectedCountry, selectedAdministrativeArea: $viewModel.selectedAdminArea, selectedSubAdministrativeArea: $viewModel.selectedSubAdminArea)
                     .presentationDetents([.height(300)])

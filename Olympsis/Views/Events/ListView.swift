@@ -177,14 +177,14 @@ struct ListView: View {
                             .padding(.top)
                             .frame(width: 150, height: 110)
                         
-                        Text("No events found—time to make one happen! ⚡")
+                        Text(String(localized: "no-events-title", table: "Events"))
                             .font(.body)
                             .padding(.top)
                             .fontWeight(.bold)
                             .padding(.bottom, 5)
                             .multilineTextAlignment(.center)
                         
-                        Text("Looks like there aren’t any sports events in your area right now. Why not be the first to start one? Gather players, set the time, and get the game going! Or try adjusting your filters to see more events nearby.")
+                        Text(String(localized: "no-events-sub-title", table: "Events"))
                             .font(.callout)
                             .padding(.bottom)
                             .padding(.horizontal)
@@ -214,7 +214,7 @@ struct ListView: View {
                             }
                             
                             ForEach(eventsGrouped, id: \.id) { group in
-                                Section(header: Text(group.dayInString).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
+                                Section(header: Text(group.dayInString.capitalized).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
                                     ForEach(group.events, id: \.id) { event in
                                         EventListItem(event: event)
                                             .scrollContentBackground(.hidden)
@@ -284,12 +284,12 @@ struct ListView: View {
                     Image("illustrations/error")
                         .resizable()
                         .frame(width: 170, height: 150)
-                    Text("Whoops! Error loading events. ⚠️")
+                    Text(String(localized: "failed-events-title", table: "Events"))
                         .padding(.top)
                         .fontWeight(.bold)
                         .padding(.bottom, 5)
                     
-                    Text("We ran into an issue pulling up events. Try again in a bit!")
+                    Text(String(localized: "failed-events-sub-title", table: "Events"))
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
                     

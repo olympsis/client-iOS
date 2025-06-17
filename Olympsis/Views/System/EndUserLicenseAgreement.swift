@@ -170,7 +170,7 @@ struct EndUserLicenseAgreement: View {
                 .padding(.vertical)
                 
                 Button(action: { Task { await AcceptEULA() }}) {
-                    LoadingButton(text: String(localized: "Accept", table: "General"), status: $status)
+                    LoadingButton(text: String(localized: "accept", table: "General"), status: $status)
                 }.padding(.vertical)
                 
                 Button(action: { dismiss() }) {

@@ -16,7 +16,7 @@ struct SearchBar: View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
-            TextField("Search...", text: $text, onCommit: onCommit)
+            TextField("\(String(localized: "search", table: "General"))...", text: $text, onCommit: onCommit)
                 .foregroundColor(.primary)
                 .keyboardType(.webSearch)
                 .submitLabel(.search)
@@ -27,6 +27,14 @@ struct SearchBar: View {
                 .fill(.regularMaterial)
                 .cornerRadius(radius: 10, corners: .allCorners)
         )
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.primary.opacity(0.15), lineWidth: 1)
+        }
     }
 }
 
+#Preview {
+    SearchBar(text: .constant(""))
+        .padding(.horizontal)
+}

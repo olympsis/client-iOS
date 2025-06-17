@@ -10,9 +10,10 @@ import Kingfisher
 
 struct MemberListItem: View {
     
-    @State private var showMenu: Bool = false
-    
     @StateObject var member: Member
+    private var enableMenu: Bool = true
+    
+    @State private var showMenu: Bool = false
     @EnvironmentObject private var club: Club
     @Environment(SessionStore.self) private var session
     
@@ -31,6 +32,16 @@ struct MemberListItem: View {
         return member.role ?? ""
     }
     
+    var userImageURL: URL? {
+        guard let user = member.user,
+              let imageURLString = user.imageURL,
+              let url = generateImageURL(imageURLString) else {
+            return nil
+        }
+        
+        return url
+    }
+    
     var memberIsUser: Bool {
         guard let user = session.user, let uuid = user.uuid else {
             return false
@@ -38,15 +49,16 @@ struct MemberListItem: View {
         return uuid == member.user?.uuid
     }
     
-    init(member: Member) {
+    init(member: Member, enableMenu: Bool = true) {
         self._member = StateObject(
             wrappedValue: member
         )
+        self.enableMenu = enableMenu
     }
     
     var body: some View {
         HStack {
-            UserBadgeView(size: .medium)
+            UserBadgeView(size: .medium, imageURL: userImageURL)
                 .redacted(reason: member.isBlocked ? .placeholder : [])
             
             VStack(alignment: .leading) {
@@ -81,7 +93,7 @@ struct MemberListItem: View {
             
             Spacer()
             
-            if !memberIsUser {
+            if !memberIsUser && enableMenu {
                 Button(action:{self.showMenu.toggle()}){
                     Image(systemName: "ellipsis")
                         .imageScale(.large)

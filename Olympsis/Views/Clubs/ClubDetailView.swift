@@ -101,11 +101,11 @@ struct ClubDetailView: View {
                         HStack {
                             if isPublic {
                                 Image(systemName: "globe.americas.fill")
-                                Text("Public club")
+                                Text(String(localized: "public-club", table: "General"))
                                     .font(.callout)
                             } else {
                                 Image(systemName: "lock.fill")
-                                Text("Private club")
+                                Text(String(localized: "private-club", table: "General"))
                                     .font(.callout)
                             }
                         }

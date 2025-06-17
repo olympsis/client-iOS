@@ -18,9 +18,7 @@ struct ClubMenu: View {
     @State private var showOrganizations = false
     @State private var showClubs = false
     @State private var showReports = false
-    @State private var showNewClub = false
     @State private var showEditClub = false
-    @State private var showApplications = false
     @State private var showLeaveClubAlert = false
     @State private var showDeleteClubAlert = false
     @State private var alertType = Alerts.LeaveClub
@@ -59,8 +57,8 @@ struct ClubMenu: View {
                     if club.visibility == "private" {
                         HStack {
                             Image(systemName: "lock.fill")
-                                .foregroundStyle(Color("color-prime"))
-                            Text("Private group")
+                            
+                            Text(String(localized: "private-club", table: "General"))
                                 .font(.callout)
                             Spacer()
                         }.frame(height: 20)
@@ -68,7 +66,7 @@ struct ClubMenu: View {
                     } else {
                         HStack {
                             Image(systemName: "globe.americas.fill")
-                            Text("Public group")
+                            Text(String(localized: "public-club", table: "General"))
                                 .font(.callout)
                             Spacer()
                         }
@@ -77,8 +75,7 @@ struct ClubMenu: View {
                     }
                     
                     HStack {
-                        Text("\(club.members.count)") +
-                        Text(" members")
+                        Text(String(localized: "\(club.members.count) member", table: "General"))
                             .font(.callout)
                         Spacer()
                     }
@@ -94,33 +91,37 @@ struct ClubMenu: View {
                                 .environmentObject(club)
                                 .environment(session)
                         } label: {
-                            MenuLabel(icon: Image(systemName: "pencil"), text: "Edit Club")
+                            MenuLabel(icon: Image(systemName: "pencil"), text: String(localized: "club-menu-edit-club", table: "Groups"))
                         }
                     }
                     
                     if role != "member" {
-                        MenuButton(icon: Image(systemName: "note.text"), text: "Applications", action: {
-                            self.showApplications.toggle()
-                        })
+                        NavigationLink {
+                            ClubApplications(club: club)
+                        } label: {
+                            MenuLabel(icon: Image(systemName: "note.text"), text: String(localized: "group-menu-applications", table: "Groups"))
+                        }
                     }
                     
                     if role != "member" {
-                        MenuButton(icon: Image(systemName: "ladybug"), text: "Reports", action: {
+                        MenuButton(icon: Image(systemName: "ladybug"), text: String(localized: "group-menu-reports", table: "Groups"), action: {
                             self.showReports.toggle()
                         })
                     }
                     
                     if role != "member" {
-                        MenuButton(icon: Image(systemName: "building.fill"), text: "Change Organization", action: {
+                        MenuButton(icon: Image(systemName: "building.fill"), text: String(localized: "club-menu-change-organization", table: "Groups"), action: {
                             self.showOrganizations.toggle()
                         })
                     }
-                            
-                    MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
-                        self.showNewClub.toggle()
-                    })
                     
-                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
+                    NavigationLink {
+                        NewClub(hideTopBar: true)
+                    } label: {
+                        MenuLabel(icon: Image(systemName: "plus.circle.fill"), text: String(localized: "club-menu-create-group", table: "Groups"), type: .normal)
+                    }
+                    
+                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"), action: {
                         self.showClubs.toggle()
                     })
                     
@@ -128,17 +129,19 @@ struct ClubMenu: View {
                         MembersListView()
                             .environmentObject(club)
                     } label: {
-                        MenuLabel(icon: Image(systemName: "person.3"), text: "Members")
+                        MenuLabel(icon: Image(systemName: "person.3"), text: String(localized: "group-menu-members", table: "Groups"))
                     }
                     
-                    MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Club", action: {
-                        showAlert = false
-                        alertType = .LeaveClub
-                        showAlert.toggle()
-                    }, type: .destructive)
+                    if role != "owner" || (role == "owner" && !isOnlyOwner) {
+                        MenuButton(icon: Image(systemName: "door.left.hand.open"), text: String(localized: "club-menu-leave-club", table: "Groups"), action: {
+                            showAlert = false
+                            alertType = .LeaveClub
+                            showAlert.toggle()
+                        }, type: .destructive)
+                    }
                     
                     if role == "owner" {
-                        MenuButton(icon: Image(systemName: "trash.fill"), text: "Delete Club", action: {
+                        MenuButton(icon: Image(systemName: "trash.fill"), text: String(localized: "club-menu-delete-club", table: "Groups"), action: {
                             showAlert = false
                             alertType = .DeleteClub
                             showAlert.toggle()
@@ -156,12 +159,6 @@ struct ClubMenu: View {
             .navigationTitle(club.name)
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
-            .fullScreenCover(isPresented: $showNewClub) {
-                NewClub()
-            }
-            .fullScreenCover(isPresented: $showApplications) {
-                ClubApplications(club: club)
-            }
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
             }
@@ -174,59 +171,34 @@ struct ClubMenu: View {
             .alert(isPresented: $showAlert) {
                 switch alertType {
                 case .LeaveClub:
-                    switch role {
-                    case "owner":
-                        if isOnlyOwner {
-                            return Alert(
-                                title: Text("About Leaving Club"),
-                                message: Text("You cannot leave this club. You are the only owner. Please delete the club or appoint new owners."),
-                                dismissButton: .default(Text("Ok"))
-                            )
-                        } else {
-                            return Alert(
-                                title: Text("Leaving Club"),
-                                message: Text("Are you sure you want to leave this club?"),
-                                primaryButton: .cancel(),
-                                secondaryButton: .destructive(Text("Leave"), action: {
-                                    Task { // Perform delete operation
-                                        _ = await session.clubObserver.leaveClub(id: club.id)
-                                        session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                        session.selectedGroup = session.groups.first
-                                        dismiss()
-                                    }
-                                })
-                            );
-                        }
-                    default:
-                        return Alert(
-                            title: Text("Leaving Club"),
-                            message: Text("Are you sure you want to leave this club?"),
-                            primaryButton: .cancel(),
-                            secondaryButton: .destructive(Text("Leave"), action: {
-                                Task { // Perform delete operation
-                                    _ = await session.clubObserver.leaveClub(id: club.id)
-                                    session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                    
-                                    session.clubsState = .loading
-                                    session.selectedGroup = nil
-                                    if let next = session.groups.first {
-                                        session.selectedGroup = next
-                                    }
-
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        session.clubsState = .success
-                                        dismiss()
-                                    }
+                    return Alert(
+                        title: Text(String(localized: "warning-leave-club-title", table: "Groups")),
+                        message: Text(String(localized: "warning-leave-club-sub-title", table: "Groups")),
+                        primaryButton: .cancel(),
+                        secondaryButton: .destructive(Text(String(localized: "option-leave", table: "Groups")), action: {
+                            Task { // Perform delete operation
+                                _ = await session.clubObserver.leaveClub(id: club.id)
+                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
+                                
+                                session.clubsState = .loading
+                                session.selectedGroup = nil
+                                if let next = session.groups.first {
+                                    session.selectedGroup = next
                                 }
-                            })
-                        );
-                    }
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    session.clubsState = .success
+                                    dismiss()
+                                }
+                            }
+                        })
+                    );
                 case .DeleteClub:
                     return Alert(
-                        title: Text("Delete Club"),
-                        message: Text("Are you sure you want to delete this club?"),
+                        title: Text(String(localized: "warning-delete-club-title", table: "Groups")),
+                        message: Text(String(localized: "warning-delete-club-sub-title", table: "Groups")),
                         primaryButton: .cancel(),
-                        secondaryButton: .destructive(Text("Delete"), action: {
+                        secondaryButton: .destructive(Text(String(localized: "option-delete", table: "Groups")), action: {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.deleteClub(id: club.id)
                                 session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
@@ -258,7 +230,7 @@ struct ClubMenu: View {
     }
 }
 
-#Preview("Club Menu") {
+#Preview {
     ClubMenu()
         .environmentObject(CLUBS[0])
         .environment(SessionStore())

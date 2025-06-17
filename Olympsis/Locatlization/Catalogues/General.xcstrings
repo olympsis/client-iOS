@@ -128,7 +128,7 @@
         }
       }
     },
-    "Accept" : {
+    "accept" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -139,7 +139,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acepte"
+            "value" : "Aceptar"
           }
         },
         "fr" : {
@@ -424,6 +424,29 @@
         }
       }
     },
+    "create-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer"
+          }
+        }
+      }
+    },
     "day-today" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -696,6 +719,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Je préfère ne pas le dire"
+          }
+        }
+      }
+    },
+    "generic-error-fetching-clubs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We hit a snag fetching clubs. Give it another shot in a moment!"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nos topamos con un problema al buscar palos. ¡Inténtalo de nuevo en un momento!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On a rencontré un problème pour récupérer les clubs. On réessaie tout de suite !"
+          }
+        }
+      }
+    },
+    "generic-error-fun-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops! Something went wrong. 🚧"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Uy! Algo salió mal. 🚧"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oups ! Un problème est survenu. 🚧"
           }
         }
       }
@@ -1019,6 +1088,52 @@
         }
       }
     },
+    "private-club" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private club"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Club privado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Club privé"
+          }
+        }
+      }
+    },
+    "public-club" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public club"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Club público"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Club public"
+          }
+        }
+      }
+    },
     "quick-action-sub-text-1" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1107,6 +1222,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "RECHERCHE DES CLUBS"
+          }
+        }
+      }
+    },
+    "radius" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radius"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rayon"
+          }
+        }
+      }
+    },
+    "radius-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching near you"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscando cerca de ti"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recherche près de chez vous"
           }
         }
       }
@@ -1271,6 +1432,98 @@
         }
       }
     },
+    "sports" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sports"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deportes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sportif"
+          }
+        }
+      }
+    },
+    "sports-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only include the sports you like"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluye solo los deportes que te gustan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluez uniquement les sports que vous aimez"
+          }
+        }
+      }
+    },
+    "tags" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mots clés"
+          }
+        }
+      }
+    },
+    "tags-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add some keywords to find your club!"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Agrega algunas palabras clave para encontrar tu club!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez quelques mots-clés pour affiner votre recherche!"
+          }
+        }
+      }
+    },
     "unblock" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1296,6 +1549,12 @@
     },
     "username" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "username"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",

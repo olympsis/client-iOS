@@ -24,8 +24,7 @@ struct InputFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .opacity(0.2)
-                .foregroundStyle(Color.gray)
+                .foregroundStyle(Color.Background.secondary)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
@@ -41,8 +40,7 @@ struct BackgroundPillModifier: ViewModifier {
         content
             .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .opacity(0.2)
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(Color.Background.secondary)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
                             .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)

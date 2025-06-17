@@ -22,6 +22,7 @@ struct ClubApplications: View {
                     if applications.filter({$0.status != "accepted"}).count > 0 {
                         ForEach(applications.filter({$0.status != "accepted"})) { application in
                             ClubApplicationListItem(club: club, application: application, applications: $applications)
+                                .padding(.horizontal, 10)
                         }
                     } else {
                         HStack {
@@ -34,13 +35,6 @@ struct ClubApplications: View {
                     let res = await clubObserver.getApplications(id: club.id)
                     await MainActor.run {
                         applications = res
-                    }
-                }
-            }.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action:{self.presentationMode.wrappedValue.dismiss()}){
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(Color("color-prime"))
                     }
                 }
             }
@@ -56,8 +50,6 @@ struct ClubApplications: View {
     }
 }
 
-struct ClubApplications_Previews: PreviewProvider {
-    static var previews: some View {
-        ClubApplications(club: CLUBS[0])
-    }
+#Preview {
+    ClubApplications(club: CLUBS[0])
 }

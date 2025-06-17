@@ -29,7 +29,7 @@ struct FilterButton: View {
                         .fontWeight(.medium)
                 }
                 
-                Text("Filters")
+                Text(String(localized: "filters", table: "General"))
                     .font(.callout)
                     .fontWeight(.medium)
             }

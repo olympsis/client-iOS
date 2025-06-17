@@ -27,7 +27,7 @@ func calculateTimeAgo(from date: Date, shortned: Bool = false) -> String {
     } else if timeDifference < secondsInAnHour {
         let minutes = Int(timeDifference / secondsInAMinute)
         if shortned {
-            return String(localized: "\(minutes) minutes-shortened", table: "Time")
+            return String(localized: "\(minutes) minute-shortened", table: "Time")
         } else {
             return String(localized: "\(minutes) min-ago", table: "Time")
         }

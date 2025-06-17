@@ -60,18 +60,27 @@ struct MemberReportListItem: View {
                 Text(notes)
                 Spacer()
             }
-            HStack {
-                Text("Created at:")
-                    .fontWeight(.bold)
-                Text(calculateTimeAgo(from: report.createdAt))
-                Spacer()
-            }
             if let m = report.member {
-                MemberView2(member: m)
+                MemberListItem(member: Member(id: nil, role: "member", user: m, joinedAt: nil), enableMenu: false)
+                    .environmentObject(club)
             }
-        }.padding(.all).background{
-            RoundedRectangle(cornerRadius: 10)
+            
+            HStack {
+                Spacer()
+                
+                Text(calculateTimeAgo(from: report.createdAt))
+                    .font(.callout)
+                    .foregroundStyle(.gray)
+            }
+        }
+        .padding(.all)
+        .background{
+            RoundedRectangle(cornerRadius: 15)
                 .foregroundStyle(Color(Color.Background.secondary))
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.primary.opacity(0.15), lineWidth: 1)
         }
     }
 }
@@ -79,4 +88,5 @@ struct MemberReportListItem: View {
 #Preview {
     MemberReportListItem(club: CLUBS[0], report: MEMBER_REPORTS[0])
         .environment(SessionStore())
+        .padding(.horizontal, 10)
 }
