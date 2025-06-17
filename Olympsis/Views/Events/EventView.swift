@@ -28,6 +28,7 @@ struct EventView: View {
     @State private var venueState: LOADING_STATE = .pending
     @State private var organizersState: LOADING_STATE = .pending
     
+    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
@@ -58,7 +59,7 @@ struct EventView: View {
     }
     
     /// Update event data
-    func reloadEvent() async {
+    private func reloadEvent() async {
         guard let resp = await session.eventObserver.fetchEvent(id: event.id) else {
             handleFailure()
             return
@@ -69,7 +70,7 @@ struct EventView: View {
     }
     
     /// Handles success
-    func handleSuccess() {
+    private func handleSuccess() {
         state = .success
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             state = .pending
@@ -77,11 +78,19 @@ struct EventView: View {
     }
     
     /// Handles faliures gracefully
-    func handleFailure() {
+    private func handleFailure() {
         state = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             state = .pending
         }
+    }
+    
+    private func openExternalURL() {
+        guard let extLink = event.externalLink,
+              let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+        openURL(url)
     }
     
     var body: some View {
@@ -149,6 +158,18 @@ struct EventView: View {
                         .padding(.top, 10)
                         .padding([.horizontal, .bottom])
                         .id(3)
+                        
+                        if event.externalLink != nil {
+                            Button(action: { openExternalURL() }) {
+                                HStack {
+                                    Image(systemName: "link")
+                                    
+                                    Text("More event details may be available out of Olympsis. Please click on this message to learn more.")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.leading)
+                                }
+                            }.padding([.horizontal, .bottom])
+                        }
                         
                         // MARK: - Action Buttons
                         EventActionButtons(
