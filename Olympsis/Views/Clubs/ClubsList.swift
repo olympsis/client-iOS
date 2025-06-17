@@ -252,17 +252,17 @@ struct ClubsList: View {
                                     .padding(.top)
                                     .frame(width: 150, height: 110)
                                 
-                                Text("No clubs found in your area... YET! 🚀")
+                                Text(String(localized: "no-clubs-title", table: "General"))
                                     .font(.body)
                                     .padding(.top)
                                     .fontWeight(.bold)
                                     .padding(.bottom, 5)
                                 
-                                Text("It looks like there aren’t any clubs that match your search. Why not start your own and bring the community together? Or try adjusting your filters to discover more clubs nearby!")
+                                Text(String(localized: "no-clubs-sub-title", table: "General"))
                                     .font(.callout)
                                     .padding(.horizontal)
                                     .padding(.bottom)
-                                    .multilineTextAlignment(.center)
+                                    .multilineTextAlignment(.leading)
                             } else {
                                 ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
                                     ClubListItem(club: club, showToast: $showCompletedApplicationToast)
@@ -286,7 +286,7 @@ struct ClubsList: View {
                             
                             Text(String(localized: "generic-error-fetching-clubs", table: "General"))
                                 .padding(.horizontal)
-                                .multilineTextAlignment(.center)
+                                .multilineTextAlignment(.leading)
                             Spacer()
                         }.padding(.top, 50)
                     }

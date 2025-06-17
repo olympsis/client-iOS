@@ -997,6 +997,52 @@
         }
       }
     },
+    "no-clubs-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It looks like there aren’t any clubs that match your search. Why not start your own and bring the community together? Or try adjusting your filters to discover more clubs nearby!"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece que no hay ningún club que coincida con tu búsqueda. ¿Por qué no creas el tuyo y unes a la comunidad? ¡O prueba a ajustar tus filtros para descubrir más clubes cerca!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il semble qu'aucun club ne corresponde à votre recherche. Pourquoi ne pas créer le vôtre et fédérer la communauté ? Ou essayez d'ajuster vos filtres pour découvrir d'autres clubs à proximité !"
+          }
+        }
+      }
+    },
+    "no-clubs-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No clubs found in your area... YET! 🚀"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron clubes en tu zona... ¡TODAVÍA! 🚀"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun club trouvé dans votre région... POUR L'INSTANT! 🚀"
+          }
+        }
+      }
+    },
     "no-thanks" : {
       "extractionState" : "manual",
       "localizations" : {
