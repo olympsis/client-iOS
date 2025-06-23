@@ -272,42 +272,58 @@ struct WorkoutDetails {
     let cadence: Double
     let paceSegments: [PaceSegment]
     let heartRateSamples: [HKQuantitySample]
+    let splits: [PaceSegment]
+}
+
+// MARK: - Pace Analysis Models
+struct PaceSegment: Identifiable {
+    let id = UUID()
+    let segmentNumber: Int
+    let distance: Double // Distance in meters
+    let duration: TimeInterval // Duration in seconds
+    let pace: Double // Pace in seconds per unit (min/km or min/mile)
+    let elevationGain: Double // Elevation gain in meters
+    let elevationLoss: Double // Elevation loss in meters
+    let startTime: Date
+    let endTime: Date
+    let detailSamples: [PaceDetailSample] // Sub-segments for detailed analysis
+    
+    init(segmentNumber: Int, distance: Double, duration: TimeInterval, pace: Double, 
+         elevationGain: Double, elevationLoss: Double, startTime: Date, endTime: Date, 
+         detailSamples: [PaceDetailSample] = []) {
+        self.segmentNumber = segmentNumber
+        self.distance = distance
+        self.duration = duration
+        self.pace = pace
+        self.elevationGain = elevationGain
+        self.elevationLoss = elevationLoss
+        self.startTime = startTime
+        self.endTime = endTime
+        self.detailSamples = detailSamples
+    }
+}
+
+struct PaceDetailSample: Identifiable {
+    let id = UUID()
+    let distance: Double // Distance in meters (0.1km or 0.1 mile)
+    let duration: TimeInterval // Duration in seconds
+    let pace: Double // Pace in seconds per unit
+    let startTime: Date
+    let endTime: Date
+    
+    init(distance: Double, duration: TimeInterval, pace: Double, startTime: Date, endTime: Date) {
+        self.distance = distance
+        self.duration = duration
+        self.pace = pace
+        self.startTime = startTime
+        self.endTime = endTime
+    }
 }
 
 enum ActivitiesSummaryType {
     case distance
     case calories
     case time
-}
-
-
-// MARK: - Supporting Types
-struct PaceSegment {
-    let segmentNumber: Int
-    let distance: Double // in miles or km
-    let duration: TimeInterval
-    let pace: Double // minutes per mile/km
-    let startTime: Date
-    let endTime: Date
-    let isPartial: Bool
-}
-
-struct PaceAnalysis {
-    let fastest: PaceSegment?
-    let slowest: PaceSegment?
-    let averagePace: Double?
-    let steadiness: Double? // Lower = more consistent pace
-    
-    var consistencyRating: String {
-        guard let steadiness = steadiness else { return "Unknown" }
-        
-        switch steadiness {
-        case 0..<0.15: return "Very Consistent"
-        case 0.15..<0.30: return "Consistent"
-        case 0.30..<0.50: return "Moderate"
-        default: return "Variable"
-        }
-    }
 }
 
 

@@ -213,11 +213,15 @@ extension WorkoutManager {
             
             let (cd, ls, hs, ds) = try await (cadence, locationSamples, heartRateSamples, distanceSamples)
             
+            // Generate running splits with or without elevation data
+            let splits = await generateRunningSplits(from: ls, for: workout)
+            
             return WorkoutDetails(
                 route: ls,
                 cadence: cd ?? 0,
-                paceSegments: [],
-                heartRateSamples: hs
+                paceSegments: splits,
+                heartRateSamples: hs,
+                splits: splits
             )
         } catch {
             log.error("Failed to get workout additional data. Error: \(error.localizedDescription)")
@@ -433,5 +437,311 @@ extension WorkoutManager {
             
             self.healthStore.execute(query)
         }
+    }
+    
+    /// Generates running splits with optional elevation data from location samples or workout duration
+    /// - Parameters:
+    ///   - locations: Array of location samples from the workout (can be empty)
+    ///   - workout: The workout to calculate splits for
+    /// - Returns: Array of pace segments with distance, pace, and optional elevation data
+    private func generateRunningSplits(from locations: [CLLocation], for workout: HKWorkout) async -> [PaceSegment] {
+        // Only generate splits for running workouts
+        guard workout.workoutActivityType == .running else { return [] }
+        
+        // If we have location data, use GPS-based splits
+        if !locations.isEmpty {
+            return generateGPSSplits(from: locations, for: workout)
+        }
+        
+        // Otherwise, generate time-based splits using workout distance and duration
+        return await generateTimeBSplits(for: workout)
+    }
+    
+    /// Generates GPS-based splits with elevation data
+    private func generateGPSSplits(from locations: [CLLocation], for workout: HKWorkout) -> [PaceSegment] {
+        let splitDistance: Double = unit == UnitLength.miles ? 1609.344 : 1000 // 1 mile or 1 km in meters
+        var splits: [PaceSegment] = []
+        var currentDistance: Double = 0
+        var splitStartIndex = 0
+        var splitStartTime = workout.startDate
+        
+        for (index, location) in locations.enumerated() {
+            guard index > 0 else { continue }
+            
+            let previousLocation = locations[index - 1]
+            let segmentDistance = location.distance(from: previousLocation)
+            currentDistance += segmentDistance
+            
+            // Check if we've completed a split
+            if currentDistance >= splitDistance {
+                let splitEndTime = location.timestamp
+                let duration = splitEndTime.timeIntervalSince(splitStartTime)
+                
+                // Calculate elevation gain/loss for this split
+                let splitLocations = Array(locations[splitStartIndex...index])
+                let elevationData = calculateElevationChange(for: splitLocations)
+                
+                // Calculate pace (time per unit distance)
+                let paceInSeconds = duration / (splitDistance / (unit == UnitLength.miles ? 1609.344 : 1000))
+                
+                let split = PaceSegment(
+                    segmentNumber: splits.count + 1,
+                    distance: splitDistance,
+                    duration: duration,
+                    pace: paceInSeconds,
+                    elevationGain: elevationData.gain,
+                    elevationLoss: elevationData.loss,
+                    startTime: splitStartTime,
+                    endTime: splitEndTime
+                )
+                
+                splits.append(split)
+                
+                // Reset for next split
+                currentDistance = 0
+                splitStartIndex = index
+                splitStartTime = splitEndTime
+            }
+        }
+        
+        // Handle remaining partial split if significant distance covered
+        if currentDistance > splitDistance * 0.1 && splitStartIndex < locations.count - 1 {
+            let splitEndTime = locations.last!.timestamp
+            let duration = splitEndTime.timeIntervalSince(splitStartTime)
+            
+            let splitLocations = Array(locations[splitStartIndex..<locations.count])
+            let elevationData = calculateElevationChange(for: splitLocations)
+            
+            let paceInSeconds = duration / (currentDistance / (unit == UnitLength.miles ? 1609.344 : 1000))
+            
+            let split = PaceSegment(
+                segmentNumber: splits.count + 1,
+                distance: currentDistance,
+                duration: duration,
+                pace: paceInSeconds,
+                elevationGain: elevationData.gain,
+                elevationLoss: elevationData.loss,
+                startTime: splitStartTime,
+                endTime: splitEndTime
+            )
+            
+            splits.append(split)
+        }
+        
+        return splits
+    }
+    
+    /// Generates HealthKit distance sample-based splits when GPS data is not available
+    private func generateTimeBSplits(for workout: HKWorkout) async -> [PaceSegment] {
+        // Fetch distance samples from HealthKit
+        let distanceSamples = await fetchDistanceSamples(from: workout)
+        
+        guard !distanceSamples.isEmpty else {
+            // Fallback to basic time-based splits if no distance samples
+            return generateBasicTimeSplits(for: workout)
+        }
+        
+        return generateSplitsFromDistanceSamples(distanceSamples, workout: workout)
+    }
+    
+    /// Fetches aggregated distance samples from HealthKit for detailed pace analysis
+    private func fetchDistanceSamples(from workout: HKWorkout) async -> [HKQuantitySample] {
+        do {
+            return try await fetchSamplesForUnit(
+                from: workout,
+                for: getDistanceType(for: workout.workoutActivityType)
+            )
+        } catch {
+            log.error("Failed to fetch distance samples: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    /// Generates splits using HealthKit distance samples for precise pace calculation
+    private func generateSplitsFromDistanceSamples(_ samples: [HKQuantitySample], workout: HKWorkout) -> [PaceSegment] {
+        let splitDistance: Double = unit == UnitLength.miles ? 1609.344 : 1000.0 // 1 mile or 1 km in meters
+        let detailInterval: Double = unit == UnitLength.miles ? 160.9344 : 100.0 // 0.1 mile or 0.1km
+        
+        var splits: [PaceSegment] = []
+        var currentDistance: Double = 0
+        var splitStartTime = workout.startDate
+        var splitStartSampleIndex = 0
+        
+        let meterUnit = HKUnit.meter()
+        
+        for (index, sample) in samples.enumerated() {
+            let sampleDistance = sample.quantity.doubleValue(for: meterUnit)
+            currentDistance += sampleDistance
+            
+            // Check if we've completed a split
+            if currentDistance >= splitDistance {
+                let splitEndTime = sample.endDate
+                let duration = splitEndTime.timeIntervalSince(splitStartTime)
+                
+                // Get detailed samples for this split (for 100m/0.1mi breakdown)
+                let splitSamples = Array(samples[splitStartSampleIndex...index])
+                
+                let split = PaceSegment(
+                    segmentNumber: splits.count + 1,
+                    distance: splitDistance,
+                    duration: duration,
+                    pace: duration / (splitDistance / (unit == UnitLength.miles ? 1609.344 : 1000.0)),
+                    elevationGain: 0, // No elevation data available
+                    elevationLoss: 0, // No elevation data available
+                    startTime: splitStartTime,
+                    endTime: splitEndTime,
+                    detailSamples: generateDetailSamples(from: splitSamples, interval: detailInterval)
+                )
+                
+                splits.append(split)
+                
+                // Reset for next split
+                currentDistance = 0
+                splitStartTime = splitEndTime
+                splitStartSampleIndex = index + 1
+            }
+        }
+        
+        // Handle remaining partial split
+        if currentDistance > splitDistance * 0.1 && splitStartSampleIndex < samples.count {
+            let splitEndTime = samples.last!.endDate
+            let duration = splitEndTime.timeIntervalSince(splitStartTime)
+            let splitSamples = Array(samples[splitStartSampleIndex..<samples.count])
+            
+            let split = PaceSegment(
+                segmentNumber: splits.count + 1,
+                distance: currentDistance,
+                duration: duration,
+                pace: duration / (currentDistance / (unit == UnitLength.miles ? 1609.344 : 1000.0)),
+                elevationGain: 0,
+                elevationLoss: 0,
+                startTime: splitStartTime,
+                endTime: splitEndTime,
+                detailSamples: generateDetailSamples(from: splitSamples, interval: detailInterval)
+            )
+            
+            splits.append(split)
+        }
+        
+        return splits
+    }
+    
+    /// Generates detailed samples for sub-split analysis (0.1km or 0.1 mile intervals)
+    private func generateDetailSamples(from samples: [HKQuantitySample], interval: Double) -> [PaceDetailSample] {
+        var detailSamples: [PaceDetailSample] = []
+        var currentDistance: Double = 0
+        var intervalStartTime = samples.first?.startDate ?? Date()
+        var intervalStartIndex = 0
+        
+        let meterUnit = HKUnit.meter()
+        
+        for (index, sample) in samples.enumerated() {
+            let sampleDistance = sample.quantity.doubleValue(for: meterUnit)
+            currentDistance += sampleDistance
+            
+            if currentDistance >= interval {
+                let intervalEndTime = sample.endDate
+                let duration = intervalEndTime.timeIntervalSince(intervalStartTime)
+                
+                let detailSample = PaceDetailSample(
+                    distance: interval,
+                    duration: duration,
+                    pace: duration / (interval / (unit == UnitLength.miles ? 1609.344 : 1000.0)),
+                    startTime: intervalStartTime,
+                    endTime: intervalEndTime
+                )
+                
+                detailSamples.append(detailSample)
+                
+                // Reset for next interval
+                currentDistance = 0
+                intervalStartTime = intervalEndTime
+                intervalStartIndex = index + 1
+            }
+        }
+        
+        return detailSamples
+    }
+    
+    /// Fallback method for basic time-based splits when no distance samples available
+    private func generateBasicTimeSplits(for workout: HKWorkout) -> [PaceSegment] {
+        guard let totalDistance = workout.totalDistance?.doubleValue(for: unit == UnitLength.miles ? .mile() : .meter()),
+              totalDistance > 0 else { return [] }
+        
+        let workoutDuration = workout.duration
+        let splitDistance: Double = unit == UnitLength.miles ? 1.0 : 1000.0
+        let splitDistanceInMeters: Double = unit == UnitLength.miles ? 1609.344 : 1000.0
+        
+        let numberOfFullSplits = Int(totalDistance / splitDistance)
+        var splits: [PaceSegment] = []
+        
+        let averagePacePerMeter = workoutDuration / (totalDistance * (unit == UnitLength.miles ? 1609.344 : 1.0))
+        
+        for splitIndex in 0..<numberOfFullSplits {
+            let splitDuration = averagePacePerMeter * splitDistanceInMeters
+            let startTime = workout.startDate.addingTimeInterval(Double(splitIndex) * splitDuration)
+            let endTime = startTime.addingTimeInterval(splitDuration)
+            
+            let split = PaceSegment(
+                segmentNumber: splitIndex + 1,
+                distance: splitDistanceInMeters,
+                duration: splitDuration,
+                pace: averagePacePerMeter * (unit == UnitLength.miles ? 1609.344 : 1000.0),
+                elevationGain: 0,
+                elevationLoss: 0,
+                startTime: startTime,
+                endTime: endTime
+            )
+            
+            splits.append(split)
+        }
+        
+        return splits
+    }
+    
+    /// Calculates elevation gain and loss for a segment of locations
+    /// - Parameter locations: Array of locations to analyze
+    /// - Returns: Tuple containing elevation gain and loss in meters
+    private func calculateElevationChange(for locations: [CLLocation]) -> (gain: Double, loss: Double) {
+        guard locations.count > 1 else { return (0, 0) }
+        
+        var totalGain: Double = 0
+        var totalLoss: Double = 0
+        
+        // Apply smoothing to reduce GPS noise in elevation data
+        let smoothedElevations = smoothElevations(locations.map { $0.altitude })
+        
+        for i in 1..<smoothedElevations.count {
+            let elevationChange = smoothedElevations[i] - smoothedElevations[i - 1]
+            
+            if elevationChange > 0 {
+                totalGain += elevationChange
+            } else {
+                totalLoss += abs(elevationChange)
+            }
+        }
+        
+        return (gain: totalGain, loss: totalLoss)
+    }
+    
+    /// Applies a simple moving average to smooth elevation data and reduce GPS noise
+    /// - Parameter elevations: Raw elevation data
+    /// - Returns: Smoothed elevation data
+    private func smoothElevations(_ elevations: [Double]) -> [Double] {
+        guard elevations.count > 2 else { return elevations }
+        
+        let windowSize = 3
+        var smoothed: [Double] = []
+        
+        for i in 0..<elevations.count {
+            let start = max(0, i - windowSize/2)
+            let end = min(elevations.count - 1, i + windowSize/2)
+            
+            let window = Array(elevations[start...end])
+            let average = window.reduce(0, +) / Double(window.count)
+            smoothed.append(average)
+        }
+        
+        return smoothed
     }
 }
