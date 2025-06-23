@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ActivitySplitsView: View {
     
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         Text("")
@@ -33,7 +33,6 @@ struct ActivitySplitsView: View {
 }
 
 #Preview {
-    let manager = WorkoutManager()
-    return ActivitySplitsView()
-        .environmentObject(manager)
+    ActivitySplitsView()
+        .environment(WorkoutManager())
 }

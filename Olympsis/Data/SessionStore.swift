@@ -79,6 +79,7 @@ class SessionStore {
     var postObserver = PostObserver()
     var fieldObserver = FieldObserver()
     var eventObserver = EventObserver()
+    var workoutManager = WorkoutManager()
     var locationManager = LocationManager()
     var managementObserver = ManagementObserver()
     var notificationService = NotificationService()

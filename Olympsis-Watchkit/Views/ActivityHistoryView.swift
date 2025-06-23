@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActivityHistoryView: View {
     
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         NavigationStack {
@@ -34,5 +34,5 @@ struct ActivityHistoryView: View {
 
 #Preview {
     ActivityHistoryView()
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActivityView: View {
     
-    var selectedSport: SPORTS
+    var selectedSport: SUPPORTED_SPORTS
     
     @State private var selected: ACTIVITY_PAGES = .metrics
     @State private var isActive = true
@@ -17,7 +17,7 @@ struct ActivityView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isLuminanceReduced) var isLuminenceReduced
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     private func startCountdown() {
         if manager.session == nil {
@@ -40,17 +40,17 @@ struct ActivityView: View {
         TabView(selection: $selected) {
             
             ActivityMenu(selection: $selected)
-                .environmentObject(manager)
+                .environment(manager)
                 .tag(ACTIVITY_PAGES.menu)
             
             switch selectedSport {
             case .running, .walking:
                 RunActivityMetrics()
-                    .environmentObject(manager)
+                    .environment(manager)
                     .tag(ACTIVITY_PAGES.metrics)
             case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
                 GeneralActivityMetrics()
-                    .environmentObject(manager)
+                    .environment(manager)
                     .tag(ACTIVITY_PAGES.metrics)
             default:
                 EmptyView()
@@ -59,11 +59,11 @@ struct ActivityView: View {
             switch selectedSport {
             case .running, .walking:
                 RunActivityDetails()
-                    .environmentObject(manager)
+                    .environment(manager)
                     .tag(ACTIVITY_PAGES.details)
             case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
                 GeneralActivityDetails()
-                    .environmentObject(manager)
+                    .environment(manager)
                     .tag(ACTIVITY_PAGES.details)
             default:
                 EmptyView()
@@ -106,5 +106,5 @@ struct ActivityView: View {
 
 #Preview {
     ActivityView(selectedSport: .soccer)
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

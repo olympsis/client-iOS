@@ -10,18 +10,18 @@ import SwiftUI
 @main
 struct Olympsis_WatchkitApp: App {
     
-    @StateObject private var manager = WorkoutManager()
+    @State private var manager = WorkoutManager()
     
     var body: some Scene {
         WindowGroup {
             ActivityHomeView()
+                .environment(manager)
                 .task {
                     await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
                 }
-                .environmentObject(manager)
                 .sheet(isPresented: $manager.showingSummaryView, content: {
                     ActivitySummaryView()
-                        .environmentObject(manager)
+                        .environment(manager)
                 })
         }
     }

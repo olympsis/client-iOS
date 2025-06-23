@@ -22,13 +22,13 @@ struct ActivityGoalButton: View {
                         .font(.title3)
                         .italic()
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.background)
+                        .foregroundStyle(Color.Background.primary)
                     
                     Spacer()
                     
                     goal.toIcon()
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.background)
+                        .foregroundStyle(Color.Background.primary)
                 }
                 .padding(.horizontal)
             }

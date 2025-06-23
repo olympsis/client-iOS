@@ -11,12 +11,12 @@ struct WorkoutsList: View {
     
     var title: String
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) var manager: WorkoutManager
     
     var body: some View {
         ScrollView {
             ForEach(manager.workouts.sorted(by: { $0.workout.startDate > $1.workout.startDate })) { workout in
-                WorkoutListItemView(workout: workout)
+                WorkoutListItem(workout: workout)
             }
         }
         .contentMargins(.vertical, 10)
@@ -38,6 +38,6 @@ struct WorkoutsList: View {
 #Preview {
     NavigationStack {
         WorkoutsList(title: "Workouts")
-            .environmentObject(WorkoutManager())
+            .environment(WorkoutManager())
     }
 }

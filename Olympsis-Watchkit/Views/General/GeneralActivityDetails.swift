@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GeneralActivityDetails: View {
     
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         ScrollView {
@@ -38,5 +38,5 @@ struct GeneralActivityDetails: View {
 
 #Preview {
     GeneralActivityDetails()
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

@@ -11,7 +11,7 @@ import WatchKit
 struct ActivityMenu: View {
     
     @Binding var selection: ACTIVITY_PAGES
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         ScrollView {
@@ -49,7 +49,7 @@ struct ActivityMenu: View {
                         }
                     }) {
                         Circle()
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .overlay {
                                 if manager.state == .paused {
                                     Image(systemName: "play.fill")
@@ -108,5 +108,5 @@ struct ActivityMenu: View {
 
 #Preview {
     ActivityMenu(selection: .constant(.menu))
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

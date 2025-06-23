@@ -6,160 +6,153 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct WorkoutView: View {
     
-    var activityName: Text
+    var activityName: String
     var workout: Workout
-    @Environment(\.dismiss) private var dismiss
+    @State private var state: LOADING_STATE = .loading
     
-    var sportIcon: some View {
-        switch (workout.type) {
-        case .walking:
-            return ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.primary)
-                Image(systemName: "figure.walk")
-                    .resizable()
-                    .frame(width: 45, height: 55)
-                    .foregroundColor(Color.Background.primary)
-            }
-        case .running:
-            return ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.primary)
-                Image(systemName: "figure.run")
-                    .resizable()
-                    .frame(width: 45, height: 55)
-                    .foregroundColor(Color.Background.primary)
-            }
-        case .soccer:
-            return ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.primary)
-                Image(systemName: "figure.soccer")
-                    .resizable()
-                    .frame(width: 45, height: 55)
-                    .foregroundColor(Color.Background.primary)
-            }
-            
-        default:
-            return ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.primary)
-                Image(systemName: "figure")
-                    .resizable()
-                    .frame(width: 45, height: 55)
-                    .foregroundColor(.background)
-            }
-        }
+    @Environment(\.dismiss) private var dismiss
+    @Environment(WorkoutManager.self) private var manager
+    
+    private var hasSplits: Bool {
+        return workout.type == .running || workout.type == .cycling
+    }
+    
+    private var cadence: String {
+        return String(format: "%.1f", workout.cadence ?? 0)
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack {
-                    HStack {
-                        sportIcon
-                        Spacer()
-                        VStack(alignment: .leading) {
-                            Text("\(workout.caloriesBurned, specifier: "%.0f")")
-                                .font(.custom("Archivo-Black", size: 80))
-                                .foregroundColor(Color("color-secnd"))
-                            Text("Calories")
-                                .foregroundColor(.gray)
-                                .padding(.leading)
+        ScrollView {
+            VStack {
+                HStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(Color.foreground)
+                        .overlay {
+                            workout.type.icon()
+                                .resizable()
+                                .frame(width: 45, height: 55)
+                                .foregroundStyle(Color.Background.primary)
                         }
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal)
                     
-                    switch (workout.type) {
-                    case .walking, .running:
-                        VStack {
-                            HStack(alignment: .top) {
-                                VStack(alignment: .leading) {
-                                    Text(workout.averagePace)
-                                        .foregroundColor(Color("color-secnd"))
-                                        .font(.title3)
-                                        .bold()
-                                    Text("Avg. Pace")
-                                }.frame(width: 100)
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .leading) {
-                                    Text(workout.ellapsedTime)
-                                        .foregroundColor(Color("color-secnd"))
-                                        .font(.title3)
-                                        .bold()
-                                    Text("Time")
-                                }
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .leading) {
-                                    Text("\(workout.totalDistanceTraveled, specifier: "%0.2f")")
-                                        .foregroundColor(Color("color-secnd"))
-                                        .font(.title3)
-                                        .bold()
-                                    Text("Miles")
-                                }
-                            }.padding(.horizontal, 25)
-                                .padding(.vertical)
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text("\(workout.averageHeartRate, specifier: "%.0f")")
-                                        .foregroundColor(Color("color-secnd"))
-                                        .font(.title3)
-                                        .bold()
-                                    Text("Avg. Heart Rate")
-                                }.frame(width: 100)
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .leading) {
-                                    Text("_")
-                                        .foregroundColor(Color("color-secnd"))
-                                        .font(.title3)
-                                        .bold()
-                                    Text("Cadence")
-                                }.frame(width: 100)
-                            }.padding(.horizontal, 25)
-                        }
-                    case .soccer:
-                        HStack {}
-                    default:
-                        VStack {
-                            if mapState == .success {
-                                WorkoutMapView(locations: workout.route2DPoints)
-                            }
-                        }
-                    }
+                    Spacer()
+                    
+                    VStack(alignment: .leading) {
+                        Text("\(workout.totalDistance, specifier: "%0.2f")")
+                            .font(.custom("Archivo-BlackItalic", size: 80))
+                            .italic()
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            .foregroundStyle(Color.foreground)
+                        
+                        Text("Miles")
+                            .foregroundColor(.gray)
+                            .padding(.leading)
+                    }.padding(.leading)
+                    
+                    Spacer()
                 }
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "chevron.left")
+                .frame(maxWidth: .infinity)
+                .padding([.top, .horizontal])
+                
+                // MARK: - Workout Details
+                VStack {
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading) {
+                            Text(workout.averagePace)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color.primary)
+                            Text("Avg. Pace")
+                        }.frame(width: 100)
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            Text("\(workout.totalCalories, specifier: "%.0f")")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.green)
+                            Text("Calories")
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            Text(workout.totalTime)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color.Brand.tertiary)
+                            Text("Time")
                         }
                     }
-                    
-                    ToolbarItem(placement: .principal) {
-                        activityName
+                    .padding(.vertical)
+                    .padding(.horizontal, 25)
+                        
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("\(workout.averageHeartRate, specifier: "%.0f")")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color.Brand.secondary)
+                            Text("Avg. Heart Rate")
+                        }
+                        .frame(width: 100)
+                        .redacted(reason: state == .loading ? .placeholder : [])
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            Text(cadence)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color.Brand.quaternary)
+                            Text("Cadence")
+                        }
+                        .frame(width: 100)
+                        .redacted(reason: state == .loading ? .placeholder : [])
                     }
+                    .padding(.horizontal, 25)
+                }
+                
+                if !workout.route2DPoints.isEmpty {
+                    WorkoutMapView(locations: workout.route2DPoints)
+                }
+                
+                if hasSplits {
+                    WorkoutSplitsView(splits: [])
+                        .padding(.top)
                 }
             }
+            .navigationTitle(activityName)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .task {
+            state = .loading
+            guard workout.cadence == nil,
+                  workout.heartSamples.isEmpty,
+                  workout.locationSamples.isEmpty,
+                let details = await manager.fetchWorkoutAdditionalData(from: workout.workout) else {
+                state = .failure
+                return
+            }
+            
+            workout.cadence = details.cadence
+            workout.locationSamples = details.route
+            workout.heartSamples = details.heartRateSamples
+            
+            state = .success
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        WorkoutView(activityName: Text("Friday Evening Run"), workout: Workout(id: UUID(), type: .running, startDate: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, endDate: Date(), averageHeartRate: 155, caloriesBurned: 101, totalDistanceTraveled: 0.76))
+        WorkoutView(activityName: "Friday Evening Run", workout: Workout(type: .running, workout: HKWorkout(activityType: .running, start: Date(), end: Date().addingTimeInterval(30 * 60)), totalDistance: 100, totalCalories: 0))
+            .environment(WorkoutManager())
     }
 }

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct RunActivityPreperation: View {
     
-    var sport: SPORTS
+    var sport: SUPPORTED_SPORTS
     @State private var pickedGoal: ACTIVITY_GOALS?
     @State private var showGoalPicker: Bool = false
     @State private var showLiveActivity: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     @AppStorage("run_type") private var runType: String?
     
@@ -23,7 +23,7 @@ struct RunActivityPreperation: View {
         ScrollView {
             NavigationLink(destination: {
                 ActivityView(selectedSport: sport)
-                    .environmentObject(manager)
+                    .environment(manager)
             }) {
                 Circle()
                     .frame(width: 120, height: 120)
@@ -71,5 +71,5 @@ struct RunActivityPreperation: View {
 
 #Preview {
     RunActivityPreperation(sport: .running)
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

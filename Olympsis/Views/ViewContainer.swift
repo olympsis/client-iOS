@@ -9,7 +9,6 @@ import MapKit
 import SwiftUI
 import Firebase
 import Security
-import AlertToast
 import AuthenticationServices
 
 struct ViewContainer: View {
@@ -48,28 +47,28 @@ struct ViewContainer: View {
                 Home(router: homeRouter)
                     .tag(ViewTab.home)
                     .toolbar(.hidden, for: .tabBar)
-                    .environmentObject(session)
+                    .environment(session)
                 
                 GroupView(router: groupRouter)
                     .tag(ViewTab.club)
                     .toolbar(.hidden, for: .tabBar)
-                    .environmentObject(session)
+                    .environment(session)
                 
                 Events(router: eventRouter)
                     .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
-                    .environmentObject(session)
+                    .environment(session)
                 
-                Activity()
+                Activities()
                     .tag(ViewTab.activity)
                     .toolbar(.hidden, for: .tabBar)
-                    .environmentObject(session)
-                    .environmentObject(session.workoutManager)
+                    .environment(session)
+                    .environment(session.workoutManager)
                 
                 Profile()
                     .tag(ViewTab.profile)
                     .toolbar(.hidden, for: .tabBar)
-                    .environmentObject(session)
+                    .environment(session)
             }
             .padding(.bottom, -10)
             
@@ -126,6 +125,10 @@ struct ViewContainer: View {
                 }
             }
             session.state = .success
+            
+            if session.workoutManager.checkAuthorizationStatus() {
+                _ = await session.workoutManager.loadWorkouts()
+            }
             
             guard let hasOnboarded = user.hasOnboarded else {
                 return

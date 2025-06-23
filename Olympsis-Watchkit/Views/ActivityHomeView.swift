@@ -11,18 +11,18 @@ import CoreLocation
 struct ActivityHomeView: View {
     
     @State private var selectedTab: Int = 1
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         TabView(selection: $selectedTab) {
             ActivityHistoryView()
-                .environmentObject(manager)
+                .environment(manager)
                 .tag(0)
             ActivitySportsPicker()
-                .environmentObject(manager)
+                .environment(manager)
                 .tag(1)
             ActivitySettingsView()
-                .environmentObject(manager)
+                .environment(manager)
                 .tag(2)
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -36,5 +36,5 @@ struct ActivityHomeView: View {
 
 #Preview {
     ActivityHomeView()
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

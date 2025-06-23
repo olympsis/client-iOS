@@ -9,16 +9,15 @@ import SwiftUI
 
 struct ActivitySportsPicker: View {
     
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                ForEach([SPORTS.running, SPORTS.walking, SPORTS.soccer, SPORTS.tennis, SPORTS.pickleball], id: \.self) { sport in
+                ForEach([SUPPORTED_SPORTS.running, SUPPORTED_SPORTS.walking, SUPPORTED_SPORTS.soccer, SUPPORTED_SPORTS.tennis, SUPPORTED_SPORTS.pickleball], id: \.self) { sport in
                     NavigationLink(destination: ActivityPreparationView(sport: sport)) {
-                        SportView(sport: sport, scale: .XLarge)
-                            .frame(width: 130, height: 130)
-                            .padding(.vertical)
+                        ActivitySportCard(sport: sport)
+                            .frame(height: 150)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -39,5 +38,5 @@ struct ActivitySportsPicker: View {
 
 #Preview {
     ActivitySportsPicker()
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }

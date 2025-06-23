@@ -18,7 +18,7 @@ struct RunActivityGoalSetter: View {
     @State private var distance: Double = 1
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     func secondsToMinutesSecondsFormat(seconds: Int) -> String {
         let minutes = seconds / 60
@@ -105,7 +105,7 @@ struct RunActivityGoalSetter: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { dismiss() }) {
                         Text("Cancel")
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -116,4 +116,5 @@ struct RunActivityGoalSetter: View {
 
 #Preview {
     RunActivityGoalSetter(goal: .zone)
+        .environment(WorkoutManager())
 }

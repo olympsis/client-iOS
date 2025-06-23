@@ -22,33 +22,15 @@ struct WorkoutSmallListItemView: View {
                         .foregroundStyle(.gray)
                     
                     HStack {
-                        switch workout.type {
-                        case .running:
-                            Image(systemName: "figure.run")
-                                .fontWeight(.bold)
-                                .imageScale(.large)
-                        case .walking:
-                            Image(systemName: "figure.walk")
-                                .fontWeight(.bold)
-                                .imageScale(.large)
-                        case .cycling:
-                            Image(systemName: "figure.outdoor.cycle")
-                                .fontWeight(.bold)
-                                .imageScale(.large)
-                        case .soccer:
-                            Image(systemName: "figure.soccer")
-                                .fontWeight(.bold)
-                                .imageScale(.large)
-                        default:
-                            Image(systemName: "figure")
-                                .fontWeight(.bold)
-                                .imageScale(.large)
-                        }
+                        workout.type.icon()
+                            .fontWeight(.bold)
+                            .imageScale(.large)
                         
                         Text("\(workout.totalDistance, specifier: "%.2f")")
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.horizontal)
+                        
                         Group {
                             Locale.current.measurementSystem == "Metric" ? Text("km") : Text("mi")
                         }

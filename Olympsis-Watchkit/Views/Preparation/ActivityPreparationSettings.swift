@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActivityPreparationSettings: View {
     
-    var sport: SPORTS
+    var sport: SUPPORTED_SPORTS
     
     @AppStorage("run_type") private var runType: String?
     @AppStorage("unit_type") private var unitType: String?
@@ -23,13 +23,13 @@ struct ActivityPreparationSettings: View {
                         Text("Environment")
                             .font(.caption2)
                             .textCase(.uppercase)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                         
                         HStack {
                             Button(action: { runType = "outdoor" }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(height: 40)
-                                    .foregroundStyle(runType != "indoor" ? Color.colorSecnd : Color.background)
+                                    .foregroundStyle(runType != "indoor" ? Color.colorSecnd : Color.Background.primary)
                                     .overlay {
                                         Text("Outdoor")
                                             .foregroundStyle(runType != "indoor" ? Color.white : Color.foreground)
@@ -39,7 +39,7 @@ struct ActivityPreparationSettings: View {
                             Button(action: { runType = "indoor" }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(height: 40)
-                                    .foregroundStyle(runType == "indoor" ? Color.colorSecnd : Color.background)
+                                    .foregroundStyle(runType == "indoor" ? Color.Brand.secondary : Color.Background.primary)
                                     .overlay {
                                         Text("Indoor")
                                             .foregroundStyle(runType == "indoor" ? Color.white : Color.foreground)
@@ -50,13 +50,13 @@ struct ActivityPreparationSettings: View {
                         Text("Unit")
                             .font(.caption2)
                             .textCase(.uppercase)
-                            .foregroundStyle(Color.background)
+                            .foregroundStyle(Color.Background.primary)
                             .padding(.top)
                         HStack {
                             Button(action: { unitType = "kilometers" }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(height: 40)
-                                    .foregroundStyle(unitType != "miles" ? Color.colorSecnd : Color.background)
+                                    .foregroundStyle(unitType != "miles" ? Color.Brand.secondary : Color.Background.primary)
                                     .overlay {
                                         Text("Kilometers")
                                             .foregroundStyle(unitType != "miles" ? Color.white : Color.foreground)
@@ -66,7 +66,7 @@ struct ActivityPreparationSettings: View {
                             Button(action: { unitType = "miles" }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(height: 40)
-                                    .foregroundStyle(unitType == "miles" ? Color.colorSecnd : Color.background)
+                                    .foregroundStyle(unitType == "miles" ? Color.Brand.secondary : Color.Background.primary)
                                     .overlay {
                                         Text("Miles")
                                             .foregroundStyle(unitType == "miles" ? Color.white : Color.foreground)

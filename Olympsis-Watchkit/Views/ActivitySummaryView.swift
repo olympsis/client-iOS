@@ -66,7 +66,7 @@ struct ActivitySummaryView: View {
     }
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         ScrollView {
@@ -85,7 +85,7 @@ struct ActivitySummaryView: View {
                     }
                     
                     Image(systemName: "clock")
-                        .foregroundStyle(Color.colorPrime)
+                        .foregroundStyle(Color.Brand.secondary)
                         .imageScale(.large)
                         .fontWeight(.bold)
                         .padding(.all)
@@ -220,6 +220,6 @@ struct ActivitySummaryView: View {
 #Preview {
     NavigationStack {
         ActivitySummaryView()
-            .environmentObject(WorkoutManager())
+            .environment(WorkoutManager())
     }
 }

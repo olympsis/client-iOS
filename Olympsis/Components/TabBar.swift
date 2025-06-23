@@ -33,7 +33,7 @@ struct TabBar: View {
                         Image(systemName: currentTab == .home ? "house.fill" : "house")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
+                            .foregroundStyle(Color.foreground)
                     }
                 }
                 
@@ -49,7 +49,7 @@ struct TabBar: View {
                         Image(systemName: currentTab == .club ? "person.2.fill" : "person.2")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
+                            .foregroundStyle(Color.foreground)
                     }
                 }
                 
@@ -61,12 +61,8 @@ struct TabBar: View {
                     VStack {
                         Image(systemName: currentTab == .activity ? "figure.run.circle.fill" : "figure.run.circle")
                             .imageScale(.large)
-                            .frame(width: 20, height: 20)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white )
-                        Text("ACTIVITY")
-                            .font(.caption2)
-                            .foregroundColor(.white )
+                            .foregroundStyle(Color.foreground)
                     }
                 }
                 
@@ -82,7 +78,7 @@ struct TabBar: View {
                         Image(systemName: currentTab == .events ? "calendar.circle.fill" : "calendar")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.foreground)
+                            .foregroundStyle(Color.foreground)
                     }
                 }
                 

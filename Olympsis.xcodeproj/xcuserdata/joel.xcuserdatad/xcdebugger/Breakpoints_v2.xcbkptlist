@@ -20,5 +20,65 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A9DECBE2-A9B8-49F5-814C-125A2D7F2F91"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis/Shared/Data/WorkoutManager+Read.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
+            landmarkName = "fetchWorkoutAdditionalData(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A9DECBE2-A9B8-49F5-814C-125A2D7F2F91 - 6d3f16ddb7e62d5f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for Olympsis.WorkoutManager.fetchWorkoutAdditionalData(from: __C.HKWorkout) async -&gt; Swift.Optional&lt;Olympsis.WorkoutDetails&gt;"
+                  moduleName = "Olympsis.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joel/Documents/Olympsis/Source/client-ios/Olympsis/Shared/Data/WorkoutManager+Read.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "217"
+                  endingLineNumber = "217">
+               </Location>
+               <Location
+                  uuid = "A9DECBE2-A9B8-49F5-814C-125A2D7F2F91 - b2527e9e5783a4ac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(10) suspend resume partial function for Olympsis.WorkoutManager.fetchWorkoutAdditionalData(from: __C.HKWorkout) async -&gt; Swift.Optional&lt;Olympsis.WorkoutDetails&gt;"
+                  moduleName = "Olympsis.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joel/Documents/Olympsis/Source/client-ios/Olympsis/Shared/Data/WorkoutManager+Read.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "217"
+                  endingLineNumber = "217">
+               </Location>
+               <Location
+                  uuid = "A9DECBE2-A9B8-49F5-814C-125A2D7F2F91 - 78b7e2c7acdf97b1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(19) suspend resume partial function for Olympsis.WorkoutManager.fetchWorkoutAdditionalData(from: __C.HKWorkout) async -&gt; Swift.Optional&lt;Olympsis.WorkoutDetails&gt;"
+                  moduleName = "Olympsis.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joel/Documents/Olympsis/Source/client-ios/Olympsis/Shared/Data/WorkoutManager+Read.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "217"
+                  endingLineNumber = "217">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

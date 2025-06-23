@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5DDCB9772C4C487500AE6C7A"
-               BuildableName = "Olympsis.app"
+               BuildableName = "OlympsisWatchkit"
                BlueprintName = "OlympsisWatchkit"
                ReferencedContainer = "container:Olympsis.xcodeproj">
             </BuildableReference>
@@ -59,7 +59,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5DDCB9772C4C487500AE6C7A"
-            BuildableName = "Olympsis.app"
+            BuildableName = "OlympsisWatchkit"
             BlueprintName = "OlympsisWatchkit"
             ReferencedContainer = "container:Olympsis.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5DDCB9772C4C487500AE6C7A"
-            BuildableName = "Olympsis.app"
+            BuildableName = "OlympsisWatchkit"
             BlueprintName = "OlympsisWatchkit"
             ReferencedContainer = "container:Olympsis.xcodeproj">
          </BuildableReference>

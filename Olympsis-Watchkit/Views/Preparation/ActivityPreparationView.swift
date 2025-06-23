@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ActivityPreparationView: View {
     
-    var sport: SPORTS
+    var sport: SUPPORTED_SPORTS
     @State private var selected: Int = 0
-    @EnvironmentObject private var manager: WorkoutManager
+    @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         NavigationStack {
@@ -19,17 +19,17 @@ struct ActivityPreparationView: View {
                 switch sport {
                 case .running, .walking:
                     RunActivityPreperation(sport: sport)
-                        .environmentObject(manager)
+                        .environment(manager)
                         .tag(0)
                 case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
                     GeneralActivityPreparation(sport: sport)
-                        .environmentObject(manager)
+                        .environment(manager)
                         .tag(0)
                 default:
                     EmptyView()
                 }
                 ActivityPreparationSettings(sport: sport)
-                    .environmentObject(manager)
+                    .environment(manager)
                     .tag(1)
             }.task {
                 manager.selectedSport = sport
@@ -40,5 +40,5 @@ struct ActivityPreparationView: View {
 
 #Preview {
     ActivityPreparationView(sport: .running)
-        .environmentObject(WorkoutManager())
+        .environment(WorkoutManager())
 }
