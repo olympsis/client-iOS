@@ -139,25 +139,29 @@ struct WorkoutView: View {
         }
         .task {
             state = .loading
-            guard workout.cadence == nil,
-                  workout.heartSamples.isEmpty,
-                  workout.locationSamples.isEmpty,
-                let details = await manager.fetchWorkoutAdditionalData(from: workout.workout) else {
-                state = .failure
-                return
+            // Only fetch additional data if we don't already have it
+            if workout.cadence == nil || 
+               workout.heartSamples.isEmpty || 
+               workout.locationSamples.isEmpty || 
+               workout.paceSegments.isEmpty {
+                
+                guard let details = await manager.fetchWorkoutAdditionalData(from: workout.workout) else {
+                    state = .failure
+                    return
+                }
+                
+                workout.cadence = details.cadence
+                workout.locationSamples = details.route
+                workout.paceSegments = details.paceSegments
+                workout.heartSamples = details.heartRateSamples
             }
-            
-            workout.cadence = details.cadence
-            workout.locationSamples = details.route
-            workout.paceSegments = details.paceSegments
-            workout.heartSamples = details.heartRateSamples
-            
-            let stats = workout.workout.allStatistics
-            for stat in stats {
-                print(stat.key)
-                print(stat.key == HKQuantityTypeIdentifier.activeEnergyBurned as NSObject)
-                print(stat.key == HKQuantityTypeIdentifier.distanceWalkingRunning as NSObject)
-            }
+//            
+//            let stats = workout.workout.allStatistics
+//            for stat in stats {
+//                print(stat.key)
+//                print(stat.key == HKQuantityTypeIdentifier.activeEnergyBurned as NSObject)
+//                print(stat.key == HKQuantityTypeIdentifier.distanceWalkingRunning as NSObject)
+//            }
             state = .success
         }
     }

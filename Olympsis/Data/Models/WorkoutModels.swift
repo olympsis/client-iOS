@@ -62,10 +62,10 @@ class Workout: Identifiable {
         }
         
         let totalMinutes = workout.duration / 60.0
-        let paceMinutesPerMile = totalMinutes / totalDistance
+        let paceMinutesPerUnit = totalMinutes / totalDistance // Now correctly calculates pace per unit (km or mile)
         
-        let minutes = Int(paceMinutesPerMile)
-        let seconds = Int((paceMinutesPerMile - Double(minutes)) * 60)
+        let minutes = Int(paceMinutesPerUnit)
+        let seconds = Int((paceMinutesPerUnit - Double(minutes)) * 60)
         
         return String(format: "%d:%02d", minutes, seconds)
     }
@@ -107,7 +107,13 @@ class Workout: Identifiable {
               let sum = statistics.sumQuantity() else {
             return 0
         }
-        return sum.doubleValue(for: HKUnit.mile())
+        // Return distance in user's preferred unit (miles or kilometers)
+        let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
+        if preferredUnit == UnitLength.kilometers {
+            return sum.doubleValue(for: HKUnit.meter()) / 1000.0 // Convert meters to kilometers
+        } else {
+            return sum.doubleValue(for: HKUnit.mile())
+        }
     }
     
     var totalCaloriesBurned: Double {

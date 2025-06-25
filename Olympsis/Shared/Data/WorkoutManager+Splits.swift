@@ -20,13 +20,76 @@ extension WorkoutManager {
         // Only generate splits for running workouts
         guard workout.workoutActivityType == .running else { return [] }
         
-        // Use distance samples if available, otherwise fallback to basic splits
+        
+        // If we have location data, use GPS-based distance calculation instead of HealthKit distance samples
+        if !locations.isEmpty && locations.count > 10 {
+            return generateGPSBasedSplits(from: locations, for: workout)
+        }
         guard !distanceSamples.isEmpty else {
             return generateBasicTimeSplits(for: workout)
         }
         
         // Generate splits from distance samples with optional elevation data
         return generateSplitsFromDistanceSamples(distanceSamples, locations: locations, workout: workout)
+    }
+    
+    /// Generates splits using GPS location data for more accurate distance calculation
+    private func generateGPSBasedSplits(from locations: [CLLocation], for workout: HKWorkout) -> [PaceSegment] {
+        let splitDistance: Double = unit == UnitLength.miles ? 1609.344 : 1000.0 // 1 mile or 1 km in meters
+        
+        var splits: [PaceSegment] = []
+        var currentDistance: Double = 0
+        var splitStartTime = workout.startDate
+        var splitStartIndex = 0
+        
+        // Sort locations by timestamp to ensure proper order
+        let sortedLocations = locations.sorted { $0.timestamp < $1.timestamp }
+        
+        for (index, location) in sortedLocations.enumerated() {
+            guard index > 0 else { continue } // Skip first location
+            
+            let previousLocation = sortedLocations[index - 1]
+            let segmentDistance = previousLocation.distance(from: location)
+            currentDistance += segmentDistance
+            
+            // Check if we've completed a split
+            if currentDistance >= splitDistance {
+                // Find the exact time when split distance was reached by interpolation
+                let overshoot = currentDistance - splitDistance
+                let segmentDuration = location.timestamp.timeIntervalSince(previousLocation.timestamp)
+                let overshootTime = (overshoot / segmentDistance) * segmentDuration
+                let splitEndTime = location.timestamp.addingTimeInterval(-overshootTime)
+                
+                let duration = splitEndTime.timeIntervalSince(splitStartTime)
+                let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
+                let calculatedPace = duration / (splitDistance / conversionFactor)
+                
+                // Calculate elevation for this split
+                let splitLocations = Array(sortedLocations[splitStartIndex...index])
+                let elevationData = calculateElevationChange(for: splitLocations)
+                
+                let split = PaceSegment(
+                    segmentNumber: splits.count + 1,
+                    distance: splitDistance,
+                    duration: duration,
+                    pace: calculatedPace,
+                    elevationGain: elevationData.gain,
+                    elevationLoss: elevationData.loss,
+                    startTime: splitStartTime,
+                    endTime: splitEndTime
+                )
+                
+                splits.append(split)
+                
+                
+                // Reset for next split
+                currentDistance = overshoot
+                splitStartTime = splitEndTime
+                splitStartIndex = index
+            }
+        }
+        
+        return splits
     }
     
     /// Gets location samples within a specific time range for elevation calculation
@@ -52,10 +115,17 @@ extension WorkoutManager {
             let sampleDistance = sample.quantity.doubleValue(for: meterUnit)
             currentDistance += sampleDistance
             
+            
             // Check if we've completed a split
             if currentDistance >= splitDistance {
-                let splitEndTime = sample.endDate
-                let duration = splitEndTime.timeIntervalSince(splitStartTime)
+                // Calculate precise time when split distance was reached
+                let overshoot = currentDistance - splitDistance
+                let sampleDuration = sample.endDate.timeIntervalSince(sample.startDate)
+                let overshootTime = (overshoot / sampleDistance) * sampleDuration
+                let splitEndTime = sample.endDate.addingTimeInterval(-overshootTime)
+                
+                // Calculate active duration excluding pauses using workout events
+                let duration = calculateActiveWorkoutTimeFromEvents(from: splitStartTime, to: splitEndTime, workout: workout)
                 
                 // Get detailed samples for this split (for 0.1km/0.1mi breakdown)
                 let splitSamples = Array(samples[splitStartSampleIndex...index])
@@ -73,11 +143,14 @@ extension WorkoutManager {
                     elevationData = (gain: 0, loss: 0)
                 }
                 
+                let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
+                let calculatedPace = duration / (splitDistance / conversionFactor)
+                
                 let split = PaceSegment(
                     segmentNumber: splits.count + 1,
                     distance: splitDistance,
                     duration: duration,
-                    pace: duration / (splitDistance / (unit == UnitLength.miles ? 1609.344 : 1000.0)),
+                    pace: calculatedPace,
                     elevationGain: elevationData.gain,
                     elevationLoss: elevationData.loss,
                     startTime: splitStartTime,
@@ -87,10 +160,10 @@ extension WorkoutManager {
                 
                 splits.append(split)
                 
-                // Reset for next split
-                currentDistance = 0
+                // Reset for next split, carrying forward overshoot distance and time
+                currentDistance = overshoot
                 splitStartTime = splitEndTime
-                splitStartSampleIndex = index + 1
+                splitStartSampleIndex = index
             }
         }
         
@@ -248,5 +321,85 @@ extension WorkoutManager {
         }
         
         return smoothed
+    }
+    
+    /// Calculates active workout time by detecting and excluding pauses
+    /// - Parameters:
+    ///   - startTime: Start time of the period
+    ///   - endTime: End time of the period
+    ///   - samples: HealthKit samples for this period
+    /// - Returns: Active duration excluding paused periods
+    private func calculateActiveWorkoutTime(from startTime: Date, to endTime: Date, samples: [HKQuantitySample]) -> TimeInterval {
+        guard samples.count > 1 else { return endTime.timeIntervalSince(startTime) }
+        
+        var activeDuration: TimeInterval = 0
+        let pauseThreshold: TimeInterval = 20 // If gap between samples > 20 seconds, consider it a pause
+        
+        for i in 1..<samples.count {
+            let previousSample = samples[i-1]
+            let currentSample = samples[i]
+            
+            let gapDuration = currentSample.startDate.timeIntervalSince(previousSample.endDate)
+            
+            if gapDuration > pauseThreshold {
+                // This is likely a pause - only count the sample duration, not the gap
+                activeDuration += previousSample.endDate.timeIntervalSince(previousSample.startDate)
+            } else {
+                // Normal continuous activity - count full duration including gap
+                activeDuration += currentSample.startDate.timeIntervalSince(previousSample.startDate)
+            }
+        }
+        
+        // Add the last sample duration
+        let lastSample = samples.last!
+        activeDuration += lastSample.endDate.timeIntervalSince(lastSample.startDate)
+        
+        return activeDuration
+    }
+    
+    /// Calculates active workout time using HealthKit workout events (pause/resume)
+    /// - Parameters:
+    ///   - startTime: Start time of the period
+    ///   - endTime: End time of the period
+    ///   - workout: HKWorkout with events
+    /// - Returns: Active duration excluding paused periods based on workout events
+    private func calculateActiveWorkoutTimeFromEvents(from startTime: Date, to endTime: Date, workout: HKWorkout) -> TimeInterval {
+        guard let events = workout.workoutEvents, !events.isEmpty else {
+            // No events, return raw duration
+            return endTime.timeIntervalSince(startTime)
+        }
+        
+        var activeDuration: TimeInterval = 0
+        var currentTime = startTime
+        var isPaused = false
+        
+        // Filter events to only those within our time range
+        let relevantEvents = events.filter { event in
+            event.dateInterval.start >= startTime && event.dateInterval.start <= endTime
+        }
+        
+        for event in relevantEvents.sorted(by: { $0.dateInterval.start < $1.dateInterval.start }) {
+            let eventTime = event.dateInterval.start
+            
+            if !isPaused {
+                // Add time from current to pause
+                activeDuration += eventTime.timeIntervalSince(currentTime)
+            }
+            
+            if event.type == .pause {
+                isPaused = true
+            } else if event.type == .resume {
+                isPaused = false
+            }
+            
+            currentTime = eventTime
+        }
+        
+        // Add remaining time if not paused
+        if !isPaused && currentTime < endTime {
+            let remainingTime = endTime.timeIntervalSince(currentTime)
+            activeDuration += remainingTime
+        }
+        return activeDuration
     }
 }
