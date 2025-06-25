@@ -11,6 +11,7 @@ import SwiftUI
 struct WorkoutSplitsView: View {
     
     var splits: [RunSplit]
+    var hasElevationData: Bool = false
     
     var body: some View {
         VStack {
@@ -31,11 +32,13 @@ struct WorkoutSplitsView: View {
                                 .padding(.horizontal)
                         }
                         .annotation(position: .trailing) {
-                            HStack {
-                                Text(String(split.elevation) + " ft")
-                                Image(systemName: "mountain.2.fill")
-                                    .imageScale(.small)
-                            }.padding(.horizontal)
+                            if hasElevationData {
+                                HStack {
+                                    Text(String(split.elevation) + " ft")
+                                    Image(systemName: "mountain.2.fill")
+                                        .imageScale(.small)
+                                }.padding(.horizontal)
+                            }
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                 }

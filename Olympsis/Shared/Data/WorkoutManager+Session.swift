@@ -102,7 +102,7 @@ extension WorkoutManager {
     func resetWorkout() {
         if let workout,
            let selectedSport  {
-            let work = Workout(type: selectedSport, workout: workout, totalDistance: 0, totalCalories: 0)
+            let work = Workout(type: selectedSport, workout: workout)
             workouts.append(work)
         }
         

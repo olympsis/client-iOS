@@ -53,28 +53,5 @@ extension WorkoutManager {
         default:
             return .stepCount  // Fallback
         }
-    }
-    
-    /// Gets distance for workout type
-    /// - Parameters:
-    ///     - activityType: the type of activity we want distance for
-    ///
-    /// - Returns: Returns the HealthKit quantity type needed to get distance
-    func getDistanceType(for activityType: HKWorkoutActivityType) -> HKQuantityTypeIdentifier {
-        switch activityType {
-        case .cycling, .handCycling:
-            return .distanceCycling
-        case .swimming:
-            return .distanceSwimming
-        case .walking, .running, .hiking, .stairClimbing:
-            return .distanceWalkingRunning
-        case .wheelchairWalkPace, .wheelchairRunPace:
-            return .distanceWheelchair
-        case .downhillSkiing, .crossCountrySkiing, .snowboarding:
-            return .distanceDownhillSnowSports
-        default:
-            return .distanceWalkingRunning // Default fallback
-        }
-    }
-    
+    }    
 }

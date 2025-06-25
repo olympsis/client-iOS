@@ -18,18 +18,15 @@ class Workout: Identifiable {
     let workout: HKWorkout
     
     var cadence: Double?
-    var totalDistance: Double
-    var totalCalories: Double
     
+    var paceSegments: [PaceSegment] = []
     var heartSamples: [HKQuantitySample] = []
     var locationSamples: [CLLocation] = []
     var distanceSamples: [HKQuantitySample] = []
     
-    init(type: SUPPORTED_SPORTS, workout: HKWorkout, totalDistance: Double, totalCalories: Double) {
+    init(type: SUPPORTED_SPORTS, workout: HKWorkout) {
         self.type = type
         self.workout = workout
-        self.totalDistance = totalDistance
-        self.totalCalories = totalCalories
     }
     
     var name: String {
@@ -103,6 +100,24 @@ class Workout: Identifiable {
     var route2DPoints: [CLLocationCoordinate2D] {
         return locationSamples.map { $0.coordinate }
     }
+    
+    var totalDistance: Double {
+        guard let quantityType = getDistanceQuantityType(for: workout),
+              let statistics = workout.allStatistics[quantityType],
+              let sum = statistics.sumQuantity() else {
+            return 0
+        }
+        return sum.doubleValue(for: HKUnit.mile())
+    }
+    
+    var totalCaloriesBurned: Double {
+        guard let quantityType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
+              let statistics = workout.allStatistics[quantityType],
+              let average = statistics.sumQuantity() else {
+            return 0
+        }
+        return average.doubleValue(for: HKUnit.kilocalorie())
+    }
 }
 
 extension [Workout] {
@@ -111,7 +126,7 @@ extension [Workout] {
     }
     
     func calculateTotalCalories() -> Int {
-        return Int(self.reduce(0.0) { $0 + ($1.totalCalories) })
+        return Int(self.reduce(0.0) { $0 + ($1.totalCaloriesBurned) })
     }
        
     func totalCaloriesBurnedPerDay() -> [CaloricDailyAverage] {
@@ -125,7 +140,7 @@ extension [Workout] {
            
            // Adjust weekday index to be 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
            let index = (weekday + 5) % 7
-           caloriesBurnedPerDay[index] += Int(workout.totalCalories)
+           caloriesBurnedPerDay[index] += Int(workout.totalCaloriesBurned)
            workoutCountPerDay[index] += 1
        }
        
@@ -156,7 +171,7 @@ extension [Workout] {
        for workout in self {
            let startDate = workout.workout.startDate
            let dayOfMonth = calendar.component(.day, from: startDate) - 1 // -1 to convert to 0-based index
-           caloriesBurnedPerDay[dayOfMonth] += Int(workout.totalCalories)
+           caloriesBurnedPerDay[dayOfMonth] += Int(workout.totalCaloriesBurned)
        }
        
        var caloricDailyAverages = [CaloricDailyAverage]()
@@ -181,7 +196,7 @@ extension [Workout] {
        for workout in self {
            let startDate = workout.workout.startDate
            let month = calendar.component(.month, from: startDate) - 1 // -1 to convert to 0-based index
-           caloriesBurnedPerMonth[month] += Int(workout.totalCalories)
+           caloriesBurnedPerMonth[month] += Int(workout.totalCaloriesBurned)
            workoutCountPerMonth[month] += 1
        }
        
@@ -239,7 +254,7 @@ struct CaloricMonthlyAverage: Identifiable {
 
 struct RunSplit: Identifiable {
     let id: Int
-    let pace: Int
+    let pace: Double
     let elevation: Int
 }
 
@@ -260,11 +275,6 @@ struct WorkoutQueryConfig {
         dateRange: nil,
         cursor: nil
     )
-}
-
-struct WorkoutStatistics {
-    let calories: Double
-    let totalDistance: Double
 }
 
 struct WorkoutDetails {

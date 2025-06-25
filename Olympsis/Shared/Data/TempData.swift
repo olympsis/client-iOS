@@ -807,8 +807,6 @@ let RUNNING_POINTS = [
 let WORKOUTS = [
     Workout(
         type: .soccer,
-        workout: HKWorkout(activityType: .other, start: Date(), end: Date()),
-        totalDistance: 0,
-        totalCalories: 0
+        workout: HKWorkout(activityType: .other, start: Date(), end: Date())
     )
 ]

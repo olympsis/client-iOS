@@ -25,6 +25,12 @@ struct WorkoutView: View {
         return String(format: "%.1f", workout.cadence ?? 0)
     }
     
+    private var splits: [RunSplit] {
+        return workout.paceSegments.map {
+            RunSplit(id: $0.segmentNumber, pace: $0.pace, elevation: 0)
+        }
+    }
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -73,7 +79,7 @@ struct WorkoutView: View {
                         Spacer()
                         
                         VStack(alignment: .leading) {
-                            Text("\(workout.totalCalories, specifier: "%.0f")")
+                            Text("\(workout.totalCaloriesBurned, specifier: "%.0f")")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.green)
@@ -123,8 +129,8 @@ struct WorkoutView: View {
                     WorkoutMapView(locations: workout.route2DPoints)
                 }
                 
-                if hasSplits {
-                    WorkoutSplitsView(splits: [])
+                if !splits.isEmpty {
+                    WorkoutSplitsView(splits: splits)
                         .padding(.top)
                 }
             }
@@ -143,8 +149,15 @@ struct WorkoutView: View {
             
             workout.cadence = details.cadence
             workout.locationSamples = details.route
+            workout.paceSegments = details.paceSegments
             workout.heartSamples = details.heartRateSamples
             
+            let stats = workout.workout.allStatistics
+            for stat in stats {
+                print(stat.key)
+                print(stat.key == HKQuantityTypeIdentifier.activeEnergyBurned as NSObject)
+                print(stat.key == HKQuantityTypeIdentifier.distanceWalkingRunning as NSObject)
+            }
             state = .success
         }
     }
@@ -152,7 +165,7 @@ struct WorkoutView: View {
 
 #Preview {
     NavigationStack {
-        WorkoutView(activityName: "Friday Evening Run", workout: Workout(type: .running, workout: HKWorkout(activityType: .running, start: Date(), end: Date().addingTimeInterval(30 * 60)), totalDistance: 100, totalCalories: 0))
+        WorkoutView(activityName: "Friday Evening Run", workout: Workout(type: .running, workout: HKWorkout(activityType: .running, start: Date(), end: Date().addingTimeInterval(30 * 60))))
             .environment(WorkoutManager())
     }
 }

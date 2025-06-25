@@ -150,7 +150,7 @@ struct WorkoutListItem: View {
                             Spacer()
                             
                             VStack(alignment: .leading) {
-                                Text("\(workout.totalCalories, specifier: "%.0f")")
+                                Text("\(workout.totalCaloriesBurned, specifier: "%.0f")")
                                     .fontWeight(.bold)
                                     .foregroundStyle(Color.Brand.secondary)
                                 
@@ -195,5 +195,5 @@ struct WorkoutListItem: View {
 }
 
 #Preview {
-    WorkoutListItem(workout: Workout(type: .soccer, workout: HKWorkout(activityType: .running, start: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, end: Date()), totalDistance: 100, totalCalories: 0))
+    WorkoutListItem(workout: Workout(type: .soccer, workout: HKWorkout(activityType: .running, start: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, end: Date())))
 }
