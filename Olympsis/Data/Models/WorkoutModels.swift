@@ -10,6 +10,7 @@ import HealthKit
 import Foundation
 import CoreLocation
 
+@Observable
 class Workout: Identifiable {
     
     let id = UUID()

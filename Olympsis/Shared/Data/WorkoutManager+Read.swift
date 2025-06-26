@@ -196,13 +196,100 @@ extension WorkoutManager {
         }
     }
     
-    func fetchWorkoutAdditionalData(from workout: HKWorkout) async -> WorkoutDetails? {
-        do {
-            async let cadence = fetchAverageStatistic(
+    /// Fetches running cadence by calculating steps per minute from total step count
+    /// - Parameter workout: The HKWorkout to fetch cadence for
+    /// - Returns: Running cadence in steps per minute, or nil if unavailable
+    private func fetchRunningCadence(from workout: HKWorkout) async -> Double? {
+        // Debug: Check what statistics are available in the workout
+        print("🏃‍♂️ Available workout statistics for cadence:")
+        for (key, statistic) in workout.allStatistics {
+            print("   - \(key.identifier): \(statistic)")
+            if let sum = statistic.sumQuantity() {
+                print("     Sum: \(sum)")
+            }
+            if let average = statistic.averageQuantity() {
+                print("     Average: \(average)")
+            }
+        }
+        
+        guard workout.workoutActivityType == .running || workout.workoutActivityType == .walking else {
+            // For non-running activities, fall back to the original method
+            return await fetchAverageStatistic(
                 from: workout,
                 type: getCadenceType(for: workout.workoutActivityType),
                 unit: HKUnit.count().unitDivided(by: .minute())
             )
+        }
+        
+        // For running, calculate cadence from total steps and active workout duration
+        guard let totalSteps = await fetchAverageStatistic(
+            from: workout,
+            type: .stepCount,
+            unit: HKUnit.count()
+        ) else {
+            print("🏃‍♂️ No step count data available for cadence calculation")
+            return nil
+        }
+        
+        // Calculate active workout duration (excluding pauses) for accurate cadence
+        let activeWorkoutDuration = await calculateActiveWorkoutDurationFromEvents(workout: workout)
+        
+        // Convert active duration from seconds to minutes and calculate steps per minute
+        let activeMinutes = activeWorkoutDuration / 60.0
+        guard activeMinutes > 0 else { 
+            print("🏃‍♂️ Active workout duration is 0, cannot calculate cadence")
+            return nil 
+        }
+        
+        let cadence = totalSteps / activeMinutes
+        print("🏃‍♂️ Cadence calculation: \(totalSteps) steps / \(activeMinutes) minutes = \(cadence) steps/min")
+        return cadence
+    }
+    
+    /// Calculates the active workout duration by excluding paused periods
+    /// - Parameter workout: The HKWorkout to analyze
+    /// - Returns: Active duration in seconds
+    private func calculateActiveWorkoutDurationFromEvents(workout: HKWorkout) async -> TimeInterval {
+        guard let events = workout.workoutEvents, !events.isEmpty else {
+            // No pause/resume events, return total workout duration
+            return workout.duration
+        }
+        
+        var activeDuration: TimeInterval = 0
+        var currentTime = workout.startDate
+        var isPaused = false
+        
+        // Sort events by start time
+        let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
+        
+        for event in sortedEvents {
+            let eventTime = event.dateInterval.start
+            
+            if !isPaused {
+                // Add active time from current position to pause
+                activeDuration += eventTime.timeIntervalSince(currentTime)
+            }
+            
+            if event.type == .pause {
+                isPaused = true
+            } else if event.type == .resume {
+                isPaused = false
+            }
+            
+            currentTime = eventTime
+        }
+        
+        // Add remaining time if not paused at the end
+        if !isPaused {
+            activeDuration += workout.endDate.timeIntervalSince(currentTime)
+        }
+        
+        return activeDuration
+    }
+    
+    func fetchWorkoutAdditionalData(from workout: HKWorkout) async -> WorkoutDetails? {
+        do {
+            async let cadence = fetchRunningCadence(from: workout)
             
             async let locationSamples = fetchWorkoutRoute(from: workout)
             async let heartRateSamples = fetchSamplesForUnit(from: workout, for: .heartRate)

@@ -17,8 +17,8 @@ struct WorkoutSplitsView: View {
         VStack {
             HStack {
                 Text("Splits")
-                    .textCase(.uppercase)
-                    .foregroundStyle(.gray)
+                    .font(.custom("Archivo-Bold", size: 18))
+                    .foregroundColor(.primary)
                 Spacer()
             }.padding(.leading)
             

@@ -22,7 +22,11 @@ struct WorkoutView: View {
     }
     
     private var cadence: String {
-        return String(format: "%.1f", workout.cadence ?? 0)
+        guard let cadence = workout.cadence,
+              cadence != 0 else {
+            return "-"
+        }
+        return String(format: "%.1f", cadence)
     }
     
     private var splits: [RunSplit] {
@@ -125,14 +129,22 @@ struct WorkoutView: View {
                     .padding(.horizontal, 25)
                 }
                 
+                // Workout map view
                 if !workout.route2DPoints.isEmpty {
                     WorkoutMapView(locations: workout.route2DPoints)
+                        .redacted(reason: state == .loading ? .placeholder : [])
                 }
                 
+                // Workout Splits view
                 if !splits.isEmpty {
                     WorkoutSplitsView(splits: splits)
                         .padding(.top)
+                        .redacted(reason: state == .loading ? .placeholder : [])
                 }
+                
+                // Workout Statistics View
+                WorkoutStatistics(workout: workout)
+                    .redacted(reason: state == .loading ? .placeholder : [])
             }
             .navigationTitle(activityName)
             .navigationBarTitleDisplayMode(.inline)

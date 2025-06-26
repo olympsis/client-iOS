@@ -47,7 +47,7 @@ extension WorkoutManager {
     func getCadenceType(for activityType: HKWorkoutActivityType) -> HKQuantityTypeIdentifier {
         switch activityType {
         case .running, .walking:
-            return .runningStrideLength  // We'll calculate from this
+            return .stepCount  // Use step count to calculate running cadence
         case .cycling, .handCycling:
             return .cyclingCadence
         default:
