@@ -129,17 +129,24 @@ struct WorkoutView: View {
                     .padding(.horizontal, 25)
                 }
                 
-                // Workout map view
-                if !workout.route2DPoints.isEmpty {
-                    WorkoutMapView(locations: workout.route2DPoints)
-                        .redacted(reason: state == .loading ? .placeholder : [])
-                }
-                
                 // Workout Splits view
                 if !splits.isEmpty {
                     WorkoutSplitsView(splits: splits)
                         .padding(.top)
                         .redacted(reason: state == .loading ? .placeholder : [])
+                }
+                
+                // Workout map view
+                if !workout.route2DPoints.isEmpty {
+                    switch workout.type {
+                    case .running, .walking, .cycling, .hiking:
+                        WorkoutMapView(locations: workout.route2DPoints)
+                            .redacted(reason: state == .loading ? .placeholder : [])
+                    case .tennis, .basketball, .soccer, .football, .pickleball, .racquetball, .volleyball:
+                        WorkoutHeatmapMapView(coordinates: RUNNING_POINTS, sportType: "soccer")
+                    default:
+                        EmptyView()
+                    }
                 }
                 
                 // Workout Statistics View
@@ -167,13 +174,6 @@ struct WorkoutView: View {
                 workout.paceSegments = details.paceSegments
                 workout.heartSamples = details.heartRateSamples
             }
-//            
-//            let stats = workout.workout.allStatistics
-//            for stat in stats {
-//                print(stat.key)
-//                print(stat.key == HKQuantityTypeIdentifier.activeEnergyBurned as NSObject)
-//                print(stat.key == HKQuantityTypeIdentifier.distanceWalkingRunning as NSObject)
-//            }
             state = .success
         }
     }
