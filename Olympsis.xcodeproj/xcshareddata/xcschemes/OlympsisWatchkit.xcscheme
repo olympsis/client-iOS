@@ -64,7 +64,6 @@
             ReferencedContainer = "container:Olympsis.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

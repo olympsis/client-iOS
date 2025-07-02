@@ -125,10 +125,6 @@ class Workout: Identifiable {
         }
         return average.doubleValue(for: HKUnit.kilocalorie())
     }
-    
-    var route2DPoints: [CLLocationCoordinate2D] {
-        return locationSamples.map { $0.coordinate }
-    }
 }
 
 extension [Workout] {
