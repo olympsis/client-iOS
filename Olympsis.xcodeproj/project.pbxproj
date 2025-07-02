@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC93E2BAD035000E16B95 /* PostViewer.swift */; };
+		5D0CCB1B2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB1A2E12033600B69071 /* CyclingActivityPreparation.swift */; };
+		5D0CCB1C2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB1A2E12033600B69071 /* CyclingActivityPreparation.swift */; };
+		5D0CCB1E2E12035E00B69071 /* CyclingActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB1D2E12035E00B69071 /* CyclingActivityMetrics.swift */; };
+		5D0CCB1F2E12035E00B69071 /* CyclingActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB1D2E12035E00B69071 /* CyclingActivityMetrics.swift */; };
+		5D0CCB212E1203AC00B69071 /* CyclingActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB202E1203AC00B69071 /* CyclingActivityDetails.swift */; };
+		5D0CCB222E1203AC00B69071 /* CyclingActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB202E1203AC00B69071 /* CyclingActivityDetails.swift */; };
+		5D0CCB242E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB232E1203BE00B69071 /* CyclingGoalSetter.swift */; };
+		5D0CCB252E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB232E1203BE00B69071 /* CyclingGoalSetter.swift */; };
 		5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */; };
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
 		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
@@ -455,7 +463,6 @@
 		5DB096172E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
 		5DB096192E07424700BB924A /* ActivitiesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096182E07424700BB924A /* ActivitiesChart.swift */; };
 		5DB0961A2E07424700BB924A /* ActivitiesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096182E07424700BB924A /* ActivitiesChart.swift */; };
-		5DB0961C2E07437900BB924A /* ActivitiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961B2E07437900BB924A /* ActivitiesList.swift */; };
 		5DB0961D2E07437900BB924A /* ActivitiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961B2E07437900BB924A /* ActivitiesList.swift */; };
 		5DB0961F2E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */; };
 		5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */; };
@@ -516,16 +523,13 @@
 		5DC8B4812E05CE6C008C9052 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B47C2E05CE6C008C9052 /* Assets.xcassets */; };
 		5DC8B4822E05CE6C008C9052 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B4642E05CE6C008C9052 /* Preview Assets.xcassets */; };
 		5DC8B4832E05CE6C008C9052 /* OlympsisWatchkit-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B47F2E05CE6C008C9052 /* OlympsisWatchkit-Info.plist */; };
-		5DC8B4842E05CE6C008C9052 /* ActivitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4772E05CE6C008C9052 /* ActivitySettingsView.swift */; };
 		5DC8B4852E05CE6C008C9052 /* GeneralActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4672E05CE6C008C9052 /* GeneralActivityDetails.swift */; };
 		5DC8B4862E05CE6C008C9052 /* GeneralActivityGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4682E05CE6C008C9052 /* GeneralActivityGoalSetter.swift */; };
 		5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */; };
 		5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */; };
-		5DC8B4912E05CE6C008C9052 /* RunActivityGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4702E05CE6C008C9052 /* RunActivityGoalSetter.swift */; };
 		5DC8B4952E05CE6C008C9052 /* ActivityZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45F2E05CE6C008C9052 /* ActivityZoneView.swift */; };
 		5DC8B4962E05CE6C008C9052 /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */; };
 		5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */; };
-		5DC8B49B2E05CE6C008C9052 /* RunActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46F2E05CE6C008C9052 /* RunActivityDetails.swift */; };
 		5DCAEA2D2B01958F00B9C22A /* EventParticipants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipants.swift */; };
 		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
 		5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */; };
@@ -713,6 +717,10 @@
 
 /* Begin PBXFileReference section */
 		5D0CC93E2BAD035000E16B95 /* PostViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewer.swift; sourceTree = "<group>"; };
+		5D0CCB1A2E12033600B69071 /* CyclingActivityPreparation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingActivityPreparation.swift; sourceTree = "<group>"; };
+		5D0CCB1D2E12035E00B69071 /* CyclingActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingActivityMetrics.swift; sourceTree = "<group>"; };
+		5D0CCB202E1203AC00B69071 /* CyclingActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingActivityDetails.swift; sourceTree = "<group>"; };
+		5D0CCB232E1203BE00B69071 /* CyclingGoalSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingGoalSetter.swift; sourceTree = "<group>"; };
 		5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItemTemplate.swift; sourceTree = "<group>"; };
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
 		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
@@ -1643,6 +1651,10 @@
 		5DC8B4662E05CE6C008C9052 /* Cycling */ = {
 			isa = PBXGroup;
 			children = (
+				5D0CCB1A2E12033600B69071 /* CyclingActivityPreparation.swift */,
+				5D0CCB1D2E12035E00B69071 /* CyclingActivityMetrics.swift */,
+				5D0CCB202E1203AC00B69071 /* CyclingActivityDetails.swift */,
+				5D0CCB232E1203BE00B69071 /* CyclingGoalSetter.swift */,
 			);
 			path = Cycling;
 			sourceTree = "<group>";
@@ -2762,7 +2774,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DB0961C2E07437900BB924A /* ActivitiesList.swift in Sources */,
 				5D5321592E06364F00C67357 /* ActivityElevationView.swift in Sources */,
 				5D53215A2E06364F00C67357 /* ActivityGoalButton.swift in Sources */,
 				5D53217F2E063B3B00C67357 /* TimeFunctions.swift in Sources */,
@@ -2774,6 +2785,7 @@
 				5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */,
 				5DB096372E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
 				5DB096112E064A0700BB924A /* ActivitySportCard.swift in Sources */,
+				5D0CCB1B2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */,
 				5D53215E2E06364F00C67357 /* EllaspsedTimeView.swift in Sources */,
 				5D5321772E0639C500C67357 /* SportView.swift in Sources */,
 				5D53215F2E06364F00C67357 /* WorkoutSmallListItemView.swift in Sources */,
@@ -2790,6 +2802,7 @@
 				5D5321662E06364F00C67357 /* ActivityPreparationView.swift in Sources */,
 				5D5321872E063B9500C67357 /* GroupSelection.swift in Sources */,
 				5D5321F62E063BEF00C67357 /* ManagementModels.swift in Sources */,
+				5D0CCB222E1203AC00B69071 /* CyclingActivityDetails.swift in Sources */,
 				5D5321672E06364F00C67357 /* RunActivityDetails.swift in Sources */,
 				5D5321682E06364F00C67357 /* RunActivityGoalSetter.swift in Sources */,
 				5D5321692E06364F00C67357 /* RunActivityMetrics.swift in Sources */,
@@ -2806,8 +2819,10 @@
 				5D5321812E063B5100C67357 /* EventFormat.swift in Sources */,
 				5D5321702E06364F00C67357 /* ActivityView.swift in Sources */,
 				5D53214F2E06360F00C67357 /* WorkoutHeatMapView.swift in Sources */,
+				5D0CCB252E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */,
 				5D5321502E06360F00C67357 /* WorkoutMapView.swift in Sources */,
 				5D5321762E0636B900C67357 /* WorkoutModels.swift in Sources */,
+				5D0CCB1F2E12035E00B69071 /* CyclingActivityMetrics.swift in Sources */,
 				5D5321512E06360F00C67357 /* WorkoutSplitsView.swift in Sources */,
 				5D5321522E06360F00C67357 /* Enums.swift in Sources */,
 				5D5321832E063B6000C67357 /* EventTeam.swift in Sources */,
@@ -2868,6 +2883,7 @@
 				5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
 				9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */,
+				5D0CCB1E2E12035E00B69071 /* CyclingActivityMetrics.swift in Sources */,
 				5D9E74592DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift in Sources */,
 				5DBB94D02B05B1830031876D /* NotificationModels.swift in Sources */,
 				5DBB94CB2B03254C0031876D /* NewClub.swift in Sources */,
@@ -2886,16 +2902,13 @@
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
-				5DC8B4842E05CE6C008C9052 /* ActivitySettingsView.swift in Sources */,
 				5DC8B4852E05CE6C008C9052 /* GeneralActivityDetails.swift in Sources */,
 				5DC8B4862E05CE6C008C9052 /* GeneralActivityGoalSetter.swift in Sources */,
 				5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */,
 				5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */,
-				5DC8B4912E05CE6C008C9052 /* RunActivityGoalSetter.swift in Sources */,
 				5DC8B4952E05CE6C008C9052 /* ActivityZoneView.swift in Sources */,
 				5DC8B4962E05CE6C008C9052 /* ActivityElevationView.swift in Sources */,
 				5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */,
-				5DC8B49B2E05CE6C008C9052 /* RunActivityDetails.swift in Sources */,
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,
 				9A8162A3296685D40042F0A6 /* RoomListItem.swift in Sources */,
@@ -2919,6 +2932,7 @@
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
+				5D0CCB242E1203BE00B69071 /* CyclingGoalSetter.swift in Sources */,
 				5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				5DCAEA2D2B01958F00B9C22A /* EventParticipants.swift in Sources */,
@@ -3034,6 +3048,7 @@
 				5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */,
 				5D76D36A2C79534800846382 /* ToastManager.swift in Sources */,
 				5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */,
+				5D0CCB212E1203AC00B69071 /* CyclingActivityDetails.swift in Sources */,
 				5D204B462DA1F73400B67F5D /* LocationUsage.swift in Sources */,
 				5D2DEFC62B27EF060082FE73 /* EventOrganizers.swift in Sources */,
 				5D4B0A622D96F37C00475A0C /* EventComments.swift in Sources */,
@@ -3093,6 +3108,7 @@
 				5DBA3AF42B95282D00B67CFB /* PostReportView.swift in Sources */,
 				5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */,
 				5D4B0A662D96F87400475A0C /* EventMedia.swift in Sources */,
+				5D0CCB1C2E12033600B69071 /* CyclingActivityPreparation.swift in Sources */,
 				5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */,
 				9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */,
 				9A81B6382925C97B009CA6ED /* EditProfile.swift in Sources */,
@@ -3222,6 +3238,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -3247,6 +3264,7 @@
 				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.watchkit;
 				PRODUCT_NAME = Olympsis;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -3262,6 +3280,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

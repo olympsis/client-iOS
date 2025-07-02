@@ -21,12 +21,10 @@ struct ActivityPreparationView: View {
                     RunActivityPreperation(sport: sport)
                         .environment(manager)
                         .tag(0)
-                case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
+                default:
                     GeneralActivityPreparation(sport: sport)
                         .environment(manager)
                         .tag(0)
-                default:
-                    EmptyView()
                 }
                 ActivityPreparationSettings(sport: sport)
                     .environment(manager)

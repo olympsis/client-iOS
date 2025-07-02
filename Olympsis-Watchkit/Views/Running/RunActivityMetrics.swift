@@ -45,7 +45,7 @@ struct RunActivityMetrics: View {
             
             VStack(spacing: -10) {
                 distanceText
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(Color.Brand.tertiary)
                     .font(.system(size: 70))
                     .fontWeight(.bold)
                 
