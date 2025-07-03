@@ -18,7 +18,7 @@ struct ActivityPreparationView: View {
             TabView(selection: $selected) {
                 switch sport {
                 case .running, .walking:
-                    RunActivityPreperation(sport: sport)
+                    DistanceActivityPreparation(sport: sport)
                         .environment(manager)
                         .tag(0)
                 default:

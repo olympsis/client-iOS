@@ -13,6 +13,7 @@ struct ActivitySportCard: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
+            .frame(height: 150)
             .foregroundStyle(Color.Brand.primary)
             .overlay {
                 VStack(alignment: .center) {
@@ -22,14 +23,13 @@ struct ActivitySportCard: View {
                         .foregroundStyle(Color.primary)
                     
                     Text(sport.getName())
-                        .italic()
-                        .textCase(.uppercase)
-                        .font(.custom("Archivo-Italic", size: 15, relativeTo: .title3))
+                        .padding(.top)
+                        .font(.custom("Archivo-Bold", size: 15, relativeTo: .title3))
                 }.padding(.vertical, 30)
             }
     }
 }
 
 #Preview {
-    ActivitySportCard(sport: .basketball)
+    ActivitySportCard(sport: .golf)
 }

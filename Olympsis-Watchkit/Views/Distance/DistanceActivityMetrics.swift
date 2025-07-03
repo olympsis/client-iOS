@@ -1,5 +1,5 @@
 //
-//  ActivitySnapshot.swift
+//  DistanceActivityMetrics.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 7/20/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RunActivityMetrics: View {
+struct DistanceActivityMetrics: View {
     
     @Environment(WorkoutManager.self) private var manager
     
@@ -96,8 +96,7 @@ struct RunActivityMetrics: View {
                     }
                 }.padding(.horizontal)
             }
-        }
-        .toolbar {
+        }.toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 TimelineView(
                     EllapsedTimeTimelineSchedule(
@@ -152,7 +151,7 @@ private struct PaceTimelineSchedule: TimelineSchedule {
 
 #Preview {
     NavigationStack {
-        RunActivityMetrics()
+        DistanceActivityMetrics()
             .environment(WorkoutManager())
     }
 }

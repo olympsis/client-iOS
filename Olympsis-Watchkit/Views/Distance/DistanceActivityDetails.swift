@@ -1,5 +1,5 @@
 //
-//  ActivityDetails.swift
+//  DistanceActivityDetails.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 7/20/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RunActivityDetails: View {
+struct DistanceActivityDetails: View {
     
     @Environment(WorkoutManager.self) private var manager
     
@@ -78,6 +78,6 @@ struct RunActivityDetails: View {
 }
 
 #Preview {
-    RunActivityDetails()
+    DistanceActivityDetails()
         .environment(WorkoutManager())
 }

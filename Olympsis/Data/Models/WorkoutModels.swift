@@ -259,10 +259,20 @@ struct CaloricMonthlyAverage: Identifiable {
     }
 }
 
-struct RunSplit: Identifiable {
+struct DistanceSplit: Identifiable {
     let id: Int
     let pace: Double
+    let distance: Double // In meters
     let elevation: Int
+    
+    func formatDistance(unit: UnitLength) -> Double {
+        switch unit {
+        case .miles:
+            return distance / 1609.344
+        default:
+            return distance
+        }
+    }
 }
 
 

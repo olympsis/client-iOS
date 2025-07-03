@@ -75,18 +75,19 @@ struct GeneralActivityMetrics: View {
                 )
                 .font(.system(size: 70))
                 .fontWeight(.semibold)
-            }
-            .padding(.vertical)
-            .foregroundStyle(Color.dark)
+                .foregroundStyle(.primary)
+            }.padding(.vertical)
             
             HStack {
                 VStack(spacing: -5) {
                     distanceText
                         .font(.title2)
                         .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
                     
                     distanceMetric
                         .font(.caption2)
+                        .foregroundStyle(.primary)
                 }
 
                 Spacer()
@@ -100,7 +101,7 @@ struct GeneralActivityMetrics: View {
                 }
             }
             .padding(.horizontal)
-            .foregroundStyle(Color.dark)
+            .foregroundStyle(.primary)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -115,10 +116,6 @@ struct GeneralActivityMetrics: View {
                     }
                 }
             }
-        }
-        .background {
-            Color.colorSecnd
-                .ignoresSafeArea()
         }
     }
 }
@@ -142,6 +139,8 @@ private struct EllapsedTimeTimelineSchedule: TimelineSchedule {
 }
 
 #Preview {
-    GeneralActivityMetrics()
-        .environment(WorkoutManager())
+    NavigationStack {
+        GeneralActivityMetrics()
+            .environment(WorkoutManager())
+    }
 }

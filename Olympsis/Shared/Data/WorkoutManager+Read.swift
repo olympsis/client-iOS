@@ -12,7 +12,6 @@ import CoreLocation
 
 extension WorkoutManager {
     
-    @MainActor
     func fetchWorkoutsHistory(in datePredicate: String?) async {
         guard checkAuthorizationStatus() else {
             return
@@ -20,13 +19,24 @@ extension WorkoutManager {
         await MainActor.run {
             self.viewState = .loading
         }
-//        let workouts = await fetchAllWorkoutHistory(in: datePredicate)
-        let workouts: [Workout] = []
-        await MainActor.run {
-            self.workouts = workouts
+        // Fetch workouts for all sports in a single query
+        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
+            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
         }
-        await MainActor.run {
-            self.viewState = .pending
+        let workoutPredicate = NSCompoundPredicate(
+            orPredicateWithSubpredicates: workoutPredicates  // OR, not AND!
+        )
+        
+        do {
+            let workouts: [Workout] = try await batchProcessWorkouts(
+                fetchWorkouts(predicate: workoutPredicate, batch: 10)
+            )
+            await MainActor.run {
+                self.workouts = workouts
+                self.viewState = .pending
+            }
+        } catch {
+            log.error("Failed to fetch workouts: \(error)")
         }
     }
     

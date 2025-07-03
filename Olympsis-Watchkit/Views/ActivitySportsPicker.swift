@@ -9,12 +9,16 @@ import SwiftUI
 
 struct ActivitySportsPicker: View {
     
+    private var supportedSports: [SUPPORTED_SPORTS] {
+        return SUPPORTED_SPORTS.allCases.filter({ $0 != .spike })
+    }
+    
     @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                ForEach([SUPPORTED_SPORTS.running, SUPPORTED_SPORTS.walking, SUPPORTED_SPORTS.soccer, SUPPORTED_SPORTS.tennis, SUPPORTED_SPORTS.pickleball], id: \.self) { sport in
+                ForEach(supportedSports, id: \.self) { sport in
                     NavigationLink(destination: ActivityPreparationView(sport: sport)) {
                         ActivitySportCard(sport: sport)
                             .frame(height: 150)

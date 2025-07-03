@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RunActivityGoalSetter: View {
+struct ActivityGoalSetter: View {
     
     var goal: ACTIVITY_GOALS
     
@@ -107,7 +107,7 @@ struct RunActivityGoalSetter: View {
 
 #Preview {
     NavigationStack {
-        RunActivityGoalSetter(goal: .zone)
+        ActivityGoalSetter(goal: .zone)
             .environment(WorkoutManager())
     }
 }

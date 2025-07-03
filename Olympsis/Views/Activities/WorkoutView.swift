@@ -29,9 +29,9 @@ struct WorkoutView: View {
         return String(format: "%.1f", cadence)
     }
     
-    private var splits: [RunSplit] {
+    private var splits: [DistanceSplit] {
         return workout.paceSegments.map {
-            RunSplit(id: $0.segmentNumber, pace: $0.pace, elevation: 0)
+            DistanceSplit(id: $0.segmentNumber, pace: $0.pace, distance: $0.distance, elevation: 0)
         }
     }
     
