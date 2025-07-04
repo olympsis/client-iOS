@@ -11,14 +11,21 @@ import HealthKit
 import Foundation
 import CoreLocation
 
-class WorkoutManager: NSObject, ObservableObject {
+@Observable
+class WorkoutManager: NSObject {
     
-    @Published var workouts = [Workout]()
-    @Published var samples: [HKSample] = []
-    @Published var events: [HKWorkoutEvent] = []
-    @Published var manager = CLLocationManager()
+    var workouts = [Workout]()
+    var samples: [HKSample] = []
+    var events: [HKWorkoutEvent] = []
+    var manager = CLLocationManager()
     
-    @Published var selectedSport: SPORTS? {
+    var selectedType = "All"
+    var selectedFilter: Int = 0
+    
+    var fetchingCursor: Date? = nil
+    var backgroundTask: Task<Void, Never>? = nil
+    
+    var selectedSport: SUPPORTED_SPORTS? {
         didSet {
             Task {
                 await MainActor.run {
@@ -29,13 +36,13 @@ class WorkoutManager: NSObject, ObservableObject {
         }
     }
     
-    @Published var selectedWorkout: HKWorkoutActivityType?
-    @Published var workout: HKWorkout?
+    var selectedWorkout: HKWorkoutActivityType?
+    var workout: HKWorkout?
     
-    @Published var state: WORKOUT_STATES = .pending
-    @Published var viewState: LOADING_STATE = .pending
+    var state: WORKOUT_STATES = .pending
+    var viewState: LOADING_STATE = .pending
     
-    @Published var showingSummaryView: Bool = false {
+    var showingSummaryView: Bool = false {
         didSet {
             Task {
                 await MainActor.run {
@@ -48,14 +55,14 @@ class WorkoutManager: NSObject, ObservableObject {
         }
     }
     
-    @Published var isProcessingWorkout: Bool = false
+    var isProcessingWorkout: Bool = false
     
-    @Published var averageHeartRate: Double = 0
-    @Published var heartRate: Double = 0
-    @Published var activeEnergy: Double = 0
-    @Published var distance: Double = 0
+    var averageHeartRate: Double = 0
+    var heartRate: Double = 0
+    var activeEnergy: Double = 0
+    var distance: Double = 0
     
-    @Published var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
+    var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
     
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?

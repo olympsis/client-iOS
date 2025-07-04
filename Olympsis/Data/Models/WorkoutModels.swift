@@ -308,25 +308,29 @@ struct PaceSegment: Identifiable {
     let segmentNumber: Int
     let distance: Double // Distance in meters
     let duration: TimeInterval // Duration in seconds
-    let pace: Double // Pace in seconds per unit (min/km or min/mile)
     let elevationGain: Double // Elevation gain in meters
     let elevationLoss: Double // Elevation loss in meters
     let startTime: Date
     let endTime: Date
     let detailSamples: [PaceDetailSample] // Sub-segments for detailed analysis
     
-    init(segmentNumber: Int, distance: Double, duration: TimeInterval, pace: Double, 
-         elevationGain: Double, elevationLoss: Double, startTime: Date, endTime: Date, 
+    init(segmentNumber: Int, distance: Double, duration: TimeInterval,
+         elevationGain: Double, elevationLoss: Double, startTime: Date, endTime: Date,
          detailSamples: [PaceDetailSample] = []) {
         self.segmentNumber = segmentNumber
         self.distance = distance
         self.duration = duration
-        self.pace = pace
         self.elevationGain = elevationGain
         self.elevationLoss = elevationLoss
         self.startTime = startTime
         self.endTime = endTime
         self.detailSamples = detailSamples
+    }
+    
+    func getPace(for unit: UnitLength) -> Double {
+        let conversionFactor: Double = unit == .kilometers ? 1000.0 : 1609.344
+        let distanceInUnit = distance / conversionFactor
+        return duration / distanceInUnit // Returns seconds per unit
     }
 }
 

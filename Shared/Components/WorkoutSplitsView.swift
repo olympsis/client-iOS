@@ -1,103 +1,142 @@
-//
-//  WorkoutSplitsView.swift
-//  Olympsis
-//
-//  Created by Joel Joseph on 7/6/24.
-//
-
-import Charts
 import SwiftUI
 
 struct WorkoutSplitsView: View {
     
     var splits: [PaceSegment]
+    var unit: UnitLength = .miles
+    var hasElevationData: Bool = false
+    
+    private var mileData: [(mile: String, pace: String, elevation: String, barWidth: CGFloat)] {
+        var result: [(String, String, String, CGFloat)] = []
+        
+        // Calculate relative bar widths based on pace
+        let paces = splits.map { $0.getPace(for: unit) }
+        let minPace = paces.min() ?? 0
+        let maxPace = paces.max() ?? 1
+        let paceRange = maxPace - minPace
+        
+        // Determine conversion factor based on unit
+        let conversionFactor: Double = unit == .kilometers ? 1000.0 : 1609.344
+        
+        for (index, split) in splits.enumerated() {
+            let splitDistanceInUnit = split.distance / conversionFactor
+            
+            // Sequential split numbering
+            let mileDisplay: String
+            if splitDistanceInUnit >= 1.0 {
+                // Full unit - show split number
+                mileDisplay = String(index + 1)
+            } else {
+                // Partial unit - show actual distance
+                mileDisplay = String(format: "%.2f", splitDistanceInUnit)
+            }
+            
+            // Format pace as MM:SS
+            let paceInSeconds = split.getPace(for: unit)
+            let minutes = Int(paceInSeconds) / 60
+            let seconds = Int(paceInSeconds) % 60
+            let paceDisplay = String(format: "%d:%02d", minutes, seconds)
+            
+            // Format elevation
+            let elevation = split.elevationGain + split.elevationLoss
+            let elevationDisplay = hasElevationData ? "\(elevation) ft" : ""
+            
+            // Calculate bar width (faster pace = longer bar)
+            let normalizedPace = paceRange > 0 ? CGFloat(maxPace - split.getPace(for: unit)) / CGFloat(paceRange) : 1.0
+            let barWidth = SCREEN_WIDTH/4 + (normalizedPace * SCREEN_WIDTH/4)
+            
+            result.append((mileDisplay, paceDisplay, elevationDisplay, barWidth))
+        }
+        
+        return result
+    }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            // Header
             HStack {
                 Text("Splits")
-                    .textCase(.uppercase)
-                    .foregroundStyle(.gray)
+                    .font(.custom("Archivo-Bold", size: 18))
+                    .foregroundColor(.primary)
                 Spacer()
-            }.padding(.leading)
-            ScrollView {                
-                Chart(splits) { split in
-                    BarMark(
-                        x: .value("Pace", split.pace / 60.0), 
-                        y: .value("Split", "Split \(split.segmentNumber)")
-                    )
-                    .foregroundStyle(Color.colorSecnd)
-                    .annotation(position: .leading) {
-                        Text(formatPace(split.pace))
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                    }
-                    .annotation(position: .trailing) {
-                        HStack {
-                            Text(formatElevation(split.elevationGain - split.elevationLoss))
-                            Image(systemName: "mountain.2")
-                                .imageScale(.small)
-                        }.padding(.horizontal)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-                .chartLegend(.hidden)
-                .chartXAxis(.hidden)
-                .chartYAxis {
-                    AxisMarks(preset: .extended, position: .leading)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 12)
+            
+            // Column headers
+            HStack {
+                Text(unit == .miles ? "MI" : "KM")
+                    .font(.custom("Archivo-Medium", size: 13))
+                    .foregroundColor(.secondary)
+                    .frame(width: 40, alignment: .leading)
+                
+                Text("PACE")
+                    .padding(.leading)
+                    .font(.custom("Archivo-Medium", size: 13))
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                if hasElevationData {
+                    Text("ELEVATION")
+                        .font(.custom("Archivo-Medium", size: 13))
+                        .foregroundColor(.secondary)
+                        .frame(width: 80, alignment: .trailing)
                 }
             }
             .padding(.horizontal)
-        }
-    }
-    
-    /// Formats pace in seconds to MM:SS/unit format (e.g., "8:05/mi")
-    private func formatPace(_ paceInSeconds: Double) -> String {
-        let minutes = Int(paceInSeconds / 60)
-        let seconds = Int(paceInSeconds.truncatingRemainder(dividingBy: 60))
-        return String(format: "%d:%02d/mi", minutes, seconds)
-    }
-    
-    /// Formats elevation change in meters to feet with sign
-    private func formatElevation(_ elevationChangeInMeters: Double) -> String {
-        let elevationInFeet = elevationChangeInMeters * 3.28084 // Convert meters to feet
-        let sign = elevationInFeet >= 0 ? "+" : ""
-        return String(format: "%@%.0f ft", sign, elevationInFeet)
+            .padding(.bottom, 8)
+            
+            // Data rows
+            ForEach(Array(mileData.enumerated()), id: \.offset) { index, data in
+                HStack {
+                    // Mile column
+                    Text(data.mile)
+                        .font(.custom("Archivo-Regular", size: 16))
+                        .foregroundColor(.primary)
+                        .frame(width: 40, alignment: .leading)
+                    
+                    // Pace with background bar
+                    ZStack(alignment: .leading) {
+                        // Background bar (similar to image)
+                        Rectangle()
+                            .fill(Color.Brand.primary)
+                            .frame(height: 25)
+                            .frame(width: data.barWidth)
+                        
+                        // Pace text
+                        Text(data.pace)
+                            .font(.custom("Archivo-Regular", size: 16))
+                            .foregroundColor(.white)
+                            .padding(.leading)
+                    }
+                    
+                    Spacer()
+                    
+                    // Elevation column
+                    if hasElevationData {
+                        Text(data.elevation)
+                            .font(.custom("Archivo-Regular", size: 16))
+                            .foregroundColor(.primary)
+                            .frame(width: 80, alignment: .trailing)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+            }
+        }.background(Color(.systemBackground))
     }
 }
 
 #Preview {
-    let baseDate = Date()
-    let split1 = PaceSegment(
-        segmentNumber: 1, 
-        distance: 1609.344, 
-        duration: 511, 
-        pace: 511, 
-        elevationGain: 5, 
-        elevationLoss: 8, 
-        startTime: baseDate, 
-        endTime: baseDate.addingTimeInterval(511)
+    WorkoutSplitsView(
+        splits: [
+            PaceSegment(segmentNumber: 1, distance: 1609.344, duration: 510, elevationGain: 10, elevationLoss: -5, startTime: Date(), endTime: Date()),
+            PaceSegment(segmentNumber: 2, distance: 1609.344, duration: 530, elevationGain: 0, elevationLoss: -13.1, startTime: Date(), endTime: Date()),
+            PaceSegment(segmentNumber: 3, distance: 1609.344, duration: 480, elevationGain: 0, elevationLoss: 0, startTime: Date(), endTime: Date()),
+            PaceSegment(segmentNumber: 4, distance: 850.134, duration: 450, elevationGain: 0, elevationLoss: 0, startTime: Date(), endTime: Date()),
+        ],
+        unit: .miles,
+        hasElevationData: true
     )
-    let split2 = PaceSegment(
-        segmentNumber: 2, 
-        distance: 1609.344, 
-        duration: 485, 
-        pace: 485, 
-        elevationGain: 12, 
-        elevationLoss: 2, 
-        startTime: baseDate.addingTimeInterval(511), 
-        endTime: baseDate.addingTimeInterval(996)
-    )
-    let split3 = PaceSegment(
-        segmentNumber: 3, 
-        distance: 1609.344, 
-        duration: 710, 
-        pace: 710, 
-        elevationGain: 2, 
-        elevationLoss: 32, 
-        startTime: baseDate.addingTimeInterval(996), 
-        endTime: baseDate.addingTimeInterval(1706)
-    )
-    
-    return WorkoutSplitsView(splits: [split1, split2, split3])
 }

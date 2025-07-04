@@ -55,7 +55,10 @@ struct WorkoutStatistics: View {
                                 .foregroundStyle(.red.opacity(0.2))
                             }
                         }
+                        .chartYScale(domain:(heartRateChartData.map { $0.1 }.min() ?? 0) - 5...(heartRateChartData.map { $0.1 }.max() ?? 100) + 5)
                         .frame(height: 200)
+                        .clipped()
+                        
                         
                         // Heart Rate Stats
                         HStack {

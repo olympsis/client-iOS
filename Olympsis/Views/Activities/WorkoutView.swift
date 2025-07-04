@@ -28,13 +28,7 @@ struct WorkoutView: View {
         }
         return String(format: "%.1f", cadence)
     }
-    
-    private var splits: [DistanceSplit] {
-        return workout.paceSegments.map {
-            DistanceSplit(id: $0.segmentNumber, pace: $0.pace, distance: $0.distance, elevation: 0)
-        }
-    }
-    
+
     var body: some View {
         ScrollView {
             VStack {
@@ -130,8 +124,8 @@ struct WorkoutView: View {
                 }
                 
                 // Workout Splits view
-                if !splits.isEmpty {
-                    WorkoutSplitsView(splits: splits)
+                if !workout.paceSegments.isEmpty {
+                    WorkoutSplitsView(splits: workout.paceSegments)
                         .padding(.top)
                         .redacted(reason: state == .loading ? .placeholder : [])
                 }

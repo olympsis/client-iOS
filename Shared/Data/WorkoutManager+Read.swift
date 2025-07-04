@@ -19,103 +19,88 @@ extension WorkoutManager {
         await MainActor.run {
             self.viewState = .loading
         }
-        let workouts = await fetchAllWorkoutHistory(in: datePredicate)
-        await MainActor.run {
-            self.workouts = workouts
+        // Fetch workouts for all sports in a single query
+        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
+            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
         }
-        await MainActor.run {
-            self.viewState = .pending
-        }
-    }
-    
-    func fetchAllWorkoutHistory(in datePredicate: String?) async -> [Workout] {
-        var workouts = [Workout]()
-        await withTaskGroup(of: [Workout].self) { group in
-            for sport in SUPPORTED_SPORTS.allCases {
-                group.addTask {
-                    return await self.fetchWorkoutHistory(for: sport.workoutActivityType, in: datePredicate)
-                }
-            }
-            
-            for await results in group {
-                workouts.append(contentsOf: results)
-            }
-        }
-        return workouts
-    }
-    
-    func fetchWorkoutHistory(for workoutType: HKWorkoutActivityType, in datePredicate: String?) async -> [Workout] {
-        let workoutPredicate = HKQuery.predicateForWorkouts(with: workoutType)
+        let workoutPredicate = NSCompoundPredicate(
+            orPredicateWithSubpredicates: workoutPredicates  // OR, not AND!
+        )
         
-        var combinations = [NSPredicate]()
-        combinations.append(workoutPredicate)
-        if let datePredicate {
-            combinations.append(NSPredicate(format: datePredicate))
-        }
-        
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: combinations)
-
         do {
-            let workouts = try await fetchWorkouts(type: workoutType, predicate: predicate)
-            var _workouts: [Workout] = []
+            let workouts: [Workout] = try await batchProcessWorkouts(
+                fetchWorkouts(predicate: workoutPredicate, batch: 10)
+            )
+            await MainActor.run {
+                self.workouts = workouts
+                self.viewState = .pending
+            }
+        } catch {
+            log.error("Failed to fetch workouts: \(error)")
+        }
+    }
+    
+    func loadWorkouts(dateRange: DateInterval? = nil) async -> [Workout] {
+        let datePredicate = buildDatePredicate(
+            dateRange: dateRange,
+            cursor: self.fetchingCursor
+        )
+        
+        // Fetch workouts for all sports in a single query
+        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
+            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
+        }
+        let workoutPredicate = NSCompoundPredicate(
+            orPredicateWithSubpredicates: workoutPredicates  // OR, not AND!
+        )
+        
+        // Combine workout predicate with date predicate using AND
+        var predicates: [NSPredicate] = [workoutPredicate]
+        if let datePredicate {
+            predicates.append(datePredicate)
+        }
+        
+        let combinedPredicate = NSCompoundPredicate(
+            andPredicateWithSubpredicates: predicates
+        )
+        
+        do {
+            let workouts = try await fetchWorkouts(predicate: combinedPredicate)
+            // Keep track of pointer in loaded workouts
+            self.fetchingCursor = workouts.last?.startDate
             
-            await withTaskGroup(of: Workout?.self) { group in
-                for workout in workouts {
-                    group.addTask {
-                        do {
-                            guard let activity = sportFromActivityType(activity: workoutType) else {
-                                throw WorkoutError.failedQuery
-                            }
-                            
-                            return Workout(
-                                type: activity,
-                                workout: workout
-                            )
-                        } catch {
-                            self.log.error("Failed to fetch data for workout \(workout.uuid): \(error.localizedDescription)")
-                            return nil
-                        }
-                    }
-                }
-
-                for await result in group {
-                    if let workout = result {
-                        _workouts.append(workout)
+            // If we did get a full batch then we create a background task to fetch the rest
+            if workouts.count == 20 {
+                self.backgroundTask = Task(priority: .background) {
+                    let results = await loadWorkouts()
+                    await MainActor.run {
+                        self.workouts.append(contentsOf: results)
                     }
                 }
             }
             
-            return _workouts
-        } catch HKError.errorNoData {
-            log.error("No data")
-        } catch HKError.errorHealthDataUnavailable {
-            log.error("Data unavailable")
-        } catch HKError.errorHealthDataRestricted {
-            log.error("Data restricted")
-        } catch HKError.errorInvalidArgument {
-            log.error("Invalid argument")
-        } catch HKError.errorAuthorizationDenied {
-            log.error("Authorization Denied")
-        } catch HKError.errorAuthorizationNotDetermined {
-            log.error("Authorization Unknown")
-        } catch HKError.errorRequiredAuthorizationDenied {
-            log.error("Authorization Denied")
-        } catch HKError.errorDatabaseInaccessible {
-            log.error("Database Inaccessible")
+            let processedWorkouts = await batchProcessWorkouts(workouts)
+            self.workouts.append(contentsOf: processedWorkouts)
+            return processedWorkouts
         } catch {
-            log.error("Failed to load weekly run history: \(error.localizedDescription)")
+            log.error("Failed to fetch workouts: \(error.localizedDescription)")
+            return []
         }
-        
-        return []
     }
     
-    func fetchWorkouts(type: HKWorkoutActivityType, predicate: NSPredicate) async throws -> [HKWorkout] {
-        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+    /// Queries HealthKit for the workout generic data
+    /// - Parameters:
+    ///     - predicate: filter to help us refine our query for the workouts
+    ///     - batch: upper-bound limit for fetching workouts
+    ///
+    /// - Returns: an array containing the HealthKit workout data
+    func fetchWorkouts(predicate: NSPredicate, batch: Int = 20) async throws -> [HKWorkout] {
+        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
                 sampleType: HKObjectType.workoutType(),
                 predicate: predicate,
-                limit: HKObjectQueryNoLimit,
+                limit: batch,
                 sortDescriptors: [dateSortDescriptor]) { (query, results, error) in
                 if let workouts = results as? [HKWorkout] {
                     continuation.resume(returning: workouts)
@@ -129,51 +114,282 @@ extension WorkoutManager {
         }
     }
     
-    func fetchAverageForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> Double {
-        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        let type = HKQuantityType.quantityType(forIdentifier: quantityType)!
-        let predicate = HKQuery.predicateForObjects(from: workout)
+    /// Queries HealthKit for the location data for a workout
+    /// - Parameters:
+    ///     - workout: the workout we need to pull data form
+    ///
+    /// - Returns: an array containing the location data for the workout
+    func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [CLLocation] {
+        // First get the workout routes
+        let workoutRoutes = try await fetchWorkoutRoutes(for: workout)
         
-        let unit = {
-            if quantityType == .heartRate {
-                return HKUnit.count().unitDivided(by: HKUnit.minute())
-            } else if quantityType == .activeEnergyBurned {
-                return HKUnit.kilocalorie()
-            } else {
-                if self.unit == UnitLength.miles {
-                    return HKUnit.mile()
-                } else {
-                    return HKUnit.meter()
+        guard !workoutRoutes.isEmpty else { return [] }
+        
+        // Then fetch location data for each route using TaskGroup
+        return try await withThrowingTaskGroup(of: (Int, [CLLocation]).self) { group in
+            for (index, route) in workoutRoutes.enumerated() {
+                group.addTask {
+                    let locations = try await self.fetchLocations(for: route)
+                    return (index, locations)
                 }
             }
-        }()
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [dateSortDescriptor]) { (query, results, error) in
-                if let samples = results as? [HKQuantitySample] {
-                    let average = samples.reduce(0.0) { $0 + $1.quantity.doubleValue(for: unit) }
-                    if quantityType == .heartRate {
-                        if let last = samples.last?.quantity.doubleValue(for: unit) {
-                            continuation.resume(returning: last)
-                            return
-                        }
-                    }
-                    continuation.resume(returning: average)
-                } else if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(throwing: WorkoutError.failedQuery)
-                }
+            
+            var routeSegments: [(index: Int, locations: [CLLocation])] = []
+            for try await (index, locations) in group {
+                routeSegments.append((index: index, locations: locations))
             }
-            self.healthStore.execute(query)
+            
+            // Sort by route index, then by timestamp
+            return routeSegments
+                .sorted { $0.index < $1.index }
+                .flatMap { $0.locations }
+                .sorted { $0.timestamp < $1.timestamp }
         }
     }
     
-    func fetchSamplesForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> [HKQuantitySample] {
-        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        let type = HKQuantityType.quantityType(forIdentifier: quantityType)!
-        let predicate = HKQuery.predicateForObjects(from: workout)
+    private func fetchWorkoutRoutes(for workout: HKWorkout) async throws -> [HKWorkoutRoute] {
+        return try await withCheckedThrowingContinuation { continuation in
+            let workoutPredicate = HKQuery.predicateForObjects(from: workout)
+            
+            let query = HKSampleQuery(
+                sampleType: HKSeriesType.workoutRoute(),
+                predicate: workoutPredicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)]
+            ) { (query, results, error) in
+                
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let workoutRouteSamples = results as? [HKWorkoutRoute] else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                
+                continuation.resume(returning: workoutRouteSamples)
+            }
+            
+            self.healthStore.execute(query)
+        }
+    }
+
+    private func fetchLocations(for route: HKWorkoutRoute) async throws -> [CLLocation] {
+        return try await withCheckedThrowingContinuation { continuation in
+            var locations: [CLLocation] = []
+            var hasError = false
+            
+            let locationQuery = HKWorkoutRouteQuery(route: route) { (query, routeData, done, error) in
+                if let error = error {
+                    if !hasError {
+                        hasError = true
+                        continuation.resume(throwing: error)
+                    }
+                    return
+                }
+                
+                if let routeData = routeData {
+                    locations.append(contentsOf: routeData)
+                }
+                
+                if done {
+                    if !hasError {
+                        // Sort locations by timestamp to ensure proper ordering
+                        let sortedLocations = locations.sorted { $0.timestamp < $1.timestamp }
+                        continuation.resume(returning: sortedLocations)
+                    }
+                }
+            }
+            
+            self.healthStore.execute(locationQuery)
+        }
+    }
+    
+    /// Fetches running cadence by calculating steps per minute from total step count
+    /// - Parameter workout: The HKWorkout to fetch cadence for
+    /// - Returns: Running cadence in steps per minute, or nil if unavailable
+    private func fetchRunningCadence(from workout: HKWorkout) async -> Double? {
+        // Debug: Check what statistics are available in the workout
+        print("🏃‍♂️ Available workout statistics for cadence:")
+        for (key, statistic) in workout.allStatistics {
+            print("   - \(key.identifier): \(statistic)")
+            if let sum = statistic.sumQuantity() {
+                print("     Sum: \(sum)")
+            }
+            if let average = statistic.averageQuantity() {
+                print("     Average: \(average)")
+            }
+        }
         
+        guard workout.workoutActivityType == .running || workout.workoutActivityType == .walking else {
+            // For non-running activities, fall back to the original method
+            return await fetchAverageStatistic(
+                from: workout,
+                type: getCadenceType(for: workout.workoutActivityType),
+                unit: HKUnit.count().unitDivided(by: .minute())
+            )
+        }
+        
+        // For running, calculate cadence from total steps and active workout duration
+        guard let totalSteps = await fetchAverageStatistic(
+            from: workout,
+            type: .stepCount,
+            unit: HKUnit.count()
+        ) else {
+            print("🏃‍♂️ No step count data available for cadence calculation")
+            return nil
+        }
+        
+        // Calculate active workout duration (excluding pauses) for accurate cadence
+        let activeWorkoutDuration = await calculateActiveWorkoutDurationFromEvents(workout: workout)
+        
+        // Convert active duration from seconds to minutes and calculate steps per minute
+        let activeMinutes = activeWorkoutDuration / 60.0
+        guard activeMinutes > 0 else { 
+            print("🏃‍♂️ Active workout duration is 0, cannot calculate cadence")
+            return nil 
+        }
+        
+        let cadence = totalSteps / activeMinutes
+        print("🏃‍♂️ Cadence calculation: \(totalSteps) steps / \(activeMinutes) minutes = \(cadence) steps/min")
+        return cadence
+    }
+    
+    /// Calculates the active workout duration by excluding paused periods
+    /// - Parameter workout: The HKWorkout to analyze
+    /// - Returns: Active duration in seconds
+    private func calculateActiveWorkoutDurationFromEvents(workout: HKWorkout) async -> TimeInterval {
+        guard let events = workout.workoutEvents, !events.isEmpty else {
+            // No pause/resume events, return total workout duration
+            return workout.duration
+        }
+        
+        var activeDuration: TimeInterval = 0
+        var currentTime = workout.startDate
+        var isPaused = false
+        
+        // Sort events by start time
+        let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
+        
+        for event in sortedEvents {
+            let eventTime = event.dateInterval.start
+            
+            if !isPaused {
+                // Add active time from current position to pause
+                activeDuration += eventTime.timeIntervalSince(currentTime)
+            }
+            
+            if event.type == .pause {
+                isPaused = true
+            } else if event.type == .resume {
+                isPaused = false
+            }
+            
+            currentTime = eventTime
+        }
+        
+        // Add remaining time if not paused at the end
+        if !isPaused {
+            activeDuration += workout.endDate.timeIntervalSince(currentTime)
+        }
+        
+        return activeDuration
+    }
+    
+    func fetchWorkoutAdditionalData(from workout: HKWorkout) async -> WorkoutDetails? {
+        do {
+            async let cadence = fetchRunningCadence(from: workout)
+            
+            async let locationSamples = fetchWorkoutRoute(from: workout)
+            async let heartRateSamples = fetchSamplesForUnit(from: workout, for: .heartRate)
+            async let distanceSamples = fetchSamplesForUnit(
+                from: workout,
+                for: getDistanceType(for: workout.workoutActivityType)
+            )
+            
+            let (cd, ls, hs, ds) = try await (cadence, locationSamples, heartRateSamples, distanceSamples)
+            
+            // Generate running splits using distance samples with optional elevation data from locations
+            let splits = generateRunningSplits(from: ds, locations: ls, for: workout)
+            
+            return WorkoutDetails(
+                route: ls,
+                cadence: cd ?? 0,
+                paceSegments: splits,
+                heartRateSamples: hs,
+                splits: splits
+            )
+        } catch {
+            log.error("Failed to get workout additional data. Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    /// Process a batch of workouts to get heart rate and calorie data
+    /// - Parameters:
+    ///     - workouts: the batch of workouts to process
+    ///
+    /// - Returns: an array of the processed workouts
+    private func batchProcessWorkouts(_ workouts: [HKWorkout]) async -> [Workout] {
+        // Group workouts by type for efficient processing
+        let groupedWorkouts = Dictionary(grouping: workouts) { $0.workoutActivityType }
+        
+        return await withTaskGroup(of: [Workout].self) { group in
+            for (activityType, workoutsOfType) in groupedWorkouts {
+                group.addTask {
+                    await self.processWorkoutBatch(workoutsOfType, activityType: activityType)
+                }
+            }
+            
+            var allProcessed: [Workout] = []
+            for await batch in group {
+                allProcessed.append(contentsOf: batch)
+            }
+            
+            // Sort by date to maintain order
+            return allProcessed.sorted { $0.workout.startDate > $1.workout.startDate }
+        }
+    }
+    
+    /// Processes a workout batch by confirming the activity type and fetching the statistics for the workout batch
+    /// - Parameters:
+    ///     - workouts: the batch of workouts to process
+    ///
+    /// - Returns: an array of the processed workouts with the calories and heart rate stats
+    private func processWorkoutBatch(_ workouts: [HKWorkout], activityType: HKWorkoutActivityType) async -> [Workout] {
+        guard let sport = sportFromActivityType(activity: activityType) else {
+            return []
+        }
+        
+        return workouts.compactMap { workout -> Workout? in
+            return Workout(
+                type: sport,
+                workout: workout
+            )
+        }
+    }
+    
+    /// Queries HealthKit samples data from workout for a specific unit type
+    /// - Parameters:
+    ///     - workout: the workout we need to pull data for
+    ///     - quantityType: the unity type we want to fetch data for
+    ///
+    /// - Returns: an array of HealthKit quantity samples
+    private func fetchSamplesForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> [HKQuantitySample] {
+        guard let type = HKQuantityType.quantityType(forIdentifier: quantityType) else { return [] }
+        
+        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        var predicate = HKQuery.predicateForObjects(from: workout)
+        
+        if quantityType == .heartRate {
+            predicate = HKQuery.predicateForSamples(
+                withStart: workout.startDate,
+                end: workout.endDate,
+                options: .strictStartDate
+            )
+        }
+
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(sampleType: type,
                                       predicate: predicate,
@@ -191,40 +407,76 @@ extension WorkoutManager {
         }
     }
     
-    func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [CLLocation] {
-        return try await withCheckedThrowingContinuation { continuation in
-            let workoutPredicate = HKQuery.predicateForObjects(from: workout)
-            
-            let query = HKSampleQuery(sampleType: HKSeriesType.workoutRoute(),
-                                      predicate: workoutPredicate,
-                                      limit: 0,
-                                      sortDescriptors: nil) { (query, results, error) in
-                if let workoutRouteSamples = results as? [HKWorkoutRoute] {
-                    var locations: [CLLocation] = []
-                                
-                    let group = DispatchGroup()
-                    for workoutRoute in workoutRouteSamples {
-                        group.enter()
-                        let locationQuery = HKWorkoutRouteQuery(route: workoutRoute) { (query, routeData, done, error) in
-                            if let routeData = routeData {
-                                locations.append(contentsOf: routeData)
-                            }
-                            if done {
-                                group.leave()
-                            }
+    /// Queries HealthKit average statistic for a workout unit
+    /// - Parameters:
+    ///     - workout: the workout we are fetching the unit average from
+    ///     - type: the statistic unit type
+    ///     - unit: the method to calculate the average of our unit
+    ///
+    /// - Returns: a double expressing the average of the statistic
+    private func fetchAverageStatistic(from workout: HKWorkout, type: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double? {
+        guard let quantityType = HKQuantityType.quantityType(forIdentifier: type) else { return nil }
+        
+        let predicate = HKQuery.predicateForObjects(from: workout)
+        
+        // Determine the correct statistics option based on quantity type
+        let statisticsOption: HKStatisticsOptions = {
+            switch type {
+            // Discrete types - use average
+            case .heartRate,
+                 .heartRateVariabilitySDNN,
+                 .respiratoryRate,
+                 .oxygenSaturation,
+                 .bodyTemperature,
+                 .cyclingCadence,
+                 .runningStrideLength,
+                 .bloodPressureSystolic,
+                 .bloodPressureDiastolic:
+                return .discreteAverage
+                
+            // Cumulative types - use sum
+            case .activeEnergyBurned,
+                 .basalEnergyBurned,
+                 .distanceWalkingRunning,
+                 .distanceCycling,
+                 .distanceSwimming,
+                 .stepCount,
+                 .flightsClimbed,
+                 .swimmingStrokeCount:
+                return .cumulativeSum
+                
+            default:
+                // For unknown types, check if it's cumulative
+                return quantityType.aggregationStyle == .cumulative ? .cumulativeSum : .discreteAverage
+            }
+        }()
+        
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(
+                quantityType: quantityType,
+                quantitySamplePredicate: predicate,
+                options: statisticsOption
+            ) { _, result, error in
+                if let statistics = result {
+                    // Handle the result based on the option used
+                    if statisticsOption == .cumulativeSum {
+                        if let sum = statistics.sumQuantity() {
+                            continuation.resume(returning: sum.doubleValue(for: unit))
+                        } else {
+                            continuation.resume(returning: nil)
                         }
-                        self.healthStore.execute(locationQuery)
+                    } else {
+                        if let average = statistics.averageQuantity() {
+                            continuation.resume(returning: average.doubleValue(for: unit))
+                        } else {
+                            continuation.resume(returning: nil)
+                        }
                     }
-                    
-                    group.notify(queue: .main) {
-                        continuation.resume(returning: locations)
-                    }
-                } else if let error = error {
-                    continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(throwing: WorkoutError.failedQuery)
+                    continuation.resume(returning: nil)
                 }
             }
+            
             self.healthStore.execute(query)
         }
     }

@@ -12,13 +12,32 @@ struct DistanceActivityMetrics: View {
     @Environment(WorkoutManager.self) private var manager
     
     var averagePaceText: Text {
-        let mins = Double(manager.builder?.elapsedTime ?? 0) / 60
-        if manager.unit == UnitLength.kilometers {
-            let conversion = (manager.distance / 1000)
-            return Text("\(mins/conversion, specifier: "%.2f")")
-        } else {
-            return Text("\(mins/manager.distance, specifier: "%.2f")")
+        let totalMinutes = Double(manager.builder?.elapsedTime ?? 0) / 60
+        
+        // Guard against zero or very small distances
+        guard manager.distance > 0.001 else {
+            return Text("--:--")
         }
+        
+        let paceInMinutes: Double
+        
+        if manager.unit == UnitLength.kilometers {
+            let distanceInKm = manager.distance / 1000
+            paceInMinutes = totalMinutes / distanceInKm
+        } else {
+            let distanceInMiles = manager.distance / 1609.344
+            paceInMinutes = totalMinutes / distanceInMiles
+        }
+        
+        // Guard against infinite or NaN values
+        guard paceInMinutes.isFinite && !paceInMinutes.isNaN else {
+            return Text("--:--")
+        }
+        
+        let minutes = Int(paceInMinutes)
+        let seconds = Int((paceInMinutes - Double(minutes)) * 60)
+        
+        return Text(String(format: "%d:%02d", minutes, seconds))
     }
     
     var distanceText: Text {
@@ -46,7 +65,7 @@ struct DistanceActivityMetrics: View {
             VStack(spacing: -10) {
                 distanceText
                     .foregroundStyle(Color.Brand.tertiary)
-                    .font(.system(size: 70))
+                    .font(.custom("Archivo-Black", size: 70))
                     .fontWeight(.bold)
                 
                 distanceMetric

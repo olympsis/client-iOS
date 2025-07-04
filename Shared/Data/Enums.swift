@@ -177,13 +177,13 @@ enum EVENT_STATUS: String {
 
 // MARK: - Sports
 
-enum SPORTS: String, CaseIterable {
+enum SUPPORTED_SPORTS: String, CaseIterable {
     
     case running = "running"
     case walking = "walking"
     case cycling = "cycling"
-    case weights = "weights"
     case soccer = "soccer"
+    case weights = "weights"
     case volleyball = "volleyball"
     case basketball = "basketball"
     case pickleball = "pickleball"
@@ -228,39 +228,6 @@ enum SPORTS: String, CaseIterable {
             return Image(systemName: "figure.american.football")
         case .weights:
             return Image(systemName: "figure.strengthtraining.traditional")
-        }
-    }
-    
-    func images() -> [String] {
-        switch self {
-        case .soccer:
-            return ["event-images/soccer-0.jpg", "event-images/soccer-1.jpg", "event-images/soccer-2.jpg"]
-        case .basketball:
-            return ["event-images/basketball-0.jpg", "event-images/basketball-1.jpg", "event-images/basketball-2.jpg"]
-        case .volleyball:
-            return ["event-images/volleyball-0.jpg","event-images/volleyball-1.jpg","event-images/volleyball-2.jpg"]
-        case .tennis:
-            return ["event-images/tennis-0.jpg", "event-images/tennis-1.jpg", "event-images/tennis-2.jpg"]
-        case .pickleball:
-            return ["event-images/pickleball-0.jpg","event-images/pickleball-1.jpg","event-images/pickleball-2.jpg"]
-        case .golf:
-            return ["event-images/golf-0.jpg","event-images/golf-1.jpg","event-images/golf-2.jpg"]
-        case .hiking:
-            return ["event-images/hiking-0.jpg", "event-images/hiking-1.jpg"]
-        case .climbing:
-            return ["event-images/climbing-0.jpg","event-images/climbing-1.jpg","event-images/climbing-2.jpg"]
-        case .spike:
-            return ["event-images/spikeball-0.jpg"]
-        case .running, .walking:
-            return ["event-images/running-0.jpg", "event-images/running-1.jpg"]
-        case .cycling:
-            return ["event-images/cycling-0.jpg", "event-images/cycling-1.jpg"]
-        case .racquetball:
-            return ["event-images/racquetball-0.jpg"]
-        case .football:
-            return ["event-images/football-0.jpg"]
-        case .weights:
-            return ["event-images/weights-0.jpg", "event-images/weights-1.jpg"]
         }
     }
     
@@ -739,54 +706,7 @@ enum DevicePlatform: String, Codable {
     case web = "web"
 }
 
-enum SUPPORTED_SPORTS: String, CaseIterable {
-    case running = "running"
-    case walking = "walking"
-    case cycling = "cycling"
-    case soccer = "soccer"
-    case volleyball = "volleyball"
-    case basketball = "basketball"
-    case pickleball = "pickleball"
-    case racquetball = "racquetball"
-    case tennis = "tennis"
-    case golf = "golf"
-    case hiking = "hiking"
-    case climbing = "climbing"
-    case football = "football"
-    
-    var workoutActivityType: HKWorkoutActivityType {
-        switch self {
-        case .running:
-                .running
-        case .walking:
-                .walking
-        case .cycling:
-                .cycling
-        case .soccer:
-                .soccer
-        case .volleyball:
-                .volleyball
-        case .basketball:
-                .basketball
-        case .pickleball:
-                .pickleball
-        case .racquetball:
-                .racquetball
-        case .tennis:
-                .tennis
-        case .golf:
-                .golf
-        case .hiking:
-                .hiking
-        case .climbing:
-                .climbing
-        case .football:
-                .americanFootball
-        }
-    }
-}
-
-func sportFromActivityType(activity: HKWorkoutActivityType) -> SPORTS? {
+func sportFromActivityType(activity: HKWorkoutActivityType) -> SUPPORTED_SPORTS? {
     switch activity {
     case.americanFootball:
         return .football
@@ -819,9 +739,46 @@ func sportFromActivityType(activity: HKWorkoutActivityType) -> SPORTS? {
     }
 }
 
-enum SHARE_METHOD {
-    case image
-    case facebook
-    case instagram
-    case x
+enum ACTIVITY_PAGES {
+    case menu
+    case metrics
+    case details
+}
+
+enum ACTIVITY_GOALS: CaseIterable {
+    case distance
+    case duration
+    case heart_rate
+    case pace
+    case zone
+    
+    func toString() -> String {
+        switch self {
+        case .distance:
+            return "Distance"
+        case .duration:
+            return "Duration"
+        case .heart_rate:
+            return "Heart Rate"
+        case .pace:
+            return "Pace"
+        case .zone:
+            return "Zone"
+        }
+    }
+    
+    func toIcon() -> Image {
+        switch self {
+        case .distance:
+            return Image(systemName: "road.lanes")
+        case .duration:
+            return Image(systemName: "clock")
+        case .heart_rate:
+            return Image(systemName: "heart")
+        case .pace:
+            return Image(systemName: "shoe")
+        case .zone:
+            return Image(systemName: "rectangle.grid.1x2")
+        }
+    }
 }
