@@ -92,6 +92,7 @@ extension WorkoutManager {
             session?.stopActivity(with: session?.currentActivity.startDate)
             resetWorkout()
             state = .ended
+            self.stopListeningToLocationUpdates()
             log.info("Workout ended early")
         }
         #endif

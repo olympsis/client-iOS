@@ -21,10 +21,11 @@ extension WorkoutManager {
         guard workout.workoutActivityType == .running else { return [] }
         
         
-        // If we have location data, use GPS-based distance calculation instead of HealthKit distance samples
-        if !locations.isEmpty && locations.count > 10 {
-            return generateGPSBasedSplits(from: locations, for: workout)
-        }
+        // Use HealthKit distance samples for more accurate distance calculation
+        // (GPS-based calculation can accumulate extra distance due to GPS noise)
+        // if !locations.isEmpty && locations.count > 10 {
+        //     return generateGPSBasedSplits(from: locations, for: workout)
+        // }
         guard !distanceSamples.isEmpty else {
             return generateBasicTimeSplits(for: workout)
         }
@@ -43,7 +44,16 @@ extension WorkoutManager {
         var splitStartIndex = 0
         
         // Sort locations by timestamp to ensure proper order
-        let sortedLocations = locations.sorted { $0.timestamp < $1.timestamp }
+        let allLocations = locations.sorted { $0.timestamp < $1.timestamp }
+        
+        // Filter out locations during paused periods to avoid GPS drift
+        let activeLocations = filterActiveLocations(allLocations, workout: workout)
+        let sortedLocations = activeLocations
+        
+        // Debug logging for split generation
+        let displayUnit = unit == UnitLength.miles ? "miles" : "km"
+        let conversionFactor = unit == UnitLength.miles ? 1609.344 : 1000.0
+        print("🏃‍♂️ DEBUG: Starting GPS-based splits generation - Original: \(allLocations.count), Active: \(sortedLocations.count) locations")
         
         for (index, location) in sortedLocations.enumerated() {
             guard index > 0 else { continue } // Skip first location
@@ -80,6 +90,8 @@ extension WorkoutManager {
                 
                 splits.append(split)
                 
+                // Debug logging for complete split
+                print("🏃‍♂️ DEBUG: Complete split #\(splits.count) - Distance: \(String(format: "%.2f", splitDistance/conversionFactor)) \(displayUnit), Total distance so far: \(String(format: "%.2f", (splitDistance * Double(splits.count))/conversionFactor)) \(displayUnit)")
                 
                 // Reset for next split
                 currentDistance = overshoot
@@ -87,6 +99,38 @@ extension WorkoutManager {
                 splitStartIndex = index
             }
         }
+        
+        // Handle remaining partial split (minimum 0.01 mile/km or ~16 meters)
+        if currentDistance >= splitDistance * 0.01 && splitStartIndex < sortedLocations.count {
+            let splitEndTime = sortedLocations.last!.timestamp
+            let duration = splitEndTime.timeIntervalSince(splitStartTime)
+            
+            // Debug logging for partial split
+            let displayUnit = unit == UnitLength.miles ? "miles" : "km"
+            let conversionFactor = unit == UnitLength.miles ? 1609.344 : 1000.0
+            let partialDistanceInDisplayUnit = currentDistance / conversionFactor
+            print("🏃‍♂️ DEBUG: Partial split - Raw distance: \(currentDistance)m, Display distance: \(String(format: "%.2f", partialDistanceInDisplayUnit)) \(displayUnit), Split #\(splits.count + 1)")
+            
+            // Calculate elevation for partial split
+            let splitLocations = Array(sortedLocations[splitStartIndex..<sortedLocations.count])
+            let elevationData = calculateElevationChange(for: splitLocations)
+            
+            let split = PaceSegment(
+                segmentNumber: splits.count + 1,
+                distance: currentDistance, // currentDistance is already in meters
+                duration: duration,
+                elevationGain: elevationData.gain,
+                elevationLoss: elevationData.loss,
+                startTime: splitStartTime,
+                endTime: splitEndTime
+            )
+            
+            splits.append(split)
+        }
+        
+        // Debug logging for final totals
+        let totalCalculatedDistance = (splitDistance * Double(splits.count > 0 && currentDistance < splitDistance * 0.01 ? splits.count : splits.count - 1)) + (currentDistance >= splitDistance * 0.01 ? currentDistance : 0)
+        print("🏃‍♂️ DEBUG: Final totals - Total splits: \(splits.count), Total calculated distance: \(String(format: "%.2f", totalCalculatedDistance/conversionFactor)) \(displayUnit)")
         
         return splits
     }
@@ -165,11 +209,16 @@ extension WorkoutManager {
             }
         }
         
-        // Handle remaining partial split (minimum 0.05 mile/km or ~80 meters)
-        if currentDistance >= splitDistance * 0.05 && splitStartSampleIndex < samples.count {
+        // Handle remaining partial split - use exact remainder of total distance
+        if currentDistance >= splitDistance * 0.01 && splitStartSampleIndex < samples.count {
             let splitEndTime = samples.last!.endDate
             let duration = splitEndTime.timeIntervalSince(splitStartTime)
             let splitSamples = Array(samples[splitStartSampleIndex..<samples.count])
+            
+            // Calculate exact remainder distance from total workout distance
+            let totalWorkoutDistance = workout.totalDistance?.doubleValue(for: HKUnit.meter()) ?? 0
+            let completedDistance = splitDistance * Double(splits.count)
+            let remainderDistance = totalWorkoutDistance - completedDistance
             
             // Calculate elevation for partial split if location data is available
             let elevationData: (gain: Double, loss: Double)
@@ -186,7 +235,7 @@ extension WorkoutManager {
             
             let split = PaceSegment(
                 segmentNumber: splits.count + 1,
-                distance: currentDistance,
+                distance: remainderDistance, // Use exact remainder instead of accumulated distance
                 duration: duration,
                 elevationGain: elevationData.gain,
                 elevationLoss: elevationData.loss,
@@ -397,5 +446,47 @@ extension WorkoutManager {
             activeDuration += remainingTime
         }
         return activeDuration
+    }
+    
+    /// Filters out location points that occurred during paused periods
+    /// - Parameters:
+    ///   - locations: All location samples
+    ///   - workout: HKWorkout with events
+    /// - Returns: Filtered locations excluding those during paused periods
+    private func filterActiveLocations(_ locations: [CLLocation], workout: HKWorkout) -> [CLLocation] {
+        guard let events = workout.workoutEvents, !events.isEmpty else {
+            // No workout events, return all locations
+            return locations
+        }
+        
+        var activeLocations: [CLLocation] = []
+        var isPaused = false
+        
+        // Sort events by timestamp
+        let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
+        var eventIndex = 0
+        
+        for location in locations {
+            // Update pause state based on events
+            while eventIndex < sortedEvents.count && sortedEvents[eventIndex].dateInterval.start <= location.timestamp {
+                let event = sortedEvents[eventIndex]
+                if event.type == .pause {
+                    isPaused = true
+                    print("🏃‍♂️ DEBUG: Paused at \(event.dateInterval.start)")
+                } else if event.type == .resume {
+                    isPaused = false
+                    print("🏃‍♂️ DEBUG: Resumed at \(event.dateInterval.start)")
+                }
+                eventIndex += 1
+            }
+            
+            // Only include location if not paused
+            if !isPaused {
+                activeLocations.append(location)
+            }
+        }
+        
+        print("🏃‍♂️ DEBUG: Filtered out \(locations.count - activeLocations.count) locations during paused periods")
+        return activeLocations
     }
 }
