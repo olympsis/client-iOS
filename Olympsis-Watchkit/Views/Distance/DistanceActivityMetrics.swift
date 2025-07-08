@@ -57,25 +57,66 @@ struct DistanceActivityMetrics: View {
         }
     }
     
+    var activeCalories: Text {
+        guard manager.activeEnergy > 0 else {
+            return Text("--")
+        }
+        
+        return Text("\(manager.activeEnergy, specifier: "%.0f")")
+    }
+    
     var body: some View {
         VStack {
-            
-            Spacer()
-            
+
             VStack(spacing: -10) {
-                distanceText
-                    .foregroundStyle(Color.Brand.tertiary)
-                    .font(.custom("Archivo-Black", size: 70))
-                    .fontWeight(.bold)
+                VStack(alignment: .trailing, spacing: -5) {
+//                    Text("2:00")
+//                        .font(.title3)
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(Color.Brand.quaternary)
+                    distanceText
+                        .minimumScaleFactor(0.7)
+                        .foregroundStyle(Color.Brand.tertiary)
+                        .font(.custom("Archivo-BlackItalic", size: 70))
+                        .fontWeight(.bold)
+                }
+                    
                 
                 distanceMetric
+                    .font(.system(size: 12))
                     .textCase(.uppercase)
-                    .font(.caption)
                     .foregroundStyle(.gray)
             }
             
             Spacer()
-            Spacer()
+            
+            TimelineView (
+                PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+            ) { _ in
+                HStack {
+                    VStack {
+                        activeCalories
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                        Text("Cal")
+                            .textCase(.uppercase)
+                            .font(.system(size: 10))
+                            .foregroundStyle(.gray)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack {
+                        SmallZoneViewer(zone: manager.zone)
+                        Text("Zone")
+                            .textCase(.uppercase)
+                            .font(.system(size: 10))
+                            .foregroundStyle(.gray)
+                    }
+                }
+                .padding(.vertical, 5)
+                .padding(.horizontal, 15)
+            }
             
             TimelineView(
                 PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
@@ -83,11 +124,11 @@ struct DistanceActivityMetrics: View {
                 HStack {
                     VStack {
                         averagePaceText
-                            .font(.title3)
+                            .font(.headline)
                             .fontWeight(.semibold)
                         Text("pace")
                             .textCase(.uppercase)
-                            .font(.caption2)
+                            .font(.system(size: 10))
                             .foregroundStyle(.gray)
                     }
                     
@@ -101,21 +142,22 @@ struct DistanceActivityMetrics: View {
                                     .number.precision(.fractionLength(0))
                                 )
                             )
-                            .font(.title3)
+                            .font(.headline)
                             .fontWeight(.semibold)
                             
                             Image(systemName: "heart.fill")
                                 .foregroundStyle(.red)
-                                .imageScale(.large)
+                                .imageScale(.medium)
                         }
                         Text("bpm")
                             .textCase(.uppercase)
-                            .font(.caption2)
+                            .font(.system(size: 10))
                             .foregroundStyle(.gray)
                     }
-                }.padding(.horizontal)
+                }.padding(.horizontal, 15)
             }
-        }.toolbar {
+        }
+        .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 TimelineView(
                     EllapsedTimeTimelineSchedule(

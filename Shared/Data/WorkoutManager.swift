@@ -23,6 +23,7 @@ class WorkoutManager: NSObject {
     var selectedFilter: Int = 0
     
     var fetchingCursor: Date? = nil
+    var locationTask: Task<Void, Never>? = nil
     var backgroundTask: Task<Void, Never>? = nil
     
     var selectedSport: SUPPORTED_SPORTS? {
@@ -61,6 +62,9 @@ class WorkoutManager: NSObject {
     var heartRate: Double = 0
     var activeEnergy: Double = 0
     var distance: Double = 0
+    var zone: Int {
+        return 3
+    }
     
     var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
     

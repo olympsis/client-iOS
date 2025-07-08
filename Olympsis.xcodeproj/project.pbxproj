@@ -401,6 +401,8 @@
 		5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */; };
 		5D78BDEA2C0D48C000F170D6 /* NewEventImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */; };
 		5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */; };
+		5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
+		5D7DA5B02E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */; };
@@ -935,6 +937,7 @@
 		5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventSportsPicker.swift; sourceTree = "<group>"; };
 		5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventImagePicker.swift; sourceTree = "<group>"; };
 		5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePickerView.swift; sourceTree = "<group>"; };
+		5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallZoneViewer.swift; sourceTree = "<group>"; };
 		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
 		5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePicker.swift; sourceTree = "<group>"; };
@@ -1610,6 +1613,7 @@
 				5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */,
 				5DC8B4612E05CE6C008C9052 /* WorkoutSmallListItemView.swift */,
 				5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */,
+				5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2753,6 +2757,7 @@
 				5D5321822E063B5700C67357 /* EventParticipant.swift in Sources */,
 				5D53215D2E06364F00C67357 /* ActivityZoneView.swift in Sources */,
 				5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */,
+				5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */,
 				5DB096372E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
 				5D0A8E392E16121300E8B3B1 /* GeneralActivityPreparation.swift in Sources */,
 				5DB096112E064A0700BB924A /* ActivitySportCard.swift in Sources */,
@@ -2998,6 +3003,7 @@
 				5DC8B4482E05BF09008C9052 /* Enums.swift in Sources */,
 				5DC8B4492E05BF09008C9052 /* WorkoutManager.swift in Sources */,
 				5DC8B44A2E05BF09008C9052 /* TempData.swift in Sources */,
+				5D7DA5B02E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */,
 				9AAAA6B32903BE2F0003D501 /* CacheService.swift in Sources */,
 				5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */,
 				5D204B502DA2C9F600B67F5D /* EventOrganizer.swift in Sources */,
