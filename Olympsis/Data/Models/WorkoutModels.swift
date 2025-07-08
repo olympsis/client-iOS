@@ -125,6 +125,20 @@ class Workout: Identifiable {
         }
         return average.doubleValue(for: HKUnit.kilocalorie())
     }
+    
+    var totalElevationGain: Double {
+        guard !paceSegments.isEmpty else { return 0 }
+        
+        let totalGainInMeters = paceSegments.reduce(0) { $0 + $1.elevationGain }
+        
+        // Return in appropriate units - feet for miles, meters for kilometers
+        let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
+        if preferredUnit == UnitLength.miles {
+            return totalGainInMeters * 3.28084 // Convert meters to feet
+        } else {
+            return totalGainInMeters // Keep in meters
+        }
+    }
 }
 
 extension [Workout] {

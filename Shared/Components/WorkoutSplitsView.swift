@@ -37,9 +37,21 @@ struct WorkoutSplitsView: View {
             let seconds = Int(paceInSeconds) % 60
             let paceDisplay = String(format: "%d:%02d", minutes, seconds)
             
-            // Format elevation
-            let elevation = split.elevationGain + split.elevationLoss
-            let elevationDisplay = hasElevationData ? "\(elevation) ft" : ""
+            // Format elevation - show net elevation change from previous segment
+            let netElevationChange = split.elevationGain - split.elevationLoss
+            let elevationDisplay: String
+            if hasElevationData {
+                if unit == .miles {
+                    // Convert meters to feet and round to 0 decimals
+                    let elevationInFeet = netElevationChange * 3.28084
+                    elevationDisplay = "\(Int(elevationInFeet.rounded())) ft"
+                } else {
+                    // Keep in meters and round to 0 decimals
+                    elevationDisplay = "\(Int(netElevationChange.rounded())) m"
+                }
+            } else {
+                elevationDisplay = ""
+            }
             
             // Calculate bar width (faster pace = longer bar)
             let normalizedPace = paceRange > 0 ? CGFloat(maxPace - split.getPace(for: unit)) / CGFloat(paceRange) : 1.0
@@ -78,10 +90,10 @@ struct WorkoutSplitsView: View {
                 Spacer()
                 
                 if hasElevationData {
-                    Text("ELEVATION")
+                    Text("ELEV")
                         .font(.custom("Archivo-Medium", size: 13))
                         .foregroundColor(.secondary)
-                        .frame(width: 80, alignment: .trailing)
+                        .frame(width: 60, alignment: .trailing)
                 }
             }
             .padding(.horizontal)
@@ -118,7 +130,7 @@ struct WorkoutSplitsView: View {
                         Text(data.elevation)
                             .font(.custom("Archivo-Regular", size: 16))
                             .foregroundColor(.primary)
-                            .frame(width: 80, alignment: .trailing)
+                            .frame(width: 60, alignment: .trailing)
                     }
                 }
                 .padding(.horizontal)

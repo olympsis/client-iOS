@@ -19,11 +19,12 @@ struct WorkoutMapView: View {
             MapPolyline(coordinates: locations)
                 .tint(Color.blue)
                 .stroke(Color.blue, lineWidth: 5)
-            
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
-        .frame(height: 300)
+        .frame(height: 250)
+        .mapControlVisibility(.hidden)
+        .disabled(true)
     }
 }
 

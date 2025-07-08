@@ -125,7 +125,7 @@ struct ViewContainer: View {
                 }
             }
             session.state = .success
-            
+
             if session.workoutManager.checkAuthorizationStatus() {
                 _ = await session.workoutManager.loadWorkouts()
             }

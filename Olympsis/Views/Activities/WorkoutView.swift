@@ -26,7 +26,14 @@ struct WorkoutView: View {
               cadence != 0 else {
             return "-"
         }
-        return String(format: "%.1f", cadence)
+        return String(format: "%.0f", cadence)
+    }
+    
+    private var elevationGain: String {
+        guard workout.totalElevationGain > 0 else {
+            return "-"
+        }
+        return String(format: "%.0f \(manager.unit == .miles ? "ft" : "m")", workout.totalElevationGain)
     }
 
     var body: some View {
@@ -111,6 +118,17 @@ struct WorkoutView: View {
                         Spacer()
                         
                         VStack(alignment: .leading) {
+                            Text(elevationGain)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                            Text("Elevation Gain")
+                        }
+                        .frame(width: 100)
+                        .redacted(reason: state == .loading ? .placeholder : [])
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
                             Text(cadence)
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -125,22 +143,25 @@ struct WorkoutView: View {
                 
                 // Workout Splits view
                 if !workout.paceSegments.isEmpty {
-                    WorkoutSplitsView(splits: workout.paceSegments)
+                    let hasElevation = workout.paceSegments.contains { $0.elevationGain > 0 || $0.elevationLoss > 0 }
+                    WorkoutSplitsView(splits: workout.paceSegments, hasElevationData: hasElevation)
                         .padding(.top)
                         .redacted(reason: state == .loading ? .placeholder : [])
                 }
                 
                 // Workout map view
                 if !workout.route2DPoints.isEmpty {
-                    switch workout.type {
-                    case .running, .walking, .cycling, .hiking:
-                        WorkoutMapView(locations: workout.route2DPoints)
-                            .redacted(reason: state == .loading ? .placeholder : [])
-                    case .tennis, .basketball, .soccer, .football, .pickleball, .racquetball, .volleyball:
-                        WorkoutHeatmapMapView(coordinates: RUNNING_POINTS, sportType: "soccer")
-                    default:
-                        EmptyView()
-                    }
+                    Group {
+                        switch workout.type {
+                        case .running, .walking, .cycling, .hiking:
+                            WorkoutMapView(locations: workout.route2DPoints)
+                                .redacted(reason: state == .loading ? .placeholder : [])
+                        case .tennis, .basketball, .soccer, .football, .pickleball, .racquetball, .volleyball:
+                            WorkoutHeatmapMapView(coordinates: RUNNING_POINTS, sportType: "soccer")
+                        default:
+                            EmptyView()
+                        }
+                    }.padding(.top)
                 }
                 
                 // Workout Statistics View

@@ -61,17 +61,7 @@ struct WorkoutStatistics: View {
                         
                         
                         // Heart Rate Stats
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Min")
-                                    .font(.custom("Archivo-Regular", size: 12))
-                                    .foregroundColor(.secondary)
-                                Text("\(Int(heartRateChartData.map(\.1).min() ?? 0)) BPM")
-                                    .font(.custom("Archivo-Bold", size: 16))
-                            }
-                            
-                            Spacer()
-                            
+                        HStack {                            
                             VStack(alignment: .center) {
                                 Text("Average")
                                     .font(.custom("Archivo-Regular", size: 12))

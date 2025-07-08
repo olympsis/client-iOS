@@ -34,107 +34,6 @@ extension WorkoutManager {
         return generateSplitsFromDistanceSamples(distanceSamples, locations: locations, workout: workout)
     }
     
-    /// Generates splits using GPS location data for more accurate distance calculation
-    private func generateGPSBasedSplits(from locations: [CLLocation], for workout: HKWorkout) -> [PaceSegment] {
-        let splitDistance: Double = unit == UnitLength.miles ? 1609.344 : 1000.0 // 1 mile or 1 km in meters
-        
-        var splits: [PaceSegment] = []
-        var currentDistance: Double = 0
-        var splitStartTime = workout.startDate
-        var splitStartIndex = 0
-        
-        // Sort locations by timestamp to ensure proper order
-        let allLocations = locations.sorted { $0.timestamp < $1.timestamp }
-        
-        // Filter out locations during paused periods to avoid GPS drift
-        let activeLocations = filterActiveLocations(allLocations, workout: workout)
-        let sortedLocations = activeLocations
-        
-        // Debug logging for split generation
-        let displayUnit = unit == UnitLength.miles ? "miles" : "km"
-        let conversionFactor = unit == UnitLength.miles ? 1609.344 : 1000.0
-        print("🏃‍♂️ DEBUG: Starting GPS-based splits generation - Original: \(allLocations.count), Active: \(sortedLocations.count) locations")
-        
-        for (index, location) in sortedLocations.enumerated() {
-            guard index > 0 else { continue } // Skip first location
-            
-            let previousLocation = sortedLocations[index - 1]
-            let segmentDistance = previousLocation.distance(from: location)
-            currentDistance += segmentDistance
-            
-            // Check if we've completed a split
-            if currentDistance >= splitDistance {
-                // Find the exact time when split distance was reached by interpolation
-                let overshoot = currentDistance - splitDistance
-                let segmentDuration = location.timestamp.timeIntervalSince(previousLocation.timestamp)
-                let overshootTime = (overshoot / segmentDistance) * segmentDuration
-                let splitEndTime = location.timestamp.addingTimeInterval(-overshootTime)
-                
-                let duration = splitEndTime.timeIntervalSince(splitStartTime)
-                let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
-                let calculatedPace = duration / (splitDistance / conversionFactor)
-                
-                // Calculate elevation for this split
-                let splitLocations = Array(sortedLocations[splitStartIndex...index])
-                let elevationData = calculateElevationChange(for: splitLocations)
-                
-                let split = PaceSegment(
-                    segmentNumber: splits.count + 1,
-                    distance: splitDistance,
-                    duration: duration,
-                    elevationGain: elevationData.gain,
-                    elevationLoss: elevationData.loss,
-                    startTime: splitStartTime,
-                    endTime: splitEndTime
-                )
-                
-                splits.append(split)
-                
-                // Debug logging for complete split
-                print("🏃‍♂️ DEBUG: Complete split #\(splits.count) - Distance: \(String(format: "%.2f", splitDistance/conversionFactor)) \(displayUnit), Total distance so far: \(String(format: "%.2f", (splitDistance * Double(splits.count))/conversionFactor)) \(displayUnit)")
-                
-                // Reset for next split
-                currentDistance = overshoot
-                splitStartTime = splitEndTime
-                splitStartIndex = index
-            }
-        }
-        
-        // Handle remaining partial split (minimum 0.01 mile/km or ~16 meters)
-        if currentDistance >= splitDistance * 0.01 && splitStartIndex < sortedLocations.count {
-            let splitEndTime = sortedLocations.last!.timestamp
-            let duration = splitEndTime.timeIntervalSince(splitStartTime)
-            
-            // Debug logging for partial split
-            let displayUnit = unit == UnitLength.miles ? "miles" : "km"
-            let conversionFactor = unit == UnitLength.miles ? 1609.344 : 1000.0
-            let partialDistanceInDisplayUnit = currentDistance / conversionFactor
-            print("🏃‍♂️ DEBUG: Partial split - Raw distance: \(currentDistance)m, Display distance: \(String(format: "%.2f", partialDistanceInDisplayUnit)) \(displayUnit), Split #\(splits.count + 1)")
-            
-            // Calculate elevation for partial split
-            let splitLocations = Array(sortedLocations[splitStartIndex..<sortedLocations.count])
-            let elevationData = calculateElevationChange(for: splitLocations)
-            
-            let split = PaceSegment(
-                segmentNumber: splits.count + 1,
-                distance: currentDistance, // currentDistance is already in meters
-                duration: duration,
-                elevationGain: elevationData.gain,
-                elevationLoss: elevationData.loss,
-                startTime: splitStartTime,
-                endTime: splitEndTime
-            )
-            
-            splits.append(split)
-        }
-        
-        // Debug logging for final totals
-        let totalCalculatedDistance = (splitDistance * Double(splits.count > 0 && currentDistance < splitDistance * 0.01 ? splits.count : splits.count - 1)) + (currentDistance >= splitDistance * 0.01 ? currentDistance : 0)
-        print("🏃‍♂️ DEBUG: Final totals - Total splits: \(splits.count), Total calculated distance: \(String(format: "%.2f", totalCalculatedDistance/conversionFactor)) \(displayUnit)")
-        
-        return splits
-    }
-    
     /// Gets location samples within a specific time range for elevation calculation
     private func getLocationsForTimeRange(locations: [CLLocation], startTime: Date, endTime: Date) -> [CLLocation] {
         return locations.filter { location in
@@ -187,7 +86,6 @@ extension WorkoutManager {
                 }
                 
                 let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
-                let calculatedPace = duration / (splitDistance / conversionFactor)
                 
                 let split = PaceSegment(
                     segmentNumber: splits.count + 1,
@@ -255,7 +153,6 @@ extension WorkoutManager {
         var detailSamples: [PaceDetailSample] = []
         var currentDistance: Double = 0
         var intervalStartTime = samples.first?.startDate ?? Date()
-        var intervalStartIndex = 0
         
         let meterUnit = HKUnit.meter()
         
@@ -280,7 +177,6 @@ extension WorkoutManager {
                 // Reset for next interval
                 currentDistance = 0
                 intervalStartTime = intervalEndTime
-                intervalStartIndex = index + 1
             }
         }
         

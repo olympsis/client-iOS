@@ -85,6 +85,8 @@ class WorkoutManager: NSObject, ObservableObject {
         HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
         HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
         HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+        HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+        HKQuantityType.quantityType(forIdentifier: .cyclingCadence)!,
     ]
     
     override init() {

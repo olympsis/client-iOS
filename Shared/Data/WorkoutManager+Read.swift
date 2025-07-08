@@ -210,18 +210,6 @@ extension WorkoutManager {
     /// - Parameter workout: The HKWorkout to fetch cadence for
     /// - Returns: Running cadence in steps per minute, or nil if unavailable
     private func fetchRunningCadence(from workout: HKWorkout) async -> Double? {
-        // Debug: Check what statistics are available in the workout
-        print("🏃‍♂️ Available workout statistics for cadence:")
-        for (key, statistic) in workout.allStatistics {
-            print("   - \(key.identifier): \(statistic)")
-            if let sum = statistic.sumQuantity() {
-                print("     Sum: \(sum)")
-            }
-            if let average = statistic.averageQuantity() {
-                print("     Average: \(average)")
-            }
-        }
-        
         guard workout.workoutActivityType == .running || workout.workoutActivityType == .walking else {
             // For non-running activities, fall back to the original method
             return await fetchAverageStatistic(
@@ -231,29 +219,39 @@ extension WorkoutManager {
             )
         }
         
-        // For running, calculate cadence from total steps and active workout duration
-        guard let totalSteps = await fetchAverageStatistic(
-            from: workout,
-            type: .stepCount,
-            unit: HKUnit.count()
-        ) else {
-            print("🏃‍♂️ No step count data available for cadence calculation")
-            return nil
+        // For running, try step count first, then fall back to distance estimation
+        if let cadence = await fetchStepCountCadence(for: workout) {
+            // Only use step count if it's reasonable (160-200 steps/min for running)
+            if cadence >= 140 && cadence <= 220 {
+                return cadence
+            } else {
+                print("🏃‍♂️ Step count cadence (\(cadence)) seems unrealistic, using distance estimation instead")
+            }
         }
         
-        // Calculate active workout duration (excluding pauses) for accurate cadence
-        let activeWorkoutDuration = await calculateActiveWorkoutDurationFromEvents(workout: workout)
-        
-        // Convert active duration from seconds to minutes and calculate steps per minute
-        let activeMinutes = activeWorkoutDuration / 60.0
-        guard activeMinutes > 0 else { 
-            print("🏃‍♂️ Active workout duration is 0, cannot calculate cadence")
-            return nil 
+        // Fallback: Try to get cadence from workout statistics if available
+        if let cadenceFromStats = workout.allStatistics[HKQuantityType.quantityType(forIdentifier: .runningSpeed)!] {
+            print("🏃‍♂️ Found running speed in workout statistics: \(cadenceFromStats)")
         }
         
-        let cadence = totalSteps / activeMinutes
-        print("🏃‍♂️ Cadence calculation: \(totalSteps) steps / \(activeMinutes) minutes = \(cadence) steps/min")
-        return cadence
+        // Fallback: Estimate cadence using distance and typical running stride length
+        if let totalDistance = workout.totalDistance?.doubleValue(for: HKUnit.meter()) {
+            let activeWorkoutDuration = await calculateActiveWorkoutDurationFromEvents(workout: workout)
+            let activeMinutes = activeWorkoutDuration / 60.0
+            
+            // TODO: Update stride length calculation based on user's height
+            // Current value is calibrated to match device measurements (e.g., Nike Run Club)
+            // Formula for height-based stride: stride = height * 0.415 (for running)
+            let estimatedStrideLength = 1.23 // meters - UPDATE THIS TO USE USER HEIGHT
+            
+            let estimatedSteps = totalDistance / estimatedStrideLength
+            let estimatedCadence = estimatedSteps / activeMinutes
+            
+            // Round to 0 decimals
+            return round(estimatedCadence)
+        }
+        
+        return nil
     }
     
     /// Calculates the active workout duration by excluding paused periods
@@ -295,6 +293,165 @@ extension WorkoutManager {
         }
         
         return activeDuration
+    }
+    
+    /// Fetches step count samples during active workout periods and calculates cadence
+    /// - Parameter workout: The HKWorkout to fetch cadence for
+    /// - Returns: Running cadence in steps per minute, or nil if unavailable
+    private func fetchStepCountCadence(for workout: HKWorkout) async -> Double? {
+        // Query step count samples for entire workout period (with some buffer)
+        let bufferMinutes: TimeInterval = 5 * 60 // 5 minute buffer before/after
+        let queryStart = workout.startDate.addingTimeInterval(-bufferMinutes)
+        let queryEnd = workout.endDate.addingTimeInterval(bufferMinutes)
+        
+        do {
+            let allStepSamples = try await fetchStepCountSamples(
+                startDate: queryStart,
+                endDate: queryEnd
+            )
+            
+            // Filter and sum steps that overlap with active workout periods
+            let activePeriods = getActiveWorkoutPeriods(for: workout)
+            let totalActiveDuration = activePeriods.reduce(0) { $0 + $1.duration }
+            
+            let stepsInActiveWorkout = calculateStepsInActivePeriods(
+                stepSamples: allStepSamples,
+                activePeriods: activePeriods
+            )
+            
+            guard stepsInActiveWorkout > 0, totalActiveDuration > 0 else {
+                return nil
+            }
+            
+            // Calculate cadence as steps per minute
+            let activeMinutes = totalActiveDuration / 60.0
+            let cadence = stepsInActiveWorkout / activeMinutes
+            
+            return cadence
+            
+        } catch {
+            return nil
+        }
+    }
+    
+    /// Calculates steps that occurred during active workout periods, avoiding double-counting
+    /// - Parameters:
+    ///   - stepSamples: All step count samples
+    ///   - activePeriods: Active workout periods (excluding pauses)
+    /// - Returns: Total steps during active periods
+    private func calculateStepsInActivePeriods(stepSamples: [HKQuantitySample], activePeriods: [DateInterval]) -> Double {
+        var totalSteps: Double = 0
+        var processedTimeRanges: [DateInterval] = []
+        
+        for activePeriod in activePeriods {
+            // Find step samples that overlap with this active period
+            let overlappingSamples = stepSamples.filter { sample in
+                let sampleInterval = DateInterval(start: sample.startDate, end: sample.endDate)
+                return sampleInterval.intersects(activePeriod)
+            }
+            
+            for sample in overlappingSamples {
+                let sampleInterval = DateInterval(start: sample.startDate, end: sample.endDate)
+                let intersection = activePeriod.intersection(with: sampleInterval)
+                
+                if let intersection = intersection {
+                    // Check if we've already processed this time range
+                    let alreadyProcessed = processedTimeRanges.contains { processed in
+                        processed.intersects(intersection)
+                    }
+                    
+                    if !alreadyProcessed {
+                        // Calculate proportion of steps for this intersection
+                        let sampleDuration = sampleInterval.duration
+                        let intersectionDuration = intersection.duration
+                        let proportion = intersectionDuration / sampleDuration
+                        
+                        let sampleSteps = sample.quantity.doubleValue(for: HKUnit.count())
+                        let proportionalSteps = sampleSteps * proportion
+                        
+                        totalSteps += proportionalSteps
+                        processedTimeRanges.append(intersection)
+                    }
+                }
+            }
+        }
+        
+        return totalSteps
+    }
+    
+    /// Gets active workout periods excluding paused time
+    /// - Parameter workout: The HKWorkout to analyze
+    /// - Returns: Array of active time periods
+    private func getActiveWorkoutPeriods(for workout: HKWorkout) -> [DateInterval] {
+        guard let events = workout.workoutEvents, !events.isEmpty else {
+            // No pause/resume events, return entire workout duration
+            return [DateInterval(start: workout.startDate, end: workout.endDate)]
+        }
+        
+        var activePeriods: [DateInterval] = []
+        var currentStart = workout.startDate
+        var isPaused = false
+        
+        // Sort events by start time
+        let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
+        
+        for event in sortedEvents {
+            let eventTime = event.dateInterval.start
+            
+            if event.type == .pause && !isPaused {
+                // End current active period
+                activePeriods.append(DateInterval(start: currentStart, end: eventTime))
+                isPaused = true
+            } else if event.type == .resume && isPaused {
+                // Start new active period
+                currentStart = eventTime
+                isPaused = false
+            }
+        }
+        
+        // Add final active period if not paused at the end
+        if !isPaused && currentStart < workout.endDate {
+            activePeriods.append(DateInterval(start: currentStart, end: workout.endDate))
+        }
+        
+        return activePeriods
+    }
+    
+    /// Fetches step count samples for a specific time period
+    /// - Parameters:
+    ///   - startDate: Start of the time period
+    ///   - endDate: End of the time period
+    /// - Returns: Array of step count samples
+    private func fetchStepCountSamples(startDate: Date, endDate: Date) async throws -> [HKQuantitySample] {
+        guard let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            throw WorkoutError.failedQuery
+        }
+        
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startDate,
+            end: endDate,
+            options: .strictStartDate
+        )
+        
+        let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: stepCountType,
+                predicate: predicate,
+                limit: 0,
+                sortDescriptors: [dateSortDescriptor]
+            ) { (query, results, error) in
+                if let samples = results as? [HKQuantitySample] {
+                    continuation.resume(returning: samples)
+                } else if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(throwing: WorkoutError.failedQuery)
+                }
+            }
+            self.healthStore.execute(query)
+        }
     }
     
     func fetchWorkoutAdditionalData(from workout: HKWorkout) async -> WorkoutDetails? {
