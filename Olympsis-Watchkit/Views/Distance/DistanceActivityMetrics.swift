@@ -25,8 +25,7 @@ struct DistanceActivityMetrics: View {
             let distanceInKm = manager.distance / 1000
             paceInMinutes = totalMinutes / distanceInKm
         } else {
-            let distanceInMiles = manager.distance / 1609.344
-            paceInMinutes = totalMinutes / distanceInMiles
+            paceInMinutes = totalMinutes / manager.distance
         }
         
         // Guard against infinite or NaN values
@@ -80,81 +79,66 @@ struct DistanceActivityMetrics: View {
                         .font(.custom("Archivo-BlackItalic", size: 70))
                         .fontWeight(.bold)
                 }
-                    
-                
-                distanceMetric
-                    .font(.system(size: 12))
-                    .textCase(.uppercase)
-                    .foregroundStyle(.gray)
             }
             
             Spacer()
             
-            TimelineView (
-                PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
-            ) { _ in
-                HStack {
-                    VStack {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
+                TimelineView (
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
+                    HStack {
                         activeCalories
-                            .font(.headline)
+                            .font(.title3)
                             .fontWeight(.semibold)
+                        
                         Text("Cal")
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
-                            .foregroundStyle(.gray)
-                    }
-                    
-                    Spacer()
-                    
-                    VStack {
-                        SmallZoneViewer(zone: manager.zone)
-                        Text("Zone")
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
+                            .font(.title3)
                             .foregroundStyle(.gray)
                     }
                 }
-                .padding(.vertical, 5)
-                .padding(.horizontal, 15)
-            }
-            
-            TimelineView(
-                PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
-            ) { _ in
-                HStack {
+                
+                TimelineView (
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
                     VStack {
+                        SmallZoneViewer(zone: manager.zone)
+                    }
+                }
+                
+                
+                TimelineView(
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
+                    HStack {
                         averagePaceText
-                            .font(.headline)
+                            .font(.title3)
                             .fontWeight(.semibold)
-                        Text("pace")
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
+                        
+                        Text("/mi")
+                            .font(.title3)
                             .foregroundStyle(.gray)
+                        
                     }
-                    
-                    Spacer()
-                    
-                    VStack {
-                        HStack {
-                            
-                            Text(
-                                manager.heartRate.formatted(
-                                    .number.precision(.fractionLength(0))
-                                )
+                }
+                
+                TimelineView(
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
+                    HStack {
+                        Text(
+                            manager.heartRate.formatted(
+                                .number.precision(.fractionLength(0))
                             )
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            
-                            Image(systemName: "heart.fill")
-                                .foregroundStyle(.red)
-                                .imageScale(.medium)
-                        }
-                        Text("bpm")
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
-                            .foregroundStyle(.gray)
+                        )
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        
+                        Image(systemName: "heart.fill")
+                            .foregroundStyle(.red)
+                            .imageScale(.medium)
                     }
-                }.padding(.horizontal, 15)
+                }
             }
         }
         .toolbar {

@@ -407,3 +407,10 @@ struct WorkoutRawData {
     let startDate: Date
     let endDate: Date
 }
+
+struct HeartRateZone {
+    let name: String
+    let minHeartRate: Int
+    let maxHeartRate: Int
+    let intensityRange: String
+}

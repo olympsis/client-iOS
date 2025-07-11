@@ -58,13 +58,23 @@ class WorkoutManager: NSObject {
     
     var isProcessingWorkout: Bool = false
     
+    
+    // Live Workout Statistics
     var averageHeartRate: Double = 0
     var heartRate: Double = 0
     var activeEnergy: Double = 0
     var distance: Double = 0
-    var zone: Int {
-        return 3
-    }
+    var zone: Int = 1
+    
+    var zones: [HeartRateZone] = []
+    
+    let zoneDefinitions: [(name: String, minPercent: Double, maxPercent: Double)] = [
+        ("Zone 1 - Active Recovery", 0.50, 0.60),
+        ("Zone 2 - Aerobic Base", 0.60, 0.70),
+        ("Zone 3 - Aerobic", 0.70, 0.80),
+        ("Zone 4 - Lactate Threshold", 0.80, 0.90),
+        ("Zone 5 - VO2 Max", 0.90, 1.00)
+    ]
     
     var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
     
@@ -94,6 +104,7 @@ class WorkoutManager: NSObject {
         HKSampleType.characteristicType(forIdentifier: .dateOfBirth)!,
         HKQuantityType.quantityType(forIdentifier: .heartRate)!,
         HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+        HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
         HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
         HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
         HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
@@ -114,12 +125,18 @@ class WorkoutManager: NSObject {
     }
     
     @MainActor
-    func requestHealthStoreAuthorization() async {
+    func requestHealthStoreAuthorization() async -> Bool{
         do {
+            guard HKHealthStore.isHealthDataAvailable() else {
+                log.error("HealthKit is not available on this device")
+                return false
+            }
+            
             try await healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead)
+            return true
         } catch {
             log.error("Failed to request health store authorization \(error.localizedDescription, privacy: .public)")
-            return
+            return false
         }
     }
     
@@ -127,26 +144,25 @@ class WorkoutManager: NSObject {
     func updateForStatistics(_ statistics: HKStatistics?) {
         guard let statistics = statistics else { return }
 
-        DispatchQueue.main.async {
-            switch statistics.quantityType {
-            case HKQuantityType.quantityType(forIdentifier: .heartRate):
-                let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-                let _ = statistics.maximumQuantity()
-                self.heartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
-                self.averageHeartRate = statistics.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
-            case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned):
-                let energyUnit = HKUnit.kilocalorie()
-                self.activeEnergy = statistics.sumQuantity()?.doubleValue(for: energyUnit) ?? 0
-            case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
-                if self.unit == UnitLength.kilometers {
-                    self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
-                    
-                } else {
-                    self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0
-                }
-            default:
-                return
+        switch statistics.quantityType {
+        case HKQuantityType.quantityType(forIdentifier: .heartRate):
+            let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
+            let _ = statistics.maximumQuantity()
+            self.heartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
+            self.averageHeartRate = statistics.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
+            self.zone = self.getZoneFromHeartRate(self.heartRate)
+        case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned):
+            let energyUnit = HKUnit.kilocalorie()
+            self.activeEnergy = statistics.sumQuantity()?.doubleValue(for: energyUnit) ?? 0
+        case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
+            if self.unit == UnitLength.kilometers {
+                self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
+                
+            } else {
+                self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0
             }
+        default:
+            return
         }
     }
     

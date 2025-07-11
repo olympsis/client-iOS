@@ -388,6 +388,10 @@
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
 		5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */; };
 		5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01442C07C8F9006A264C /* Onboarding.swift */; };
+		5D6F114B2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */; };
+		5D6F114C2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */; };
+		5D6F114F2E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */; };
+		5D6F11502E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */; };
 		5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322B2C7C324E007DB25D /* ToastView.swift */; };
 		5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322D2C7C370A007DB25D /* ToastModifier.swift */; };
 		5D76D36A2C79534800846382 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3692C79534800846382 /* ToastManager.swift */; };
@@ -923,6 +927,8 @@
 		5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutClubs.swift"; sourceTree = "<group>"; };
 		5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboard-AboutEvents.swift"; sourceTree = "<group>"; };
 		5D6C01442C07C8F9006A264C /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutManager+Zones.swift"; sourceTree = "<group>"; };
+		5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutManager+Workout.swift"; sourceTree = "<group>"; };
 		5D6F322B2C7C324E007DB25D /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5D6F322D2C7C370A007DB25D /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
 		5D7668682BF95A2C003FAD7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1408,6 +1414,14 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5D6F114D2E21A456005F1BE5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		5D6F32292C7C323C007DB25D /* Toast */ = {
 			isa = PBXGroup;
 			children = (
@@ -1570,15 +1584,18 @@
 		5DC8B43F2E05BF09008C9052 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				5D6F114D2E21A456005F1BE5 /* Models */,
 				5DC8B4382E05BF09008C9052 /* Enums.swift */,
 				5DC8B4392E05BF09008C9052 /* TempData.swift */,
 				5DC8B43A2E05BF09008C9052 /* WorkoutManager.swift */,
 				5DC8B43C2E05BF09008C9052 /* WorkoutManager+Read.swift */,
 				5DC8B43E2E05BF09008C9052 /* WorkoutManager+Write.swift */,
 				5DB0962C2E0A155400BB924A /* WorkoutManager+Splits.swift */,
+				5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */,
 				5DC8B43D2E05BF09008C9052 /* WorkoutManager+Session.swift */,
 				5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */,
 				5DC8B43B2E05BF09008C9052 /* WorkoutManager+Location.swift */,
+				5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */,
 				5DB096362E0B4C4C00BB924A /* WorkoutUtils.swift */,
 			);
 			path = Data;
@@ -2018,7 +2035,6 @@
 				5F1329B72A26F02200B31170 /* ClubModels.swift */,
 				5FF49CB92A2BE92100FAA4DA /* PostModels.swift */,
 				5FF2A0262A380534009234AD /* ChatModels.swift */,
-				5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */,
 				5DBB94CF2B05B1830031876D /* NotificationModels.swift */,
 				5DBB94D52B0D27920031876D /* OrganizationModels.swift */,
 				5D18BD172B391D9000F90777 /* GenericModels.swift */,
@@ -2784,7 +2800,9 @@
 				5D5321F72E063BF700C67357 /* EventSharing.swift in Sources */,
 				5D53216D2E06364F00C67357 /* ActivitySettingsView.swift in Sources */,
 				5DB096142E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
+				5D6F114F2E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */,
 				5D53217B2E063B0900C67357 /* ClubModels.swift in Sources */,
+				5D6F114B2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */,
 				5D53217D2E063B2000C67357 /* UserModels.swift in Sources */,
 				5D53216E2E06364F00C67357 /* ActivitySportsPicker.swift in Sources */,
 				5D53216F2E06364F00C67357 /* ActivitySummaryView.swift in Sources */,
@@ -2901,6 +2919,7 @@
 				5DCB01BC2ADF75B600450F69 /* WorkoutView.swift in Sources */,
 				9AD208F42933FE41007A62C4 /* EventMenu.swift in Sources */,
 				5D666A8F2BF66580001EE754 /* CropView.swift in Sources */,
+				5D6F11502E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */,
 				5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */,
 				9A81B62929249B11009CA6ED /* ClubApplicationRequestDao.swift in Sources */,
 				5DCAEA2D2B01958F00B9C22A /* EventParticipants.swift in Sources */,
@@ -2991,6 +3010,7 @@
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
+				5D6F114C2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */,
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */,
 				5DC8B4412E05BF09008C9052 /* WorkoutManager+Location.swift in Sources */,
