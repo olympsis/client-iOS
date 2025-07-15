@@ -45,7 +45,7 @@ struct ActivityView: View {
             
             switch selectedSport {
             case .running, .walking:
-                DistanceActivityMetrics()
+                DistanceActivityMetrics1()
                     .environment(manager)
                     .tag(ACTIVITY_PAGES.metrics)
             case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
@@ -75,18 +75,7 @@ struct ActivityView: View {
         .toolbar(isActive ? .hidden : .visible)
         .overlay {
             if isActive {
-                ZStack(alignment: .center) {
-                    Color.colorSecnd
-                        .ignoresSafeArea()
-                    Text("\(countdown)")
-                        .font(.system(size: 150))
-                        .fontWeight(.bold)
-                        .padding(.bottom)
-                        .padding(.bottom)
-                    
-                }
-                .onAppear(perform: startCountdown)
-                .zIndex(100)
+                ActivityCountdownView(isActive: $isActive)
             }
         }
         .onChange(of: manager.state, { oldValue, newValue in

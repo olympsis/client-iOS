@@ -27,6 +27,14 @@ struct GeneralActivityPreparation: View {
     var body: some View {
         NavigationStack {
             ScrollView {
+                if !manager.hasLocationAccess {
+                    Group {
+                        Image(systemName: "location.slash")
+                        Text("Location disabled. Go to Olympsis iOS App to enable.")
+                            .font(.caption)
+                    }.padding(.bottom, 10)
+                }
+                
                 NavigationLink(destination: {
                     ActivityView(selectedSport: sport)
                         .environment(manager)

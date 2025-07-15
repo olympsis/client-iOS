@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DistanceActivityMetrics: View {
+struct DistanceActivityMetrics1: View {
     
     @Environment(WorkoutManager.self) private var manager
     
@@ -50,6 +50,14 @@ struct DistanceActivityMetrics: View {
     
     var distanceMetric: Text {
         if manager.unit == UnitLength.kilometers {
+            return Text("/km")
+        } else {
+            return Text("/mi")
+        }
+    }
+    
+    var distanceMetricLarge: Text {
+        if manager.unit == UnitLength.kilometers {
             return Text("KILOMETERS")
         } else {
             return Text("MILES")
@@ -66,24 +74,20 @@ struct DistanceActivityMetrics: View {
     
     var body: some View {
         VStack {
-
             VStack(spacing: -10) {
                 VStack(alignment: .trailing, spacing: -5) {
-//                    Text("2:00")
-//                        .font(.title3)
-//                        .fontWeight(.bold)
-//                        .foregroundStyle(Color.Brand.quaternary)
                     distanceText
                         .minimumScaleFactor(0.7)
                         .foregroundStyle(Color.Brand.tertiary)
                         .font(.custom("Archivo-BlackItalic", size: 70))
                         .fontWeight(.bold)
                 }
+                
+                distanceMetricLarge
+                    .foregroundStyle(.gray)
             }
             
-            Spacer()
-            
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                 TimelineView (
                     PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
                 ) { _ in
@@ -93,7 +97,7 @@ struct DistanceActivityMetrics: View {
                             .fontWeight(.semibold)
                         
                         Text("Cal")
-                            .font(.title3)
+                            .font(.headline)
                             .foregroundStyle(.gray)
                     }
                 }
@@ -115,8 +119,8 @@ struct DistanceActivityMetrics: View {
                             .font(.title3)
                             .fontWeight(.semibold)
                         
-                        Text("/mi")
-                            .font(.title3)
+                        distanceMetric
+                            .font(.headline)
                             .foregroundStyle(.gray)
                         
                     }
@@ -158,45 +162,9 @@ struct DistanceActivityMetrics: View {
     }
 }
 
-private struct EllapsedTimeTimelineSchedule: TimelineSchedule {
-    var startDate: Date
-
-    init(from startDate: Date) {
-        self.startDate = startDate
-    }
-
-    func entries(from startDate: Date, mode: TimelineScheduleMode) -> PeriodicTimelineSchedule.Entries {
-        PeriodicTimelineSchedule(
-            from: self.startDate,
-            by: (mode == .lowFrequency ? 1.0 : (1.0 / 30.0))
-        ).entries(
-            from: startDate,
-            mode: mode
-        )
-    }
-}
-
-private struct PaceTimelineSchedule: TimelineSchedule {
-    var startDate: Date
-    
-    init(from startDate: Date) {
-        self.startDate = startDate
-    }
-    
-    func entries(from startDate: Date, mode: TimelineScheduleMode) -> PeriodicTimelineSchedule.Entries {
-        PeriodicTimelineSchedule(
-            from: self.startDate,
-            by: (mode == .lowFrequency ? 60 : 30)
-        ).entries(
-            from: startDate,
-            mode: mode
-        )
-    }
-}
-
 #Preview {
     NavigationStack {
-        DistanceActivityMetrics()
+        DistanceActivityMetrics1()
             .environment(WorkoutManager())
     }
 }

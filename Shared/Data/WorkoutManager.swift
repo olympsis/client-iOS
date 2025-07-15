@@ -26,6 +26,17 @@ class WorkoutManager: NSObject {
     var locationTask: Task<Void, Never>? = nil
     var backgroundTask: Task<Void, Never>? = nil
     
+    var hasLocationAccess: Bool {
+        switch (manager.authorizationStatus) {
+        case .authorizedWhenInUse, .authorizedAlways:
+            return true
+        case .notDetermined, .denied, .restricted:
+            return false
+        @unknown default:
+            return false
+        }
+    }
+    
     var selectedSport: SUPPORTED_SPORTS? {
         didSet {
             Task {
@@ -141,6 +152,11 @@ class WorkoutManager: NSObject {
     }
     
     @MainActor
+    func requestLocationAccess() {
+        manager.requestWhenInUseAuthorization()
+    }
+    
+    @MainActor
     func updateForStatistics(_ statistics: HKStatistics?) {
         guard let statistics = statistics else { return }
 
@@ -165,7 +181,6 @@ class WorkoutManager: NSObject {
             return
         }
     }
-    
 }
 
 extension WorkoutManager {
