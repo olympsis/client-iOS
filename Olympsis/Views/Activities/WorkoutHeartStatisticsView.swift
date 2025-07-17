@@ -110,7 +110,8 @@ struct WorkoutHeartStatisticsView: View {
                         // Zone Details
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Zone Details")
-                                .font(.custom("Archivo-Medium", size: 16, relativeTo: .headline))
+                                .padding(.bottom, 10)
+                                .font(.custom("Archivo-Medium", size: 18, relativeTo: .headline))
                             
                             ForEach(Array(heartRateZones.enumerated()), id: \.offset) { index, zone in
                                 HStack {
@@ -191,7 +192,7 @@ struct WorkoutHeartStatisticsView: View {
         let minHR = heartRates.min() ?? 60
         let maxHR = heartRates.max() ?? 200
         
-        return (minHR - 5)...(maxHR + 5)
+        return (minHR - 5)...(maxHR + 10)
     }
     
     /// Local helper to determine heart rate zone

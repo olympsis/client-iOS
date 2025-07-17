@@ -12,6 +12,16 @@ import CoreLocation
 
 extension WorkoutManager {
     
+    /// Creates a predicate for fetching workouts from all supported sports
+    private func createSportsWorkoutPredicate() -> NSCompoundPredicate {
+        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
+            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
+        }
+        return NSCompoundPredicate(
+            orPredicateWithSubpredicates: workoutPredicates
+        )
+    }
+    
     func fetchWorkoutsHistory(in datePredicate: String?) async {
         guard checkAuthorizationStatus() else {
             return
@@ -19,13 +29,8 @@ extension WorkoutManager {
         await MainActor.run {
             self.viewState = .loading
         }
-        // Fetch workouts for all sports in a single query
-        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
-            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
-        }
-        let workoutPredicate = NSCompoundPredicate(
-            orPredicateWithSubpredicates: workoutPredicates  // OR, not AND!
-        )
+        
+        let workoutPredicate = createSportsWorkoutPredicate()
         
         do {
             let workouts: [Workout] = try await batchProcessWorkouts(
@@ -46,13 +51,7 @@ extension WorkoutManager {
             cursor: self.fetchingCursor
         )
         
-        // Fetch workouts for all sports in a single query
-        let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
-            HKQuery.predicateForWorkouts(with: $0.getWorkoutActivityType())
-        }
-        let workoutPredicate = NSCompoundPredicate(
-            orPredicateWithSubpredicates: workoutPredicates  // OR, not AND!
-        )
+        let workoutPredicate = createSportsWorkoutPredicate()
         
         // Combine workout predicate with date predicate using AND
         var predicates: [NSPredicate] = [workoutPredicate]
@@ -72,20 +71,28 @@ extension WorkoutManager {
             // If we did get a full batch then we create a background task to fetch the rest
             if workouts.count == 20 {
                 self.backgroundTask = Task(priority: .background) {
-                    let results = await loadWorkouts()
+                    let results = await loadWorkouts(dateRange: dateRange)
                     await MainActor.run {
-                        self.workouts.append(contentsOf: results)
+                        self.appendUniqueWorkouts(results)
                     }
                 }
             }
             
             let processedWorkouts = await batchProcessWorkouts(workouts)
-            self.workouts.append(contentsOf: processedWorkouts)
+            self.appendUniqueWorkouts(processedWorkouts)
             return processedWorkouts
         } catch {
             log.error("Failed to fetch workouts: \(error.localizedDescription)")
             return []
         }
+    }
+    
+    /// Appends workouts to the main workouts array, avoiding duplicates
+    /// - Parameter newWorkouts: Array of workouts to append
+    private func appendUniqueWorkouts(_ newWorkouts: [Workout]) {
+        let existingWorkoutIds = Set(workouts.map { $0.workout.uuid })
+        let uniqueWorkouts = newWorkouts.filter { !existingWorkoutIds.contains($0.workout.uuid) }
+        workouts.append(contentsOf: uniqueWorkouts)
     }
     
     /// Queries HealthKit for the workout generic data
