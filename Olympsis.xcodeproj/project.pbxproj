@@ -139,6 +139,7 @@
 		5D1905982DA1C7F50051990F /* Archivo_SemiCondensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905082DA1C7F50051990F /* Archivo_SemiCondensed-ThinItalic.ttf */; };
 		5D19059A2DA1C9BB0051990F /* AuthUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1905992DA1C9BB0051990F /* AuthUserInfo.swift */; };
 		5D19059C2DA1C9CA0051990F /* AuthUserSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D19059B2DA1C9CA0051990F /* AuthUserSports.swift */; };
+		5D1D51212E298A730047B838 /* WorkoutHeartStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D51202E298A730047B838 /* WorkoutHeartStatisticsView.swift */; };
 		5D204B462DA1F73400B67F5D /* LocationUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B452DA1F73400B67F5D /* LocationUsage.swift */; };
 		5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B4B2DA2C8F900B67F5D /* EventParticipant.swift */; };
 		5D204B4E2DA2C92300B67F5D /* EventTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B4D2DA2C92300B67F5D /* EventTeam.swift */; };
@@ -848,6 +849,7 @@
 		5D19052C2DA1C7F50051990F /* Archivo-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Archivo-ThinItalic.ttf"; sourceTree = "<group>"; };
 		5D1905992DA1C9BB0051990F /* AuthUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserInfo.swift; sourceTree = "<group>"; };
 		5D19059B2DA1C9CA0051990F /* AuthUserSports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserSports.swift; sourceTree = "<group>"; };
+		5D1D51202E298A730047B838 /* WorkoutHeartStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeartStatisticsView.swift; sourceTree = "<group>"; };
 		5D204B452DA1F73400B67F5D /* LocationUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUsage.swift; sourceTree = "<group>"; };
 		5D204B4B2DA2C8F900B67F5D /* EventParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipant.swift; sourceTree = "<group>"; };
 		5D204B4D2DA2C92300B67F5D /* EventTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTeam.swift; sourceTree = "<group>"; };
@@ -2391,8 +2393,9 @@
 				5DC8B4552E05CB14008C9052 /* CyclingComputerView.swift */,
 				5DC8B4562E05CB14008C9052 /* GeneralSportMetrics.swift */,
 				5DC8B4572E05CB14008C9052 /* WorkoutsList.swift */,
-				5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */,
 				9AC5BAC1295E6D26003E851B /* Activities.swift */,
+				5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */,
+				5D1D51202E298A730047B838 /* WorkoutHeartStatisticsView.swift */,
 			);
 			path = Activities;
 			sourceTree = "<group>";
@@ -2993,6 +2996,7 @@
 				5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
+				5D1D51212E298A730047B838 /* WorkoutHeartStatisticsView.swift in Sources */,
 				5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,

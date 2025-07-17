@@ -13,7 +13,7 @@ struct WorkoutView: View {
     var activityName: String
     var workout: Workout
     @State private var state: LOADING_STATE = .loading
-    
+    @State private var showHeartDetails: Bool = false
     @Environment(\.dismiss) private var dismiss
     @Environment(WorkoutManager.self) private var manager
     
@@ -167,9 +167,17 @@ struct WorkoutView: View {
                 // Workout Statistics View
                 WorkoutStatistics(workout: workout)
                     .redacted(reason: state == .loading ? .placeholder : [])
+                
+                Button(action: { showHeartDetails.toggle() }) {
+                    Text("More Details")
+                }
             }
             .navigationTitle(activityName)
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showHeartDetails) {
+                WorkoutHeartStatisticsView(workout: workout)
+                    .environment(manager)
+            }
         }
         .task {
             state = .loading
