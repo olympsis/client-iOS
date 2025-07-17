@@ -73,7 +73,7 @@ struct DistanceActivityMetrics3: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .center, spacing: 10) {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .leading, spacing: 0) {
                 Group {
                     TimelineView (
@@ -124,7 +124,7 @@ struct DistanceActivityMetrics3: View {
                         .textCase(.uppercase)
                         .foregroundStyle(.gray)
                 }
-            }.padding(.top, 20)
+            }.padding(.top, 15)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                 TimelineView (
@@ -160,20 +160,6 @@ struct DistanceActivityMetrics3: View {
                 }
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                TimelineView(
-                    EllapsedTimeTimelineSchedule(
-                        from: manager.builder?.startDate ?? Date()
-                    )
-                ) { context in
-                    HStack {
-                        EllaspsedTimeView(ellapsedTime: TimeInterval(manager.builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -181,6 +167,20 @@ struct DistanceActivityMetrics3: View {
     NavigationStack {
         DistanceActivityMetrics3()
             .environment(WorkoutManager())
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    TimelineView(
+                        EllapsedTimeTimelineSchedule(
+                            from: WorkoutManager().builder?.startDate ?? Date()
+                        )
+                    ) { context in
+                        HStack {
+                            EllaspsedTimeView(ellapsedTime: TimeInterval(WorkoutManager().builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                }
+            }
     }
 }
 

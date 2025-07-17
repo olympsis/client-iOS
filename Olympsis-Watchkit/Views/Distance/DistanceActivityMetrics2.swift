@@ -145,20 +145,6 @@ struct DistanceActivityMetrics2: View {
             
             Spacer()
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                TimelineView(
-                    EllapsedTimeTimelineSchedule(
-                        from: manager.builder?.startDate ?? Date()
-                    )
-                ) { context in
-                    HStack {
-                        EllaspsedTimeView(ellapsedTime: TimeInterval(manager.builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -166,6 +152,20 @@ struct DistanceActivityMetrics2: View {
     NavigationStack {
         DistanceActivityMetrics2()
             .environment(WorkoutManager())
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    TimelineView(
+                        EllapsedTimeTimelineSchedule(
+                            from: WorkoutManager().builder?.startDate ?? Date()
+                        )
+                    ) { context in
+                        HStack {
+                            EllaspsedTimeView(ellapsedTime: TimeInterval(WorkoutManager().builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                }
+            }
     }
 }
 

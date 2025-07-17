@@ -1691,11 +1691,11 @@
 			isa = PBXGroup;
 			children = (
 				5DC8B46F2E05CE6C008C9052 /* DistanceActivityDetails.swift */,
+				5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */,
 				5DC8B4712E05CE6C008C9052 /* DistanceActivityMetrics1.swift */,
 				5D6F11512E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift */,
 				5D6F11572E21CE0B005F1BE5 /* DistanceActivityMetrics3.swift */,
 				5DC8B4722E05CE6C008C9052 /* DistanceActivityPreparation.swift */,
-				5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */,
 			);
 			path = Distance;
 			sourceTree = "<group>";

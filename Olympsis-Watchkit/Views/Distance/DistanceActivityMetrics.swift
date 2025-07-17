@@ -28,6 +28,20 @@ struct DistanceActivityMetrics: View {
             isContinuous: false,
             isHapticFeedbackEnabled: true
         )
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                TimelineView(
+                    EllapsedTimeTimelineSchedule(
+                        from: manager.builder?.startDate ?? Date()
+                    )
+                ) { context in
+                    HStack {
+                        EllaspsedTimeView(ellapsedTime: TimeInterval(manager.builder?.elapsedTime ?? 0), showSubSeconds: context.cadence == .live)
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+        }
     }
 }
 
