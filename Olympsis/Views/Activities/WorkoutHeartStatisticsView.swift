@@ -177,8 +177,11 @@ struct WorkoutHeartStatisticsView: View {
     
     /// Load heart rate zones from WorkoutManager
     private func loadHeartRateZones() async {
+        guard workoutManager.zones.isEmpty else {
+            heartRateZones = workoutManager.zones
+            return
+        }
         heartRateZones = await workoutManager.generateHeartRateZones()
-        // Make sure workoutManager has the zones for getZoneFromHeartRate function
         workoutManager.zones = heartRateZones
     }
     

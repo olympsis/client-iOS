@@ -14,6 +14,7 @@ struct WorkoutView: View {
     var workout: Workout
     @State private var state: LOADING_STATE = .loading
     @State private var showHeartDetails: Bool = false
+    @State private var gradientColors: [Color] = [Color.Brand.primary]
     @Environment(\.dismiss) private var dismiss
     @Environment(WorkoutManager.self) private var manager
     
@@ -34,6 +35,66 @@ struct WorkoutView: View {
             return "-"
         }
         return String(format: "%.0f \(manager.unit == .miles ? "ft" : "m")", workout.totalElevationGain)
+    }
+    
+    /// Generates an array of colors matching location points based on heart rate zones
+    /// Each color corresponds to the heart rate zone at that location point
+    /// - Returns: Array of colors matching the workout.route2DPoints array
+    private func generateHeartRateZoneColors() -> [Color] {
+        // Return default colors if no heart rate data or location data
+        guard !workout.heartSamples.isEmpty && !workout.route2DPoints.isEmpty else {
+            return [Color.Brand.primary]
+        }
+        
+        var colors: [Color] = []
+        
+        // Sort heart rate samples by timestamp for efficient lookup
+        let sortedHeartSamples = workout.heartSamples.sorted { $0.startDate < $1.startDate }
+        
+        // For each location point, find the closest heart rate sample and determine its zone
+        for (index, _) in workout.route2DPoints.enumerated() {
+            // Calculate timestamp for this location point based on workout progress
+            let workoutDuration = workout.workout.duration
+            let timeInterval = workoutDuration / Double(workout.route2DPoints.count)
+            let pointTimestamp = workout.workout.startDate.addingTimeInterval(timeInterval * Double(index))
+            
+            // Find the closest heart rate sample to this timestamp
+            let closestHeartRateSample = sortedHeartSamples.min { sample1, sample2 in
+                abs(sample1.startDate.timeIntervalSince(pointTimestamp)) < abs(sample2.startDate.timeIntervalSince(pointTimestamp))
+            }
+            
+            if let heartRateSample = closestHeartRateSample {
+                // Get heart rate value
+                let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                let heartRateValue = heartRateSample.quantity.doubleValue(for: heartRateUnit)
+                
+                // Determine zone using WorkoutManager
+                let zoneNumber = manager.getZoneFromHeartRate(heartRateValue)
+                
+                // Get zone color
+                let zoneColor = colorForZone(zoneNumber)
+                colors.append(zoneColor)
+            } else {
+                // Fallback to default color if no heart rate sample found
+                colors.append(Color.blue)
+            }
+        }
+        
+        return colors
+    }
+    
+    /// Returns the color for a given heart rate zone number
+    /// - Parameter zoneNumber: Zone number (1-5)
+    /// - Returns: Color for the zone
+    private func colorForZone(_ zoneNumber: Int) -> Color {
+        switch zoneNumber {
+        case 1: return .blue      // Zone 1: Active Recovery
+        case 2: return .green     // Zone 2: Aerobic Base
+        case 3: return .yellow    // Zone 3: Aerobic
+        case 4: return .orange    // Zone 4: Lactate Threshold
+        case 5: return .red       // Zone 5: VO2 Max
+        default: return .gray
+        }
     }
 
     var body: some View {
@@ -154,23 +215,21 @@ struct WorkoutView: View {
                     Group {
                         switch workout.type {
                         case .running, .walking, .cycling, .hiking:
-                            WorkoutMapView(locations: workout.route2DPoints)
+                            WorkoutMapView(gradient: gradientColors, locations: workout.route2DPoints)
                                 .redacted(reason: state == .loading ? .placeholder : [])
                         case .tennis, .basketball, .soccer, .football, .pickleball, .racquetball, .volleyball:
                             WorkoutHeatmapMapView(coordinates: RUNNING_POINTS, sportType: "soccer")
                         default:
                             EmptyView()
                         }
-                    }.padding(.top)
+                    }
+                    .padding(.top)
+                    .redacted(reason: state == .loading ? .placeholder : [])
                 }
                 
                 // Workout Statistics View
-                WorkoutStatistics(workout: workout)
+                WorkoutStatistics(workout: workout, showHeartDetails: $showHeartDetails)
                     .redacted(reason: state == .loading ? .placeholder : [])
-                
-                Button(action: { showHeartDetails.toggle() }) {
-                    Text("More Details")
-                }
             }
             .navigationTitle(activityName)
             .navigationBarTitleDisplayMode(.inline)
@@ -196,7 +255,16 @@ struct WorkoutView: View {
                 workout.locationSamples = details.route
                 workout.paceSegments = details.paceSegments
                 workout.heartSamples = details.heartRateSamples
-            }
+                
+                if !details.route.isEmpty {
+                    guard manager.zones.isEmpty else {
+                        gradientColors = generateHeartRateZoneColors()
+                        return
+                    }
+                    manager.zones = await manager.generateHeartRateZones()
+                    gradientColors = generateHeartRateZoneColors()
+                }
+             }
             state = .success
         }
     }

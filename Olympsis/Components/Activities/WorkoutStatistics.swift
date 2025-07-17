@@ -11,7 +11,7 @@ import HealthKit
 
 struct WorkoutStatistics: View {
     let workout: Workout
-    
+    @Binding var showHeartDetails: Bool
     private var heartRateChartData: [(Date, Double)] {
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         return workout.heartSamples.map { sample in
@@ -33,9 +33,20 @@ struct WorkoutStatistics: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Heart Rate Chart
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Heart Rate")
-                        .font(.custom("Archivo-Bold", size: 18))
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("Heart Rate")
+                            .font(.custom("Archivo-Bold", size: 20))
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        if !heartRateChartData.isEmpty {
+                            Button(action: { showHeartDetails.toggle() }) {
+                                Text("Show More")
+                                    .font(.callout)
+                            }
+                        }
+                    }
                     
                     if !heartRateChartData.isEmpty {
                         Chart {
@@ -93,62 +104,62 @@ struct WorkoutStatistics: View {
                 }
                 
                 // Distance Chart
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Distance")
-                        .font(.custom("Archivo-Bold", size: 18))
-                        .foregroundColor(.primary)
-                    
-                    if !distanceChartData.isEmpty {
-                        Chart {
-                            ForEach(Array(distanceChartData.enumerated()), id: \.offset) { index, data in
-                                LineMark(
-                                    x: .value("Time", data.0),
-                                    y: .value("Distance", data.1)
-                                )
-                                .interpolationMethod(.cardinal)
-                                .foregroundStyle(.blue)
-                                
-                                AreaMark(
-                                    x: .value("Time", data.0),
-                                    y: .value("Distance", data.1)
-                                )
-                                .interpolationMethod(.cardinal)
-                                .foregroundStyle(.blue.opacity(0.2))
-                            }
-                        }
-                        .frame(height: 200)
-                        
-                        // Distance Stats
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Total Distance")
-                                    .font(.custom("Archivo-Regular", size: 12))
-                                    .foregroundColor(.secondary)
-                                Text(String(format: "%.2f km", workout.totalDistance))
-                                    .font(.custom("Archivo-Bold", size: 16))
-                            }
-                            
-                            Spacer()
-                            
-                            VStack(alignment: .trailing) {
-                                Text("Average Pace")
-                                    .font(.custom("Archivo-Regular", size: 12))
-                                    .foregroundColor(.secondary)
-                                Text(workout.averagePace)
-                                    .font(.custom("Archivo-Bold", size: 16))
-                            }
-                        }
-                        .padding(.top, 8)
-                    } else {
-                        Text("No distance data available")
-                            .font(.custom("Archivo-Regular", size: 14))
-                            .foregroundColor(.secondary)
-                            .frame(height: 100)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(8)
-                    }
-                }
+//                VStack(alignment: .leading, spacing: 12) {
+//                    Text("Distance")
+//                        .font(.custom("Archivo-Bold", size: 20))
+//                        .foregroundColor(.primary)
+//                    
+//                    if !distanceChartData.isEmpty {
+//                        Chart {
+//                            ForEach(Array(distanceChartData.enumerated()), id: \.offset) { index, data in
+//                                LineMark(
+//                                    x: .value("Time", data.0),
+//                                    y: .value("Distance", data.1)
+//                                )
+//                                .interpolationMethod(.cardinal)
+//                                .foregroundStyle(.blue)
+//                                
+//                                AreaMark(
+//                                    x: .value("Time", data.0),
+//                                    y: .value("Distance", data.1)
+//                                )
+//                                .interpolationMethod(.cardinal)
+//                                .foregroundStyle(.blue.opacity(0.2))
+//                            }
+//                        }
+//                        .frame(height: 200)
+//                        
+//                        // Distance Stats
+//                        HStack {
+//                            VStack(alignment: .leading) {
+//                                Text("Total Distance")
+//                                    .font(.custom("Archivo-Regular", size: 12))
+//                                    .foregroundColor(.secondary)
+//                                Text(String(format: "%.2f km", workout.totalDistance))
+//                                    .font(.custom("Archivo-Bold", size: 16))
+//                            }
+//                            
+//                            Spacer()
+//                            
+//                            VStack(alignment: .trailing) {
+//                                Text("Average Pace")
+//                                    .font(.custom("Archivo-Regular", size: 12))
+//                                    .foregroundColor(.secondary)
+//                                Text(workout.averagePace)
+//                                    .font(.custom("Archivo-Bold", size: 16))
+//                            }
+//                        }
+//                        .padding(.top, 8)
+//                    } else {
+//                        Text("No distance data available")
+//                            .font(.custom("Archivo-Regular", size: 14))
+//                            .foregroundColor(.secondary)
+//                            .frame(height: 100)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color.gray.opacity(0.1))
+//                            .cornerRadius(8)
+//                    }
+//                }
             }
             .padding(20)
         }
@@ -159,6 +170,6 @@ struct WorkoutStatistics: View {
 
 #Preview {
     NavigationView {
-        WorkoutStatistics(workout: Workout(type: .running, workout: HKWorkout(activityType: .other, start: Date(), end: Date())))
+        WorkoutStatistics(workout: Workout(type: .running, workout: HKWorkout(activityType: .other, start: Date(), end: Date())), showHeartDetails: .constant(false))
     }
 }
