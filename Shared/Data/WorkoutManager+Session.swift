@@ -32,7 +32,8 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
             Task {
                 await MainActor.run {
                     state = .active
-                    listenToLocationUpdates()
+//                    listenToLocationUpdates()
+                    manager.startUpdatingLocation()
                     self.log.info("Workout state changed -> ACTIVE")
                 }
             }
@@ -58,7 +59,8 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
                         return
                     }
                     
-                    stopListeningToLocationUpdates()
+//                    stopListeningToLocationUpdates()
+                    manager.stopUpdatingLocation()
                     
                     try await routeBuilder.finishRoute(with: workout, metadata: [:])
                     log.info("Workout Route finished.")

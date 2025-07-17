@@ -181,6 +181,14 @@ class WorkoutManager: NSObject {
             return
         }
     }
+    
+    @MainActor
+    func enableWaterEjectMode() {
+        #if os(watchOS)
+        guard WKInterfaceDevice.current().isWaterLockEnabled else { return }
+        WKInterfaceDevice.current().enableWaterLock()
+        #endif
+    }
 }
 
 extension WorkoutManager {

@@ -46,33 +46,6 @@ struct ActivityPreparationSettings: View {
                                     }
                             }.buttonStyle(PlainButtonStyle())
                         }
-                        
-                        Text("Unit")
-                            .font(.caption2)
-                            .textCase(.uppercase)
-                            .foregroundStyle(Color.Background.primary)
-                            .padding(.top)
-                        HStack {
-                            Button(action: { unitType = "kilometers" }) {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(height: 40)
-                                    .foregroundStyle(unitType != "miles" ? Color.Brand.secondary : Color.Background.primary)
-                                    .overlay {
-                                        Text("Kilometers")
-                                            .foregroundStyle(unitType != "miles" ? Color.white : Color.foreground)
-                                    }
-                            }.buttonStyle(PlainButtonStyle())
-                                
-                            Button(action: { unitType = "miles" }) {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(height: 40)
-                                    .foregroundStyle(unitType == "miles" ? Color.Brand.secondary : Color.Background.primary)
-                                    .overlay {
-                                        Text("Miles")
-                                            .foregroundStyle(unitType == "miles" ? Color.white : Color.foreground)
-                                    }
-                            }.buttonStyle(PlainButtonStyle())
-                        }
                     }
                 default:
                     EmptyView()

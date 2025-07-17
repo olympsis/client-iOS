@@ -16,8 +16,8 @@ struct ActivityView: View {
     @State private var countdown: Int = 3
     
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.isLuminanceReduced) var isLuminenceReduced
     @Environment(WorkoutManager.self) private var manager
+    @Environment(\.isLuminanceReduced) private var isLuminenceReduced
     
     private func startCountdown() {
         if manager.session == nil {

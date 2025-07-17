@@ -13,100 +13,55 @@ struct ActivityMenu: View {
     @Binding var selection: ACTIVITY_PAGES
     @Environment(WorkoutManager.self) private var manager
     
+    private var isPaused: Bool {
+        return manager.state == .paused
+    }
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                
-                // MARK: - STOP & PAUSE
-                HStack(spacing: 20) {
-                    Button(action: {
-                        manager.stopWorkout()
-                    }) {
-                        Circle()
-                            .foregroundStyle(.red)
-                            .overlay {
-                                if !manager.isProcessingWorkout {
-                                    Image(systemName: "stop.fill")
-                                        .imageScale(.large)
-                                } else {
-                                    ProgressView()
-                                }
-                            }
-                    }
-                    .frame(width: 75, height: 75)
-                    .buttonStyle(PlainButtonStyle())
-                    .disabled(manager.isProcessingWorkout)
-                    
-                    Button(action: {
-                        withAnimation {
-                            if manager.state == .paused {
-                                manager.resumeWorkout()
-                                selection = .metrics
-                            } else {
-                                manager.pauseWorkout()
-                                selection = .details
-                            }
+        VStack(spacing: 10) {
+            // MARK: - STOP & PAUSE
+            ActivityStateButtons(selection: $selection)
+                .environment(manager)
+            
+            // MARK: - Water & Lap
+            HStack(spacing: 20) {
+                Button(action: { manager.enableWaterEjectMode() }) {
+                    Circle()
+                        .foregroundStyle(Color.colorPrime)
+                        .overlay {
+                            Image(systemName: "drop.fill")
+                                .imageScale(.large)
                         }
-                    }) {
-                        Circle()
-                            .foregroundStyle(Color.Background.primary)
-                            .overlay {
-                                if manager.state == .paused {
-                                    Image(systemName: "play.fill")
-                                        .imageScale(.large)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color.foreground)
-                                } else {
-                                    Image(systemName: "pause.fill")
-                                        .imageScale(.large)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color.foreground)
-                                }
-                            }
-                    }
-                    .frame(width: 75, height: 75)
-                    .buttonStyle(PlainButtonStyle())
-                    .disabled(manager.isProcessingWorkout)
                 }
+                .frame(width: 75, height: 75)
+                .buttonStyle(PlainButtonStyle())
+                .disabled(manager.isProcessingWorkout)
                 
-                // MARK: - Water & Lap
-                HStack(spacing: 20) {
-                    Button(action: {}) {
-                        Circle()
-                            .foregroundStyle(Color.colorPrime)
-                            .overlay {
-                                Image(systemName: "drop.fill")
-                                    .imageScale(.large)
-                            }
-                    }
-                    .frame(width: 75, height: 75)
-                    .buttonStyle(PlainButtonStyle())
-                    .disabled(manager.isProcessingWorkout)
-                    
-                    Button(action: {}) {
-                        Circle()
-                            .foregroundStyle(Color.colorSecnd)
-                            .overlay {
-                                Image(systemName: "flag.checkered")
-                                    .imageScale(.large)
-                            }
-                            
-                    }
-                    .frame(width: 75, height: 75)
-                    .buttonStyle(PlainButtonStyle())
-                    .disabled(manager.isProcessingWorkout)
-                }
+//                    Button(action: {}) {
+//                        Circle()
+//                            .foregroundStyle(Color.colorSecnd)
+//                            .overlay {
+//                                Image(systemName: "flag.checkered")
+//                                    .imageScale(.large)
+//                            }
+//
+//                    }
+//                    .frame(width: 75, height: 75)
+//                    .buttonStyle(PlainButtonStyle())
+//                    .disabled(manager.isProcessingWorkout)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Menu")
-                }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text(manager.state == .paused ? "Menu - Paused" : "Menu - Active")
             }
         }
     }
 }
 
 #Preview {
-    ActivityMenu(selection: .constant(.menu))
-        .environment(WorkoutManager())
+    NavigationStack {
+        ActivityMenu(selection: .constant(.menu))
+            .environment(WorkoutManager())
+    }
 }

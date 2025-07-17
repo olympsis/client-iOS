@@ -440,6 +440,8 @@
 		5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9572392C326D8B004D5318 /* EventSharingView.swift */; };
 		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
 		5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */; };
+		5D9A74FF2E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
+		5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F32D5E628800438FA7 /* Events.swift */; };
 		5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */; };
@@ -980,6 +982,7 @@
 		5D9572392C326D8B004D5318 /* EventSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingView.swift; sourceTree = "<group>"; };
 		5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProfileLabel.swift; sourceTree = "<group>"; };
 		5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBadgeView.swift; sourceTree = "<group>"; };
+		5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateButtons.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		5D9DB7F32D5E628800438FA7 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -1641,6 +1644,7 @@
 				5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */,
 				5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */,
 				5D6F11542E21BB53005F1BE5 /* ZoneViewer.swift */,
+				5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2787,6 +2791,7 @@
 				5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */,
 				5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */,
 				5DB096372E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
+				5D9A74FF2E27290D0072606D /* ActivityStateButtons.swift in Sources */,
 				5D0A8E392E16121300E8B3B1 /* GeneralActivityPreparation.swift in Sources */,
 				5DB096112E064A0700BB924A /* ActivitySportCard.swift in Sources */,
 				5D53215E2E06364F00C67357 /* EllaspsedTimeView.swift in Sources */,
@@ -3157,6 +3162,7 @@
 				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* VenueService.swift in Sources */,
 				5D117A712E25B082002380DE /* ScheduleComponents.swift in Sources */,
+				5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */,
 				5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */,
 				5DC8B4582E05CB14008C9052 /* GeneralSportMetrics.swift in Sources */,
 				5DC8B4592E05CB14008C9052 /* WorkoutsList.swift in Sources */,

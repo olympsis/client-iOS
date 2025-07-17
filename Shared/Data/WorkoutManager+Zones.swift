@@ -77,9 +77,6 @@ extension WorkoutManager {
         }
         
         log.info("Successfully generated \(zones.count) heart rate zones")
-        for zone in zones {
-            print(zone)
-        }
         return zones
     }
     
