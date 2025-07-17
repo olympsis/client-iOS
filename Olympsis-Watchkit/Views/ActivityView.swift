@@ -45,7 +45,7 @@ struct ActivityView: View {
             
             switch selectedSport {
             case .running, .walking:
-                DistanceActivityMetrics1()
+                DistanceActivityMetrics()
                     .environment(manager)
                     .tag(ACTIVITY_PAGES.metrics)
             case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:

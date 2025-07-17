@@ -73,10 +73,11 @@ struct DistanceActivityMetrics2: View {
     }
     
     var body: some View {
-        VStack(spacing: 2) {
-            ZoneViewer(zone: manager.zone)
-            
+        VStack(spacing: 15) {
             Spacer()
+            
+            ZoneViewer(zone: manager.zone)
+                .padding(.top, 20)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                 TimelineView (
@@ -140,9 +141,9 @@ struct DistanceActivityMetrics2: View {
                         
                     }
                 }
-                
-
             }
+            
+            Spacer()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

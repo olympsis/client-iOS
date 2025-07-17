@@ -124,7 +124,7 @@ struct DistanceActivityMetrics3: View {
                         .textCase(.uppercase)
                         .foregroundStyle(.gray)
                 }
-            }
+            }.padding(.top, 20)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                 TimelineView (

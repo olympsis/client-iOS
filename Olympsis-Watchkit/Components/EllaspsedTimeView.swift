@@ -10,7 +10,7 @@ import SwiftUI
 struct EllaspsedTimeView: View {
     
     var ellapsedTime: TimeInterval = 0
-    var showSubSeconds: Bool = true
+    @State var showSubSeconds: Bool = false
     @State private var timeFormatter = EllapsedTimeFormatter()
     
     var body: some View {
@@ -18,8 +18,17 @@ struct EllaspsedTimeView: View {
             NSNumber(value: ellapsedTime),
             formatter: timeFormatter
         )
+        .onAppear {
+            let newFormatter = EllapsedTimeFormatter()
+            newFormatter.showSubSeconds = showSubSeconds
+            
+            timeFormatter = newFormatter
+        }
         .onChange(of: showSubSeconds) { _, newValue in
-            timeFormatter.showSubSeconds = newValue
+            let newFormatter = EllapsedTimeFormatter()
+            newFormatter.showSubSeconds = newValue
+            
+            timeFormatter = newFormatter
         }
     }
 }

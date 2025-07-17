@@ -4,7 +4,7 @@ struct ZoneViewer: View {
     
     var zone: Int
     private let zones: [Int] = [1,2,3,4,5]
-    
+    @State private var lastChanged: Date = Date()
     func getColorForZone(_ zone: Int) -> Color {
         switch zone {
         case 1: return .blue
@@ -41,6 +41,15 @@ struct ZoneViewer: View {
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(getColorForZone(zone))
+            
+            TimelineView(
+                EllapsedTimeTimelineSchedule(from: lastChanged)
+            ) { context in
+                EllaspsedTimeView(ellapsedTime: Date.now.timeIntervalSince(lastChanged), showSubSeconds: false)
+                    .fontWeight(.semibold)
+            }
+        }.onChange(of: zone) { oldValue, newValue in
+            lastChanged = Date()
         }
     }
 }

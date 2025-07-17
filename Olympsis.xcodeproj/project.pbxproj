@@ -421,6 +421,7 @@
 		5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */; };
 		5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */; };
 		5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */; };
+		5D877B2C2E289A73000DEAC8 /* DistanceActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */; };
 		5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F42C76D82400AAF374 /* ImageSaver.swift */; };
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
 		5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F82C76E4B000AAF374 /* ShareMenu.swift */; };
@@ -963,6 +964,7 @@
 		5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueSearchViewModel.swift; sourceTree = "<group>"; };
 		5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDescriptorView.swift; sourceTree = "<group>"; };
 		5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRoutes.swift; sourceTree = "<group>"; };
+		5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityMetrics.swift; sourceTree = "<group>"; };
 		5D8958F42C76D82400AAF374 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIconButton.swift; sourceTree = "<group>"; };
 		5D8958F82C76E4B000AAF374 /* ShareMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMenu.swift; sourceTree = "<group>"; };
@@ -1693,6 +1695,7 @@
 				5D6F11512E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift */,
 				5D6F11572E21CE0B005F1BE5 /* DistanceActivityMetrics3.swift */,
 				5DC8B4722E05CE6C008C9052 /* DistanceActivityPreparation.swift */,
+				5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */,
 			);
 			path = Distance;
 			sourceTree = "<group>";
@@ -2817,6 +2820,7 @@
 				5D53216C2E06364F00C67357 /* ActivityHomeView.swift in Sources */,
 				5D5321F72E063BF700C67357 /* EventSharing.swift in Sources */,
 				5D53216D2E06364F00C67357 /* ActivitySettingsView.swift in Sources */,
+				5D877B2C2E289A73000DEAC8 /* DistanceActivityMetrics.swift in Sources */,
 				5DB096142E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
 				5D6F114F2E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */,
 				5D53217B2E063B0900C67357 /* ClubModels.swift in Sources */,
