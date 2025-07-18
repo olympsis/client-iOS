@@ -53,7 +53,7 @@ struct ActivityStateButtons: View {
                 
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0)) {
                     isPaused ? manager.resumeWorkout() : manager.pauseWorkout()
-                    selection = isPaused ? .details : .menu
+                    selection = isPaused ? .metrics : .menu
                 }
                 
                 // Re-enable interactions after a brief delay
