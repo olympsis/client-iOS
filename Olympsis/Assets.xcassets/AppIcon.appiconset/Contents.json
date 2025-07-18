@@ -1,37 +1,13 @@
 {
   "images" : [
     {
-      "filename" : "Icon-iOS-Default-1024x1024@1x.png",
+      "filename" : "V2 – 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
     },
     {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "OlympsisIcon-iOS-Dark-1024x1024@1x.png",
-      "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "tinted"
-        }
-      ],
-      "filename" : "OlympsisIcon-iOS-ClearLight-1024x1024@1x.png",
-      "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
-    },
-    {
-      "filename" : "Icon-watchOS-Default-1024x1024@1x.png",
+      "filename" : "V2 – 2.png",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"
