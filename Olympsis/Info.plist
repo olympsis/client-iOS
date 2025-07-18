@@ -2,17 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Olympsis may read your health data to display your saved workouts both privately and to users if enabled.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Olympsis requires access to your health data to record your activities to help you stay on track to your goals.</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string></string>
-	</dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.olympsis.client</string>
+		<string>com.olympsis.client.watchkit</string>
+	</array>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -52,7 +48,7 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>
