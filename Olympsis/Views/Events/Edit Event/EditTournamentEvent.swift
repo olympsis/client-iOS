@@ -16,7 +16,7 @@ struct EditTournamentEvent: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventStopTime:           Date = Date().addingTimeInterval(30 * 60)
     @State private var eventImageURL:           String = ""
-    @State private var eventSport:              SPORTS = .soccer
+    @State private var eventSport:              SUPPORTED_SPORTS = .soccer
     @State private var eventLevel:              Int    = 0
     @State private var eventMaxParticipants:    Double = 0
     @State private var eventMinParticipants:    Double = 0

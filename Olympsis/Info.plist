@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Olympsis may read your health data to display your saved workouts both privately and to users if enabled.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Olympsis requires access to your health data to record your activities to help you stay on track to your goals.</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string></string>
+	</dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -15,6 +26,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>CHAT</key>
+	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
 	<string>localhost</string>
 	<key>Enable Multiple Windows</key>
@@ -73,6 +86,10 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>processing</string>
+		<string>fetch</string>
+		<string>location</string>
+		<string>nearby-interaction</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>

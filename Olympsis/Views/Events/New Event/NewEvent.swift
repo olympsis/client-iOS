@@ -7,7 +7,7 @@
 
 import os
 import SwiftUI
-import AlertToast
+//import AlertToast
 
 struct NewEvent: View {
     
@@ -457,9 +457,9 @@ struct NewEvent: View {
                     manager.organizers.append(select)
                 }
             }
-            .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
-                AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-error-text", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
-            })
+//            .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
+//                AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-error-text", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
+//            })
         }
     }
 }

@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "01B33438-DDBF-4D83-9458-BC084534886A"
+            uuid = "B591FA5F-7CEF-49FC-ABD4-35C9E32256BB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Olympsis-Watchkit/Managers/ActivityManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "updateForStatistics(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4EF40F9F-F8BD-40EF-BB4F-689B7CC30A91"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Olympsis/Data/Managers/LocationManager.swift"
+            filePath = "Olympsis/Shared/Data/WorkoutManager+Read.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "locationManager(_:didFailWithError:)"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "fetchRunningCadence(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

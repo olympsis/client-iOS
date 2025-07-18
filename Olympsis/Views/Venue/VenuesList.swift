@@ -80,7 +80,7 @@ struct VenuesList: View {
             .navigationTitle(String(localized: "nearby-venues", table: "General"))
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showRequestLocation, content: {
-                EmptyView()
+                LocationRequestView()
             })
         }
         .gesture(
@@ -94,9 +94,7 @@ struct VenuesList: View {
     }
 }
 
-struct FieldsList_Previews: PreviewProvider {
-    static var previews: some View {
-        VenuesList(venues: [Venue]())
-            .environment(SessionStore())
-    }
+#Preview {
+    VenuesList(venues: [Venue]())
+        .environment(SessionStore())
 }

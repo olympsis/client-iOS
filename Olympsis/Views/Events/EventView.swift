@@ -9,7 +9,7 @@ import os
 import MapKit
 import SwiftUI
 import Kingfisher
-import AlertToast
+//import AlertToast
 import CoreLocation
 
 /// A view that shows more detail about a specific event
@@ -222,9 +222,9 @@ struct EventView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
-        .toast(isPresenting: $showToast, alert: {
-            AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
-        })
+//        .toast(isPresenting: $showToast, alert: {
+//            AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
+//        })
         .background(.regularMaterial)
         .background {
             KFImage(generateImageURL(event.mediaURL))
