@@ -1591,7 +1591,6 @@
 			isa = PBXGroup;
 			children = (
 				5DC8B4342E05BF09008C9052 /* WorkoutHeatMapView.swift */,
-				5DC8B4352E05BF09008C9052 /* WorkoutMapView.swift */,
 				5DC8B4362E05BF09008C9052 /* WorkoutSplitsView.swift */,
 			);
 			path = Components;
@@ -1742,6 +1741,7 @@
 				5D3E6F642E0DD0CC005225FE /* WorkoutHeatmapMapView.swift */,
 				5DB0963B2E0B890C00BB924A /* WorkoutStatistics.swift */,
 				5DB096182E07424700BB924A /* ActivitiesChart.swift */,
+				5DC8B4352E05BF09008C9052 /* WorkoutMapView.swift */,
 				5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */,
 				5DB0963D2E0DCBA600BB924A /* WorkoutHeatmapView.swift */,
 				5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */,

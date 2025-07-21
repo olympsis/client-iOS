@@ -21,7 +21,7 @@ struct WorkoutMapView: View {
                 .tint(Color.blue)
                 .stroke(
                     Gradient(colors: gradient),
-                    lineWidth: 1.5
+                    lineWidth: 2
                 )
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
