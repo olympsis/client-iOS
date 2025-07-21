@@ -11,21 +11,24 @@ import SwiftUI
 struct ActivitiesChart: View {
 
     private var workouts: [Workout] {
-        switch manager.selectedFilter {
+        switch manager.frequencyFilter {
         case 1: // The last month of workouts
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -30, to: start) ?? Date()
             return manager.workouts
+                .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         case 2: // The last year worth of workouts
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -365, to: start) ?? Date()
             return manager.workouts
+                .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         default: // The last week of workouts
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -7, to: start) ?? Date()
             return manager.workouts
+                .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         }
     }
@@ -39,7 +42,7 @@ struct ActivitiesChart: View {
             Text("Calories")
                 .font(.title3)
             
-            if manager.selectedFilter == 0 {
+            if manager.frequencyFilter == 0 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDay()) { data in
                         LineMark(
@@ -58,7 +61,7 @@ struct ActivitiesChart: View {
 //                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
-            } else if manager.selectedFilter == 1 {
+            } else if manager.frequencyFilter == 1 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDayInMonth()) { data in
                         LineMark(

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ActivitiesTypePicker: View {
-    
-    @Binding var selectedType: String
+
     @Environment(WorkoutManager.self) private var manager
     
     private var sports: [SUPPORTED_SPORTS] {
@@ -24,16 +23,16 @@ struct ActivitiesTypePicker: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                Button (action: { selectedType = "All" }) {
+                Button (action: { manager.sportFilter = nil }) {
                     Text("All")
                         .padding(.vertical, 5)
                         .padding(.horizontal)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(selectedType == "All" ? Color.Brand.primary : Color.primary)
-                                .opacity(selectedType == "All" ? 1 : 0.15)
+                                .foregroundStyle(manager.sportFilter == nil ? Color.Brand.primary : Color.primary)
+                                .opacity(manager.sportFilter == nil ? 1 : 0.15)
                         }
-                        .foregroundStyle(selectedType == "All" ? Color.white : Color.primary)
+                        .foregroundStyle(manager.sportFilter == nil ? Color.white : Color.primary)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.primary, lineWidth: 1)
@@ -42,16 +41,16 @@ struct ActivitiesTypePicker: View {
                     
                 }
                 ForEach(sports, id: \.self) { sport in
-                    Button(action: { selectedType = sport.getName() }) {
+                    Button(action: { manager.sportFilter = sport }) {
                         Text(sport.getName())
                             .padding(.vertical, 5)
                             .padding(.horizontal)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(selectedType == sport.getName() ? Color.Brand.primary : Color.primary)
-                                    .opacity(selectedType == sport.getName() ? 1 : 0.15)
+                                    .foregroundStyle(manager.sportFilter == sport ? Color.Brand.primary : Color.primary)
+                                    .opacity(manager.sportFilter == sport ? 1 : 0.15)
                             }
-                            .foregroundStyle(selectedType == sport.getName() ? Color.white : Color.primary)
+                            .foregroundStyle(manager.sportFilter == sport ? Color.white : Color.primary)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color.primary, lineWidth: 1)
@@ -65,6 +64,6 @@ struct ActivitiesTypePicker: View {
 }
 
 #Preview {
-    ActivitiesTypePicker(selectedType: .constant("All"))
+    ActivitiesTypePicker()
         .environment(WorkoutManager())
 }

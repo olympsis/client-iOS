@@ -11,9 +11,7 @@ import HealthKit
 
 struct Activities: View {
     
-    @State private var selectedType: String = "All"
     @State private var showActivityView: Bool = false
-    @State private var selectedSport: SUPPORTED_SPORTS?
     @State private var selectedFilter: Int = 0
     @Environment(SessionStore.self) private var session
     @Environment(WorkoutManager.self) private var manager
@@ -24,7 +22,7 @@ struct Activities: View {
             ScrollView(showsIndicators: false) {
                 
                 // Picks by which type to filter out the results
-                ActivitiesTypePicker(selectedType: $selectedType)
+                ActivitiesTypePicker()
                     .padding(.top, 10)
                     .environment(manager)
                 
