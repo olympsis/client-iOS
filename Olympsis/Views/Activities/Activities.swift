@@ -26,6 +26,7 @@ struct Activities: View {
                 // Picks by which type to filter out the results
                 ActivitiesTypePicker(selectedType: $selectedType)
                     .padding(.top, 10)
+                    .environment(manager)
                 
                 // Selects the frequency of which we want to see the results
                 ActivitiesFrequencySelector(selectedFilter: $selectedFilter)
@@ -44,11 +45,10 @@ struct Activities: View {
                 Spacer(minLength: 40)
             }
             .task {
+                _ = await manager.requestHealthStoreAuthorization()
                 guard manager.workouts.isEmpty else {
                     return
                 }
-                await manager.requestHealthStoreAuthorization()
-//                await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -10,6 +10,16 @@ import SwiftUI
 struct ActivitiesTypePicker: View {
     
     @Binding var selectedType: String
+    @Environment(WorkoutManager.self) private var manager
+    
+    private var sports: [SUPPORTED_SPORTS] {
+        var seen = Set<SUPPORTED_SPORTS>()
+        return manager.workouts
+            .sorted { $0.workout.startDate > $1.workout.startDate } // Most recent first
+            .compactMap { workout in
+                seen.insert(workout.type).inserted ? workout.type : nil
+            }
+    }
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -31,7 +41,7 @@ struct ActivitiesTypePicker: View {
                         }
                     
                 }
-                ForEach(SUPPORTED_SPORTS.allCases, id: \.self) { sport in
+                ForEach(sports, id: \.self) { sport in
                     Button(action: { selectedType = sport.getName() }) {
                         Text(sport.getName())
                             .padding(.vertical, 5)
@@ -56,4 +66,5 @@ struct ActivitiesTypePicker: View {
 
 #Preview {
     ActivitiesTypePicker(selectedType: .constant("All"))
+        .environment(WorkoutManager())
 }
