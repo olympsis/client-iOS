@@ -24,62 +24,60 @@ struct DistanceActivityPreparation: View {
     @AppStorage("run_type") private var runType: String?
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                if !manager.hasLocationAccess {
-                    Group {
-                        Image(systemName: "location.slash")
-                        Text("Location disabled. Go to Olympsis iOS App to enable.")
-                            .font(.caption)
-                    }.padding(.bottom, 10)
-                }
-                
-                NavigationLink(destination: {
-                    ActivityView(selectedSport: sport)
-                        .environment(manager)
-                }) {
-                    Circle()
-                        .frame(width: 120, height: 120)
-                        .foregroundStyle(Color.colorPrime)
-                        .overlay {
-                            VStack {
-                                Text("Start")
-                                    .textCase(.uppercase)
-                                    .italic()
-                                    .font(.system(size: 30))
-                                    .fontWeight(.bold)
-                            }
-                        }
-                }
-                .buttonStyle(PlainButtonStyle())
-                .onChange(of: manager.state, { oldValue, newValue in
-                    if newValue == .ended {
-                       dismiss()
-                    }
-                })
-                
-                // MARK: - Options
-                VStack {
-                    HStack {
-                        Text("Goals")
-                        Spacer()
-                    }
-                    
-                    ForEach(goals, id: \.self) { goal in
-                        NavigationLink {
-                            ActivityGoalSetter(goal: goal)
-                        } label: {
-                            ActivityGoalButton(goal: goal)
-                        }.buttonStyle(PlainButtonStyle())
-
-                    }
-                }
-                .padding(.top)
-                .scenePadding()
-                .fullScreenCover(isPresented: $showLiveActivity, content: {
-                    ActivityView(selectedSport: .running)
-                })
+        ScrollView {
+            if !manager.hasLocationAccess {
+                Group {
+                    Image(systemName: "location.slash")
+                    Text("Location disabled. Go to Olympsis iOS App to enable.")
+                        .font(.caption)
+                }.padding(.bottom, 10)
             }
+            
+            NavigationLink(destination: {
+                ActivityView(selectedSport: sport)
+                    .environment(manager)
+            }) {
+                Circle()
+                    .frame(width: 120, height: 120)
+                    .foregroundStyle(Color.colorPrime)
+                    .overlay {
+                        VStack {
+                            Text("Start")
+                                .textCase(.uppercase)
+                                .italic()
+                                .font(.system(size: 30))
+                                .fontWeight(.bold)
+                        }
+                    }
+            }
+            .buttonStyle(PlainButtonStyle())
+            .onChange(of: manager.state, { oldValue, newValue in
+                if newValue == .ended {
+                   dismiss()
+                }
+            })
+            
+            // MARK: - Options
+            VStack {
+                HStack {
+                    Text("Goals")
+                    Spacer()
+                }
+                
+                ForEach(goals, id: \.self) { goal in
+                    NavigationLink {
+                        ActivityGoalSetter(goal: goal)
+                    } label: {
+                        ActivityGoalButton(goal: goal)
+                    }.buttonStyle(PlainButtonStyle())
+
+                }
+            }
+            .padding(.top)
+            .scenePadding()
+            .fullScreenCover(isPresented: $showLiveActivity, content: {
+                ActivityView(selectedSport: .running)
+            })
         }
     }
 }

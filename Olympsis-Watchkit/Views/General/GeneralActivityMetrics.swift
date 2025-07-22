@@ -80,7 +80,7 @@ struct GeneralActivityMetrics: View {
                                 .imageScale(.medium)
                         }
                         
-                        Text("CAL")
+                        Text("BPM")
                             .font(.headline)
                             .foregroundStyle(.gray)
                     }
