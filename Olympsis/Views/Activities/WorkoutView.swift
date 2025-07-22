@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HealthKit
+import CoreLocation
 
 struct WorkoutView: View {
     
@@ -14,6 +15,7 @@ struct WorkoutView: View {
     var workout: Workout
     @State private var state: LOADING_STATE = .loading
     @State private var showHeartDetails: Bool = false
+    @State private var workoutLocationString: String? = nil
     @State private var gradientColors: [Color] = [Color.Brand.primary]
     @Environment(\.dismiss) private var dismiss
     @Environment(WorkoutManager.self) private var manager
@@ -96,10 +98,47 @@ struct WorkoutView: View {
         default: return .gray
         }
     }
+    
+    @MainActor
+    private func getWorkoutLocation(coordinate: CLLocation) async -> String? {
+        do {
+            let geocoder = CLGeocoder()
+            let results = try await geocoder.reverseGeocodeLocation(coordinate)
+            guard let location = results.first,
+                  let city = location.subAdministrativeArea,
+                  let state = location.administrativeArea else { return nil }
+            
+            return "\(city), \(state)"
+        } catch {
+            return nil
+        }
+    }
 
     var body: some View {
         ScrollView {
             VStack {
+                HStack(alignment: .bottom) {
+                    Text(workout.type.rawValue.prefix(1).uppercased() + workout.type.rawValue.dropFirst().lowercased())
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing) {
+                        Text(getWorkoutStartDateTime(from: workout.workout))
+                        if let workoutLocationString {
+                            HStack {
+                                Image(systemName: "location.fill")
+                                    .foregroundStyle(.gray)
+                                
+                                Text(workoutLocationString)
+                            }
+                        }
+                    }.redacted(reason: state == .loading ? .placeholder : [])
+                }
+                .padding(.top, 10)
+                .padding(.horizontal)
+                .foregroundStyle(.gray)
+                
                 HStack {
                     RoundedRectangle(cornerRadius: 20)
                         .frame(width: 100, height: 100)
@@ -129,78 +168,69 @@ struct WorkoutView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
-                .padding([.top, .horizontal])
+                .padding(.horizontal)
                 
                 // MARK: - Workout Details
-                VStack {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading) {
-                            Text(workout.averagePace)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.primary)
-                            Text("Avg. Pace")
-                        }.frame(width: 100)
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading) {
-                            Text("\(workout.totalCaloriesBurned, specifier: "%.0f")")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.green)
-                            Text("Calories")
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading) {
-                            Text(workout.totalTime)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.Brand.tertiary)
-                            Text("Time")
-                        }
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                    VStack(alignment: .leading) {
+                        Text(workout.averagePace)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.primary)
+                        Text("Avg. Pace")
+                    }.frame(width: 100)
+                    
+                    
+                    
+                    VStack(alignment: .leading) {
+                        Text("\(workout.totalCaloriesBurned, specifier: "%.0f")")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.green)
+                        Text("Calories")
                     }
-                    .padding(.vertical)
-                    .padding(.horizontal, 25)
-                        
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("\(workout.averageHeartRate, specifier: "%.0f")")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.Brand.secondary)
-                            Text("Avg. Heart Rate")
-                        }
-                        .frame(width: 100)
-                        .redacted(reason: state == .loading ? .placeholder : [])
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading) {
-                            Text(elevationGain)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                            Text("Elevation Gain")
-                        }
-                        .frame(width: 100)
-                        .redacted(reason: state == .loading ? .placeholder : [])
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading) {
-                            Text(cadence)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.Brand.quaternary)
-                            Text("Cadence")
-                        }
-                        .frame(width: 100)
-                        .redacted(reason: state == .loading ? .placeholder : [])
+                    
+                    
+                    
+                    VStack(alignment: .leading) {
+                        Text(workout.totalTime)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.Brand.tertiary)
+                        Text("Time")
                     }
-                    .padding(.horizontal, 25)
-                }
+                    
+                    VStack(alignment: .leading) {
+                        Text("\(workout.averageHeartRate, specifier: "%.0f")")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.Brand.secondary)
+                        Text("Avg. Heart Rate")
+                    }
+                    .frame(width: 100)
+                    .redacted(reason: state == .loading ? .placeholder : [])
+                    
+                    
+                    
+                    VStack(alignment: .leading) {
+                        Text(elevationGain)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                        Text("Elevation Gain")
+                    }
+                    .frame(width: 100)
+                    .redacted(reason: state == .loading ? .placeholder : [])
+                    
+                    VStack(alignment: .leading) {
+                        Text(cadence)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.Brand.quaternary)
+                        Text("Cadence")
+                    }
+                    .frame(width: 100)
+                    .redacted(reason: state == .loading ? .placeholder : [])
+                }.padding(.top, 10)
                 
                 // Workout Splits view
                 if !workout.paceSegments.isEmpty {
@@ -256,17 +286,13 @@ struct WorkoutView: View {
                 workout.paceSegments = details.paceSegments
                 workout.heartSamples = details.heartRateSamples
                 
-//                for detail in details.route {
-//                    print("lat=\(detail.coordinate.latitude), long=\(detail.coordinate.longitude), altitude=\(detail.altitude), horizontalAccuracy=\(detail.horizontalAccuracy), verticalAccuracy=\(detail.verticalAccuracy), course=\(detail.course), courseAccuracy=\(detail.courseAccuracy), speed=\(detail.speed), speedAccuracy=\(detail.speedAccuracy), timestamp=\(detail.timestamp)")
-//                }
-                
-//                print(parseLocationData(locExample))
-                
                 if !details.route.isEmpty {
-                    guard manager.zones.isEmpty else {
+                    guard let point = details.route.first,
+                        manager.zones.isEmpty else {
                         gradientColors = generateHeartRateZoneColors()
                         return
                     }
+                    workoutLocationString = await getWorkoutLocation(coordinate: point)
                     manager.zones = await manager.generateHeartRateZones()
                     gradientColors = generateHeartRateZoneColors()
                 }

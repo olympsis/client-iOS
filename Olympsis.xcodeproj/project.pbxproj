@@ -529,9 +529,7 @@
 		5DC8B4512E05C72D008C9052 /* BadgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B44E2E05C72D008C9052 /* BadgesView.swift */; };
 		5DC8B4522E05C72D008C9052 /* TrophiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B44F2E05C72D008C9052 /* TrophiesView.swift */; };
 		5DC8B4542E05C7BD008C9052 /* SportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4532E05C7BD008C9052 /* SportView.swift */; };
-		5DC8B4582E05CB14008C9052 /* GeneralSportMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4562E05CB14008C9052 /* GeneralSportMetrics.swift */; };
 		5DC8B4592E05CB14008C9052 /* WorkoutsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4572E05CB14008C9052 /* WorkoutsList.swift */; };
-		5DC8B45A2E05CB14008C9052 /* CyclingComputerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4552E05CB14008C9052 /* CyclingComputerView.swift */; };
 		5DC8B4822E05CE6C008C9052 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B4642E05CE6C008C9052 /* Preview Assets.xcassets */; };
 		5DC8B4832E05CE6C008C9052 /* OlympsisWatchkit-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B47F2E05CE6C008C9052 /* OlympsisWatchkit-Info.plist */; };
 		5DC8B4852E05CE6C008C9052 /* GeneralActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4672E05CE6C008C9052 /* GeneralActivityDetails.swift */; };
@@ -1070,8 +1068,6 @@
 		5DC8B44E2E05C72D008C9052 /* BadgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesView.swift; sourceTree = "<group>"; };
 		5DC8B44F2E05C72D008C9052 /* TrophiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophiesView.swift; sourceTree = "<group>"; };
 		5DC8B4532E05C7BD008C9052 /* SportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportView.swift; sourceTree = "<group>"; };
-		5DC8B4552E05CB14008C9052 /* CyclingComputerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingComputerView.swift; sourceTree = "<group>"; };
-		5DC8B4562E05CB14008C9052 /* GeneralSportMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSportMetrics.swift; sourceTree = "<group>"; };
 		5DC8B4572E05CB14008C9052 /* WorkoutsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsList.swift; sourceTree = "<group>"; };
 		5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityElevationView.swift; sourceTree = "<group>"; };
 		5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityGoalButton.swift; sourceTree = "<group>"; };
@@ -1763,6 +1759,7 @@
 				5DB096182E07424700BB924A /* ActivitiesChart.swift */,
 				5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */,
 				5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */,
+				5D1D51202E298A730047B838 /* WorkoutHeartStatisticsView.swift */,
 			);
 			path = Activities;
 			sourceTree = "<group>";
@@ -2406,12 +2403,9 @@
 		9AC5BAC0295E6D17003E851B /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				5DC8B4552E05CB14008C9052 /* CyclingComputerView.swift */,
-				5DC8B4562E05CB14008C9052 /* GeneralSportMetrics.swift */,
 				5DC8B4572E05CB14008C9052 /* WorkoutsList.swift */,
 				9AC5BAC1295E6D26003E851B /* Activities.swift */,
 				5DCB01BB2ADF75B600450F69 /* WorkoutView.swift */,
-				5D1D51202E298A730047B838 /* WorkoutHeartStatisticsView.swift */,
 			);
 			path = Activities;
 			sourceTree = "<group>";
@@ -3196,9 +3190,7 @@
 				5D117A712E25B082002380DE /* ScheduleComponents.swift in Sources */,
 				5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */,
 				5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */,
-				5DC8B4582E05CB14008C9052 /* GeneralSportMetrics.swift in Sources */,
 				5DC8B4592E05CB14008C9052 /* WorkoutsList.swift in Sources */,
-				5DC8B45A2E05CB14008C9052 /* CyclingComputerView.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D3E6F652E0DD0CC005225FE /* WorkoutHeatmapMapView.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,
