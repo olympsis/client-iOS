@@ -17,11 +17,15 @@ struct ActivitySummaryView: View {
         return formatter
     }()
     
-    var ellapsedTime: Double {
+    private var sport: SUPPORTED_SPORTS? {
+        return manager.selectedSport
+    }
+    
+    private var ellapsedTime: Double {
         return Double(manager.workout?.duration ?? 0)
     }
     
-    var distanceText: Text {
+    private var distanceText: Text {
         if manager.unit == UnitLength.kilometers {
             let distance = manager.workout?.statistics(for:
                 HKQuantityType.init(.distanceWalkingRunning))?
@@ -38,7 +42,7 @@ struct ActivitySummaryView: View {
         }
     }
     
-    var averagePaceText: Text {
+    private var averagePaceText: Text {
         let mins = ellapsedTime/60
         if manager.unit == UnitLength.kilometers {
             let distance = manager.workout?.statistics(for:
@@ -56,12 +60,12 @@ struct ActivitySummaryView: View {
         }
     }
     
-    var averageHeartRate: Double {
+    private var averageHeartRate: Double {
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         return manager.workout?.statistics(for: HKQuantityType.init(.heartRate))?.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
     }
     
-    var totalEnergyBurned: Double {
+    private var totalEnergyBurned: Double {
         return manager.workout?.statistics(for: HKQuantityType.init(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
     }
     
@@ -71,6 +75,10 @@ struct ActivitySummaryView: View {
     var body: some View {
         ScrollView {
             VStack {
+                if sport == .running || sport == .walking {
+                    RunRoutePolylineView(coordinates: manager.locationPoints.map { $0.coordinate })
+                }
+                
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
                         Text("Total Time")

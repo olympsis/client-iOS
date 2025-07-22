@@ -71,6 +71,7 @@ class WorkoutManager: NSObject {
     
     
     // Live Workout Statistics
+    var locationPoints: [CLLocation] = []
     var averageHeartRate: Double = 0
     var heartRate: Double = 0
     var activeEnergy: Double = 0

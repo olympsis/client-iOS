@@ -10,7 +10,9 @@ import SwiftUI
 struct ActivitySportsPicker: View {
     
     private var supportedSports: [SUPPORTED_SPORTS] {
-        return SUPPORTED_SPORTS.allCases.filter({ $0 != .spike })
+        return SUPPORTED_SPORTS.allCases.filter({
+            $0 != .spike && $0 != .cycling && $0 != .weights
+        })
     }
     
     @Environment(WorkoutManager.self) private var manager
