@@ -14,24 +14,19 @@ struct ActivityPreparationView: View {
     @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
-        NavigationStack {
-            TabView(selection: $selected) {
-                switch sport {
-                case .running, .walking:
-                    DistanceActivityPreparation(sport: sport)
-                        .environment(manager)
-                        .tag(0)
-                default:
-                    GeneralActivityPreparation(sport: sport)
-                        .environment(manager)
-                        .tag(0)
-                }
-                ActivityPreparationSettings(sport: sport)
+        Group {
+            switch sport {
+            case .running, .walking:
+                DistanceActivityPreparation(sport: sport)
                     .environment(manager)
-                    .tag(1)
-            }.task {
-                manager.selectedSport = sport
+                    .tag(0)
+            default:
+                GeneralActivityPreparation(sport: sport)
+                    .environment(manager)
+                    .tag(0)
             }
+        }.task {
+            manager.selectedSport = sport
         }
     }
 }

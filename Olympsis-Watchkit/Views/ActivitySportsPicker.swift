@@ -18,23 +18,21 @@ struct ActivitySportsPicker: View {
     @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                ForEach(supportedSports, id: \.self) { sport in
-                    NavigationLink(destination: ActivityPreparationView(sport: sport)) {
-                        ActivitySportCard(sport: sport)
-                            .frame(height: 150)
-                    }
-                    .buttonStyle(PlainButtonStyle())
+        ScrollView {
+            ForEach(supportedSports, id: \.self) { sport in
+                NavigationLink(destination: ActivityPreparationView(sport: sport)) {
+                    ActivitySportCard(sport: sport)
+                        .frame(height: 150)
                 }
+                .buttonStyle(PlainButtonStyle())
             }
-            .task {
-                _ = await manager.requestHealthStoreAuthorization()
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Activities")
-                }
+        }
+        .task {
+            _ = await manager.requestHealthStoreAuthorization()
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Activities")
             }
         }
     }

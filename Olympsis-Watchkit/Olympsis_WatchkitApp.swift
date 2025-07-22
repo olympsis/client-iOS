@@ -14,7 +14,7 @@ struct Olympsis_WatchkitApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ActivityHomeView()
+            ViewContainer()
                 .environment(manager)
                 .task {
                     await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)

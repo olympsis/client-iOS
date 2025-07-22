@@ -80,6 +80,8 @@ struct DistanceActivityMetrics3: View {
                         PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
                     ) { _ in
                         averagePaceText
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
                             .foregroundStyle(Color.Brand.tertiary)
                             .font(.custom("Archivo-BlackItalic", size: 35))
                     }

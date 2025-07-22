@@ -127,16 +127,21 @@ class Workout: Identifiable {
     }
     
     var totalElevationGain: Double {
-        guard !paceSegments.isEmpty else { return 0 }
+        guard !locationSamples.isEmpty else { return 0 }
         
-        let totalGainInMeters = paceSegments.reduce(0) { $0 + $1.elevationGain }
+        // Get all elevation values from location samples
+        let elevations = locationSamples.map { $0.altitude }
+        guard let minElevation = elevations.min(),
+              let maxElevation = elevations.max() else { return 0 }
+        
+        let elevationGainInMeters = maxElevation - minElevation
         
         // Return in appropriate units - feet for miles, meters for kilometers
         let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
         if preferredUnit == UnitLength.miles {
-            return totalGainInMeters * 3.28084 // Convert meters to feet
+            return elevationGainInMeters * 3.28084 // Convert meters to feet
         } else {
-            return totalGainInMeters // Keep in meters
+            return elevationGainInMeters // Keep in meters
         }
     }
 }

@@ -85,7 +85,7 @@ extension WorkoutManager {
                     elevationData = (gain: 0, loss: 0)
                 }
                 
-                let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
+                _ = (unit == UnitLength.miles ? 1609.344 : 1000.0)
                 
                 let split = PaceSegment(
                     segmentNumber: splits.count + 1,
@@ -156,7 +156,7 @@ extension WorkoutManager {
         
         let meterUnit = HKUnit.meter()
         
-        for (index, sample) in samples.enumerated() {
+        for (_, sample) in samples.enumerated() {
             let sampleDistance = sample.quantity.doubleValue(for: meterUnit)
             currentDistance += sampleDistance
             

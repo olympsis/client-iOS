@@ -16,7 +16,7 @@ struct DistanceActivityMetrics: View {
         TabView(selection: $selectedPage) {
             DistanceActivityMetrics1().tag(0.0)
             DistanceActivityMetrics2().tag(1.0)
-            DistanceActivityMetrics3().tag(2.0)
+//            DistanceActivityMetrics3().tag(2.0)
         }
         .tabViewStyle(.verticalPage)
         .digitalCrownRotation(
