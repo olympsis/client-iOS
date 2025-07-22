@@ -156,7 +156,7 @@ extension WorkoutManager {
         
         let meterUnit = HKUnit.meter()
         
-        for (index, sample) in samples.enumerated() {
+        for (_, sample) in samples.enumerated() {
             let sampleDistance = sample.quantity.doubleValue(for: meterUnit)
             currentDistance += sampleDistance
             
