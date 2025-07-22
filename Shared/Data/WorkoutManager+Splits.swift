@@ -85,7 +85,7 @@ extension WorkoutManager {
                     elevationData = (gain: 0, loss: 0)
                 }
                 
-                let conversionFactor = (unit == UnitLength.miles ? 1609.344 : 1000.0)
+                _ = (unit == UnitLength.miles ? 1609.344 : 1000.0)
                 
                 let split = PaceSegment(
                     segmentNumber: splits.count + 1,

@@ -105,7 +105,7 @@ struct WorkoutView: View {
             let geocoder = CLGeocoder()
             let results = try await geocoder.reverseGeocodeLocation(coordinate)
             guard let location = results.first,
-                  let city = location.subAdministrativeArea,
+                  let city = location.locality,
                   let state = location.administrativeArea else { return nil }
             
             return "\(city), \(state)"
@@ -285,18 +285,21 @@ struct WorkoutView: View {
                 workout.locationSamples = details.route
                 workout.paceSegments = details.paceSegments
                 workout.heartSamples = details.heartRateSamples
-                
-                if !details.route.isEmpty {
-                    guard let point = details.route.first,
-                        manager.zones.isEmpty else {
-                        gradientColors = generateHeartRateZoneColors()
-                        return
-                    }
-                    workoutLocationString = await getWorkoutLocation(coordinate: point)
-                    manager.zones = await manager.generateHeartRateZones()
-                    gradientColors = generateHeartRateZoneColors()
-                }
              }
+            
+            // Handle location data
+            if !workout.locationSamples.isEmpty {
+                if let point = workout.locationSamples.first {
+                    workoutLocationString = await getWorkoutLocation(coordinate: point)
+                }
+                guard manager.zones.isEmpty else {
+                    gradientColors = generateHeartRateZoneColors()
+                    state = .success
+                    return
+                }
+                manager.zones = await manager.generateHeartRateZones()
+                gradientColors = generateHeartRateZoneColors()
+            }
             state = .success
         }
     }
