@@ -21,7 +21,7 @@ struct WorkoutMapView: View {
                 .tint(Color.blue)
                 .stroke(
                     Gradient(colors: gradient),
-                    lineWidth: 2
+                    lineWidth: 2.5
                 )
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -33,7 +33,7 @@ struct WorkoutMapView: View {
 }
 
 #Preview {
-    WorkoutMapView(gradient: [Color.Brand.primary], locations: ACTIVITY_POINTS)
+    WorkoutMapView(gradient: [Color.Brand.primary], locations: RUNNING_POINTS.map { $0.coordinate })
 }
 
 

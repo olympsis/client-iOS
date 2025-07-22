@@ -260,7 +260,7 @@ struct WorkoutView: View {
 //                    print("lat=\(detail.coordinate.latitude), long=\(detail.coordinate.longitude), altitude=\(detail.altitude), horizontalAccuracy=\(detail.horizontalAccuracy), verticalAccuracy=\(detail.verticalAccuracy), course=\(detail.course), courseAccuracy=\(detail.courseAccuracy), speed=\(detail.speed), speedAccuracy=\(detail.speedAccuracy), timestamp=\(detail.timestamp)")
 //                }
                 
-                print(parseLocationData(locExample))
+//                print(parseLocationData(locExample))
                 
                 if !details.route.isEmpty {
                     guard manager.zones.isEmpty else {

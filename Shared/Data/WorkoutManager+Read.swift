@@ -151,7 +151,49 @@ extension WorkoutManager {
                 .sorted { $0.index < $1.index }
                 .flatMap { $0.locations }
                 .sorted { $0.timestamp < $1.timestamp }
+            
+            // Filter locations to every 0.5km
+            // return filterLocationsByDistance(allLocations, minimumDistance: 500.0)
         }
+    }
+    
+    /// Filters location data to keep points that are at least a minimum distance apart
+    /// - Parameters:
+    ///   - locations: Array of CLLocation objects to filter
+    ///   - minimumDistance: Minimum distance in meters between kept locations
+    /// - Returns: Filtered array of locations
+    private func filterLocationsByDistance(_ locations: [CLLocation], minimumDistance: Double) -> [CLLocation] {
+        guard !locations.isEmpty else { return [] }
+        
+        var filteredLocations: [CLLocation] = []
+        var lastKeptLocation: CLLocation?
+        
+        for location in locations {
+            // Always keep the first location
+            if lastKeptLocation == nil {
+                filteredLocations.append(location)
+                lastKeptLocation = location
+                continue
+            }
+            
+            // Calculate distance from last kept location
+            let distanceFromLast = location.distance(from: lastKeptLocation!)
+            
+            // Keep location if it's far enough from the last kept location
+            if distanceFromLast >= minimumDistance {
+                filteredLocations.append(location)
+                lastKeptLocation = location
+            }
+        }
+        
+        // Always keep the last location if it's not already included
+        if let lastLocation = locations.last,
+           let lastKept = filteredLocations.last,
+           lastLocation != lastKept {
+            filteredLocations.append(lastLocation)
+        }
+        
+        return filteredLocations
     }
     
     private func fetchWorkoutRoutes(for workout: HKWorkout) async throws -> [HKWorkoutRoute] {
