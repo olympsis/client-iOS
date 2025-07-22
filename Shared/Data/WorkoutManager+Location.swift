@@ -23,10 +23,9 @@ extension WorkoutManager: CLLocationManagerDelegate {
             return
         }
         Task { @MainActor in
-            guard let routeBuilder else {
-                return
-            }
+            guard let routeBuilder else { return }
             try await routeBuilder.insertRouteData([location])
+            self.locationPoints.append(location)
             self.log.info("Route Location added: \(location.coordinate.latitude), \(location.coordinate.longitude)")
         }
     }

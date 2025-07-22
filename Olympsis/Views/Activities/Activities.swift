@@ -11,9 +11,7 @@ import HealthKit
 
 struct Activities: View {
     
-    @State private var selectedType: String = "All"
     @State private var showActivityView: Bool = false
-    @State private var selectedSport: SUPPORTED_SPORTS?
     @State private var selectedFilter: Int = 0
     @Environment(SessionStore.self) private var session
     @Environment(WorkoutManager.self) private var manager
@@ -24,8 +22,9 @@ struct Activities: View {
             ScrollView(showsIndicators: false) {
                 
                 // Picks by which type to filter out the results
-                ActivitiesTypePicker(selectedType: $selectedType)
+                ActivitiesTypePicker()
                     .padding(.top, 10)
+                    .environment(manager)
                 
                 // Selects the frequency of which we want to see the results
                 ActivitiesFrequencySelector(selectedFilter: $selectedFilter)
@@ -44,11 +43,10 @@ struct Activities: View {
                 Spacer(minLength: 40)
             }
             .task {
+                _ = await manager.requestHealthStoreAuthorization()
                 guard manager.workouts.isEmpty else {
                     return
                 }
-                await manager.requestHealthStoreAuthorization()
-//                await manager.fetchWorkoutsHistory(in: manager.weekPredicate.predicateFormat)
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {

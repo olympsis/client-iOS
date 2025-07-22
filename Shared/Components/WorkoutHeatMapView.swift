@@ -16,7 +16,7 @@ struct HeatmapView: View {
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
         span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
     )
-    @State private var coordinates: [CLLocationCoordinate2D] = RUNNING_POINTS
+    @State private var coordinates: [CLLocationCoordinate2D] = ACTIVITY_POINTS
     @State private var annotations: [HeatmapAnnotation] = []
     var body: some View {
         Map {
@@ -32,7 +32,7 @@ struct HeatmapView: View {
             }
         }
         .task {
-            annotations = createHeatmapAnnotations(from: RUNNING_POINTS)
+            annotations = createHeatmapAnnotations(from: ACTIVITY_POINTS)
         }
     }
 

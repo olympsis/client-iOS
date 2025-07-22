@@ -19,8 +19,8 @@ class WorkoutManager: NSObject {
     var events: [HKWorkoutEvent] = []
     var manager = CLLocationManager()
     
-    var selectedType = "All"
-    var selectedFilter: Int = 0
+    var sportFilter: SUPPORTED_SPORTS?
+    var frequencyFilter: Int = 0
     
     var fetchingCursor: Date? = nil
     var locationTask: Task<Void, Never>? = nil
@@ -71,6 +71,7 @@ class WorkoutManager: NSObject {
     
     
     // Live Workout Statistics
+    var locationPoints: [CLLocation] = []
     var averageHeartRate: Double = 0
     var heartRate: Double = 0
     var activeEnergy: Double = 0

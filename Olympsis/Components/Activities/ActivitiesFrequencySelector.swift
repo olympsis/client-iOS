@@ -16,19 +16,19 @@ struct ActivitiesFrequencySelector: View {
         HStack {
             Button(action: {
                 withAnimation(.interpolatingSpring) {
-                    manager.selectedFilter = 0
+                    manager.frequencyFilter = 0
                 }
             }){
                 Text("Week")
-                    .foregroundColor(manager.selectedFilter == 0 ? .white : .primary)
+                    .foregroundColor(manager.frequencyFilter == 0 ? .white : .primary)
             }
             .padding(.horizontal)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
             .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(manager.selectedFilter == 0 ? Color.Brand.primary : Color.primary)
-                    .opacity(manager.selectedFilter == 0 ? 1 : 0.15)
+                    .foregroundStyle(manager.frequencyFilter == 0 ? Color.Brand.primary : Color.primary)
+                    .opacity(manager.frequencyFilter == 0 ? 1 : 0.15)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
@@ -40,19 +40,19 @@ struct ActivitiesFrequencySelector: View {
             
             Button(action: {
                 withAnimation(.interpolatingSpring) {
-                    manager.selectedFilter = 1
+                    manager.frequencyFilter = 1
                 }
             }){
                 Text("Month")
-                    .foregroundColor(manager.selectedFilter == 1 ? .white : .primary)
+                    .foregroundColor(manager.frequencyFilter == 1 ? .white : .primary)
             }
             .padding(.horizontal)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
             .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(manager.selectedFilter == 1 ? Color.Brand.primary : Color.primary)
-                    .opacity(manager.selectedFilter == 1 ? 1 : 0.15)
+                    .foregroundStyle(manager.frequencyFilter == 1 ? Color.Brand.primary : Color.primary)
+                    .opacity(manager.frequencyFilter == 1 ? 1 : 0.15)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
@@ -64,19 +64,19 @@ struct ActivitiesFrequencySelector: View {
             
             Button(action: {
                 withAnimation(.interpolatingSpring) {
-                    manager.selectedFilter = 2
+                    manager.frequencyFilter = 2
                 }
             }){
                 Text("Year")
-                    .foregroundColor(manager.selectedFilter == 2 ? .white : .primary)
+                    .foregroundColor(manager.frequencyFilter == 2 ? .white : .primary)
             }
             .padding(.horizontal)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
             .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(manager.selectedFilter == 2 ? Color.Brand.primary : Color.primary)
-                    .opacity(manager.selectedFilter == 2 ? 1 : 0.15)
+                    .foregroundStyle(manager.frequencyFilter == 2 ? Color.Brand.primary : Color.primary)
+                    .opacity(manager.frequencyFilter == 2 ? 1 : 0.15)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 10)

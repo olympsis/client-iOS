@@ -31,25 +31,12 @@ struct GeneralActivityMetrics: View {
         }
     }
     
-    private var caloriesText: Text {
-//        return Text(
-//            Measurement (
-//                value: manager.activeEnergy,
-//                unit: UnitEnergy.kilocalories
-//            ).formatted(
-//                .measurement (
-//                    width: .abbreviated,
-//                    usage: .workout
-//                )
-//            )
-//        )
-        return Text(
-            manager.activeEnergy.formatted(
-                .number.precision(.fractionLength(0))
-            )
-        )
-        .font(.title2)
-        .fontWeight(.semibold)
+    private var activeCalories: Text {
+        guard manager.activeEnergy > 0 else {
+            return Text("--")
+        }
+        
+        return Text("\(manager.activeEnergy, specifier: "%.0f")")
     }
     
     private var distanceMetric: Text {
@@ -61,47 +48,58 @@ struct GeneralActivityMetrics: View {
     }
     
     var body: some View {
-        VStack {
-            VStack(spacing: -5) {
-                Image(systemName: "heart.fill")
+        VStack(spacing: 10) {
+            HStack() {
+                Image(systemName: "flame.fill")
                     .resizable()
-                    .frame(width: 25, height: 25)
-                    .foregroundStyle(.red)
+                    .frame(width: 35, height: 40)
+                    .foregroundStyle(Color.Brand.tertiary)
                 
-                Text(
-                    manager.heartRate.formatted(
-                        .number.precision(.fractionLength(0))
-                    )
-                )
-                .font(.system(size: 70))
-                .fontWeight(.semibold)
-                .foregroundStyle(.primary)
+                activeCalories
+                    .minimumScaleFactor(0.7)
+                    .font(.custom("Archivo-BlackItalic", size: 70))
+                    .fontWeight(.bold)
             }.padding(.vertical)
             
-            HStack {
-                VStack(spacing: -5) {
-                    distanceText
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                    
-                    distanceMetric
-                        .font(.caption2)
-                        .foregroundStyle(.primary)
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                TimelineView(
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
+                    VStack {
+                        HStack {
+                            Text(
+                                manager.heartRate.formatted(
+                                    .number.precision(.fractionLength(0))
+                                )
+                            )
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            
+                            Image(systemName: "heart.fill")
+                                .foregroundStyle(.red)
+                                .imageScale(.medium)
+                        }
+                        
+                        Text("CAL")
+                            .font(.headline)
+                            .foregroundStyle(.gray)
+                    }
                 }
-
-                Spacer()
                 
-                VStack(spacing: -5) {
-                    caloriesText
-                        .font(.title2)
-                    
-                    Text("CALORIES")
-                        .font(.caption2)
+                TimelineView (
+                    PaceTimelineSchedule(from: manager.builder?.startDate ?? Date())
+                ) { _ in
+                    VStack {
+                        distanceText
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        distanceMetric
+                            .font(.headline)
+                            .foregroundStyle(.gray)
+                    }
                 }
             }
-            .padding(.horizontal)
-            .foregroundStyle(.primary)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

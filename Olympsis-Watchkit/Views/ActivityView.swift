@@ -56,18 +56,18 @@ struct ActivityView: View {
                 EmptyView()
             }
             
-            switch selectedSport {
-            case .running, .walking:
-                DistanceActivityDetails()
-                    .environment(manager)
-                    .tag(ACTIVITY_PAGES.details)
-            case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
-                GeneralActivityDetails()
-                    .environment(manager)
-                    .tag(ACTIVITY_PAGES.details)
-            default:
-                EmptyView()
-            }
+//            switch selectedSport {
+//            case .running, .walking:
+//                DistanceActivityDetails()
+//                    .environment(manager)
+//                    .tag(ACTIVITY_PAGES.details)
+//            case .soccer, .volleyball, .tennis, .spike, .basketball, .football, .pickleball, .racquetball:
+//                GeneralActivityDetails()
+//                    .environment(manager)
+//                    .tag(ACTIVITY_PAGES.details)
+//            default:
+//                EmptyView()
+//            }
             
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode:  isLuminenceReduced ? .never : .automatic))

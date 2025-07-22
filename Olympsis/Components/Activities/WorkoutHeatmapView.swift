@@ -53,7 +53,7 @@ struct WorkoutHeatmapView: View {
     
     /// Convenience initializer using RUNNING_POINTS from TempData
     init(sportType: String? = nil) {
-        self.coordinates = RUNNING_POINTS
+        self.coordinates = ACTIVITY_POINTS
         self.fieldBounds = nil
         self.sportType = sportType
     }
@@ -316,11 +316,11 @@ struct WorkoutHeatmapView_Previews: PreviewProvider {
                 WorkoutHeatmapView(sportType: "soccer")
                 
                 // Example 2: With custom coordinates
-                WorkoutHeatmapView(coordinates: RUNNING_POINTS, sportType: "tennis")
+                WorkoutHeatmapView(coordinates: ACTIVITY_POINTS, sportType: "tennis")
                 
                 // Example 3: With field bounds for focused mapping
                 WorkoutHeatmapView(
-                    coordinates: RUNNING_POINTS,
+                    coordinates: ACTIVITY_POINTS,
                     fieldBounds: createSampleFieldBounds(),
                     sportType: "tennis"
                 )
