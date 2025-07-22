@@ -218,7 +218,7 @@ struct WorkoutView: View {
                             WorkoutMapView(gradient: gradientColors, locations: workout.route2DPoints)
                                 .redacted(reason: state == .loading ? .placeholder : [])
                         case .tennis, .basketball, .soccer, .football, .pickleball, .racquetball, .volleyball:
-                            WorkoutHeatmapMapView(coordinates: RUNNING_POINTS, sportType: "soccer")
+                            WorkoutHeatmapMapView(coordinates: ACTIVITY_POINTS, sportType: "soccer")
                         default:
                             EmptyView()
                         }
@@ -255,6 +255,12 @@ struct WorkoutView: View {
                 workout.locationSamples = details.route
                 workout.paceSegments = details.paceSegments
                 workout.heartSamples = details.heartRateSamples
+                
+//                for detail in details.route {
+//                    print("lat=\(detail.coordinate.latitude), long=\(detail.coordinate.longitude), altitude=\(detail.altitude), horizontalAccuracy=\(detail.horizontalAccuracy), verticalAccuracy=\(detail.verticalAccuracy), course=\(detail.course), courseAccuracy=\(detail.courseAccuracy), speed=\(detail.speed), speedAccuracy=\(detail.speedAccuracy), timestamp=\(detail.timestamp)")
+//                }
+                
+                print(parseLocationData(locExample))
                 
                 if !details.route.isEmpty {
                     guard manager.zones.isEmpty else {

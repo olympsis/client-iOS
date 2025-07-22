@@ -33,7 +33,7 @@ struct WorkoutMapView: View {
 }
 
 #Preview {
-    WorkoutMapView(gradient: [Color.Brand.primary], locations: RUNNING_POINTS)
+    WorkoutMapView(gradient: [Color.Brand.primary], locations: ACTIVITY_POINTS)
 }
 
 
