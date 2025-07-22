@@ -219,7 +219,6 @@
 		5D5321562E06360F00C67357 /* WorkoutManager+Read.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43C2E05BF09008C9052 /* WorkoutManager+Read.swift */; };
 		5D5321572E06360F00C67357 /* WorkoutManager+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43D2E05BF09008C9052 /* WorkoutManager+Session.swift */; };
 		5D5321582E06360F00C67357 /* WorkoutManager+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43E2E05BF09008C9052 /* WorkoutManager+Write.swift */; };
-		5D5321592E06364F00C67357 /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */; };
 		5D53215A2E06364F00C67357 /* ActivityGoalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */; };
 		5D53215B2E06364F00C67357 /* ActivityRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45D2E05CE6C008C9052 /* ActivityRingsView.swift */; };
 		5D53215C2E06364F00C67357 /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */; };
@@ -228,7 +227,6 @@
 		5D5321632E06364F00C67357 /* GeneralActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4692E05CE6C008C9052 /* GeneralActivityMetrics.swift */; };
 		5D5321652E06364F00C67357 /* ActivityPreparationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46C2E05CE6C008C9052 /* ActivityPreparationSettings.swift */; };
 		5D5321662E06364F00C67357 /* ActivityPreparationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46D2E05CE6C008C9052 /* ActivityPreparationView.swift */; };
-		5D5321672E06364F00C67357 /* DistanceActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46F2E05CE6C008C9052 /* DistanceActivityDetails.swift */; };
 		5D5321682E06364F00C67357 /* ActivityGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4702E05CE6C008C9052 /* ActivityGoalSetter.swift */; };
 		5D5321692E06364F00C67357 /* DistanceActivityMetrics1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4712E05CE6C008C9052 /* DistanceActivityMetrics1.swift */; };
 		5D53216A2E06364F00C67357 /* DistanceActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4722E05CE6C008C9052 /* DistanceActivityPreparation.swift */; };
@@ -532,7 +530,6 @@
 		5DC8B4832E05CE6C008C9052 /* OlympsisWatchkit-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B47F2E05CE6C008C9052 /* OlympsisWatchkit-Info.plist */; };
 		5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */; };
 		5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */; };
-		5DC8B4962E05CE6C008C9052 /* ActivityElevationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */; };
 		5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */; };
 		5DCAEA2D2B01958F00B9C22A /* EventParticipants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipants.swift */; };
 		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
@@ -1066,7 +1063,6 @@
 		5DC8B44F2E05C72D008C9052 /* TrophiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophiesView.swift; sourceTree = "<group>"; };
 		5DC8B4532E05C7BD008C9052 /* SportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportView.swift; sourceTree = "<group>"; };
 		5DC8B4572E05CB14008C9052 /* WorkoutsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsList.swift; sourceTree = "<group>"; };
-		5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityElevationView.swift; sourceTree = "<group>"; };
 		5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityGoalButton.swift; sourceTree = "<group>"; };
 		5DC8B45D2E05CE6C008C9052 /* ActivityRingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRingsView.swift; sourceTree = "<group>"; };
 		5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySplitsView.swift; sourceTree = "<group>"; };
@@ -1075,7 +1071,6 @@
 		5DC8B4692E05CE6C008C9052 /* GeneralActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityMetrics.swift; sourceTree = "<group>"; };
 		5DC8B46C2E05CE6C008C9052 /* ActivityPreparationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPreparationSettings.swift; sourceTree = "<group>"; };
 		5DC8B46D2E05CE6C008C9052 /* ActivityPreparationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPreparationView.swift; sourceTree = "<group>"; };
-		5DC8B46F2E05CE6C008C9052 /* DistanceActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityDetails.swift; sourceTree = "<group>"; };
 		5DC8B4702E05CE6C008C9052 /* ActivityGoalSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityGoalSetter.swift; sourceTree = "<group>"; };
 		5DC8B4712E05CE6C008C9052 /* DistanceActivityMetrics1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityMetrics1.swift; sourceTree = "<group>"; };
 		5DC8B4722E05CE6C008C9052 /* DistanceActivityPreparation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityPreparation.swift; sourceTree = "<group>"; };
@@ -1614,6 +1609,9 @@
 				5D6F114D2E21A456005F1BE5 /* Models */,
 				5DC8B4382E05BF09008C9052 /* Enums.swift */,
 				5DC8B4392E05BF09008C9052 /* TempData.swift */,
+				5DB096362E0B4C4C00BB924A /* WorkoutUtils.swift */,
+				5D97CB642E2F484A00DE12B4 /* ActivityPointsData.swift */,
+				5D97CB612E2F483300DE12B4 /* RunningPointsData.swift */,
 				5DC8B43A2E05BF09008C9052 /* WorkoutManager.swift */,
 				5DC8B43C2E05BF09008C9052 /* WorkoutManager+Read.swift */,
 				5DC8B43E2E05BF09008C9052 /* WorkoutManager+Write.swift */,
@@ -1623,9 +1621,6 @@
 				5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */,
 				5DC8B43B2E05BF09008C9052 /* WorkoutManager+Location.swift */,
 				5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */,
-				5DB096362E0B4C4C00BB924A /* WorkoutUtils.swift */,
-				5D97CB642E2F484A00DE12B4 /* ActivityPointsData.swift */,
-				5D97CB612E2F483300DE12B4 /* RunningPointsData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1651,26 +1646,18 @@
 		5DC8B4622E05CE6C008C9052 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5D117A6F2E25B082002380DE /* ScheduleComponents.swift */,
-				5DC8B45B2E05CE6C008C9052 /* ActivityElevationView.swift */,
-				5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */,
+				5D6F11542E21BB53005F1BE5 /* ZoneViewer.swift */,
+				5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */,
 				5DC8B45D2E05CE6C008C9052 /* ActivityRingsView.swift */,
 				5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */,
-				5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */,
-				5DC8B4612E05CE6C008C9052 /* WorkoutSmallListItemView.swift */,
 				5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */,
-				5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */,
-				5D6F11542E21BB53005F1BE5 /* ZoneViewer.swift */,
+				5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */,
+				5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */,
 				5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */,
+				5D117A6F2E25B082002380DE /* ScheduleComponents.swift */,
+				5DC8B4612E05CE6C008C9052 /* WorkoutSmallListItemView.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		5DC8B4632E05CE6C008C9052 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		5DC8B46B2E05CE6C008C9052 /* General */ = {
@@ -1694,7 +1681,6 @@
 		5DC8B4732E05CE6C008C9052 /* Distance */ = {
 			isa = PBXGroup;
 			children = (
-				5DC8B46F2E05CE6C008C9052 /* DistanceActivityDetails.swift */,
 				5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */,
 				5DC8B4712E05CE6C008C9052 /* DistanceActivityMetrics1.swift */,
 				5D6F11512E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift */,
@@ -1710,15 +1696,15 @@
 				5DC8B46B2E05CE6C008C9052 /* General */,
 				5DC8B46E2E05CE6C008C9052 /* Preparation */,
 				5DC8B4732E05CE6C008C9052 /* Distance */,
-				5DC8B4742E05CE6C008C9052 /* ActivityHistoryView.swift */,
-				5DC8B4702E05CE6C008C9052 /* ActivityGoalSetter.swift */,
 				5DC8B4752E05CE6C008C9052 /* ViewContainer.swift */,
+				5DC8B47A2E05CE6C008C9052 /* ActivityView.swift */,
 				5DC8B4762E05CE6C008C9052 /* ActivityMenu.swift */,
+				5DC8B4702E05CE6C008C9052 /* ActivityGoalSetter.swift */,
+				5DC8B4742E05CE6C008C9052 /* ActivityHistoryView.swift */,
 				5DC8B4772E05CE6C008C9052 /* ActivitySettingsView.swift */,
 				5DC8B4782E05CE6C008C9052 /* ActivitySportsPicker.swift */,
 				5DC8B4792E05CE6C008C9052 /* ActivitySummaryView.swift */,
 				5D117A732E25B423002380DE /* ActivityCountdownView.swift */,
-				5DC8B47A2E05CE6C008C9052 /* ActivityView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1730,7 +1716,6 @@
 				5DC8B47C2E05CE6C008C9052 /* Assets.xcassets */,
 				5DC8B47E2E05CE6C008C9052 /* OlympsisWatchkit.entitlements */,
 				5DC8B47F2E05CE6C008C9052 /* OlympsisWatchkit-Info.plist */,
-				5DC8B4632E05CE6C008C9052 /* Data */,
 				5DC8B47B2E05CE6C008C9052 /* Views */,
 				5DC8B4622E05CE6C008C9052 /* Components */,
 				5D5497372E302BF400D1F5A2 /* Preview Content */,
@@ -2789,7 +2774,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D5321592E06364F00C67357 /* ActivityElevationView.swift in Sources */,
 				5D53215A2E06364F00C67357 /* ActivityGoalButton.swift in Sources */,
 				5D53217F2E063B3B00C67357 /* TimeFunctions.swift in Sources */,
 				5D5321F52E063BDE00C67357 /* ChatModels.swift in Sources */,
@@ -2814,7 +2798,6 @@
 				5D5321662E06364F00C67357 /* ActivityPreparationView.swift in Sources */,
 				5D5321872E063B9500C67357 /* GroupSelection.swift in Sources */,
 				5D5321F62E063BEF00C67357 /* ManagementModels.swift in Sources */,
-				5D5321672E06364F00C67357 /* DistanceActivityDetails.swift in Sources */,
 				5D5321682E06364F00C67357 /* ActivityGoalSetter.swift in Sources */,
 				5D5321692E06364F00C67357 /* DistanceActivityMetrics1.swift in Sources */,
 				5D53216A2E06364F00C67357 /* DistanceActivityPreparation.swift in Sources */,
@@ -2924,7 +2907,6 @@
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */,
 				5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */,
-				5DC8B4962E05CE6C008C9052 /* ActivityElevationView.swift in Sources */,
 				5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */,
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,

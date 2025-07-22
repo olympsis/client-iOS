@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GeneralActivityMetrics: View {
     
-    @AppStorage("selected_face") private var selectedFace: Int?
     @Environment(WorkoutManager.self) private var manager
     
     private var averagePaceText: Text {

@@ -12,27 +12,27 @@ struct ActivityHistoryView: View {
     @Environment(WorkoutManager.self) private var manager
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                ForEach(manager.workouts) { workout in
-                    WorkoutSmallListItemView(workout: workout)
-                }
-                
-                Text("To see more workout details check the Olympsis application.")
-                    .foregroundStyle(.gray)
-                    .font(.caption)
-                    .padding(.vertical)
+        ScrollView {
+            ForEach(manager.workouts) { workout in
+                WorkoutSmallListItemView(workout: workout)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("History")
-                }
+            
+            Text("To see more workout details check the Olympsis application.")
+                .foregroundStyle(.gray)
+                .font(.caption)
+                .padding(.vertical)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("History")
             }
         }
     }
 }
 
 #Preview {
-    ActivityHistoryView()
-        .environment(WorkoutManager())
+    NavigationStack {
+        ActivityHistoryView()
+            .environment(WorkoutManager())
+    }
 }

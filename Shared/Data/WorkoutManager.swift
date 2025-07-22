@@ -114,6 +114,8 @@ class WorkoutManager: NSObject {
         HKSampleType.activitySummaryType(),
         HKSampleType.characteristicType(forIdentifier: .biologicalSex)!,
         HKSampleType.characteristicType(forIdentifier: .dateOfBirth)!,
+        HKQuantityType.quantityType(forIdentifier: .height)!,
+        HKQuantityType.quantityType(forIdentifier: .bodyMass)!,
         HKQuantityType.quantityType(forIdentifier: .heartRate)!,
         HKQuantityType.quantityType(forIdentifier: .stepCount)!,
         HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,

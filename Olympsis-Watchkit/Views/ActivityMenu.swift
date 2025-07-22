@@ -54,6 +54,7 @@ struct ActivityMenu: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text(manager.state == .paused ? "Menu - Paused" : "Menu - Active")
+                    .foregroundStyle(manager.state == .paused ? Color.Brand.secondary : .primary)
             }
         }
     }
