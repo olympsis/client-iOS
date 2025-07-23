@@ -3253,7 +3253,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -3295,7 +3296,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
