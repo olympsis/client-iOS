@@ -45,58 +45,31 @@ struct ActivitiesChart: View {
             if manager.frequencyFilter == 0 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDay()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Day", data.dayAbbreviation()),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.totalCaloriesBurnedPerDay()) { data in
-                        AreaMark(x: .value("Day", data.dayAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             } else if manager.frequencyFilter == 1 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDayInMonth()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Day", data.id),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.totalCaloriesBurnedPerDayInMonth()) { data in
-                        AreaMark(x: .value("Day", data.dayAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             } else {
                 Chart {
                     ForEach(workouts.monthlyAverageCaloriesBurned()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Month", data.monthAbbreviation()),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.monthlyAverageCaloriesBurned()) { data in
-                        AreaMark(x: .value("Day", data.monthAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             }
