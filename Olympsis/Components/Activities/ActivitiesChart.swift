@@ -18,18 +18,22 @@ struct ActivitiesChart: View {
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
-        case 2: // The last year worth of workouts
-            let start = Date()
-            let end = Calendar.current.date(byAdding: .day, value: -365, to: start) ?? Date()
+        case 2: // Current year workouts (January 1st to today)
+            let calendar = Calendar.current
+            let today = Date()
+            let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: today)) ?? today
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
-                .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
-        default: // The last week of workouts
-            let start = Date()
-            let end = Calendar.current.date(byAdding: .day, value: -7, to: start) ?? Date()
+                .workoutsWithinDateInterval(interval: DateInterval(start: startOfYear, end: today))
+        default: // Current week from Monday to today
+            let calendar = Calendar.current
+            var dateComponents = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+            dateComponents.weekday = 2 // Monday is weekday 2
+            let mondayOfThisWeek = calendar.date(from: dateComponents) ?? Date()
+            
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
-                .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
+                .workoutsWithinDateInterval(interval: DateInterval(start: mondayOfThisWeek, end: Date()))
         }
     }
     
