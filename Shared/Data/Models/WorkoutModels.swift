@@ -86,6 +86,8 @@ class Workout: Identifiable {
         if calendar.isDate(workout.startDate, equalTo: today, toGranularity: .weekOfYear) {
             if calendar.isDateInYesterday(workout.startDate) {
                 return "Yesterday"
+            } else if calendar.isDateInToday(workout.startDate) {
+                return "Today"
             } else {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "EEEE" // EEEE will give you the full weekday name
@@ -129,12 +131,18 @@ class Workout: Identifiable {
     var totalElevationGain: Double {
         guard !locationSamples.isEmpty else { return 0 }
         
-        // Get all elevation values from location samples
-        let elevations = locationSamples.map { $0.altitude }
-        guard let minElevation = elevations.min(),
-              let maxElevation = elevations.max() else { return 0 }
+        // Get starting elevation (average of first 5 samples to avoid outliers)
+        let startingSamples = Array(locationSamples.prefix(min(5, locationSamples.count)))
+        let startingElevation = startingSamples.map { $0.altitude }.reduce(0, +) / Double(startingSamples.count)
         
-        let elevationGainInMeters = maxElevation - minElevation
+        // Get all elevations and sort to find top 5 highest values
+        let elevations = locationSamples.map { $0.altitude }
+        let sortedElevations = elevations.sorted(by: >)
+        let topFiveElevations = Array(sortedElevations.prefix(min(5, elevations.count)))
+        let maxElevation = topFiveElevations.reduce(0, +) / Double(topFiveElevations.count)
+        
+        // Calculate gain from starting elevation to highest point average
+        let elevationGainInMeters = max(0, maxElevation - startingElevation)
         
         // Return in appropriate units - feet for miles, meters for kilometers
         let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
