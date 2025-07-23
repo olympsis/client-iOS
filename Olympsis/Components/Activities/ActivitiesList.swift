@@ -60,11 +60,9 @@ struct ActivitiesList: View {
                 
             }
             if (recentWorkouts.count > 0) {
-                LazyVStack {
-                    ForEach(recentWorkouts) { workout in
-                        WorkoutListItem(workout: workout)
-                            .padding(.horizontal)
-                    }
+                ForEach(recentWorkouts) { workout in
+                    WorkoutListItem(workout: workout)
+                        .padding(.horizontal)
                 }
             } else {
                 Text("Couldn't find any recent activities 😤")

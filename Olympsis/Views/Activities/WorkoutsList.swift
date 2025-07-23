@@ -15,8 +15,10 @@ struct WorkoutsList: View {
     
     var body: some View {
         ScrollView {
-            ForEach(manager.workouts.sorted(by: { $0.workout.startDate > $1.workout.startDate })) { workout in
-                WorkoutListItem(workout: workout)
+            LazyVStack {
+                ForEach(manager.workouts.sorted(by: { $0.workout.startDate > $1.workout.startDate })) { workout in
+                    WorkoutListItem(workout: workout)
+                }
             }
         }
         .contentMargins(.vertical, 10)
