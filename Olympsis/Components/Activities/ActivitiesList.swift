@@ -18,21 +18,21 @@ struct ActivitiesList: View {
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -30, to: start) ?? Date()
             arr = manager.workouts
-                .sorted { $0.dateToString > $1.dateToString }
+                .sorted { $0.workout.startDate > $1.workout.startDate }
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         case 2: // The last year worth of workouts
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -365, to: start) ?? Date()
             arr =  manager.workouts
-                .sorted { $0.dateToString > $1.dateToString }
+                .sorted { $0.workout.startDate > $1.workout.startDate }
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         default: // The last week of workouts
             let start = Date()
             let end = Calendar.current.date(byAdding: .day, value: -7, to: start) ?? Date()
             arr = manager.workouts
-                .sorted { $0.dateToString > $1.dateToString }
+                .sorted { $0.workout.startDate > $1.workout.startDate }
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
         }
@@ -60,11 +60,9 @@ struct ActivitiesList: View {
                 
             }
             if (recentWorkouts.count > 0) {
-                LazyVStack {
-                    ForEach(recentWorkouts) { workout in
-                        WorkoutListItem(workout: workout)
-                            .padding(.horizontal)
-                    }
+                ForEach(recentWorkouts) { workout in
+                    WorkoutListItem(workout: workout)
+                        .padding(.horizontal)
                 }
             } else {
                 Text("Couldn't find any recent activities 😤")

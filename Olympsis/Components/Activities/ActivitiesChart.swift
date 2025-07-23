@@ -18,18 +18,22 @@ struct ActivitiesChart: View {
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
-        case 2: // The last year worth of workouts
-            let start = Date()
-            let end = Calendar.current.date(byAdding: .day, value: -365, to: start) ?? Date()
+        case 2: // Current year workouts (January 1st to today)
+            let calendar = Calendar.current
+            let today = Date()
+            let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: today)) ?? today
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
-                .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
-        default: // The last week of workouts
-            let start = Date()
-            let end = Calendar.current.date(byAdding: .day, value: -7, to: start) ?? Date()
+                .workoutsWithinDateInterval(interval: DateInterval(start: startOfYear, end: today))
+        default: // Current week from Monday to today
+            let calendar = Calendar.current
+            var dateComponents = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+            dateComponents.weekday = 2 // Monday is weekday 2
+            let mondayOfThisWeek = calendar.date(from: dateComponents) ?? Date()
+            
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
-                .workoutsWithinDateInterval(interval: DateInterval(start: end, end: start))
+                .workoutsWithinDateInterval(interval: DateInterval(start: mondayOfThisWeek, end: Date()))
         }
     }
     
@@ -45,58 +49,31 @@ struct ActivitiesChart: View {
             if manager.frequencyFilter == 0 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDay()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Day", data.dayAbbreviation()),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.totalCaloriesBurnedPerDay()) { data in
-                        AreaMark(x: .value("Day", data.dayAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             } else if manager.frequencyFilter == 1 {
                 Chart {
                     ForEach(workouts.totalCaloriesBurnedPerDayInMonth()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Day", data.id),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.totalCaloriesBurnedPerDayInMonth()) { data in
-                        AreaMark(x: .value("Day", data.dayAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             } else {
                 Chart {
                     ForEach(workouts.monthlyAverageCaloriesBurned()) { data in
-                        LineMark(
+                        BarMark(
                             x: .value("Month", data.monthAbbreviation()),
                             y: .value("Calories", data.count)
                         )
-                        .interpolationMethod(.cardinal)
-                        .symbol(by: .value("Workout Type", "Running"))
                     }
-                    
-                    ForEach(workouts.monthlyAverageCaloriesBurned()) { data in
-                        AreaMark(x: .value("Day", data.monthAbbreviation()),
-                                 y: .value("Calories", data.count))
-                    }
-                    .interpolationMethod(.cardinal)
-//                                .foregroundStyle(linearGradient)
                 }
                 .frame(height: 200)
             }
