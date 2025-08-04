@@ -20,7 +20,7 @@ struct EventActionButtons: View {
     @State private var state: LOADING_STATE = .pending
     
     @Environment(\.openURL) private var openURL
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     private let notificationManager = NotificationManager()
@@ -142,6 +142,10 @@ struct EventActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            }
                         
                         VStack {
                             VStack {
@@ -155,6 +159,7 @@ struct EventActionButtons: View {
                                 .fontWeight(.bold)
                         }.foregroundStyle(Color.foreground)
                     }.redacted(reason: venueState != .success ? .placeholder : [])
+                        .modifier(BackgroundPillModifier())
                 }.disabled(venueState != .success ? true : false)
 
             } else {
@@ -167,6 +172,10 @@ struct EventActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            }
                         
                         VStack {
                             VStack {
@@ -196,6 +205,11 @@ struct EventActionButtons: View {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 60)
                     .foregroundColor(Color.Background.secondary)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    }
+                    
                 VStack {
                     if event.visibility == EVENT_VISIBILITY_TYPES.Private {
                         VStack {
@@ -231,6 +245,7 @@ struct EventActionButtons: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
                                     .foregroundColor(Color.Brand.tertiary)
+
                                 VStack {
                                     if state == .loading {
                                         ProgressView()
@@ -262,6 +277,7 @@ struct EventActionButtons: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
                                     .foregroundColor(Color.Brand.primary)
+
                                 VStack {
                                     if state == .loading {
                                         ProgressView()
@@ -289,6 +305,7 @@ struct EventActionButtons: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(maxWidth: .infinity, idealHeight: 60)
                                 .foregroundColor(Color.red)
+
                             VStack {
                                 if state == .loading {
                                     ProgressView()
@@ -312,7 +329,7 @@ struct EventActionButtons: View {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(Color.red)
                         .frame(maxWidth: .infinity, idealHeight: 60)
-                        
+                    
                     VStack {
                         VStack {
                             Image(systemName: "circle.fill")
@@ -349,6 +366,10 @@ struct EventActionButtons: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 60)
                         .foregroundColor(Color.Background.secondary)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                        }
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")
@@ -362,7 +383,7 @@ struct EventActionButtons: View {
                 }
             }.sheet(isPresented: $showMenu) {
                 EventMenu(clubs: $clubs, organizations: $organizations)
-                    .environmentObject(event)
+                    .environment(event)
                     .presentationDetents([.medium])
             }
             
@@ -374,6 +395,6 @@ struct EventActionButtons: View {
 
 #Preview {
     EventActionButtons(venues: .constant(VENUES), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

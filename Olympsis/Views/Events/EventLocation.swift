@@ -10,7 +10,7 @@ import SwiftUI
 struct EventLocation: View {
     
     @Binding var venues: [Venue]
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     private var venueDescriptors: [VenueDescriptor] {
         return event.venues
@@ -38,5 +38,5 @@ struct EventLocation: View {
 
 #Preview {
     EventLocation(venues: .constant([]))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }

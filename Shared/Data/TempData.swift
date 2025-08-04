@@ -177,6 +177,10 @@ let EVENTS = [
         body: "Lets go play boys!!!",
         tags: [],
         sports: ["soccer"],
+        config: EventConfig(
+            hidePoster: true,
+            hideLocation: true
+        ),
         formatConfig: nil,
         startTime: Date(timeIntervalSince1970: 1699806600),
         stopTime: Date(timeIntervalSince1970: 1699806615),
@@ -191,6 +195,7 @@ let EVENTS = [
         participantsWaitlist: [],
         participantsConfig: ParticipantsConfig(
             hasWaitlist: false,
+            hideParticipants: true,
             minParticipants: nil,
             maxParticipants: 10
         ),

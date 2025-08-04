@@ -121,18 +121,23 @@ class TeamDao: Codable {
 
 class TeamsConfig: Codable {
     var hasWaitlist: Bool?
+    var hideTeams: Bool?
+    
     var minTeams: Int32?
     var maxTeams: Int32?
     var maxTeamSize: Int32?
     
     enum CodingKeys: String, CodingKey {
         case hasWaitlist = "has_waitlist"
+        case hideTeams = "hide_teams"
+        
         case minTeams = "min_teams"
         case maxTeams = "max_teams"
         case maxTeamSize = "max_team_size"
     }
     
     init(hasWaitlist: Bool? = nil,
+         hideTeams: Bool? = nil,
          minTeams: Int32? = nil,
          maxTeams: Int32? = nil,
          maxTeamSize: Int32? = nil) {
@@ -145,6 +150,7 @@ class TeamsConfig: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         hasWaitlist = try container.decodeIfPresent(Bool.self, forKey: .hasWaitlist)
+        hideTeams = try container.decodeIfPresent(Bool.self, forKey: .hideTeams)
         minTeams = try container.decodeIfPresent(Int32.self, forKey: .minTeams)
         maxTeams = try container.decodeIfPresent(Int32.self, forKey: .maxTeams)
         maxTeamSize = try container.decodeIfPresent(Int32.self, forKey: .maxTeamSize)
@@ -153,6 +159,7 @@ class TeamsConfig: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(hasWaitlist, forKey: .hasWaitlist)
+        try container.encodeIfPresent(hideTeams, forKey: .hideTeams)
         try container.encodeIfPresent(minTeams, forKey: .minTeams)
         try container.encodeIfPresent(maxTeams, forKey: .maxTeams)
         try container.encodeIfPresent(maxTeamSize, forKey: .maxTeamSize)

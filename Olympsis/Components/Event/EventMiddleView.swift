@@ -12,7 +12,7 @@ struct EventMiddleView: View {
     
     @State private var isBlinking: Bool = false
     @State private var timeDifference: String = ""
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     var startTime: Date {
         return event.startTime;
@@ -131,5 +131,5 @@ struct EventMiddleView: View {
 
 #Preview {
     EventMiddleView()
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }
