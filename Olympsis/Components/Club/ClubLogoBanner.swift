@@ -38,7 +38,7 @@ struct ClubLogoBanner: View {
         endPoint: .top
     )
     
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -121,5 +121,5 @@ struct ClubLogoBanner: View {
 
 #Preview {
     ClubLogoBanner()
-        .environmentObject(CLUBS[1])
+        .environment(CLUBS[1])
 }

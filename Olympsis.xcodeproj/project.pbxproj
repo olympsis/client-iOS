@@ -14,6 +14,17 @@
 		5D117A712E25B082002380DE /* ScheduleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A6F2E25B082002380DE /* ScheduleComponents.swift */; };
 		5D117A742E25B423002380DE /* ActivityCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A732E25B423002380DE /* ActivityCountdownView.swift */; };
 		5D117A752E25B423002380DE /* ActivityCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A732E25B423002380DE /* ActivityCountdownView.swift */; };
+		5D11905C2E384CD000574041 /* ClubWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11905B2E384CD000574041 /* ClubWalletView.swift */; };
+		5D11905E2E39072B00574041 /* ClubWalletChangeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11905D2E39072B00574041 /* ClubWalletChangeAccount.swift */; };
+		5D1190602E39073E00574041 /* ClubWalletWithdraw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11905F2E39073E00574041 /* ClubWalletWithdraw.swift */; };
+		5D1190622E39074F00574041 /* ClubWalletAutoWithdrawl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1190612E39074F00574041 /* ClubWalletAutoWithdrawl.swift */; };
+		5D1190652E3996D200574041 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = 5D1190642E3996D200574041 /* Stripe */; };
+		5D1190672E3996D200574041 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = 5D1190662E3996D200574041 /* StripeApplePay */; };
+		5D1190692E3996D200574041 /* StripeConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 5D1190682E3996D200574041 /* StripeConnect */; };
+		5D11906B2E3996D200574041 /* StripeFinancialConnections in Frameworks */ = {isa = PBXBuildFile; productRef = 5D11906A2E3996D200574041 /* StripeFinancialConnections */; };
+		5D11906D2E3996D200574041 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 5D11906C2E3996D200574041 /* StripePaymentSheet */; };
+		5D11906F2E3996D200574041 /* StripePayments in Frameworks */ = {isa = PBXBuildFile; productRef = 5D11906E2E3996D200574041 /* StripePayments */; };
+		5D1190712E3996D200574041 /* StripePaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5D1190702E3996D200574041 /* StripePaymentsUI */; };
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
 		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
 		5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */; };
@@ -531,6 +542,7 @@
 		5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */; };
 		5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */; };
 		5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */; };
+		5DC902492E3BFB3300B61718 /* FinanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC902482E3BFB3300B61718 /* FinanceService.swift */; };
 		5DCAEA2D2B01958F00B9C22A /* EventParticipants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2C2B01958F00B9C22A /* EventParticipants.swift */; };
 		5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */; };
 		5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */; };
@@ -723,6 +735,10 @@
 		5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItemTemplate.swift; sourceTree = "<group>"; };
 		5D117A6F2E25B082002380DE /* ScheduleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleComponents.swift; sourceTree = "<group>"; };
 		5D117A732E25B423002380DE /* ActivityCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCountdownView.swift; sourceTree = "<group>"; };
+		5D11905B2E384CD000574041 /* ClubWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletView.swift; sourceTree = "<group>"; };
+		5D11905D2E39072B00574041 /* ClubWalletChangeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletChangeAccount.swift; sourceTree = "<group>"; };
+		5D11905F2E39073E00574041 /* ClubWalletWithdraw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletWithdraw.swift; sourceTree = "<group>"; };
+		5D1190612E39074F00574041 /* ClubWalletAutoWithdrawl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletAutoWithdrawl.swift; sourceTree = "<group>"; };
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
 		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
 		5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRoomView.swift; sourceTree = "<group>"; };
@@ -1085,6 +1101,7 @@
 		5DC8B47D2E05CE6C008C9052 /* Olympsis_WatchkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Olympsis_WatchkitApp.swift; sourceTree = "<group>"; };
 		5DC8B47E2E05CE6C008C9052 /* OlympsisWatchkit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OlympsisWatchkit.entitlements; sourceTree = "<group>"; };
 		5DC8B47F2E05CE6C008C9052 /* OlympsisWatchkit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OlympsisWatchkit-Info.plist"; sourceTree = "<group>"; };
+		5DC902482E3BFB3300B61718 /* FinanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceService.swift; sourceTree = "<group>"; };
 		5DCAEA2C2B01958F00B9C22A /* EventParticipants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventParticipants.swift; sourceTree = "<group>"; };
 		5DCAEA2E2B01A30A00B9C22A /* EventMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMiddleView.swift; sourceTree = "<group>"; };
 		5DCAEA302B01A67800B9C22A /* EventActionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventActionButtons.swift; sourceTree = "<group>"; };
@@ -1263,8 +1280,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D11906F2E3996D200574041 /* StripePayments in Frameworks */,
+				5D11906D2E3996D200574041 /* StripePaymentSheet in Frameworks */,
+				5D1190672E3996D200574041 /* StripeApplePay in Frameworks */,
 				5DF945AC2BF9CCB500BE3C63 /* Kingfisher in Frameworks */,
+				5D1190652E3996D200574041 /* Stripe in Frameworks */,
+				5D11906B2E3996D200574041 /* StripeFinancialConnections in Frameworks */,
 				5D4499D32BAB7F4100F54D10 /* Hermes in Frameworks */,
+				5D1190692E3996D200574041 /* StripeConnect in Frameworks */,
+				5D1190712E3996D200574041 /* StripePaymentsUI in Frameworks */,
 				5D38BDC32C174372003EEF90 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2072,8 +2096,9 @@
 				9AF0A1B829313D430055D1F6 /* PostService.swift */,
 				9AB6DDC32961537E00C7E427 /* ChatService.swift */,
 				5D20624F2B141C7E00A9D408 /* OrgService.swift */,
-				5DC468C52B9FCE7D0023353D /* ManagementService.swift */,
+				5DC902482E3BFB3300B61718 /* FinanceService.swift */,
 				5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */,
+				5DC468C52B9FCE7D0023353D /* ManagementService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2356,6 +2381,10 @@
 				5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */,
 				5D314C9F2C33A3F000F99676 /* ClubView.swift */,
 				5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */,
+				5D11905B2E384CD000574041 /* ClubWalletView.swift */,
+				5D11905D2E39072B00574041 /* ClubWalletChangeAccount.swift */,
+				5D11905F2E39073E00574041 /* ClubWalletWithdraw.swift */,
+				5D1190612E39074F00574041 /* ClubWalletAutoWithdrawl.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -2473,6 +2502,13 @@
 				5D4499D22BAB7F4100F54D10 /* Hermes */,
 				5DF945AB2BF9CCB500BE3C63 /* Kingfisher */,
 				5D38BDC22C174372003EEF90 /* FirebaseAuth */,
+				5D1190642E3996D200574041 /* Stripe */,
+				5D1190662E3996D200574041 /* StripeApplePay */,
+				5D1190682E3996D200574041 /* StripeConnect */,
+				5D11906A2E3996D200574041 /* StripeFinancialConnections */,
+				5D11906C2E3996D200574041 /* StripePaymentSheet */,
+				5D11906E2E3996D200574041 /* StripePayments */,
+				5D1190702E3996D200574041 /* StripePaymentsUI */,
 			);
 			productName = Olympsis;
 			productReference = 9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */;
@@ -2507,6 +2543,7 @@
 				5D4499D12BAB7EEE00F54D10 /* XCRemoteSwiftPackageReference "Hermes" */,
 				5DF945AA2BF9CBB400BE3C63 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5D38BDC12C174372003EEF90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9A8FF0AE28BB14BF00DE4CF8 /* Products */;
@@ -2858,6 +2895,7 @@
 				9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */,
 				5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */,
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
+				5D11905E2E39072B00574041 /* ClubWalletChangeAccount.swift in Sources */,
 				5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
@@ -2917,6 +2955,7 @@
 				5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */,
 				5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */,
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
+				5D1190602E39073E00574041 /* ClubWalletWithdraw.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
@@ -2968,7 +3007,9 @@
 				5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
+				5DC902492E3BFB3300B61718 /* FinanceService.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
+				5D11905C2E384CD000574041 /* ClubWalletView.swift in Sources */,
 				5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */,
 				5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
@@ -3149,6 +3190,7 @@
 				9A5CA4DB296F725C00C63A32 /* MembersListView.swift in Sources */,
 				5D38BD9D2C1699DF003EEF90 /* LoggingManagement.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
+				5D1190622E39074F00574041 /* ClubWalletAutoWithdrawl.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
 				5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */,
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,
@@ -3587,6 +3629,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.18.1;
+			};
+		};
 		5D38BDC12C174372003EEF90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -3614,6 +3664,41 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5D1190642E3996D200574041 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = Stripe;
+		};
+		5D1190662E3996D200574041 /* StripeApplePay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeApplePay;
+		};
+		5D1190682E3996D200574041 /* StripeConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeConnect;
+		};
+		5D11906A2E3996D200574041 /* StripeFinancialConnections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeFinancialConnections;
+		};
+		5D11906C2E3996D200574041 /* StripePaymentSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePaymentSheet;
+		};
+		5D11906E2E3996D200574041 /* StripePayments */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePayments;
+		};
+		5D1190702E3996D200574041 /* StripePaymentsUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D1190632E3996D200574041 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePaymentsUI;
+		};
 		5D38BDC22C174372003EEF90 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5D38BDC12C174372003EEF90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

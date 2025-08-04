@@ -14,7 +14,7 @@ struct ClubEditor: View {
     @State private var viewModel = NewGroupManager()
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     @Environment(SessionStore.self) private var session
     
     var body: some View {
@@ -264,8 +264,8 @@ struct ClubEditor: View {
 #Preview {
     NavigationStack {
         ClubEditor()
+            .environment(CLUBS[0])
             .environment(SessionStore())
-            .environmentObject(CLUBS[0])
     }
 }
 

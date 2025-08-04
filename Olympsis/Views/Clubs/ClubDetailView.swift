@@ -12,17 +12,13 @@ import Kingfisher
 /// Club details are shown in this view. When you click to see details on a club list view you will reach this view to learn more about the club
 struct ClubDetailView: View {
     
-    @StateObject var club: Club
+    var club: Club
     @State private var camera = MapCameraPosition.camera(
         MapCamera(centerCoordinate: CLLocationCoordinate2D(
             latitude: 37.3347302, longitude: -122.0089189
         ), distance: 1000 )
     )
     @Environment(\.dismiss) private var dismiss
-    
-    init(club: Club) {
-        self._club = StateObject(wrappedValue: club)
-    }
     
     func updatePosition() {
         let geocoder = CLGeocoder()
@@ -94,7 +90,7 @@ struct ClubDetailView: View {
                     
                     // MARK: - Image
                     ClubLogoBanner()
-                        .environmentObject(club)
+                        .environment(club)
                     
                     // MARK: Details
                     VStack(alignment: .leading) {

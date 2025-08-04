@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MemberReportListItem: View {
     
-    @State var club: Club
+    var club: Club
     @State var report: MemberReport
     @StateObject private var observer = ManagementObserver()
     
@@ -62,7 +62,7 @@ struct MemberReportListItem: View {
             }
             if let m = report.member {
                 MemberListItem(member: Member(id: nil, role: "member", user: m, joinedAt: nil), enableMenu: false)
-                    .environmentObject(club)
+                    .environment(club)
             }
             
             HStack {

@@ -17,12 +17,8 @@ struct ClubView: View {
     @State private var showSelector = false
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var club: Club
+    var club: Club
     @Environment(SessionStore.self) private var session
-    
-    init(club: Club) {
-        self._club = StateObject(wrappedValue: club)
-    }
     
     var acceptedEULA: Bool {
         guard let user = session.user,
@@ -92,7 +88,7 @@ struct ClubView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         ClubMenu()
-                            .environmentObject(club)
+                            .environment(club)
                             .environment(session)
                     } label: {
                         if let logo = club.logo,
