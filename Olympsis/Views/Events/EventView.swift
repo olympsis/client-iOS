@@ -145,6 +145,7 @@ struct EventView: View {
                         
                         // MARK: - Participants View
                         EventParticipants(clubs: $clubs, organizations: $organizations)
+                            .environment(session)
                             .environment(event)
                             .id(6)
                         

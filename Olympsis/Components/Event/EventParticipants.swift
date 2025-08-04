@@ -20,7 +20,23 @@ struct EventParticipants: View {
     @State private var showParticipants = false
     
     @Environment(Event.self) private var event: Event
+    @Environment(SessionStore.self) private var session: SessionStore
     
+    /// Compute wether or not we can allow the users to see the participants list
+    /// If hide participants is set to true then we only show the participants when the user has RSVPed
+    private var canShowParticipants: Bool {
+        guard let config = event.participantsConfig,
+              let hideParticipants = config.hideParticipants else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+            return !hideParticipants
+        }
+        return true
+    }
     
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
@@ -28,6 +44,7 @@ struct EventParticipants: View {
         return event.participants
     }
     
+    /// Convert the participants status and return it's string
     private var participantsStatus: String {
         switch event.getEventStatus() {
         case .ended:
@@ -97,9 +114,9 @@ struct EventParticipants: View {
                         }
                     }
                 }
-            }
+            }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
-            if (event.participants.count > 3) {
+            if (event.participants.count > 3 && canShowParticipants) {
                 Button(action: { showParticipants.toggle() }) {
                     Text("+\(event.participants.count-3) \(String(localized: "more", table: "General"))...")
                 }.padding(.top)
@@ -247,8 +264,8 @@ struct EventParticipantsViewExt: View {
 
 #Preview {
     EventParticipants(clubs: .constant([]), organizations: .constant([]))
-        .environment(SessionStore())
         .environment(EVENTS[0])
+        .environment(SessionStore())
 }
 
 #Preview {

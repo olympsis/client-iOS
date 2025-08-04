@@ -35,7 +35,7 @@ struct EventOrganizers: View {
     private var canShowPoster: Bool {
         guard let config = event.config,
               let hidePoster = config.hidePoster else {
-            return false
+            return true
         }
         
         return !hidePoster
