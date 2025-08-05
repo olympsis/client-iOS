@@ -553,7 +553,7 @@
 		5DD6EED72E15EE7E0051F127 /* WorkoutListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD6EED62E15EE7E0051F127 /* WorkoutListItemView.swift */; };
 		5DD751BE2D5E9727000B0640 /* SportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751BD2D5E9727000B0640 /* SportsPicker.swift */; };
 		5DD751C02D601946000B0640 /* NewEventAdvancedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */; };
-		5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */; };
+		5DD751C22D60217A000B0640 /* NewEventParticipantsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */; };
 		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
 		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
@@ -1113,7 +1113,7 @@
 		5DD6EED62E15EE7E0051F127 /* WorkoutListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListItemView.swift; sourceTree = "<group>"; };
 		5DD751BD2D5E9727000B0640 /* SportsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsPicker.swift; sourceTree = "<group>"; };
 		5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventAdvancedSettings.swift; sourceTree = "<group>"; };
-		5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventParticipantsLimit.swift; sourceTree = "<group>"; };
+		5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventParticipantsSettings.swift; sourceTree = "<group>"; };
 		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
@@ -1548,7 +1548,7 @@
 				5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */,
 				5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */,
 				5DD751C32D602275000B0640 /* NewEventExternalLink.swift */,
-				5DD751C12D60217A000B0640 /* NewEventParticipantsLimit.swift */,
+				5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */,
 				5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */,
 				5D4A77A12D9CBD400017194D /* NewEventFormatting.swift */,
 				5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */,
@@ -2905,7 +2905,7 @@
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
 				9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */,
 				9AC5BAC2295E6D26003E851B /* Activities.swift in Sources */,
-				5DD751C22D60217A000B0640 /* NewEventParticipantsLimit.swift in Sources */,
+				5DD751C22D60217A000B0640 /* NewEventParticipantsSettings.swift in Sources */,
 				5DB0963C2E0B890C00BB924A /* WorkoutStatistics.swift in Sources */,
 				9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */,
 				5DB0963E2E0DCBA600BB924A /* WorkoutHeatmapView.swift in Sources */,

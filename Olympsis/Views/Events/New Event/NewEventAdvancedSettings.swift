@@ -55,7 +55,7 @@ struct NewEventAdvancedSettings: View {
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showLimitParticipants) {
-                NewEventParticipantsLimit()
+                NewEventParticipantsSettings()
                     .environment(manager)
                     .presentationDetents([.height(350)])
                     .presentationDragIndicator(.visible)

@@ -7,12 +7,13 @@
 
 import SwiftUI
 
-struct NewEventParticipantsLimit: View {
+struct NewEventParticipantsSettings: View {
     
     @State private var isEditing: Bool = false
     @State private var allowWaitlist: Bool = false
     @State private var minParticipants: Double = 0
     @State private var maxParticipants: Double = 0
+    @State private var hideParticipants: Bool = false
     
     private let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -76,6 +77,18 @@ struct NewEventParticipantsLimit: View {
                     .font(.subheadline)
             }.padding([.top, .horizontal])
             
+            // MARK: - Hide Participants
+            VStack(alignment: .leading){
+                Toggle(isOn: $hideParticipants) {
+                    Text("Hide Participants List")
+                        .font(.headline)
+                        .bold()
+                }
+                Text("Show participants list after RSVP")
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+            }.padding([.top, .horizontal])
+            
             Spacer()
         }
         .onAppear {
@@ -96,9 +109,10 @@ struct NewEventParticipantsLimit: View {
         }
         .onDisappear {
             // Make sure we update the manager on dismissal of this view
-            if (minParticipants != 0 || maxParticipants != 0 || allowWaitlist) {
+            if (minParticipants != 0 || maxParticipants != 0 || allowWaitlist || hideParticipants) {
                 manager.participantsConfig = ParticipantsConfig(
                     hasWaitlist: allowWaitlist,
+                    hideParticipants: hideParticipants ? true : nil,
                     minParticipants: Int(minParticipants),
                     maxParticipants: Int(maxParticipants)
                 )
@@ -108,6 +122,6 @@ struct NewEventParticipantsLimit: View {
 }
 
 #Preview {
-    NewEventParticipantsLimit()
+    NewEventParticipantsSettings()
         .environment(NewEventManager())
 }
