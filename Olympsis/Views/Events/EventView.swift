@@ -35,6 +35,22 @@ struct EventView: View {
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_view")
     
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+            return !hideLocation
+        }
+        return true
+    }
+    
     /// Handles grabbing the event's external link and opening the url
     private func openExternalURL() {
         guard let extLink = event.externalLink,
@@ -155,10 +171,12 @@ struct EventView: View {
                         }
                         
                         // MARK: - Locations
-                        EventLocation(venues: $venues)
-                            .redacted(reason: venueState != .success ? .placeholder : [])
-                            .environment(event)
-                            .id(7)
+                        if canShowLocation {
+                            EventLocation(venues: $venues)
+                                .redacted(reason: venueState != .success ? .placeholder : [])
+                                .environment(event)
+                                .id(7)
+                        }
                         
                         // MARK: - Comments
                         EventComments(clubs: $clubs, organizations: $organizations)
