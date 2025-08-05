@@ -12,10 +12,10 @@ struct EventVenuePickerView: View {
     @State var manager: NewEventManager
     @State private var search: String = ""
     @State private var showPicker: Bool = false
+    @State private var hideLocation: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-    
     
     var body: some View {
         VStack {
@@ -45,6 +45,18 @@ struct EventVenuePickerView: View {
                     .padding(.horizontal)
                 }.padding(.vertical)
                 
+                // MARK: - Hide Locations
+                VStack(alignment: .leading){
+                    Toggle(isOn: $hideLocation) {
+                        Text("Hide Locations")
+                            .font(.headline)
+                            .bold()
+                    }
+                    Text("Show locations after RSVP")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                }.padding([.bottom, .horizontal])
+                
                 ForEach(manager.selectedVenues, id: \.id) {
                     VenueMediumListItem(item: $0)
                 }
@@ -54,6 +66,20 @@ struct EventVenuePickerView: View {
                 EventVenuePicker(manager: manager)
                     .environment(session)
             })
+        }
+        .onAppear {
+            // Set variable from manager
+            guard let config = manager.config else { return }
+            hideLocation = config.hideLocation ?? false
+        }
+        .onDisappear {
+            // Handle hide location config
+            guard var config = manager.config else {
+                manager.config = .init(hideLocation: hideLocation ? true : nil)
+                return
+            }
+            config.hideLocation = hideLocation ? true : nil
+            manager.config = config
         }
     }
 }

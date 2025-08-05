@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NewEventAdvancedSettings: View {
     
+    @State private var hidePoster: Bool = false
+    
     @State private var showEventFormat: Bool = false
     @State private var showLimitParticipants: Bool = false
     @State private var showExternalLinkField: Bool = false
@@ -32,6 +34,18 @@ struct NewEventAdvancedSettings: View {
             }.padding(.horizontal)
             
             ScrollView {
+                // MARK: - Hide Locations
+                VStack(alignment: .leading){
+                    Toggle(isOn: $hidePoster) {
+                        Text("Hide Poster")
+                            .font(.headline)
+                            .bold()
+                    }
+                    Text("Only show the event's organizers")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                }.padding([.top, .horizontal])
+                
                 MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
                     showEventFormat.toggle()
                 }.padding(.top)
@@ -48,6 +62,18 @@ struct NewEventAdvancedSettings: View {
                     showRecurringEventSettings.toggle()
                 }
             }
+            .onAppear {
+                guard let config = manager.config else { return }
+                hidePoster = config.hidePoster ?? false
+            }
+            .onDisappear {
+                guard var config = manager.config else {
+                    manager.config = .init(hidePoster: hidePoster ? true : nil)
+                    return
+                }
+                config.hidePoster = hidePoster ? true : nil
+                manager.config = config
+            }
             .sheet(isPresented: $showEventFormat) {
                 NewEventFormatting()
                     .environment(manager)
@@ -57,7 +83,7 @@ struct NewEventAdvancedSettings: View {
             .sheet(isPresented: $showLimitParticipants) {
                 NewEventParticipantsSettings()
                     .environment(manager)
-                    .presentationDetents([.height(350)])
+                    .presentationDetents([.height(450)])
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showExternalLinkField) {

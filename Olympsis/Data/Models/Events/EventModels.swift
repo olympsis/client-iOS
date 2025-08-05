@@ -279,6 +279,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var body: String?
     var tags: [String]?
     let sports: [String]?
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     var startTime: Date?
     var stopTime: Date?
@@ -304,6 +305,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case body
         case sports
         case tags
+        case config
         case formatConfig = "format_config"
         case startTime = "start_time"
         case stopTime = "stop_time"
@@ -330,6 +332,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         body: String? = nil,
         tags: [String]? = nil,
         sports: [String]? = nil,
+        config: EventConfig? = nil,
         formatConfig: EventFormatConfig? = nil,
         startTime: Date? = nil,
         stopTime: Date? = nil,
@@ -354,6 +357,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = body
         self.sports = sports
         self.tags = tags
+        self.config = config
         self.formatConfig = formatConfig
         self.startTime = startTime
         self.stopTime = stopTime
@@ -389,6 +393,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
+        self.config = try container.decodeIfPresent(EventConfig.self, forKey: .config)
         self.formatConfig = try container.decodeIfPresent(EventFormatConfig.self, forKey: .formatConfig)
         
         // Decode timestamps to Date objects
@@ -452,6 +457,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(tags, forKey: .tags)
+        try container.encodeIfPresent(config, forKey: .config)
         try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
         try container.encodeIfPresent(startTime?.ISO8601Format(), forKey: .startTime)
         try container.encodeIfPresent(stopTime?.ISO8601Format(), forKey: .stopTime)

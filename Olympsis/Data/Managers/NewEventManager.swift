@@ -67,6 +67,7 @@ class NewEventManager {
     var sports: [Sport] = []
     
     // More Options
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     var visibility: EVENT_VISIBILITY_TYPES = .Public
     
@@ -191,6 +192,7 @@ class NewEventManager {
             body: self.body,
             tags: self.selectedTags.map { $0.name },
             sports: self.selectedSports.map { $0.name.components(separatedBy: " ")[1] },
+            config: self.config,
             formatConfig: self.formatConfig,
             startTime: self.startDate,
             stopTime: self.endDate,

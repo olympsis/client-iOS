@@ -99,6 +99,10 @@ struct NewEventParticipantsSettings: View {
                 allowWaitlist = waitlist
             }
             
+            if let participants = config.hideParticipants {
+                hideParticipants = participants
+            }
+            
             if let min = config.minParticipants {
                 minParticipants = Double(min)
             }
@@ -109,14 +113,12 @@ struct NewEventParticipantsSettings: View {
         }
         .onDisappear {
             // Make sure we update the manager on dismissal of this view
-            if (minParticipants != 0 || maxParticipants != 0 || allowWaitlist || hideParticipants) {
-                manager.participantsConfig = ParticipantsConfig(
-                    hasWaitlist: allowWaitlist,
-                    hideParticipants: hideParticipants ? true : nil,
-                    minParticipants: Int(minParticipants),
-                    maxParticipants: Int(maxParticipants)
-                )
-            }
+            manager.participantsConfig = ParticipantsConfig(
+                hasWaitlist: allowWaitlist,
+                hideParticipants: hideParticipants ? true : nil,
+                minParticipants: minParticipants > 0 ? Int(minParticipants) : nil,
+                maxParticipants: maxParticipants > 0 ? Int(maxParticipants) : nil
+            )
         }
     }
 }
