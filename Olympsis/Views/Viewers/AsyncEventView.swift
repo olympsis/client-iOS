@@ -60,6 +60,7 @@ struct AsyncEventView: View {
             case .success:
                 if let event {
                     EventView(event: event)
+                        .environment(event)
                         .toolbar(.hidden, for: .navigationBar)
                 }
             case .failure:

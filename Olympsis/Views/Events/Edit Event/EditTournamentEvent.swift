@@ -36,7 +36,7 @@ struct EditTournamentEvent: View {
     @State private var showSkillLevelPicker: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     var startTimeString: String {
@@ -371,5 +371,5 @@ struct EditTournamentEvent: View {
 
 #Preview {
     EditTournamentEvent()
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }

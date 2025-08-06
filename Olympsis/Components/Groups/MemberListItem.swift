@@ -14,7 +14,7 @@ struct MemberListItem: View {
     private var enableMenu: Bool = true
     
     @State private var showMenu: Bool = false
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     @Environment(SessionStore.self) private var session
     
     var username: String {
@@ -122,6 +122,6 @@ struct MemberListItem: View {
 
 #Preview {
     MemberListItem(member: CLUBS[0].members.first!)
-        .environmentObject(CLUBS[0])
+        .environment(CLUBS[0])
         .environment(SessionStore())
 }

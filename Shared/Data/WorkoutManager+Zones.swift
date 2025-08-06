@@ -27,7 +27,8 @@ extension WorkoutManager {
             }
         }
         
-        log.warning("Heart rate \(heartRateInt) bpm does not fall within any defined zone")
+        // Might need to keep around for debugging
+        // log.warning("Heart rate \(heartRateInt) bpm does not fall within any defined zone")
         return 1
     }
     

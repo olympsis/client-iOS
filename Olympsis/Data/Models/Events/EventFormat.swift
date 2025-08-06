@@ -8,14 +8,14 @@
 import Foundation
 
 class EventFormatConfig: Codable {
-    // Type identifiers
-    var isCompetition: Bool?
-    var isCompetitionGame: Bool?
-    var parentCompetitionID: String?
+    
+    var isCompetition: Bool? // If is a tournament
+    var isCompetitionGame: Bool? // If is a sub event of a competiton event
+    var parentCompetitionID: String? // If is competition game this is required
     var competitionState: String? // "not_started", "in_progress", "completed"
     
     // Format details
-    var formats: [CompetitionFormats]?
+    var formats: [CompetitionFormats]? // 2v2, round-robin, singles
     var rounds: Int32?
     var currentRound: Int32?
     var bracketData: [String: Any]?

@@ -10,7 +10,7 @@ import SwiftUI
 struct MembersListView: View {
     
     @State private var text: String = ""
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     
     private var members: [Member] {
         return club.members
@@ -42,7 +42,7 @@ struct MembersListView: View {
             VStack (spacing: 5) {
                 ForEach(members) { member in
                     MemberListItem(member: member)
-                        .environmentObject(club)
+                        .environment(club)
                 }.padding(.top)
             }
         }
@@ -54,7 +54,7 @@ struct MembersListView: View {
 #Preview {
     NavigationStack {
         MembersListView()
-            .environmentObject(CLUBS[0])
+            .environment(CLUBS[0])
             .environment(SessionStore())
     }
 }

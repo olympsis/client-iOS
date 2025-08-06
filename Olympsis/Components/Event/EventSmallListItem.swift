@@ -83,6 +83,7 @@ struct EventSmallListItem: View {
             }
             .fullScreenCover(isPresented: $showDetails) {
                 EventView(event: event)
+                    .environment(event)
                     .presentationDetents([.large])
             }
     }

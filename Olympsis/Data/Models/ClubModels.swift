@@ -7,11 +7,12 @@
 
 import Foundation
 
-class Club: Decodable, Identifiable, ObservableObject, Hashable {
+@Observable
+class Club: Decodable, Identifiable, Hashable {
 
     let id: String
     let parent: OrganizationDao?
-    @Published var name: String
+    var name: String
     var logo: String?
     var banner: String?
     var sports: [String]
@@ -21,7 +22,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
     let country: String
     let location: GeoJSON
     let visibility: String
-    @Published var members: [Member]
+    var members: [Member]
     var blackList: [String]?
     let rules: [String]
     var tags: [String]
@@ -458,7 +459,6 @@ struct ClubSnippet: Codable {
     let country: String
     let visibility: String
 }
-
 
 struct OrgSnippet: Codable {
     let id: String

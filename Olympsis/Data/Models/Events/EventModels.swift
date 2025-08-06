@@ -8,7 +8,8 @@
 import Foundation
 import CoreLocation
 
-class Event: Decodable, Identifiable, ObservableObject, Hashable {
+@Observable
+class Event: Decodable, Identifiable, Hashable {
     let id: String
     let poster: UserSnippet?
     var organizers: [Organizer]
@@ -22,20 +23,21 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
     var tags: [String]
     var sports: [String]
 
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     
-    @Published var startTime: Date
-    @Published var stopTime: Date
+    var startTime: Date
+    var stopTime: Date
     
-    @Published var participants: [Participant]
-    @Published var participantsWaitlist: [Participant]
+    var participants: [Participant]
+    var participantsWaitlist: [Participant]
     var participantsConfig: ParticipantsConfig?
     
-    @Published var teams: [Team]
-    @Published var teamsWaitlist: [Team]
+    var teams: [Team]
+    var teamsWaitlist: [Team]
     var teamsConfig: TeamsConfig?
     
-    @Published var comments: [EventComment]
+    var comments: [EventComment]
     
     var visibility: EVENT_VISIBILITY_TYPES
     var externalLink: String?
@@ -52,7 +54,6 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         case poster
         case organizers
         case venues
-        case venue // For backwards compatibility
         
         case mediaURL = "media_url"
         case mediaType = "media_type"
@@ -62,6 +63,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         case tags
         case sports
         
+        case config
         case formatConfig = "format_config"
         
         case startTime = "start_time"
@@ -98,6 +100,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
          body: String,
          tags: [String] = [],
          sports: [String] = [],
+         config: EventConfig? = nil,
          formatConfig: EventFormatConfig? = nil,
          startTime: Date,
          stopTime: Date,
@@ -129,6 +132,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         self.tags = tags
         self.sports = sports
         
+        self.config = config
         self.formatConfig = formatConfig
         
         self.startTime = startTime
@@ -163,12 +167,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
         organizers = try container.decodeIfPresent([Organizer].self, forKey: .organizers) ?? []
         
-        // Handle venues with backwards compatibility
-        if let singleVenue = try container.decodeIfPresent(VenueDescriptor.self, forKey: .venue) {
-            venues = [singleVenue]
-        } else {
-            venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues) ?? []
-        }
+        venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues) ?? []
         
         // Decode media properties with conversion
         mediaURL = try container.decode(String.self, forKey: .mediaURL)
@@ -180,6 +179,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
         sports = try container.decodeIfPresent([String].self, forKey: .sports) ?? []
         
+        config = try container.decodeIfPresent(EventConfig.self, forKey: .config)
         formatConfig = try container.decodeIfPresent(EventFormatConfig.self, forKey: .formatConfig)
         
         /// Since we know created_at parsing works, use the same approach for start_time
@@ -239,6 +239,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         self.organizers = event.organizers
         self.tags = event.tags
         self.sports = event.sports
+        self.config = config
         self.formatConfig = event.formatConfig
         self.participantsConfig = event.participantsConfig
         self.teams = event.teams
@@ -251,9 +252,22 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
+        hasher.combine(id)
     }
 }
+
+struct EventConfig: Codable {
+    var hidePoster: Bool? = nil
+    
+    // Hide Pre-RSVP
+    var hideLocation: Bool? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        case hidePoster = "hide_poster"
+        case hideLocation = "hide_location"
+    }
+}
+
 
 class EventDao: Codable, Identifiable, ObservableObject {
     let poster: String?
@@ -265,6 +279,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var body: String?
     var tags: [String]?
     let sports: [String]?
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     var startTime: Date?
     var stopTime: Date?
@@ -290,6 +305,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case body
         case sports
         case tags
+        case config
         case formatConfig = "format_config"
         case startTime = "start_time"
         case stopTime = "stop_time"
@@ -316,6 +332,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         body: String? = nil,
         tags: [String]? = nil,
         sports: [String]? = nil,
+        config: EventConfig? = nil,
         formatConfig: EventFormatConfig? = nil,
         startTime: Date? = nil,
         stopTime: Date? = nil,
@@ -340,6 +357,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = body
         self.sports = sports
         self.tags = tags
+        self.config = config
         self.formatConfig = formatConfig
         self.startTime = startTime
         self.stopTime = stopTime
@@ -375,6 +393,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
+        self.config = try container.decodeIfPresent(EventConfig.self, forKey: .config)
         self.formatConfig = try container.decodeIfPresent(EventFormatConfig.self, forKey: .formatConfig)
         
         // Decode timestamps to Date objects
@@ -438,6 +457,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(tags, forKey: .tags)
+        try container.encodeIfPresent(config, forKey: .config)
         try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
         try container.encodeIfPresent(startTime?.ISO8601Format(), forKey: .startTime)
         try container.encodeIfPresent(stopTime?.ISO8601Format(), forKey: .stopTime)
@@ -473,7 +493,7 @@ struct NewEventDao: Codable {
     enum CodingKeys: String, CodingKey {
         case event
         case includeHost = "include_host"
-        case recurrence = "recurrence"
+        case recurrence
     }
 }
 

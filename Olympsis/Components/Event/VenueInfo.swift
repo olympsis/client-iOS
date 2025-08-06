@@ -17,7 +17,7 @@ struct VenueInfo: View {
     @State private var locality: String = "Custom Coordinates"
     @State private var showSheet: Bool = false
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     /// Venue(s) name
     ///
@@ -75,6 +75,6 @@ struct VenueInfo: View {
 
 #Preview {
     VenueInfo(venues: .constant([Venue]()), venuesTarget: .constant(0), state: .constant(.pending))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

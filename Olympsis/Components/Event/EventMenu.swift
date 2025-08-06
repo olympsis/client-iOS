@@ -19,7 +19,7 @@ struct EventMenu: View {
     @State private var showRecurring: Bool = false
     @State private var showNotification: Bool = false
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
@@ -116,6 +116,6 @@ struct EventMenu: View {
 
 #Preview {
     EventMenu(clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

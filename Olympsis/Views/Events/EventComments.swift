@@ -19,7 +19,7 @@ struct EventComments: View {
     
     private let service = EventObserver()
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     private var isPosterOrAdmin: Bool {
@@ -180,6 +180,6 @@ struct EventComments: View {
 
 #Preview {
     EventComments(clubs: .constant([]), organizations: .constant([]))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

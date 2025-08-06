@@ -123,20 +123,25 @@ class ParticipantDao: Codable {
 }
 
 class ParticipantsConfig: Codable {
-    var hasWaitlist: Bool?
+    var hasWaitlist: Bool? // Enables a wait-list
+    var hideParticipants: Bool? // Hide Pre-RSVP
+    
     var minParticipants: Int?
     var maxParticipants: Int?
     
     enum CodingKeys: String, CodingKey {
         case hasWaitlist = "has_waitlist"
+        case hideParticipants = "hide_participants"
         case minParticipants = "min_participants"
         case maxParticipants = "max_participants"
     }
     
     init(hasWaitlist: Bool? = nil,
+         hideParticipants: Bool? = nil,
          minParticipants: Int? = nil,
          maxParticipants: Int? = nil) {
         self.hasWaitlist = hasWaitlist
+        self.hideParticipants = hideParticipants
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
     }
@@ -144,6 +149,7 @@ class ParticipantsConfig: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         hasWaitlist = try container.decodeIfPresent(Bool.self, forKey: .hasWaitlist)
+        hideParticipants = try container.decodeIfPresent(Bool.self, forKey: .hideParticipants)
         minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
         maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
     }
@@ -151,6 +157,7 @@ class ParticipantsConfig: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(hasWaitlist, forKey: .hasWaitlist)
+        try container.encodeIfPresent(hideParticipants, forKey: .hideParticipants)
         try container.encodeIfPresent(minParticipants, forKey: .minParticipants)
         try container.encodeIfPresent(maxParticipants, forKey: .maxParticipants)
     }

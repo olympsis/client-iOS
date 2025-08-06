@@ -9,17 +9,18 @@ import os
 import MapKit
 import SwiftUI
 import Kingfisher
-//import AlertToast
 import CoreLocation
 
 /// A view that shows more detail about a specific event
 struct EventView: View {
     
-    @StateObject var event: Event
+    @State var event: Event
+    
     @State private var venues = [Venue]()
+    @State private var venuesTarget: Int = 0
+    
     @State private var clubs = [Club]()
     @State private var organizations = [Organization]()
-    @State private var venuesTarget: Int = 0
     
     @State private var showToast: Bool = false
     @State private var showSharingMenu: Bool = false
@@ -34,57 +35,23 @@ struct EventView: View {
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_view")
     
-    private var eventTitle: String {
-        return event.title
-    }
-    
-    private var eventImage: URL? {
-        return generateImageURL(event.mediaURL)
-    }
-    
-    private var eventBody: String {
-        return event.body
-    }
-    
-    private var organizers: [Organizer] {
-        return event.organizers
-    }
-    
-    private var venueDescriptors: [VenueDescriptor] {
-        return event.venues
-    }
-    
-    init(event: Event) {
-        self._event = StateObject(wrappedValue: event)
-    }
-    
-    /// Update event data
-    private func reloadEvent() async {
-        guard let resp = await session.eventObserver.fetchEvent(id: event.id) else {
-            handleFailure()
-            return
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
         }
-        event.update(from: resp)
         
-        handleSuccess()
-    }
-    
-    /// Handles success
-    private func handleSuccess() {
-        state = .success
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            state = .pending
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+            return !hideLocation
         }
+        return true
     }
     
-    /// Handles faliures gracefully
-    private func handleFailure() {
-        state = .failure
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            state = .pending
-        }
-    }
-    
+    /// Handles grabbing the event's external link and opening the url
     private func openExternalURL() {
         guard let extLink = event.externalLink,
               let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
@@ -98,10 +65,10 @@ struct EventView: View {
             
             // MARK: - Event Top Bar
             HStack(alignment: .center) {
-                Text(eventTitle)
-                    .font(.largeTitle)
-                    .bold()
+                Text(event.title)
                     .lineLimit(1)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .minimumScaleFactor(0.5)
 
                 Spacer()
@@ -153,7 +120,7 @@ struct EventView: View {
                                 
                                Spacer()
                             }
-                            Text(eventBody)
+                            Text(event.body)
                         }
                         .padding(.top, 10)
                         .padding([.horizontal, .bottom])
@@ -163,6 +130,7 @@ struct EventView: View {
                             Button(action: { openExternalURL() }) {
                                 HStack {
                                     Image(systemName: "link")
+                                        .foregroundStyle(Color.Brand.tertiary)
                                     
                                     Text("More event details may be available out of Olympsis. Please click on this message to learn more.")
                                         .font(.caption)
@@ -178,8 +146,8 @@ struct EventView: View {
                             clubs: $clubs,
                             organizations: $organizations
                         )
+                        .environment(event)
                         .id(4)
-                        .environmentObject(event)
                         
                         // MARK: - Organizers
                         EventOrganizers(event: event, clubs: $clubs, organizations: $organizations)
@@ -193,7 +161,8 @@ struct EventView: View {
                         
                         // MARK: - Participants View
                         EventParticipants(clubs: $clubs, organizations: $organizations)
-                            .environmentObject(event)
+                            .environment(session)
+                            .environment(event)
                             .id(6)
                         
                         // MARK: - Competiton formats
@@ -202,16 +171,18 @@ struct EventView: View {
                         }
                         
                         // MARK: - Locations
-                        EventLocation(venues: $venues)
-                            .redacted(reason: venueState != .success ? .placeholder : [])
-                            .environmentObject(event)
-                            .id(7)
+                        if canShowLocation {
+                            EventLocation(venues: $venues)
+                                .redacted(reason: venueState != .success ? .placeholder : [])
+                                .environment(event)
+                                .id(7)
+                        }
                         
                         // MARK: - Comments
                         EventComments(clubs: $clubs, organizations: $organizations)
-                            .id(8)
+                            .environment(event)
                             .padding(.top)
-                            .environmentObject(event)
+                            .id(8)
                         
                         Spacer(minLength: 50)
                     }
@@ -222,9 +193,6 @@ struct EventView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
-//        .toast(isPresenting: $showToast, alert: {
-//            AlertToast(displayMode: .hud, type: .regular, title: "Event Link Copied")
-//        })
         .background(.regularMaterial)
         .background {
             KFImage(generateImageURL(event.mediaURL))
@@ -241,8 +209,8 @@ struct EventView: View {
             // TODO: - I will want to make a synchronous call here
             venueState = .loading
             organizersState = .loading
-            venues = await session.fetchVenues(in: venueDescriptors)
-            (clubs, organizations) = await session.fetchOrganizers(in: organizers)
+            venues = await session.fetchVenues(in: event.venues)
+            (clubs, organizations) = await session.fetchOrganizers(in: event.organizers)
             venueState = .success
             organizersState = .success
         }
@@ -250,6 +218,7 @@ struct EventView: View {
 }
 
 #Preview {
-    EventView(event: EVENTS[0])
+    EventView(event: EVENTS[1])
+        .environment(EVENTS[1])
         .environment(SessionStore())
 }
