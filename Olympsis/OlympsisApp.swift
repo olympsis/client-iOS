@@ -45,6 +45,7 @@ struct OlympsisApp: App {
     }
 }
 
+// MARK: - Handle App Setup
 class AppDelegate: NSObject, UIApplicationDelegate {
     @AppStorage("deviceToken") private var dToken: String?
     let logger = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
@@ -66,8 +67,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         sceneConfiguration.delegateClass = CustomSceneDelegate.self
         return sceneConfiguration
     }
+    
 }
 
+// MARK: - Handle Notifications Handling
 extension AppDelegate : UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -80,9 +83,56 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 
-
+// MARK: - Handle Quick Actions & Universal Links
 class CustomSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    let logger = Logger(subsystem: "com.olympsis.client", category: "scene_delegate")
+    
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         completionHandler(QuickActionsManager.shared.handleShortcutItem(shortcutItem: shortcutItem))
     }
+    
+    // MARK: - Universal Links Handler
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        logger.info("Universal link received: \(userActivity.activityType)")
+        
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let incomingURL = userActivity.webpageURL else {
+            logger.warning("Invalid universal link activity")
+            return
+        }
+        
+        handleUniversalLink(url: incomingURL)
+    }
+    
+    
+    private func handleUniversalLink(url: URL) {
+        logger.info("Processing universal link: \(url.absoluteString)")
+        
+        // Parse the URL path
+        let path = url.path
+        let pathComponents = path.components(separatedBy: "/").filter { !$0.isEmpty }
+        
+        print("Universal link path: \(path)")
+        print("Path components: \(pathComponents)")
+        
+        // Handle different URL patterns based on your apple-app-site-association
+        if pathComponents.count >= 2 && pathComponents[0] == "events" {
+            let eventId = pathComponents[1]
+            logger.info("Opening event with ID: \(eventId)")
+            print("Event ID: \(eventId)")
+            
+            // Navigate to event view
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("OpenEvent"),
+                    object: nil,
+                    userInfo: ["eventId": eventId]
+                )
+            }
+        } else {
+            logger.info("Universal link path not handled: \(path)")
+            print("Universal link path not handled: \(path)")
+        }
+    }
 }
+
