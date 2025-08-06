@@ -197,6 +197,7 @@ class NewEventManager {
             startTime: self.startDate,
             stopTime: self.endDate,
             participantsConfig: self.participantsConfig,
+            teamsConfig: self.teamsConfig,
             visibility: self.visibility,
             externalLink: self.externalLink.isEmpty ? nil : self.externalLink
         )

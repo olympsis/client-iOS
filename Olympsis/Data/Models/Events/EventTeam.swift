@@ -142,6 +142,7 @@ class TeamsConfig: Codable {
          maxTeams: Int32? = nil,
          maxTeamSize: Int32? = nil) {
         self.hasWaitlist = hasWaitlist
+        self.hideTeams = hideTeams
         self.minTeams = minTeams
         self.maxTeams = maxTeams
         self.maxTeamSize = maxTeamSize

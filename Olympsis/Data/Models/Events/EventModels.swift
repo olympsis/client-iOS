@@ -493,7 +493,7 @@ struct NewEventDao: Codable {
     enum CodingKeys: String, CodingKey {
         case event
         case includeHost = "include_host"
-        case recurrence = "recurrence"
+        case recurrence
     }
 }
 
