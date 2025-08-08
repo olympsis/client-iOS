@@ -75,9 +75,10 @@ struct TabBar: View {
                     }
                 } label: {
                     VStack {
-                        Image(systemName: currentTab == .events ? "calendar.circle.fill" : "calendar")
+                        Image(systemName: "calendar")
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
+                            .fontWeight(currentTab == .events ? .bold : .regular)
                             .foregroundStyle(Color.foreground)
                     }
                 }
