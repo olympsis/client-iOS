@@ -14,7 +14,6 @@ struct ClubListItem: View {
     @Binding var showToast: Bool
     @State var showActions: Bool = true
     @State private var showEULA: Bool = false
-    @State private var showDetails: Bool = false
     @State private var status: LOADING_STATE = .pending
     
     @Environment(SessionStore.self) private var session
@@ -99,7 +98,7 @@ struct ClubListItem: View {
             
             if showActions {
                 HStack(spacing: 15) {
-                    Button(action: { self.showDetails.toggle() }) {
+                    NavigationLink(destination: ClubDetailView(club: club)) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(height: 35)
@@ -132,9 +131,6 @@ struct ClubListItem: View {
             RoundedRectangle(cornerRadius: 15)
                 .stroke(Color.primary.opacity(0.2), lineWidth: 1)
         }
-        .fullScreenCover(isPresented: $showDetails, content: {
-            ClubDetailView(club: club)
-        })
         .sheet(isPresented: $showEULA, content: {
             EndUserLicenseAgreement()
         })
