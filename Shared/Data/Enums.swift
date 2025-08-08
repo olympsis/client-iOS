@@ -103,7 +103,7 @@ enum ROUTES: Codable, Hashable {
         openMessages: Bool?=nil,
         openNotifications: Bool?=nil
     )
-    case groups
+    case groups(id: String?=nil)
     case events(id: String?=nil, venueId: String?=nil)
     case profile
 }
@@ -118,7 +118,10 @@ enum GROUP_ROUTES: Codable, Hashable {
     case messages
     case newPost
     case newEvent
-    case settings
+    case clubMenu
+    
+    case clubsList(id: String?=nil)
+    case clubsMenu
 }
 
 enum GROUP_SETTINGS_ROUTES: Codable, Hashable {

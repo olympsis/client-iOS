@@ -104,7 +104,6 @@ struct TabBar: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 25)
-            
         }
         .frame(height: 25)
         .padding(.vertical)

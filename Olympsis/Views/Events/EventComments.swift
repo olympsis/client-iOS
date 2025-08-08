@@ -130,6 +130,10 @@ struct EventComments: View {
                             Color.Background.secondary
                         }
                         .clipShape(Capsule())
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                        }
                     
                     Button(action: { addComment() }) {
                         switch state {
@@ -141,6 +145,10 @@ struct EventComments: View {
                                 }
                                 .foregroundStyle(.white)
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         case .loading:
                             ProgressView()
                                 .padding(10)
@@ -148,6 +156,10 @@ struct EventComments: View {
                                     Color.Brand.primary
                                 }
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         case .failure:
                             Image(systemName: "xmark")
                                 .padding(10)
@@ -156,6 +168,10 @@ struct EventComments: View {
                                 }
                                 .foregroundStyle(.white)
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         }
                     }
                 }
