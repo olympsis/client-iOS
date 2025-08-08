@@ -704,6 +704,7 @@
 		BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FC29E279C9008EA591 /* EncodeToData.swift */; };
 		BE9C45FF29E36DB0008EA591 /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C45FE29E36DB0008EA591 /* SecureStore.swift */; };
 		BE9C460129E38936008EA591 /* GenerateImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C460029E38936008EA591 /* GenerateImageURL.swift */; };
+		5DDCB9F92C4C487500AE6C7A /* Olympsis.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5DDCB9782C4C487500AE6C7A /* Olympsis.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -714,6 +715,13 @@
 			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
 			remoteInfo = Olympsis;
 		};
+		5DDCB9F72C4C487500AE6C7A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DDCB9772C4C487500AE6C7A;
+			remoteInfo = OlympsisWatchkit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -723,6 +731,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				5DDCB9F92C4C487500AE6C7A /* Olympsis.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1215,6 +1224,7 @@
 		9A81B64A2925EC79009CA6ED /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
 		9A81B64C2925EED1009CA6ED /* EventsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModalView.swift; sourceTree = "<group>"; };
 		9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DDCB9782C4C487500AE6C7A /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisApp.swift; sourceTree = "<group>"; };
 		9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewContainer.swift; sourceTree = "<group>"; };
 		9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2002,6 +2012,7 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
+				5DDCB9782C4C487500AE6C7A /* Olympsis.app */,
 				5DBF2B832E42E34C0025B0FE /* OlympsisTests.xctest */,
 			);
 			name = Products;
@@ -2531,7 +2542,7 @@
 			);
 			name = OlympsisWatchkit;
 			productName = "Olympsis-Watchkit Watch App";
-			productReference = 9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */;
+			productReference = 5DDCB9782C4C487500AE6C7A /* Olympsis.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */ = {
@@ -2547,6 +2558,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5DDCB9F82C4C487500AE6C7A /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -3352,6 +3364,11 @@
 			isa = PBXTargetDependency;
 			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
 			targetProxy = 5DBF2B872E42E34C0025B0FE /* PBXContainerItemProxy */;
+		};
+		5DDCB9F82C4C487500AE6C7A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5DDCB9772C4C487500AE6C7A /* OlympsisWatchkit */;
+			targetProxy = 5DDCB9F72C4C487500AE6C7A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

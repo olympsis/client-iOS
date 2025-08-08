@@ -13,9 +13,6 @@
 		<string>applinks:olympsis.com</string>
 		<string>appclip:olympsis.com</string>
 		<string>webcredentials:olympsis.com</string>
-		<string>applinks:www.olympsis.com</string>
-		<string>appclip:www.olympsis.com</string>
-		<string>webcredentials:www.olympsis.com</string>
 	</array>
 	<key>com.apple.developer.healthkit</key>
 	<true/>

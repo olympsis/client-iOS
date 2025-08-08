@@ -32,10 +32,10 @@ struct ShareMenu: View {
                         dismiss()
                     }
                     
-                    SquareIconButton(icon: Image(systemName: "photo"), text: "Export", size: CGSize(width: 80, height: 80), imageSize: CGSize(width: 35, height: 25)) {
-                        sharingMethod = .image
-                        showShareView = true
-                    }
+//                    SquareIconButton(icon: Image(systemName: "photo"), text: "Export", size: CGSize(width: 80, height: 80), imageSize: CGSize(width: 35, height: 25)) {
+//                        sharingMethod = .image
+//                        showShareView = true
+//                    }
                     
 //                    SquareIconButton(icon: Image("logos/instagram"), text: "Instagram", size: CGSize(width: 80, height: 80), imageSize: CGSize(width: 35, height: 35)) {
 //                        sharingMethod = .instagram
