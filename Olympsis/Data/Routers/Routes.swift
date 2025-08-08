@@ -7,11 +7,11 @@
 
 import Foundation
 
-/// Handle external and internal urls within the application
+/// Handle  internal urls within the application
 ///
-/// We want the urls triggering the app to open to have the right format.
+/// We want the internal urls triggering the app to open to have the right format.
 /// Then we route to the appropriate view based on the url and it's query parameters
-func handleIncomingURL(_ url: URL) -> ROUTES? {
+func handleInternalURL(_ url: URL) -> ROUTES? {
     guard url.scheme == "olympsis" else {
         return nil
     }
@@ -31,7 +31,7 @@ func handleIncomingURL(_ url: URL) -> ROUTES? {
         return ROUTES.home()
         
     case URL_ACTIONS.open_groups.rawValue:
-        return ROUTES.groups
+        return ROUTES.groups()
         
     case URL_ACTIONS.open_events.rawValue:
         guard let id = components.queryItems?.first(where: { $0.name == "id" })?.value else {
@@ -65,6 +65,42 @@ func handleIncomingURL(_ url: URL) -> ROUTES? {
     default:
         return nil
     }
+}
+
+/// Handle external urls
+///
+/// We want the external urls to be handled properly. To open up the app and go to the right views.
+/// For now we will only handle events and groups external urls.
+/// That way events and groups can be shared and opened within the app if installed.
+func handleExternalURL(_ url: URL) -> ROUTES? {
+    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+        print("Invalid external URL")
+        return nil
+    }
+    
+    // Break down url path
+    let parts = components.path.components(separatedBy: "/").filter { !$0.isEmpty }
+    guard let page = parts.first else {
+        return nil
+    }
+    
+    // Handle pages: events | groups
+    switch page {
+    case "events":
+        guard let id = parts.dropFirst().first else {
+            return ROUTES.events()
+        }
+        return ROUTES.events(id: id)
+    case "groups":
+        guard let id = parts.dropFirst().first else {
+            return ROUTES.groups()
+        }
+        return ROUTES.groups(id: id)
+    default:
+        return nil
+    }
+    
+    return nil
 }
 
 @MainActor
@@ -107,10 +143,10 @@ func handleEventsURL(_ route: ROUTES, router: EventRouter) {
     case .home, .groups, .profile:
         return
     case .events(let id, _):
-        if let id {
-            router.navigate(to: .events(ID: id))
+        guard let id else {
+            return router.navigateToRoot()
         }
-        return
+        return router.navigate(to: .events(ID: id))
     }
 }
 

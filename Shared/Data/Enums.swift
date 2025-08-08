@@ -103,7 +103,7 @@ enum ROUTES: Codable, Hashable {
         openMessages: Bool?=nil,
         openNotifications: Bool?=nil
     )
-    case groups
+    case groups(id: String?=nil)
     case events(id: String?=nil, venueId: String?=nil)
     case profile
 }

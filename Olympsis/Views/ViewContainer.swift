@@ -91,7 +91,7 @@ struct ViewContainer: View {
             Onboarding()
         })
         .environment(\.openURL, OpenURLAction { url in // Handles internal URLS
-            guard let route = handleIncomingURL(url) else {
+            guard let route = handleInternalURL(url) else {
                 return .systemAction
             }
             
@@ -99,7 +99,8 @@ struct ViewContainer: View {
             return .handled
         })
         .onOpenURL(perform: { url in
-            guard let route = handleIncomingURL(url) else {
+            // Handle both internal and external urls
+            guard let route = url.scheme == "olympsis" ? handleInternalURL(url) : handleExternalURL(url) else {
                 return
             }
             
