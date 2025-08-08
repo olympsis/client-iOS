@@ -30,7 +30,10 @@ struct GroupView: View {
         return selectedGroup!.type
     }
     
-    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
+    private var log: Logger = Logger(
+        subsystem: "com.olympsis.client",
+        category: "group_view"
+    )
     
     init(router: GroupRouter = GroupRouter()) {
         self._router = StateObject(wrappedValue: router)
