@@ -92,15 +92,13 @@ func handleExternalURL(_ url: URL) -> ROUTES? {
         }
         return ROUTES.events(id: id)
     case "groups":
-        guard let id = parts.dropFirst().first else {
+        guard let id = parts.dropFirst().dropFirst().first else {
             return ROUTES.groups()
         }
         return ROUTES.groups(id: id)
     default:
         return nil
     }
-    
-    return nil
 }
 
 @MainActor
@@ -127,12 +125,14 @@ func handleHomeURL(_ route: ROUTES, router: HomeRouter) {
 
 @MainActor
 func handleGroupsURL(_ route: ROUTES, router: GroupRouter) {
-    router.navigateToRoot()
     switch route {
     case .home, .events, .profile:
         return
-    case .groups:
-        return
+    case .groups(let id):
+        guard let id else {
+            return router.navigateToRoot()
+        }
+        return router.navigate(to: .clubsList(id: id))
     }
 }
 

@@ -1,35 +1,35 @@
 //
-//  AsyncEventView.swift
+//  AsyncClubView.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 9/3/24.
+//  Created by Joel Joseph on 8/8/25.
 //
 
 import os
 import SwiftUI
 
-struct AsyncEventView: View {
-
-    @State public var eventId: String
-    @State private var event: Event?
-    @State private var title: String = "Event"
+struct AsyncClubView: View {
+    
+    @State public var clubID: String
+    @State private var club: Club?
+    @State private var title: String = "Club"
     @State private var state: VIEW_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
-    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "async_event_view")
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "async_club_view")
     
     @MainActor
-    func fetchEvent() async {
+    private func fetchClub() async {
         state = .loading
-        guard let event = await session.eventObserver.fetchEvent(id: eventId) else {
+        guard let club = await session.clubObserver.getClub(id: clubID) else {
             state = .failure
-            log.error("Failed to fetch event:\(eventId, privacy: .public)")
+            log.error("Failed to fetch club:\(clubID, privacy: .public)")
             return
         }
-        self.title = event.title
-        self.event = event
+        self.title = club.name
+        self.club = club
         state = .success
     }
     
@@ -48,7 +48,7 @@ struct AsyncEventView: View {
                         
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { Task {
-                                await fetchEvent()
+                                await fetchClub()
                             } }) {
                                 Image(systemName: "arrow.clockwise")
                             }
@@ -58,19 +58,17 @@ struct AsyncEventView: View {
                     .navigationBarBackButtonHidden()
                     .navigationBarTitleDisplayMode(.inline)
             case .success:
-                if let event {
-                    EventView(event: event)
-                        .environment(event)
-                        .toolbar(.hidden, for: .navigationBar)
+                if let club {
+                    ClubDetailView(club: club)
                 }
             case .failure:
                 VStack {
                     Image("illustrations/sorry")
                         .resizable()
                         .frame(width: 250, height: 250)
-                    Text("Failed to get Event.")
+                    Text("Failed to get Club")
                         .fontWeight(.bold)
-                    Button(action: { Task { await fetchEvent() }}) {
+                    Button(action: { Task { await fetchClub() }}) {
                         Text("Try again")
                     }
                 }
@@ -84,7 +82,7 @@ struct AsyncEventView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { Task {
-                            await fetchEvent()
+                            await fetchClub()
                         } }) {
                             Image(systemName: "arrow.clockwise")
                         }
@@ -93,16 +91,16 @@ struct AsyncEventView: View {
                 .navigationTitle(title)
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar(event != nil ? .hidden : .visible, for: .tabBar)
+                .toolbar(club != nil ? .hidden : .visible, for: .tabBar)
             }
         }
         .task {
-            await fetchEvent()
+            await fetchClub()
         }
     }
 }
 
 #Preview {
-    AsyncEventView(eventId: "")
+    AsyncClubView(clubID: "")
         .environment(SessionStore())
 }

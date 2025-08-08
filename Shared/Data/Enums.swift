@@ -118,7 +118,10 @@ enum GROUP_ROUTES: Codable, Hashable {
     case messages
     case newPost
     case newEvent
-    case settings
+    case clubMenu
+    
+    case clubsList(id: String?=nil)
+    case clubsMenu
 }
 
 enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
