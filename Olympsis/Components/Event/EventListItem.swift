@@ -33,6 +33,22 @@ struct EventListItem: View {
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+            return !hideLocation
+        }
+        return true
+    }
+    
     private var title: String {
         return event.title
     }
@@ -101,6 +117,7 @@ struct EventListItem: View {
                                     .font(.body)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
+                                    .redacted(reason: canShowLocation ? [] : .placeholder)
                             }
                             
                             Spacer()
