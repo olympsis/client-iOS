@@ -26,14 +26,16 @@ struct ActivitiesChart: View {
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
                 .workoutsWithinDateInterval(interval: DateInterval(start: startOfYear, end: today))
         default: // Current week from Monday to today
+            let today = Date()
             let calendar = Calendar.current
-            var dateComponents = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
-            dateComponents.weekday = 2 // Monday is weekday 2
-            let mondayOfThisWeek = calendar.date(from: dateComponents) ?? Date()
             
+            // Get the Monday of this week properly
+            let mondayOfThisWeek = calendar.dateInterval(of: .weekOfYear, for: today)?.start ?? today
+            
+            let interval = DateInterval(start: mondayOfThisWeek, end: today)
             return manager.workouts
                 .filter { manager.sportFilter == nil ? true : $0.type == manager.sportFilter }
-                .workoutsWithinDateInterval(interval: DateInterval(start: mondayOfThisWeek, end: Date()))
+                .workoutsWithinDateInterval(interval: interval)
         }
     }
     

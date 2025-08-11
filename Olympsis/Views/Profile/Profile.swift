@@ -121,12 +121,24 @@ struct Profile: View {
                     ProfileMenu()
                 })
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text(username)
-                            .foregroundColor(.primary)
-                            .font(.title2)
-                            .fontWeight(.regular)
+                    if #available(iOS 26.0, *) {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text(username)
+                                .fixedSize()
+                                .font(.title2)
+                                .fontWeight(.regular)
+                                .foregroundColor(.primary)
+                        }.sharedBackgroundVisibility(.hidden)
+                    } else {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text(username)
+                                .fixedSize()
+                                .font(.title2)
+                                .fontWeight(.regular)
+                                .foregroundColor(.primary)
+                        }
                     }
+                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
                             Image(systemName: "slider.horizontal.3")
