@@ -10,15 +10,20 @@ import SwiftUI
 import Foundation
 import NotificationCenter
 
-class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+@Observable
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     let center = UNUserNotificationCenter.current()
     
-    @Published var showToast: Bool = false
-    @Published var inMessageView: Bool = false
-    @Published var toastPosition: DisplayPosition = .bottom
-    @Published var toastContent: ToastContent = ToastContent(view: { AnyView(EmptyView()) })
+    var isShowing: Bool = false
+    var inMessageView: Bool = false
     
+    // Notification Queue
+    var queue: [NotificationMetadata] = []
+    var currentNotification: NotificationMetadata?
+    private var dismissTask: Task<Void, Never>?
+    
+    @ObservationIgnored
     @AppStorage("deviceToken") private var dToken: String?
     
     private var userObserver = UserObserver()
@@ -29,6 +34,65 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     override init() {
         super.init()
         center.delegate = self
+    }
+    
+    // Handles inserting new note and triggering queue processing
+    func show(_ notification: NotificationMetadata) {
+        queue.append(notification)
+        
+        if currentNotification == nil {
+            processQueue()
+        }
+    }
+    
+    // Process our notiication queue
+    private func processQueue() {
+        guard !queue.isEmpty else {
+            currentNotification = nil
+            isShowing = false
+            return
+        }
+        
+        let notification = queue.removeFirst()
+        currentNotification = notification
+        
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+            isShowing = true
+        }
+        
+        // Auto-dismiss after 2 seconds (adjustable)
+        dismissTask?.cancel()
+        dismissTask = Task {
+            try? await Task.sleep(for: .seconds(2))
+            
+            if !Task.isCancelled {
+                dismiss()
+            }
+        }
+    }
+    
+    // Handle in-app notification dismissal
+    func dismiss() {
+        dismissTask?.cancel()
+        
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            isShowing = false
+        }
+        
+        // Process next in queue after animation
+        Task {
+            try? await Task.sleep(for: .milliseconds(350))
+            processQueue()
+        }
+    }
+    
+    // Handle in-app notification interaction here
+    func handleTap() {
+        
+        // Handle your navigation here
+        // You might want to inject a navigation handler or use a coordinator
+        
+        dismiss()
     }
     
     // Request alert sound and badge notifications
@@ -63,60 +127,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
     }
     
-    // Sets a local notification to remind users to head to the event
-    func setEventLocalNotification(_ event: Event, minutesBefore: Int = 30) async {
-        do {
-            guard try await checkAuthorizationStatus() else { return }
-            
-            let subtitles = [
-                "Time to make your way to the venue. ",
-                "Get ready—the event kicks off shortly!",
-                "The countdown is almost over—see you there!",
-                "Don’t be late! Head to the event now.",
-                "It’s almost game time—make your way over!",
-                "The action begins soon—get moving!",
-                "Your event is about to start—let’s go!",
-                "Final call—time to head out!",
-                "The excitement is about to begin!",
-                "See you soon—the event starts shortly!"
-            ]
-            
-            // Create notification content
-            let content = UNMutableNotificationContent()
-            content.title = "\(event.title) is starting soon!"
-            content.body = subtitles.randomElement() ?? "Get ready—the event starts soon!"
-            content.sound = UNNotificationSound.default
-            
-            // Calculate the time 'minutesBefore' minutes before the specified date
-            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: event.startTime)!
-            
-            // Extract date components from the early reminder time
-            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: earlyReminderTime)
-            
-            // Create trigger with the date components
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-            
-            // Create request with a unique identifier
-            let identifier = event.id
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
-            try await center.add(request)
-        } catch {
-            log.error("Error scheduling local notification: \(error)")
-        }
-    }
-    
-    // Removes the local notification
-    func removeEventLocalNotification(_ id: String) async {
-        do {
-            guard try await checkAuthorizationStatus() else { return }
-            // Remove the specific notification with the given identifier
-            center.removePendingNotificationRequests(withIdentifiers: [id])
-        } catch {
-            log.error("Error removing local notification: \(error)")
-        }
-    }
-    
     // This method is called when the user interacts with a notification (taps on it).
     // You can use this method to handle actions associated with the notification.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -128,17 +138,26 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         completionHandler()
     }
     
+    // This method is called for handling notiications when the app is opened
+    // We will have our own toast system to show notifications internally
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
         } else {
-            completionHandler([.sound])
-            // Handle Notifications in App
-//            let userInfo = notification.request.content.userInfo
-//            let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: userInfo)
-//            ToastManager.shared.sendNotification(note: note)
+            do {
+                // Grab notification data
+                guard let data = try NotificationMetadata(from: notification) else {
+                    return
+                }
+                completionHandler([.sound])
+                show(data)
+            } catch {
+                log.error("Failed to parse notification data. Error: \(error.localizedDescription)")
+                completionHandler([])
+                return
+            }
         }
     }
 }

@@ -193,6 +193,8 @@
 		5D38BDA22C169FF4003EEF90 /* LogListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BDA12C169FF4003EEF90 /* LogListItem.swift */; };
 		5D38BDA42C16A036003EEF90 /* SystemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D38BDA32C16A036003EEF90 /* SystemModels.swift */; };
 		5D38BDC32C174372003EEF90 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5D38BDC22C174372003EEF90 /* FirebaseAuth */; };
+		5D3C7FD42E4CA942005C42D7 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C7FD32E4CA942005C42D7 /* NotificationView.swift */; };
+		5D3C7FD62E4D67FB005C42D7 /* ReportNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C7FD52E4D67FB005C42D7 /* ReportNotificationToast.swift */; };
 		5D3E6F652E0DD0CC005225FE /* WorkoutHeatmapMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E6F642E0DD0CC005225FE /* WorkoutHeatmapMapView.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
@@ -446,7 +448,6 @@
 		5D92BA942C834C1800B19BD4 /* MetadataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA922C834C1800B19BD4 /* MetadataModels.swift */; };
 		5D92BA982C83692B00B19BD4 /* EventNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */; };
 		5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */; };
-		5D92BA9C2C840B5300B19BD4 /* StatusNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */; };
 		5D92BA9E2C840CFF00B19BD4 /* MessageNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */; };
 		5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */; };
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
@@ -927,6 +928,8 @@
 		5D38BD9E2C169B24003EEF90 /* LogViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewer.swift; sourceTree = "<group>"; };
 		5D38BDA12C169FF4003EEF90 /* LogListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogListItem.swift; sourceTree = "<group>"; };
 		5D38BDA32C16A036003EEF90 /* SystemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemModels.swift; sourceTree = "<group>"; };
+		5D3C7FD32E4CA942005C42D7 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		5D3C7FD52E4D67FB005C42D7 /* ReportNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNotificationToast.swift; sourceTree = "<group>"; };
 		5D3E6F642E0DD0CC005225FE /* WorkoutHeatmapMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeatmapMapView.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
@@ -1018,7 +1021,6 @@
 		5D92BA922C834C1800B19BD4 /* MetadataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataModels.swift; sourceTree = "<group>"; };
 		5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotificationToast.swift; sourceTree = "<group>"; };
 		5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNotificationToast.swift; sourceTree = "<group>"; };
-		5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusNotificationToast.swift; sourceTree = "<group>"; };
 		5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationToast.swift; sourceTree = "<group>"; };
 		5D9557A32A6C5E3F006A1EF8 /* FindingEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindingEvents.swift; sourceTree = "<group>"; };
 		5D9557A52A6C907D006A1EF8 /* RSVP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVP.swift; sourceTree = "<group>"; };
@@ -1513,10 +1515,11 @@
 			children = (
 				5D6F322B2C7C324E007DB25D /* ToastView.swift */,
 				5D6F322D2C7C370A007DB25D /* ToastModifier.swift */,
+				5D3C7FD32E4CA942005C42D7 /* NotificationView.swift */,
 				5D92BA902C82D0D600B19BD4 /* PostNotificationToast.swift */,
 				5D92BA972C83692B00B19BD4 /* EventNotificationToast.swift */,
 				5D92BA992C83FDDB00B19BD4 /* GroupNotificationToast.swift */,
-				5D92BA9B2C840B5300B19BD4 /* StatusNotificationToast.swift */,
+				5D3C7FD52E4D67FB005C42D7 /* ReportNotificationToast.swift */,
 				5D92BA9D2C840CFF00B19BD4 /* MessageNotificationToast.swift */,
 			);
 			path = Toast;
@@ -2115,14 +2118,14 @@
 				5F1329B72A26F02200B31170 /* ClubModels.swift */,
 				5FF49CB92A2BE92100FAA4DA /* PostModels.swift */,
 				5FF2A0262A380534009234AD /* ChatModels.swift */,
+				5D666AA22BF91B5A001EE754 /* ImageModels.swift */,
+				5D389CC82DBD4E620095C1E6 /* CacheModels.swift */,
+				5D38BDA32C16A036003EEF90 /* SystemModels.swift */,
+				5D18BD172B391D9000F90777 /* GenericModels.swift */,
+				5D92BA922C834C1800B19BD4 /* MetadataModels.swift */,
 				5DBB94CF2B05B1830031876D /* NotificationModels.swift */,
 				5DBB94D52B0D27920031876D /* OrganizationModels.swift */,
-				5D18BD172B391D9000F90777 /* GenericModels.swift */,
 				5DC468C72B9FD6830023353D /* ManagementModels.swift */,
-				5D666AA22BF91B5A001EE754 /* ImageModels.swift */,
-				5D38BDA32C16A036003EEF90 /* SystemModels.swift */,
-				5D92BA922C834C1800B19BD4 /* MetadataModels.swift */,
-				5D389CC82DBD4E620095C1E6 /* CacheModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3081,6 +3084,7 @@
 				5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */,
 				9A81B62B2924A701009CA6ED /* NewClubApplication.swift in Sources */,
 				5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */,
+				5D3C7FD62E4D67FB005C42D7 /* ReportNotificationToast.swift in Sources */,
 				9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */,
 				5D76D36F2C79632D00846382 /* HomeRouter.swift in Sources */,
 				5D45B5B62D9CE36600AB24AC /* TagView.swift in Sources */,
@@ -3184,6 +3188,7 @@
 				5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */,
 				5D204B462DA1F73400B67F5D /* LocationUsage.swift in Sources */,
 				5D2DEFC62B27EF060082FE73 /* EventOrganizers.swift in Sources */,
+				5D3C7FD42E4CA942005C42D7 /* NotificationView.swift in Sources */,
 				5D4B0A622D96F37C00475A0C /* EventComments.swift in Sources */,
 				5DBB94CD2B0326300031876D /* NewGroup.swift in Sources */,
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
@@ -3346,7 +3351,6 @@
 				5D18BD242B3A1A6A00F90777 /* EditTournamentEvent.swift in Sources */,
 				5DD751BE2D5E9727000B0640 /* SportsPicker.swift in Sources */,
 				5DF945B22BFC706100BE3C63 /* UserBlockingConfirmation.swift in Sources */,
-				5D92BA9C2C840B5300B19BD4 /* StatusNotificationToast.swift in Sources */,
 				5D314CA22C33ADBF00F99676 /* OrganizationView.swift in Sources */,
 				5D20625C2B142D6900A9D408 /* ManagerView.swift in Sources */,
 				5D666A932BF69715001EE754 /* CropModels.swift in Sources */,
@@ -3825,7 +3829,7 @@
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.11.0;
+				minimumVersion = 8.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

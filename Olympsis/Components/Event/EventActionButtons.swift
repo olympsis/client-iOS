@@ -69,7 +69,6 @@ struct EventActionButtons: View {
                 event.participants.append(participant)
                 
                 handleSuccess()
-                await notificationManager.setEventLocalNotification(event)
                 guard let extLink = event.externalLink,
                       let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
                     return
@@ -101,7 +100,6 @@ struct EventActionButtons: View {
             }
             
             event.participants.removeAll(where: { $0.user?.uuid == uuid })
-            await notificationManager.removeEventLocalNotification(event.id)
             handleSuccess()
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NotificationCenter
 
 struct OlympsisNotification: Codable {
     var title: String
@@ -64,5 +65,80 @@ struct NotificationItemListResponse: Decodable {
         case unreadCount = "unread_count"
         case totalNotifications = "total_notifications"
         case notifications
+    }
+}
+
+enum NotificationType: String, CaseIterable {
+    case newClubApplication = "new_club_application"
+    case clubApplicationUpdate = "club_application_update"
+    case clubRankingChange = "club_ranking_change"
+    case clubSuspension = "club_suspension"
+    case clubExpulsion = "club_expulsion"
+    case memberReport = "member_report"
+    
+    case postApprovalRequest = "post_approval_request"
+    case postApprovalRequestUpdate = "post_approval_request_update"
+    
+    case newPost = "new_post"
+    case postLike = "post_like"
+    case postComment = "post_comment"
+    case postReport = "post_report"
+    case postCommentReport = "post_comment_report"
+    
+    case newEvent = "new_event"
+    case eventComment = "event_comment"
+    case eventParticipantUpdate = "event_participant_update"
+    case eventReminder = "event_reminder"
+    
+    case dailyEventSummary = "daily_event_summary"
+    case weeklyEventSummary = "weekly_event_summary"
+    
+    case newAnnouncement = "new_announcement"
+    
+    case directMessage = "direct_message"
+    case groupMessage = "group_message"
+    case removedFromGroup = "removed_from_group"
+}
+
+struct AppNotification {
+    let id = UUID()
+    var type: NotificationType
+    let title: String
+    let body: String
+    
+    var clubID: String?
+    var postID: String?
+    var groupID: String?
+    var eventID: String?
+    let position: TOAST_POSITION
+    
+    init(type: NotificationType, title: String, body: String, clubID: String? = nil, postID: String? = nil, groupID: String? = nil, eventID: String? = nil) {
+        self.type = type
+        self.title = title
+        self.body = body
+        
+        self.clubID = clubID
+        self.postID = postID
+        self.groupID = groupID
+        self.eventID = eventID
+        
+        self.position = .top
+    }
+    
+    init?(from notification: UNNotification) {
+        let userInfo = notification.request.content.userInfo
+        guard let _type = userInfo["type"] as? String,
+              let noteType = NotificationType(rawValue: _type) else {
+            return nil
+        }
+        
+        self.type = noteType
+        self.position = .top
+        self.title = notification.request.content.title
+        self.body = notification.request.content.body
+        
+        self.clubID = userInfo["club_id"] as? String
+        self.postID = userInfo["post_id"] as? String
+        self.eventID = userInfo["event_id"] as? String
     }
 }

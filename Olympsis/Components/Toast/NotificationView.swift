@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct NotificationView: View {
+    var metadata: NotificationMetadata
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        switch metadata.type {
+        case .newClubApplication, .clubApplicationUpdate, .clubRankingChange, .clubSuspension, .clubExpulsion, .postApprovalRequest, .postApprovalRequestUpdate:
+            GroupNotificationToast(metadata: metadata)
+        case .newEvent, .eventComment, .eventParticipantUpdate, .eventReminder, .dailyEventSummary, .weeklyEventSummary:
+            EventNotificationToast(metadata: metadata)
+        case .newPost, .postLike, .postComment, .newAnnouncement:
+            PostNotificationToast(metadata: metadata)
+        case .memberReport, .postReport, .postCommentReport:
+            ReportNotificationToast(metadata: metadata)
+        case .directMessage, .groupMessage, .removedFromGroup:
+            MessageNotificationToast(metadata: metadata)
+        }
     }
 }
 
 #Preview {
-    NotificationView()
+    let metadata = NotificationMetadata(type: .newPost, userID: UUID().uuidString, username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC")
+    NotificationView(metadata: metadata)
 }

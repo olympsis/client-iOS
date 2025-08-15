@@ -49,13 +49,6 @@ struct PostNotificationToast: View {
         return generateImageURL(postImg)
     }
     
-    private var timestamp: Int {
-        guard let time = metadata.timestamp else {
-            return Int(Date.now.timeIntervalSince1970)
-        }
-        return time
-    }
-    
     private let size: CGFloat = 40
     
     var body: some View {

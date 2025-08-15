@@ -603,7 +603,6 @@ enum POST_TOAST_TYPES: String {
 enum EVENT_TOAST_TYPES: String {
     case newEvent = "new_event"
     case eventInvite = "event_invite"
-    case eventsSummary = "events_summary"
     case eventStatus = "event_status"
     case eventParticipantStatus = "event_participant_status"
 }
