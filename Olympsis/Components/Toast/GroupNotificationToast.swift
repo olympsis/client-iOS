@@ -10,14 +10,20 @@ import Kingfisher
 
 struct GroupNotificationToast: View {
     
-    var type: GROUP_TOAST_TYPES
-    var content: String
     var metadata: NotificationMetadata
-    
-    init(content: String, metadata: NotificationMetadata) {
-        self.type = GROUP_TOAST_TYPES(rawValue: metadata.type) ?? .applicationStatus
-        self.content = content
-        self.metadata = metadata
+    private var content: String {
+        switch metadata.type {
+        case .newClubApplication:
+            return " applied to your club."
+        case .clubApplicationUpdate:
+            return "Your application was approved!"
+        case .clubExpulsion:
+            return "You've been kicked out of the club."
+        case .clubSuspension:
+            return "You've been suspended for 24 hours."
+        default:
+            return "Your rank has changed."
+        }
     }
     
     var imageURL: URL? {
@@ -41,22 +47,12 @@ struct GroupNotificationToast: View {
         return username
     }
     
-    var timestamp: Int {
-        guard let time = metadata.timestamp else {
-            return Int(Date.now.timeIntervalSince1970)
-        }
-        return time
-    }
-    
     let size: CGFloat = 40
-    
-    @State private var groupImageFailed = false
-    
     
     var body: some View {
         Group {
-            switch type {
-            case .newApplication:
+            switch metadata.type {
+            case .newClubApplication:
                 HStack(alignment: .top, spacing: 10) {
                     KFImage(imageURL)
                         .placeholder({
@@ -67,37 +63,32 @@ struct GroupNotificationToast: View {
                                     ProgressView()
                                 }
                         })
-                        .onFailure { _ in
-                            groupImageFailed = true
-                        }
+                        .onFailureView({
+                            Circle()
+                                .frame(width: size, height: size)
+                                .foregroundStyle(Color.Background.tertiary)
+                                .overlay {
+                                    Image(systemName: "person.3.fill")
+                                        .imageScale(.small)
+                                        .foregroundStyle(Color.gray)
+                                }
+                        })
                         .cacheOriginalImage()
                         .setProcessor(postUserImageNotificationProcessor())
                         .resizable()
                         .clipShape(Circle())
                         .frame(width: size, height: size)
-                        .overlay {
-                            if groupImageFailed {
-                                Circle()
-                                    .frame(width: size, height: size)
-                                    .overlay {
-                                        Image(systemName: "person.3.fill")
-                                            .imageScale(.small)
-                                            .foregroundStyle(Color.foreground)
-                                    }
-                            }
-                        }
-                    
                     
                     Group {
                         Text("[\(groupName)] \(username)")
                             .fontWeight(.bold)
                         +
-                        Text(" applied to your club.")
+                        Text(content)
                     }.frame(minHeight: 40)
                     
                     Spacer()
                 }
-            case .applicationStatus, .newReport:
+            default:
                 HStack(alignment: .top, spacing: 10) {
                     KFImage(imageURL)
                         .placeholder({
@@ -108,32 +99,28 @@ struct GroupNotificationToast: View {
                                     ProgressView()
                                 }
                         })
-                        .onFailure { _ in
-                            groupImageFailed = true
-                        }
+                        .onFailureView({
+                            Circle()
+                                .frame(width: size, height: size)
+                                .foregroundStyle(Color.Background.tertiary)
+                                .overlay {
+                                    Image(systemName: "person.3.fill")
+                                        .imageScale(.small)
+                                        .foregroundStyle(Color.gray)
+                                }
+                        })
                         .cacheOriginalImage()
                         .setProcessor(postUserImageNotificationProcessor())
                         .resizable()
                         .clipShape(Circle())
                         .frame(width: size, height: size)
-                        .overlay {
-                            if groupImageFailed {
-                                Circle()
-                                    .frame(width: size, height: size)
-                                    .overlay {
-                                        Image(systemName: "person.3.fill")
-                                            .imageScale(.small)
-                                            .foregroundStyle(Color.foreground)
-                                    }
-                            }
-                        }
                     
                     
                     Group {
                         Text("[\(groupName)]")
                             .fontWeight(.bold)
                         +
-                        Text(" accepted your applciation")
+                        Text(" \(content)")
                     }.frame(minHeight: 40)
                     
                     Spacer()
@@ -144,6 +131,15 @@ struct GroupNotificationToast: View {
 }
 
 #Preview {
-    let metadata = NotificationMetadata(userId: UUID().uuidString,  username: "johndoe", postId: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg", timestamp: 1725008123)
-    GroupNotificationToast(content: "Check out 6 events happening in your area that you might enjoy!", metadata: metadata)
+    let metadata = NotificationMetadata(type: .newClubApplication, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
+    
+    let status = NotificationMetadata(type: .clubApplicationUpdate, userID: UUID().uuidString,  username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
+    
+    RoundedRectangle(cornerRadius: 10)
+        .frame(height: 60)
+        .padding(.horizontal, 10)
+        .foregroundStyle(Color.Background.secondary)
+        .overlay {
+            GroupNotificationToast(metadata: status)
+        }
 }
