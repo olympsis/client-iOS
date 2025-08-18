@@ -227,6 +227,6 @@ struct EventNotificationToast: View {
         .padding(.horizontal, 10)
         .foregroundStyle(Color.Background.secondary)
         .overlay {
-            EventNotificationToast(metadata: participantData)
+            EventNotificationToast(metadata: metadata)
         }
 }

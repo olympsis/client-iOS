@@ -21,7 +21,7 @@ struct ViewContainer: View {
     @StateObject private var eventRouter = EventRouter()
     @StateObject private var profileRouter = ProfileRouter()
     
-    @StateObject private var toastManager = ToastManager()
+//    @StateObject private var toastManager = ToastManager()
     @Environment(SessionStore.self) private var session
 
     func handleRoute(_ route: ROUTES) {
@@ -106,6 +106,7 @@ struct ViewContainer: View {
             
             handleRoute(route)
         })
+        .notificationSystem(manager: session.notificationsManager)
         .task {
             session.state = .loading
             await session.CheckIn()

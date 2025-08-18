@@ -63,7 +63,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         // Auto-dismiss after 2 seconds (adjustable)
         dismissTask?.cancel()
         dismissTask = Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(for: .seconds(3))
             
             if !Task.isCancelled {
                 dismiss()
