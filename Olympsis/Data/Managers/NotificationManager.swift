@@ -13,6 +13,8 @@ import NotificationCenter
 @Observable
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
+    static let shared = NotificationManager()
+    
     let center = UNUserNotificationCenter.current()
     
     var isShowing: Bool = false
@@ -23,15 +25,22 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     var currentNotification: NotificationMetadata?
     private var dismissTask: Task<Void, Never>?
     
+    // Track processed notifications to prevent duplicates
+    private var processedNotifications = Set<String>()
+    private var lastCleanupTime = Date()
+    
     @ObservationIgnored
     @AppStorage("deviceToken") private var dToken: String?
+    
+    // Navigation handler closure
+    var navigationHandler: ((URL) -> Void)?
     
     private var userObserver = UserObserver()
     private var cacheService = CacheService()
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
     
-    override init() {
+    private override init() {
         super.init()
         center.delegate = self
     }
@@ -60,7 +69,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             isShowing = true
         }
         
-        // Auto-dismiss after 2 seconds (adjustable)
+        // Auto-dismiss after 3 seconds (adjustable)
         dismissTask?.cancel()
         dismissTask = Task {
             try? await Task.sleep(for: .seconds(3))
@@ -89,10 +98,44 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // Handle in-app notification interaction here
     func handleTap() {
         
-        // Handle your navigation here
-        // You might want to inject a navigation handler or use a coordinator
+        // Event Navigation
+        if let eventID = currentNotification?.eventID,
+            let url = URL(string: "olympsis://events?ID=\(eventID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
+        
+        // Groups Navigation
+        if let groupID = currentNotification?.groupID,
+           let url = URL(string: "olympsis://groups?ID=\(groupID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
+        
+        // Post Navigation
+        if let groupID = currentNotification?.groupID,
+           let postID = currentNotification?.postID,
+           let url = URL(string: "olympsis://posts/?groupID=\(groupID)&?ID=\(postID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
         
         dismiss()
+    }
+    
+    // Clean up old notification IDs to prevent memory leaks
+    private func cleanupOldNotifications() {
+        let now = Date()
+        let fiveMinutesAgo = now.timeIntervalSince(lastCleanupTime)
+        
+        // Only cleanup every 5 minutes to avoid excessive processing
+        if fiveMinutesAgo > 300 {
+            processedNotifications.removeAll()
+            lastCleanupTime = now
+        }
     }
     
     // Request alert sound and badge notifications
@@ -143,12 +186,27 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let notificationId = notification.request.identifier
+        
+        // Check for duplicate notification
+        if processedNotifications.contains(notificationId) {
+            completionHandler([])
+            return
+        }
+        
+        // Clean up old notification IDs (older than 5 minutes)
+        cleanupOldNotifications()
+        
+        // Mark as processed
+        processedNotifications.insert(notificationId)
+        
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
         } else {
             do {
                 // Grab notification data
                 guard let data = try NotificationMetadata(from: notification) else {
+                    log.error("❌ Failed to create NotificationMetadata")
                     return
                 }
                 completionHandler([.sound])

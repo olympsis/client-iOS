@@ -34,7 +34,7 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
         return ROUTES.groups()
         
     case URL_ACTIONS.open_events.rawValue:
-        guard let id = components.queryItems?.first(where: { $0.name == "id" })?.value else {
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
             return ROUTES.events()
         }
         return ROUTES.events(id: id)
@@ -43,14 +43,14 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
         return ROUTES.profile
     
     case URL_ACTIONS.open_post_view.rawValue:
-        guard let id = components.queryItems?.first(where: { $0.name == "id" })?.value else {
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
             print("Invalid URL: no post ID")
             return ROUTES.home()
         }
         return ROUTES.home(postId: id)
         
     case URL_ACTIONS.open_event_view.rawValue:
-        guard let id = components.queryItems?.first(where: { $0.name == "id" })?.value else {
+        guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
             print("Invalid URL: no event ID")
             return ROUTES.events()
         }

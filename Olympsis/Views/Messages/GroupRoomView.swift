@@ -134,7 +134,7 @@ struct GroupRoomView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{
                         Task {
-                            session.notificationsManager.inMessageView = false
+                            NotificationManager.shared.inMessageView = false
                             await viewModel.disconnect()
                             dismiss()
                         }
@@ -154,12 +154,12 @@ struct GroupRoomView: View {
                 }
             }
             .task {
-                session.notificationsManager.inMessageView = true
+                NotificationManager.shared.inMessageView = true
                 await viewModel.loadInitialData()
                 await viewModel.startWebSocketConnection()
             }
             .onDisappear {
-                session.notificationsManager.inMessageView = false
+                NotificationManager.shared.inMessageView = false
                 Task {
                     await viewModel.disconnect()
                 }

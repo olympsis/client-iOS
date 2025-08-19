@@ -83,7 +83,6 @@ class SessionStore {
     var locationManager = LocationManager()
     var managementObserver = ManagementObserver()
     var notificationService = NotificationService()
-    var notificationsManager = NotificationManager()
 
     // This variable helps us keep track of the user's current location. It also includes a fallback to a location
     // This fallback location is a second location in case we are unable to find the user's current location
@@ -143,8 +142,6 @@ class SessionStore {
     private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     init() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.delegate = notificationsManager
         authStatus = .unknown
         user = cacheService.fetchUser()
         
@@ -184,7 +181,7 @@ class SessionStore {
     
     func updateNotifications() async {
         do {
-            if try await notificationsManager.checkAuthorizationStatus() {
+            if try await NotificationManager.shared.checkAuthorizationStatus() {
                 guard let dToken = dToken else {
                     log.error("Failed to grab notification token from cache.")
                     return
@@ -319,11 +316,12 @@ class SessionStore {
     }
     
     func getNotifications() async {
-        do {
-            self.notifications = try await notificationService.GetNotifications().notifications
-        } catch {
-            log.error("Failed to get notifications. Error: \(error)")
-        }
+        self.notifications = []
+//        do {
+//            self.notifications = try await notificationService.GetNotifications().notifications
+//        } catch {
+//            log.error("Failed to get notifications. Error: \(error)")
+//        }
     }
     
     func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {

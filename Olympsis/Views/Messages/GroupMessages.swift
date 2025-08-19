@@ -260,11 +260,11 @@ struct GroupMessages: View {
                 }
             }
             .task {
-                session.notificationsManager.inMessageView = true
+                NotificationManager.shared.inMessageView = true
                 await fetchChatRooms()
             }
             .onDisappear {
-                session.notificationsManager.inMessageView = false
+                NotificationManager.shared.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 GroupNewRoom(rooms: $rooms)

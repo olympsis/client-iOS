@@ -106,7 +106,15 @@ struct ViewContainer: View {
             
             handleRoute(route)
         })
-        .notificationSystem(manager: session.notificationsManager)
+        .notificationSystem(manager: NotificationManager.shared)
+        .onAppear {
+            // Set up navigation handler for notifications
+            NotificationManager.shared.navigationHandler = { url in
+                if let route = handleInternalURL(url) {
+                    handleRoute(route)
+                }
+            }
+        }
         .task {
             session.state = .loading
             await session.CheckIn()

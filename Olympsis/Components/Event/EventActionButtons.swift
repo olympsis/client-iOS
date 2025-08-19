@@ -23,8 +23,6 @@ struct EventActionButtons: View {
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
-    private let notificationManager = NotificationManager()
-    
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
     }
