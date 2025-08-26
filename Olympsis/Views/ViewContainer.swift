@@ -21,7 +21,6 @@ struct ViewContainer: View {
     @StateObject private var eventRouter = EventRouter()
     @StateObject private var profileRouter = ProfileRouter()
     
-//    @StateObject private var toastManager = ToastManager()
     @Environment(SessionStore.self) private var session
 
     func handleRoute(_ route: ROUTES) {
@@ -117,7 +116,7 @@ struct ViewContainer: View {
         }
         .task {
             session.state = .loading
-            await session.CheckIn()
+            await session.checkIn()
             guard let user = session.user else {
                 await session.logout()
                 return

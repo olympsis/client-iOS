@@ -250,7 +250,7 @@ class SessionStore {
         }
     }
     
-    func CheckIn() async {
+    func checkIn() async {
         
         clubs = []
         orgs = []
@@ -552,10 +552,8 @@ class SessionStore {
     }
     
     /// Logout user from application
-    ///
-    /// Clears cache from all data
-    ///
-    /// Calls firebase API to sign out user
+    /// - Clears cache from all data
+    /// - Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
         
@@ -571,14 +569,11 @@ class SessionStore {
         return
     }
     
-    
     /// Deletes the user's account from application
-    ///
-    /// Makes a call to firebase servers to delete account.
-    ///
-    /// Makes a call to Olympsis servers to delete account
-    ///
-    /// Clears cache of all data
+    /// - Makes a call to firebase servers to delete account.
+    /// - Makes a call to Olympsis servers to delete account
+    /// - Clears cache of all data
+    /// - Returns: a boolean of wether or not we were successful in deleting the user's account
     func deleteAccount() async -> Bool {
         do {
             guard let user = Auth.auth().currentUser else { return false }

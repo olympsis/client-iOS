@@ -74,7 +74,7 @@ class EventFormatConfig: Codable {
         isCompetitionGame = try container.decodeIfPresent(Bool.self, forKey: .isCompetitionGame)
         parentCompetitionID = try container.decodeIfPresent(String.self, forKey: .parentCompetitionID)
         competitionState = try container.decodeIfPresent(String.self, forKey: .competitionState)
-        
+
         if let formatStrings = try container.decodeIfPresent([String].self, forKey: .formats) {
             formats = formatStrings.compactMap { CompetitionFormats.init(rawValue: $0) }
         }

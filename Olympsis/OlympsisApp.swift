@@ -22,7 +22,6 @@ struct OlympsisApp: App {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @State private var sessionStore = SessionStore()
-    @StateObject private var toastManager = ToastManager()
     @StateObject private var quickActionsManager = QuickActionsManager.shared
     
     @Environment(\.scenePhase) private var scenePhase
@@ -82,7 +81,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 
-// MARK: - Handle Quick Actions & Universal Links
+// MARK: - Handle Quick Actions
 class CustomSceneDelegate: UIResponder, UIWindowSceneDelegate {
     let logger = Logger(subsystem: "com.olympsis.client", category: "scene_delegate")
     
