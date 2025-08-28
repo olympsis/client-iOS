@@ -86,7 +86,7 @@ struct EventListItem: View {
     }
     
     var body: some View {
-        Button(action:{ self.showDetails.toggle() }) {
+        NavigationLink(destination: EventView(event: event).environment(event).environment(session)) {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
@@ -225,11 +225,7 @@ struct EventListItem: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: event)
-                .environment(event)
-                .presentationDetents([.large])
-        }
+        .navigationLinkIndicatorVisibility(.hidden)
         .task {
             venueState = .loading
             venues = await session.fetchVenues(in: venueDescriptors)

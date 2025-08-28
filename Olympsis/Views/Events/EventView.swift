@@ -14,7 +14,7 @@ import CoreLocation
 /// A view that shows more detail about a specific event
 struct EventView: View {
     
-    @State var event: Event
+    var event: Event
     
     @State private var venues = [Venue]()
     @State private var venuesTarget: Int = 0
@@ -61,134 +61,102 @@ struct EventView: View {
     }
     
     var body: some View {
-        VStack {
-            
-            // MARK: - Event Top Bar
-            HStack(alignment: .center) {
-                Text(event.title)
-                    .lineLimit(1)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .minimumScaleFactor(0.5)
-
-                Spacer()
-                
-                Button(action: { self.showSharingMenu = true }) {
-                    Image(systemName: "square.and.arrow.up")
-                        .imageScale(.large)
-                }
-                .padding(.horizontal, 10)
-                .clipShape(Rectangle())
-                .tint(Color.foreground)
-                
-                Button(action:{ dismiss() }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .padding(.top, 5)
-                        .imageScale(.large)
-                }
-                .clipShape(Circle())
-                .tint(Color.foreground)
-
-            }.padding([.top, .horizontal])
-            
-            
-            ScrollView(showsIndicators: false) {
-                ScrollViewReader { proxy in
-                    LazyVStack(alignment: .leading) {
-                        
-                        // MARK: - Event Quick Info
-                        EventQuickInfo(
-                            event: event,
-                            venues: $venues,
-                            venuesTarget: $venuesTarget,
-                            venuesState: $venueState
-                        )
-                        .padding(.bottom, 10)
-                        .id(1)
-                        
-                        // MARK: - Event Media
-                        EventMedia(event: event)
-                            .id(2)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        
-                        // MARK: - Detail/Body
-                        VStack(alignment: .leading) {
+        ScrollView(showsIndicators: false) {
+            ScrollViewReader { proxy in
+                LazyVStack(alignment: .leading) {
+                    
+                    // MARK: - Event Quick Info
+                    EventQuickInfo(
+                        event: event,
+                        venues: $venues,
+                        venuesTarget: $venuesTarget,
+                        venuesState: $venueState
+                    )
+                    .padding(.bottom, 10)
+                    .id(1)
+                    
+                    // MARK: - Event Media
+                    EventMedia(event: event)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .id(2)
+                    
+                    // MARK: - Detail/Body
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(String(localized: "event-details-title", table: "Events"))
+                                .font(.title2)
+                                .bold()
+                            
+                           Spacer()
+                        }
+                        Text(event.body)
+                    }
+                    .padding(.top, 10)
+                    .padding([.horizontal, .bottom])
+                    .id(3)
+                    
+                    if event.externalLink != nil {
+                        Button(action: { openExternalURL() }) {
                             HStack {
-                                Text(String(localized: "event-details-title", table: "Events"))
-                                    .font(.title2)
-                                    .bold()
+                                Image(systemName: "link")
+                                    .foregroundStyle(Color.Brand.tertiary)
                                 
-                               Spacer()
+                                Text("More event details may be available out of Olympsis. Please click on this message to learn more.")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.leading)
                             }
-                            Text(event.body)
-                        }
-                        .padding(.top, 10)
-                        .padding([.horizontal, .bottom])
-                        .id(3)
-                        
-                        if event.externalLink != nil {
-                            Button(action: { openExternalURL() }) {
-                                HStack {
-                                    Image(systemName: "link")
-                                        .foregroundStyle(Color.Brand.tertiary)
-                                    
-                                    Text("More event details may be available out of Olympsis. Please click on this message to learn more.")
-                                        .font(.caption)
-                                        .multilineTextAlignment(.leading)
-                                }
-                            }.padding([.horizontal, .bottom])
-                        }
-                        
-                        // MARK: - Action Buttons
-                        EventActionButtons(
-                            venues: $venues, 
-                            venueState: $venueState,
-                            clubs: $clubs,
-                            organizations: $organizations
-                        )
+                        }.padding([.horizontal, .bottom])
+                    }
+                    
+                    // MARK: - Action Buttons
+                    EventActionButtons(
+                        venues: $venues,
+                        venueState: $venueState,
+                        clubs: $clubs,
+                        organizations: $organizations
+                    )
+                    .environment(event)
+                    .id(4)
+                    
+                    // MARK: - Organizers
+                    EventOrganizers(event: event, clubs: $clubs, organizations: $organizations)
+                        .padding(.horizontal)
+                        .padding(.bottom, 3)
+                        .padding(.top)
+                        .redacted(reason: organizersState != .success ? .placeholder : [])
+                        .zIndex(1)
+                        .id(5)
+  
+                    
+                    // MARK: - Participants View
+                    EventParticipants(clubs: $clubs, organizations: $organizations)
+                        .environment(session)
                         .environment(event)
-                        .id(4)
-                        
-                        // MARK: - Organizers
-                        EventOrganizers(event: event, clubs: $clubs, organizations: $organizations)
-                            .padding(.horizontal)
-                            .padding(.bottom, 3)
-                            .padding(.top)
-                            .redacted(reason: organizersState != .success ? .placeholder : [])
-                            .zIndex(1)
-                            .id(5)
-      
-                        
-                        // MARK: - Participants View
-                        EventParticipants(clubs: $clubs, organizations: $organizations)
-                            .environment(session)
-                            .environment(event)
-                            .id(6)
-                        
-                        // MARK: - Competiton formats
-                        if let formats = event.formatConfig?.formats, !formats.isEmpty {
-                            EventFormatView(event: event)
-                        }
-                        
-                        // MARK: - Locations
-                        if canShowLocation {
-                            EventLocation(venues: $venues)
-                                .redacted(reason: venueState != .success ? .placeholder : [])
-                                .environment(event)
-                                .id(7)
-                        }
-                        
-                        // MARK: - Comments
-                        EventComments(clubs: $clubs, organizations: $organizations)
-                            .environment(event)
-                            .padding(.top)
-                            .id(8)
-                        
-                        Spacer(minLength: 50)
+                        .id(6)
+                    
+                    // MARK: - Competiton formats
+                    if let formats = event.formatConfig?.formats, !formats.isEmpty {
+                        EventFormatView(event: event)
                     }
-                    .onChange(of: venuesTarget) { _, newValue in
-                        proxy.scrollTo(newValue, anchor: .top)
+                    
+                    // MARK: - Locations
+                    if canShowLocation {
+                        EventLocation(venues: $venues)
+                            .redacted(reason: venueState != .success ? .placeholder : [])
+                            .environment(event)
+                            .id(7)
                     }
+                    
+                    // MARK: - Comments
+                    EventComments(clubs: $clubs, organizations: $organizations)
+                        .environment(event)
+                        .padding(.top)
+                        .id(8)
+                    
+                    Spacer(minLength: 50)
+                }
+                .onChange(of: venuesTarget) { _, newValue in
+                    proxy.scrollTo(newValue, anchor: .top)
                 }
             }
         }
@@ -201,12 +169,43 @@ struct EventView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
         }
+        .toolbarTitleDisplayMode(.inline)
+        .navigationTitle(Text(event.title))
+        .toolbar {
+//            if #available(iOS 26.0, *) {
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Text(event.title)
+//                        .fixedSize()
+//                        .lineLimit(1)
+//                        .minimumScaleFactor(0.5)
+//                        .font(.custom("Archivo-Bold", size: 30, relativeTo: .largeTitle))
+//                }.sharedBackgroundVisibility(.hidden)
+//            } else {
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Text(event.title)
+//                        .lineLimit(1)
+//                        .minimumScaleFactor(0.5)
+//                        .font(.custom("Archivo-Bold", size: 30, relativeTo: .largeTitle))
+//                }
+//            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { self.showSharingMenu = true }) {
+                    Image(systemName: "square.and.arrow.up")
+                        .imageScale(.medium)
+                }
+                .clipShape(Rectangle())
+                .tint(Color.foreground)
+            }
+        }
         .sheet(isPresented: $showSharingMenu, content: {
             ShareMenu(event: event, venue: venues[0], showToast: $showToast)
                 .presentationDetents([.height(170)])
         })
         .task {
-            // TODO: - I will want to make a synchronous call here
+            guard venueState == .pending,
+                  organizersState == .pending else { return }
+            
             venueState = .loading
             organizersState = .loading
             venues = await session.fetchVenues(in: event.venues)
@@ -218,7 +217,9 @@ struct EventView: View {
 }
 
 #Preview {
-    EventView(event: EVENTS[1])
-        .environment(EVENTS[1])
-        .environment(SessionStore())
+    NavigationStack {
+        EventView(event: EVENTS[1])
+            .environment(EVENTS[1])
+            .environment(SessionStore())
+    }
 }

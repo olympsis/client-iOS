@@ -13,7 +13,8 @@ struct ParticipantView: View {
     @State var participant: Participant
     
     private var imageURL: URL? {
-        guard let data = participant.user,
+        guard !participant.isAnonymous,
+            let data = participant.user,
               let img = data.imageURL else {
             return nil
         }
@@ -35,12 +36,41 @@ struct ParticipantView: View {
         }
     }
     
+    private var name: String {
+        guard let first = participant.user?.firstName,
+              let last = participant.user?.lastName else {
+            return "Olympsis User"
+        }
+        
+        return participant.isAnonymous ? "Anonymous User" : "\(first) \(last)"
+    }
+    
+    private var username: String {
+        guard let username = participant.user?.username else {
+            return "olympsis-user"
+        }
+        
+        return participant.isAnonymous ? "@anon-user" : "@\(username)"
+    }
+    
     var body: some View {
-        UserBadgeView(size: .medium, imageURL: imageURL)
-            .overlay {
-                Circle()
-                    .stroke(ringColor, lineWidth: 2)
+        HStack {
+            UserBadgeView(size: .small, imageURL: imageURL)
+                .overlay {
+                    Circle()
+                        .stroke(ringColor, lineWidth: 2)
+                }
+            
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(.callout)
+                    .fontWeight(.medium)
+                
+                Text(username)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
             }
+        }
     }
 }
 
