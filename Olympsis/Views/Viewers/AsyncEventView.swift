@@ -12,7 +12,6 @@ struct AsyncEventView: View {
 
     @State public var eventId: String
     @State private var event: Event?
-    @State private var title: String = "Event"
     @State private var state: VIEW_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
@@ -28,7 +27,6 @@ struct AsyncEventView: View {
             log.error("Failed to fetch event:\(eventId, privacy: .public)")
             return
         }
-        self.title = event.title
         self.event = event
         state = .success
     }
@@ -54,14 +52,13 @@ struct AsyncEventView: View {
                             }
                         }
                     }
-                    .navigationTitle(title)
+                    .navigationTitle("Event")
                     .navigationBarBackButtonHidden()
                     .navigationBarTitleDisplayMode(.inline)
             case .success:
                 if let event {
                     EventView(event: event)
                         .environment(event)
-                        .toolbar(.hidden, for: .navigationBar)
                 }
             case .failure:
                 VStack {
@@ -90,10 +87,8 @@ struct AsyncEventView: View {
                         }
                     }
                 }
-                .navigationTitle(title)
-                .navigationBarBackButtonHidden()
+                .navigationTitle("Event")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar(event != nil ? .hidden : .visible, for: .tabBar)
             }
         }
         .task {
