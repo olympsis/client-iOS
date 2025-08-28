@@ -53,8 +53,11 @@ struct ProfileMenu: View {
                     .padding(.horizontal)
                     .padding(.vertical, 10)
                     .onChange(of: toggleActivity) { _, newValue in
-                        withAnimation {
-                            hideActivities = newValue
+                        Task { @MainActor in
+                            withAnimation {
+                                hideActivities = newValue
+                            }
+                            _ = await session.workoutManager.requestHealthStoreAuthorization()
                         }
                     }
                     

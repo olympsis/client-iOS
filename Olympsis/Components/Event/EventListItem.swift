@@ -139,8 +139,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             .offset(x: 2, y: 8)
                         }
                         
@@ -190,8 +193,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             
                             // MARK: - Start Time
                             HStack {
@@ -209,8 +215,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                         }
                     }
                     .padding([.leading, .trailing], 7)
