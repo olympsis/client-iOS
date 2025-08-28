@@ -19,12 +19,14 @@ struct ProfileMenu: View {
     @State private var showAlert: Bool = false
     @State private var showDeleteView: Bool = false
     @State private var alertType: AlertType = .logout
+    @State private var toggleActivity: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
     @AppStorage("app_mode") private var appMode: APP_MODE?
     @AppStorage("app_state") private var appState: APP_STATE?
+    @AppStorage("hide_activities") private var hideActivities: Bool?
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -38,6 +40,24 @@ struct ProfileMenu: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack {
+                    Toggle(isOn: $toggleActivity) {
+                        VStack(alignment: .leading) {
+                            Text("Show Activities")
+                                .fontWeight(.medium)
+                            
+                            Text("Turn off to hide the Activities tab. Your workout data stays on device in Apple Health.")
+                                .font(.callout)
+                                .foregroundStyle(.gray)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                    .onChange(of: toggleActivity) { _, newValue in
+                        withAnimation {
+                            hideActivities = newValue
+                        }
+                    }
+                    
                     NavigationLink(destination: NotificationSettings().environment(session)) {
                         MenuLabel(icon: Image(systemName: "bell.fill"), text: String(localized: "setting-notifications", table: "Settings"))
                     }
@@ -111,6 +131,11 @@ struct ProfileMenu: View {
                 .navigationTitle(String(localized: "settings-title", table: "Settings"))
                 .navigationBarBackButtonHidden()
                 .navigationBarTitleDisplayMode(.inline)
+            }
+            .onAppear {
+                if let activity = hideActivities {
+                    toggleActivity = activity
+                }
             }
             .alert(isPresented: $showAlert) {
                 switch alertType {
