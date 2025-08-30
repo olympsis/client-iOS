@@ -46,7 +46,7 @@ struct GroupMessages: View {
     @MainActor
     func fetchChatRooms() async {
         state = .loading
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             log.error("Failed to find the selected group!")
             state = .failure
             return
@@ -260,11 +260,11 @@ struct GroupMessages: View {
                 }
             }
             .task {
-                session.notificationsManager.inMessageView = true
+                NotificationManager.shared.inMessageView = true
                 await fetchChatRooms()
             }
             .onDisappear {
-                session.notificationsManager.inMessageView = false
+                NotificationManager.shared.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 GroupNewRoom(rooms: $rooms)

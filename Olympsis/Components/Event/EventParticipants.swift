@@ -63,57 +63,7 @@ struct EventParticipants: View {
                 .fontWeight(.bold)
             
             ForEach(event.participants.prefix(3), id: \.id) { ptp in
-                HStack {
-                    if let url = ptp.user?.imageURL {
-                        UserBadgeView(size: .small, imageURL: generateImageURL(url))
-                        
-                        VStack(alignment: .leading) {
-                            if let firstName = ptp.user?.firstName,
-                               let lastName = ptp.user?.lastName {
-                                Text("\(firstName) \(lastName)")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            } else {
-                                Text("Olympsis User")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
-                            
-                            if let username = ptp.user?.username {
-                                Text("@\(username)")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            } else {
-                                Text("olympsis-user")
-                                    .font(.caption)
-                            }
-                        }
-                    } else {
-                        UserBadgeView(size: .small)
-                        
-                        VStack(alignment: .leading) {
-                            if let firstName = ptp.user?.firstName,
-                               let lastName = ptp.user?.lastName {
-                                Text("\(firstName) \(lastName)")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            } else {
-                                Text("Olympsis User")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
-                            
-                            if let username = ptp.user?.username {
-                                Text("@\(username)")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            } else {
-                                Text("olympsis-user")
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                }
+                ParticipantView(participant: ptp)
             }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
             if (event.participants.count > 3 && canShowParticipants) {
@@ -241,7 +191,6 @@ struct EventParticipantsViewExt: View {
             ForEach(participants, id: \.self) { p in
                 HStack {
                     ParticipantView(participant: p)
-                    Text(p.user?.username ?? "olympsis_user")
                     Spacer()
                     
                     if canRemoveParticipant(p) {

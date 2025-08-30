@@ -570,13 +570,8 @@ struct NotificationDevice: Codable, Hashable {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         // Convert Date objects to ISO strings
-        let createdAtString = dateFormatter.string(from: createdAt)
-        try container.encode(createdAtString, forKey: .createdAt)
-        
-        if let updatedAt = updatedAt {
-            let updatedAtString = dateFormatter.string(from: updatedAt)
-            try container.encode(updatedAtString, forKey: .updatedAt)
-        }
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
     }
     
     static func == (lhs: NotificationDevice, rhs: NotificationDevice) -> Bool {

@@ -62,10 +62,20 @@ struct Home: View {
             .disabled(session.state == .loading)
             .redacted(reason: session.state == .loading ? .placeholder : [])
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Olympsis")
-                        .textCase(.uppercase)
-                        .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Olympsis")
+                            .fixedSize()
+                            .textCase(.uppercase)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Olympsis")
+                            .fixedSize()
+                            .textCase(.uppercase)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                    }
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {

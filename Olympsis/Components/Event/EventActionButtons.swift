@@ -17,13 +17,12 @@ struct EventActionButtons: View {
     @Binding var organizations: [Organization]
     
     @State private var showMenu: Bool = false
+    @State private var showRSVPSheet: Bool = false
     @State private var state: LOADING_STATE = .pending
     
     @Environment(\.openURL) private var openURL
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
-    
-    private let notificationManager = NotificationManager()
     
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
@@ -48,38 +47,37 @@ struct EventActionButtons: View {
         return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
     }
     
-    @MainActor
-    private func rsvp(status: String) {
-        guard state != .loading else { return }
-        
-        Task {
-            guard let user = session.user,
-                  let _ = user.uuid else {
-                handleFailure()
-                return
-            }
-            
-            do {
-                state = .loading
-                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
-                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
-                
-                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
-                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
-                event.participants.append(participant)
-                
-                handleSuccess()
-                await notificationManager.setEventLocalNotification(event)
-                guard let extLink = event.externalLink,
-                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-                    return
-                }
-                openURL(url)
-            } catch {
-                handleFailure()
-            }
-        }
-    }
+//    @MainActor
+//    private func rsvp(status: String) {
+//        guard state != .loading else { return }
+//        
+//        Task {
+//            guard let user = session.user,
+//                  let _ = user.uuid else {
+//                handleFailure()
+//                return
+//            }
+//            
+//            do {
+//                state = .loading
+//                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
+//                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
+//                
+//                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
+//                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
+//                event.participants.append(participant)
+//                
+//                handleSuccess()
+//                guard let extLink = event.externalLink,
+//                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+//                    return
+//                }
+//                openURL(url)
+//            } catch {
+//                handleFailure()
+//            }
+//        }
+//    }
     
     @MainActor
     func cancel() {
@@ -101,7 +99,6 @@ struct EventActionButtons: View {
             }
             
             event.participants.removeAll(where: { $0.user?.uuid == uuid })
-            await notificationManager.removeEventLocalNotification(event.id)
             handleSuccess()
         }
     }
@@ -240,7 +237,7 @@ struct EventActionButtons: View {
                     if let maxPtp = event.participantsConfig?.maxParticipants,
                        let hasWaitlist = event.participantsConfig?.hasWaitlist,
                        hasWaitlist && (event.participants.count >= maxPtp) {
-                        Button(action: { rsvp(status: "waitlist") }) {
+                        Button(action: { showRSVPSheet.toggle() }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
@@ -265,14 +262,7 @@ struct EventActionButtons: View {
                             }.foregroundStyle(.white)
                         }
                     } else {
-                        Menu {
-                            Button(action: { rsvp(status: "maybe") }) {
-                                Text("Maybe")
-                            }
-                            Button(action:{ rsvp(status: "yes") }){
-                                Text("I'm In")
-                            }
-                        } label: {
+                        Button(action: { showRSVPSheet.toggle() }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
@@ -381,7 +371,8 @@ struct EventActionButtons: View {
                             .fontWeight(.bold)
                     }.foregroundStyle(Color.foreground)
                 }
-            }.sheet(isPresented: $showMenu) {
+            }
+            .sheet(isPresented: $showMenu) {
                 EventMenu(clubs: $clubs, organizations: $organizations)
                     .environment(event)
                     .presentationDetents([.medium])
@@ -390,6 +381,17 @@ struct EventActionButtons: View {
         }
         .frame(height: 60)
         .padding(.horizontal)
+        .sheet(isPresented: $showRSVPSheet, onDismiss: {
+            guard let extLink = event.externalLink,
+                  let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+                return
+            }
+            openURL(url)
+        }, content: {
+            RSVPSheet(event: event)
+                .environment(session)
+                .presentationDetents([.height(215)])
+        })
     }
 }
 

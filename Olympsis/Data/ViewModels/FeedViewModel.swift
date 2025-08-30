@@ -21,7 +21,7 @@ class FeedViewModel: ObservableObject {
             status = .loading
         }
         // this error should never happen but you never know :)
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             if !refresh {
                 status = .failure
             }
@@ -120,7 +120,7 @@ class FeedViewModel: ObservableObject {
     
     @MainActor
     func loadMorePosts(session: SessionStore, batch: Int=20) async {
-        guard session.selectedGroup != nil else {
+        guard session.groupsManager.selected != nil else {
             return
         }
     }

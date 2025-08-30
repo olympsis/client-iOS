@@ -52,7 +52,7 @@ struct PostListItem: View {
             }
         }
         .fullScreenCover(isPresented: $showComments) {
-            if let club = session.selectedGroup?.club {
+            if let club = session.groupsManager.selected?.club {
                 PostComments(club: club)
                     .environmentObject(post)
             }
@@ -85,8 +85,12 @@ struct PostHeader: View {
     @EnvironmentObject private var post: Post
     @Environment(SessionStore.self) private var session
     
+    private var selectedGroup: GroupSelection? {
+        return session.groupsManager.selected
+    }
+    
     private var isOrg: Bool {
-        guard let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = selectedGroup,
               selectedGroup.organization != nil else {
             return false
         }
@@ -102,7 +106,7 @@ struct PostHeader: View {
     }
     
     private var orgImageURL: String {
-        guard let club = session.selectedGroup?.club,
+        guard let club = selectedGroup?.club,
               let org = club.parent,
               let image = org.logo else {
             return GenerateImageURL("https://api.olympsis.com")
@@ -121,7 +125,7 @@ struct PostHeader: View {
     }
     
     private var orgName: String {
-        guard let club = session.selectedGroup?.club,
+        guard let club = selectedGroup?.club,
               let org = club.parent,
               let name = org.name,
               name != "" else {
@@ -131,7 +135,7 @@ struct PostHeader: View {
     }
     
     private func isPinned() -> Bool {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return false
         }
         if selectedGroup.type == GROUP_TYPE.Club {

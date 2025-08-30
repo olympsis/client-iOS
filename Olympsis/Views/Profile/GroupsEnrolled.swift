@@ -9,9 +9,13 @@ import SwiftUI
 
 struct GroupsEnrolled: View {
     
+    private var groups: [GroupSelection] {
+        return session.groupsManager.groups
+    }
+    
     private var clubs: [Club] {
         var arr = [Club]()
-        let groups = session.groups.filter { $0.type == .Club }
+        let groups = groups.filter { $0.type == .Club }
         groups.forEach { group in
             guard let club = group.club else { return }
             arr.append(club)
@@ -21,7 +25,7 @@ struct GroupsEnrolled: View {
     
     private var organizations: [Organization] {
         var arr = [Organization]()
-        let groups = session.groups.filter { $0.type == .Organization }
+        let groups = groups.filter { $0.type == .Organization }
         groups.forEach { group in
             guard let organization = group.organization else { return }
             arr.append(organization)

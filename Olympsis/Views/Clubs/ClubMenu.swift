@@ -188,13 +188,9 @@ struct ClubMenu: View {
                         secondaryButton: .destructive(Text(String(localized: "option-leave", table: "Groups")), action: {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.leaveClub(id: club.id)
-                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                
+                                guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
-                                session.selectedGroup = nil
-                                if let next = session.groups.first {
-                                    session.selectedGroup = next
-                                }
+                                session.groupsManager.remove(selected)
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     session.clubsState = .success
@@ -211,13 +207,9 @@ struct ClubMenu: View {
                         secondaryButton: .destructive(Text(String(localized: "option-delete", table: "Groups")), action: {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.deleteClub(id: club.id)
-                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                
+                                guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
-                                session.selectedGroup = nil
-                                if let next = session.groups.first {
-                                    session.selectedGroup = next
-                                }
+                                session.groupsManager.remove(selected)
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     session.clubsState = .success

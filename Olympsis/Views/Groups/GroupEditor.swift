@@ -227,7 +227,7 @@ struct GroupEditor: View {
                     VStack(alignment: .center){
                         Button(action: {
                             Task {
-                                guard let selectedGroup = session.selectedGroup else {
+                                guard let selectedGroup = session.groupsManager.selected else {
                                     return
                                 }
                                 switch selectedGroup.type {
@@ -256,7 +256,7 @@ struct GroupEditor: View {
         .navigationTitle("Edit Group")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            guard let selectedGroup = session.selectedGroup else {
+            guard let selectedGroup = session.groupsManager.selected else {
                 return
             }
             switch selectedGroup.type {

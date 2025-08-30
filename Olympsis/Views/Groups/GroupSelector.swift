@@ -15,11 +15,23 @@ struct GroupSelector: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
+    private var groups: [GroupSelection] {
+        return session.groupsManager.groups
+    }
+    
+    private var clubs: [GroupSelection] {
+        return groups.filter({ $0.type == GROUP_TYPE.Club })
+    }
+    
+    private var organizations: [GroupSelection] {
+        return groups.filter({ $0.type == GROUP_TYPE.Organization })
+    }
+    
     var body: some View {
         VStack {
             List {
                 Section {
-                    ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Club })) { g in
+                    ForEach(clubs) { g in
                         GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
                             .onTapGesture {
                                 selection = g.id
@@ -29,9 +41,9 @@ struct GroupSelector: View {
                     Text("Clubs")
                 }
                 
-                if (session.groups.filter({ $0.type == GROUP_TYPE.Organization }).count != 0) {
+                if (organizations.count != 0) {
                     Section {
-                        ForEach(session.groups.filter({ $0.type == GROUP_TYPE.Organization })) { g in
+                        ForEach(organizations) { g in
                             GroupSelectionListItem(selectedGroup: g, selectionID: $selection)
                                 .onTapGesture {
                                     selection = g.id
@@ -63,17 +75,18 @@ struct GroupSelector: View {
         })
         .onChange(of: selection) { _, _ in
             Task { @MainActor in
-                guard let selection = session.groups.first(where: { $0.id == selection }),
-                      let selectedGroup = session.selectedGroup,
+                guard let selection = groups.first(where: { $0.id == selection }),
+                      let selectedGroup = session.groupsManager.selected,
                       selectedGroup.id != selection.id else {
                     return
                 }
-                session.selectedGroup = selection
+//                session.selectedGroup = selection
+                session.groupsManager.select(selection)
                 dismiss()
             }
         }
         .task {
-            guard let selectedGroup = session.selectedGroup else {
+            guard let selectedGroup = session.groupsManager.selected else {
                 return
             }
             self.selection = selectedGroup.id
@@ -83,7 +96,7 @@ struct GroupSelector: View {
 
 #Preview {
     let session = SessionStore()
-    session.groups = GROUP_SELECTIONS
+    session.groupsManager.groups = GROUP_SELECTIONS
     return GroupSelector()
         .environment(session)
 }

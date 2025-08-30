@@ -65,3 +65,37 @@ struct SmallPillModifier: ViewModifier {
             .clipShape(Capsule())
     }
 }
+
+struct NotificationModifier: ViewModifier {
+    var manager: NotificationManager
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .top) {
+                if let notification = manager.currentNotification, manager.isShowing {
+                    NotificationView(
+                        metadata: notification,
+                        onTap: { manager.handleTap() },
+                        onDismiss: { manager.dismiss() }
+                    )
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: .top)
+                                .combined(with: .opacity),
+                            removal: .opacity
+                        )
+                    )
+                    .zIndex(999)
+                    .allowsHitTesting(true) // Only the notification itself is tappable
+                }
+            }
+    }
+}
+
+extension View {
+    func notificationSystem(manager: NotificationManager) -> some View {
+        modifier(NotificationModifier(manager: manager))
+    }
+}

@@ -33,16 +33,24 @@ struct EventListItem: View {
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
-    private var title: String {
-        return event.title
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+            return !hideLocation
+        }
+        return true
     }
     
     private var imageURL: URL? {
         return generateImageURL(event.mediaURL)
-    }
-    
-    private var venueDescriptors: [VenueDescriptor] {
-        return event.venues
     }
     
     private var venueLocationName: String {
@@ -65,12 +73,8 @@ struct EventListItem: View {
         return sport.prefix(1).capitalized + sport.dropFirst()
     }
     
-    private var eventStartDate: String {
-        return event.timeToString()
-    }
-    
     var body: some View {
-        Button(action:{ self.showDetails.toggle() }) {
+        NavigationLink(destination: EventView(event: event).environment(event).environment(session)) {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
@@ -101,6 +105,7 @@ struct EventListItem: View {
                                     .font(.body)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
+                                    .redacted(reason: canShowLocation ? [] : .placeholder)
                             }
                             
                             Spacer()
@@ -122,8 +127,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             .offset(x: 2, y: 8)
                         }
                         
@@ -134,7 +142,7 @@ struct EventListItem: View {
                                 Image(systemName: "calendar")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
-                                Text(eventStartDate)
+                                Text(event.timeToString())
                                     .font(.callout)
                                     .foregroundStyle(.white)
                             }
@@ -173,8 +181,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             
                             // MARK: - Start Time
                             HStack {
@@ -192,8 +203,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                         }
                     }
                     .padding([.leading, .trailing], 7)
@@ -205,17 +219,10 @@ struct EventListItem: View {
                             .opacity(0.95)
                             .mask(gradient)
                     }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-        .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: event)
-                .environment(event)
-                .presentationDetents([.large])
-        }
-        .task {
+                }.clipShape(RoundedRectangle(cornerRadius: 10))
+        }.task {
             venueState = .loading
-            venues = await session.fetchVenues(in: venueDescriptors)
+            venues = await session.fetchVenues(in: event.venues)
             venueState = .success
         }
     }

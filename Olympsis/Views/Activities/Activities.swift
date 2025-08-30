@@ -49,15 +49,32 @@ struct Activities: View {
                 }
             }
             .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack(alignment: .top) {
-                        Text("Activities")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        
-                        Text("beta")
-                            .font(.callout)
-                            .foregroundStyle(.yellow)
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        HStack(alignment: .top) {
+                            Text("Activities")
+                                .fixedSize()
+                                .fontWeight(.bold)
+                                .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                            
+                            Text("beta")
+                                .fixedSize()
+                                .font(.callout)
+                                .foregroundStyle(.yellow)
+                        }
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        HStack(alignment: .top) {
+                            Text("Activities")
+                                .fixedSize()
+                                .fontWeight(.bold)
+                                .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                            
+                            Text("beta")
+                                .font(.callout)
+                                .foregroundStyle(.yellow)
+                        }
                     }
                 }
             }

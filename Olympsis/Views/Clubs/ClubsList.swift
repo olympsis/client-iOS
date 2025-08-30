@@ -316,10 +316,19 @@ struct ClubsList: View {
             NewGroup()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Text("Clubs")
-                    .font(.title)
-                    .fontWeight(.bold)
+            if #available(iOS 26.0, *) {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Clubs")
+                        .fixedSize()
+                        .fontWeight(.bold)
+                        .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                }.sharedBackgroundVisibility(.hidden)
+            } else {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Clubs")
+                        .fontWeight(.bold)
+                        .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                }
             }
         }
         .task {

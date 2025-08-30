@@ -96,10 +96,20 @@ struct Events: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Events")
-                        .font(.title)
-                        .bold()
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Events")
+                            .fixedSize()
+                            .fontWeight(.bold)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Events")
+                            .fixedSize()
+                            .fontWeight(.bold)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                    }
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
@@ -109,14 +119,21 @@ struct Events: View {
                             Image(systemName: "plus")
                                 .imageScale(.large)
                         case .map:
-                            ZStack {
+                            if #available(iOS 26.0, *) {
+                                Image(systemName: "plus")
+                                    .imageScale(.large)
+                                    .foregroundColor(.primary)
+                                    .symbolRenderingMode(.palette)
+                            } else {
                                 Circle()
                                     .tint(Color.colorPrime)
                                     .frame(width: 40, height: 40)
-                                Image(systemName: "plus")
-                                    .imageScale(.large)
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.white)
+                                    .overlay {
+                                        Image(systemName: "plus")
+                                            .imageScale(.large)
+                                            .foregroundColor(.white)
+                                            .symbolRenderingMode(.palette)
+                                    }
                             }
                         }
                     }.frame(width: 41)
@@ -137,16 +154,22 @@ struct Events: View {
                                 Image(systemName: "map")
                                     .imageScale(.large)
                             case .map:
-                                Circle()
-                                    .tint(Color.colorPrime)
-                                    .frame(width: 40, height: 40)
-                                    .overlay {
-                                        Image(systemName: "line.3.horizontal.decrease")
-                                            .imageScale(.large)
-                                            .symbolRenderingMode(.palette)
-                                            .foregroundColor(.white)
-                                        
-                                    }
+                                if #available(iOS 26.0, *) {
+                                    Image(systemName: "line.3.horizontal.decrease")
+                                        .imageScale(.large)
+                                        .foregroundColor(.primary)
+                                        .symbolRenderingMode(.palette)
+                                } else {
+                                    Circle()
+                                        .tint(Color.colorPrime)
+                                        .frame(width: 40, height: 40)
+                                        .overlay {
+                                            Image(systemName: "line.3.horizontal.decrease")
+                                                .imageScale(.large)
+                                                .symbolRenderingMode(.palette)
+                                                .foregroundColor(.white)
+                                        }
+                                }
                             }
                         }
                         .frame(width: 41)

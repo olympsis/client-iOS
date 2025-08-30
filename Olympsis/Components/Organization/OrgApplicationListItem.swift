@@ -51,7 +51,7 @@ struct OrgApplicationListItem: View {
     }
     
     func accept() async {
-        guard let org = session.selectedGroup?.organization,
+        guard let org = session.groupsManager.selected?.organization,
             let club = application.club else {
             return
         }
@@ -65,7 +65,7 @@ struct OrgApplicationListItem: View {
     }
     
     func deny() async {
-        guard let org = session.selectedGroup?.organization,
+        guard let org = session.groupsManager.selected?.organization,
             let club = application.club else {
             return
         }

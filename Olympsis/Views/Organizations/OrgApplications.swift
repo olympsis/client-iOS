@@ -14,7 +14,7 @@ struct OrgApplications: View {
     @Environment(\.presentationMode) var presentationMode
     
     var organizationID: String {
-        guard let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = session.groupsManager.selected,
               let organization = selectedGroup.organization else {
             return ""
         }

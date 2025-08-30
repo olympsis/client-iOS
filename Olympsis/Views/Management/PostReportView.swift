@@ -28,7 +28,7 @@ struct PostReportView: View {
             return
         }
         var groupID = ""
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             return
         }
         if let club = selectedGroup.club {

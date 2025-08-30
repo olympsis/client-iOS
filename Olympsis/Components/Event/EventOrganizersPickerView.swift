@@ -22,7 +22,7 @@ struct EventOrganizersPickerView: View {
               let uuid = user.uuid else {
             return []
         }
-        return session.groups.filter {
+        return session.groupsManager.groups.filter {
             guard let member = $0.club?.members.first(where: { $0.user?.uuid == uuid }),
                   member.role != MEMBER_ROLES.Member.rawValue else {
                 guard let member = $0.organization?.members.first(where: { $0.user?.uuid == uuid }),

@@ -38,20 +38,39 @@ struct ClubView: View {
                 EndUserLicenseAgreement()
             })
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack(alignment: .center) {
-                        Text(club.name)
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.6)
-                       Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                        Spacer()
-                    }
-                    .frame(width: SCREEN_WIDTH/2, alignment: .leading)
-                    .onTapGesture {
-                        self.showSelector.toggle()
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        HStack(alignment: .center) {
+                            Text(club.name)
+                                .font(.title)
+                                .lineLimit(1)
+                                .fontWeight(.bold)
+                                .minimumScaleFactor(0.6)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                            Spacer()
+                        }
+                        .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                        .onTapGesture {
+                            self.showSelector.toggle()
+                        }
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        HStack(alignment: .center) {
+                            Text(club.name)
+                                .font(.title)
+                                .lineLimit(1)
+                                .fontWeight(.bold)
+                                .minimumScaleFactor(0.6)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                            Spacer()
+                        }
+                        .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                        .onTapGesture {
+                            self.showSelector.toggle()
+                        }
                     }
                 }
                 

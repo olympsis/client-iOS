@@ -18,6 +18,8 @@ struct TabBar: View {
     
     @Environment(SessionStore.self) private var session
     
+    @AppStorage("hide_activities") private var hideActivities: Bool?
+    
     var body: some View {
         GeometryReader { proxy in
             HStack(alignment: .center, spacing: 0) {
@@ -53,16 +55,18 @@ struct TabBar: View {
                     }
                 }
                 
-                Button() {
-                    withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .activity
-                    }
-                } label: {
-                    VStack {
-                        Image(systemName: currentTab == .activity ? "bolt.fill" : "bolt")
-                            .imageScale(.large)
-                            .frame(maxWidth: .infinity)
-                            .foregroundStyle(Color.foreground)
+                if hideActivities != true {
+                    Button() {
+                        withAnimation(.easeInOut(duration: 0.2)){
+                            currentTab = .activity
+                        }
+                    } label: {
+                        VStack {
+                            Image(systemName: currentTab == .activity ? "bolt.fill" : "bolt")
+                                .imageScale(.large)
+                                .frame(maxWidth: .infinity)
+                                .foregroundStyle(Color.foreground)
+                        }
                     }
                 }
                 

@@ -10,25 +10,132 @@ import SwiftUI
 import Foundation
 import NotificationCenter
 
-class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
+@Observable
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
+    static let shared = NotificationManager()
+    
     let center = UNUserNotificationCenter.current()
     
-    @Published var showToast: Bool = false
-    @Published var inMessageView: Bool = false
-    @Published var toastPosition: DisplayPosition = .bottom
-    @Published var toastContent: ToastContent = ToastContent(view: { AnyView(EmptyView()) })
+    var isShowing: Bool = false
+    var inMessageView: Bool = false
     
+    // Notification Queue
+    var queue: [NotificationMetadata] = []
+    var currentNotification: NotificationMetadata?
+    private var dismissTask: Task<Void, Never>?
+    
+    // Track processed notifications to prevent duplicates
+    private var processedNotifications = Set<String>()
+    private var lastCleanupTime = Date()
+    
+    @ObservationIgnored
     @AppStorage("deviceToken") private var dToken: String?
+    
+    // Navigation handler closure
+    var navigationHandler: ((URL) -> Void)?
     
     private var userObserver = UserObserver()
     private var cacheService = CacheService()
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")
     
-    override init() {
+    private override init() {
         super.init()
         center.delegate = self
+    }
+    
+    // Handles inserting new note and triggering queue processing
+    func show(_ notification: NotificationMetadata) {
+        queue.append(notification)
+        
+        if currentNotification == nil {
+            processQueue()
+        }
+    }
+    
+    // Process our notiication queue
+    private func processQueue() {
+        guard !queue.isEmpty else {
+            currentNotification = nil
+            isShowing = false
+            return
+        }
+        
+        let notification = queue.removeFirst()
+        currentNotification = notification
+        
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+            isShowing = true
+        }
+        
+        // Auto-dismiss after 3 seconds (adjustable)
+        dismissTask?.cancel()
+        dismissTask = Task {
+            try? await Task.sleep(for: .seconds(3))
+            
+            if !Task.isCancelled {
+                dismiss()
+            }
+        }
+    }
+    
+    // Handle in-app notification dismissal
+    func dismiss() {
+        dismissTask?.cancel()
+        
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            isShowing = false
+        }
+        
+        // Process next in queue after animation
+        Task {
+            try? await Task.sleep(for: .milliseconds(350))
+            processQueue()
+        }
+    }
+    
+    // Handle in-app notification interaction here
+    func handleTap() {
+        
+        // Event Navigation
+        if let eventID = currentNotification?.eventID,
+            let url = URL(string: "olympsis://events?ID=\(eventID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
+        
+        // Groups Navigation
+        if let groupID = currentNotification?.groupID,
+           let url = URL(string: "olympsis://groups?ID=\(groupID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
+        
+        // Post Navigation
+        if let groupID = currentNotification?.groupID,
+           let postID = currentNotification?.postID,
+           let url = URL(string: "olympsis://posts?ID=\(postID)&?groupID=\(groupID)") {
+            dismiss()
+            navigationHandler?(url)
+            return
+        }
+        
+        dismiss()
+    }
+    
+    // Clean up old notification IDs to prevent memory leaks
+    private func cleanupOldNotifications() {
+        let now = Date()
+        let fiveMinutesAgo = now.timeIntervalSince(lastCleanupTime)
+        
+        // Only cleanup every 5 minutes to avoid excessive processing
+        if fiveMinutesAgo > 300 {
+            processedNotifications.removeAll()
+            lastCleanupTime = now
+        }
     }
     
     // Request alert sound and badge notifications
@@ -63,60 +170,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         }
     }
     
-    // Sets a local notification to remind users to head to the event
-    func setEventLocalNotification(_ event: Event, minutesBefore: Int = 30) async {
-        do {
-            guard try await checkAuthorizationStatus() else { return }
-            
-            let subtitles = [
-                "Time to make your way to the venue. ",
-                "Get ready—the event kicks off shortly!",
-                "The countdown is almost over—see you there!",
-                "Don’t be late! Head to the event now.",
-                "It’s almost game time—make your way over!",
-                "The action begins soon—get moving!",
-                "Your event is about to start—let’s go!",
-                "Final call—time to head out!",
-                "The excitement is about to begin!",
-                "See you soon—the event starts shortly!"
-            ]
-            
-            // Create notification content
-            let content = UNMutableNotificationContent()
-            content.title = "\(event.title) is starting soon!"
-            content.body = subtitles.randomElement() ?? "Get ready—the event starts soon!"
-            content.sound = UNNotificationSound.default
-            
-            // Calculate the time 'minutesBefore' minutes before the specified date
-            let earlyReminderTime = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: event.startTime)!
-            
-            // Extract date components from the early reminder time
-            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: earlyReminderTime)
-            
-            // Create trigger with the date components
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-            
-            // Create request with a unique identifier
-            let identifier = event.id
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
-            try await center.add(request)
-        } catch {
-            log.error("Error scheduling local notification: \(error)")
-        }
-    }
-    
-    // Removes the local notification
-    func removeEventLocalNotification(_ id: String) async {
-        do {
-            guard try await checkAuthorizationStatus() else { return }
-            // Remove the specific notification with the given identifier
-            center.removePendingNotificationRequests(withIdentifiers: [id])
-        } catch {
-            log.error("Error removing local notification: \(error)")
-        }
-    }
-    
     // This method is called when the user interacts with a notification (taps on it).
     // You can use this method to handle actions associated with the notification.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -128,17 +181,51 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
         completionHandler()
     }
     
+    // This method is called for handling notiications when the app is opened
+    // We will have our own toast system to show notifications internally
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                     willPresent notification: UNNotification,
                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let notificationId = notification.request.identifier
+        
+        // Check for duplicate notification
+        if processedNotifications.contains(notificationId) {
+            completionHandler([])
+            return
+        }
+        
+        // Clean up old notification IDs (older than 5 minutes)
+        cleanupOldNotifications()
+        
+        // Mark as processed
+        processedNotifications.insert(notificationId)
+        
         if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
             completionHandler([[.banner, .badge, .sound]])
         } else {
-            completionHandler([.sound])
-            // Handle Notifications in App
-//            let userInfo = notification.request.content.userInfo
-//            let note = Notification(name: Notification.Name(rawValue: "toast-system"), userInfo: userInfo)
-//            ToastManager.shared.sendNotification(note: note)
+            do {
+                // Grab notification data
+                guard let data = try NotificationMetadata(from: notification) else {
+                    log.error("❌ Failed to create NotificationMetadata")
+                    return
+                }
+                
+                if data.type == .clubApplicationUpdate {
+                    var notificationData: [String: Any] = ["type": "club"]
+                    guard let groupID = data.groupID else {
+                        return
+                    }
+                    notificationData["group_id"] = groupID
+                    NotificationCenter.default.post(name: .groupAddedServerSide, object: nil, userInfo: notificationData)
+                }
+                
+                completionHandler([.sound])
+                show(data)
+            } catch {
+                log.error("Failed to parse notification data. Error: \(error.localizedDescription)")
+                completionHandler([])
+                return
+            }
         }
     }
 }

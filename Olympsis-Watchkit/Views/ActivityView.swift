@@ -72,7 +72,7 @@ struct ActivityView: View {
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode:  isLuminenceReduced ? .never : .automatic))
         .navigationBarBackButtonHidden()
-        .toolbar(isActive ? .hidden : .visible)
+        .toolbar(isActive ? .hidden : .visible, for: .navigationBar)
         .overlay {
             if isActive {
                 ActivityCountdownView(isActive: $isActive)

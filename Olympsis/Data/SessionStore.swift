@@ -53,22 +53,6 @@ class SessionStore {
     var invitations = [Invitation]() // Invitations Cache
     var notifications = [NotificationItem]()
     
-    // groups & posts
-    var selectedGroup: GroupSelection? {
-        didSet {
-            guard let selectedGroup else {
-                return
-            }
-            if let club = selectedGroup.club {
-                selectedGroupID = club.id
-            }
-            if let org = selectedGroup.organization {
-                selectedGroupID = org.id
-            }
-        }
-    }
-    var groups: [GroupSelection] = [GroupSelection]()
-    
     // Observers
     var authObserver = AuthObserver()
     var feedObserver = FeedObserver()
@@ -83,7 +67,8 @@ class SessionStore {
     var locationManager = LocationManager()
     var managementObserver = ManagementObserver()
     var notificationService = NotificationService()
-    var notificationsManager = NotificationManager()
+    
+    var groupsManager = GroupsManager()
 
     // This variable helps us keep track of the user's current location. It also includes a fallback to a location
     // This fallback location is a second location in case we are unable to find the user's current location
@@ -143,8 +128,6 @@ class SessionStore {
     private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     init() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.delegate = notificationsManager
         authStatus = .unknown
         user = cacheService.fetchUser()
         
@@ -184,7 +167,7 @@ class SessionStore {
     
     func updateNotifications() async {
         do {
-            if try await notificationsManager.checkAuthorizationStatus() {
+            if try await NotificationManager.shared.checkAuthorizationStatus() {
                 guard let dToken = dToken else {
                     log.error("Failed to grab notification token from cache.")
                     return
@@ -253,11 +236,10 @@ class SessionStore {
         }
     }
     
-    func CheckIn() async {
+    func checkIn() async {
         
         clubs = []
         orgs = []
-        groups = []
         
         do {
             guard let resp = try await userObserver.CheckIn() else {
@@ -274,32 +256,21 @@ class SessionStore {
                 c.forEach { c in
                     self.clubs.insert(c)
                     let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
-                    self.groups.append(group)
-                    
-                    if selectedGroupID == c.id {
-                        selectedGroup = group
-                    }
+                    groupsManager.add(group)
                 }
             }
             if let o = resp.organizations {
                 o.forEach { o in
                     self.orgs.insert(o)
                     let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
-                    self.groups.append(group)
-                    
-                    if selectedGroupID == o.id {
-                        selectedGroup = group
-                    }
+                    groupsManager.add(group)
                 }
             }
             if let i = resp.invitations {
                 invitations = i
             }
             
-            if selectedGroup == nil {
-                selectedGroup = groups.first
-            }
-            
+            groupsManager.restore()
             authStatus = .authenticated
         } catch let DecodingError.dataCorrupted(context) {
             print(context)
@@ -319,11 +290,12 @@ class SessionStore {
     }
     
     func getNotifications() async {
-        do {
-            self.notifications = try await notificationService.GetNotifications().notifications
-        } catch {
-            log.error("Failed to get notifications. Error: \(error)")
-        }
+        self.notifications = []
+//        do {
+//            self.notifications = try await notificationService.GetNotifications().notifications
+//        } catch {
+//            log.error("Failed to get notifications. Error: \(error)")
+//        }
     }
     
     func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
@@ -554,10 +526,8 @@ class SessionStore {
     }
     
     /// Logout user from application
-    ///
-    /// Clears cache from all data
-    ///
-    /// Calls firebase API to sign out user
+    /// - Clears cache from all data
+    /// - Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
         
@@ -573,14 +543,11 @@ class SessionStore {
         return
     }
     
-    
     /// Deletes the user's account from application
-    ///
-    /// Makes a call to firebase servers to delete account.
-    ///
-    /// Makes a call to Olympsis servers to delete account
-    ///
-    /// Clears cache of all data
+    /// - Makes a call to firebase servers to delete account.
+    /// - Makes a call to Olympsis servers to delete account
+    /// - Clears cache of all data
+    /// - Returns: a boolean of wether or not we were successful in deleting the user's account
     func deleteAccount() async -> Bool {
         do {
             guard let user = Auth.auth().currentUser else { return false }
