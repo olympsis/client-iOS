@@ -19,21 +19,21 @@ struct GroupFeed: View {
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_feed")
     
-    var groupID: String {
-        guard let selectedGroup = session.selectedGroup else {
-            return ""
-        }
-        switch selectedGroup.type {
-        case .Club:
-            return selectedGroup.club?.id.lowercased() ?? ""
-        case .Organization:
-            return selectedGroup.club?.id.lowercased() ?? ""
-        }
+    private var selectedGroup: GroupSelection? {
+        return session.groupsManager.selected
     }
     
-    var groupEvents: [Event] {
-        guard let selectedGroup = session.selectedGroup,
-              let id = selectedGroup.club?.id ?? selectedGroup.organization?.id else {
+    private var selectedGroupID: String {
+        guard let selectedGroup,
+              let id = selectedGroup.groupID else {
+            return ""
+        }
+        return id
+    }
+    
+    private var groupEvents: [Event] {
+        guard let selectedGroup,
+              let id = selectedGroup.groupID else {
             return []
         }
         
@@ -41,7 +41,7 @@ struct GroupFeed: View {
     }
     
     func isPinned(post: Post) -> Bool {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup else {
             return false
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -104,8 +104,8 @@ struct GroupFeed: View {
                         .padding(.vertical)
                     }
                     
-                    if viewModel.posts[groupID]?.count ?? 0 > 0 {
-                        ForEach(viewModel.posts[groupID]?.sorted(by: { $0.createdAt > $1.createdAt }) ?? [Post]()) { post in
+                    if viewModel.posts[selectedGroupID]?.count ?? 0 > 0 {
+                        ForEach(viewModel.posts[selectedGroupID]?.sorted(by: { $0.createdAt > $1.createdAt }) ?? [Post]()) { post in
                             Spacer(minLength: 10)
                             
                             PostListItem(post: post)
@@ -178,7 +178,7 @@ struct GroupFeed: View {
             }
         }
         .fullScreenCover(isPresented: $showNewPost) {
-            if let group = session.selectedGroup {
+            if let group = session.groupsManager.selected {
                 if let club = group.club {
                     PostCreator(type: .Post, groupId: club.id)
                         .environmentObject(viewModel)

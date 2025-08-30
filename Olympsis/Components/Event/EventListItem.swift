@@ -49,16 +49,8 @@ struct EventListItem: View {
         return true
     }
     
-    private var title: String {
-        return event.title
-    }
-    
     private var imageURL: URL? {
         return generateImageURL(event.mediaURL)
-    }
-    
-    private var venueDescriptors: [VenueDescriptor] {
-        return event.venues
     }
     
     private var venueLocationName: String {
@@ -79,10 +71,6 @@ struct EventListItem: View {
             return "Activity"
         }
         return sport.prefix(1).capitalized + sport.dropFirst()
-    }
-    
-    private var eventStartDate: String {
-        return event.timeToString()
     }
     
     var body: some View {
@@ -154,7 +142,7 @@ struct EventListItem: View {
                                 Image(systemName: "calendar")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
-                                Text(eventStartDate)
+                                Text(event.timeToString())
                                     .font(.callout)
                                     .foregroundStyle(.white)
                             }
@@ -231,13 +219,10 @@ struct EventListItem: View {
                             .opacity(0.95)
                             .mask(gradient)
                     }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-        .navigationLinkIndicatorVisibility(.hidden)
-        .task {
+                }.clipShape(RoundedRectangle(cornerRadius: 10))
+        }.task {
             venueState = .loading
-            venues = await session.fetchVenues(in: venueDescriptors)
+            venues = await session.fetchVenues(in: event.venues)
             venueState = .success
         }
     }

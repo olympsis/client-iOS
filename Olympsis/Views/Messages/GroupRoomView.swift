@@ -38,7 +38,7 @@ struct GroupRoomView: View {
     }
     
     private func getUserData(uuid: String) -> UserSnippet? {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             log.error("Failed to find the selected group!")
             return nil
         }

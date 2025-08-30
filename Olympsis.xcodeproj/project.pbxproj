@@ -384,6 +384,8 @@
 		5D551CB12E064391000C713C /* Archivo-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19052B2DA1C7F50051990F /* Archivo-Thin.ttf */; };
 		5D551CB22E064391000C713C /* Archivo-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19052C2DA1C7F50051990F /* Archivo-ThinItalic.ttf */; };
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
+		5D5CAF892E627D9E004E26D4 /* GroupsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5CAF882E627D9E004E26D4 /* GroupsManager.swift */; };
+		5D5CAF8B2E628192004E26D4 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5CAF8A2E628192004E26D4 /* NotificationNames.swift */; };
 		5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */; };
 		5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF712C3120BB005D431F /* HotEvents.swift */; };
 		5D63AF742C31212A005D431F /* NextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D63AF732C31212A005D431F /* NextEvent.swift */; };
@@ -436,7 +438,6 @@
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
 		5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */; };
 		5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */; };
-		5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */; };
 		5D877B2C2E289A73000DEAC8 /* DistanceActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */; };
 		5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F42C76D82400AAF374 /* ImageSaver.swift */; };
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
@@ -962,6 +963,8 @@
 		5D5321742E06367500C67357 /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS11.0.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
 		5D5497362E302BF400D1F5A2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5D5BEF862BEFE894008648C5 /* General.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = General.xcstrings; sourceTree = "<group>"; };
+		5D5CAF882E627D9E004E26D4 /* GroupsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsManager.swift; sourceTree = "<group>"; };
+		5D5CAF8A2E628192004E26D4 /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		5D63AF6F2C311E1A005D431F /* NearbyVenues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyVenues.swift; sourceTree = "<group>"; };
 		5D63AF712C3120BB005D431F /* HotEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotEvents.swift; sourceTree = "<group>"; };
 		5D63AF732C31212A005D431F /* NextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEvent.swift; sourceTree = "<group>"; };
@@ -1010,7 +1013,6 @@
 		5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueMediumListItem.swift; sourceTree = "<group>"; };
 		5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueSearchViewModel.swift; sourceTree = "<group>"; };
 		5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDescriptorView.swift; sourceTree = "<group>"; };
-		5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRoutes.swift; sourceTree = "<group>"; };
 		5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityMetrics.swift; sourceTree = "<group>"; };
 		5D8958F42C76D82400AAF374 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIconButton.swift; sourceTree = "<group>"; };
@@ -1637,8 +1639,8 @@
 		5DBB94D92B125BCB0031876D /* Groups */ = {
 			isa = PBXGroup;
 			children = (
-				5D4499D42BABDAAA00F54D10 /* GroupReports.swift */,
 				5DBB94DA2B125BF20031876D /* GroupView.swift */,
+				5D4499D42BABDAAA00F54D10 /* GroupReports.swift */,
 				5DBB94DC2B125C230031876D /* GroupSelection.swift */,
 				5D4942BD2B129AC800D19188 /* GroupSelector.swift */,
 				5DACA4C02C3351E7002E1655 /* GroupEditor.swift */,
@@ -2086,7 +2088,7 @@
 			children = (
 				9ABB1EBC29053D020050C0F0 /* SessionStore.swift */,
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
-				5D877A3A2C6AEFE10050238F /* ViewRoutes.swift */,
+				5D5CAF8A2E628192004E26D4 /* NotificationNames.swift */,
 				5D76D36D2C79631D00846382 /* Routers */,
 				9AB02F4A29024300008C07F1 /* Managers */,
 				9A8FF0D428BB337C00DE4CF8 /* Observers */,
@@ -2332,6 +2334,7 @@
 		9AB02F4A29024300008C07F1 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				5D5CAF882E627D9E004E26D4 /* GroupsManager.swift */,
 				9AB02F4D290246BD008C07F1 /* NotificationManager.swift */,
 				9A81B63D2925DE1A009CA6ED /* LocationManager.swift */,
 				5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */,
@@ -3040,6 +3043,7 @@
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */,
 				5DC8B48F2E05CE6C008C9052 /* ActivitySplitsView.swift in Sources */,
+				5D5CAF8B2E628192004E26D4 /* NotificationNames.swift in Sources */,
 				5DC8B4992E05CE6C008C9052 /* EllaspsedTimeView.swift in Sources */,
 				5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */,
 				5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */,
@@ -3276,6 +3280,7 @@
 				5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */,
 				5D19059A2DA1C9BB0051990F /* AuthUserInfo.swift in Sources */,
 				5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */,
+				5D5CAF892E627D9E004E26D4 /* GroupsManager.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
 				5D92BA982C83692B00B19BD4 /* EventNotificationToast.swift in Sources */,
 				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
@@ -3295,7 +3300,6 @@
 				5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */,
 				5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */,
 				5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */,
-				5D877A3B2C6AEFE10050238F /* ViewRoutes.swift in Sources */,
 				9A81B60D292425B8009CA6ED /* VenueService.swift in Sources */,
 				5D117A712E25B082002380DE /* ScheduleComponents.swift in Sources */,
 				5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */,
@@ -3481,9 +3485,9 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.OlympsisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3494,7 +3498,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -3508,9 +3512,9 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.OlympsisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3520,7 +3524,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};

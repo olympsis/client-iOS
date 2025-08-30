@@ -15,7 +15,7 @@ struct GroupView: View {
     @Environment(SessionStore.self) private var session
     
     private var selectedGroup: GroupSelection? {
-        guard let group = session.selectedGroup else {
+        guard let group = session.groupsManager.selected else {
             return nil
         }
         

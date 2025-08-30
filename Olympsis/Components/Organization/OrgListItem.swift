@@ -37,7 +37,7 @@ struct OrgListItem: View {
     
     func Apply() async {
         status = .loading
-        guard let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = session.groupsManager.selected,
               let clubID = selectedGroup.club?.id else {
             status = .failure
             DispatchQueue.main.asyncAfter(deadline: .now()+1) {

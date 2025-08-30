@@ -449,7 +449,7 @@ struct NewEvent: View {
                 PostMediaViolation()
             })
             .task {
-                guard let select = session.selectedGroup else {
+                guard let select = session.groupsManager.selected else {
                     return
                 }
                 if !manager.organizers.contains(where: { $0.id == select.id }) {

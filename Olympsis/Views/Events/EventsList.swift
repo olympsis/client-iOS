@@ -63,7 +63,9 @@ struct EventsList: View {
                         }
                         .id(group.date)
                     }
-                }.listStyle(.plain)
+                }
+                .listStyle(.plain)
+                .navigationLinkIndicatorVisibility(.hidden)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

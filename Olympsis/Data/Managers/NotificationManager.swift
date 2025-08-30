@@ -209,6 +209,16 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                     log.error("❌ Failed to create NotificationMetadata")
                     return
                 }
+                
+                if data.type == .clubApplicationUpdate {
+                    var notificationData: [String: Any] = ["type": "club"]
+                    guard let groupID = data.groupID else {
+                        return
+                    }
+                    notificationData["group_id"] = groupID
+                    NotificationCenter.default.post(name: .groupAddedServerSide, object: nil, userInfo: notificationData)
+                }
+                
                 completionHandler([.sound])
                 show(data)
             } catch {

@@ -54,7 +54,7 @@ struct InvitationView: View {
             return
         }
         let group = GroupSelection(type: GROUP_TYPE.Organization, club: nil, organization: org, posts: nil)
-        session.groups.append(group)
+        session.groupsManager.add(group)
         invitation.id = ""
         session.invitations = [Invitation]()
         handleAcceptSuccess()

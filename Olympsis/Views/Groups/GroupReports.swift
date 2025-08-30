@@ -24,7 +24,7 @@ struct GroupReports: View {
     
     func fetchNewReports() async {
         var groupID: String = ""
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             return
         }
         if selectedGroup.club != nil {
@@ -76,7 +76,6 @@ struct GroupReports: View {
         NavigationStack {
             VStack {
                 HStack {
-
                     selectedTab == 0 ?
                     Button(action: {
                         withAnimation {
@@ -205,7 +204,7 @@ struct GroupReports: View {
                         if (!memberReports.isEmpty) {
                             ScrollView {
                                 ForEach(memberReports.filter{ $0.status == "pending" }) { report in
-                                    if let club = session.selectedGroup?.club {
+                                    if let club = session.groupsManager.selected?.club {
                                         MemberReportListItem(club: club, report: report)
                                     }
                                 }

@@ -22,10 +22,14 @@ struct PostMenu: View {
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
+    private var selectedGroup: GroupSelection? {
+        return session.groupsManager.selected
+    }
+    
     private var isAdmin: Bool {
         guard let user = session.user,
               let uuid = user.uuid,
-              let group = session.selectedGroup else {
+              let group = selectedGroup else {
             return false
         }
         if group.type == GROUP_TYPE.Club {
@@ -49,7 +53,7 @@ struct PostMenu: View {
     }
     
     private var isPinned: Bool {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return false
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -71,7 +75,7 @@ struct PostMenu: View {
     }
     
     private func pinPost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -98,7 +102,7 @@ struct PostMenu: View {
     }
     
     private func unPinPost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -124,7 +128,7 @@ struct PostMenu: View {
     }
     
     private func deletePost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         

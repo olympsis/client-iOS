@@ -46,7 +46,8 @@ struct UserDataListView: View {
         self.status = .loading
         guard let sender = session.user?.uuid,
             let recipient = data.uuid,
-              let organizationID = session.selectedGroup?.organization?.id else {
+              let selectedGroup = session.groupsManager.selected,
+              let organizationID = selectedGroup.organization?.id else {
             handleFailure()
             return
         }

@@ -24,7 +24,7 @@ struct GroupNewRoom: View {
             }
             guard let user = session.user,
                   let uuid = user.uuid,
-                  let selectedGroup = session.selectedGroup else {
+                  let selectedGroup = session.groupsManager.selected else {
                 return
             }
             

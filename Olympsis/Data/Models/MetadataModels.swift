@@ -19,6 +19,7 @@ struct NotificationMetadata {
     var postID: String?
     var postImageURL: String?
     
+    var groupT: String?
     var groupID: String?
     var groupName: String?
     var groupImageURL: String?
@@ -41,6 +42,7 @@ struct NotificationMetadata {
         postID: String?=nil,
         postImageURL: String?=nil,
         
+        groupT: String?=nil,
         groupID: String?=nil,
         groupName: String?=nil,
         groupImageURL: String?=nil,
@@ -61,6 +63,7 @@ struct NotificationMetadata {
         self.username = username
         self.userImageURL = userImageURL
         
+        self.groupT = groupT
         self.groupID = groupID
         self.groupName = groupName
         self.groupImageURL = groupImageURL
@@ -89,10 +92,11 @@ struct NotificationMetadata {
         
         self.postID = userInfo["post_id"] as? String
         self.postImageURL = userInfo["post_image_url"] as? String
-        
+         
+        self.groupT = userInfo["group_type"] as? String
         self.groupID = userInfo["group_id"] as? String
         self.groupName = userInfo["group_name"] as? String
-        self.groupImageURL = userInfo["group_image_url"] as? String
+        self.groupImageURL = userInfo["group_logo_url"] as? String
         
         self.eventID = userInfo["event_id"] as? String
         self.eventName = userInfo["event_name"] as? String

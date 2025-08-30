@@ -46,7 +46,7 @@ struct GroupMessages: View {
     @MainActor
     func fetchChatRooms() async {
         state = .loading
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             log.error("Failed to find the selected group!")
             state = .failure
             return

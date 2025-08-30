@@ -194,8 +194,8 @@ struct OrgMenu: View {
                             Task { // Perform delete operation
                                 let res = await session.orgObserver.deleteOrganization(id: organization.id)
                                 if res {
-                                    session.selectedGroup = session.groups.first
-                                    session.groups.removeAll(where: { $0.organization?.id == organization.id })
+                                    guard let selection = session.groupsManager.selected else { return }
+                                    session.groupsManager.remove(selection)
                                 }
                                 dismiss()
                             }
