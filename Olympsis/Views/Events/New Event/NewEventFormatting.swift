@@ -47,7 +47,11 @@ struct NewEventFormatting: View {
             }
             .onDisappear {
                 // Make sure we update the manager config on dissmiss of this view
-                manager.formatConfig = EventFormatConfig(isCompetition: isTournament)
+                guard manager.formatConfig  != nil else {
+                    manager.formatConfig = EventFormatConfig(isCompetition: isTournament)
+                    return
+                }
+                manager.formatConfig?.isCompetition = isTournament
             }
             .navigationDestination(for: EventFormattingRoutes.self) { route in
                 switch (route) {

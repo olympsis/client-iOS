@@ -46,12 +46,11 @@ struct NewEventCompetitionFromatSelector: View {
             .padding(.horizontal)
             .onDisappear {
                 guard !Array(selectedFormats).isEmpty else { return }
-                guard let config = manager.formatConfig else {
+                guard manager.formatConfig != nil else {
                     manager.formatConfig = EventFormatConfig(formats: Array(competitionFormats))
                     return
                 }
-                config.formats = Array(selectedFormats)
-                manager.formatConfig = config
+                manager.formatConfig?.formats = Array(selectedFormats)
             }
             
             Spacer()
