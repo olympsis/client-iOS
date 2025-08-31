@@ -58,7 +58,7 @@ struct RSVPSheet: View {
                     lastName: user.lastName,
                     imageURL: user.imageURL
                 )
-                let participant = Participant(id: id, user: snippet, status: response == .yes ? .Yes : .Maybe, createdAt: Date())
+                let participant = Participant(id: id, user: snippet, status: response == .yes ? .Yes : .Maybe, isAnonymous: isAnonymous, createdAt: Date())
                 
                 withAnimation {
                     event.participants.append(participant)
