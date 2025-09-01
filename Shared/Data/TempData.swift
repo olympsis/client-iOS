@@ -148,6 +148,7 @@ let EVENTS = [
                 id: UUID().uuidString,
                 user: USER_SNIPPETS[0],
                 status: .Yes,
+                isAnonymous: true,
                 createdAt: Date()
             )
         ],

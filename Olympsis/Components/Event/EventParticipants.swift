@@ -64,6 +64,7 @@ struct EventParticipants: View {
             
             ForEach(event.participants.prefix(3), id: \.id) { ptp in
                 ParticipantView(participant: ptp)
+                    .environment(session)
             }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
             if (event.participants.count > 3 && canShowParticipants) {
@@ -191,6 +192,7 @@ struct EventParticipantsViewExt: View {
             ForEach(participants, id: \.self) { p in
                 HStack {
                     ParticipantView(participant: p)
+                        .environment(session)
                     Spacer()
                     
                     if canRemoveParticipant(p) {

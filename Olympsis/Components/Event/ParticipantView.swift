@@ -53,6 +53,17 @@ struct ParticipantView: View {
         return participant.isAnonymous ? "@anon-user" : "@\(username)"
     }
     
+    private var isUserAnonymous: Bool {
+        guard participant.isAnonymous,
+              let uuid = session.user?.uuid,
+              participant.user?.uuid == uuid else {
+            return false
+        }
+        return true
+    }
+    
+    @Environment(SessionStore.self) private var session: SessionStore
+    
     var body: some View {
         HStack {
             UserBadgeView(size: .small, imageURL: imageURL)
@@ -62,9 +73,17 @@ struct ParticipantView: View {
                 }
             
             VStack(alignment: .leading) {
-                Text(name)
-                    .font(.callout)
-                    .fontWeight(.medium)
+                HStack {
+                    Text(name)
+                        .font(.callout)
+                        .fontWeight(.medium)
+                    
+                    if isUserAnonymous {
+                        Text("(You)")
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.Brand.tertiary)
+                    }
+                }
                 
                 Text(username)
                     .font(.caption)
@@ -76,4 +95,5 @@ struct ParticipantView: View {
 
 #Preview {
     ParticipantView(participant: EVENTS[0].participants[0])
+        .environment(SessionStore())
 }
