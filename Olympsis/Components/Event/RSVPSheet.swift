@@ -64,6 +64,8 @@ struct RSVPSheet: View {
                     event.participants.append(participant)
                 }
                 
+                await NotificationManager.shared.requestAuthorization()
+                
                 dismiss()
             } catch {
                 log.error("Failed to add participant to event. EventID: \(event.id, privacy: .public), Error: \(error)")
