@@ -65,7 +65,6 @@ struct EventsList: View {
                     }
                 }
                 .listStyle(.plain)
-                .navigationLinkIndicatorVisibility(.hidden)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

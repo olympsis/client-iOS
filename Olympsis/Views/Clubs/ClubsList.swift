@@ -178,122 +178,120 @@ struct ClubsList: View {
     }
     
     var body: some View {
-        VStack {
-            ScrollView(.vertical, showsIndicators: false){
-                VStack(alignment: .trailing) {
-                    
-                    // MARK: - Search
-                    HStack {
-                        SearchBar(text: $text, onCommit: {
-                            showCancel = false
-                        }).onTapGesture {
-                                if !showCancel {
-                                    showCancel = true
-                                }
-                            }
-                        .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                        .padding(.horizontal)
-                        .padding(.top)
-                        .onChange(of: text) { _, new in
-                            if !new.isEmpty {
-                                withAnimation(.easeInOut) {
-                                    showCancel = true
-                                }
-                            } else {
-                                withAnimation(.easeInOut) {
-                                    showCancel = false
-                                }
+        ScrollView(.vertical, showsIndicators: false){
+            VStack(alignment: .trailing) {
+                
+                // MARK: - Search
+                HStack {
+                    SearchBar(text: $text, onCommit: {
+                        showCancel = false
+                    }).onTapGesture {
+                            if !showCancel {
+                                showCancel = true
                             }
                         }
-                        
-                        if showCancel {
-                            Button(action:{
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                                withAnimation(.easeInOut) {
-                                    text = ""
-                                    showCancel = false
-                                }
-                            }){
-                                Text(String(localized: "cancel", table: "General"))
-                                    .foregroundColor(.gray)
-                                    .frame(height: 40)
-                                    .padding(.top)
-                            }.padding(.trailing)
+                    .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
+                    .padding(.horizontal)
+                    .padding(.top)
+                    .onChange(of: text) { _, new in
+                        if !new.isEmpty {
+                            withAnimation(.easeInOut) {
+                                showCancel = true
+                            }
+                        } else {
+                            withAnimation(.easeInOut) {
+                                showCancel = false
+                            }
                         }
                     }
                     
-                    // MARK: - Actions
-                    HStack {
-                        Button(action: handleShowNewClub) {
-                            Image(systemName: "plus")
-                            
-                            Text(String(localized: "create-club", table: "Groups"))
-                        }
-                        .padding(.vertical, 8)
-                        .padding(.horizontal)
-                        .background(.regularMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        
-                        FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
-                    }.padding(.trailing)
+                    if showCancel {
+                        Button(action:{
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                            withAnimation(.easeInOut) {
+                                text = ""
+                                showCancel = false
+                            }
+                        }){
+                            Text(String(localized: "cancel", table: "General"))
+                                .foregroundColor(.gray)
+                                .frame(height: 40)
+                                .padding(.top)
+                        }.padding(.trailing)
+                    }
                 }
                 
-                // MARK: - List View
-                switch status {
-                case .pending, .success:
-                    VStack{
-                        if filteredClubs.isEmpty {
-                            
-                            Spacer(minLength: 50)
-                            
-                            Image("illustrations/search")
-                                .resizable()
-                                .padding(.top)
-                                .frame(width: 150, height: 110)
-                            
-                            Text(String(localized: "no-clubs-title", table: "General"))
-                                .font(.body)
-                                .padding(.top)
-                                .fontWeight(.bold)
-                                .padding(.bottom, 5)
-                            
-                            Text(String(localized: "no-clubs-sub-title", table: "General"))
-                                .font(.callout)
-                                .padding(.horizontal)
-                                .padding(.bottom)
-                                .multilineTextAlignment(.leading)
-                        } else {
-                            ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
-                                ClubListItem(club: club, showToast: $showCompletedApplicationToast)
-                                    .clipShape(Rectangle())
-                                    .padding(.horizontal, 10)
-                            }
-                        }
+                // MARK: - Actions
+                HStack {
+                    Button(action: handleShowNewClub) {
+                        Image(systemName: "plus")
+                        
+                        Text(String(localized: "create-club", table: "Groups"))
                     }
-                case .loading:
-                    ProgressView()
-                        .padding(.top)
-                case .failure:
-                    VStack {
-                        Image("illustrations/error")
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    
+                    FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                }.padding(.trailing)
+            }
+            
+            // MARK: - List View
+            switch status {
+            case .pending, .success:
+                VStack{
+                    if filteredClubs.isEmpty {
+                        
+                        Spacer(minLength: 50)
+                        
+                        Image("illustrations/search")
                             .resizable()
-                            .frame(width: 170, height: 150)
-                        Text(String(localized: "generic-error-fun-text", table: "General"))
+                            .padding(.top)
+                            .frame(width: 150, height: 110)
+                        
+                        Text(String(localized: "no-clubs-title", table: "General"))
+                            .font(.body)
                             .padding(.top)
                             .fontWeight(.bold)
                             .padding(.bottom, 5)
                         
-                        Text(String(localized: "generic-error-fetching-clubs", table: "General"))
+                        Text(String(localized: "no-clubs-sub-title", table: "General"))
+                            .font(.callout)
                             .padding(.horizontal)
+                            .padding(.bottom)
                             .multilineTextAlignment(.leading)
-                        Spacer()
-                    }.padding(.top, 50)
+                    } else {
+                        ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
+                            ClubListItem(club: club, showToast: $showCompletedApplicationToast)
+                                .clipShape(Rectangle())
+                                .padding(.horizontal, 10)
+                        }
+                    }
                 }
+            case .loading:
+                ProgressView()
+                    .padding(.top)
+            case .failure:
+                VStack {
+                    Image("illustrations/error")
+                        .resizable()
+                        .frame(width: 170, height: 150)
+                    Text(String(localized: "generic-error-fun-text", table: "General"))
+                        .padding(.top)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 5)
+                    
+                    Text(String(localized: "generic-error-fetching-clubs", table: "General"))
+                        .padding(.horizontal)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                }.padding(.top, 50)
             }
-            .refreshable {
-                Task {
-                    await fetchClubs()
-                }
+        }
+        .refreshable {
+            Task {
+                await fetchClubs()
             }
         }
         .sheet(isPresented: $showMenu, onDismiss: {

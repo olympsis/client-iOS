@@ -172,23 +172,6 @@ struct EventView: View {
         .toolbarTitleDisplayMode(.inline)
         .navigationTitle(Text(event.title))
         .toolbar {
-//            if #available(iOS 26.0, *) {
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Text(event.title)
-//                        .fixedSize()
-//                        .lineLimit(1)
-//                        .minimumScaleFactor(0.5)
-//                        .font(.custom("Archivo-Bold", size: 30, relativeTo: .largeTitle))
-//                }.sharedBackgroundVisibility(.hidden)
-//            } else {
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Text(event.title)
-//                        .lineLimit(1)
-//                        .minimumScaleFactor(0.5)
-//                        .font(.custom("Archivo-Bold", size: 30, relativeTo: .largeTitle))
-//                }
-//            }
-            
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: { self.showSharingMenu = true }) {
                     Image(systemName: "square.and.arrow.up")
