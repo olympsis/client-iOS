@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EventVenuePickerView: View {
     
-    @State var manager: NewEventManager
+    let manager: NewEventManager
     @State private var search: String = ""
     @State private var showPicker: Bool = false
     @State private var hideLocation: Bool = false
@@ -35,34 +35,35 @@ struct EventVenuePickerView: View {
                 Spacer()
                 
             }.frame(height: 44)
-            ScrollView {
-                Button(action: { showPicker.toggle() }) {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text(String(localized: "add-a-location-text", table: "Events"))
-                    }
-                    .modifier(InputFieldModifier())
-                    .padding(.horizontal)
-                }.padding(.vertical)
-                
-                // MARK: - Hide Locations
-                VStack(alignment: .leading){
-                    Toggle(isOn: $hideLocation) {
-                        Text("Hide Locations")
-                            .font(.headline)
-                            .bold()
-                    }
-                    Text("Show locations after RSVP")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                }.padding([.bottom, .horizontal])
-                
+            
+            Button(action: { showPicker.toggle() }) {
+                HStack {
+                    Image(systemName: "plus")
+                    Text(String(localized: "add-a-location-text", table: "Events"))
+                }
+                .modifier(InputFieldModifier())
+                .padding(.horizontal)
+            }.padding(.vertical)
+            
+            // MARK: - Hide Locations
+            VStack(alignment: .leading){
+                Toggle(isOn: $hideLocation) {
+                    Text("Hide Locations")
+                        .font(.headline)
+                        .bold()
+                }
+                Text("Show locations after RSVP")
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+            }.padding([.bottom, .horizontal])
+            
+            List {
                 ForEach(manager.selectedVenues, id: \.id) {
                     VenueMediumListItem(item: $0)
                 }
                 .onDelete(perform: manager.deleteVenues)
-                .padding(.horizontal)
-            }.sheet(isPresented: $showPicker, content: {
+            }
+            .sheet(isPresented: $showPicker, content: {
                 EventVenuePicker(manager: manager)
                     .environment(session)
             })
