@@ -153,18 +153,20 @@ struct ClubDetailView: View {
                 }
                 
                 // MARK: - Club Tags
-                VStack(alignment: .leading) {
-                    Text(String(localized: "club-tags", table: "Groups"))
-                        .font(.title2)
-                        .bold()
-                    
-                    WrappingHStack(alignment: .bottomLeading) {
-                        ForEach(club.tags, id: \.self) { tag in
-                            TagView(tag: Tag(name: tag))
+                if !club.tags.isEmpty {
+                    VStack(alignment: .leading) {
+                        Text(String(localized: "club-tags", table: "Groups"))
+                            .font(.title2)
+                            .bold()
+                        
+                        WrappingHStack(alignment: .bottomLeading) {
+                            ForEach(club.tags, id: \.self) { tag in
+                                TagView(tag: Tag(name: tag))
+                            }
                         }
-                    }
-                    
-                }.padding([.horizontal, .bottom])
+                        
+                    }.padding([.horizontal, .bottom])
+                }
                 
                 // MARK: - Description
                 VStack(alignment: .leading) {
