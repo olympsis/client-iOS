@@ -163,8 +163,7 @@ struct ViewContainer: View {
             handleRoute(route)
             return .handled
         })
-        .onOpenURL(perform: { url in
-            // Handle both internal and external urls
+        .onOpenURL(perform: { url in // Handle both internal and external urls
             guard let route = url.scheme == "olympsis" ? handleInternalURL(url) : handleExternalURL(url) else {
                 return
             }

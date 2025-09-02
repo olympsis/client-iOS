@@ -64,6 +64,7 @@ struct EventParticipants: View {
             
             ForEach(event.participants.prefix(3), id: \.id) { ptp in
                 ParticipantView(participant: ptp)
+                    .environment(event)
                     .environment(session)
             }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
@@ -192,6 +193,7 @@ struct EventParticipantsViewExt: View {
             ForEach(participants, id: \.self) { p in
                 HStack {
                     ParticipantView(participant: p)
+                        .environment(event)
                         .environment(session)
                     Spacer()
                     

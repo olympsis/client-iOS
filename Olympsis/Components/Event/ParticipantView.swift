@@ -12,8 +12,18 @@ struct ParticipantView: View {
     
     @State var participant: Participant
     
+    private var isUserAnonymous: Bool {
+        guard participant.isAnonymous,
+              let uuid = session.user?.uuid,
+              event.poster?.uuid != uuid,
+              participant.user?.uuid == uuid else {
+            return false
+        }
+        return true
+    }
+    
     private var imageURL: URL? {
-        guard !participant.isAnonymous,
+        guard !isUserAnonymous,
             let data = participant.user,
               let img = data.imageURL else {
             return nil
@@ -42,7 +52,7 @@ struct ParticipantView: View {
             return "Olympsis User"
         }
         
-        return participant.isAnonymous ? "Anonymous User" : "\(first) \(last)"
+        return isUserAnonymous ? "Anonymous User" : "\(first) \(last)"
     }
     
     private var username: String {
@@ -50,19 +60,11 @@ struct ParticipantView: View {
             return "olympsis-user"
         }
         
-        return participant.isAnonymous ? "@anon-user" : "@\(username)"
+        return isUserAnonymous ? "@anon-user" : "@\(username)"
     }
     
-    private var isUserAnonymous: Bool {
-        guard participant.isAnonymous,
-              let uuid = session.user?.uuid,
-              participant.user?.uuid == uuid else {
-            return false
-        }
-        return true
-    }
-    
-    @Environment(SessionStore.self) private var session: SessionStore
+    @Environment(Event.self) private var event
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         HStack {
@@ -95,5 +97,6 @@ struct ParticipantView: View {
 
 #Preview {
     ParticipantView(participant: EVENTS[0].participants[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }
