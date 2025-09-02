@@ -21,8 +21,11 @@ struct ViewContainer: View {
     @StateObject private var eventRouter = EventRouter()
     @StateObject private var profileRouter = ProfileRouter()
     
+    @State private var locationTask: Task<Void, Never>? = nil
+    
     @Environment(SessionStore.self) private var session
 
+    /// Handles routing to the various tabs in the navigation bar
     func handleRoute(_ route: ROUTES) {
         switch route {
         case .home:
@@ -37,6 +40,28 @@ struct ViewContainer: View {
         case .profile:
             currentTab = .profile
             handleProfileURL(route, router: profileRouter)
+        }
+    }
+    
+    /// Sets up a task that waits about 1 seconds before triggering
+    /// - Makes sure that we are still waiting on the location updates
+    /// - If the user has a hometown we use that fallback
+    /// - If not then we use the generic location fallback
+    private func setUpLocationFallback() {
+        locationTask = Task {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                Task { @MainActor in
+                    guard session.state == .loading else { return }
+                    guard let hometown = session.user?.hometown else {
+                        await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
+                        session.state = .success
+                        return
+                    }
+                    
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
+                    session.state = .success
+                }
+            }
         }
     }
     
@@ -108,49 +133,56 @@ struct ViewContainer: View {
         .notificationSystem(manager: NotificationManager.shared)
         .onReceive(LocationManager.shared.location.publisher, perform: { location in
             // Triggered on any signification location changes update
-            
+            // We cancel the previously set location task and use our recent location
             guard session.state == .loading else { return }
             
+            locationTask?.cancel()
             Task { @MainActor in
                 // Will want to add saved added sports here later
                 guard let user = session.user else { return }
                 await session.getNearbyData(location: location, selectedSports: user.sports)
+                
+                session.state = .success
             }
         })
         .task {
             session.state = .loading
             
-            // Set up navigation handler for notifications
+            // Sets up navigation handler for notifications
             NotificationManager.shared.navigationHandler = { url in
                 if let route = handleInternalURL(url) {
                     handleRoute(route)
                 }
             }
             
-            await session.checkIn()
-            guard let user = session.user else {
-                await session.logout()
-                return
-            }
-            
-            await session.updateNotifications()
-            await session.getNotifications()
-            
-            // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
-            if (LocationManager.shared.location == nil) {
-                if let hometown = user.hometown {
-                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
-                } else {
-                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
+            await withTaskGroup(of: Void.self) { group in
+                
+                // Check-In Task
+                group.addTask {
+                    await session.checkIn()
+                    guard await session.user != nil else {
+                        await session.logout()
+                        return
+                    }
                 }
-            }
-            session.state = .success
-
-            if session.workoutManager.checkAuthorizationStatus() {
-                _ = await session.workoutManager.loadWorkouts()
+                
+                // Fetch user's notifications
+                group.addTask {
+                    await session.getNotifications()
+                }
+                
+                // Load workouts if user has authorized us
+                if session.workoutManager.checkAuthorizationStatus() {
+                    group.addTask {
+                        _ = await session.workoutManager.loadWorkouts()
+                    }
+                }
+                
             }
             
-            guard let hasOnboarded = user.hasOnboarded else {
+            setUpLocationFallback()
+            
+            guard let hasOnboarded = session.user?.hasOnboarded else {
                 return
             }
             if !hasOnboarded {
@@ -164,3 +196,4 @@ struct ViewContainer: View {
     ViewContainer()
         .environment(SessionStore())
 }
+

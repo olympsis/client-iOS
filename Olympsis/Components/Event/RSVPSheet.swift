@@ -65,6 +65,7 @@ struct RSVPSheet: View {
                 }
                 
                 await NotificationManager.shared.requestAuthorization()
+                await session.updateNotifications()
                 
                 dismiss()
             } catch {

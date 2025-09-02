@@ -64,6 +64,7 @@ struct NotificationsView: View {
                     return
                 }
                 await NotificationManager.shared.requestAuthorization()
+                await session.updateNotifications()
             } catch {
                 log.error("Failed to determine or request notifications authorization. Error: \(error.localizedDescription)")
             }
