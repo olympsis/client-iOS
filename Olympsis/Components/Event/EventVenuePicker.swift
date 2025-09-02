@@ -36,7 +36,7 @@ struct EventVenuePicker: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
-        request.region = session.locationManager.region
+        request.region = LocationManager.shared.region
         request.resultTypes = .pointOfInterest
         
         let searchRequest = MKLocalSearch(request: request)

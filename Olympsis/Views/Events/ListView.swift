@@ -66,8 +66,8 @@ struct ListView: View {
     }
     
     private var currentLocation: CLLocation {
-        guard session.locationManager.isLocationAuthorized,
-            let location = session.locationManager.location else {
+        guard LocationManager.shared.isLocationAuthorized,
+            let location = LocationManager.shared.location else {
             return fallbackLocation
         }
         

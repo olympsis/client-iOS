@@ -26,7 +26,7 @@ struct FilterView: View {
     
     private func updateMapRegion() {
         // Get the current center
-        let center = session.locationManager.location ?? fallbackLocation.center
+        let center = LocationManager.shared.location ?? fallbackLocation.center
         
         // Calculate the span to show the radius with padding
         let radiusInDegrees = (manager.radius * 1.5) / 69.2  // Convert meters to degrees with 50% padding
@@ -68,7 +68,7 @@ struct FilterView: View {
                 Map(position: $cameraPosition) {
                     // Add a MapCircle for precise radius visualization
                     MapCircle(
-                        center: session.locationManager.location ?? fallbackLocation.center,
+                        center: LocationManager.shared.location ?? fallbackLocation.center,
                         radius: manager.radius * 1609.34  // Convert miles to meters (1 mile = 1609.34 meters)
                     )
                     .strokeStyle(style: .init(lineWidth: 2, dash: [6, 6]))

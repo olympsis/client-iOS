@@ -16,8 +16,13 @@ struct Home: View {
     
     @State private var showDetail = false
     @State private var showMoreFields = false
+    @State private var showRequestLocation: Bool = false
     
     @Environment(SessionStore.self) private var session
+    
+    private var hasLocation: Bool {
+        return LocationManager.shared.isAuthorized
+    }
     
     private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
@@ -79,6 +84,12 @@ struct Home: View {
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
+                    if !hasLocation {
+                        Button(action: { self.showRequestLocation.toggle() }) {
+                            Image(systemName: "location.slash")
+                                .foregroundStyle(.gray)
+                        }
+                    }
 // DISABLED FOR NOW
 //                    Button(action: { router.navigate(to: .messages) }) {
 //                        ZStack(alignment: .topTrailing) {
@@ -135,22 +146,12 @@ struct Home: View {
                         .navigationBarBackButtonHidden()
                 }
             })
-            .onReceive(session.locationManager.$location) { newLoc in
-                
-                // make sure new location is valid
-                guard newLoc != nil else {
-                    return
+            .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+                Task {
+                    await session.updateNotifications()
                 }
-                // we have to wait an undetermined amount of time to hear back from the gps to get location
-                // so i used on recieve and after that info is delivered we can start fetching for fields by location
-                guard !session.locationRecieved else {
-                    return
-                }
-                
-                // prevents us from doing this everytime we get new info from gps
-                // thus we only load data the first time
-                session.locationRecieved = true
-                
+            }) {
+                LocationRequestView()
             }
         }
     }

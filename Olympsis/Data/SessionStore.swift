@@ -17,20 +17,6 @@ import CoreLocation
 @Observable
 class SessionStore {
     
-    /// Global variable to keep track of the first lcation recieved when the app is opened.
-    /// We have to wait on the gps system to give us a location. Sometimes this may take longer than the startup sequence.
-    /// So we load in data from a fall back location until we get the location from the gps module.
-    var locationRecieved: Bool = false {
-        didSet {
-            Task {
-                guard let location = locationManager.location else {
-                    return
-                }
-                await getNearbyData(location: location)
-            }
-        }
-    }
-    
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
     var state: LOADING_STATE = .loading
@@ -64,7 +50,6 @@ class SessionStore {
     var fieldObserver = FieldObserver()
     var eventObserver = EventObserver()
     var workoutManager = WorkoutManager()
-    var locationManager = LocationManager()
     var managementObserver = ManagementObserver()
     var notificationService = NotificationService()
     
@@ -75,7 +60,7 @@ class SessionStore {
     // In this case we check to see if they have a stored location(hometown)
     // If not then we default to new york city
     var currentLocation: MKCoordinateRegion {
-        guard let location = locationManager.location else {
+        guard let location = LocationManager.shared.location else {
             guard let user = user, let hometown = user.hometown else {
                 return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
             }
@@ -167,57 +152,44 @@ class SessionStore {
     
     func updateNotifications() async {
         do {
-            if try await NotificationManager.shared.checkAuthorizationStatus() {
-                guard let dToken = dToken else {
-                    log.error("Failed to grab notification token from cache.")
+            guard try await NotificationManager.shared.checkAuthorizationStatus() else {
+                log.error("Failed to get authorization status.")
+                return
+            }
+            
+            guard let dToken = dToken else {
+                log.error("Failed to grab notification token from cache.")
+                return
+            }
+            
+            let uuid = await UIDevice.current.identifierForVendor?.uuidString
+            let model = await UIDevice.current.model
+            let device = NotificationDevice(
+                deviceID: uuid,
+                token: dToken,
+                platform: .ios,
+                model: model,
+                active: true,
+                createdAt: Date(),
+                updatedAt: nil
+            )
+            
+            // Check for existing devices
+            guard let user = cacheService.fetchUser(),
+                  var devices = user.notificationDevices else {
+                let dao = UserDao(notificationDevices: [device])
+                guard let user = await userObserver.UpdateUserData(update: dao) else {
+                    log.error("Failed to update user with new device token.")
                     return
                 }
-                
-                let uuid = await UIDevice.current.identifierForVendor?.uuidString
-                let model = await UIDevice.current.model
-                let device = NotificationDevice(
-                    deviceID: uuid,
-                    token: dToken,
-                    platform: .ios,
-                    model: model,
-                    active: true,
-                    createdAt: Date(),
-                    updatedAt: nil
-                )
-                
-                // Check for existing devices
-                guard let user = cacheService.fetchUser(),
-                      var devices = user.notificationDevices else {
-                    let dao = UserDao(notificationDevices: [device])
-                    guard let user = await userObserver.UpdateUserData(update: dao) else {
-                        log.error("Failed to update user with new device token.")
-                        return
-                    }
-                    cacheService.cacheUser(user: user)
-                    self.user = user
-                    return
-                }
-                
-                // Check for this device
-                guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
-                    devices.append(device)
-                    let dao = UserDao(notificationDevices: devices)
-                    guard let user = await userObserver.UpdateUserData(update: dao) else {
-                        log.error("Failed to update user with new device token.")
-                        return
-                    }
-                    cacheService.cacheUser(user: user)
-                    self.user = user
-                    return
-                }
-                
-                // Make sure that it's not the same
-                guard devices[idx].token != dToken else {
-                    return
-                }
-                
-                devices[idx].token = dToken
-                devices[idx].updatedAt = Date()
+                cacheService.cacheUser(user: user)
+                self.user = user
+                return
+            }
+            
+            // Check for this device
+            guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
+                devices.append(device)
                 let dao = UserDao(notificationDevices: devices)
                 guard let user = await userObserver.UpdateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
@@ -225,11 +197,23 @@ class SessionStore {
                 }
                 cacheService.cacheUser(user: user)
                 self.user = user
-            } else {
-                log.debug("Notification authorization is invalid.")
                 return
-                
             }
+            
+            // Make sure that it's not the same
+            guard devices[idx].token != dToken else {
+                return
+            }
+            
+            devices[idx].token = dToken
+            devices[idx].updatedAt = Date()
+            let dao = UserDao(notificationDevices: devices)
+            guard let user = await userObserver.UpdateUserData(update: dao) else {
+                log.error("Failed to update user with new device token.")
+                return
+            }
+            cacheService.cacheUser(user: user)
+            self.user = user
         } catch {
             log.error("Failed to check authorization status: \(error.localizedDescription)")
             return

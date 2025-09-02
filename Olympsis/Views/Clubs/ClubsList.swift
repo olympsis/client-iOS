@@ -20,6 +20,7 @@ struct ClubsList: View {
     @State private var showCancel: Bool = false
     @State private var showNewClub: Bool = false
     @State private var status: LOADING_STATE = .pending
+    @State private var showRequestLocation: Bool = false
     @State private var showCompletedApplicationToast:Bool = false
     
     @State private var manager = SearchManager()
@@ -44,12 +45,16 @@ struct ClubsList: View {
     }
     
     private var currentLocation: CLLocation {
-        guard session.locationManager.isLocationAuthorized,
-            let location = session.locationManager.location else {
+        guard LocationManager.shared.isLocationAuthorized,
+            let location = LocationManager.shared.location else {
             return fallbackLocation
         }
         
         return CLLocation(latitude: location.latitude, longitude: location.longitude)
+    }
+    
+    var hasLocation: Bool {
+        return LocationManager.shared.isAuthorized
     }
     
     private var tags: [Tag] {
@@ -328,6 +333,22 @@ struct ClubsList: View {
                         .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
                 }
             }
+            
+            if !hasLocation {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { self.showRequestLocation.toggle() }) {
+                        Image(systemName: "location.slash")
+                            .foregroundStyle(.gray)
+                    }
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+            Task {
+                await session.updateNotifications()
+            }
+        }) {
+            LocationRequestView()
         }
         .task {
             // Grab sports and tags from session

@@ -18,7 +18,7 @@ struct Venues: View {
     @Environment(SessionStore.self) private var session
     
     var hasLocation: Bool {
-        return session.locationManager.isAuthorized
+        return LocationManager.shared.isAuthorized
     }
     
     var body: some View {

@@ -16,7 +16,7 @@ struct VenuesList: View {
     @State private var showRequestLocation: Bool = false
     
     var hasLocation: Bool {
-        return session.locationManager.isAuthorized
+        return LocationManager.shared.isAuthorized
     }
     
     var body: some View {

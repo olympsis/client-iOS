@@ -154,7 +154,7 @@ struct VenueActionButtons: View {
     }
     
     private var estimatedTimeToField: String {
-        guard let location = session.locationManager.location else {
+        guard let location = LocationManager.shared.location else {
             return "10 min"
         }
         

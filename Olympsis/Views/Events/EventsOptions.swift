@@ -35,7 +35,7 @@ struct EventsOptions: View {
         guard let currentRadius = radius else { return }
         
         // Get the current center
-        let center = session.locationManager.location ?? fallbackLocation.center
+        let center = LocationManager.shared.location ?? fallbackLocation.center
         
         // Calculate the span to show the radius with padding
         let radiusInDegrees = (currentRadius * 1.5) / 111320  // Convert meters to degrees with 50% padding
@@ -77,7 +77,7 @@ struct EventsOptions: View {
                         Map(position: $cameraPosition) {
                             // Add a MapCircle for precise radius visualization
                             MapCircle(
-                                center: session.locationManager.location ?? fallbackLocation.center,
+                                center: LocationManager.shared.location ?? fallbackLocation.center,
                                 radius: radius ?? 5000
                             )
                             .strokeStyle(style: .init(lineWidth: 2, dash: [6, 6]))

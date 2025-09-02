@@ -12,6 +12,10 @@ struct NearbyVenues: View {
     @State private var showMoreFields = false
     @Environment(SessionStore.self) private var session
     
+    private var hasLocation: Bool {
+        return LocationManager.shared.isAuthorized
+    }
+    
     var body: some View {
         VStack(alignment: .leading){
             HStack {

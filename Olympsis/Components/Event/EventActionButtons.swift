@@ -183,7 +183,7 @@ struct EventActionButtons: View {
                             }
                             
                             if let venue = venues.first {
-                                Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
+                                Text(event.estimatedTimeToVenue(venue: venue, LocationManager.shared.location))
                                     .font(.caption)
                                     .fontWeight(.bold)
                                     .redacted(reason: venueState != .success ? .placeholder : [])

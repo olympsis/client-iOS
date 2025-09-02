@@ -106,16 +106,27 @@ struct ViewContainer: View {
             handleRoute(route)
         })
         .notificationSystem(manager: NotificationManager.shared)
-        .onAppear {
+        .onReceive(LocationManager.shared.location.publisher, perform: { location in
+            // Triggered on any signification location changes update
+            
+            guard session.state == .loading else { return }
+            
+            Task { @MainActor in
+                // Will want to add saved added sports here later
+                guard let user = session.user else { return }
+                await session.getNearbyData(location: location, selectedSports: user.sports)
+            }
+        })
+        .task {
+            session.state = .loading
+            
             // Set up navigation handler for notifications
             NotificationManager.shared.navigationHandler = { url in
                 if let route = handleInternalURL(url) {
                     handleRoute(route)
                 }
             }
-        }
-        .task {
-            session.state = .loading
+            
             await session.checkIn()
             guard let user = session.user else {
                 await session.logout()
@@ -126,7 +137,7 @@ struct ViewContainer: View {
             await session.getNotifications()
             
             // If the sessionStore has recieved a location the home page will handle all that when it recieves a location from the loc manager
-            if (!session.locationRecieved) {
+            if (LocationManager.shared.location == nil) {
                 if let hometown = user.hometown {
                     await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
                 } else {

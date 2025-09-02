@@ -73,7 +73,7 @@ struct OrganizationsView: View {
                     }
                     
                 }.refreshable {
-                    guard let location = session.locationManager.location else {
+                    guard let location = LocationManager.shared.location else {
                         return
                     }
                     
@@ -106,7 +106,7 @@ struct OrganizationsView: View {
             .navigationTitle("Organizations")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                guard let location = session.locationManager.location else {
+                guard let location = LocationManager.shared.location else {
                     return
                 }
                 
