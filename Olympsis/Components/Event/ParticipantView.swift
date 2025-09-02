@@ -10,12 +10,13 @@ import SwiftUI
 /// A view that shows a picture of a participant
 struct ParticipantView: View {
     
-    @State var participant: Participant
+    var participant: Participant
+    var posterOrAdminViewing: Bool = false
     
     private var isUserAnonymous: Bool {
-        guard participant.isAnonymous,
+        guard !posterOrAdminViewing,
+            participant.isAnonymous,
               let uuid = session.user?.uuid,
-              event.poster?.uuid != uuid,
               participant.user?.uuid == uuid else {
             return false
         }
@@ -63,7 +64,6 @@ struct ParticipantView: View {
         return isUserAnonymous ? "@anon-user" : "@\(username)"
     }
     
-    @Environment(Event.self) private var event
     @Environment(SessionStore.self) private var session
     
     var body: some View {
@@ -97,6 +97,5 @@ struct ParticipantView: View {
 
 #Preview {
     ParticipantView(participant: EVENTS[0].participants[0])
-        .environment(EVENTS[0])
         .environment(SessionStore())
 }

@@ -56,6 +56,35 @@ struct EventParticipants: View {
         }
     }
     
+    /// If you are the poster or admin there is a lot more you can see and do
+    private var isPosterOrAdmin: Bool {
+        
+        // check to see if you're the poster
+        guard let user = session.user,
+           let uuid = user.uuid else {
+            return false
+        }
+        
+        if event.poster?.uuid == uuid {
+            return true
+        }
+        
+        if clubs.first(where: { e in
+            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+        }) != nil {
+            return true
+        }
+        
+        
+        if organizations.first(where: { e in
+            e.members.contains { $0.user?.uuid == uuid }
+        }) != nil {
+            return true
+        }
+        
+        return false
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("\(event.participants.count) \(participantsStatus)")
@@ -63,8 +92,7 @@ struct EventParticipants: View {
                 .fontWeight(.bold)
             
             ForEach(event.participants.prefix(3), id: \.id) { ptp in
-                ParticipantView(participant: ptp)
-                    .environment(event)
+                ParticipantView(participant: ptp, posterOrAdminViewing: isPosterOrAdmin)
                     .environment(session)
             }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
