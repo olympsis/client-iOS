@@ -10,8 +10,8 @@ import SwiftUI
 
 struct GroupView: View {
     
+    @Binding public var router: GroupRouter
     @State private var manager = SearchManager()
-    @StateObject public var router: GroupRouter
     @Environment(SessionStore.self) private var session
     
     private var selectedGroup: GroupSelection? {
@@ -30,14 +30,10 @@ struct GroupView: View {
         return selectedGroup!.type
     }
     
-    private var log: Logger = Logger(
+    private let log: Logger = Logger(
         subsystem: "com.olympsis.client",
         category: "group_view"
     )
-    
-    init(router: GroupRouter = GroupRouter()) {
-        self._router = StateObject(wrappedValue: router)
-    }
     
     var body: some View {
         NavigationStack(path: $router.navPath) {
@@ -86,6 +82,6 @@ struct GroupView: View {
 }
 
 #Preview {
-    GroupView()
+    GroupView(router: .constant(GroupRouter()))
         .environment(SessionStore())
 }

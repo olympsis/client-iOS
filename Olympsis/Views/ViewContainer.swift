@@ -16,10 +16,10 @@ struct ViewContainer: View {
     @State var currentTab: ViewTab = .home
     @State private var showOnboarding: Bool = false
     
-    private var homeRouter = HomeRouter()
-    @StateObject private var groupRouter = GroupRouter()
-    @StateObject private var eventRouter = EventRouter()
-    @StateObject private var profileRouter = ProfileRouter()
+    @State private var homeRouter = HomeRouter()
+    @State private var groupRouter = GroupRouter()
+    @State private var eventRouter = EventRouter()
+    @State private var profileRouter = ProfileRouter()
     
     @State private var locationTask: Task<Void, Never>? = nil
     
@@ -40,6 +40,37 @@ struct ViewContainer: View {
         case .profile:
             currentTab = .profile
             handleProfileURL(route, router: profileRouter)
+        }
+    }
+    
+    /// Kicks off the tasks needed to check the user into Olympsis.
+    /// Launches a task group to run these tasks in parallel.
+    /// - Checks in with the server and get's updated user data
+    /// - Fetches the user's notifications
+    /// - Loads workouts if user allowed us to
+    private func initializeUpCheckInTasks() async {
+        await withTaskGroup(of: Void.self) { group in
+            
+            // Check-In Task
+            group.addTask {
+                await session.checkIn()
+                guard await session.user != nil else {
+                    await session.logout()
+                    return
+                }
+            }
+            
+            // Fetch user's notifications
+            group.addTask {
+                await session.getNotifications()
+            }
+            
+            // Load workouts if user has authorized us
+            if session.workoutManager.checkAuthorizationStatus() {
+                group.addTask {
+                    _ = await session.workoutManager.loadWorkouts()
+                }
+            }
         }
     }
     
@@ -65,20 +96,30 @@ struct ViewContainer: View {
         }
     }
     
+    /// If the user hasn't onboarded this will trigger the onboarding sheet to show.
+    private func handleOnboardingSheet() {
+        guard let hasOnboarded = session.user?.hasOnboarded else {
+            return
+        }
+        if !hasOnboarded {
+            showOnboarding.toggle()
+        }
+    }
+    
     var body: some View {
         VStack {
             TabView(selection: $currentTab) {
-                Home(router: homeRouter)
+                Home(router: $homeRouter)
                     .tag(ViewTab.home)
                     .toolbar(.hidden, for: .tabBar)
                     .environment(session)
                 
-                GroupView(router: groupRouter)
+                GroupView(router: $groupRouter)
                     .tag(ViewTab.club)
                     .toolbar(.hidden, for: .tabBar)
                     .environment(session)
                 
-                Events(router: eventRouter)
+                Events(router: $eventRouter)
                     .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
                     .environment(session)
@@ -155,39 +196,14 @@ struct ViewContainer: View {
                 }
             }
             
-            await withTaskGroup(of: Void.self) { group in
-                
-                // Check-In Task
-                group.addTask {
-                    await session.checkIn()
-                    guard await session.user != nil else {
-                        await session.logout()
-                        return
-                    }
-                }
-                
-                // Fetch user's notifications
-                group.addTask {
-                    await session.getNotifications()
-                }
-                
-                // Load workouts if user has authorized us
-                if session.workoutManager.checkAuthorizationStatus() {
-                    group.addTask {
-                        _ = await session.workoutManager.loadWorkouts()
-                    }
-                }
-                
-            }
+            // Handle Check-In
+            await initializeUpCheckInTasks()
             
+            // GPS Location updates fallback
             setUpLocationFallback()
             
-            guard let hasOnboarded = session.user?.hasOnboarded else {
-                return
-            }
-            if !hasOnboarded {
-                showOnboarding.toggle()
-            }
+            // Onboarding
+            handleOnboardingSheet()
         }
     }
 }

@@ -12,9 +12,9 @@ struct TabBar: View {
     
     @Binding var currentTab: ViewTab
     @State public var homeRouter = HomeRouter()
-    @StateObject public var groupRouter = GroupRouter()
-    @StateObject public var eventRouter = EventRouter()
-    @StateObject public var profileRouter = ProfileRouter()
+    @State public var groupRouter = GroupRouter()
+    @State public var eventRouter = EventRouter()
+    @State public var profileRouter = ProfileRouter()
     
     @Environment(SessionStore.self) private var session
     

@@ -12,7 +12,7 @@ import NotificationCenter
 
 struct Home: View {
     
-    @State public var router: HomeRouter
+    @Binding var router: HomeRouter
     
     @State private var showDetail = false
     @State private var showMoreFields = false
@@ -24,11 +24,7 @@ struct Home: View {
         return LocationManager.shared.isAuthorized
     }
     
-    private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
-    
-    init(router: HomeRouter = HomeRouter()) {
-        self._router = .init(initialValue: router)
-    }
+    private let log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     var body: some View {
         NavigationStack(path: $router.navPath) {
@@ -158,6 +154,6 @@ struct Home: View {
 }
 
 #Preview {
-    Home()
+    Home(router: .constant(HomeRouter()))
         .environment(SessionStore())
 }

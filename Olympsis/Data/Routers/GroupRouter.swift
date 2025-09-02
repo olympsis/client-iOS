@@ -8,9 +8,10 @@
 import SwiftUI
 import Foundation
 
-class GroupRouter: ObservableObject {
+@Observable
+class GroupRouter {
     
-    @Published var navPath = NavigationPath()
+    var navPath = NavigationPath()
     
     @MainActor
     func navigate(to destination: GROUP_ROUTES) {

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Events: View {
     
-    @StateObject var router: EventRouter = EventRouter()
+    @Binding var router: EventRouter
     
     @State private var isLoaded: Bool = false
     @State private var searchText: String = ""
@@ -221,7 +221,7 @@ struct Events: View {
                     }
                 case .settings:
                     EventsOptions(availableSports: [], selectedSports: sports)
-                        .environmentObject(router)
+                        .environment(router)
                 }
             })
             .task {
@@ -249,6 +249,6 @@ struct Events: View {
 }
 
 #Preview {
-    Events()
+    Events(router: .constant(EventRouter()))
         .environment(SessionStore())
 }

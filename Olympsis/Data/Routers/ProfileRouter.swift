@@ -8,9 +8,10 @@
 import SwiftUI
 import Foundation
 
-class ProfileRouter: ObservableObject {
+@Observable
+class ProfileRouter {
     
-    @Published var navPath = NavigationPath()
+    var navPath = NavigationPath()
     
     @MainActor
     func navigate(to destination: PROFILE_ROUTES) {

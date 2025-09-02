@@ -16,7 +16,7 @@ struct EventsOptions: View {
     @State private var status: LOADING_STATE = .pending
     @State private var sliderValue = 1.0
     
-    @EnvironmentObject private var router: EventRouter
+    @Environment(EventRouter.self) private var router
     @Environment(SessionStore.self) private var session
     
     @AppStorage("searchRadius") private var radius: Double? // search radius for fields/events in meters
@@ -163,7 +163,7 @@ struct EventsOptions: View {
 #Preview {
     NavigationStack {
         EventsOptions(availableSports: [], selectedSports: [])
-            .environmentObject(EventRouter())
+            .environment(EventRouter())
             .environment(SessionStore())
             .navigationBarBackButtonHidden(false)
     }
