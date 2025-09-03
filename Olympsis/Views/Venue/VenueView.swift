@@ -453,7 +453,6 @@ struct VenueEventsView: View {
         }
         .padding(.all)
         .fullScreenCover(item: $selectedEvent, content: { event in
-            
             EventView(event: event, isFullScreen: true)
                 .environment(event)
                 .environment(session)

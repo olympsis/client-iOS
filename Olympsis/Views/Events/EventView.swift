@@ -202,9 +202,9 @@ struct EventView: View {
                     if #available(iOS 26.0, *) {
                         Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
+                                .padding(.horizontal)
+                                .padding(.vertical, 13)
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 13)
                         .glassEffect()
                     } else {
                         Button(action: { dismiss() }) {
@@ -226,9 +226,9 @@ struct EventView: View {
                         Button(action: { self.showSharingMenu = true }) {
                             Image(systemName: "square.and.arrow.up")
                                 .imageScale(.medium)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 12)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 12)
                         .clipShape(Circle())
                         .glassEffect()
                     } else {
