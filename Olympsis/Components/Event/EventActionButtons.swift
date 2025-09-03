@@ -381,7 +381,7 @@ struct EventActionButtons: View {
         }
         .frame(height: 60)
         .padding(.horizontal)
-        .sheet(isPresented: $showRSVPSheet, onDismiss: {
+        .sheet(isPresented: .constant(true), onDismiss: {
             guard let extLink = event.externalLink,
                   let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
                 return
@@ -390,7 +390,7 @@ struct EventActionButtons: View {
         }, content: {
             RSVPSheet(event: event)
                 .environment(session)
-                .presentationDetents([.height(215)])
+                .presentationDetents([.height(238)])
         })
     }
 }
