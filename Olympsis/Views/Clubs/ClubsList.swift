@@ -12,7 +12,8 @@ import CoreLocation
 
 struct ClubsList: View {
 
-    @State private var text: String = ""
+    @State private var searchText: String = ""
+    
     @State private var numFiltersActive = 0
     @State private var showMenu: Bool = false
     @State private var showEULA: Bool = false
@@ -66,7 +67,7 @@ struct ClubsList: View {
     }
     
     private var filteredClubs: [Club] {
-        guard !text.isEmpty else {
+        guard !searchText.isEmpty else {
             guard let user = session.user,
                   let userClubs = user.clubs else {
                 return session.clubs
@@ -108,7 +109,7 @@ struct ClubsList: View {
                     manager.selectedSports.isEmpty ||
                     manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
                 }
-                .filter { $0.name.localizedLowercase.contains(text.localizedLowercase) }
+                .filter { $0.name.localizedLowercase.contains(searchText.localizedLowercase) }
         }
         return session.clubs
             .filter { club in !userClubs.contains(where: { club.id == $0 }) }
@@ -122,7 +123,7 @@ struct ClubsList: View {
                 manager.selectedSports.isEmpty ||
                 manager.selectedSports.contains { selectedSport in club.sports.contains(selectedSport) }
             }
-            .filter { $0.name.localizedLowercase.contains(text.localizedLowercase) }
+            .filter { $0.name.localizedLowercase.contains(searchText.localizedLowercase) }
     }
     
     private func handleShowNewClub() {
@@ -185,56 +186,60 @@ struct ClubsList: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             VStack(alignment: .trailing) {
-                
-                // MARK: - Search
-                HStack {
-                    SearchBar(text: $text, onCommit: {
-                        showCancel = false
-                    }).onTapGesture {
-                            if !showCancel {
-                                showCancel = true
-                            }
-                        }
-                    .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
-                    .padding(.horizontal)
-                    .padding(.top)
-                    .onChange(of: text) { _, new in
-                        if !new.isEmpty {
-                            withAnimation(.easeInOut) {
-                                showCancel = true
-                            }
-                        } else {
-                            withAnimation(.easeInOut) {
-                                showCancel = false
-                            }
-                        }
-                    }
-                    
-                    if showCancel {
-                        Button(action:{
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                            withAnimation(.easeInOut) {
-                                text = ""
-                                showCancel = false
-                            }
-                        }){
-                            Text(String(localized: "cancel", table: "General"))
-                                .foregroundColor(.gray)
-                                .frame(height: 40)
-                                .padding(.top)
-                        }.padding(.trailing)
-                    }
-                }
+//                
+//                // MARK: - Search
+//                HStack {
+//                    SearchBar(text: $searchText, onCommit: {
+//                        showCancel = false
+//                    }).onTapGesture {
+//                            if !showCancel {
+//                                showCancel = true
+//                            }
+//                        }
+//                    .frame(maxWidth: SCREEN_WIDTH-10, maxHeight: 40)
+//                    .padding(.horizontal)
+//                    .padding(.top)
+//                    .onChange(of: searchText) { _, new in
+//                        if !new.isEmpty {
+//                            withAnimation(.easeInOut) {
+//                                showCancel = true
+//                            }
+//                        } else {
+//                            withAnimation(.easeInOut) {
+//                                showCancel = false
+//                            }
+//                        }
+//                    }
+//                    
+//                    if showCancel {
+//                        Button(action:{
+//                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+//                            withAnimation(.easeInOut) {
+//                                searchText = ""
+//                                showCancel = false
+//                            }
+//                        }){
+//                            Text(String(localized: "cancel", table: "General"))
+//                                .foregroundColor(.gray)
+//                                .frame(height: 40)
+//                                .padding(.top)
+//                        }.padding(.trailing)
+//                    }
+//                }
                 
                 // MARK: - Actions
                 HStack {
+                    Spacer()
+                    
                     Button(action: handleShowNewClub) {
-                        Image(systemName: "plus")
-                        
-                        Text(String(localized: "create-club", table: "Groups"))
+                        HStack {
+                            Image(systemName: "plus")
+                            Text(String(localized: "create-club", table: "Groups"))
+                        }
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
                     }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
+                    
                     .background(.regularMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     
@@ -267,7 +272,7 @@ struct ClubsList: View {
                             .padding(.bottom)
                             .multilineTextAlignment(.leading)
                     } else {
-                        ForEach(text.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(text.lowercased()) }, id: \.id){ club in
+                        ForEach(searchText.isEmpty ? filteredClubs : filteredClubs.filter{ $0.name.lowercased().contains(searchText.lowercased()) }, id: \.id){ club in
                             ClubListItem(club: club, showToast: $showCompletedApplicationToast)
                                 .clipShape(Rectangle())
                                 .padding(.horizontal, 10)
@@ -376,7 +381,7 @@ struct ClubsList: View {
             if !hasLoaded {
                 await fetchClubs()
             }
-        }
+        }.searchable(text: $searchText, placement: .toolbar)
     }
 }
 

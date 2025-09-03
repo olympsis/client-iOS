@@ -694,7 +694,6 @@
 		9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20901293444A4007A62C4 /* MemberListItem.swift */; };
 		9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD20905293446A4007A62C4 /* UserPeek.swift */; };
 		9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */; };
-		9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DC432974A095009B6120 /* ClubsList2.swift */; };
 		9ADDD94A296A74D700245CCE /* RoomsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD949296A74D700245CCE /* RoomsSearch.swift */; };
 		9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94B296A78CF00245CCE /* NewRoom.swift */; };
 		9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADDD94F296A807A00245CCE /* RoomDao.swift */; };
@@ -1281,7 +1280,6 @@
 		9AD20901293444A4007A62C4 /* MemberListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListItem.swift; sourceTree = "<group>"; };
 		9AD20905293446A4007A62C4 /* UserPeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPeek.swift; sourceTree = "<group>"; };
 		9AD2091229357D1B007A62C4 /* AddParticipantResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantResponse.swift; sourceTree = "<group>"; };
-		9AD4DC432974A095009B6120 /* ClubsList2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsList2.swift; sourceTree = "<group>"; };
 		9ADDD949296A74D700245CCE /* RoomsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsSearch.swift; sourceTree = "<group>"; };
 		9ADDD94B296A78CF00245CCE /* NewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoom.swift; sourceTree = "<group>"; };
 		9ADDD94F296A807A00245CCE /* RoomDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDao.swift; sourceTree = "<group>"; };
@@ -2422,7 +2420,6 @@
 			isa = PBXGroup;
 			children = (
 				9AD208F7293429E3007A62C4 /* ClubsList.swift */,
-				9AD4DC432974A095009B6120 /* ClubsList2.swift */,
 				9AD208FB293432A4007A62C4 /* ClubMenu.swift */,
 				9AD208FD2934448D007A62C4 /* ClubApplications.swift */,
 				9A5CA4DC296F7DA300C63A32 /* ClubMemberMenu.swift */,
@@ -3205,7 +3202,6 @@
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
 				5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */,
-				9AD4DC442974A095009B6120 /* ClubsList2.swift in Sources */,
 				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
 				5D9E745D2DFCE72B0094C0D1 /* EventFormatView.swift in Sources */,

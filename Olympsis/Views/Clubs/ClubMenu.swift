@@ -131,9 +131,9 @@ struct ClubMenu: View {
                         MenuLabel(icon: Image(systemName: "plus.circle.fill"), text: String(localized: "club-menu-create-group", table: "Groups"), type: .normal)
                     }
                     
-                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"), action: {
-                        self.showClubs.toggle()
-                    })
+                    NavigationLink(destination: ClubsList()) {
+                        MenuLabel(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"))
+                    }
                     
                     NavigationLink {
                         MembersListView()
@@ -171,9 +171,6 @@ struct ClubMenu: View {
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
-            }
-            .fullScreenCover(isPresented: $showClubs) {
-                ClubsList2()
             }
             .fullScreenCover(isPresented: $showReports, content: {
                 GroupReports()
