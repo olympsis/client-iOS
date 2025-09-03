@@ -186,7 +186,7 @@ struct Events: View {
                     .padding(.trailing)
                 }
             }
-            .toolbarBackground(page == .list ? .visible : .hidden, for: .navigationBar)
+            .toolbarBackground(page == .list ? .automatic : .hidden, for: .navigationBar)
             .sheet(item: $selectedVenue) { field in
                 VenueView(venue: field)
                     .presentationDetents([.height(250), .large])
