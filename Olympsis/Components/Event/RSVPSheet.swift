@@ -146,6 +146,7 @@ struct RSVPSheet: View {
                         Text("Hide my RSVP")
                             .fontWeight(.medium)
                         Text("Keep your attendance private from other participants.")
+                            .lineLimit(2)
                             .font(.callout)
                             .foregroundStyle(.gray)
                     }
