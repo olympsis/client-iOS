@@ -177,7 +177,9 @@ struct EventComments: View {
                 }
             }
             
-            ForEach(event.comments, id: \.id) { comment in
+            ForEach(event.comments.sorted(by: { eventA, eventB in
+                eventA.createdAt > eventB.createdAt
+            }), id: \.id) { comment in
                 EventCommentListItem(comment: comment)
                     .contextMenu {
                         if (isPosterOrAdmin) {

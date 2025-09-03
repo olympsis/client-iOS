@@ -154,7 +154,7 @@ struct EventView: View {
                     EventComments(clubs: $clubs, organizations: $organizations)
                         .environment(event)
                         .padding(.top)
-//                        .id(8)
+                        .id(8)
                     
                     Spacer(minLength: 50)
                 }
