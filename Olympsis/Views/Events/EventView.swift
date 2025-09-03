@@ -65,7 +65,7 @@ struct EventView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             ScrollViewReader { proxy in
-                LazyVStack(alignment: .leading) {
+                VStack(alignment: .leading) {
                     
                     // MARK: - Event Quick Info
                     EventQuickInfo(
@@ -154,7 +154,7 @@ struct EventView: View {
                     EventComments(clubs: $clubs, organizations: $organizations)
                         .environment(event)
                         .padding(.top)
-                        .id(8)
+//                        .id(8)
                     
                     Spacer(minLength: 50)
                 }
