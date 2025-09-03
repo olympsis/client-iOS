@@ -152,6 +152,8 @@ struct RSVPSheet: View {
                     }
                 }
             }.padding(.horizontal)
+            
+            Spacer()
         }
     }
 }
