@@ -15,6 +15,7 @@ import CoreLocation
 struct EventView: View {
     
     var event: Event
+    var isFullScreen: Bool = false
     
     @State private var venues = [Venue]()
     @State private var venuesTarget: Int = 0
@@ -72,6 +73,7 @@ struct EventView: View {
                         venuesTarget: $venuesTarget,
                         venuesState: $venueState
                     )
+                    .padding(.top, isFullScreen ? 50 : 0)
                     .padding(.bottom, 10)
                     .id(1)
                     
@@ -87,7 +89,7 @@ struct EventView: View {
                                 .font(.title2)
                                 .bold()
                             
-                           Spacer()
+                            Spacer()
                         }
                         Text(event.body)
                     }
@@ -126,7 +128,7 @@ struct EventView: View {
                         .redacted(reason: organizersState != .success ? .placeholder : [])
                         .zIndex(1)
                         .id(5)
-  
+                    
                     
                     // MARK: - Participants View
                     EventParticipants(clubs: $clubs, organizations: $organizations)
@@ -177,8 +179,6 @@ struct EventView: View {
                     Image(systemName: "square.and.arrow.up")
                         .imageScale(.medium)
                 }
-                .clipShape(Rectangle())
-                .tint(Color.foreground)
             }
         }
         .sheet(isPresented: $showSharingMenu, content: {
@@ -196,12 +196,56 @@ struct EventView: View {
             venueState = .success
             organizersState = .success
         }
+        .overlay(alignment: .top) {
+            if isFullScreen {
+                HStack {
+                    if #available(iOS 26.0, *) {
+                        Button(action: { dismiss() }) {
+                            Image(systemName: "chevron.left")
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 13)
+                        .glassEffect()
+                    } else {
+                        Button(action: { dismiss() }) {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Text(event.title)
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                    
+                    if #available(iOS 26.0, *) {
+                        Button(action: { self.showSharingMenu = true }) {
+                            Image(systemName: "square.and.arrow.up")
+                                .imageScale(.medium)
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 12)
+                        .clipShape(Circle())
+                        .glassEffect()
+                    } else {
+                        Button(action: { self.showSharingMenu = true }) {
+                            Image(systemName: "square.and.arrow.up")
+                                .imageScale(.medium)
+                        }
+                    }
+                }.padding(.horizontal)
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        EventView(event: EVENTS[1])
+        EventView(event: EVENTS[1], isFullScreen: true)
             .environment(EVENTS[1])
             .environment(SessionStore())
     }

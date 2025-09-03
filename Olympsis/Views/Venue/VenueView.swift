@@ -352,6 +352,8 @@ struct VenueActionButtons: View {
 struct VenueEventsView: View {
     
     @Binding var venue: Venue
+    @State private var selectedEvent: Event?
+    @State private var showEventView: Bool = false
     @State private var status: LOADING_STATE = .pending
     @Environment(SessionStore.self) private var session
     
@@ -441,11 +443,21 @@ struct VenueEventsView: View {
                     }else {
                         ForEach(fieldEvents) { event in
                             EventListItem(event: event)
+                                .onTapGesture {
+                                    selectedEvent = event
+                                }
                         }
                     }
                 }
             }
-        }.padding(.all)
+        }
+        .padding(.all)
+        .fullScreenCover(item: $selectedEvent, content: { event in
+            
+            EventView(event: event, isFullScreen: true)
+                .environment(event)
+                .environment(session)
+        })
     }
 }
 
