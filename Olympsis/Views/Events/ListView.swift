@@ -148,7 +148,6 @@ struct ListView: View {
     }
     
     var body: some View {
-        
         ScrollViewReader { proxy in
             ScrollView {
                 HStack(alignment: .bottom) {
@@ -158,6 +157,7 @@ struct ListView: View {
                     
                     FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
                 }
+                .zIndex(2)
                 .frame(height: 40)
                 .padding(.horizontal)
                 
@@ -203,6 +203,8 @@ struct ListView: View {
                                     .background(Color.Background.secondary)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.horizontal)
+                                    .allowsHitTesting(false)
+                                    .zIndex(1)
                                 }.id(group.date)
                             }
                         }.onChange(of: selectedDate) { oldValue, newValue in
