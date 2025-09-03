@@ -145,7 +145,7 @@ struct RSVPSheet: View {
                     VStack(alignment: .leading) {
                         Text("Hide my RSVP")
                             .fontWeight(.medium)
-                        Text("Keep your attendance private from other participants.")
+                        Text("Keep your attendance private from others.")
                             .lineLimit(2)
                             .font(.callout)
                             .foregroundStyle(.gray)

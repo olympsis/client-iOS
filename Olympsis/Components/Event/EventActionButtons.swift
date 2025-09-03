@@ -390,7 +390,7 @@ struct EventActionButtons: View {
         }, content: {
             RSVPSheet(event: event)
                 .environment(session)
-                .presentationDetents([.height(238)])
+                .presentationDetents([.height(215)])
         })
     }
 }
