@@ -430,6 +430,9 @@
 		5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */; };
 		5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
 		5D7DA5B02E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
+		5D7DF3C22E693CF80090761E /* NewEventCustomLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */; };
+		5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */; };
+		5D7DF3C62E6C8ADF0090761E /* VenuePickerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */; };
 		5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7E0CE42E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
@@ -1005,6 +1008,9 @@
 		5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventImagePicker.swift; sourceTree = "<group>"; };
 		5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePickerView.swift; sourceTree = "<group>"; };
 		5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallZoneViewer.swift; sourceTree = "<group>"; };
+		5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCustomLocation.swift; sourceTree = "<group>"; };
+		5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLAlgorithms.swift; sourceTree = "<group>"; };
+		5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenuePickerListItem.swift; sourceTree = "<group>"; };
 		5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRoutePolylineView.swift; sourceTree = "<group>"; };
 		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
@@ -1924,6 +1930,7 @@
 				5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */,
 				5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */,
 				5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */,
+				5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */,
 			);
 			path = Venue;
 			sourceTree = "<group>";
@@ -2386,6 +2393,7 @@
 				5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */,
 				5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */,
 				5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */,
+				5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2510,6 +2518,7 @@
 				5D18BD252B3BC1CF00F90777 /* Generic.swift */,
 				5D9F69402BB7653F0057D205 /* MapFunctions.swift */,
 				5D8B4A922C1CEDC40030FF3E /* ImageProcessors.swift */,
+				5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3050,6 +3059,7 @@
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */,
 				5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */,
+				5D7DF3C22E693CF80090761E /* NewEventCustomLocation.swift in Sources */,
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5D1190602E39073E00574041 /* ClubWalletWithdraw.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
@@ -3146,6 +3156,7 @@
 				5DB0962E2E0A155500BB924A /* WorkoutManager+Splits.swift in Sources */,
 				5D666A9F2BF7CDAD001EE754 /* MediaPickerViewModel.swift in Sources */,
 				5DD6EED72E15EE7E0051F127 /* WorkoutListItemView.swift in Sources */,
+				5D7DF3C62E6C8ADF0090761E /* VenuePickerListItem.swift in Sources */,
 				5DF5CFC22C0450D5008F5374 /* ClubLogoBanner.swift in Sources */,
 				5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */,
 				5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */,
@@ -3290,6 +3301,7 @@
 				5D38BD9D2C1699DF003EEF90 /* LoggingManagement.swift in Sources */,
 				9AF0A1B929313D430055D1F6 /* PostService.swift in Sources */,
 				5D1190622E39074F00574041 /* ClubWalletAutoWithdrawl.swift in Sources */,
+				5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
 				5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */,
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,

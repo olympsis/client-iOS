@@ -36,17 +36,20 @@ struct CustomLocationPicker: View {
                     Marker(String(localized: "selected-location-text", table: "General"), coordinate: coordinate)
                 }
             }
+            .ignoresSafeArea(edges: .bottom)
+            .highPriorityGesture(TapGesture().onEnded({ action in
+                
+            }))
+            .onTapGesture(coordinateSpace: .local) { screenCoord in
+                if let coordinate = proxy.convert(screenCoord, from: .local) {
+                    handleLocationTap(coordinate)
+                }
+            }
             .mapStyle(.standard)
             .mapControls {
                 MapCompass()
                 MapPitchToggle()
                 MapUserLocationButton()
-            }
-            // Use onTapGesture with the map proxy to convert tap coordinates
-            .onTapGesture { screenCoord in
-                if let coordinate = proxy.convert(screenCoord, from: .local) {
-                    handleLocationTap(coordinate)
-                }
             }
         }
     }

@@ -135,51 +135,53 @@ struct ClubsList: View {
     }
     
     @MainActor
-    private func fetchClubs() async {
+    private func fetchClubs() {
         guard status != .loading else { return }
-        do {
-            status = .loading
-            let geoCoder = CLGeocoder()
-            let locale = Locale(identifier: "en_US")
-            let pk = try await geoCoder.reverseGeocodeLocation(currentLocation, preferredLocale: locale)
-            
-            var tags: String? = nil
-            var sports: String? = nil
-            
-            if (!manager.tags.isEmpty) {
-                tags = manager.getTagsString()
-            }
-            
-            if (!manager.sports.isEmpty) {
-                sports = manager.getSportsString()
-            }
-            
-            guard let country = pk.first?.country,
-                  let state = pk.first?.administrativeArea,
-                  let resp = await session.clubObserver.getClubs(
-                    country: country,
-                    state: stateAbbreviationToFullName[state] ?? state,
-                    location: GeoJSON(
-                        type: "Point",
-                        coordinates: [
-                            currentLocation.coordinate.latitude,
-                            currentLocation.coordinate.longitude
-                        ]),
-                    radius: manager.radius,
-                    tags: tags,
-                    sports: sports
-                  ) else {
+        Task { @MainActor in
+            do {
+                status = .loading
+                let geoCoder = CLGeocoder()
+                let locale = Locale(identifier: "en_US")
+                let pk = try await geoCoder.reverseGeocodeLocation(currentLocation, preferredLocale: locale)
+                
+                var tags: String? = nil
+                var sports: String? = nil
+                
+                if (!manager.tags.isEmpty) {
+                    tags = manager.getTagsString()
+                }
+                
+                if (!manager.sports.isEmpty) {
+                    sports = manager.getSportsString()
+                }
+                
+                guard let country = pk.first?.country,
+                      let state = pk.first?.administrativeArea,
+                      let resp = await session.clubObserver.getClubs(
+                        country: country,
+                        state: stateAbbreviationToFullName[state] ?? state,
+                        location: GeoJSON(
+                            type: "Point",
+                            coordinates: [
+                                currentLocation.coordinate.latitude,
+                                currentLocation.coordinate.longitude
+                            ]),
+                        radius: manager.radius,
+                        tags: tags,
+                        sports: sports
+                      ) else {
+                    status = .failure
+                    return
+                }
+                
+                resp.forEach { session.clubs.insert($0) }
+                
+                status = .success
+                hasLoaded = true
+            } catch {
+                log.error("Failed to get clubs. Error: \(error)")
                 status = .failure
-                return
             }
-            
-            resp.forEach { session.clubs.insert($0) }
-            
-            status = .success
-            hasLoaded = true
-        } catch {
-            log.error("Failed to get clubs. Error: \(error)")
-            status = .failure
         }
     }
     
@@ -300,17 +302,13 @@ struct ClubsList: View {
             }
         }
         .refreshable {
-            Task {
-                await fetchClubs()
-            }
+            fetchClubs()
         }
         .sheet(isPresented: $showMenu, onDismiss: {
             withAnimation(.easeInOut) {
                 numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
                 
-                Task {
-                    await fetchClubs()
-                }
+                fetchClubs()
             }
         }, content: {
             FilterView(manager: manager)
@@ -379,7 +377,7 @@ struct ClubsList: View {
             
             // Fetch clubs
             if !hasLoaded {
-                await fetchClubs()
+                fetchClubs()
             }
         }.searchable(text: $searchText, placement: .toolbar)
     }

@@ -8,15 +8,17 @@
 import os
 import MapKit
 import SwiftUI
+import CoreLocation
 
 struct EventVenuePicker: View {
     
     @State var manager: NewEventManager
     @State private var index: Int = 0
-    @State private var search: String = ""
+    @State private var searchText: String = ""
     @State private var venues: Set<Venue> = []
+    @State private var venuesList = [Venue]()
     @State private var customVenues = [Venue]()
-    @State private var isCustomLocation: Bool = false
+    @State private var showCustom: Bool = false
     @State private var state: LOADING_STATE = .pending
     
     @State private var customLocationName: String = ""
@@ -27,83 +29,225 @@ struct EventVenuePicker: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
-    private let log: Logger = Logger(
-        subsystem: "com.olympsis.client",
-        category: "event_venue_picker"
-    )
-
-    private func search(_ text: String) async {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = text
-        request.region = LocationManager.shared.region
-        request.resultTypes = .pointOfInterest
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
+    
+    private func search() {
+        guard state != .loading else { return }
         
-        let searchRequest = MKLocalSearch(request: request)
-        
-        do {
-            state = .loading
-            let results = try await searchRequest.start()
-            let points = results.mapItems
-            if points.count > 20 {
-                let reduced = points.dropLast(points.count - 20)
-                reduced.forEach { item in
-                    guard let name = item.name,
-                          let state = item.placemark.administrativeArea,
-                          let city = item.placemark.subAdministrativeArea,
-                          let country = item.placemark.country else {
-                        return
-                    }
-                    let location = item.placemark.coordinate
+        Task { @MainActor in
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = searchText
+            request.region = session.currentLocation
+            request.resultTypes = [.address, .pointOfInterest]
+            
+            let searchRequest = MKLocalSearch(request: request)
+            
+            do {
+                state = .loading
+                let results = try await searchRequest.start()
+                let points = results.mapItems
+                
+                // Parallelize reverse geocoding of the top 20 items
+                let topItems = Array(points.prefix(20))
+                
+                // Run the geocoding concurrently off the main actor
+                let venuesFound: [Venue] = try await withThrowingTaskGroup(of: Venue?.self) { group in
+                    for item in topItems {
+                        group.addTask {
+                            // If this child task is cancelled, throw to avoid hanging.
+                            try Task.checkCancellation()
+                            
+                            guard let name = item.name else { return nil }
+                            let coord = item.placemark.coordinate
+                            
+                            let geocoder = CLGeocoder()
+                            let location = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+                            let placemark = try await geocoder.reverseGeocodeLocation(location).first
+                            guard let placemark else { return nil }
 
-                    self.venues.insert(
-                        Venue(
-                            name: name,
-                            location: GeoJSON(
-                                type: "point",
-                                coordinates: [
-                                    Double(location.longitude),
-                                    Double(location.latitude)
-                                ]
-                            ),
-                            city: city,
-                            state: state,
-                            country: country
-                        )
-                    )
-                }
-            } else {
-                points.forEach { item in
-                    guard let name = item.name,
-                          let state = item.placemark.administrativeArea,
-                          let city = item.placemark.subAdministrativeArea,
-                          let country = item.placemark.country else {
-                        return
+                            let city = placemark.locality ?? placemark.subAdministrativeArea ?? ""
+                            let stateStr = placemark.administrativeArea ?? ""
+                            let country = placemark.country ?? ""
+                            let countryCode = placemark.isoCountryCode ?? ""
+
+                            // Address parts
+                            let streetNumber = placemark.subThoroughfare
+                            let street = placemark.thoroughfare
+                            let postalCode = placemark.postalCode
+
+                            // Build fullAddress
+                            let fullAddress: String? = {
+                                // US-specific: "StreetNumber StreetName, City, StateAbbrev PostalCode - Country"
+                                if countryCode.uppercased() == "US" {
+                                    var leftParts: [String] = []
+
+                                    // StreetNumber StreetName
+                                    if let street, !street.isEmpty {
+                                        if let streetNumber, !streetNumber.isEmpty {
+                                            leftParts.append("\(streetNumber) \(street)")
+                                        } else {
+                                            leftParts.append(street)
+                                        }
+                                    }
+
+                                    // City
+                                    if !city.isEmpty {
+                                        leftParts.append(city)
+                                    }
+
+                                    // "StateAbbrev PostalCode" (postal optional)
+                                    var stateZip = ""
+                                    if !stateStr.isEmpty {
+                                        stateZip = stateStr
+                                    }
+                                    if let postalCode, !postalCode.isEmpty {
+                                        stateZip = stateZip.isEmpty ? postalCode : "\(stateZip) \(postalCode)"
+                                    }
+                                    if !stateZip.isEmpty {
+                                        leftParts.append(stateZip)
+                                    }
+
+                                    // Join left side with ", " then append " - Country"
+                                    let left = leftParts.joined(separator: ", ")
+                                    let right = country.isEmpty ? "" : " - \(country)"
+                                    let combined = left + right
+
+                                    return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
+                                }
+
+                                // Non-US fallback: "StreetNumber StreetName, City, Region PostalCode - Country"
+                                var parts: [String] = []
+
+                                if let street, !street.isEmpty {
+                                    if let streetNumber, !streetNumber.isEmpty {
+                                        parts.append("\(streetNumber) \(street)")
+                                    } else {
+                                        parts.append(street)
+                                    }
+                                }
+
+                                if !city.isEmpty {
+                                    parts.append(city)
+                                }
+
+                                var regionPostal = ""
+                                if !stateStr.isEmpty {
+                                    regionPostal = stateStr
+                                }
+                                if let postalCode, !postalCode.isEmpty {
+                                    regionPostal = regionPostal.isEmpty ? postalCode : "\(regionPostal) \(postalCode)"
+                                }
+                                if !regionPostal.isEmpty {
+                                    parts.append(regionPostal)
+                                }
+
+                                let left = parts.joined(separator: ", ")
+                                let right = country.isEmpty ? "" : " - \(country)"
+                                let combined = left + right
+
+                                return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
+                            }()
+                            
+                            guard !city.isEmpty, !stateStr.isEmpty, !country.isEmpty else { return nil }
+                            
+                            return Venue(
+                                name: name,
+                                location: GeoJSON(
+                                    type: "Point",
+                                    coordinates: [
+                                        Double(coord.longitude),
+                                        Double(coord.latitude)
+                                    ]
+                                ),
+                                city: city,
+                                state: stateStr,
+                                country: country,
+                                fullAddress: fullAddress
+                            )
+                        }
                     }
-                    let location = item.placemark.coordinate
                     
-                    self.venues.insert(
-                        Venue(
-                            name: name,
-                            location: GeoJSON(
-                                type: "point",
-                                coordinates: [
-                                    Double(location.longitude),
-                                    Double(location.latitude)
-                                ]
-                            ),
-                            city: city,
-                            state: state,
-                            country: country
-                        )
-                    )
+                    var collected = [Venue]()
+                    do {
+                        for try await maybeVenue in group {
+                            if let v = maybeVenue {
+                                collected.append(v)
+                            }
+                        }
+                    } catch {
+                        // Cancel remaining tasks on first thrown error to avoid dangling work.
+                        group.cancelAll()
+                        throw error
+                    }
+                    return collected
                 }
+                
+                // Merge and refresh UI (on main actor)
+                self.venues.formUnion(venuesFound)
+                self.venuesList = filterResults()
+                state = .success
+            } catch is CancellationError {
+                // User navigated away or search replaced; treat as benign.
+                state = .pending
+            } catch {
+                log.error("Failed to search for venues: \(error.localizedDescription)")
+                state = .failure
             }
-            state = .success
-        } catch {
-            log.error("Failed to search for venues: \(error.localizedDescription)")
-            state = .failure
         }
+    }
+    
+    private func filterResults() -> [Venue] {
+        let list = Array(venues)
+        let userCoord = session.currentLocation.center
+        let userLocation = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+        
+        // Helper to compute distance in meters from user to a venue
+        func distanceToVenue(_ v: Venue) -> CLLocationDistance {
+            // GeoJSON coordinates are [lon, lat]
+            guard v.location.coordinates.count >= 2 else { return .greatestFiniteMagnitude }
+            let lat = v.location.coordinates[1]
+            let lon = v.location.coordinates[0]
+            let venueLoc = CLLocation(latitude: lat, longitude: lon)
+            return userLocation.distance(from: venueLoc)
+        }
+        
+        // Normalize comparison strings
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let hasQuery = !query.isEmpty
+        
+        let sorted = list.sorted { a, b in
+            // Primary: custom venues first (description == "external")
+            let aIsCustom = a.description == "external"
+            let bIsCustom = b.description == "external"
+            if aIsCustom != bIsCustom {
+                return aIsCustom && !bIsCustom
+            }
+            
+            // Secondary: name similarity (lower Levenshtein is better)
+            let aName = a.name.localizedLowercase
+            let bName = b.name.localizedLowercase
+            let q = query.localizedLowercase
+            
+            let aLev = hasQuery ? levenshteinDistance(stringA: aName, stringB: q) : 0
+            let bLev = hasQuery ? levenshteinDistance(stringA: bName, stringB: q) : 0
+            
+            if aLev != bLev {
+                return aLev < bLev
+            }
+            
+            // Tertiary: distance to user (lower is better)
+            let aDist = distanceToVenue(a)
+            let bDist = distanceToVenue(b)
+            if aDist != bDist {
+                return aDist < bDist
+            }
+            
+            // Final tie-breaker: alphabetical by name
+            return aName < bName
+        }
+        
+        // Return only the top 20 results
+        return Array(sorted.prefix(20))
     }
     
     private func saveCustomLocation() {
@@ -123,164 +267,80 @@ struct EventVenuePicker: View {
                 locationInfo.coordinate.longitude,
                 locationInfo.coordinate.latitude
             ]),
-            city: locationInfo.city, state: locationInfo.state, country: locationInfo.country)
+            city: locationInfo.city,
+            state: locationInfo.state,
+            country: locationInfo.country
+        )
         
         manager.selectedVenues.append(venue)
         dismiss()
     }
     
     var body: some View {
-        Group {
-            if !isCustomLocation {
-                VStack {
-                    
-                    // MARK: - Actions
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            withAnimation(.easeInOut) {
-                                isCustomLocation.toggle()
+        NavigationStack {
+            ScrollView {
+                switch state {
+                case .pending, .success:
+                    if venuesList.count > 0 {
+                        ForEach(venuesList, id: \.id) { venue in
+                            VenuePickerListItem(venue: venue, isExternal: venue.description != "external")
+                                .padding([.horizontal, .bottom])
+                                .onTapGesture {
+                                    manager.selectedVenues.append(venue)
+                                    dismiss()
+                                }
+                        }
+                    } else {
+                        VStack {
+                            Text("No venues found near you")
+                            Button(action: { showCustom.toggle() }) {
+                                Text(String(localized: "set-custom-location-text", table: "Events"))
+                                    .font(.callout)
+                                    .fontWeight(.medium)
                             }
-                        }) {
+                        }.padding(.top, 50)
+                    }
+                case .loading:
+                    ProgressView()
+                        .padding(.top, 50)
+                case .failure:
+                    VStack {
+                        Text("No venues found near you")
+                        Button(action: { showCustom.toggle() }) {
                             Text(String(localized: "set-custom-location-text", table: "Events"))
                                 .font(.callout)
                                 .fontWeight(.medium)
                         }
-                    }.padding([.top, .horizontal])
-                    
-                    TextField("\(String(localized: "location-name-text", table: "Events"))...", text: $searchModel.searchText)
-                        .padding(.leading)
-                        .modifier(InputFieldModifier())
-                        .submitLabel(.search)
-                        .padding([.horizontal, .vertical])
-                    
-                    ScrollView {
-                        VStack {
-                            if venues.count > 0 {
-                                ForEach(Array(venues), id: \.id) { venue in
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            HStack {
-                                                Text(venue.name)
-                                                    .font(.title2)
-                                                    .lineLimit(1)
-                                                
-                                                if (venue.description != "external") {
-                                                    Image(systemName: "checkmark.seal")
-                                                        .foregroundColor(Color.Brand.quaternary)
-                                                }
-                                                
-                                                Spacer()
-                                            }
-                                            Text("\(venue.city), \(venue.state)")
-                                                .lineLimit(1)
-                                                .foregroundStyle(.gray)
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding(.all)
-                                    .onTapGesture {
-                                        manager.selectedVenues.append(venue)
-                                        dismiss()
-                                    }
-                                }
-                            } else {
-                                Text("No venues found near you")
-                                Button(action: { index = 1 }) {
-                                    Text(String(localized: "set-custom-location-text", table: "Events"))
-                                        .font(.callout)
-                                        .fontWeight(.medium)
-                                }
-                            }
-                        }
+                    }.padding(.top, 50)
+                }
+            }
+            .searchable(text: $searchText, placement: .navigationBarDrawer)
+            .onSubmit(of: .search, {
+                search()
+            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { showCustom.toggle() }) {
+                        Image("icons/custom.map.badge.plus")
                     }
                 }
-                .onChange(of: searchModel.debouncedSearchText, { oldValue, newValue in
-                    venues = Set(session.venues)
-                    if (!newValue.isEmpty) {
-                        Task {
-                            await search(newValue)
-                        }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {}) {
+                        Image(systemName: "character.textbox")
                     }
-                })
-            } else {
-                VStack {
-                    
-                    // MARK: - Actions
-                    HStack {
-                        Button(action: {
-                            withAnimation(.easeInOut) {
-                                isCustomLocation.toggle()
-                            }
-                        }) {
-                            Image(systemName: "chevron.left")
-                            Text(String(localized: "lookup", table: "General"))
-                        }
-                        
-                        Spacer()
-                        
-                        if mapViewModel.selectedCoordinate != nil {
-                            Button(action: { saveCustomLocation() }) {
-                                Text(String(localized: "done", table: "General"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
-                        }
-                    }.padding([.top, .horizontal])
-                    
-                    Group {
-                        if mapViewModel.selectedCoordinate != nil {
-                            if let location = mapViewModel.locationInfo {
-                                HStack(alignment: .center) {
-                                    VStack(alignment: .leading, spacing: 20) {
-                                        TextField(String(localized: "set-custom-location-name", table: "Events"), text: $customLocationName)
-                                        Text("\(location.coordinate.latitude), \(location.coordinate.longitude)")
-                                    }
-                                    
-                                    Button(action: { mapViewModel.clearPin() }) {
-                                        Text(String(localized: "clear", table: "General"))
-                                            .fontWeight(.medium)
-                                            .foregroundStyle(.red)
-                                            .padding(.vertical, 5)
-                                            .padding(.horizontal, 10)
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .stroke(style: StrokeStyle(lineWidth: 1))
-                                                    .opacity(0.5)
-                                            }
-                                    }
-                                }
-                                .padding(.all)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.gray)
-                                        .opacity(0.12)
-                                }
-                                .padding(.bottom)
-                            } else {
-                                ProgressView()
-                            }
-                        } else {
-                            HStack {
-                                Image(systemName: "mappin.and.ellipse")
-                                Text(String(localized: "tap-anywhere-text", table: "Events"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                    
-                                Spacer()
-                            }
-                            .foregroundStyle(.gray)
-                        }
-                    }.padding([.top, .horizontal])
-                    
-                    CustomLocationPicker()
-                        .environment(mapViewModel)
-                        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
                 }
+            }
+            .sheet(isPresented: $showCustom) {
+                saveCustomLocation()
+            } content: {
+                NewEventCustomLocation()
+                    .environment(mapViewModel)
             }
         }
         .onAppear {
-            venues = Set(session.venues)
+            venues.formUnion(session.venues)
+            venuesList = filterResults()
         }
     }
 }
