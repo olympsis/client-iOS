@@ -21,84 +21,72 @@ struct NewEventAdvancedSettings: View {
     @Environment(NewEventManager.self) private var manager
     
     var body: some View {
-        VStack {
-            HStack {
-                Text(String(localized: "advanced-settings-title", table: "Events"))
-                    .fontWeight(.medium)
-                
-                Spacer()
-                
-                Button(action: { dismiss() }) {
-                    Image(systemName: "xmark.circle.fill")
+        ScrollView {
+            // MARK: - Hide Locations
+            VStack(alignment: .leading){
+                Toggle(isOn: $hidePoster) {
+                    Text("Hide Poster")
+                        .font(.headline)
+                        .bold()
                 }
-            }.padding(.horizontal)
+                Text("Only show the event's organizers")
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+            }.padding([.top, .horizontal])
             
-            ScrollView {
-                // MARK: - Hide Locations
-                VStack(alignment: .leading){
-                    Toggle(isOn: $hidePoster) {
-                        Text("Hide Poster")
-                            .font(.headline)
-                            .bold()
-                    }
-                    Text("Only show the event's organizers")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                }.padding([.top, .horizontal])
-                
-                MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
-                    showEventFormat.toggle()
-                }.padding(.top)
-                
-                MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: String(localized: "advanced-settings-participants", table: "Events")) {
-                    showLimitParticipants.toggle()
-                }
-                
-                MenuButton(icon: Image(systemName: "link"), text: String(localized: "advanced-settings-external-link", table: "Events")) {
-                    showExternalLinkField.toggle()
-                }
-                
-                MenuButton(icon: Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90"), text: String(localized: "advanced-settings-recurring", table: "Events")) {
-                    showRecurringEventSettings.toggle()
-                }
-            }
-            .onAppear {
-                guard let config = manager.config else { return }
-                hidePoster = config.hidePoster ?? false
-            }
-            .onDisappear {
-                guard var config = manager.config else {
-                    manager.config = .init(hidePoster: hidePoster ? true : nil)
-                    return
-                }
-                config.hidePoster = hidePoster ? true : nil
-                manager.config = config
-            }
-            .sheet(isPresented: $showEventFormat) {
-                NewEventFormatting()
-                    .environment(manager)
-                    .presentationDetents([.height(350)])
-                    .presentationDragIndicator(.visible)
-            }
-            .sheet(isPresented: $showLimitParticipants) {
-                NewEventParticipantsSettings()
-                    .environment(manager)
-                    .presentationDetents([.height(450)])
-                    .presentationDragIndicator(.visible)
-            }
-            .sheet(isPresented: $showExternalLinkField) {
-                NewEventExternalLink()
-                    .environment(manager)
-                    .presentationDetents([.height(150)])
-                    .presentationDragIndicator(.visible)
-            }
-            .sheet(isPresented: $showRecurringEventSettings) {
-                NewEventRecurringSettings()
-                    .environment(manager)
-                    .presentationDetents([.height(350)])
-                    .presentationDragIndicator(.visible)
+            MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
+                showEventFormat.toggle()
+            }.padding(.top)
+            
+            MenuButton(icon: Image(systemName: "person.2.badge.minus.fill"), text: String(localized: "advanced-settings-participants", table: "Events")) {
+                showLimitParticipants.toggle()
             }
             
+            MenuButton(icon: Image(systemName: "link"), text: String(localized: "advanced-settings-external-link", table: "Events")) {
+                showExternalLinkField.toggle()
+            }
+            
+            MenuButton(icon: Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90"), text: String(localized: "advanced-settings-recurring", table: "Events")) {
+                showRecurringEventSettings.toggle()
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(Text(String(localized: "advanced-settings-title", table: "Events")))
+        .onAppear {
+            guard let config = manager.config else { return }
+            hidePoster = config.hidePoster ?? false
+        }
+        .onDisappear {
+            guard var config = manager.config else {
+                manager.config = .init(hidePoster: hidePoster ? true : nil)
+                return
+            }
+            config.hidePoster = hidePoster ? true : nil
+            manager.config = config
+        }
+        .sheet(isPresented: $showEventFormat) {
+            NewEventFormatting()
+                .environment(manager)
+                .presentationDetents([.height(350)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showLimitParticipants) {
+            NewEventParticipantsSettings()
+                .environment(manager)
+                .presentationDetents([.height(450)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showExternalLinkField) {
+            NewEventExternalLink()
+                .environment(manager)
+                .presentationDetents([.height(150)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showRecurringEventSettings) {
+            NewEventRecurringSettings()
+                .environment(manager)
+                .presentationDetents([.height(350)])
+                .presentationDragIndicator(.visible)
         }
     }
 }
