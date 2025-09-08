@@ -36,15 +36,12 @@ struct CustomLocationPicker: View {
                     Marker(String(localized: "selected-location-text", table: "General"), coordinate: coordinate)
                 }
             }
-            .ignoresSafeArea(edges: .bottom)
-            .highPriorityGesture(TapGesture().onEnded({ action in
-                
-            }))
-            .onTapGesture(coordinateSpace: .local) { screenCoord in
+            .onTapGesture(count: 1, coordinateSpace: .local,perform: { screenCoord in
                 if let coordinate = proxy.convert(screenCoord, from: .local) {
                     handleLocationTap(coordinate)
                 }
-            }
+            })
+            .ignoresSafeArea(edges: .bottom)
             .mapStyle(.standard)
             .mapControls {
                 MapCompass()

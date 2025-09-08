@@ -175,14 +175,16 @@ struct VenueDescriptor: Codable, Hashable {
     var state: String?
     var country: String?
     var location: GeoJSON?
+    var fullAddress: String?
     
-    init(id: String?=nil, name: String?, city: String?, state: String?, country: String?, location: GeoJSON?=nil) {
+    init(id: String?=nil, name: String?, city: String?, state: String?, country: String?, location: GeoJSON?=nil, fullAddress: String?=nil) {
         self.id = id
         self.name = name
         self.city = city
         self.state = state
         self.country = country
         self.location = location
+        self.fullAddress = fullAddress
     }
     
     func isInternal() -> Bool {
@@ -204,5 +206,15 @@ struct VenueDescriptor: Codable, Hashable {
                 continuation.resume(returning: placemarks ?? [])
             }
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case city
+        case state
+        case country
+        case location
+        case fullAddress = "full_address"
     }
 }

@@ -30,18 +30,8 @@ class NewEventManager {
     var startDate: Date
     var endDate: Date
     
-    // Location
-    var selectedVenues = [Venue]() {
-        didSet {
-            selectedVenueDescriptors = selectedVenues.map {
-                if $0.description == "external" {
-                    return VenueDescriptor(name: $0.name, city: $0.city, state: $0.state, country: $0.country, location: $0.location)
-                } else {
-                    return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
-                }
-            }
-        }
-    }
+    // Location(s)
+    var selectedVenues = [Venue]()
     var selectedVenueDescriptors = [VenueDescriptor]()
     
     // Image
@@ -102,6 +92,31 @@ class NewEventManager {
         }
     }
     
+    /// Handles adding a new venue to the manager
+    /// - Parameters venue: the venue we are adding to the manager
+    func addVenue(_ venue: Venue) {
+        let descriptor = VenueDescriptor(
+            id: venue.description == "external" ? nil : venue.id,
+            name: venue.name,
+            city: venue.city,
+            state: venue.state,
+            country: venue.country,
+            location: venue.location,
+            fullAddress: venue.fullAddress
+        )
+        
+        selectedVenues.append(venue)
+        selectedVenueDescriptors.append(descriptor)
+    }
+    
+    /// Handles removing a venue descriptor from the manager
+    /// - Parameters venue: the venue we are removing from the manager
+    func removeVenueDescriptor(_ descriptor: VenueDescriptor) {
+        selectedVenueDescriptors.removeAll(where: { $0.name == descriptor.name })
+        selectedVenues.removeAll(where: { $0.name == descriptor.name })
+    }
+    
+    /// Triggers the create event action
     func createEvent(user: User) async throws -> String? {
         guard let dto = generateEventDTO() else {
             throw NewEventError.invalidData

@@ -433,6 +433,7 @@
 		5D7DF3C22E693CF80090761E /* NewEventCustomLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */; };
 		5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */; };
 		5D7DF3C62E6C8ADF0090761E /* VenuePickerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */; };
+		5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */; };
 		5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7E0CE42E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
@@ -1011,6 +1012,7 @@
 		5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCustomLocation.swift; sourceTree = "<group>"; };
 		5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLAlgorithms.swift; sourceTree = "<group>"; };
 		5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenuePickerListItem.swift; sourceTree = "<group>"; };
+		5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenuePickerButton.swift; sourceTree = "<group>"; };
 		5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRoutePolylineView.swift; sourceTree = "<group>"; };
 		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
@@ -1931,6 +1933,7 @@
 				5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */,
 				5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */,
 				5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */,
+				5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */,
 			);
 			path = Venue;
 			sourceTree = "<group>";
@@ -3232,6 +3235,7 @@
 				5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
+				5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */,
 				9AA5F617294DB0F900219B95 /* LoadingButton.swift in Sources */,
 				9A81B63E2925DE1A009CA6ED /* LocationManager.swift in Sources */,
 				5D666AA32BF91B5A001EE754 /* ImageModels.swift in Sources */,

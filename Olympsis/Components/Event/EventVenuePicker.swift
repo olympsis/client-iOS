@@ -13,11 +13,9 @@ import CoreLocation
 struct EventVenuePicker: View {
     
     @State var manager: NewEventManager
-    @State private var index: Int = 0
     @State private var searchText: String = ""
     @State private var venues: Set<Venue> = []
     @State private var venuesList = [Venue]()
-    @State private var customVenues = [Venue]()
     @State private var showCustom: Bool = false
     @State private var state: LOADING_STATE = .pending
     
@@ -252,13 +250,13 @@ struct EventVenuePicker: View {
     
     private func saveCustomLocation() {
         guard let locationInfo = mapViewModel.locationInfo,
-              !customLocationName.isEmpty && customLocationName.count > 1 else {
+              !locationInfo.name.isEmpty && locationInfo.name.count > 1 else {
             return
         }
 
         let venue = Venue(
             id: UUID().uuidString,
-            name: customLocationName,
+            name: locationInfo.name,
             owner: Ownership(name: "", type: ""),
             description: "external",
             sports: [],
@@ -272,7 +270,7 @@ struct EventVenuePicker: View {
             country: locationInfo.country
         )
         
-        manager.selectedVenues.append(venue)
+        manager.addVenue(venue)
         dismiss()
     }
     
@@ -286,7 +284,7 @@ struct EventVenuePicker: View {
                             VenuePickerListItem(venue: venue, isExternal: venue.description != "external")
                                 .padding([.horizontal, .bottom])
                                 .onTapGesture {
-                                    manager.selectedVenues.append(venue)
+                                    manager.addVenue(venue)
                                     dismiss()
                                 }
                         }
@@ -324,12 +322,6 @@ struct EventVenuePicker: View {
                         Image("icons/custom.map.badge.plus")
                     }
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {}) {
-                        Image(systemName: "character.textbox")
-                    }
-                }
             }
             .sheet(isPresented: $showCustom) {
                 saveCustomLocation()
@@ -337,10 +329,10 @@ struct EventVenuePicker: View {
                 NewEventCustomLocation()
                     .environment(mapViewModel)
             }
-        }
-        .onAppear {
-            venues.formUnion(session.venues)
-            venuesList = filterResults()
+            .onAppear {
+                venues.formUnion(session.venues)
+                venuesList = filterResults()
+            }
         }
     }
 }
