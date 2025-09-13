@@ -14,13 +14,10 @@ struct ParticipantView: View {
     var posterOrAdminViewing: Bool = false
     
     private var isUserAnonymous: Bool {
-        guard !posterOrAdminViewing,
-            participant.isAnonymous,
-              let uuid = session.user?.uuid,
-              participant.user?.uuid == uuid else {
-            return false
-        }
-        return true
+        // Posters or admins get full viewing rights
+        if posterOrAdminViewing { return false }
+        
+        return participant.isAnonymous
     }
     
     private var imageURL: URL? {
@@ -80,7 +77,7 @@ struct ParticipantView: View {
                         .font(.callout)
                         .fontWeight(.medium)
                     
-                    if isUserAnonymous {
+                    if isUserAnonymous && (session.user?.uuid == participant.user?.uuid) {
                         Text("(You)")
                             .fontWeight(.bold)
                             .foregroundStyle(Color.Brand.tertiary)

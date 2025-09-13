@@ -106,6 +106,7 @@ struct EventParticipants: View {
         .sheet(isPresented: $showParticipants, content: {
             EventParticipantsViewExt(clubs: $clubs, organizations: $organizations)
                 .environment(event)
+                .presentationDragIndicator(.visible)
         })
     }
 }
@@ -205,14 +206,10 @@ struct EventParticipantsViewExt: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                }.padding(.leading)
-                Text("Participants")
-                Spacer()
-            }.padding(.vertical)
+        VStack(alignment: .leading) {
+            Text("Participants")
+                .font(.headline)
+                .padding([.leading, .top])
             
             EventRSVPChart()
                 .environment(event)
@@ -220,7 +217,7 @@ struct EventParticipantsViewExt: View {
             
             ForEach(participants, id: \.self) { p in
                 HStack {
-                    ParticipantView(participant: p)
+                    ParticipantView(participant: p, posterOrAdminViewing: isPosterOrAdmin)
                         .environment(event)
                         .environment(session)
                     Spacer()
