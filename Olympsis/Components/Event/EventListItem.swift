@@ -76,13 +76,6 @@ struct EventListItem: View {
     
     var body: some View {
         NavigationLink(destination: EventView(event: event).environment(event).environment(session)) {
-            // Workaround xcode 26 can't get this to work on earlier OS versions
-            // .navigationLinkIndicatorVisibility(.hidden)
-            HStack {
-                Spacer()
-            }.frame(height: 250)
-        }
-        .background {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)

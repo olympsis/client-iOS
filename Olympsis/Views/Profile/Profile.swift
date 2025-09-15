@@ -17,7 +17,6 @@ struct Profile: View {
     enum ProfileTabs: Int {
         case achievements
         case groupsEnrolled
-        case pastEvents
     }
     
     var username: String {
@@ -44,6 +43,23 @@ struct Profile: View {
                         EditProfileButton()
                             .padding(.bottom, 30)
                     }
+                    
+                    NavigationLink(destination: PastEvents()) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 60)
+                            .foregroundStyle(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.foreground.opacity(0.2), lineWidth: 1)
+                            }
+                            .overlay {
+                                HStack(alignment: .center) {
+                                    Image(systemName: "calendar.badge.checkmark")
+                                    Text("Past Events")
+                                        .fontWeight(.medium)
+                                }
+                            }
+                    }.padding([.bottom, .horizontal])
                     
                     HStack() {
                         Button(action: {
@@ -83,23 +99,8 @@ struct Profile: View {
                         }
                         
                         Spacer()
-                        
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .pastEvents
-                            }
-                        }) {
-                            VStack {
-                                Text(String(localized: "past-events", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .pastEvents ? Color.foreground : Color.clear)
-                            }
-                        }
                     }
+                    .padding(.bottom, 10)
                     .padding(.horizontal)
                     
                     switch selectedTab {
@@ -109,10 +110,6 @@ struct Profile: View {
                         
                     case .groupsEnrolled:
                         GroupsEnrolled()
-                            .environment(session)
-                        
-                    case .pastEvents:
-                        PastEvents()
                             .environment(session)
                     }
 

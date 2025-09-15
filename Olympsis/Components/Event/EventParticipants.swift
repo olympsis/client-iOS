@@ -99,6 +99,8 @@ struct EventParticipants: View {
             if (event.participants.count > 3 && canShowParticipants) {
                 Button(action: { showParticipants.toggle() }) {
                     Text("+\(event.participants.count-3) \(String(localized: "more", table: "General"))...")
+                        .font(.callout)
+                        .fontWeight(.medium)
                 }.padding(.top)
             }
         }
@@ -134,7 +136,7 @@ struct EventRSVPChart: View {
     var body: some View {
         Chart {
             BarMark(
-                x: .value("Responses", "yes"),
+                x: .value("Responses", "I'm in!"),
                 y: .value("Total Count", yesCount)
             ).foregroundStyle(Color("color-prime"))
             BarMark(
