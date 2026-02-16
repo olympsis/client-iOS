@@ -96,19 +96,34 @@ struct Events: View {
                 }
             }
             .toolbar {
+//                if #available(iOS 26.0, *) {
+//                    ToolbarItem(placement: .topBarLeading) {
+//                        Text("Events")
+//                            .fixedSize()
+//                            .fontWeight(.bold)
+//                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+//                    }.sharedBackgroundVisibility(.hidden)
+//                } else {
+//                    ToolbarItem(placement: .topBarLeading) {
+//                        Text("Events")
+//                            .fixedSize()
+//                            .fontWeight(.bold)
+//                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+//                    }
+//                }
                 if #available(iOS 26.0, *) {
                     ToolbarItem(placement: .topBarLeading) {
-                        Text("Events")
+                        Text("Olympsis")
                             .fixedSize()
-                            .fontWeight(.bold)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
                     }.sharedBackgroundVisibility(.hidden)
                 } else {
                     ToolbarItem(placement: .topBarLeading) {
-                        Text("Events")
+                        Text("Olympsis")
                             .fixedSize()
-                            .fontWeight(.bold)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .title))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
                     }
                 }
                 

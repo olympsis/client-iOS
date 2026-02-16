@@ -32,8 +32,8 @@
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<key>DEV_USER_ID</key>
+	<string>22f61f7a-e291-4df9-a725-52f2e3930a12</string>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<dict>
 		<key>NSPrivacyAccessedAPIType</key>
@@ -48,7 +48,7 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>

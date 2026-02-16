@@ -23,52 +23,52 @@ struct TabBar: View {
     var body: some View {
         GeometryReader { proxy in
             HStack(alignment: .center, spacing: 0) {
-                Button() {
-                    withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .home
-                        if currentTab == .home {
-                            homeRouter.navigateToRoot()
-                        }
-                    }
-                } label: {
-                    VStack {
-                        Image(systemName: currentTab == .home ? "house.fill" : "house")
-                            .imageScale(.large)
-                            .frame(maxWidth: .infinity)
-                            .foregroundStyle(Color.foreground)
-                    }
-                }
-                
-                Button() {
-                    withAnimation(.easeInOut(duration: 0.2)){
-                        currentTab = .club
-                        if currentTab == .club {
-                            groupRouter.navigateToRoot()
-                        }
-                    }
-                } label: {
-                    VStack {
-                        Image(systemName: currentTab == .club ? "person.2.fill" : "person.2")
-                            .imageScale(.large)
-                            .frame(maxWidth: .infinity)
-                            .foregroundStyle(Color.foreground)
-                    }
-                }
-                
-                if hideActivities != true {
-                    Button() {
-                        withAnimation(.easeInOut(duration: 0.2)){
-                            currentTab = .activity
-                        }
-                    } label: {
-                        VStack {
-                            Image(systemName: currentTab == .activity ? "bolt.fill" : "bolt")
-                                .imageScale(.large)
-                                .frame(maxWidth: .infinity)
-                                .foregroundStyle(Color.foreground)
-                        }
-                    }
-                }
+//                Button() {
+//                    withAnimation(.easeInOut(duration: 0.2)){
+//                        currentTab = .home
+//                        if currentTab == .home {
+//                            homeRouter.navigateToRoot()
+//                        }
+//                    }
+//                } label: {
+//                    VStack {
+//                        Image(systemName: currentTab == .home ? "house.fill" : "house")
+//                            .imageScale(.large)
+//                            .frame(maxWidth: .infinity)
+//                            .foregroundStyle(Color.foreground)
+//                    }
+//                }
+//                
+//                Button() {
+//                    withAnimation(.easeInOut(duration: 0.2)){
+//                        currentTab = .club
+//                        if currentTab == .club {
+//                            groupRouter.navigateToRoot()
+//                        }
+//                    }
+//                } label: {
+//                    VStack {
+//                        Image(systemName: currentTab == .club ? "person.2.fill" : "person.2")
+//                            .imageScale(.large)
+//                            .frame(maxWidth: .infinity)
+//                            .foregroundStyle(Color.foreground)
+//                    }
+//                }
+//                
+//                if hideActivities != true {
+//                    Button() {
+//                        withAnimation(.easeInOut(duration: 0.2)){
+//                            currentTab = .activity
+//                        }
+//                    } label: {
+//                        VStack {
+//                            Image(systemName: currentTab == .activity ? "bolt.fill" : "bolt")
+//                                .imageScale(.large)
+//                                .frame(maxWidth: .infinity)
+//                                .foregroundStyle(Color.foreground)
+//                        }
+//                    }
+//                }
                 
                 Button() {
                     withAnimation(.easeInOut(duration: 0.2)){

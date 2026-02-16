@@ -120,7 +120,6 @@ struct AuthView: View {
                                 .padding(.bottom, 35)
                         }
                 }
-                
             }.background {
                 Rectangle()
                     .foregroundStyle(.black)
@@ -129,9 +128,6 @@ struct AuthView: View {
                     .ignoresSafeArea(edges: .bottom)
             }
         }
-//        .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
-//            AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-server-error", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
-//        })
         .background {
             Image("basketball-bw")
                 .resizable()

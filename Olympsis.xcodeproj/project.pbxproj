@@ -3423,8 +3423,8 @@
 				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your past activities and share a snapshot if you share your them with your club.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
@@ -3465,8 +3465,8 @@
 				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your past activities and share a snapshot if you share your them with your club.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
@@ -3679,10 +3679,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Olympsis needs camera access so you can capture and share moments with your community.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";
@@ -3736,10 +3737,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Olympsis/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Olympsis needs camera access so you can capture and share moments with your community.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data to record your activities to help you stay on track to your goals.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";

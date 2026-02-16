@@ -13,7 +13,7 @@ import AuthenticationServices
 
 struct ViewContainer: View {
     
-    @State var currentTab: ViewTab = .home
+    @State var currentTab: ViewTab = .events
     @State private var showOnboarding: Bool = false
     
     @State private var homeRouter = HomeRouter()
@@ -108,44 +108,62 @@ struct ViewContainer: View {
     
     var body: some View {
         VStack {
-            TabView(selection: $currentTab) {
-                Home(router: $homeRouter)
-                    .tag(ViewTab.home)
-                    .toolbar(.hidden, for: .tabBar)
-                    .environment(session)
+            if #available(iOS 26.0, *) {
+                TabView(selection: $currentTab) {
+                    Tab("", systemImage: "calendar", value: .events) {
+                        Events(router: $eventRouter)
+                            .tag(ViewTab.events)
+                            .toolbar(.hidden, for: .tabBar)
+                            .environment(session)
+                    }
+                    
+                    Tab("", systemImage: "person.circle", value: .profile) {
+                        Profile()
+                            .tag(ViewTab.profile)
+                            .toolbar(.hidden, for: .tabBar)
+                            .environment(session)
+                    }
+                }
+            } else {
+                TabView(selection: $currentTab) {
+                    Home(router: $homeRouter)
+                        .tag(ViewTab.home)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                    
+                    GroupView(router: $groupRouter)
+                        .tag(ViewTab.club)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                    
+                    Events(router: $eventRouter)
+                        .tag(ViewTab.events)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                    
+                    Activities()
+                        .tag(ViewTab.activity)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                        .environment(session.workoutManager)
+                    
+                    Profile()
+                        .tag(ViewTab.profile)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                }
+                .padding(.bottom, -10)
                 
-                GroupView(router: $groupRouter)
-                    .tag(ViewTab.club)
-                    .toolbar(.hidden, for: .tabBar)
-                    .environment(session)
-                
-                Events(router: $eventRouter)
-                    .tag(ViewTab.events)
-                    .toolbar(.hidden, for: .tabBar)
-                    .environment(session)
-                
-                Activities()
-                    .tag(ViewTab.activity)
-                    .toolbar(.hidden, for: .tabBar)
-                    .environment(session)
-                    .environment(session.workoutManager)
-                
-                Profile()
-                    .tag(ViewTab.profile)
-                    .toolbar(.hidden, for: .tabBar)
-                    .environment(session)
+                TabBar(
+                    currentTab: $currentTab,
+                    homeRouter: homeRouter,
+                    groupRouter: groupRouter,
+                    eventRouter: eventRouter,
+                    profileRouter: profileRouter
+                )
+                .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground).padding(.top, 2), alignment: .top)
+                .ignoresSafeArea(.keyboard)
             }
-            .padding(.bottom, -10)
-            
-            TabBar(
-                currentTab: $currentTab,
-                homeRouter: homeRouter,
-                groupRouter: groupRouter,
-                eventRouter: eventRouter,
-                profileRouter: profileRouter
-            )
-            .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground).padding(.top, 2), alignment: .top)
-            .ignoresSafeArea(.keyboard)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {
