@@ -9,18 +9,13 @@ import Hermes
 import Foundation
 
 class FinanceService {
-    
+
     private var http: Courrier
     private let decoder: JSONDecoder
-    
+
     init() {
-        #if targetEnvironment(simulator)
-            self.http = Courrier(.HTTP, host: "localhost")
-        #else
-            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-            self.http = Courrier(.HTTPS, host: host)
-        #endif
-        
+        let env = AppEnvironment.current
+        self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
         decoder = JSONDecoder()
     }
     

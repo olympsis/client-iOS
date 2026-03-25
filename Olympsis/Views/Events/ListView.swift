@@ -61,7 +61,7 @@ struct ListView: View {
         guard let user = session.user, let hometown = user.hometown else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
-        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+        return CLLocation(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0])
     }
     
     private var currentLocation: CLLocation {

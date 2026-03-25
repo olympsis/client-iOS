@@ -30,7 +30,7 @@ struct Events: View {
         guard let user = session.user, let hometown = user.hometown else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
-        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+        return CLLocation(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0])
     }
     
     private var currentLocation: CLLocation {
@@ -153,52 +153,52 @@ struct Events: View {
                         }
                     }.frame(width: 41)
                     
-                    Button(action:{
-                        withAnimation(.easeInOut) {
-                            switch page {
-                            case .list:
-                                page = .map
-                            case .map:
-                                page = .list
-                            }
-                        }
-                    }){
-                        Group {
-                            switch page {
-                            case .list:
-                                Image(systemName: "map")
-                                    .imageScale(.large)
-                            case .map:
-                                if #available(iOS 26.0, *) {
-                                    Image(systemName: "line.3.horizontal.decrease")
-                                        .imageScale(.large)
-                                        .foregroundColor(.primary)
-                                        .symbolRenderingMode(.palette)
-                                } else {
-                                    Circle()
-                                        .tint(Color.colorPrime)
-                                        .frame(width: 40, height: 40)
-                                        .overlay {
-                                            Image(systemName: "line.3.horizontal.decrease")
-                                                .imageScale(.large)
-                                                .symbolRenderingMode(.palette)
-                                                .foregroundColor(.white)
-                                        }
-                                }
-                            }
-                        }
-                        .frame(width: 41)
-                        .overlay(alignment: .topTrailing) {
-                            if session.events.count > 0 {
-                                Circle()
-                                    .foregroundStyle(.red)
-                                    .frame(width: 15, height: 15)
-                            }
-                        }
-                    }
-                    .frame(width: 41)
-                    .padding(.top, 2)
-                    .padding(.trailing)
+//                    Button(action:{
+//                        withAnimation(.easeInOut) {
+//                            switch page {
+//                            case .list:
+//                                page = .map
+//                            case .map:
+//                                page = .list
+//                            }
+//                        }
+//                    }){
+//                        Group {
+//                            switch page {
+//                            case .list:
+//                                Image(systemName: "map")
+//                                    .imageScale(.large)
+//                            case .map:
+//                                if #available(iOS 26.0, *) {
+//                                    Image(systemName: "line.3.horizontal.decrease")
+//                                        .imageScale(.large)
+//                                        .foregroundColor(.primary)
+//                                        .symbolRenderingMode(.palette)
+//                                } else {
+//                                    Circle()
+//                                        .tint(Color.colorPrime)
+//                                        .frame(width: 40, height: 40)
+//                                        .overlay {
+//                                            Image(systemName: "line.3.horizontal.decrease")
+//                                                .imageScale(.large)
+//                                                .symbolRenderingMode(.palette)
+//                                                .foregroundColor(.white)
+//                                        }
+//                                }
+//                            }
+//                        }
+//                        .frame(width: 41)
+//                        .overlay(alignment: .topTrailing) {
+//                            if session.events.count > 0 {
+//                                Circle()
+//                                    .foregroundStyle(.red)
+//                                    .frame(width: 15, height: 15)
+//                            }
+//                        }
+//                    }
+//                    .frame(width: 41)
+//                    .padding(.top, 2)
+//                    .padding(.trailing)
                 }
             }
             .toolbarBackground(page == .list ? .automatic : .hidden, for: .navigationBar)

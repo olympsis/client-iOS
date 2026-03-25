@@ -335,6 +335,18 @@ func numberToGroupType(number: Int) -> GROUP_TYPE {
     }
 }
 
+/// Maps API string values (e.g. "GROUP", "ORGANIZATION") to GROUP_TYPE
+func stringToGroupType(_ value: String) -> GROUP_TYPE {
+    switch value.uppercased() {
+    case "GROUP", "CLUB":
+        return .Club
+    case "ORGANIZATION":
+        return .Organization
+    default:
+        return .Club
+    }
+}
+
 enum EVENT_RSVP_STATUS: String, CaseIterable {
     case Yes = "yes"
     case Maybe = "maybe"

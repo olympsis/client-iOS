@@ -172,7 +172,7 @@ class Event: Decodable, Identifiable, Hashable {
         // Decode media properties with conversion
         mediaURL = try container.decode(String.self, forKey: .mediaURL)
         let mediaTypeRawValue = try container.decode(String.self, forKey: .mediaType)
-        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue) ?? .image // Provide a default value
+        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.lowercased()) ?? .image
         
         title = try container.decode(String.self, forKey: .title)
         body = try container.decode(String.self, forKey: .body)
@@ -199,9 +199,13 @@ class Event: Decodable, Identifiable, Hashable {
         
         comments = try container.decodeIfPresent([EventComment].self, forKey: .comments) ?? []
         
-        // Decode visibility with conversion
-        let visibilityRawValue = try container.decode(Int.self, forKey: .visibility)
-        visibility = numberToEventVisibilityType(visibilityRawValue)
+        // Decode visibility — API sends uppercase string (e.g. "PUBLIC"), fall back to legacy int
+        if let visibilityString = try? container.decode(String.self, forKey: .visibility) {
+            visibility = EVENT_VISIBILITY_TYPES(rawValue: visibilityString.lowercased()) ?? .Public
+        } else {
+            let visibilityInt = try container.decode(Int.self, forKey: .visibility)
+            visibility = numberToEventVisibilityType(visibilityInt)
+        }
         
         externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
@@ -382,9 +386,9 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
         self.mediaURL = try container.decodeIfPresent(String.self, forKey: .mediaURL)
         
-        // Decode mediaType with conversion from Int if needed
+        // Decode mediaType — API sends uppercase (e.g. "IMAGE")
         if let mediaTypeRaw = try container.decodeIfPresent(String.self, forKey: .mediaType) {
-            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw)
+            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.lowercased())
         } else {
             self.mediaType = nil
         }
@@ -414,8 +418,10 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.teamsConfig = try container.decodeIfPresent(TeamsConfig.self, forKey: .teamsConfig)
         self.teams = try container.decodeIfPresent([Team].self, forKey: .teams)
         
-        // Decode visibility with conversion from Int if needed
-        if let visibilityInt = try container.decodeIfPresent(Int.self, forKey: .visibility) {
+        // Decode visibility — API sends uppercase string (e.g. "PUBLIC"), fall back to legacy int
+        if let visibilityString = try? container.decode(String.self, forKey: .visibility) {
+            self.visibility = EVENT_VISIBILITY_TYPES(rawValue: visibilityString.lowercased()) ?? .Public
+        } else if let visibilityInt = try container.decodeIfPresent(Int.self, forKey: .visibility) {
             self.visibility = numberToEventVisibilityType(visibilityInt)
         } else {
             self.visibility = nil

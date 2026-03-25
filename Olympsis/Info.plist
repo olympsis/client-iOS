@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.olympsis.client</string>
@@ -25,15 +32,19 @@
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
-	<string>localhost</string>
+	<string>192.168.1.156</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
+	<key>STAGING_HOST</key>
+	<string></string>
+	<key>STAGING_CHAT</key>
+	<string></string>
 	<key>DEV_USER_ID</key>
-	<string>22f61f7a-e291-4df9-a725-52f2e3930a12</string>
+	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<dict>
 		<key>NSPrivacyAccessedAPIType</key>

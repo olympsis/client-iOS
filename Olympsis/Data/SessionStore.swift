@@ -64,7 +64,7 @@ class SessionStore {
             guard let user = user, let hometown = user.hometown else {
                 return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
             }
-            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 5000, longitudinalMeters: 5000)
+            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
     }
@@ -130,6 +130,14 @@ class SessionStore {
     }
     
     func listenToAuthStateChanges() {
+        #if DEV
+        // In local development we skip Firebase auth entirely and treat the
+        // hardcoded dev user as already authenticated. The actual user ID is
+        // supplied via the DEV_USER_ID key in Info.plist (see AppEnvironment).
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.authStatus = .authenticated
+        }
+        #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
             guard let self = self else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -148,6 +156,7 @@ class SessionStore {
                 }
             }
         }
+        #endif
     }
     
     func updateNotifications() async {

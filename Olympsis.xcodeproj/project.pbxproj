@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AC4A26EAE6B436E809F8879 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF4DAA4BA0427F8CB31D09 /* AppEnvironment.swift */; };
 		5D0A8E392E16121300E8B3B1 /* GeneralActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0A8E382E16121300E8B3B1 /* GeneralActivityPreparation.swift */; };
 		5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC93E2BAD035000E16B95 /* PostViewer.swift */; };
 		5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */; };
@@ -172,6 +173,7 @@
 		5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListItem.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D23BC4E2E5F752600077879 /* RSVPSheet.swift */; };
+		5D2540EC2F56644D00D53F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */; };
 		5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26182F2D715AE300FE2923 /* CalendarManager.swift */; };
 		5D2618322D72541200FE2923 /* QuickActionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2618312D72541200FE2923 /* QuickActionsManager.swift */; };
 		5D2AF5E32CEED1FB0026A526 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */; };
@@ -594,7 +596,6 @@
 		5DFB7EA92B44F0FA00D05BF6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */; };
 		5DFB8A062A720B560002A560 /* VenueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB8A052A720B560002A560 /* VenueView.swift */; };
 		5DFDBE1A2D63210A00735F51 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFDBE192D63210A00735F51 /* QuickActions.swift */; };
-		5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DFE10162C090B7100F8233D /* GoogleService-Info.plist */; };
 		5F1329B82A26F02200B31170 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
 		5F493FA52A54027300EAF5A4 /* SimpleButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */; };
 		5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4E53F12A28E91800257350 /* WelcomeCard.swift */; };
@@ -757,6 +758,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		40EF4DAA4BA0427F8CB31D09 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		5D0A8E382E16121300E8B3B1 /* GeneralActivityPreparation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralActivityPreparation.swift; sourceTree = "<group>"; };
 		5D0CC93E2BAD035000E16B95 /* PostViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewer.swift; sourceTree = "<group>"; };
 		5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItemTemplate.swift; sourceTree = "<group>"; };
@@ -913,6 +915,7 @@
 		5D20625F2B14463400A9D408 /* OrgListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItem.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D23BC4E2E5F752600077879 /* RSVPSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPSheet.swift; sourceTree = "<group>"; };
+		5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D26182F2D715AE300FE2923 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		5D2618312D72541200FE2923 /* QuickActionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsManager.swift; sourceTree = "<group>"; };
 		5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
@@ -1182,7 +1185,6 @@
 		5DFB7EA82B44F0FA00D05BF6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		5DFB8A052A720B560002A560 /* VenueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueView.swift; sourceTree = "<group>"; };
 		5DFDBE192D63210A00735F51 /* QuickActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActions.swift; sourceTree = "<group>"; };
-		5DFE10162C090B7100F8233D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F1329B72A26F02200B31170 /* ClubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModels.swift; sourceTree = "<group>"; };
 		5F493FA42A54027300EAF5A4 /* SimpleButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButtonLabel.swift; sourceTree = "<group>"; };
 		5F4E53F12A28E91800257350 /* WelcomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCard.swift; sourceTree = "<group>"; };
@@ -2044,7 +2046,7 @@
 			children = (
 				5D78BDE12C0BB17F00F170D6 /* Salt Lake City.gpx */,
 				5D7668682BF95A2C003FAD7C /* Info.plist */,
-				5DFE10162C090B7100F8233D /* GoogleService-Info.plist */,
+				5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */,
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
 				9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */,
 				9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */,
@@ -2094,6 +2096,7 @@
 		9A8FF0BF28BB18C300DE4CF8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				40EF4DAA4BA0427F8CB31D09 /* AppEnvironment.swift */,
 				9ABB1EBC29053D020050C0F0 /* SessionStore.swift */,
 				9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */,
 				5D5CAF8A2E628192004E26D4 /* NotificationNames.swift */,
@@ -2778,7 +2781,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DFE10172C090B7100F8233D /* GoogleService-Info.plist in Resources */,
 				5DDD5E722C41095F00793FEB /* Groups.xcstrings in Resources */,
 				5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */,
 				5DDD5E782C4109EC00793FEB /* Settings.xcstrings in Resources */,
@@ -2834,6 +2836,7 @@
 				5D1905582DA1C7F50051990F /* Archivo-Italic.ttf in Resources */,
 				5D1905592DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraLight.ttf in Resources */,
 				5D19055A2DA1C7F50051990F /* Archivo_ExtraCondensed-ThinItalic.ttf in Resources */,
+				5D2540EC2F56644D00D53F12 /* GoogleService-Info.plist in Resources */,
 				5D19055B2DA1C7F50051990F /* Archivo_ExtraCondensed-Italic.ttf in Resources */,
 				5D19055C2DA1C7F50051990F /* Archivo-Medium.ttf in Resources */,
 				5D19055D2DA1C7F50051990F /* Archivo_Condensed-Regular.ttf in Resources */,
@@ -3047,6 +3050,7 @@
 				5DB096192E07424700BB924A /* ActivitiesChart.swift in Sources */,
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
+				3AC4A26EAE6B436E809F8879 /* AppEnvironment.swift in Sources */,
 				5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
@@ -3703,7 +3707,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEV";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_ENABLE_BARE_SLASH_REGEX = NO;
 				SWIFT_STRICT_CONCURRENCY = minimal;

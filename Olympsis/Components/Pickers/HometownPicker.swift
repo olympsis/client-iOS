@@ -12,7 +12,7 @@ import CoreLocation
 
 struct HometownPicker: View {
     
-    @Binding var hometown: [Double]
+    @Binding var hometown: GeoJSON?
     @State private var city: String = ""
     @State private var state: String = ""
     @State private var country: String = ""
@@ -88,8 +88,8 @@ struct HometownPicker: View {
                                     
                                     withAnimation {
                                         pin = coordinates
-                                        hometown.append(coordinates.latitude)
-                                        hometown.append(coordinates.longitude)
+                                        // GeoJSON stores [longitude, latitude]
+                                        hometown = GeoJSON(type: "Point", coordinates: [coordinates.longitude, coordinates.latitude])
                                         getPlacemark(from: coordinates) { placemark in
                                             if let placemark = placemark {
                                                 let city = placemark.locality ?? ""
@@ -114,5 +114,5 @@ struct HometownPicker: View {
 }
 
 #Preview {
-    HometownPicker(hometown: .constant([]))
+    HometownPicker(hometown: .constant(nil))
 }

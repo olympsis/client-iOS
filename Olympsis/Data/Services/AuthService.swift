@@ -8,19 +8,14 @@
 import os
 import Hermes
 import Foundation
-import FirebaseAuth
 
 class AuthService {
-    
+
     private var http: Courrier
-    
+
     init() {
-        #if targetEnvironment(simulator)
-            self.http = Courrier(.HTTP, host: "localhost")
-        #else
-            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-            self.http = Courrier(.HTTPS, host: host)
-        #endif
+        let env = AppEnvironment.current
+        self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
     }
     
     func register(request: AuthRequest) async throws -> (Data, URLResponse) {
@@ -39,9 +34,9 @@ class AuthService {
     }
     
     func deleteAccount() async throws -> (Data, URLResponse){
-        let token = try await Auth.auth().currentUser?.getIDToken()
+        let headers = try await AppEnvironment.authHeaders()
         let endpoint = Endpoint("/v1/auth/delete")
-        return try await http.Request(.DELETE, endpoint, headers: ["Authorization": token ?? ""])
+        return try await http.Request(.DELETE, endpoint, headers: headers)
     }
 }
 

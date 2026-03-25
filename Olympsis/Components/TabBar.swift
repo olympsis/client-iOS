@@ -17,6 +17,7 @@ struct TabBar: View {
     @State public var profileRouter = ProfileRouter()
     
     @Environment(SessionStore.self) private var session
+    @Environment(\.colorScheme) private var colorScheme
     
     @AppStorage("hide_activities") private var hideActivities: Bool?
     
@@ -83,7 +84,18 @@ struct TabBar: View {
                             .imageScale(.large)
                             .frame(maxWidth: .infinity)
                             .fontWeight(currentTab == .events ? .bold : .regular)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(
+                                currentTab == .events
+                                    ? (colorScheme == .dark ? .white : Color("color-prime"))
+                                    : Color.foreground
+                            )
+                            .background {
+                                if currentTab == .events && colorScheme == .dark {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(Color("color-prime"))
+                                        .frame(width: 36, height: 36)
+                                }
+                            }
                     }
                 }
                 
@@ -101,8 +113,20 @@ struct TabBar: View {
                             .frame(maxWidth: .infinity)
                             .overlay(
                                 Circle()
-                                    .stroke(Color.foreground, lineWidth: currentTab == .profile ? 3 : 1)
+                                    .stroke(
+                                        currentTab == .profile
+                                            ? (colorScheme == .dark ? .white : Color("color-prime"))
+                                            : Color.foreground,
+                                        lineWidth: currentTab == .profile ? 3 : 1
+                                    )
                             )
+                            .background {
+                                if currentTab == .profile && colorScheme == .dark {
+                                    Circle()
+                                        .fill(Color("color-prime"))
+                                        .frame(width: 36, height: 36)
+                                }
+                            }
                     }
                 }
             }

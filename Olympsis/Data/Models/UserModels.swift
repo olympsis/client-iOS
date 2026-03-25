@@ -25,10 +25,10 @@ struct User: Codable, Hashable {
     var blockedUsers: [String]?
     var reportedPosts: [String]?
     var reportedEvents: [String]?
-    var hometown: [Double]?
+    var hometown: GeoJSON?
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
-    
+
     static func == (lhs: User, rhs: User) -> Bool {
         guard let lhsID = lhs.uuid,
               let rhsID = rhs.uuid else {
@@ -78,7 +78,7 @@ struct User: Codable, Hashable {
         blockedUsers: [String]?=nil,
         reportedPosts: [String]?=nil,
         reportedEvents: [String]?=nil,
-        hometown: [Double]?=nil,
+        hometown: GeoJSON?=nil,
         notificationDevices: [NotificationDevice]? = nil,
         notificationPreference: NotificationPreference? = nil
     ){
@@ -106,18 +106,18 @@ struct User: Codable, Hashable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         username = try container.decodeIfPresent(String.self, forKey: .username)
         firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        
+
         if let genderString = try container.decodeIfPresent(String.self, forKey: .gender) {
            gender = Gender(rawValue: genderString)
         } else {
             gender = nil
         }
-        
+
         birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
@@ -130,7 +130,7 @@ struct User: Codable, Hashable {
         blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
         reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
         reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
-        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        hometown = try container.decodeIfPresent(GeoJSON.self, forKey: .hometown)
         notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
         notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
     }
@@ -181,7 +181,7 @@ struct UserDao: Codable {
     var blockedUsers: [String]?
     var reportedPosts: [String]?
     var reportedEvents: [String]?
-    var hometown: [Double]?
+    var hometown: GeoJSON?
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
 
@@ -201,7 +201,7 @@ struct UserDao: Codable {
         blockedUsers: [String]?=nil,
         reportedPosts: [String]?=nil,
         reportedEvents: [String]?=nil,
-        hometown: [Double]?=nil,
+        hometown: GeoJSON?=nil,
         notificationDevices: [NotificationDevice]? = nil,
         notificationPreference: NotificationPreference? = nil
     ){
@@ -270,11 +270,11 @@ struct UserDao: Codable {
         blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
         reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
         reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
-        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        hometown = try container.decodeIfPresent(GeoJSON.self, forKey: .hometown)
         notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
         notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
     }
-        
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

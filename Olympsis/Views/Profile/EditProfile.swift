@@ -67,11 +67,11 @@ struct EditProfile: View {
                 return
             }
             
-            var coords: [Double]?
+            var coords: GeoJSON?
             if (latitude != 0 && longitude != 0) {
-                coords = [latitude, longitude]
+                coords = GeoJSON(type: "Point", coordinates: [longitude, latitude])
             }
-            
+
             let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
             guard let res = await userObserver.UpdateUserData(update: update) else {
                 status = .failure
@@ -100,11 +100,11 @@ struct EditProfile: View {
             _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
         }
         
-        var coords: [Double]?
+        var coords: GeoJSON?
         if (latitude != 0 && longitude != 0) {
-            coords = [latitude, longitude]
+            coords = GeoJSON(type: "Point", coordinates: [longitude, latitude])
         }
-        
+
         // update user data
         let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
         guard let resp = await userObserver.UpdateUserData(update: update) else {
@@ -375,8 +375,8 @@ struct EditProfile: View {
                     }
                     
                     if let home = usr.hometown {
-                        hometown = CLLocationCoordinate2D(latitude: home[0], longitude: home[1])
-                        getPlacemark(from: CLLocationCoordinate2D(latitude: home[0], longitude: home[1])) { placemark in
+                        hometown = CLLocationCoordinate2D(latitude: home.coordinates[1], longitude: home.coordinates[0])
+                        getPlacemark(from: CLLocationCoordinate2D(latitude: home.coordinates[1], longitude: home.coordinates[0])) { placemark in
                             if let placemark = placemark {
                                 let city = placemark.locality ?? ""
                                 let state = placemark.administrativeArea ?? ""

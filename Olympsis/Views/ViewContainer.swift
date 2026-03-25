@@ -89,7 +89,7 @@ struct ViewContainer: View {
                         return
                     }
                     
-                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]))
+                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]))
                     session.state = .success
                 }
             }
@@ -113,17 +113,16 @@ struct ViewContainer: View {
                     Tab("", systemImage: "calendar", value: .events) {
                         Events(router: $eventRouter)
                             .tag(ViewTab.events)
-                            .toolbar(.hidden, for: .tabBar)
                             .environment(session)
                     }
                     
                     Tab("", systemImage: "person.circle", value: .profile) {
                         Profile()
                             .tag(ViewTab.profile)
-                            .toolbar(.hidden, for: .tabBar)
                             .environment(session)
                     }
                 }
+                .padding(.bottom, -10)
             } else {
                 TabView(selection: $currentTab) {
                     Home(router: $homeRouter)
