@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 3/25/26.
 //
 
+import MapKit
 import SwiftUI
 import Foundation
 import CoreLocation
@@ -22,6 +23,12 @@ class EventsViewModel {
     var selectedTags: [String] = []
     var selectedSports: [String] = []
     
+    var mapRegion: MKCoordinateRegion?
+    
+    var numFiltersActive: Int {
+        selectedTags.count + selectedSports.count
+    }
+    
     var state: VIEW_STATE = .loading
     var page: EVENTS_PAGE_STATE = .list
     
@@ -30,7 +37,7 @@ class EventsViewModel {
     @ObservationIgnored
     @AppStorage("searchRadius") private var searchRadius: Double? // search radius for fields/events in meters
     
-    private var currentLocation: CLLocation {
+    var currentLocation: CLLocation {
         guard LocationManager.shared.isLocationAuthorized,
             let location = LocationManager.shared.location else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
@@ -73,7 +80,7 @@ class EventsViewModel {
     }
     
     func selectSport(_ sport: Sport) {
-        let name = sport.name.components(separatedBy: " ")[1]
+        let name = sport.name
         if selectedSports.contains(name) {
             selectedSports.removeAll { $0 == name }
         } else {
@@ -82,7 +89,7 @@ class EventsViewModel {
     }
     
     func isSportSelected(_ sport: Sport) -> Bool {
-        return selectedSports.contains(sport.name.components(separatedBy: " ")[1])
+        return selectedSports.contains(sport.name)
     }
     
     func getSportsString() -> String {

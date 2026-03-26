@@ -240,7 +240,8 @@ struct NewEvent: View {
                             EventDatePickerView(eventTime: $manager.startDate)
                                 .presentationDetents([.medium])
                         })
-                        .id(4)
+                        .id(2)
+                        
                         
                         VStack(alignment: .leading){
                             Text(String(localized: "new-event-stop-time-title", table: "Events"))
@@ -260,6 +261,7 @@ struct NewEvent: View {
                             EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
                                 .presentationDetents([.medium])
                         })
+                        .id(3)
                     }
                     
                     // MARK: - Description
@@ -285,7 +287,7 @@ struct NewEvent: View {
                                     .scrollContentBackground(.hidden)
                                     .padding(.horizontal, 5)
                             }
-                        }
+                        }.id(4)
                     }
                     
                     // MARK: - Venue picker
@@ -293,7 +295,7 @@ struct NewEvent: View {
                         VenuePickerButton(validationStatus: $validationStatus)
                             .environment(session)
                             .environment(manager)
-                            .id(3)
+                            .id(5)
                     }
                     
                     // MARK: - Image picker

@@ -14,7 +14,7 @@ struct ListView: View {
     @Binding var searchText: String
     @Binding var showNewEvent: Bool
     @Binding var showMenu: Bool
-    @Binding var numFiltersActive: Int
+    let numFiltersActive: Int
     
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
@@ -155,7 +155,7 @@ struct ListView: View {
                     DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
                         .frame(width: 120)
                     
-                    FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
+                    FilterButton(numActive: .constant(numFiltersActive), action: { showMenu.toggle() })
                 }
                 .zIndex(2)
                 .frame(height: 40)
@@ -247,7 +247,7 @@ struct ListView: View {
 
 #Preview {
     NavigationStack {
-        ListView(state: .constant(.pending), searchText: .constant(""), showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: .constant(0))
+        ListView(state: .constant(.pending), searchText: .constant(""), showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: 0)
             .environment(SessionStore())
             .environment(SearchManager())
     }

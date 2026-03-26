@@ -35,7 +35,7 @@ class SearchManager {
     }
     
     func selectSport(_ sport: Sport) {
-        let name = sport.name.components(separatedBy: " ")[1]
+        let name = sport.name
         if selectedSports.contains(name) {
             selectedSports.removeAll { $0 == name }
         } else {
@@ -44,7 +44,7 @@ class SearchManager {
     }
     
     func isSportSelected(_ sport: Sport) -> Bool {
-        return selectedSports.contains(sport.name.components(separatedBy: " ")[1])
+        return selectedSports.contains(sport.name)
     }
     
     func getSportsString() -> String {

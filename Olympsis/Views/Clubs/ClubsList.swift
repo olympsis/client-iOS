@@ -311,7 +311,8 @@ struct ClubsList: View {
                 fetchClubs()
             }
         }, content: {
-            FilterView(manager: manager)
+            FilterView()
+                .environment(manager)
                 .environment(session)
                 .presentationDragIndicator(.visible)
         })

@@ -9,7 +9,6 @@ import MapKit
 import SwiftUI
 
 struct FilterView: View {
-    @Bindable var manager: SearchManager
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     
@@ -21,7 +20,7 @@ struct FilterView: View {
     }
     
     @Environment(SessionStore.self) private var session
-    
+    @Environment(SearchManager.self) private var manager
     @AppStorage("searchRadius") private var searchRadius: Double?
     
     private func updateMapRegion() {
@@ -60,6 +59,8 @@ struct FilterView: View {
     }
     
     var body: some View {
+        @Bindable var manager = manager
+        
         ScrollView {
             
             Spacer(minLength: 15)
@@ -202,6 +203,7 @@ struct FilterView: View {
 }
 
 #Preview {
-    FilterView(manager: SearchManager())
+    FilterView()
         .environment(SessionStore())
+        .environment(SearchManager())
 }
