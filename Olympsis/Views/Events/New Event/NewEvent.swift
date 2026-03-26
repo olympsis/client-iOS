@@ -376,6 +376,9 @@ struct NewEvent: View {
                 }
             }
         }
+        .onDisappear {
+            manager.clearGeocodeCache()
+        }
     }
 }
 

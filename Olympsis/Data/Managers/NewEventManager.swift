@@ -79,6 +79,28 @@ class NewEventManager {
     var customVenueSearch: String = ""
     
     var recurrenceOptions: EventRecurrenceOptions?
+    
+    // MARK: - Geocode Cache
+    
+    /// Cached geocode results keyed by coordinate string (lat/lon rounded to 4 dp ≈ 11m).
+    /// Persists for the lifetime of the event creation flow and is explicitly cleared on exit.
+    struct GeocodeResult {
+        let city: String
+        let state: String
+        let country: String
+        let fullAddress: String?
+    }
+    var geocodeCache: [String: GeocodeResult] = [:]
+    
+    /// Returns a stable cache key for a coordinate pair, rounded to ~11m precision.
+    func geocodeCacheKey(lat: Double, lon: Double) -> String {
+        String(format: "%.4f_%.4f", lat, lon)
+    }
+    
+    /// Clears the geocode cache. Call this when the user exits the new event flow.
+    func clearGeocodeCache() {
+        geocodeCache.removeAll()
+    }
 
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()

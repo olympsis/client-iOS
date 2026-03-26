@@ -11,6 +11,9 @@ struct VenuePickerButton: View {
     
     @Binding var validationStatus: NEW_EVENT_ERROR?
     
+    // Controls programmatic navigation to the venue picker
+    @State private var showVenuePicker: Bool = false
+    
     private var hasSelectedVenue: Bool {
         return !manager.selectedVenues.isEmpty || !manager.selectedVenueDescriptors.isEmpty
     }
@@ -32,13 +35,13 @@ struct VenuePickerButton: View {
                 
                 Spacer()
                 
-                
                 if hasSelectedVenue {
-                    NavigationLink(destination: EventVenuePicker(manager: manager).environment(session)) {
-                        Text("Edit Venue(s)")
-                            .italic()
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 2.5)
+                    // Use a plain Button instead of NavigationLink to avoid the Form/List
+                    // row treating the entire section as a navigation target
+                    Button(action: { showVenuePicker = true }) {
+                        Text("Add")
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 5)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundStyle(Color.Background.secondary)
@@ -48,24 +51,30 @@ struct VenuePickerButton: View {
                                     .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
                             }
                     }
+                    .buttonStyle(.plain)
                 }
             }
             
             if hasSelectedVenue {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center) {
-                    ForEach(manager.selectedVenueDescriptors, id: \.self) { descriptor in
+                ForEach(manager.selectedVenueDescriptors, id: \.self) { descriptor in
+                    HStack {
                         VenueDescriptorView(item: descriptor)
-                            .overlay(alignment: .topTrailing) {
-                                Button(action: { manager.removeVenueDescriptor(descriptor) }) {
-                                    Image(systemName: "xmark.circle.fill")
+                        Button(action: { manager.removeVenueDescriptor(descriptor) }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.red)
+                                .frame(width: 50, height: 100)
+                                .overlay {
+                                    Image(systemName: "xmark")
+                                        .fontWeight(.bold)
                                         .imageScale(.large)
-                                        .foregroundStyle(.red)
+                                        .foregroundStyle(.white)
                                 }
-                            }
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             } else {
-                NavigationLink(destination: EventVenuePicker(manager: manager).environment(session)) {
+                Button(action: { showVenuePicker = true }) {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color.Background.secondary)
                         .frame(height: 100)
@@ -77,7 +86,13 @@ struct VenuePickerButton: View {
                             Text(String(localized: "pick-a-location-text", table: "Events"))
                         }
                 }
+                .buttonStyle(.plain)
             }
+        }
+        // Programmatic navigation destination — only activates when showVenuePicker is set to true
+        .navigationDestination(isPresented: $showVenuePicker) {
+            EventVenuePicker(manager: manager)
+                .environment(session)
         }
     }
 }
@@ -87,6 +102,19 @@ struct VenuePickerButton: View {
         VenuePickerButton(validationStatus: .constant(nil))
             .environment(SessionStore())
             .environment(NewEventManager())
+            .padding(.horizontal)
+    }
+}
+
+#Preview ("Selected") {
+    let manager = NewEventManager()
+    let _ = manager.selectedVenueDescriptors.append(VENUE_DESCRIPTORS[0])
+    let _ = manager.selectedVenueDescriptors.append(VENUE_DESCRIPTORS[1])
+    
+    return NavigationStack {
+        VenuePickerButton(validationStatus: .constant(nil))
+            .environment(SessionStore())
+            .environment(manager)
             .padding(.horizontal)
     }
 }

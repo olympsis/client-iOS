@@ -52,117 +52,79 @@ struct EventVenuePicker: View {
                 let results = try await searchRequest.start()
                 let points = results.mapItems
                 
-                // Parallelize reverse geocoding of the top 20 items
                 let topItems = Array(points.prefix(20))
                 
-                // Run the geocoding concurrently off the main actor
-                let venuesFound: [Venue] = try await withThrowingTaskGroup(of: Venue?.self) { group in
-                    for item in topItems {
-                        group.addTask {
-                            // If this child task is cancelled, throw to avoid hanging.
-                            try Task.checkCancellation()
-                            
-                            guard let name = item.name else { return nil }
-                            let coord = item.placemark.coordinate
-                            
-                            let geocoder = CLGeocoder()
-                            let location = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
-                            let placemark = try await geocoder.reverseGeocodeLocation(location).first
-                            guard let placemark else { return nil }
+                // CLGeocoder only supports one active request at a time per app, so geocode serially.
+                // Results are cached in the manager so repeat searches don't re-geocode the same coords.
+                let geocoder = CLGeocoder()
+                var venuesFound = [Venue]()
 
-                            let city = placemark.locality ?? placemark.subAdministrativeArea ?? ""
-                            let stateStr = placemark.administrativeArea ?? ""
-                            let country = placemark.country ?? ""
+                for item in topItems {
+                    try Task.checkCancellation()
 
-                            // Address parts
-                            let streetNumber = placemark.subThoroughfare
-                            let street = placemark.thoroughfare
-                            let postalCode = placemark.postalCode
+                    guard let name = item.name else { continue }
+                    let coord = item.placemark.coordinate
+                    let cacheKey = manager.geocodeCacheKey(lat: coord.latitude, lon: coord.longitude)
 
-                            // Build fullAddress as two lines:
-                            //   Line 1: "StreetNumber StreetName"
-                            //   Line 2: "City, StateAbbrev PostalCode, Country"
-                            let fullAddress: String? = {
-                                // Line 1: street number + street name
-                                var line1 = ""
-                                if let street, !street.isEmpty {
-                                    if let streetNumber, !streetNumber.isEmpty {
-                                        line1 = "\(streetNumber) \(street)"
-                                    } else {
-                                        line1 = street
-                                    }
-                                }
-
-                                // Line 2: city, region+postal, country
-                                var line2Parts: [String] = []
-
-                                if !city.isEmpty {
-                                    line2Parts.append(city)
-                                }
-
-                                // "StateAbbrev PostalCode" (or just one if the other is missing)
-                                var regionPostal = ""
-                                if !stateStr.isEmpty {
-                                    regionPostal = stateStr
-                                }
-                                if let postalCode, !postalCode.isEmpty {
-                                    regionPostal = regionPostal.isEmpty ? postalCode : "\(regionPostal) \(postalCode)"
-                                }
-                                if !regionPostal.isEmpty {
-                                    line2Parts.append(regionPostal)
-                                }
-
-                                if !country.isEmpty {
-                                    line2Parts.append(country)
-                                }
-
-                                let line2 = line2Parts.joined(separator: ", ")
-
-                                // Combine the two lines with a newline separator
-                                let combined: String
-                                if line1.isEmpty {
-                                    combined = line2
-                                } else if line2.isEmpty {
-                                    combined = line1
-                                } else {
-                                    combined = "\(line1)\n\(line2)"
-                                }
-
-                                return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
-                            }()
-                            
-                            guard !city.isEmpty, !stateStr.isEmpty, !country.isEmpty else { return nil }
-                            
-                            return Venue(
-                                name: name,
-                                location: GeoJSON(
-                                    type: "Point",
-                                    coordinates: [
-                                        Double(coord.longitude),
-                                        Double(coord.latitude)
-                                    ]
-                                ),
-                                city: city,
-                                state: stateStr,
-                                country: country,
-                                fullAddress: fullAddress
-                            )
+                    // Resolve geocode info: use cache if available, otherwise hit the geocoder
+                    let geocodeResult: NewEventManager.GeocodeResult
+                    if let cached = manager.geocodeCache[cacheKey] {
+                        geocodeResult = cached
+                    } else {
+                        let location = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+                        let placemark: CLPlacemark?
+                        do {
+                            placemark = try await geocoder.reverseGeocodeLocation(location).first
+                        } catch {
+                            // Skip this result if geocoding fails (e.g. rate limit or network hiccup)
+                            log.warning("Geocoding failed for \(name): \(error.localizedDescription)")
+                            continue
                         }
-                    }
-                    
-                    var collected = [Venue]()
-                    do {
-                        for try await maybeVenue in group {
-                            if let v = maybeVenue {
-                                collected.append(v)
+                        guard let placemark else { continue }
+
+                        let city = placemark.locality ?? placemark.subAdministrativeArea ?? ""
+                        let stateStr = placemark.administrativeArea ?? ""
+                        let country = placemark.country ?? ""
+
+                        guard !city.isEmpty, !stateStr.isEmpty, !country.isEmpty else { continue }
+
+                        // Build fullAddress as two lines:
+                        //   Line 1: "StreetNumber StreetName"
+                        //   Line 2: "City, StateAbbrev PostalCode, Country"
+                        let fullAddress: String? = {
+                            var line1 = ""
+                            if let street = placemark.thoroughfare, !street.isEmpty {
+                                line1 = placemark.subThoroughfare.map { "\($0) \(street)" } ?? street
                             }
-                        }
-                    } catch {
-                        // Cancel remaining tasks on first thrown error to avoid dangling work.
-                        group.cancelAll()
-                        throw error
+                            var line2Parts: [String] = []
+                            if !city.isEmpty { line2Parts.append(city) }
+                            var regionPostal = stateStr
+                            if let postalCode = placemark.postalCode, !postalCode.isEmpty {
+                                regionPostal = regionPostal.isEmpty ? postalCode : "\(regionPostal) \(postalCode)"
+                            }
+                            if !regionPostal.isEmpty { line2Parts.append(regionPostal) }
+                            if !country.isEmpty { line2Parts.append(country) }
+                            let line2 = line2Parts.joined(separator: ", ")
+                            let combined = line1.isEmpty ? line2 : (line2.isEmpty ? line1 : "\(line1)\n\(line2)")
+                            return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
+                        }()
+
+                        let result = NewEventManager.GeocodeResult(city: city, state: stateStr, country: country, fullAddress: fullAddress)
+                        manager.geocodeCache[cacheKey] = result
+                        geocodeResult = result
                     }
-                    return collected
+
+                    venuesFound.append(Venue(
+                        name: name,
+                        location: GeoJSON(
+                            type: "Point",
+                            coordinates: [Double(coord.longitude), Double(coord.latitude)]
+                        ),
+                        city: geocodeResult.city,
+                        state: geocodeResult.state,
+                        country: geocodeResult.country,
+                        fullAddress: geocodeResult.fullAddress
+                    ))
                 }
                 
                 // Merge and refresh UI (on main actor)
@@ -180,7 +142,9 @@ struct EventVenuePicker: View {
     }
     
     private func filterResults() -> [Venue] {
-        let list = Array(venues)
+        // Exclude venues the user has already selected
+        let selectedNames = Set(manager.selectedVenueDescriptors.compactMap { $0.name?.localizedLowercase })
+        let list = Array(venues).filter { !selectedNames.contains($0.name.localizedLowercase) }
         let userCoord = session.currentLocation.center
         let userLocation = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
         
@@ -275,7 +239,7 @@ struct EventVenuePicker: View {
                         }
                     } else {
                         VStack {
-                            Text("No venues found near you")
+                            Text("Search for locations or")
                             Button(action: { showCustom.toggle() }) {
                                 Text(String(localized: "set-custom-location-text", table: "Events"))
                                     .font(.callout)
@@ -288,7 +252,7 @@ struct EventVenuePicker: View {
                         .padding(.top, 50)
                 case .failure:
                     VStack {
-                        Text("No venues found near you")
+                        Text("Search for locations or")
                         Button(action: { showCustom.toggle() }) {
                             Text(String(localized: "set-custom-location-text", table: "Events"))
                                 .font(.callout)
