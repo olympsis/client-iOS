@@ -27,6 +27,13 @@ struct EventVenuePicker: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
+    private var location: MKCoordinateRegion {
+        guard let user = session.user, let hometown = user.hometown else {
+            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.76553, longitude: -73.97770), latitudinalMeters: 4000, longitudinalMeters: 4000)
+        }
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 4000, longitudinalMeters: 4000)
+    }
+    
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
     
     private func search() {
@@ -66,68 +73,34 @@ struct EventVenuePicker: View {
                             let city = placemark.locality ?? placemark.subAdministrativeArea ?? ""
                             let stateStr = placemark.administrativeArea ?? ""
                             let country = placemark.country ?? ""
-                            let countryCode = placemark.isoCountryCode ?? ""
 
                             // Address parts
                             let streetNumber = placemark.subThoroughfare
                             let street = placemark.thoroughfare
                             let postalCode = placemark.postalCode
 
-                            // Build fullAddress
+                            // Build fullAddress as two lines:
+                            //   Line 1: "StreetNumber StreetName"
+                            //   Line 2: "City, StateAbbrev PostalCode, Country"
                             let fullAddress: String? = {
-                                // US-specific: "StreetNumber StreetName, City, StateAbbrev PostalCode - Country"
-                                if countryCode.uppercased() == "US" {
-                                    var leftParts: [String] = []
-
-                                    // StreetNumber StreetName
-                                    if let street, !street.isEmpty {
-                                        if let streetNumber, !streetNumber.isEmpty {
-                                            leftParts.append("\(streetNumber) \(street)")
-                                        } else {
-                                            leftParts.append(street)
-                                        }
-                                    }
-
-                                    // City
-                                    if !city.isEmpty {
-                                        leftParts.append(city)
-                                    }
-
-                                    // "StateAbbrev PostalCode" (postal optional)
-                                    var stateZip = ""
-                                    if !stateStr.isEmpty {
-                                        stateZip = stateStr
-                                    }
-                                    if let postalCode, !postalCode.isEmpty {
-                                        stateZip = stateZip.isEmpty ? postalCode : "\(stateZip) \(postalCode)"
-                                    }
-                                    if !stateZip.isEmpty {
-                                        leftParts.append(stateZip)
-                                    }
-
-                                    // Join left side with ", " then append " - Country"
-                                    let left = leftParts.joined(separator: ", ")
-                                    let right = country.isEmpty ? "" : " - \(country)"
-                                    let combined = left + right
-
-                                    return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
-                                }
-
-                                // Non-US fallback: "StreetNumber StreetName, City, Region PostalCode - Country"
-                                var parts: [String] = []
-
+                                // Line 1: street number + street name
+                                var line1 = ""
                                 if let street, !street.isEmpty {
                                     if let streetNumber, !streetNumber.isEmpty {
-                                        parts.append("\(streetNumber) \(street)")
+                                        line1 = "\(streetNumber) \(street)"
                                     } else {
-                                        parts.append(street)
+                                        line1 = street
                                     }
                                 }
 
+                                // Line 2: city, region+postal, country
+                                var line2Parts: [String] = []
+
                                 if !city.isEmpty {
-                                    parts.append(city)
+                                    line2Parts.append(city)
                                 }
 
+                                // "StateAbbrev PostalCode" (or just one if the other is missing)
                                 var regionPostal = ""
                                 if !stateStr.isEmpty {
                                     regionPostal = stateStr
@@ -136,12 +109,24 @@ struct EventVenuePicker: View {
                                     regionPostal = regionPostal.isEmpty ? postalCode : "\(regionPostal) \(postalCode)"
                                 }
                                 if !regionPostal.isEmpty {
-                                    parts.append(regionPostal)
+                                    line2Parts.append(regionPostal)
                                 }
 
-                                let left = parts.joined(separator: ", ")
-                                let right = country.isEmpty ? "" : " - \(country)"
-                                let combined = left + right
+                                if !country.isEmpty {
+                                    line2Parts.append(country)
+                                }
+
+                                let line2 = line2Parts.joined(separator: ", ")
+
+                                // Combine the two lines with a newline separator
+                                let combined: String
+                                if line1.isEmpty {
+                                    combined = line2
+                                } else if line2.isEmpty {
+                                    combined = line1
+                                } else {
+                                    combined = "\(line1)\n\(line2)"
+                                }
 
                                 return combined.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : combined
                             }()
@@ -312,7 +297,7 @@ struct EventVenuePicker: View {
                     }.padding(.top, 50)
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onSubmit(of: .search, {
                 search()
             })

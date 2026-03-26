@@ -96,6 +96,8 @@ struct Events: View {
                 }
             })
             .task {
+                LocationManager.shared.requestLocation()
+                
                 // Grab sports and tags from session
                 manager.tags = session.tags
                 manager.sports = session.sports
