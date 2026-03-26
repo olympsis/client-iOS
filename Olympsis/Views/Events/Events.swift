@@ -66,11 +66,15 @@ struct Events: View {
                 NewEvent(manager: NewEventManager())
             }
             .sheet(isPresented: $showMenu, onDismiss: {
+                // Detect if filters actually changed so we can force a fresh fetch
+                let filtersChanged = manager.selectedTags != viewModel.selectedTags
+                    || manager.selectedSports != viewModel.selectedSports
+                
                 viewModel.selectedTags = manager.selectedTags
                 viewModel.selectedSports = manager.selectedSports
                 
                 Task {
-                    await viewModel.fetchEvents(session)
+                    await viewModel.fetchEvents(session, force: filtersChanged)
                 }
             }, content: {
                 FilterView()
