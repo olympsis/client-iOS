@@ -66,11 +66,11 @@ struct ViewContainer: View {
             }
             
             // Load workouts if user has authorized us
-            if session.workoutManager.checkAuthorizationStatus() {
-                group.addTask {
-                    _ = await session.workoutManager.loadWorkouts()
-                }
-            }
+//            if session.workoutManager.checkAuthorizationStatus() {
+//                group.addTask {
+//                    _ = await session.workoutManager.loadWorkouts()
+//                }
+//            }
         }
     }
     
@@ -84,12 +84,12 @@ struct ViewContainer: View {
                 Task { @MainActor in
                     guard session.state == .loading else { return }
                     guard let hometown = session.user?.hometown else {
-                        await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
+//                        await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
                         session.state = .success
                         return
                     }
                     
-                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]))
+//                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]))
                     session.state = .success
                 }
             }
@@ -196,8 +196,8 @@ struct ViewContainer: View {
             locationTask?.cancel()
             Task { @MainActor in
                 // Will want to add saved added sports here later
-                guard let user = session.user else { return }
-                await session.getNearbyData(location: location, selectedSports: user.sports)
+//                guard let user = session.user else { return }
+//                await session.getNearbyData(location: location, selectedSports: user.sports)
                 
                 session.state = .success
             }
@@ -211,9 +211,6 @@ struct ViewContainer: View {
                     handleRoute(route)
                 }
             }
-            
-            // Handle Check-In
-            await initializeUpCheckInTasks()
             
             // GPS Location updates fallback
             setUpLocationFallback()

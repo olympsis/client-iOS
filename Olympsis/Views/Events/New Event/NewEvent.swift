@@ -184,196 +184,147 @@ struct NewEvent: View {
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
-//                HStack {
-//                    Button(action: { dismiss() }) {
-//                        Image(systemName: "chevron.left")
-//                            .imageScale(.large)
-//                            .padding(.horizontal)
-//                    }.clipShape(Rectangle())
-//                    
-//                    Spacer()
-//                    Spacer()
-//                    
-//                    Text(String(localized: "new-event-view-title", table: "Events"))
-//                        .italic()
-//                        .textCase(.uppercase)
-//                        .fontWeight(.bold)
-//                    
-//                    Spacer()
-//                    Spacer()
-//                    Spacer()
-//                    
-//                }
-//                .frame(height: 43)
-//                .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground), alignment: .bottom)
-                
-                ScrollView(showsIndicators: false) {
-                    
-                    // MARK: - Top Options
-                    NewEventTopView(
-                        showTypePicker: $showTypePicker,
-                        showVisibilityPicker: $showVisibilityPicker,
-                        eventType: $manager.type,
-                        eventVisibility: $manager.visibility
-                    )
-                    
-                    // MARK: - Sport picker
-                    NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
-                        .padding([.bottom, .horizontal])
+                Form {
+                    // MARK: - Title and sports selection
+                    Section {
+                        NewEventTopView(
+                            showTypePicker: $showTypePicker,
+                            showVisibilityPicker: $showVisibilityPicker,
+                            eventType: $manager.type,
+                            eventVisibility: $manager.visibility
+                        )
+                        
+                        VStack(alignment: .leading){
+                            TextField("Event Title", text: $manager.title)
+                                .focused($titleFocus)
+                                .padding(.leading)
+                                .modifier(InputFieldModifier())
+                        }
+                        .id(1)
+                        
+                        NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
+                    }
                     
                     // MARK: - Organizers Picker
-                    VStack(alignment: .leading){
-                        Text(String(localized: "new-event-organizer-title", table: "Events"))
-                            .font(.headline)
-                            .bold()
-                        Text(String(localized: "new-event-organizer-sub-title", table: "Events"))
-                            .foregroundColor(.gray)
-                            .font(.subheadline)
-                        
-                        Button(action: { self.showOrganizersPicker.toggle() }) {
-                            EventOrganizerView(organizers: $manager.organizers)
-                                .modifier(InputFieldModifier())
+                    Section {
+                        VStack(alignment: .leading){
+                            HStack {
+                                NewEventOrganizers(manager: manager)
+                                Spacer()
+                            }
                         }
-                        
-                        Text("*\(String(localized: "required-text", table: "General"))")
-                            .foregroundStyle(.gray)
-                    }
-                    .padding(.horizontal)
-                    .fullScreenCover(isPresented: $showOrganizersPicker) {
-                        EventOrganizersPickerView(
-                            selectedOrganizers: $manager.organizers
-                        ).environment(session)
+                        .fullScreenCover(isPresented: $showOrganizersPicker) {
+                            EventOrganizersPickerView(
+                                selectedOrganizers: $manager.organizers
+                            ).environment(session)
+                        }
                     }
                     
-                    // MARK: - Title
-                    VStack(alignment: .leading){
-                        Text(String(localized: "new-event-title", table: "Events"))
-                            .font(.headline)
-                            .bold()
-                        Text(String(localized: "new-event-sub-title", table: "Events"))
-                            .font(.subheadline)
-                            .foregroundColor(validationStatus == .noTitle ? .red : .gray)
+                    // MARK: - Event start/stop dates
+                    Section {
+                        VStack(alignment: .leading){
+                            Text(String(localized: "new-event-start-time-title", table: "Events"))
+                                .font(.headline)
+                                .bold()
+                            
+                            Button(action: {
+                                titleFocus = false
+                                descriptionFocus = false
+                                self.showStartTimePicker.toggle()
+                            }) {
+                                Text(startTimeString)
+                                    .modifier(InputFieldModifier())
+                            }
+                        }
+                        .sheet(isPresented: $showStartTimePicker, content: {
+                            EventDatePickerView(eventTime: $manager.startDate)
+                                .presentationDetents([.medium])
+                        })
+                        .id(4)
                         
-                        TextField("", text: $manager.title)
-                            .focused($titleFocus)
-                            .padding(.leading)
-                            .modifier(InputFieldModifier())
-                        
-                        Text("*\(String(localized: "required-text", table: "General"))")
-                            .foregroundStyle(.gray)
+                        VStack(alignment: .leading){
+                            Text(String(localized: "new-event-stop-time-title", table: "Events"))
+                                .font(.headline)
+                                .bold()
+                            
+                            Button(action: {
+                                titleFocus = false
+                                descriptionFocus = false
+                                self.showStopTimePicker.toggle()
+                            }) {
+                                Text(stopTimeString)
+                                    .modifier(InputFieldModifier())
+                            }
+                        }
+                        .sheet(isPresented: $showStopTimePicker, content: {
+                            EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
+                                .presentationDetents([.medium])
+                        })
                     }
-                    .padding(.top)
-                    .padding(.horizontal)
-                    .id(1)
                     
                     // MARK: - Description
-                    VStack(alignment: .leading){
-                        Text(String(localized: "new-event-description-title", table: "Events"))
-                            .font(.headline)
-                            .bold()
-                        Text(String(localized: "new-event-description-sub-title", table: "Events"))
-                            .foregroundColor(validationStatus == .noDescription ? .red : .gray)
-                            .font(.subheadline)
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.gray.opacity(0.2))
-                                .frame(height: 100)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                                }
-                            TextEditor(text: $manager.body)
-                                .focused($descriptionFocus)
-                                .frame(height: 95)
-                                .scrollContentBackground(.hidden)
-                                .padding(.horizontal, 5)
-                        }
-                        
-                        Text("*\(String(localized: "required-text", table: "General"))")
-                            .foregroundStyle(.gray)
-                    }
-                    .padding(.top)
-                    .padding(.horizontal)
-                    .id(2)
-                    
-                    // MARK: - Venue Picker
-                    VenuePickerButton(validationStatus: $validationStatus)
-                        .environment(session)
-                        .environment(manager)
-                        .padding(.top)
-                        .padding(.horizontal)
-                        .id(3)
-                    
-                    // MARK: - Start Date/Time picker
-                    VStack(alignment: .leading){
-                        Text(String(localized: "new-event-start-time-title", table: "Events"))
-                            .font(.headline)
-                            .bold()
-                        
-                        Button(action: {
-                            titleFocus = false
-                            descriptionFocus = false
-                            self.showStartTimePicker.toggle()
-                        }) {
-                            Text(startTimeString)
-                                .modifier(InputFieldModifier())
+                    Section {
+                        VStack(alignment: .leading){
+                            Text(String(localized: "new-event-description-title", table: "Events"))
+                                .font(.headline)
+                                .bold()
+                            Text(String(localized: "new-event-description-sub-title", table: "Events"))
+                                .foregroundColor(validationStatus == .noDescription ? .red : .gray)
+                                .font(.subheadline)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.Background.secondary)
+                                    .frame(height: 100)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                    }
+                                TextEditor(text: $manager.body)
+                                    .focused($descriptionFocus)
+                                    .frame(height: 95)
+                                    .scrollContentBackground(.hidden)
+                                    .padding(.horizontal, 5)
+                            }
                         }
                     }
-                    .padding()
-                    .sheet(isPresented: $showStartTimePicker, content: {
-                        EventDatePickerView(eventTime: $manager.startDate)
-                            .presentationDetents([.medium])
-                    })
-                    .id(4)
                     
-                    // MARK: - End Date/Time picker
-                    VStack(alignment: .leading){
-                        Text(String(localized: "new-event-stop-time-title", table: "Events"))
-                            .font(.headline)
-                            .bold()
+                    // MARK: - Venue picker
+                    Section {
+                        VenuePickerButton(validationStatus: $validationStatus)
+                            .environment(session)
+                            .environment(manager)
+                            .id(3)
+                    }
+                    
+                    // MARK: - Image picker
+                    Section {
+                        NewEventImagePicker()
+                            .environment(manager)
+                    }
+                    
+                    // MARK: - Tags and advanced settings
+                    Section {
+                        NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
                         
-                        Button(action: {
-                            titleFocus = false
-                            descriptionFocus = false
-                            self.showStopTimePicker.toggle()
-                        }) {
-                            Text(stopTimeString)
-                                .modifier(InputFieldModifier())
+                        HStack {
+                            Spacer()
+                            
+                            NavigationLink(destination: NewEventAdvancedSettings().environment(manager)) {
+                                Text(String(localized: "advanced-settings-title", table: "Events"))
+                                    .fontWeight(.bold)
+                                Image(systemName: "gearshape.fill")
+                            }
                         }
                     }
-                    .padding(.horizontal)
-                    .sheet(isPresented: $showStopTimePicker, content: {
-                        EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate.addingTimeInterval(30 * 60))
-                            .presentationDetents([.medium])
-                    })
-                    
-                    // MARK: - Background Image picker
-                    NewEventImagePicker()
-                        .padding([.top, .horizontal])
-                        .environment(manager)
-                    
-                    // MARK: - Event Tags Picker
-                    NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
-                        .padding([.top, .horizontal])
-                    
-                    HStack {
-                        Spacer()
-                        
-                        NavigationLink(destination: NewEventAdvancedSettings().environment(manager)) {
-                            Text(String(localized: "advanced-settings-title", table: "Events"))
-                                .fontWeight(.bold)
-                            Image(systemName: "gearshape.fill")
-                        }.padding()
-                    }
-                    
                     
                     // MARK: - Action Button
                     VStack(alignment: .center){
                         Button(action: { handleEventCreation(value) }) {
                             LoadingButton(text: String(localized: "new-event-create-text", table: "Events"), width: 150, status: $manager.status)
-                                .padding(.horizontal, 40)
                         }
-                    }.padding(.vertical, 50)
+                    }
+                    .listRowBackground(Color.clear)
+                    
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {

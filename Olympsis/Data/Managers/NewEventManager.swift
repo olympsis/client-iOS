@@ -14,6 +14,7 @@ import Foundation
 class NewEventManager {
     
     var type: EVENT_TYPES = .Regular
+    var validationStatus: NEW_EVENT_ERROR?
     
     var selectedTags: [Tag]
     var selectedSports: [Sport]
@@ -24,11 +25,25 @@ class NewEventManager {
     var status: LOADING_STATE = .pending
     
     // Organizers
+    var poster: UserSnippet?
     var organizers: [GroupSelection]
+    var sponsors: [Sponsor]
     
     // Timestamps
     var startDate: Date
     var endDate: Date
+    
+    var startDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: startDate)
+    }
+    
+    var endDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: endDate)
+    }
     
     // Location(s)
     var selectedVenues = [Venue]()
@@ -79,6 +94,7 @@ class NewEventManager {
         self.body = ""
         self.selectedVenues = venues
         self.organizers = organizers
+        self.sponsors = []
         
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(60 * 60 * 24)
@@ -114,6 +130,10 @@ class NewEventManager {
     func removeVenueDescriptor(_ descriptor: VenueDescriptor) {
         selectedVenueDescriptors.removeAll(where: { $0.name == descriptor.name })
         selectedVenues.removeAll(where: { $0.name == descriptor.name })
+    }
+    
+    func validateEvent(proxy: ScrollViewProxy) -> NewEventError? {
+        return nil
     }
     
     /// Triggers the create event action

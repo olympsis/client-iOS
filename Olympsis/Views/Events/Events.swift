@@ -15,7 +15,7 @@ struct Events: View {
     @State private var isLoaded: Bool = false
     @State private var searchText: String = ""
     
-    @State private var state: VIEW_STATE = .pending
+    @State private var state: VIEW_STATE = .loading
     @State private var page: EVENTS_PAGE_STATE = .list
     
     @State private var numFiltersActive = 0
@@ -24,6 +24,7 @@ struct Events: View {
     @State private var selectedVenue: Venue?
     
     @State private var manager = SearchManager()
+    @State private var viewModel = EventsViewModel()
     @Environment(SessionStore.self) private var session
     
     private var fallbackLocation: CLLocation {
@@ -81,8 +82,8 @@ struct Events: View {
                 switch page {
                 case .list:
                     ListView(
-                        state: $state,
-                        searchText: $searchText,
+                        state: $viewModel.state,
+                        searchText: $viewModel.searchText,
                         showNewEvent: $showNewEvent,
                         showMenu: $showMenu,
                         numFiltersActive: $numFiltersActive
@@ -243,21 +244,21 @@ struct Events: View {
                 // Grab sports and tags from session
                 manager.tags = session.tags
                 manager.sports = session.sports
+                viewModel.tags = session.tags
+                viewModel.sports = session.sports
                 
                 // Add user's sports on the filter by default
                 if let user = session.user {
                     if let sports = user.sports {
                         manager.selectedSports = sports
-                        
+                        viewModel.selectedSports = sports
                         withAnimation(.easeInOut) {
                             numFiltersActive = manager.selectedSports.count + manager.selectedTags.count
                         }
                     }
                 }
                 
-                if !isLoaded {
-                    await fetchEvents()
-                }
+                await viewModel.fetchEvents(session)
             }
         }
     }

@@ -26,6 +26,7 @@
 		5D11906D2E3996D200574041 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 5D11906C2E3996D200574041 /* StripePaymentSheet */; };
 		5D11906F2E3996D200574041 /* StripePayments in Frameworks */ = {isa = PBXBuildFile; productRef = 5D11906E2E3996D200574041 /* StripePayments */; };
 		5D1190712E3996D200574041 /* StripePaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5D1190702E3996D200574041 /* StripePaymentsUI */; };
+		5D1881802F74DE21000FDF9E /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18817F2F74DE21000FDF9E /* EventsViewModel.swift */; };
 		5D18BD0A2B33E17700F90777 /* GroupMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD092B33E17700F90777 /* GroupMessages.swift */; };
 		5D18BD0C2B33E2C300F90777 /* GroupNewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */; };
 		5D18BD0E2B33E2CD00F90777 /* GroupRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */; };
@@ -575,6 +576,7 @@
 		5DDD5E742C41099B00793FEB /* Profile.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E732C41099B00793FEB /* Profile.xcstrings */; };
 		5DDD5E762C4109AF00793FEB /* Home.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E752C4109AF00793FEB /* Home.xcstrings */; };
 		5DDD5E782C4109EC00793FEB /* Settings.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E772C4109EC00793FEB /* Settings.xcstrings */; };
+		5DDE415F2F7437DE00D7E1EA /* NewEventOrganizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */; };
 		5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F632C8758ED001A9861 /* AsyncPostView.swift */; };
 		5DE67F662C87E2E9001A9861 /* AsyncEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
@@ -768,6 +770,7 @@
 		5D11905D2E39072B00574041 /* ClubWalletChangeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletChangeAccount.swift; sourceTree = "<group>"; };
 		5D11905F2E39073E00574041 /* ClubWalletWithdraw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletWithdraw.swift; sourceTree = "<group>"; };
 		5D1190612E39074F00574041 /* ClubWalletAutoWithdrawl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubWalletAutoWithdrawl.swift; sourceTree = "<group>"; };
+		5D18817F2F74DE21000FDF9E /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
 		5D18BD092B33E17700F90777 /* GroupMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessages.swift; sourceTree = "<group>"; };
 		5D18BD0B2B33E2C300F90777 /* GroupNewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupNewRoom.swift; sourceTree = "<group>"; };
 		5D18BD0D2B33E2CD00F90777 /* GroupRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRoomView.swift; sourceTree = "<group>"; };
@@ -1165,6 +1168,7 @@
 		5DDD5E732C41099B00793FEB /* Profile.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Profile.xcstrings; sourceTree = "<group>"; };
 		5DDD5E752C4109AF00793FEB /* Home.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Home.xcstrings; sourceTree = "<group>"; };
 		5DDD5E772C4109EC00793FEB /* Settings.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Settings.xcstrings; sourceTree = "<group>"; };
+		5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventOrganizers.swift; sourceTree = "<group>"; };
 		5DE67F632C8758ED001A9861 /* AsyncPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPostView.swift; sourceTree = "<group>"; };
 		5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventView.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
@@ -1447,6 +1451,7 @@
 				5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */,
 				5D2AF5E22CEED1FB0026A526 /* RoomViewModel.swift */,
 				5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */,
+				5D18817F2F74DE21000FDF9E /* EventsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1610,6 +1615,7 @@
 				5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */,
 				5D45B5B32D9CE26300AB24AC /* NewEventTagsPicker.swift */,
 				5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */,
+				5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */,
 			);
 			path = "New Event";
 			sourceTree = "<group>";
@@ -3237,6 +3243,7 @@
 				5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */,
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,
 				5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */,
+				5DDE415F2F7437DE00D7E1EA /* NewEventOrganizers.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
 				5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */,
@@ -3388,6 +3395,7 @@
 				5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */,
 				5D78BDEA2C0D48C000F170D6 /* NewEventImagePicker.swift in Sources */,
 				5DC733F92B2937D60051BE21 /* GroupsView.swift in Sources */,
+				5D1881802F74DE21000FDF9E /* EventsViewModel.swift in Sources */,
 				5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */,
 				5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */,
 			);

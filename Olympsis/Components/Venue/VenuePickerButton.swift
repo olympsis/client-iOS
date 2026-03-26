@@ -41,7 +41,7 @@ struct VenuePickerButton: View {
                             .padding(.vertical, 2.5)
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color.gray.opacity(0.2))
+                                    .foregroundStyle(Color.Background.secondary)
                             }
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
@@ -67,7 +67,7 @@ struct VenuePickerButton: View {
             } else {
                 NavigationLink(destination: EventVenuePicker(manager: manager).environment(session)) {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.gray.opacity(0.2))
+                        .foregroundStyle(Color.Background.secondary)
                         .frame(height: 100)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
@@ -77,11 +77,6 @@ struct VenuePickerButton: View {
                             Text(String(localized: "pick-a-location-text", table: "Events"))
                         }
                 }
-            }
-            
-            if !hasSelectedVenue {
-                Text("*\(String(localized: "required-text", table: "General"))")
-                    .foregroundStyle(.gray)
             }
         }
     }

@@ -1272,19 +1272,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tags make your event easier to discover. Add a few!"
+            "value" : "Tags make your event easier to discover"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Las etiquetas facilitan el descubrimiento de tu evento. ¡Añade algunas!"
+            "value" : "Las etiquetas facilitan el descubrimiento de tu evento."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les tags facilitent la découverte de votre événement. Ajoutez-en quelques-uns !"
+            "value" : "Les tags facilitent la découverte de votre événement"
           }
         }
       }
@@ -1629,6 +1629,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Définir un lieu personnalisé"
+          }
+        }
+      }
+    },
+    "sponsors-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sponsors"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patrocinadores"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commanditaires"
           }
         }
       }

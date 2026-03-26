@@ -134,8 +134,23 @@ class SessionStore {
         // In local development we skip Firebase auth entirely and treat the
         // hardcoded dev user as already authenticated. The actual user ID is
         // supplied via the DEV_USER_ID key in Info.plist (see AppEnvironment).
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.authStatus = .authenticated
+        Task {
+            await withTaskGroup(of: Void.self) { group in
+                
+                // Check-In Task
+                group.addTask {
+                    await self.checkIn()
+                    guard self.user != nil else {
+                        await self.logout()
+                        return
+                    }
+                }
+                
+                // Fetch user's notifications
+                group.addTask {
+                    await self.getNotifications()
+                }
+            }
         }
         #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
@@ -474,6 +489,7 @@ class SessionStore {
             log.error("Failed to find club data remotely")
             return nil
         }
+        clubs.insert(club)
         return club
     }
     
@@ -515,6 +531,7 @@ class SessionStore {
             log.error("Failed to find organization data remotely")
             return nil
         }
+        self.orgs.insert(org)
         return org
     }
     

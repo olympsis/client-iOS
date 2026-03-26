@@ -295,3 +295,8 @@ class OrganizationDao: Codable {
         case pinnedPosts = "pinned_posts"
     }
 }
+
+
+class Sponsor: Codable {
+    let name: String
+}
