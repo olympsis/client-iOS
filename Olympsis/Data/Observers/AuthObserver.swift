@@ -78,16 +78,17 @@ class AuthObserver: ObservableObject {
                         self.authType = .new
                     }
                     log.debug("New user signing in")
-                    guard let email = appleIdCredential.email,
-                          let fullName = appleIdCredential.fullName,
-                          let firstName = fullName.givenName,
-                          let lastName = fullName.familyName,
-                          let idToken = appleIdCredential.identityToken
+                    guard let idToken = appleIdCredential.identityToken
                               .flatMap({ String(data: $0, encoding: .utf8) }) else {
                         return USER_STATUS.unknown
                     }
                     
-                    let creds = OAuthProvider.appleCredential(withIDToken: idToken, rawNonce: nonce, fullName: fullName)
+                    // Name/email may be nil if Apple doesn't return them
+                    let email = appleIdCredential.email ?? ""
+                    let firstName = appleIdCredential.fullName?.givenName ?? ""
+                    let lastName = appleIdCredential.fullName?.familyName ?? ""
+                    
+                    let creds = OAuthProvider.appleCredential(withIDToken: idToken, rawNonce: nonce, fullName: appleIdCredential.fullName)
                     
                     do {
                         try await Auth.auth().signIn(with: creds)
@@ -128,7 +129,8 @@ class AuthObserver: ObservableObject {
                         try await login(token: token)
                         
                         let user = cacheService.fetchUser()
-                        guard user?.username != "",
+                        guard user?.firstName != "",
+                            user?.username != "",
                               user?.sports != nil,
                               user?.visibility != "" else {
                             return USER_STATUS.not_finished

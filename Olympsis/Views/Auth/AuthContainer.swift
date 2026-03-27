@@ -10,15 +10,21 @@ import SwiftUI
 struct AuthContainer: View {
     
     @State var currentView = AuthTab.auth
+    
+    // Apple credential data captured during Sign In with Apple
+    @State var appleFirstName: String? = nil
+    @State var appleLastName: String? = nil
+    @State var appleEmail: String? = nil
+    
     @Environment(SessionStore.self) private var session
     
     var body: some View {
         TabView(selection: $currentView){
-            AuthView(currentView: $currentView)
+            AuthView(currentView: $currentView, appleFirstName: $appleFirstName, appleLastName: $appleLastName, appleEmail: $appleEmail)
                 .tag(AuthTab.auth)
                 .toolbar(.hidden, for: .tabBar)
             
-            AuthUserInfo(currentView: $currentView)
+            AuthUserInfo(currentView: $currentView, appleFirstName: appleFirstName, appleLastName: appleLastName, appleEmail: appleEmail)
                 .tag(AuthTab.info)
                 .toolbar(.hidden, for: .tabBar)
             
@@ -33,3 +39,4 @@ struct AuthContainer: View {
     AuthContainer()
         .environment(SessionStore())
 }
+

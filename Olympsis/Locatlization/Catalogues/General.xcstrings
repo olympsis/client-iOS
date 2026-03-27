@@ -585,6 +585,29 @@
         }
       }
     },
+    "email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correo electrónico"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail"
+          }
+        }
+      }
+    },
     "filters" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -604,6 +627,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtres"
+          }
+        }
+      }
+    },
+    "first-name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Name"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prénom"
           }
         }
       }
@@ -856,6 +902,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comment ma position est-elle utilisée ?"
+          }
+        }
+      }
+    },
+    "last-name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Name"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apellido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de famille"
           }
         }
       }
@@ -1598,19 +1667,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "username"
+            "value" : "Username"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "nombre de usuario"
+            "value" : "Nombre de usuario"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "nom d'utilisateur"
+            "value" : "Nom d'utilisateur"
           }
         }
       }

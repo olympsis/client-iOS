@@ -14,6 +14,15 @@ struct AuthUserInfo: View {
     @Binding var currentView: AuthTab
     @FocusState private var isFocused: Bool
     
+    // Apple credential data - nil means Apple didn't provide it
+    let appleFirstName: String?
+    let appleLastName: String?
+    let appleEmail: String?
+    
+    // User-entered values for fields not provided by Apple
+    @State private var firstName: String = ""
+    @State private var lastName: String = ""
+    @State private var email: String = ""
 
     @State private var birthdate: Date = Date()
     @State private var selectedGender: Gender? = nil
@@ -44,7 +53,15 @@ struct AuthUserInfo: View {
         case unavailable
     }
     
+    // Whether we need the user to manually enter each field
+    private var needsFirstName: Bool { appleFirstName == nil || appleFirstName?.isEmpty == true }
+    private var needsLastName: Bool { appleLastName == nil || appleLastName?.isEmpty == true }
+    private var needsEmail: Bool { appleEmail == nil || appleEmail?.isEmpty == true }
+    
     enum INFO_ERROR {
+        case firstName
+        case lastName
+        case email
         case birthday
         case gender
     }
@@ -54,10 +71,25 @@ struct AuthUserInfo: View {
         guard state != .loading else { return }
         
         Task(priority: .userInitiated) { @MainActor in
+            infoError = nil
+            
+            // Validate name/email fields if they were required
+            if needsFirstName && firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                infoError = .firstName
+                return
+            }
+            if needsLastName && lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                infoError = .lastName
+                return
+            }
+            if needsEmail && email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                infoError = .email
+                return
+            }
+            
             guard usernameStatus == .success,
                   birthdate < minimumAge,
                   selectedGender != nil else {
-                infoError = nil
                 
                 if birthdate > minimumAge {
                     infoError = .birthday
@@ -76,6 +108,21 @@ struct AuthUserInfo: View {
             }
             
             state = .loading
+            
+            // Update auth data if user entered personal info not provided by Apple
+            if needsFirstName || needsLastName || needsEmail {
+                var authDao = AuthUserDao()
+                if needsFirstName {
+                    authDao.firstName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+                if needsLastName {
+                    authDao.lastName = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+                if needsEmail {
+                    authDao.email = email.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+                _ = try? await session.authObserver.updateUser(authDao)
+            }
             
             // Update user data
             var dao = UserDao()
@@ -155,6 +202,54 @@ struct AuthUserInfo: View {
                 .frame(height: 1)
             
             ScrollView {
+                
+                // Show name/email fields only if Apple didn't provide them
+                if needsFirstName || needsLastName || needsEmail {
+                    VStack(alignment: .leading, spacing: 12) {
+                        if needsFirstName {
+                            VStack(alignment: .leading) {
+                                Text(String(localized: "first-name", table: "General"))
+                                    .font(.headline)
+                                    .foregroundStyle(infoError == .firstName ? Color.red : Color.primary)
+                                
+                                TextField(String(localized: "enter-first-name", table: "Onboarding"), text: $firstName)
+                                    .padding(.all)
+                                    .modifier(InputFieldModifier())
+                                    .autocorrectionDisabled(true)
+                                    .textInputAutocapitalization(.words)
+                            }
+                        }
+                        
+                        if needsLastName {
+                            VStack(alignment: .leading) {
+                                Text(String(localized: "last-name", table: "General"))
+                                    .font(.headline)
+                                    .foregroundStyle(infoError == .lastName ? Color.red : Color.primary)
+                                
+                                TextField(String(localized: "enter-last-name", table: "Onboarding"), text: $lastName)
+                                    .padding(.all)
+                                    .modifier(InputFieldModifier())
+                                    .autocorrectionDisabled(true)
+                                    .textInputAutocapitalization(.words)
+                            }
+                        }
+                        
+                        if needsEmail {
+                            VStack(alignment: .leading) {
+                                Text(String(localized: "email", table: "General"))
+                                    .font(.headline)
+                                    .foregroundStyle(infoError == .email ? Color.red : Color.primary)
+                                
+                                TextField(String(localized: "enter-email", table: "Onboarding"), text: $email)
+                                    .padding(.all)
+                                    .modifier(InputFieldModifier())
+                                    .autocorrectionDisabled(true)
+                                    .textInputAutocapitalization(.never)
+                                    .keyboardType(.emailAddress)
+                            }
+                        }
+                    }.padding([.top, .horizontal])
+                }
                 
                 VStack(alignment: .leading) {
                     Text(String(localized: "auth-user-info-birthdate", table: "Onboarding"))
@@ -290,6 +385,6 @@ class UsernameSearchViewModel: ObservableObject {
 }
 
 #Preview {
-    AuthUserInfo(currentView: .constant(.info))
+    AuthUserInfo(currentView: .constant(.info), appleFirstName: nil, appleLastName: nil, appleEmail: nil)
         .environment(SessionStore())
 }

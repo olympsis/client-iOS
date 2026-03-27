@@ -14,6 +14,11 @@ struct AuthView: View {
     
     @Binding var currentView: AuthTab
     
+    // Bindings to pass Apple credential data back to AuthContainer
+    @Binding var appleFirstName: String?
+    @Binding var appleLastName: String?
+    @Binding var appleEmail: String?
+    
     @State private var showToast: Bool = false
     @State private var enableLogin: Bool = false
     
@@ -63,6 +68,14 @@ struct AuthView: View {
                             request.requestedScopes = [.fullName, .email]
                         },
                         onCompletion: { result in
+                            // Capture Apple credential data for AuthUserInfo
+                            if case .success(let authorization) = result,
+                               let cred = authorization.credential as? ASAuthorizationAppleIDCredential {
+                                appleFirstName = cred.fullName?.givenName
+                                appleLastName = cred.fullName?.familyName
+                                appleEmail = cred.email
+                            }
+                            
                             Task {
                                 do {
                                     withAnimation {
@@ -80,7 +93,7 @@ struct AuthView: View {
                                         }
                                     } else if resp == USER_STATUS.not_finished {
                                         withAnimation {
-                                            authStatus = .authenticated
+                                            currentView = .info
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
@@ -147,6 +160,6 @@ struct AuthView: View {
 }
 
 #Preview {
-    AuthView(currentView: .constant(.auth))
+    AuthView(currentView: .constant(.auth), appleFirstName: .constant(nil), appleLastName: .constant(nil), appleEmail: .constant(nil))
         .environment(SessionStore())
 }
