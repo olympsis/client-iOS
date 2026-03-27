@@ -219,7 +219,7 @@ struct EventVenuePicker: View {
             country: locationInfo.country
         )
         
-        manager.addVenue(venue)
+        manager.addVenueDescriptor(venue)
         dismiss()
     }
     
@@ -233,7 +233,7 @@ struct EventVenuePicker: View {
                             VenuePickerListItem(venue: venue, isExternal: venue.description != "external")
                                 .padding([.horizontal, .bottom])
                                 .onTapGesture {
-                                    manager.addVenue(venue)
+                                    manager.addVenueDescriptor(venue)
                                     dismiss()
                                 }
                         }
@@ -266,6 +266,19 @@ struct EventVenuePicker: View {
                 search()
             })
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if #available(iOS 26.0, *) {
+                        Button(action: { dismiss() }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .imageScale(.large)
+                        }
+                    } else {
+                        Button(action: { dismiss() }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .imageScale(.large)
+                        }
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showCustom.toggle() }) {
                         Image("icons/custom.map.badge.plus")

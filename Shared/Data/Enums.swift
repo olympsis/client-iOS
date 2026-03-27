@@ -137,6 +137,7 @@ enum EVENT_ROUTES: Codable, Hashable {
         ID: String?=nil,
         openEvents: Bool?=nil
     )
+    case new
     case settings
 }
 
@@ -374,32 +375,10 @@ func numberToEventRSVPStatus(_ number: Int) -> EVENT_RSVP_STATUS {
     }
 }
 
-enum EVENT_VISIBILITY_TYPES: String, CaseIterable {
-    case Public = "public"
-    case Group = "group"
-    case Private = "private"
-    
-    func toInt() -> Int {
-        switch self {
-        case .Public:
-            0
-        case .Group:
-            1
-        case .Private:
-            2
-        }
-    }
-}
-
-func numberToEventVisibilityType(_ number: Int) -> EVENT_VISIBILITY_TYPES {
-    switch number {
-    case 0:
-        return .Public
-    case 1:
-        return .Group
-    default:
-        return .Private
-    }
+enum EVENT_VISIBILITY_TYPES: String, CaseIterable, Codable {
+    case Public = "PUBLIC"
+    case Group = "GROUP"
+    case Private = "PRIVATE"
 }
 
 enum EVENT_SKILL_LEVELS: String, CaseIterable {
@@ -449,26 +428,11 @@ enum SkillLevel: String, CaseIterable {
     case expert     = "Expert"
 }
 
-enum EVENT_TYPES: String, CaseIterable {
-    case Regular = "regular"
-    case Competitive = "competitive"
-    
-    func toInt() -> Int {
-        switch self {
-        case .Regular:
-            return 0
-        case .Competitive:
-            return 1
-        }
-    }
-}
-
-func numberToEventType(number: Int) -> EVENT_TYPES {
-    if number == 1 {
-        return .Competitive
-    } else {
-        return .Regular
-    }
+enum EVENT_TYPES: String, CaseIterable, Codable {
+    case Regular = "REGULAR"
+    case League = "LEAGUE"
+    case Tournament = "TOURNAMENT"
+    case Class = "CLASS"
 }
 
 

@@ -22,17 +22,38 @@ struct NewEventAdvancedSettings: View {
     
     var body: some View {
         ScrollView {
-            // MARK: - Hide Locations
-            VStack(alignment: .leading){
-                Toggle(isOn: $hidePoster) {
-                    Text("Hide Poster")
-                        .font(.headline)
-                        .bold()
+            HStack {
+                if #available(iOS 26.0, *) {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .imageScale(.large)
+                            .frame(width: 50, height: 50)
+                            .glassEffect()
+                    }
+                } else {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .imageScale(.large)
+                    }
                 }
-                Text("Only show the event's organizers")
-                    .foregroundColor(.gray)
-                    .font(.subheadline)
-            }.padding([.top, .horizontal])
+                
+                Spacer()
+            }.padding()
+            
+            // MARK: - Hide Poster
+            if (!manager.organizers.isEmpty) {
+                VStack(alignment: .leading){
+                    Toggle(isOn: $hidePoster) {
+                        Text("Hide Poster")
+                            .font(.headline)
+                            .bold()
+                    }
+                    Text("Only show the event's organizers")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                }.padding([.top, .horizontal])
+            }
+            
             
             MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
                 showEventFormat.toggle()
@@ -79,7 +100,7 @@ struct NewEventAdvancedSettings: View {
         .sheet(isPresented: $showExternalLinkField) {
             NewEventExternalLink()
                 .environment(manager)
-                .presentationDetents([.height(150)])
+                .presentationDetents([.height(350)])
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showRecurringEventSettings) {

@@ -40,7 +40,7 @@ class Event: Decodable, Identifiable, Hashable {
     var comments: [EventComment]
     
     var visibility: EVENT_VISIBILITY_TYPES
-    var externalLink: String?
+    var externalLinks: [EventLink]?
     var isSensitive: Bool
     
     let createdAt: Date
@@ -80,7 +80,7 @@ class Event: Decodable, Identifiable, Hashable {
         case comments
         
         case visibility
-        case externalLink = "external_link"
+        case externalLinks = "external_links"
         case isSensitive = "is_sensitive"
         
         case createdAt = "created_at"
@@ -112,7 +112,7 @@ class Event: Decodable, Identifiable, Hashable {
          teamsConfig: TeamsConfig? = nil,
          comments: [EventComment] = [],
          visibility: EVENT_VISIBILITY_TYPES,
-         externalLink: String? = nil,
+         externalLinks: [EventLink]? = nil,
          isSensitive: Bool = false,
          createdAt: Date,
          updatedAt: Date? = nil,
@@ -149,7 +149,7 @@ class Event: Decodable, Identifiable, Hashable {
         self.comments = comments
         
         self.visibility = visibility
-        self.externalLink = externalLink
+        self.externalLinks = externalLinks
         self.isSensitive = isSensitive
         
         self.createdAt = createdAt
@@ -199,15 +199,9 @@ class Event: Decodable, Identifiable, Hashable {
         
         comments = try container.decodeIfPresent([EventComment].self, forKey: .comments) ?? []
         
-        // Decode visibility — API sends uppercase string (e.g. "PUBLIC"), fall back to legacy int
-        if let visibilityString = try? container.decode(String.self, forKey: .visibility) {
-            visibility = EVENT_VISIBILITY_TYPES(rawValue: visibilityString.lowercased()) ?? .Public
-        } else {
-            let visibilityInt = try container.decode(Int.self, forKey: .visibility)
-            visibility = numberToEventVisibilityType(visibilityInt)
-        }
+        visibility = try container.decode(EVENT_VISIBILITY_TYPES.self, forKey: .visibility)
         
-        externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        externalLinks = try container.decodeIfPresent([EventLink].self, forKey: .externalLinks)
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
         
         // Handle createdAt date from string
@@ -239,7 +233,7 @@ class Event: Decodable, Identifiable, Hashable {
         self.stopTime = event.stopTime
         self.mediaURL = event.mediaURL
         self.visibility = event.visibility
-        self.externalLink = event.externalLink
+        self.externalLinks = event.externalLinks
         self.organizers = event.organizers
         self.tags = event.tags
         self.sports = event.sports
@@ -258,6 +252,13 @@ class Event: Decodable, Identifiable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+}
+
+/// Represents an external link attached to an event, matching the server's EventLink struct.
+struct EventLink: Codable, Hashable, Identifiable {
+    var id: String { "\(title)_\(url)" }
+    var title: String
+    var url: String
 }
 
 struct EventConfig: Codable {
@@ -295,7 +296,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     let createdAt: Date?
     let updatedAt: Date?
     let canceledAt: Date?
-    var externalLink: String?
+    var externalLinks: [EventLink]?
     var isSensitive: Bool?
     var recurrenceConfig: EventRecurrenceConfig?
     
@@ -322,7 +323,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case canceledAt = "canceled_at"
-        case externalLink = "external_link"
+        case externalLinks = "external_links"
         case recurrenceConfig = "recurrence_config"
     }
     
@@ -349,7 +350,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         updatedAt: Date? = nil,
         canceledAt: Date? = nil,
         isSensitive: Bool? = nil,
-        externalLink: String? = nil,
+        externalLinks: [EventLink]? = nil,
         recurrenceConfig: EventRecurrenceConfig? = nil
     ) {
         self.poster = poster
@@ -374,7 +375,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.updatedAt = updatedAt
         self.canceledAt = canceledAt
         self.isSensitive = isSensitive
-        self.externalLink = externalLink
+        self.externalLinks = externalLinks
         self.recurrenceConfig = recurrenceConfig
     }
     
@@ -418,14 +419,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.teamsConfig = try container.decodeIfPresent(TeamsConfig.self, forKey: .teamsConfig)
         self.teams = try container.decodeIfPresent([Team].self, forKey: .teams)
         
-        // Decode visibility — API sends uppercase string (e.g. "PUBLIC"), fall back to legacy int
-        if let visibilityString = try? container.decode(String.self, forKey: .visibility) {
-            self.visibility = EVENT_VISIBILITY_TYPES(rawValue: visibilityString.lowercased()) ?? .Public
-        } else if let visibilityInt = try container.decodeIfPresent(Int.self, forKey: .visibility) {
-            self.visibility = numberToEventVisibilityType(visibilityInt)
-        } else {
-            self.visibility = nil
-        }
+        self.visibility = try container.decodeIfPresent(EVENT_VISIBILITY_TYPES.self, forKey: .visibility)
         
         // Decode timestamps to Date objects
         if let createdAtInt = try container.decodeIfPresent(Int.self, forKey: .createdAt) {
@@ -447,7 +441,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         }
         
         self.isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
-        self.externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        self.externalLinks = try container.decodeIfPresent([EventLink].self, forKey: .externalLinks)
         self.recurrenceConfig = try container.decodeIfPresent(EventRecurrenceConfig.self, forKey: .recurrenceConfig)
     }
     
@@ -471,12 +465,12 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(participants, forKey: .participants)
         try container.encodeIfPresent(teamsConfig, forKey: .teamsConfig)
         try container.encodeIfPresent(teams, forKey: .teams)
-        try container.encodeIfPresent(visibility?.toInt(), forKey: .visibility)
+        try container.encodeIfPresent(visibility?.rawValue, forKey: .visibility)
         try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
         try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
         try container.encodeIfPresent(canceledAt?.ISO8601Format(), forKey: .canceledAt)
         try container.encodeIfPresent(isSensitive, forKey: .isSensitive)
-        try container.encodeIfPresent(externalLink, forKey: .externalLink)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(recurrenceConfig, forKey: .recurrenceConfig)
     }
 }

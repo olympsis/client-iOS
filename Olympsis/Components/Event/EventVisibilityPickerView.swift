@@ -42,18 +42,18 @@ struct EventVisibilityPickerView: View {
                 }.padding(.vertical)
                     .padding(.horizontal)
                 
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: { visibility = .Group }) {
-                            visibility.rawValue == EVENT_VISIBILITY_TYPES.Group.rawValue ? Image(systemName: "circle.fill") : Image(systemName: "circle")
-                        }
-                        Text(String(localized: "visibility-group", table: "Events"))
-                            .bold()
-                    }
-                    Text(String(localized: "visibility-group-details", table: "Events"))
-                        .font(.callout)
-                        .padding(.horizontal)
-                }.padding(.horizontal)
+//                VStack(alignment: .leading) {
+//                    HStack {
+//                        Button(action: { visibility = .Group }) {
+//                            visibility.rawValue == EVENT_VISIBILITY_TYPES.Group.rawValue ? Image(systemName: "circle.fill") : Image(systemName: "circle")
+//                        }
+//                        Text(String(localized: "visibility-group", table: "Events"))
+//                            .bold()
+//                    }
+//                    Text(String(localized: "visibility-group-details", table: "Events"))
+//                        .font(.callout)
+//                        .padding(.horizontal)
+//                }.padding(.horizontal)
                 
                 Spacer()
                 
@@ -61,18 +61,30 @@ struct EventVisibilityPickerView: View {
             .navigationTitle(String(localized: "visibility-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: { dismiss() }) {
-                            Text(String(localized: "done", table: "General"))
-                                .font(.caption)
-                                .textCase(.uppercase)
-                                .foregroundStyle(.white)
-                                .padding(.horizontal)
-                                .padding(.vertical, 5)
-                                .background {
-                                    Rectangle()
-                                        .foregroundStyle(Color.Brand.primary)
-                                }
+                    if #available(iOS 26.0, *) {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(action: { dismiss() }) {
+                                Text("DONE")
+                                    .font(.caption)
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 5)
+                            }
+                            .glassEffect(.regular.tint(Color.Brand.primary).interactive())
+                        }.sharedBackgroundVisibility(.hidden)
+                    } else {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(action: { dismiss() }) {
+                                Text("DONE")
+                                    .font(.caption)
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 5)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundStyle(Color.Brand.primary)
+                                    }
+                            }
                         }
                     }
                 }

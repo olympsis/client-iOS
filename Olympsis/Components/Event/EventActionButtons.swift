@@ -382,10 +382,10 @@ struct EventActionButtons: View {
         .frame(height: 60)
         .padding(.horizontal)
         .sheet(isPresented: $showRSVPSheet, onDismiss: {
-            guard let extLink = event.externalLink,
-                  let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-                return
-            }
+            // Open the first external link after RSVP if one exists
+            guard let firstLink = event.externalLinks?.first else { return }
+            let raw = firstLink.url.contains("://") ? firstLink.url : "https://" + firstLink.url
+            guard let url = URL(string: raw), UIApplication.shared.canOpenURL(url) else { return }
             openURL(url)
         }, content: {
             RSVPSheet(event: event)

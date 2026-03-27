@@ -53,10 +53,10 @@ struct EventView: View {
         return true
     }
     
-    /// Handles grabbing the event's external link and opening the url
-    private func openExternalURL() {
-        guard let extLink = event.externalLink,
-              let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+    /// Opens an external link URL in the browser.
+    private func openExternalURL(_ link: EventLink) {
+        let raw = link.url.contains("://") ? link.url : "https://" + link.url
+        guard let url = URL(string: raw), UIApplication.shared.canOpenURL(url) else {
             return
         }
         openURL(url)
@@ -98,17 +98,24 @@ struct EventView: View {
                     .padding([.horizontal, .bottom])
                     .id(3)
                     
-                    if event.externalLink != nil {
-                        Button(action: { openExternalURL() }) {
-                            HStack {
-                                Image(systemName: "link")
-                                    .foregroundStyle(Color.Brand.tertiary)
-                                
-                                Text("More event details may be available out of Olympsis. Please click on this message to learn more.")
-                                    .font(.caption)
-                                    .multilineTextAlignment(.leading)
+                    if let links = event.externalLinks, !links.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            ForEach(links) { link in
+                                Button(action: { openExternalURL(link) }) {
+                                    HStack {
+                                        Image(systemName: "link")
+                                            .imageScale(.large)
+                                            .foregroundStyle(Color.Brand.tertiary)
+                                        
+                                        Text(link.title.isEmpty ? link.url : link.title)
+                                            .font(.callout)
+                                            .fontWeight(.bold)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                }
                             }
-                        }.padding([.horizontal, .bottom])
+                        }
+                        .padding([.horizontal, .bottom])
                     }
                     
                     // MARK: - Action Buttons

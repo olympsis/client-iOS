@@ -76,7 +76,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "External link"
+            "value" : "External links"
           }
         },
         "es-419" : {
@@ -88,7 +88,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lien externe"
+            "value" : "Lien externels"
           }
         }
       }

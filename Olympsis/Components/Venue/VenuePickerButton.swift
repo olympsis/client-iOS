@@ -89,11 +89,10 @@ struct VenuePickerButton: View {
                 .buttonStyle(.plain)
             }
         }
-        // Programmatic navigation destination — only activates when showVenuePicker is set to true
-        .navigationDestination(isPresented: $showVenuePicker) {
+        .fullScreenCover(isPresented: $showVenuePicker, content: {
             EventVenuePicker(manager: manager)
                 .environment(session)
-        }
+        })
     }
 }
 

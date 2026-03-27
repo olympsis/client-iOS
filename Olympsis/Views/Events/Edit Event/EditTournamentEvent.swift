@@ -12,7 +12,7 @@ struct EditTournamentEvent: View {
     @State private var isEditing:               Bool = false
     @State private var eventTitle:              String = ""
     @State private var eventBody:               String = ""
-    @State private var eventExternalLink:       String = ""
+    @State private var eventExternalLinks:      [EventLink] = []
     @State private var eventStartTime:          Date = Date()
     @State private var eventStopTime:           Date = Date().addingTimeInterval(30 * 60)
     @State private var eventImageURL:           String = ""
@@ -25,7 +25,7 @@ struct EditTournamentEvent: View {
     @State private var showStartTimePicker: Bool = false
     @State private var showStopTimePicker: Bool = false
     
-    @State private var eventType: EVENT_TYPES = .Competitive
+    @State private var eventType: EVENT_TYPES = .Tournament
     @State private var eventSkilLevel: EVENT_SKILL_LEVELS = .All
     @State private var eventVisibility: EVENT_VISIBILITY_TYPES = .Public
     
@@ -83,7 +83,7 @@ struct EditTournamentEvent: View {
 //            minParticipants: Int(eventMinParticipants),
 //            maxParticipants: Int(eventMaxParticipants),
 //            visibility: eventVisibility,
-//            externalLink: eventExternalLink
+//            externalLinks: eventExternalLinks
 //        )
 //        let resp = await session.eventObserver.updateEvent(id: event.id, dao: dao)
 //        if resp {
@@ -91,7 +91,7 @@ struct EditTournamentEvent: View {
 //            event.level = eventSkilLevel
 //            event.title = eventTitle
 //            event.body = eventBody
-//            event.externalLink = eventExternalLink
+//            event.externalLinks = eventExternalLinks
 //            event.startTime = Int(eventStartTime.timeIntervalSince1970)
 //            if (stopTime != nil) {
 //                event.stopTime = stopTime!
@@ -99,7 +99,7 @@ struct EditTournamentEvent: View {
 //            event.minParticipants = Int(eventMinParticipants)
 //            event.maxParticipants = Int(eventMaxParticipants)
 //            event.imageURL = eventImageURL
-//            event.externalLink = eventExternalLink
+//            event.externalLinks = eventExternalLinks
 //            handleSuccess()
 //        } else {
 //            handleFailure()
@@ -155,13 +155,13 @@ struct EditTournamentEvent: View {
 //                    Text("Link to finish the rsvp process")
 //                        .font(.subheadline)
 //                    
-//                    TextField("", text: $eventExternalLink)
+//                    // TODO: Update to multi-link editor
 //                        .padding(.leading)
 //                        .modifier(InputField())
 //                        .contextMenu {
 //                            Button(action: {
 //                                if let pasteboardString = UIPasteboard.general.string {
-//                                    eventExternalLink = pasteboardString
+//                                    // eventExternalLinks paste handling
 //                                }
 //                            }) {
 //                                Text("Paste")
@@ -361,8 +361,8 @@ struct EditTournamentEvent: View {
 //                    if let maxParticipants = event.maxParticipants {
 //                        eventMaxParticipants = Double(maxParticipants)
 //                    }
-//                    if let externalLink = event.externalLink {
-//                        eventExternalLink = externalLink
+//                    if let externalLinks = event.externalLinks {
+//                        eventExternalLinks = externalLinks
 //                    }
 //                }
         }

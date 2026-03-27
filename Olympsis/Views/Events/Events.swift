@@ -21,6 +21,8 @@ struct Events: View {
     @State private var viewModel = EventsViewModel()
     @Environment(SessionStore.self) private var session
     
+    @Namespace private var namespace
+    
     var body: some View {
         NavigationStack(path: $router.navPath) {
             Group {
@@ -52,18 +54,11 @@ struct Events: View {
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button(action:{ self.showNewEvent = true }){
+                    Button(action:{ router.navigate(to: .new) }){
                         Image(systemName: "plus")
                             .imageScale(.large)
                     }.frame(width: 41)
                 }
-            }
-            .fullScreenCover(isPresented: $showNewEvent, onDismiss: {
-                Task {
-                    await viewModel.fetchEvents(session, force: true)
-                }
-            }) {
-                NewEvent(manager: NewEventManager())
             }
             .sheet(isPresented: $showMenu, onDismiss: {
                 // Detect if filters actually changed so we can force a fresh fetch
@@ -90,6 +85,8 @@ struct Events: View {
                     } else {
                         EventsList(events: Array(session.events))
                     }
+                case .new:
+                    NewEvent(manager: NewEventManager())
                 case .settings:
                     EventsOptions(availableSports: [], selectedSports: viewModel.sports)
                         .environment(router)

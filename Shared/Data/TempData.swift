@@ -163,7 +163,7 @@ let EVENTS = [
         teamsConfig: nil,
         comments: [],
         visibility: .Public,
-        externalLink: nil,
+        externalLinks: nil,
         isSensitive: false,
         createdAt: Date()
     ),
@@ -205,7 +205,7 @@ let EVENTS = [
         teamsConfig: nil,
         comments: [],
         visibility: .Public,
-        externalLink: nil,
+        externalLinks: nil,
         isSensitive: true,
         createdAt: Date(timeIntervalSince1970: 1639364780)
     ),
