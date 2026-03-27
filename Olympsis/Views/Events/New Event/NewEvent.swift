@@ -20,8 +20,6 @@ struct NewEvent: View {
     @State private var showSkillLevelPicker: Bool = false
     
     @State private var isEditing: Bool = false
-    @State private var validationStatus: NEW_EVENT_ERROR?
-    @State private var hasEndTime: Bool = false
     
     @State private var showVenuePicker: Bool = false
     @State private var showSportsPicker: Bool = false
@@ -45,10 +43,6 @@ struct NewEvent: View {
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
     
-    private var hasSelectedVenue: Bool {
-        return !manager.selectedVenues.isEmpty
-    }
-    
     private func handleFailure() {
         manager.status = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -63,10 +57,23 @@ struct NewEvent: View {
         }
     }
     
+    private func handleEventCreation(_ value: ScrollViewProxy) {
+        Task {
+            guard manager.status != .loading else { return }
+            
+            do {
+                try await createEvent(value: value)
+            } catch MediaUploadError.innapropriateContent {
+                self.showPostViolation.toggle()
+            } catch {
+                showToast.toggle()
+            }
+        }
+    }
+    
     @MainActor
-    func createEvent(value: ScrollViewProxy) async throws {
-        validationStatus = manager.validateEvent(value: value)
-        guard validationStatus == nil  else {
+    private func createEvent(value: ScrollViewProxy) async throws {
+        guard manager.validateEvent(value: value) == nil  else {
             handleFailure()
             return
         }
@@ -80,25 +87,10 @@ struct NewEvent: View {
         guard let id = try await manager.createEvent(user: user),
             let url = URL(string: "olympsis://events?id=\(id)") else {
             log.error("Failed to create event. No ID or failed to construct URL.")
-            dismiss()
             return
         }
         openURL(url)
         dismiss()
-    }
-    
-    func handleEventCreation(_ value: ScrollViewProxy) {
-        Task {
-            guard manager.status != .loading else { return }
-            
-            do {
-                try await createEvent(value: value)
-            } catch MediaUploadError.innapropriateContent {
-                self.showPostViolation.toggle()
-            } catch {
-                showToast.toggle()
-            }
-        }
     }
     
     var body: some View {
@@ -119,7 +111,7 @@ struct NewEvent: View {
                             .padding(.leading)
                             .modifier(InputFieldModifier())
                     }
-                    .listRowBackground(validationStatus == .noTitle ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                    .listRowBackground(manager.validationStatus == .noTitle ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                     .id(1)
                     
                     NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
@@ -181,7 +173,7 @@ struct NewEvent: View {
                         EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate)
                             .presentationDetents([.medium])
                     })
-                    .listRowBackground(validationStatus == .unexpected ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                    .listRowBackground(manager.validationStatus == .unexpected ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                     .id(3)
                 }
                 
@@ -192,7 +184,7 @@ struct NewEvent: View {
                             .font(.headline)
                             .bold()
                         Text(String(localized: "new-event-description-sub-title", table: "Events"))
-                            .foregroundColor(validationStatus == .noDescription ? .red : .gray)
+                            .foregroundColor(manager.validationStatus == .noDescription ? .red : .gray)
                             .font(.subheadline)
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -209,16 +201,16 @@ struct NewEvent: View {
                                 .padding(.horizontal, 5)
                         }
                     }
-                    .listRowBackground(validationStatus == .noDescription ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                    .listRowBackground(manager.validationStatus == .noDescription ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                     .id(4)
                 }
                 
                 // MARK: - Venue picker
                 Section {
-                    VenuePickerButton(validationStatus: $validationStatus)
+                    VenuePickerButton(validationStatus: $manager.validationStatus)
                         .environment(session)
                         .environment(manager)
-                        .listRowBackground(validationStatus == .noSelectedField ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                        .listRowBackground(manager.validationStatus == .noSelectedField ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                         .id(5)
                 }
                 
@@ -253,6 +245,7 @@ struct NewEvent: View {
                 }.listRowBackground(Color.clear)
                 
             }
+            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 if #available(iOS 26.0, *) {
                     ToolbarItem(placement: .topBarTrailing) {
