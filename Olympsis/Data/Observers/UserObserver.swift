@@ -78,8 +78,8 @@ class UserObserver: ObservableObject {
         return object.users
     }
     
-    func getUserByUUID(uuid: String) async throws -> User? {
-        let (data, resp) = try await userService.getUserByUUID(uuid: uuid)
+    func getUserByUserID(userID: String) async throws -> User? {
+        let (data, resp) = try await userService.getUserByUserID(userID: userID)
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             return nil
         }

@@ -28,14 +28,14 @@ struct PostMenu: View {
     
     private var isAdmin: Bool {
         guard let user = session.user,
-              let uuid = user.uuid,
+              let userID = user.userID,
               let group = selectedGroup else {
             return false
         }
         if group.type == GROUP_TYPE.Club {
             guard post.type == "post",
                   let club = group.club,
-                  let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
+                  let member = club.members.first(where: { $0.user?.userID == userID }) else {
                 return false
             }
             return member.role != "member"
@@ -46,10 +46,10 @@ struct PostMenu: View {
     
     private var isPoster: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return post.poster?.uuid == uuid
+        return post.poster?.userID == userID
     }
     
     private var isPinned: Bool {

@@ -15,8 +15,8 @@ let _one_hr_interval = _one_hr?.timeIntervalSince(_current_date)
 
 @MainActor
 let USER_SNIPPETS = [
-    UserSnippet(uuid: UUID().uuidString, username: "johnDoe", firstName: "John", lastName: "Doe", imageURL: "feed-images/5439973E-7695-48F4-B611-8371B8BDF767.jpeg"),
-    UserSnippet(uuid: UUID().uuidString, username: "janeDoe", firstName: "Jane", lastName: "Doe", imageURL: "feed-images/2E64B83A-FCF7-4589-8E17-923F496085E4.jpeg")
+    UserSnippet(userID: UUID().uuidString, username: "johnDoe", firstName: "John", lastName: "Doe", imageURL: "feed-images/5439973E-7695-48F4-B611-8371B8BDF767.jpeg"),
+    UserSnippet(userID: UUID().uuidString, username: "janeDoe", firstName: "Jane", lastName: "Doe", imageURL: "feed-images/2E64B83A-FCF7-4589-8E17-923F496085E4.jpeg")
 ]
 
 @MainActor
@@ -31,7 +31,7 @@ let EVENT_COMMENTS = [
 
 @MainActor
 let POSTS = [
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Reaction(id: "", uuid: "", user: nil, createdAt: Date())], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779))),
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Reaction(id: "", userID: "", user: nil, createdAt: Date())], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779))),
     Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: [
         "feed-images/9DC9A5CE-073E-4859-949C-9135D740DB85.jpeg",
         "feed-images/E9650FF7-5DE7-4D76-B886-7C3EC422A05E.jpeg",
@@ -213,8 +213,8 @@ let EVENTS = [
 
 @MainActor
 let USERS_DATA = [
-    User(uuid: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", gender: Gender.Male, birthdate: nil, imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", bio: "Love to play soccer", sports: nil, visibility: "public", clubs: nil),
-    User(uuid: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", gender: Gender.Female, birthdate: nil, imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil)
+    User(userID: UUID().uuidString, username: "johndoe", firstName: "John", lastName: "Doe", gender: Gender.Male, birthdate: nil, imageURL: "profile-images/2F237A05-44E7-4356-9202-1D950B22649A.jpeg", bio: "Love to play soccer", sports: nil, visibility: "public", clubs: nil),
+    User(userID: UUID().uuidString, username: "janedoe", firstName: "Jane", lastName: "Doe", gender: Gender.Female, birthdate: nil, imageURL: "", bio: "Born and raised Utah. Love to snowboard.", sports: nil, visibility: "private", clubs: nil)
 ]
 
 @MainActor

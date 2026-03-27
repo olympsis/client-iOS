@@ -37,23 +37,23 @@ struct EventMenu: View {
         
         // check to see if you're the poster
         guard let user = session.user,
-           let uuid = user.uuid else {
+           let userID = user.userID else {
             return false
         }
         
-        if event.poster?.uuid == uuid {
+        if event.poster?.userID == userID {
             return true
         }
         
         if clubs.first(where: { e in
-            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+            e.members.contains { ($0.user?.userID == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) }
         }) != nil {
             return true
         }
         
         
         if organizations.first(where: { e in
-            e.members.contains { $0.user?.uuid == uuid }
+            e.members.contains { $0.user?.userID == userID }
         }) != nil {
             return true
         }

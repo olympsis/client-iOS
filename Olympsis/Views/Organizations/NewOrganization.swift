@@ -49,7 +49,7 @@ struct NewOrganization: View {
                     Member(
                         id: UUID().uuidString,
                         role: "owner",
-                        user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
+                        user: UserSnippet(userID: user.userID, username: user.username, imageURL: user.imageURL),
                         joinedAt: Date()
                     )
                 ],

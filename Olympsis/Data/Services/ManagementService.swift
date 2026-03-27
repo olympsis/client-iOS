@@ -92,12 +92,12 @@ class ManagementService {
 
     /// HTTP request to get bug reports
     ///
-    /// Filter through reports by the uuid of the user who created the request.
+    /// Filter through reports by the user_id of the user who created the request.
     ///
     /// - Returns: the http body and the headers
-    func getBugReports(uuid: String) async throws -> (Data, URLResponse) {
+    func getBugReports(userID: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/bugs", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        let endpoint = Endpoint("/v1/report/bugs", queryItems: [URLQueryItem(name: "user_id", value: userID)])
         return try await http.Request(.GET, endpoint, headers: headers)
     }
 
@@ -114,12 +114,12 @@ class ManagementService {
 
     /// HTTP request to get field reports
     ///
-    /// Filter through reports by the uuid of the user who created the request.
+    /// Filter through reports by the user_id of the user who created the request.
     ///
     /// - Returns: the http body and headers
-    func getFieldReports(uuid: String) async throws -> (Data, URLResponse) {
+    func getFieldReports(userID: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/fields", queryItems: [URLQueryItem(name: "uuid", value: uuid)])
+        let endpoint = Endpoint("/v1/report/fields", queryItems: [URLQueryItem(name: "user_id", value: userID)])
         return try await http.Request(.GET, endpoint, headers: headers)
     }
 

@@ -26,7 +26,7 @@ struct MemberListItem: View {
     
     var userRole: String {
         guard let user = session.user,
-              let member = club.members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = club.members.first(where: {$0.user?.userID == user.userID}) else {
             return "member"
         }
         return member.role ?? ""
@@ -43,10 +43,10 @@ struct MemberListItem: View {
     }
     
     var memberIsUser: Bool {
-        guard let user = session.user, let uuid = user.uuid else {
+        guard let user = session.user, let userID = user.userID else {
             return false
         }
-        return uuid == member.user?.uuid
+        return userID == member.user?.userID
     }
     
     init(member: Member, enableMenu: Bool = true) {

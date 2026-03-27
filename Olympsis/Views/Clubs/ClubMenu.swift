@@ -34,7 +34,7 @@ struct ClubMenu: View {
     // user's role
     var role: String {
         guard let user = session.user,
-              let member = club.members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = club.members.first(where: {$0.user?.userID == user.userID}) else {
             return "member"
         }
         return member.role ?? ""

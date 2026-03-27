@@ -125,13 +125,13 @@ struct Comment: Codable {
 struct CommentDao: Codable {
     let id: String?
     let text: String
-    var uuid: String?
+    var userID: String?
     let createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id
         case text
-        case uuid
+        case userID = "user_id"
         case createdAt = "created_at"
     }
 }
@@ -142,13 +142,13 @@ struct Reaction: Codable, Identifiable {
     }
     
     let id: String
-    let uuid: String
+    let userID: String
     let user: UserSnippet?
     let createdAt: Date
     
-    init(id: String = UUID().uuidString, uuid: String = UUID().uuidString, user: UserSnippet? = nil, createdAt: Date = Date()) {
+    init(id: String = UUID().uuidString, userID: String = UUID().uuidString, user: UserSnippet? = nil, createdAt: Date = Date()) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.user = user
         self.createdAt = createdAt
     }
@@ -156,7 +156,7 @@ struct Reaction: Codable, Identifiable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
-        self.uuid = try container.decode(String.self, forKey: .uuid)
+        self.userID = try container.decode(String.self, forKey: .userID)
         self.user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
@@ -165,7 +165,7 @@ struct Reaction: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case user
         case createdAt = "created_at"
     }
@@ -173,10 +173,10 @@ struct Reaction: Codable, Identifiable {
 
 struct ReactionDao: Codable {
     
-    let uuid: String
+    let userID: String
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
     }
 }
 
@@ -268,7 +268,7 @@ class Member: Codable, Identifiable, ObservableObject {
     func checkBlockStatus(_ user: User) {
         guard let blockedUsers = user.blockedUsers,
               let data = self.user,
-              let memberUID = data.uuid else {
+              let memberUID = data.userID else {
             self.isBlocked = false
             return
         }
@@ -288,19 +288,19 @@ class Member: Codable, Identifiable, ObservableObject {
 class MemberDao: Codable, Identifiable {
     
     let id: String?
-    let uuid: String
+    let userID: String
     let role: String
     let data: User?
     let joinedAt: Date?
     
     init(id: String?,
-         uuid: String,
+         userID: String,
          role: String,
          data: User?,
          joinedAt: Date?) {
         
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.role = role
         self.data = data
         self.joinedAt = joinedAt
@@ -308,7 +308,7 @@ class MemberDao: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case role
         case data
         case joinedAt = "joined_at"
@@ -319,7 +319,7 @@ class MemberDao: Codable, Identifiable {
         
         // Decode regular properties
         id = try container.decodeIfPresent(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         role = try container.decode(String.self, forKey: .role)
         data = try container.decodeIfPresent(User.self, forKey: .data)
         

@@ -38,7 +38,7 @@ struct UserBlockingConfirmation: View {
     func block() async {
         status = .loading
         guard let _user = session.user,
-              let memberUID = user.uuid else {
+              let memberUID = user.userID else {
             handleFailure()
             onComplete(false)
             log.error("Failed to get required data from session store to block user")

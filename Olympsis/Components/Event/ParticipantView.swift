@@ -77,7 +77,7 @@ struct ParticipantView: View {
                         .font(.callout)
                         .fontWeight(.medium)
                     
-                    if isUserAnonymous && (session.user?.uuid == participant.user?.uuid) {
+                    if isUserAnonymous && (session.user?.userID == participant.user?.userID) {
                         Text("(You)")
                             .fontWeight(.bold)
                             .foregroundStyle(Color.Brand.tertiary)

@@ -52,7 +52,7 @@ struct RSVPSheet: View {
             do {
                 let id = try await observer.addParticipant(id: event.id, dao: dao)
                 let snippet = UserSnippet(
-                    uuid: user.uuid,
+                    userID: user.userID,
                     username: user.username,
                     firstName: user.firstName,
                     lastName: user.lastName,

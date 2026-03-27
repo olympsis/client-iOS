@@ -614,9 +614,9 @@ extension Event {
 extension [Event] {
     
     /// Returns the most recent event for the user
-    func mostRecentForUser(uuid: String) -> Event? {
+    func mostRecentForUser(userID: String) -> Event? {
         return self
-            .filter { $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
+            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
             .sorted { $0.startTime < $1.startTime }
             .first
     }

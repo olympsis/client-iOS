@@ -41,8 +41,14 @@ struct GroupModel: Codable {
 
 struct ChatMember: Codable {
     let id: String?
-    let uuid: String
+    let userID: String
     let status: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case userID = "user_id"
+        case status
+    }
 }
 
 struct Message: Codable, Identifiable, Equatable {

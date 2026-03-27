@@ -188,11 +188,11 @@ class NewPostManager: ObservableObject {
         an optional `Post`object if the user data is valid
      */
     func generateNewPost(id: String, user: User, dto: PostDTO) -> Post? {
-        guard let uuid = user.uuid,
+        guard let userID = user.userID,
               let username = user.username else {
                   return nil
               }
-        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
+        let snippet = UserSnippet(userID: userID, username: username, imageURL: user.imageURL)
         return Post(
             id: id,
             type: dto.type ?? "post",

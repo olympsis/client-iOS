@@ -22,14 +22,14 @@ struct AuthRequest: Codable {
 }
 
 struct AuthResponse: Codable {
-    var uuid: String?
+    var userID: String?
     var firstName: String?
     var lastName: String?
     var email: String?
     var token: String
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case firstName = "first_name"
         case lastName = "last_name"
         case email

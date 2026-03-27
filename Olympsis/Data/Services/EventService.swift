@@ -70,9 +70,9 @@ class EventService {
         return try await http.Request(.GET, endpoint, headers: headers)
     }
 
-    func getUserPastEvents(uuid: String) async throws -> (Data, URLResponse){
+    func getUserPastEvents(userID: String) async throws -> (Data, URLResponse){
         let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/events/past/user/\(uuid)", queryItems: [URLQueryItem]())
+        let endpoint = Endpoint("/v1/events/past/user/\(userID)", queryItems: [URLQueryItem]())
 
         return try await http.Request(.GET, endpoint, headers: headers)
     }

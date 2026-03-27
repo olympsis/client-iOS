@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserCache: Codable {
-    var uuid: String
+    var userID: String
     var username: String
     let firstName: String
     let lastName: String
@@ -27,7 +27,7 @@ struct UserCache: Codable {
     var notificationPreference: NotificationPreference?
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case username
         case firstName = "first_name"
         case lastName = "last_name"

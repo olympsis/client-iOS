@@ -14,8 +14,8 @@ class SecureStore {
     static let server = "api.olympsis.com"
     private let log = Logger(subsystem: "com.olympsis.client", category: "secure_store")
     
-    func saveCurrentUserID(uuid: String) {
-        guard let uuidData = uuid.data(using: .utf8) else {
+    func saveCurrentUserID(userID: String) {
+        guard let uuidData = userID.data(using: .utf8) else {
             return
         }
         

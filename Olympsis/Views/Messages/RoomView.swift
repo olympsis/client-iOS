@@ -41,8 +41,8 @@ struct RoomView: View {
         }
     }
     
-    private func getUserData(uuid: String) -> UserSnippet? {
-        club.members.first(where: { $0.user?.uuid == uuid })?.user
+    private func getUserData(userID: String) -> UserSnippet? {
+        club.members.first(where: { $0.user?.userID == userID })?.user
     }
     
     var body: some View {
@@ -55,7 +55,7 @@ struct RoomView: View {
                             ProgressView()
                         case .success:
                             ForEach(messages, id: \.timestamp){ message in
-                                MessageView(room: room, user: getUserData(uuid: message.sender), message: message)
+                                MessageView(room: room, user: getUserData(userID: message.sender), message: message)
                                     .id(message.id)
                                     .padding(.top)
                             }
@@ -91,7 +91,7 @@ struct RoomView: View {
                     if !viewModel.text.isEmpty {
                         Button(action: {
                             Task {
-                                _ = await viewModel.sendMessage(uuid: session.user?.uuid)
+                                _ = await viewModel.sendMessage(userID: session.user?.userID)
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                              to: nil, from: nil, for: nil)
                             }

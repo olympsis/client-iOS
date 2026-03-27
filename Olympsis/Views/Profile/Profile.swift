@@ -145,10 +145,10 @@ struct Profile: View {
                 }
                 .task {
                     Task {
-                        guard let uuid = session.user?.uuid else {
+                        guard let userID = session.user?.userID else {
                             return
                         }
-                        let pastEvents = await session.eventObserver.getUserPastEvents(uuid: uuid)
+                        let pastEvents = await session.eventObserver.getUserPastEvents(userID: userID)
                         session.pastEvents = Set(pastEvents)
                     }
                 }

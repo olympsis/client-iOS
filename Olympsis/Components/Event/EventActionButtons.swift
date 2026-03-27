@@ -41,10 +41,10 @@ struct EventActionButtons: View {
     
     private var hasRSVP: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
+        return event.participants.first(where: { $0.user?.userID == userID }) != nil
     }
     
 //    @MainActor
@@ -87,7 +87,7 @@ struct EventActionButtons: View {
             state = .loading
             
             guard let user = session.user,
-                  let uuid = user.uuid else {
+                  let userID = user.userID else {
                 handleFailure()
                 return
             }
@@ -98,7 +98,7 @@ struct EventActionButtons: View {
                 return
             }
             
-            event.participants.removeAll(where: { $0.user?.uuid == uuid })
+            event.participants.removeAll(where: { $0.user?.userID == userID })
             handleSuccess()
         }
     }

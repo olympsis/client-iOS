@@ -66,10 +66,10 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: headers)
     }
     
-    func getUserByUUID(uuid: String) async throws -> (Data, URLResponse) {
+    func getUserByUserID(userID: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/search/uuid", queryItems: [
-            URLQueryItem(name: "uuid", value: uuid)
+        let endpoint = Endpoint("/v1/users/search/user_id", queryItems: [
+            URLQueryItem(name: "user_id", value: userID)
         ])
         return try await http.Request(.GET, endpoint, headers: headers)
     }

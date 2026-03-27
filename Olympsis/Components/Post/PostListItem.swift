@@ -343,26 +343,26 @@ struct PostFooter: View {
     
     private func like() async {
         guard let user = session.user,
-            let uuid = user.uuid else {
+            let userID = user.userID else {
             return
         }
-        let dao = ReactionDao(uuid: uuid)
+        let dao = ReactionDao(userID: userID)
         guard let id = await session.postObserver.addLike(id: post.id, like: dao) else {
             return
         }
-        let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
-        let like = Reaction(id: id, uuid: uuid, user: snippet, createdAt: Date())
+        let snippet = UserSnippet(userID: userID, username: user.username ?? "", imageURL: user.imageURL ?? "")
+        let like = Reaction(id: id, userID: userID, user: snippet, createdAt: Date())
         isLiked = true
         post.likes.append(like)
     }
     
     private func removeLike() async {
-        guard let user = session.user, let uuid = user.uuid,
-              let like = post.likes.first(where: { $0.uuid == uuid }),
+        guard let user = session.user, let userID = user.userID,
+              let like = post.likes.first(where: { $0.userID == userID }),
               await session.postObserver.deleteLike(id: post.id, likeID: like.id) else {
             return
         }
-        post.likes.removeAll(where: {$0.uuid == like.uuid})
+        post.likes.removeAll(where: {$0.userID == like.userID})
         isLiked = false
     }
     
@@ -422,8 +422,8 @@ struct PostFooter: View {
             .padding(.all, 5)
             .task {
                 if let user = session.user,
-                      let uuid = user.uuid,
-                      ((post.likes.first(where: { $0.uuid == uuid })) != nil) {
+                      let userID = user.userID,
+                      ((post.likes.first(where: { $0.userID == userID })) != nil) {
                     self.isLiked = true
                 }
             }

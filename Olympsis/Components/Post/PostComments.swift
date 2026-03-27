@@ -21,10 +21,10 @@ struct PostComments: View {
     
     func canDelete(_ comment: Comment) -> Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return (uuid == post.poster?.uuid) || (uuid == comment.user?.uuid)
+        return (userID == post.poster?.userID) || (userID == comment.user?.userID)
     }
     
     func handleFailure() {
@@ -38,14 +38,14 @@ struct PostComments: View {
         status = .loading
         keyboardFocused = false
         guard let user = session.user,
-              let uuid = user.uuid,
+              let userID = user.userID,
               let username = user.username,
               let imageURL = user.imageURL,
               text.count >= 2 else {
             handleFailure()
             return
         }
-        let dao = CommentDao(id: nil, text: text, uuid: uuid, createdAt: nil)
+        let dao = CommentDao(id: nil, text: text, userID: userID, createdAt: nil)
         let resp = await session.postObserver.addComment(id: post.id, comment: dao)
         guard resp != nil else {
             handleFailure()
@@ -53,7 +53,7 @@ struct PostComments: View {
         }
         status = .success
         
-        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(uuid: uuid, username: username, imageURL: imageURL), createdAt: Date())
+        let comment = Comment(id: UUID().uuidString, text: text, user: UserSnippet(userID: userID, username: username, imageURL: imageURL), createdAt: Date())
         
         withAnimation {
             text = ""
@@ -72,18 +72,18 @@ struct PostComments: View {
     
     func isCommentOwner(_ comment: Comment) -> Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return comment.user?.uuid == uuid
+        return comment.user?.userID == userID
     }
     
     var isPostOwner: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return post.poster?.uuid == uuid
+        return post.poster?.userID == userID
     }
     
     var body: some View {

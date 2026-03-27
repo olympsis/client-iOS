@@ -220,18 +220,18 @@ class ClubDao: Codable, Identifiable {
 
 class ClubInvite: Codable, Identifiable {
     let id: String
-    let uuid: String
+    let userID: String
     let clubID: String
     let status: String
     let createdAt: Date
     
     init(id: String,
-         uuid: String,
+         userID: String,
          clubID: String,
          status: String,
          createdAt: Date) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.clubID = clubID
         self.status = status
         self.createdAt = createdAt
@@ -248,7 +248,7 @@ class ClubInvite: Codable, Identifiable {
         
         // Decode regular properties
         id = try container.decode(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         clubID = try container.decode(String.self, forKey: .clubID)
         status = try container.decode(String.self, forKey: .status)
         
@@ -270,7 +270,7 @@ class ClubInvite: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case clubID = "club_id"
         case status
         case createdAt = "created_at"
@@ -383,15 +383,15 @@ struct ClubApplicationsResponse: Codable {
 
 class ClubInvitation: Decodable, Identifiable {
     let id: String
-    let uuid: String
+    let userID: String
     let clubID: String
     let status: String
     let data: Club?
     let createdAt: Date
     
-    init(id: String, uuid: String, clubID: String, status: String, data: Club?, createdAt: Date) {
+    init(id: String, userID: String, clubID: String, status: String, data: Club?, createdAt: Date) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.clubID = clubID
         self.status = status
         self.data = data
@@ -409,7 +409,7 @@ class ClubInvitation: Decodable, Identifiable {
         
         // Decode regular properties
         id = try container.decode(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         clubID = try container.decode(String.self, forKey: .clubID)
         status = try container.decode(String.self, forKey: .status)
         data = try container.decodeIfPresent(Club.self, forKey: .data)
@@ -432,7 +432,7 @@ class ClubInvitation: Decodable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case clubID = "club_id"
         case status
         case data

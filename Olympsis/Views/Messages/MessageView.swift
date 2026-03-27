@@ -17,10 +17,10 @@ struct MessageView: View {
     
     var isMe: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return message.sender == uuid
+        return message.sender == userID
     }
     
     var username : String {

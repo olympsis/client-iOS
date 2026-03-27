@@ -38,7 +38,7 @@ struct ClubMemberMenu: View {
     func unBlock() async {
         guard let user = session.user,
               let data = member.user,
-              let memberUID = data.uuid else {
+              let memberUID = data.userID else {
             log.error("Failed to get required data from session store to un-block user")
             return
         }

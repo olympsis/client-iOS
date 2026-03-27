@@ -27,18 +27,18 @@ struct GroupMessages: View {
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return rooms //[Room]()
         }
-        return rooms.filter({$0.members.contains(where: {$0.uuid == uuid })})
+        return rooms.filter({$0.members.contains(where: {$0.userID == userID })})
     }
     
     private var notJoinedRooms: [Room] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return [Room]()
         }
-        return rooms.filter({ !($0.members.contains(where: { $0.uuid == uuid })) })
+        return rooms.filter({ !($0.members.contains(where: { $0.userID == userID })) })
     }
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_messages_view")

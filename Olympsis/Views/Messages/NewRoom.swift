@@ -24,10 +24,10 @@ struct NewRoom: View {
                 state = .loading
             }
             guard let user = session.user,
-                  let uuid = user.uuid else {
+                  let userID = user.userID else {
                 return
             }
-            let res = await chatObserver.CreateRoom(group: club.id, groupType: "club", name: text, type: "group", uuid: uuid)
+            let res = await chatObserver.CreateRoom(group: club.id, groupType: "club", name: text, type: "group", userID: userID)
             if let r = res {
                 rooms.append(r)
             }

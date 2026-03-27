@@ -20,20 +20,20 @@ struct BlockedUsersList: View {
     
     func unBlock(usr: User) async {
         guard let user = session.user,
-              let uuid = usr.uuid else {
+              let targetUserID = usr.userID else {
             log.error("Failed to get required data from session store to un-block user")
             return
         }
         
         if var blockedList = user.blockedUsers {
-            blockedList.removeAll(where: { $0 == uuid })
+            blockedList.removeAll(where: { $0 == targetUserID })
             let dto = UserDao(blockedUsers: blockedList)
             
             guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
                 return
             }
             session.user = resp
-            blockedUsers.removeAll(where: { $0.uuid == uuid })
+            blockedUsers.removeAll(where: { $0.userID == targetUserID })
         }
     }
     
@@ -45,8 +45,8 @@ struct BlockedUsersList: View {
             return
         }
         do {
-            for uuid in list {
-                guard let data = try await session.userObserver.getUserByUUID(uuid: uuid) else {
+            for id in list {
+                guard let data = try await session.userObserver.getUserByUserID(userID: id) else {
                     return
                 }
                 blockedUsers.append(data)

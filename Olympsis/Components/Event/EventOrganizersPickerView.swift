@@ -19,13 +19,13 @@ struct EventOrganizersPickerView: View {
     
     private var groups: [GroupSelection] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return []
         }
         return session.groupsManager.groups.filter {
-            guard let member = $0.club?.members.first(where: { $0.user?.uuid == uuid }),
+            guard let member = $0.club?.members.first(where: { $0.user?.userID == userID }),
                   member.role != MEMBER_ROLES.Member.rawValue else {
-                guard let member = $0.organization?.members.first(where: { $0.user?.uuid == uuid }),
+                guard let member = $0.organization?.members.first(where: { $0.user?.userID == userID }),
                       member.role != MEMBER_ROLES.Member.rawValue else {
                     return false
                 }

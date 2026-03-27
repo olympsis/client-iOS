@@ -40,14 +40,14 @@ struct EventView: View {
     /// If hide participants is set to true then we only show the locations when the user has RSVPed
     private var canShowLocation: Bool {
         guard let user = session.user,
-              user.uuid != event.poster?.uuid,
+              user.userID != event.poster?.userID,
               let config = event.config,
               let hideLocation = config.hideLocation else {
             return true
         }
         
         // Reveal after user has RSVPed
-        guard event.participants.first(where: { $0.user?.uuid == user.uuid }) != nil else {
+        guard event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
             return !hideLocation
         }
         return true

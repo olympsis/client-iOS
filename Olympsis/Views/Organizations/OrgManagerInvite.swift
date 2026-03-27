@@ -36,7 +36,7 @@ struct OrgManagerInvite: View {
                     Spacer()
                 } else {
                     ScrollView {
-                        ForEach(users, id: \.uuid) { user in
+                        ForEach(users, id: \.userID) { user in
                             UserDataListView(data: user)
                         }
                     }

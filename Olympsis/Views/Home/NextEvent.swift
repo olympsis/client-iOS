@@ -13,11 +13,11 @@ struct NextEvent: View {
     
     private var event: Event? {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return nil
         }
         
-        return Array(session.events).mostRecentForUser(uuid: uuid)
+        return Array(session.events).mostRecentForUser(userID: userID)
     }
     
     var body: some View {

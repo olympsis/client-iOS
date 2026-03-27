@@ -8,7 +8,7 @@
 import Foundation
 
 class UserDataResponse: Codable {
-    let uuid: String
+    let userID: String
     let userName: String
     let imageURL: String
     let clubs: [String]?
@@ -18,7 +18,7 @@ class UserDataResponse: Codable {
     let friends: [String]?
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case userName
         case imageURL
         case clubs

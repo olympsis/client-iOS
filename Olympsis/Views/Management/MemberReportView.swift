@@ -169,6 +169,6 @@ struct MemberReportView: View {
 }
 
 #Preview {
-    MemberReportView(member: Member(id: "", role: "", user: UserSnippet(uuid: "", username: "johndoe"), joinedAt: Date()))
+    MemberReportView(member: Member(id: "", role: "", user: UserSnippet(userID: "", username: "johndoe"), joinedAt: Date()))
         .environment(SessionStore())
 }

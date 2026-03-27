@@ -34,7 +34,7 @@ struct OrgMenu: View {
     
     var role: String {
         guard let user = session.user,
-              let member = organization.members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = organization.members.first(where: {$0.user?.userID == user.userID}) else {
             return "member"
         }
         return member.role ?? ""
