@@ -61,57 +61,57 @@ struct Profile: View {
                             }
                     }.padding([.bottom, .horizontal])
                     
-                    HStack() {
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .achievements
-                            }
-                        }) {
-                            VStack {
-                                Text(String(localized: "awards", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                    
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
-                            }
-                        }
-                        
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .groupsEnrolled
-                            }
-                        }) {
-                            VStack {
-                                Text(String(localized: "groups", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
-                            }
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    .padding(.horizontal)
-                    
-                    switch selectedTab {
-                    case .achievements:
-                        Awards()
-                            .environment(session)
-                        
-                    case .groupsEnrolled:
-                        GroupsEnrolled()
-                            .environment(session)
-                    }
+//                    HStack() {
+//                        Button(action: {
+//                            withAnimation(.smooth) {
+//                                selectedTab = .achievements
+//                            }
+//                        }) {
+//                            VStack {
+//                                Text(String(localized: "awards", table: "Profile"))
+//                                    .font(.callout)
+//                                    .fontWeight(.medium)
+//                                    
+//                                
+//                                Rectangle()
+//                                    .frame(height: 1)
+//                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
+//                            }
+//                        }
+//                        
+//                        
+//                        Spacer()
+//                        
+//                        Button(action: {
+//                            withAnimation(.smooth) {
+//                                selectedTab = .groupsEnrolled
+//                            }
+//                        }) {
+//                            VStack {
+//                                Text(String(localized: "groups", table: "Profile"))
+//                                    .font(.callout)
+//                                    .fontWeight(.medium)
+//                                
+//                                Rectangle()
+//                                    .frame(height: 1)
+//                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
+//                            }
+//                        }
+//                        
+//                        Spacer()
+//                    }
+//                    .padding(.bottom, 10)
+//                    .padding(.horizontal)
+//                    
+//                    switch selectedTab {
+//                    case .achievements:
+//                        Awards()
+//                            .environment(session)
+//                        
+//                    case .groupsEnrolled:
+//                        GroupsEnrolled()
+//                            .environment(session)
+//                    }
 
                 }
                 .fullScreenCover(isPresented: $showMenu, content: {

@@ -122,7 +122,6 @@ struct ViewContainer: View {
                             .environment(session)
                     }
                 }
-                .padding(.bottom, -10)
             } else {
                 TabView(selection: $currentTab) {
                     Home(router: $homeRouter)

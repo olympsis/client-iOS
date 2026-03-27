@@ -252,9 +252,7 @@ struct EventView: View {
 }
 
 #Preview {
-    NavigationStack {
-        EventView(event: EVENTS[1], isFullScreen: true)
-            .environment(EVENTS[1])
-            .environment(SessionStore())
-    }
+    EventView(event: EVENTS[1], isFullScreen: true)
+        .environment(EVENTS[1])
+        .environment(SessionStore())
 }
