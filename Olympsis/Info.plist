@@ -5,7 +5,6 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.olympsis.client</string>
-		<string>com.olympsis.client.watchkit</string>
 	</array>
 	<key>CFBundleGetInfoString</key>
 	<string></string>

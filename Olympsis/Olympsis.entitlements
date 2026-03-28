@@ -14,11 +14,7 @@
 		<string>appclip:olympsis.com</string>
 		<string>webcredentials:olympsis.com</string>
 	</array>
-	<key>com.apple.developer.healthkit</key>
-	<true/>
-	<key>com.apple.developer.healthkit.background-delivery</key>
-	<true/>
-	<key>com.apple.developer.usernotifications.communication</key>
+<key>com.apple.developer.usernotifications.communication</key>
 	<true/>
 	<key>com.apple.developer.usernotifications.time-sensitive</key>
 	<true/>

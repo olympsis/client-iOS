@@ -5,7 +5,6 @@
 //  Created by Joel Joseph on 5/26/23.
 //
 
-import HealthKit
 import Foundation
 import CoreLocation
 
@@ -306,12 +305,4 @@ let TAGS_TEMP = [
     Tag(name: "outdoor"),
     Tag(name: "open-to-all"),
 ]
-
-let WORKOUTS = [
-    Workout(
-        type: .soccer,
-        workout: HKWorkout(activityType: .other, start: Date(), end: Date())
-    )
-]
-
 
