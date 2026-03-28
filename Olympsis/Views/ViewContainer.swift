@@ -64,6 +64,13 @@ struct ViewContainer: View {
             group.addTask {
                 await session.getNotifications()
             }
+            
+            // Load workouts if user has authorized us
+//            if session.workoutManager.checkAuthorizationStatus() {
+//                group.addTask {
+//                    _ = await session.workoutManager.loadWorkouts()
+//                }
+//            }
         }
     }
     
@@ -131,6 +138,12 @@ struct ViewContainer: View {
                         .tag(ViewTab.events)
                         .toolbar(.hidden, for: .tabBar)
                         .environment(session)
+                    
+                    Activities()
+                        .tag(ViewTab.activity)
+                        .toolbar(.hidden, for: .tabBar)
+                        .environment(session)
+                        .environment(session.workoutManager)
                     
                     Profile()
                         .tag(ViewTab.profile)

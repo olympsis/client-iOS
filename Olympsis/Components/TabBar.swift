@@ -19,6 +19,8 @@ struct TabBar: View {
     @Environment(SessionStore.self) private var session
     @Environment(\.colorScheme) private var colorScheme
     
+    @AppStorage("hide_activities") private var hideActivities: Bool?
+    
     var body: some View {
         GeometryReader { proxy in
             HStack(alignment: .center, spacing: 0) {

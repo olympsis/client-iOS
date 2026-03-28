@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import HealthKit
+import WorkoutKit
 import Foundation
 
 enum ACCOUNT_STATE {
@@ -44,7 +46,8 @@ enum ViewTab: String, CaseIterable {
     case home = "Home"
     case club = "Club"
     case events = "Events"
-case profile = "Setting"
+    case activity = "Activity"
+    case profile = "Setting"
 }
 
 enum AuthTab: String, CaseIterable {
@@ -267,6 +270,40 @@ enum SUPPORTED_SPORTS: String, CaseIterable {
         }
     }
     
+    func getWorkoutActivityType() -> HKWorkoutActivityType {
+        switch self {
+        case .running:
+                .running
+        case .walking:
+                .walking
+        case .cycling:
+                .cycling
+        case .weights:
+                .other
+        case .soccer:
+                .soccer
+        case .volleyball:
+                .volleyball
+        case .basketball:
+                .basketball
+        case .pickleball:
+                .pickleball
+        case .racquetball:
+                .racquetball
+        case .tennis:
+                .tennis
+        case .golf:
+                .golf
+        case .hiking:
+                .hiking
+        case .climbing:
+                .climbing
+        case .spike:
+                .other
+        case .football:
+                .americanFootball
+        }
+    }
 }
 
 enum MEMBER_ROLES: String, CaseIterable {
@@ -448,6 +485,19 @@ enum SCALE {
     case Large
 	case XLarge
 }
+enum WORKOUT_STATES {
+    case pending
+    case active
+    case paused
+    case ended
+}
+
+enum WORKOUT_TABS {
+    case settings
+    case metrics
+    case advanced_metrics
+}
+
 // MARK: - Event Sharing
 
 enum SHARING_TITLE_POSITION {
@@ -634,3 +684,79 @@ enum DevicePlatform: String, Codable {
     case web = "web"
 }
 
+func sportFromActivityType(activity: HKWorkoutActivityType) -> SUPPORTED_SPORTS? {
+    switch activity {
+    case.americanFootball:
+        return .football
+    case .basketball:
+        return .basketball
+    case .climbing:
+        return .climbing
+    case .cycling:
+        return .cycling
+    case .golf:
+        return .golf
+    case .hiking:
+        return .hiking
+    case .racquetball:
+        return .racquetball
+    case .running:
+        return .running
+    case .soccer:
+        return.soccer
+    case .tennis:
+        return .tennis
+    case .volleyball:
+        return .volleyball
+    case .walking:
+        return .walking
+    case .pickleball:
+        return .pickleball
+    default:
+        return nil
+    }
+}
+
+enum ACTIVITY_PAGES {
+    case menu
+    case metrics
+    case details
+}
+
+enum ACTIVITY_GOALS: CaseIterable {
+    case distance
+    case duration
+    case heart_rate
+    case pace
+    case zone
+    
+    func toString() -> String {
+        switch self {
+        case .distance:
+            return "Distance"
+        case .duration:
+            return "Duration"
+        case .heart_rate:
+            return "Heart Rate"
+        case .pace:
+            return "Pace"
+        case .zone:
+            return "Zone"
+        }
+    }
+    
+    func toIcon() -> Image {
+        switch self {
+        case .distance:
+            return Image(systemName: "road.lanes")
+        case .duration:
+            return Image(systemName: "clock")
+        case .heart_rate:
+            return Image(systemName: "heart")
+        case .pace:
+            return Image(systemName: "shoe")
+        case .zone:
+            return Image(systemName: "rectangle.grid.1x2")
+        }
+    }
+}
