@@ -31,7 +31,7 @@ struct ViewContainer: View {
             .task {
                 let location = CLLocationManager()
                 location.requestWhenInUseAuthorization()
-                _ = await manager.requestHealthStoreAuthorization()
+//                _ = await manager.requestHealthStoreAuthorization()
             }
         }
     }

@@ -8,12 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3AC4A26EAE6B436E809F8879 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EF4DAA4BA0427F8CB31D09 /* AppEnvironment.swift */; };
-		5D0A8E392E16121300E8B3B1 /* GeneralActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0A8E382E16121300E8B3B1 /* GeneralActivityPreparation.swift */; };
 		5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CC93E2BAD035000E16B95 /* PostViewer.swift */; };
 		5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0CCB3E2C2E26B300B424C0 /* RoomListItemTemplate.swift */; };
-		5D117A702E25B082002380DE /* ScheduleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A6F2E25B082002380DE /* ScheduleComponents.swift */; };
 		5D117A712E25B082002380DE /* ScheduleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A6F2E25B082002380DE /* ScheduleComponents.swift */; };
-		5D117A742E25B423002380DE /* ActivityCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A732E25B423002380DE /* ActivityCountdownView.swift */; };
 		5D117A752E25B423002380DE /* ActivityCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D117A732E25B423002380DE /* ActivityCountdownView.swift */; };
 		5D11905C2E384CD000574041 /* ClubWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11905B2E384CD000574041 /* ClubWalletView.swift */; };
 		5D11905E2E39072B00574041 /* ClubWalletChangeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11905D2E39072B00574041 /* ClubWalletChangeAccount.swift */; };
@@ -228,165 +225,6 @@
 		5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5170E42C274A470035C1F1 /* EditorGroupViewModel.swift */; };
 		5D51E4232E46765900D159BC /* AsyncClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D51E4222E46765900D159BC /* AsyncClubView.swift */; };
 		5D51E4252E46AAD600D159BC /* FatalErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D51E4242E46AAD600D159BC /* FatalErrorView.swift */; };
-		5D53214C2E06349D00C67357 /* Olympsis_WatchkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B47D2E05CE6C008C9052 /* Olympsis_WatchkitApp.swift */; };
-		5D53214E2E0634E100C67357 /* ActivityMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4762E05CE6C008C9052 /* ActivityMenu.swift */; };
-		5D53214F2E06360F00C67357 /* WorkoutHeatMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4342E05BF09008C9052 /* WorkoutHeatMapView.swift */; };
-		5D5321502E06360F00C67357 /* WorkoutMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4352E05BF09008C9052 /* WorkoutMapView.swift */; };
-		5D5321522E06360F00C67357 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4382E05BF09008C9052 /* Enums.swift */; };
-		5D5321532E06360F00C67357 /* TempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4392E05BF09008C9052 /* TempData.swift */; };
-		5D5321542E06360F00C67357 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43A2E05BF09008C9052 /* WorkoutManager.swift */; };
-		5D5321552E06360F00C67357 /* WorkoutManager+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43B2E05BF09008C9052 /* WorkoutManager+Location.swift */; };
-		5D5321562E06360F00C67357 /* WorkoutManager+Read.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43C2E05BF09008C9052 /* WorkoutManager+Read.swift */; };
-		5D5321572E06360F00C67357 /* WorkoutManager+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43D2E05BF09008C9052 /* WorkoutManager+Session.swift */; };
-		5D5321582E06360F00C67357 /* WorkoutManager+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B43E2E05BF09008C9052 /* WorkoutManager+Write.swift */; };
-		5D53215A2E06364F00C67357 /* ActivityGoalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45C2E05CE6C008C9052 /* ActivityGoalButton.swift */; };
-		5D53215B2E06364F00C67357 /* ActivityRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45D2E05CE6C008C9052 /* ActivityRingsView.swift */; };
-		5D53215C2E06364F00C67357 /* ActivitySplitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B45E2E05CE6C008C9052 /* ActivitySplitsView.swift */; };
-		5D53215E2E06364F00C67357 /* EllaspsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4602E05CE6C008C9052 /* EllaspsedTimeView.swift */; };
-		5D53215F2E06364F00C67357 /* WorkoutSmallListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4612E05CE6C008C9052 /* WorkoutSmallListItemView.swift */; };
-		5D5321632E06364F00C67357 /* GeneralActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4692E05CE6C008C9052 /* GeneralActivityMetrics.swift */; };
-		5D5321652E06364F00C67357 /* ActivityPreparationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46C2E05CE6C008C9052 /* ActivityPreparationSettings.swift */; };
-		5D5321662E06364F00C67357 /* ActivityPreparationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B46D2E05CE6C008C9052 /* ActivityPreparationView.swift */; };
-		5D5321682E06364F00C67357 /* ActivityGoalSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4702E05CE6C008C9052 /* ActivityGoalSetter.swift */; };
-		5D5321692E06364F00C67357 /* DistanceActivityMetrics1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4712E05CE6C008C9052 /* DistanceActivityMetrics1.swift */; };
-		5D53216A2E06364F00C67357 /* DistanceActivityPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4722E05CE6C008C9052 /* DistanceActivityPreparation.swift */; };
-		5D53216B2E06364F00C67357 /* ActivityHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4742E05CE6C008C9052 /* ActivityHistoryView.swift */; };
-		5D53216C2E06364F00C67357 /* ViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4752E05CE6C008C9052 /* ViewContainer.swift */; };
-		5D53216D2E06364F00C67357 /* ActivitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4772E05CE6C008C9052 /* ActivitySettingsView.swift */; };
-		5D53216E2E06364F00C67357 /* ActivitySportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4782E05CE6C008C9052 /* ActivitySportsPicker.swift */; };
-		5D53216F2E06364F00C67357 /* ActivitySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4792E05CE6C008C9052 /* ActivitySummaryView.swift */; };
-		5D5321702E06364F00C67357 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B47A2E05CE6C008C9052 /* ActivityView.swift */; };
-		5D5321762E0636B900C67357 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCB01B62ADE28E700450F69 /* WorkoutModels.swift */; };
-		5D5321772E0639C500C67357 /* SportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8B4532E05C7BD008C9052 /* SportView.swift */; };
-		5D5321782E063A2100C67357 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */; };
-		5D5321792E063A3300C67357 /* GenericModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18BD172B391D9000F90777 /* GenericModels.swift */; };
-		5D53217A2E063AF200C67357 /* OrganizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94D52B0D27920031876D /* OrganizationModels.swift */; };
-		5D53217B2E063B0900C67357 /* ClubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1329B72A26F02200B31170 /* ClubModels.swift */; };
-		5D53217C2E063B1500C67357 /* EventModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B572DA2CB8900B67F5D /* EventModels.swift */; };
-		5D53217D2E063B2000C67357 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AA2A1EDFF30054F631 /* UserModels.swift */; };
-		5D53217E2E063B2F00C67357 /* VenueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8D13AC2A213C150054F631 /* VenueModels.swift */; };
-		5D53217F2E063B3B00C67357 /* TimeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */; };
-		5D5321802E063B4C00C67357 /* EventOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B4F2DA2C9F600B67F5D /* EventOrganizer.swift */; };
-		5D5321812E063B5100C67357 /* EventFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B532DA2CA9100B67F5D /* EventFormat.swift */; };
-		5D5321822E063B5700C67357 /* EventParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B4B2DA2C8F900B67F5D /* EventParticipant.swift */; };
-		5D5321832E063B6000C67357 /* EventTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B4D2DA2C92300B67F5D /* EventTeam.swift */; };
-		5D5321842E063B6C00C67357 /* EventComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B512DA2CA1800B67F5D /* EventComment.swift */; };
-		5D5321852E063B7200C67357 /* EventRecurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B552DA2CAB700B67F5D /* EventRecurrence.swift */; };
-		5D5321862E063B8600C67357 /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
-		5D5321872E063B9500C67357 /* GroupSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBB94DC2B125C230031876D /* GroupSelection.swift */; };
-		5D5321F42E063BD800C67357 /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABB1EC02905F9F90050C0F0 /* Announcement.swift */; };
-		5D5321F52E063BDE00C67357 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
-		5D5321F62E063BEF00C67357 /* ManagementModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C72B9FD6830023353D /* ManagementModels.swift */; };
-		5D5321F72E063BF700C67357 /* EventSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B592DA2D16800B67F5D /* EventSharing.swift */; };
-		5D5497382E302BF400D1F5A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D5497362E302BF400D1F5A2 /* Preview Assets.xcassets */; };
-		5D551C472E064391000C713C /* Archivo_Condensed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C12DA1C7F50051990F /* Archivo_Condensed-Black.ttf */; };
-		5D551C482E064391000C713C /* Archivo_Condensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C22DA1C7F50051990F /* Archivo_Condensed-BlackItalic.ttf */; };
-		5D551C492E064391000C713C /* Archivo_Condensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C32DA1C7F50051990F /* Archivo_Condensed-Bold.ttf */; };
-		5D551C4A2E064391000C713C /* Archivo_Condensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C42DA1C7F50051990F /* Archivo_Condensed-BoldItalic.ttf */; };
-		5D551C4B2E064391000C713C /* Archivo_Condensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C52DA1C7F50051990F /* Archivo_Condensed-ExtraBold.ttf */; };
-		5D551C4C2E064391000C713C /* Archivo_Condensed-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C62DA1C7F50051990F /* Archivo_Condensed-ExtraBoldItalic.ttf */; };
-		5D551C4D2E064391000C713C /* Archivo_Condensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C72DA1C7F50051990F /* Archivo_Condensed-ExtraLight.ttf */; };
-		5D551C4E2E064391000C713C /* Archivo_Condensed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C82DA1C7F50051990F /* Archivo_Condensed-ExtraLightItalic.ttf */; };
-		5D551C4F2E064391000C713C /* Archivo_Condensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904C92DA1C7F50051990F /* Archivo_Condensed-Italic.ttf */; };
-		5D551C502E064391000C713C /* Archivo_Condensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CA2DA1C7F50051990F /* Archivo_Condensed-Light.ttf */; };
-		5D551C512E064391000C713C /* Archivo_Condensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CB2DA1C7F50051990F /* Archivo_Condensed-LightItalic.ttf */; };
-		5D551C522E064391000C713C /* Archivo_Condensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CC2DA1C7F50051990F /* Archivo_Condensed-Medium.ttf */; };
-		5D551C532E064391000C713C /* Archivo_Condensed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CD2DA1C7F50051990F /* Archivo_Condensed-MediumItalic.ttf */; };
-		5D551C542E064391000C713C /* Archivo_Condensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CE2DA1C7F50051990F /* Archivo_Condensed-Regular.ttf */; };
-		5D551C552E064391000C713C /* Archivo_Condensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904CF2DA1C7F50051990F /* Archivo_Condensed-SemiBold.ttf */; };
-		5D551C562E064391000C713C /* Archivo_Condensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D02DA1C7F50051990F /* Archivo_Condensed-SemiBoldItalic.ttf */; };
-		5D551C572E064391000C713C /* Archivo_Condensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D12DA1C7F50051990F /* Archivo_Condensed-Thin.ttf */; };
-		5D551C582E064391000C713C /* Archivo_Condensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D22DA1C7F50051990F /* Archivo_Condensed-ThinItalic.ttf */; };
-		5D551C592E064391000C713C /* Archivo_Expanded-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D32DA1C7F50051990F /* Archivo_Expanded-Black.ttf */; };
-		5D551C5A2E064391000C713C /* Archivo_Expanded-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D42DA1C7F50051990F /* Archivo_Expanded-BlackItalic.ttf */; };
-		5D551C5B2E064391000C713C /* Archivo_Expanded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D52DA1C7F50051990F /* Archivo_Expanded-Bold.ttf */; };
-		5D551C5C2E064391000C713C /* Archivo_Expanded-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D62DA1C7F50051990F /* Archivo_Expanded-BoldItalic.ttf */; };
-		5D551C5D2E064391000C713C /* Archivo_Expanded-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D72DA1C7F50051990F /* Archivo_Expanded-ExtraBold.ttf */; };
-		5D551C5E2E064391000C713C /* Archivo_Expanded-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D82DA1C7F50051990F /* Archivo_Expanded-ExtraBoldItalic.ttf */; };
-		5D551C5F2E064391000C713C /* Archivo_Expanded-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904D92DA1C7F50051990F /* Archivo_Expanded-ExtraLight.ttf */; };
-		5D551C602E064391000C713C /* Archivo_Expanded-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DA2DA1C7F50051990F /* Archivo_Expanded-ExtraLightItalic.ttf */; };
-		5D551C612E064391000C713C /* Archivo_Expanded-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DB2DA1C7F50051990F /* Archivo_Expanded-Italic.ttf */; };
-		5D551C622E064391000C713C /* Archivo_Expanded-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DC2DA1C7F50051990F /* Archivo_Expanded-Light.ttf */; };
-		5D551C632E064391000C713C /* Archivo_Expanded-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DD2DA1C7F50051990F /* Archivo_Expanded-LightItalic.ttf */; };
-		5D551C642E064391000C713C /* Archivo_Expanded-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DE2DA1C7F50051990F /* Archivo_Expanded-Medium.ttf */; };
-		5D551C652E064391000C713C /* Archivo_Expanded-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904DF2DA1C7F50051990F /* Archivo_Expanded-MediumItalic.ttf */; };
-		5D551C662E064391000C713C /* Archivo_Expanded-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E02DA1C7F50051990F /* Archivo_Expanded-Regular.ttf */; };
-		5D551C672E064391000C713C /* Archivo_Expanded-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E12DA1C7F50051990F /* Archivo_Expanded-SemiBold.ttf */; };
-		5D551C682E064391000C713C /* Archivo_Expanded-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E22DA1C7F50051990F /* Archivo_Expanded-SemiBoldItalic.ttf */; };
-		5D551C692E064391000C713C /* Archivo_Expanded-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E32DA1C7F50051990F /* Archivo_Expanded-Thin.ttf */; };
-		5D551C6A2E064391000C713C /* Archivo_Expanded-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E42DA1C7F50051990F /* Archivo_Expanded-ThinItalic.ttf */; };
-		5D551C6B2E064391000C713C /* Archivo_ExtraCondensed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E52DA1C7F50051990F /* Archivo_ExtraCondensed-Black.ttf */; };
-		5D551C6C2E064391000C713C /* Archivo_ExtraCondensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E62DA1C7F50051990F /* Archivo_ExtraCondensed-BlackItalic.ttf */; };
-		5D551C6D2E064391000C713C /* Archivo_ExtraCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E72DA1C7F50051990F /* Archivo_ExtraCondensed-Bold.ttf */; };
-		5D551C6E2E064391000C713C /* Archivo_ExtraCondensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E82DA1C7F50051990F /* Archivo_ExtraCondensed-BoldItalic.ttf */; };
-		5D551C6F2E064391000C713C /* Archivo_ExtraCondensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904E92DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraBold.ttf */; };
-		5D551C702E064391000C713C /* Archivo_ExtraCondensed-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904EA2DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraBoldItalic.ttf */; };
-		5D551C712E064391000C713C /* Archivo_ExtraCondensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904EB2DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraLight.ttf */; };
-		5D551C722E064391000C713C /* Archivo_ExtraCondensed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904EC2DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraLightItalic.ttf */; };
-		5D551C732E064391000C713C /* Archivo_ExtraCondensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904ED2DA1C7F50051990F /* Archivo_ExtraCondensed-Italic.ttf */; };
-		5D551C742E064391000C713C /* Archivo_ExtraCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904EE2DA1C7F50051990F /* Archivo_ExtraCondensed-Light.ttf */; };
-		5D551C752E064391000C713C /* Archivo_ExtraCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904EF2DA1C7F50051990F /* Archivo_ExtraCondensed-LightItalic.ttf */; };
-		5D551C762E064391000C713C /* Archivo_ExtraCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F02DA1C7F50051990F /* Archivo_ExtraCondensed-Medium.ttf */; };
-		5D551C772E064391000C713C /* Archivo_ExtraCondensed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F12DA1C7F50051990F /* Archivo_ExtraCondensed-MediumItalic.ttf */; };
-		5D551C782E064391000C713C /* Archivo_ExtraCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F22DA1C7F50051990F /* Archivo_ExtraCondensed-Regular.ttf */; };
-		5D551C792E064391000C713C /* Archivo_ExtraCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F32DA1C7F50051990F /* Archivo_ExtraCondensed-SemiBold.ttf */; };
-		5D551C7A2E064391000C713C /* Archivo_ExtraCondensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F42DA1C7F50051990F /* Archivo_ExtraCondensed-SemiBoldItalic.ttf */; };
-		5D551C7B2E064391000C713C /* Archivo_ExtraCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F52DA1C7F50051990F /* Archivo_ExtraCondensed-Thin.ttf */; };
-		5D551C7C2E064391000C713C /* Archivo_ExtraCondensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F62DA1C7F50051990F /* Archivo_ExtraCondensed-ThinItalic.ttf */; };
-		5D551C7D2E064391000C713C /* Archivo_SemiCondensed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F72DA1C7F50051990F /* Archivo_SemiCondensed-Black.ttf */; };
-		5D551C7E2E064391000C713C /* Archivo_SemiCondensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F82DA1C7F50051990F /* Archivo_SemiCondensed-BlackItalic.ttf */; };
-		5D551C7F2E064391000C713C /* Archivo_SemiCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904F92DA1C7F50051990F /* Archivo_SemiCondensed-Bold.ttf */; };
-		5D551C802E064391000C713C /* Archivo_SemiCondensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FA2DA1C7F50051990F /* Archivo_SemiCondensed-BoldItalic.ttf */; };
-		5D551C812E064391000C713C /* Archivo_SemiCondensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FB2DA1C7F50051990F /* Archivo_SemiCondensed-ExtraBold.ttf */; };
-		5D551C822E064391000C713C /* Archivo_SemiCondensed-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FC2DA1C7F50051990F /* Archivo_SemiCondensed-ExtraBoldItalic.ttf */; };
-		5D551C832E064391000C713C /* Archivo_SemiCondensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FD2DA1C7F50051990F /* Archivo_SemiCondensed-ExtraLight.ttf */; };
-		5D551C842E064391000C713C /* Archivo_SemiCondensed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FE2DA1C7F50051990F /* Archivo_SemiCondensed-ExtraLightItalic.ttf */; };
-		5D551C852E064391000C713C /* Archivo_SemiCondensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1904FF2DA1C7F50051990F /* Archivo_SemiCondensed-Italic.ttf */; };
-		5D551C862E064391000C713C /* Archivo_SemiCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905002DA1C7F50051990F /* Archivo_SemiCondensed-Light.ttf */; };
-		5D551C872E064391000C713C /* Archivo_SemiCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905012DA1C7F50051990F /* Archivo_SemiCondensed-LightItalic.ttf */; };
-		5D551C882E064391000C713C /* Archivo_SemiCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905022DA1C7F50051990F /* Archivo_SemiCondensed-Medium.ttf */; };
-		5D551C892E064391000C713C /* Archivo_SemiCondensed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905032DA1C7F50051990F /* Archivo_SemiCondensed-MediumItalic.ttf */; };
-		5D551C8A2E064391000C713C /* Archivo_SemiCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905042DA1C7F50051990F /* Archivo_SemiCondensed-Regular.ttf */; };
-		5D551C8B2E064391000C713C /* Archivo_SemiCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905052DA1C7F50051990F /* Archivo_SemiCondensed-SemiBold.ttf */; };
-		5D551C8C2E064391000C713C /* Archivo_SemiCondensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905062DA1C7F50051990F /* Archivo_SemiCondensed-SemiBoldItalic.ttf */; };
-		5D551C8D2E064391000C713C /* Archivo_SemiCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905072DA1C7F50051990F /* Archivo_SemiCondensed-Thin.ttf */; };
-		5D551C8E2E064391000C713C /* Archivo_SemiCondensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905082DA1C7F50051990F /* Archivo_SemiCondensed-ThinItalic.ttf */; };
-		5D551C8F2E064391000C713C /* Archivo_SemiExpanded-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905092DA1C7F50051990F /* Archivo_SemiExpanded-Black.ttf */; };
-		5D551C902E064391000C713C /* Archivo_SemiExpanded-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050A2DA1C7F50051990F /* Archivo_SemiExpanded-BlackItalic.ttf */; };
-		5D551C912E064391000C713C /* Archivo_SemiExpanded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050B2DA1C7F50051990F /* Archivo_SemiExpanded-Bold.ttf */; };
-		5D551C922E064391000C713C /* Archivo_SemiExpanded-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050C2DA1C7F50051990F /* Archivo_SemiExpanded-BoldItalic.ttf */; };
-		5D551C932E064391000C713C /* Archivo_SemiExpanded-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050D2DA1C7F50051990F /* Archivo_SemiExpanded-ExtraBold.ttf */; };
-		5D551C942E064391000C713C /* Archivo_SemiExpanded-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050E2DA1C7F50051990F /* Archivo_SemiExpanded-ExtraBoldItalic.ttf */; };
-		5D551C952E064391000C713C /* Archivo_SemiExpanded-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19050F2DA1C7F50051990F /* Archivo_SemiExpanded-ExtraLight.ttf */; };
-		5D551C962E064391000C713C /* Archivo_SemiExpanded-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905102DA1C7F50051990F /* Archivo_SemiExpanded-ExtraLightItalic.ttf */; };
-		5D551C972E064391000C713C /* Archivo_SemiExpanded-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905112DA1C7F50051990F /* Archivo_SemiExpanded-Italic.ttf */; };
-		5D551C982E064391000C713C /* Archivo_SemiExpanded-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905122DA1C7F50051990F /* Archivo_SemiExpanded-Light.ttf */; };
-		5D551C992E064391000C713C /* Archivo_SemiExpanded-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905132DA1C7F50051990F /* Archivo_SemiExpanded-LightItalic.ttf */; };
-		5D551C9A2E064391000C713C /* Archivo_SemiExpanded-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905142DA1C7F50051990F /* Archivo_SemiExpanded-Medium.ttf */; };
-		5D551C9B2E064391000C713C /* Archivo_SemiExpanded-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905152DA1C7F50051990F /* Archivo_SemiExpanded-MediumItalic.ttf */; };
-		5D551C9C2E064391000C713C /* Archivo_SemiExpanded-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905162DA1C7F50051990F /* Archivo_SemiExpanded-Regular.ttf */; };
-		5D551C9D2E064391000C713C /* Archivo_SemiExpanded-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905172DA1C7F50051990F /* Archivo_SemiExpanded-SemiBold.ttf */; };
-		5D551C9E2E064391000C713C /* Archivo_SemiExpanded-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905182DA1C7F50051990F /* Archivo_SemiExpanded-SemiBoldItalic.ttf */; };
-		5D551C9F2E064391000C713C /* Archivo_SemiExpanded-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905192DA1C7F50051990F /* Archivo_SemiExpanded-Thin.ttf */; };
-		5D551CA02E064391000C713C /* Archivo_SemiExpanded-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051A2DA1C7F50051990F /* Archivo_SemiExpanded-ThinItalic.ttf */; };
-		5D551CA12E064391000C713C /* Archivo-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051B2DA1C7F50051990F /* Archivo-Black.ttf */; };
-		5D551CA22E064391000C713C /* Archivo-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051C2DA1C7F50051990F /* Archivo-BlackItalic.ttf */; };
-		5D551CA32E064391000C713C /* Archivo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051D2DA1C7F50051990F /* Archivo-Bold.ttf */; };
-		5D551CA42E064391000C713C /* Archivo-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051E2DA1C7F50051990F /* Archivo-BoldItalic.ttf */; };
-		5D551CA52E064391000C713C /* Archivo-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19051F2DA1C7F50051990F /* Archivo-ExtraBold.ttf */; };
-		5D551CA62E064391000C713C /* Archivo-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905202DA1C7F50051990F /* Archivo-ExtraBoldItalic.ttf */; };
-		5D551CA72E064391000C713C /* Archivo-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905212DA1C7F50051990F /* Archivo-ExtraLight.ttf */; };
-		5D551CA82E064391000C713C /* Archivo-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905222DA1C7F50051990F /* Archivo-ExtraLightItalic.ttf */; };
-		5D551CA92E064391000C713C /* Archivo-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905232DA1C7F50051990F /* Archivo-Italic.ttf */; };
-		5D551CAA2E064391000C713C /* Archivo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905242DA1C7F50051990F /* Archivo-Light.ttf */; };
-		5D551CAB2E064391000C713C /* Archivo-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905252DA1C7F50051990F /* Archivo-LightItalic.ttf */; };
-		5D551CAC2E064391000C713C /* Archivo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905262DA1C7F50051990F /* Archivo-Medium.ttf */; };
-		5D551CAD2E064391000C713C /* Archivo-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905272DA1C7F50051990F /* Archivo-MediumItalic.ttf */; };
-		5D551CAE2E064391000C713C /* Archivo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905282DA1C7F50051990F /* Archivo-Regular.ttf */; };
-		5D551CAF2E064391000C713C /* Archivo-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D1905292DA1C7F50051990F /* Archivo-SemiBold.ttf */; };
-		5D551CB02E064391000C713C /* Archivo-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19052A2DA1C7F50051990F /* Archivo-SemiBoldItalic.ttf */; };
-		5D551CB12E064391000C713C /* Archivo-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19052B2DA1C7F50051990F /* Archivo-Thin.ttf */; };
-		5D551CB22E064391000C713C /* Archivo-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D19052C2DA1C7F50051990F /* Archivo-ThinItalic.ttf */; };
 		5D5BEF872BEFE894008648C5 /* General.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5D5BEF862BEFE894008648C5 /* General.xcstrings */; };
 		5D5CAF892E627D9E004E26D4 /* GroupsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5CAF882E627D9E004E26D4 /* GroupsManager.swift */; };
 		5D5CAF8B2E628192004E26D4 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5CAF8A2E628192004E26D4 /* NotificationNames.swift */; };
@@ -411,14 +249,8 @@
 		5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01402C07BB6C006A264C /* Onboard-AboutClubs.swift */; };
 		5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01422C07BB77006A264C /* Onboard-AboutEvents.swift */; };
 		5D6C01452C07C8F9006A264C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01442C07C8F9006A264C /* Onboarding.swift */; };
-		5D6F114B2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */; };
 		5D6F114C2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114A2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift */; };
-		5D6F114F2E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */; };
 		5D6F11502E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */; };
-		5D6F11522E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F11512E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift */; };
-		5D6F11562E21BB53005F1BE5 /* ZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F11542E21BB53005F1BE5 /* ZoneViewer.swift */; };
-		5D6F11582E21CE0B005F1BE5 /* DistanceActivityMetrics3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F11572E21CE0B005F1BE5 /* DistanceActivityMetrics3.swift */; };
-		5D6F115A2E21D0EE005F1BE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DC8B47C2E05CE6C008C9052 /* Assets.xcassets */; };
 		5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322B2C7C324E007DB25D /* ToastView.swift */; };
 		5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322D2C7C370A007DB25D /* ToastModifier.swift */; };
 		5D76D36A2C79534800846382 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3692C79534800846382 /* ToastManager.swift */; };
@@ -432,21 +264,18 @@
 		5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE52C0D37BC00F170D6 /* NewEventSportsPicker.swift */; };
 		5D78BDEA2C0D48C000F170D6 /* NewEventImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */; };
 		5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D78BDEB2C0D880A00F170D6 /* EventVenuePickerView.swift */; };
-		5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
 		5D7DA5B02E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DA5AE2E1C8EB000C42037 /* SmallZoneViewer.swift */; };
 		5D7DF3C22E693CF80090761E /* NewEventCustomLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */; };
 		5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C32E6B5D350090761E /* MLAlgorithms.swift */; };
 		5D7DF3C62E6C8ADF0090761E /* VenuePickerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */; };
 		5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */; };
 		5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
-		5D7E0CE42E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */; };
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
 		5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */; };
 		5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */; };
-		5D877B2C2E289A73000DEAC8 /* DistanceActivityMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */; };
 		5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F42C76D82400AAF374 /* ImageSaver.swift */; };
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
 		5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F82C76E4B000AAF374 /* ShareMenu.swift */; };
@@ -463,15 +292,11 @@
 		5D9557A62A6C907D006A1EF8 /* RSVP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A52A6C907D006A1EF8 /* RSVP.swift */; };
 		5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9557A72A6CA7ED006A1EF8 /* ManageEvents.swift */; };
 		5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9572392C326D8B004D5318 /* EventSharingView.swift */; };
-		5D97CB5F2E2F34E900DE12B4 /* WorkoutRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB5E2E2F34E900DE12B4 /* WorkoutRouteView.swift */; };
 		5D97CB602E2F34E900DE12B4 /* WorkoutRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB5E2E2F34E900DE12B4 /* WorkoutRouteView.swift */; };
-		5D97CB622E2F483300DE12B4 /* RunningPointsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB612E2F483300DE12B4 /* RunningPointsData.swift */; };
 		5D97CB632E2F483300DE12B4 /* RunningPointsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB612E2F483300DE12B4 /* RunningPointsData.swift */; };
 		5D97CB652E2F485000DE12B4 /* ActivityPointsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB642E2F484A00DE12B4 /* ActivityPointsData.swift */; };
-		5D97CB662E2F485000DE12B4 /* ActivityPointsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D97CB642E2F484A00DE12B4 /* ActivityPointsData.swift */; };
 		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
 		5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */; };
-		5D9A74FF2E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
 		5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F32D5E628800438FA7 /* Events.swift */; };
@@ -492,19 +317,12 @@
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
 		5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3DF412D9A180E00CEE236 /* SearchManager.swift */; };
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
-		5DB096112E064A0700BB924A /* ActivitySportCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */; };
 		5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */; };
-		5DB096142E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */; };
 		5DB096162E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
-		5DB096172E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
 		5DB096192E07424700BB924A /* ActivitiesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096182E07424700BB924A /* ActivitiesChart.swift */; };
-		5DB0961A2E07424700BB924A /* ActivitiesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096182E07424700BB924A /* ActivitiesChart.swift */; };
 		5DB0961D2E07437900BB924A /* ActivitiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961B2E07437900BB924A /* ActivitiesList.swift */; };
 		5DB0961F2E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */; };
-		5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0961E2E085D7C00BB924A /* WorkoutManager+Helpers.swift */; };
-		5DB0962D2E0A155500BB924A /* WorkoutManager+Splits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0962C2E0A155400BB924A /* WorkoutManager+Splits.swift */; };
 		5DB0962E2E0A155500BB924A /* WorkoutManager+Splits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0962C2E0A155400BB924A /* WorkoutManager+Splits.swift */; };
-		5DB096372E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096362E0B4C4C00BB924A /* WorkoutUtils.swift */; };
 		5DB096382E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096362E0B4C4C00BB924A /* WorkoutUtils.swift */; };
 		5DB0963C2E0B890C00BB924A /* WorkoutStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0963B2E0B890C00BB924A /* WorkoutStatistics.swift */; };
 		5DB0963E2E0DCBA600BB924A /* WorkoutHeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0963D2E0DCBA600BB924A /* WorkoutHeatmapView.swift */; };
@@ -569,7 +387,6 @@
 		5DD751C22D60217A000B0640 /* NewEventParticipantsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */; };
 		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
 		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
-		5DDCB9F92C4C487500AE6C7A /* Olympsis.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5DDCB9782C4C487500AE6C7A /* Olympsis.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
 		5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6F2C41095600793FEB /* Events.xcstrings */; };
@@ -727,13 +544,6 @@
 			remoteGlobalIDString = 9A8FF0AC28BB14BF00DE4CF8;
 			remoteInfo = Olympsis;
 		};
-		5DDCB9F72C4C487500AE6C7A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5DDCB9772C4C487500AE6C7A;
-			remoteInfo = OlympsisWatchkit;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -743,7 +553,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				5DDCB9F92C4C487500AE6C7A /* Olympsis.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1162,7 +971,6 @@
 		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
-		5DDCB9782C4C487500AE6C7A /* Olympsis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olympsis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
 		5DDD5E6F2C41095600793FEB /* Events.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Events.xcstrings; sourceTree = "<group>"; };
@@ -1323,13 +1131,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		5DBF2B802E42E34C0025B0FE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DDCB9752C4C487500AE6C7A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2043,7 +1844,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
-				5DDCB9782C4C487500AE6C7A /* Olympsis.app */,
 				5DBF2B832E42E34C0025B0FE /* OlympsisTests.xctest */,
 			);
 			name = Products;
@@ -2564,23 +2364,6 @@
 			productReference = 5DBF2B832E42E34C0025B0FE /* OlympsisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5DDCB9772C4C487500AE6C7A /* OlympsisWatchkit */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5D8C08462E05FB3C0022D438 /* Build configuration list for PBXNativeTarget "OlympsisWatchkit" */;
-			buildPhases = (
-				5DDCB9742C4C487500AE6C7A /* Sources */,
-				5DDCB9752C4C487500AE6C7A /* Frameworks */,
-				5DDCB9762C4C487500AE6C7A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OlympsisWatchkit;
-			productName = "Olympsis-Watchkit Watch App";
-			productReference = 5DDCB9782C4C487500AE6C7A /* Olympsis.app */;
-			productType = "com.apple.product-type.application";
-		};
 		9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A8FF0BB28BB14C100DE4CF8 /* Build configuration list for PBXNativeTarget "Olympsis" */;
@@ -2594,7 +2377,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5DDCB9F82C4C487500AE6C7A /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -2654,7 +2436,6 @@
 			projectRoot = "";
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
-				5DDCB9772C4C487500AE6C7A /* OlympsisWatchkit */,
 				5DBF2B822E42E34C0025B0FE /* OlympsisTests */,
 			);
 		};
@@ -2665,124 +2446,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DDCB9762C4C487500AE6C7A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5D551C472E064391000C713C /* Archivo_Condensed-Black.ttf in Resources */,
-				5D551C482E064391000C713C /* Archivo_Condensed-BlackItalic.ttf in Resources */,
-				5D551C492E064391000C713C /* Archivo_Condensed-Bold.ttf in Resources */,
-				5D551C4A2E064391000C713C /* Archivo_Condensed-BoldItalic.ttf in Resources */,
-				5D551C4B2E064391000C713C /* Archivo_Condensed-ExtraBold.ttf in Resources */,
-				5D551C4C2E064391000C713C /* Archivo_Condensed-ExtraBoldItalic.ttf in Resources */,
-				5D551C4D2E064391000C713C /* Archivo_Condensed-ExtraLight.ttf in Resources */,
-				5D551C4E2E064391000C713C /* Archivo_Condensed-ExtraLightItalic.ttf in Resources */,
-				5D551C4F2E064391000C713C /* Archivo_Condensed-Italic.ttf in Resources */,
-				5D551C502E064391000C713C /* Archivo_Condensed-Light.ttf in Resources */,
-				5D551C512E064391000C713C /* Archivo_Condensed-LightItalic.ttf in Resources */,
-				5D551C522E064391000C713C /* Archivo_Condensed-Medium.ttf in Resources */,
-				5D551C532E064391000C713C /* Archivo_Condensed-MediumItalic.ttf in Resources */,
-				5D551C542E064391000C713C /* Archivo_Condensed-Regular.ttf in Resources */,
-				5D551C552E064391000C713C /* Archivo_Condensed-SemiBold.ttf in Resources */,
-				5D551C562E064391000C713C /* Archivo_Condensed-SemiBoldItalic.ttf in Resources */,
-				5D5497382E302BF400D1F5A2 /* Preview Assets.xcassets in Resources */,
-				5D551C572E064391000C713C /* Archivo_Condensed-Thin.ttf in Resources */,
-				5D551C582E064391000C713C /* Archivo_Condensed-ThinItalic.ttf in Resources */,
-				5D551C592E064391000C713C /* Archivo_Expanded-Black.ttf in Resources */,
-				5D551C5A2E064391000C713C /* Archivo_Expanded-BlackItalic.ttf in Resources */,
-				5D551C5B2E064391000C713C /* Archivo_Expanded-Bold.ttf in Resources */,
-				5D551C5C2E064391000C713C /* Archivo_Expanded-BoldItalic.ttf in Resources */,
-				5D551C5D2E064391000C713C /* Archivo_Expanded-ExtraBold.ttf in Resources */,
-				5D551C5E2E064391000C713C /* Archivo_Expanded-ExtraBoldItalic.ttf in Resources */,
-				5D6F115A2E21D0EE005F1BE5 /* Assets.xcassets in Resources */,
-				5D551C5F2E064391000C713C /* Archivo_Expanded-ExtraLight.ttf in Resources */,
-				5D551C602E064391000C713C /* Archivo_Expanded-ExtraLightItalic.ttf in Resources */,
-				5D551C612E064391000C713C /* Archivo_Expanded-Italic.ttf in Resources */,
-				5D551C622E064391000C713C /* Archivo_Expanded-Light.ttf in Resources */,
-				5D551C632E064391000C713C /* Archivo_Expanded-LightItalic.ttf in Resources */,
-				5D551C642E064391000C713C /* Archivo_Expanded-Medium.ttf in Resources */,
-				5D551C652E064391000C713C /* Archivo_Expanded-MediumItalic.ttf in Resources */,
-				5D551C662E064391000C713C /* Archivo_Expanded-Regular.ttf in Resources */,
-				5D551C672E064391000C713C /* Archivo_Expanded-SemiBold.ttf in Resources */,
-				5D551C682E064391000C713C /* Archivo_Expanded-SemiBoldItalic.ttf in Resources */,
-				5D551C692E064391000C713C /* Archivo_Expanded-Thin.ttf in Resources */,
-				5D551C6A2E064391000C713C /* Archivo_Expanded-ThinItalic.ttf in Resources */,
-				5D551C6B2E064391000C713C /* Archivo_ExtraCondensed-Black.ttf in Resources */,
-				5D551C6C2E064391000C713C /* Archivo_ExtraCondensed-BlackItalic.ttf in Resources */,
-				5D551C6D2E064391000C713C /* Archivo_ExtraCondensed-Bold.ttf in Resources */,
-				5D551C6E2E064391000C713C /* Archivo_ExtraCondensed-BoldItalic.ttf in Resources */,
-				5D551C6F2E064391000C713C /* Archivo_ExtraCondensed-ExtraBold.ttf in Resources */,
-				5D551C702E064391000C713C /* Archivo_ExtraCondensed-ExtraBoldItalic.ttf in Resources */,
-				5D551C712E064391000C713C /* Archivo_ExtraCondensed-ExtraLight.ttf in Resources */,
-				5D551C722E064391000C713C /* Archivo_ExtraCondensed-ExtraLightItalic.ttf in Resources */,
-				5D551C732E064391000C713C /* Archivo_ExtraCondensed-Italic.ttf in Resources */,
-				5D551C742E064391000C713C /* Archivo_ExtraCondensed-Light.ttf in Resources */,
-				5D551C752E064391000C713C /* Archivo_ExtraCondensed-LightItalic.ttf in Resources */,
-				5D551C762E064391000C713C /* Archivo_ExtraCondensed-Medium.ttf in Resources */,
-				5D551C772E064391000C713C /* Archivo_ExtraCondensed-MediumItalic.ttf in Resources */,
-				5D551C782E064391000C713C /* Archivo_ExtraCondensed-Regular.ttf in Resources */,
-				5D551C792E064391000C713C /* Archivo_ExtraCondensed-SemiBold.ttf in Resources */,
-				5D551C7A2E064391000C713C /* Archivo_ExtraCondensed-SemiBoldItalic.ttf in Resources */,
-				5D551C7B2E064391000C713C /* Archivo_ExtraCondensed-Thin.ttf in Resources */,
-				5D551C7C2E064391000C713C /* Archivo_ExtraCondensed-ThinItalic.ttf in Resources */,
-				5D551C7D2E064391000C713C /* Archivo_SemiCondensed-Black.ttf in Resources */,
-				5D551C7E2E064391000C713C /* Archivo_SemiCondensed-BlackItalic.ttf in Resources */,
-				5D551C7F2E064391000C713C /* Archivo_SemiCondensed-Bold.ttf in Resources */,
-				5D551C802E064391000C713C /* Archivo_SemiCondensed-BoldItalic.ttf in Resources */,
-				5D551C812E064391000C713C /* Archivo_SemiCondensed-ExtraBold.ttf in Resources */,
-				5D551C822E064391000C713C /* Archivo_SemiCondensed-ExtraBoldItalic.ttf in Resources */,
-				5D551C832E064391000C713C /* Archivo_SemiCondensed-ExtraLight.ttf in Resources */,
-				5D551C842E064391000C713C /* Archivo_SemiCondensed-ExtraLightItalic.ttf in Resources */,
-				5D551C852E064391000C713C /* Archivo_SemiCondensed-Italic.ttf in Resources */,
-				5D551C862E064391000C713C /* Archivo_SemiCondensed-Light.ttf in Resources */,
-				5D551C872E064391000C713C /* Archivo_SemiCondensed-LightItalic.ttf in Resources */,
-				5D551C882E064391000C713C /* Archivo_SemiCondensed-Medium.ttf in Resources */,
-				5D551C892E064391000C713C /* Archivo_SemiCondensed-MediumItalic.ttf in Resources */,
-				5D551C8A2E064391000C713C /* Archivo_SemiCondensed-Regular.ttf in Resources */,
-				5D551C8B2E064391000C713C /* Archivo_SemiCondensed-SemiBold.ttf in Resources */,
-				5D551C8C2E064391000C713C /* Archivo_SemiCondensed-SemiBoldItalic.ttf in Resources */,
-				5D551C8D2E064391000C713C /* Archivo_SemiCondensed-Thin.ttf in Resources */,
-				5D551C8E2E064391000C713C /* Archivo_SemiCondensed-ThinItalic.ttf in Resources */,
-				5D551C8F2E064391000C713C /* Archivo_SemiExpanded-Black.ttf in Resources */,
-				5D551C902E064391000C713C /* Archivo_SemiExpanded-BlackItalic.ttf in Resources */,
-				5D551C912E064391000C713C /* Archivo_SemiExpanded-Bold.ttf in Resources */,
-				5D551C922E064391000C713C /* Archivo_SemiExpanded-BoldItalic.ttf in Resources */,
-				5D551C932E064391000C713C /* Archivo_SemiExpanded-ExtraBold.ttf in Resources */,
-				5D551C942E064391000C713C /* Archivo_SemiExpanded-ExtraBoldItalic.ttf in Resources */,
-				5D551C952E064391000C713C /* Archivo_SemiExpanded-ExtraLight.ttf in Resources */,
-				5D551C962E064391000C713C /* Archivo_SemiExpanded-ExtraLightItalic.ttf in Resources */,
-				5D551C972E064391000C713C /* Archivo_SemiExpanded-Italic.ttf in Resources */,
-				5D551C982E064391000C713C /* Archivo_SemiExpanded-Light.ttf in Resources */,
-				5D551C992E064391000C713C /* Archivo_SemiExpanded-LightItalic.ttf in Resources */,
-				5D551C9A2E064391000C713C /* Archivo_SemiExpanded-Medium.ttf in Resources */,
-				5D551C9B2E064391000C713C /* Archivo_SemiExpanded-MediumItalic.ttf in Resources */,
-				5D551C9C2E064391000C713C /* Archivo_SemiExpanded-Regular.ttf in Resources */,
-				5D551C9D2E064391000C713C /* Archivo_SemiExpanded-SemiBold.ttf in Resources */,
-				5D551C9E2E064391000C713C /* Archivo_SemiExpanded-SemiBoldItalic.ttf in Resources */,
-				5D551C9F2E064391000C713C /* Archivo_SemiExpanded-Thin.ttf in Resources */,
-				5D551CA02E064391000C713C /* Archivo_SemiExpanded-ThinItalic.ttf in Resources */,
-				5D551CA12E064391000C713C /* Archivo-Black.ttf in Resources */,
-				5D551CA22E064391000C713C /* Archivo-BlackItalic.ttf in Resources */,
-				5D551CA32E064391000C713C /* Archivo-Bold.ttf in Resources */,
-				5D551CA42E064391000C713C /* Archivo-BoldItalic.ttf in Resources */,
-				5D551CA52E064391000C713C /* Archivo-ExtraBold.ttf in Resources */,
-				5D551CA62E064391000C713C /* Archivo-ExtraBoldItalic.ttf in Resources */,
-				5D551CA72E064391000C713C /* Archivo-ExtraLight.ttf in Resources */,
-				5D551CA82E064391000C713C /* Archivo-ExtraLightItalic.ttf in Resources */,
-				5D551CA92E064391000C713C /* Archivo-Italic.ttf in Resources */,
-				5D551CAA2E064391000C713C /* Archivo-Light.ttf in Resources */,
-				5D551CAB2E064391000C713C /* Archivo-LightItalic.ttf in Resources */,
-				5D551CAC2E064391000C713C /* Archivo-Medium.ttf in Resources */,
-				5D551CAD2E064391000C713C /* Archivo-MediumItalic.ttf in Resources */,
-				5D551CAE2E064391000C713C /* Archivo-Regular.ttf in Resources */,
-				5D551CAF2E064391000C713C /* Archivo-SemiBold.ttf in Resources */,
-				5D551CB02E064391000C713C /* Archivo-SemiBoldItalic.ttf in Resources */,
-				5D551CB12E064391000C713C /* Archivo-Thin.ttf in Resources */,
-				5D551CB22E064391000C713C /* Archivo-ThinItalic.ttf in Resources */,
-				5D5321782E063A2100C67357 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2922,84 +2585,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5DDCB9742C4C487500AE6C7A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5D53215A2E06364F00C67357 /* ActivityGoalButton.swift in Sources */,
-				5D53217F2E063B3B00C67357 /* TimeFunctions.swift in Sources */,
-				5D5321F52E063BDE00C67357 /* ChatModels.swift in Sources */,
-				5D53215B2E06364F00C67357 /* ActivityRingsView.swift in Sources */,
-				5D53215C2E06364F00C67357 /* ActivitySplitsView.swift in Sources */,
-				5D5321822E063B5700C67357 /* EventParticipant.swift in Sources */,
-				5DB096202E085D7C00BB924A /* WorkoutManager+Helpers.swift in Sources */,
-				5D7DA5AF2E1C8EB000C42037 /* SmallZoneViewer.swift in Sources */,
-				5DB096372E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
-				5D9A74FF2E27290D0072606D /* ActivityStateButtons.swift in Sources */,
-				5D0A8E392E16121300E8B3B1 /* GeneralActivityPreparation.swift in Sources */,
-				5DB096112E064A0700BB924A /* ActivitySportCard.swift in Sources */,
-				5D53215E2E06364F00C67357 /* EllaspsedTimeView.swift in Sources */,
-				5D5321772E0639C500C67357 /* SportView.swift in Sources */,
-				5D53215F2E06364F00C67357 /* WorkoutSmallListItemView.swift in Sources */,
-				5D53217E2E063B2F00C67357 /* VenueModels.swift in Sources */,
-				5D5321842E063B6C00C67357 /* EventComment.swift in Sources */,
-				5DB0961A2E07424700BB924A /* ActivitiesChart.swift in Sources */,
-				5D5321632E06364F00C67357 /* GeneralActivityMetrics.swift in Sources */,
-				5D5321652E06364F00C67357 /* ActivityPreparationSettings.swift in Sources */,
-				5DB0962D2E0A155500BB924A /* WorkoutManager+Splits.swift in Sources */,
-				5D5321662E06364F00C67357 /* ActivityPreparationView.swift in Sources */,
-				5D5321872E063B9500C67357 /* GroupSelection.swift in Sources */,
-				5D5321F62E063BEF00C67357 /* ManagementModels.swift in Sources */,
-				5D5321682E06364F00C67357 /* ActivityGoalSetter.swift in Sources */,
-				5D5321692E06364F00C67357 /* DistanceActivityMetrics1.swift in Sources */,
-				5D53216A2E06364F00C67357 /* DistanceActivityPreparation.swift in Sources */,
-				5D6F11582E21CE0B005F1BE5 /* DistanceActivityMetrics3.swift in Sources */,
-				5D53216B2E06364F00C67357 /* ActivityHistoryView.swift in Sources */,
-				5D53216C2E06364F00C67357 /* ViewContainer.swift in Sources */,
-				5D5321F72E063BF700C67357 /* EventSharing.swift in Sources */,
-				5D53216D2E06364F00C67357 /* ActivitySettingsView.swift in Sources */,
-				5D877B2C2E289A73000DEAC8 /* DistanceActivityMetrics.swift in Sources */,
-				5DB096142E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
-				5D97CB5F2E2F34E900DE12B4 /* WorkoutRouteView.swift in Sources */,
-				5D6F114F2E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */,
-				5D97CB622E2F483300DE12B4 /* RunningPointsData.swift in Sources */,
-				5D53217B2E063B0900C67357 /* ClubModels.swift in Sources */,
-				5D6F114B2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */,
-				5D53217D2E063B2000C67357 /* UserModels.swift in Sources */,
-				5D53216E2E06364F00C67357 /* ActivitySportsPicker.swift in Sources */,
-				5D53216F2E06364F00C67357 /* ActivitySummaryView.swift in Sources */,
-				5D5321812E063B5100C67357 /* EventFormat.swift in Sources */,
-				5D5321702E06364F00C67357 /* ActivityView.swift in Sources */,
-				5D53214F2E06360F00C67357 /* WorkoutHeatMapView.swift in Sources */,
-				5D5321502E06360F00C67357 /* WorkoutMapView.swift in Sources */,
-				5D5321762E0636B900C67357 /* WorkoutModels.swift in Sources */,
-				5D117A702E25B082002380DE /* ScheduleComponents.swift in Sources */,
-				5D5321522E06360F00C67357 /* Enums.swift in Sources */,
-				5D5321832E063B6000C67357 /* EventTeam.swift in Sources */,
-				5D5321532E06360F00C67357 /* TempData.swift in Sources */,
-				5D53217A2E063AF200C67357 /* OrganizationModels.swift in Sources */,
-				5D5321802E063B4C00C67357 /* EventOrganizer.swift in Sources */,
-				5D7E0CE42E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */,
-				5D5321F42E063BD800C67357 /* Announcement.swift in Sources */,
-				5D117A742E25B423002380DE /* ActivityCountdownView.swift in Sources */,
-				5D5321542E06360F00C67357 /* WorkoutManager.swift in Sources */,
-				5D5321552E06360F00C67357 /* WorkoutManager+Location.swift in Sources */,
-				5D5321852E063B7200C67357 /* EventRecurrence.swift in Sources */,
-				5D6F11522E21BAF9005F1BE5 /* DistanceActivityMetrics2.swift in Sources */,
-				5D5321862E063B8600C67357 /* PostModels.swift in Sources */,
-				5D53217C2E063B1500C67357 /* EventModels.swift in Sources */,
-				5D5321562E06360F00C67357 /* WorkoutManager+Read.swift in Sources */,
-				5D5321792E063A3300C67357 /* GenericModels.swift in Sources */,
-				5D5321572E06360F00C67357 /* WorkoutManager+Session.swift in Sources */,
-				5DB096172E07415600BB924A /* ActivitiesTypePicker.swift in Sources */,
-				5D97CB662E2F485000DE12B4 /* ActivityPointsData.swift in Sources */,
-				5D6F11562E21BB53005F1BE5 /* ZoneViewer.swift in Sources */,
-				5D5321582E06360F00C67357 /* WorkoutManager+Write.swift in Sources */,
-				5D53214C2E06349D00C67357 /* Olympsis_WatchkitApp.swift in Sources */,
-				5D53214E2E0634E100C67357 /* ActivityMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3413,96 +2998,9 @@
 			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
 			targetProxy = 5DBF2B872E42E34C0025B0FE /* PBXContainerItemProxy */;
 		};
-		5DDCB9F82C4C487500AE6C7A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5DDCB9772C4C487500AE6C7A /* OlympsisWatchkit */;
-			targetProxy = 5DDCB9F72C4C487500AE6C7A /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		5D8C08442E05E9CF0022D438 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Olympsis-Watchkit/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your past activities and share a snapshot if you share your them with your club.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.9.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.watchkit;
-				PRODUCT_NAME = Olympsis;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10;
-			};
-			name = Debug;
-		};
-		5D8C08452E05E9CF0022D438 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = "Olympsis-Watchkit/OlympsisWatchkit.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Olympsis-Watchkit/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Olympsis-Watchkit//OlympsisWatchkit-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Olympsis;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your past activities and share a snapshot if you share your them with your club.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.olympsis.client;
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 0.9.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.watchkit;
-				PRODUCT_NAME = Olympsis;
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10;
-			};
-			name = Release;
-		};
 		5DBF2B8A2E42E34C0025B0FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3698,8 +3196,6 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Olympsis needs camera access so you can capture and share moments with your community.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";
@@ -3756,8 +3252,6 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Olympsis needs camera access so you can capture and share moments with your community.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Olympsis may read your health data to display your saved workouts both privately and to users if enabled.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Olympsis requires access to your health data when recording your activities to help you keep track of your goals.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Olympsis requires your location to show you the venues and events that are happening in close proximity to you.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Olympsis requires access to your photos library to allow you to share images of the activites you're participating in with your friends.";
@@ -3799,15 +3293,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5D8C08462E05FB3C0022D438 /* Build configuration list for PBXNativeTarget "OlympsisWatchkit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5D8C08442E05E9CF0022D438 /* Debug */,
-				5D8C08452E05E9CF0022D438 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		5DBF2B892E42E34C0025B0FE /* Build configuration list for PBXNativeTarget "OlympsisTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

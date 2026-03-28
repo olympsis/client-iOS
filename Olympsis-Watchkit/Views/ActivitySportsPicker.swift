@@ -28,7 +28,7 @@ struct ActivitySportsPicker: View {
             }
         }
         .task {
-            _ = await manager.requestHealthStoreAuthorization()
+//            _ = await manager.requestHealthStoreAuthorization()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

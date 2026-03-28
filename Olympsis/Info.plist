@@ -2,13 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.olympsis.client</string>
@@ -33,18 +26,21 @@
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
 	<string>192.168.1.156</string>
+	<key>DEV_USER_ID</key>
+	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>STAGING_HOST</key>
-	<string></string>
-	<key>STAGING_CHAT</key>
-	<string></string>
-	<key>DEV_USER_ID</key>
-	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<dict>
 		<key>NSPrivacyAccessedAPIType</key>
@@ -59,7 +55,11 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<key>STAGING_CHAT</key>
+	<string></string>
+	<key>STAGING_HOST</key>
+	<string></string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>

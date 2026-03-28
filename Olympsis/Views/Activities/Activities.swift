@@ -43,7 +43,7 @@ struct Activities: View {
                 Spacer(minLength: 40)
             }
             .task {
-                _ = await manager.requestHealthStoreAuthorization()
+//                _ = await manager.requestHealthStoreAuthorization()
                 guard manager.workouts.isEmpty else {
                     return
                 }
