@@ -5,9 +5,10 @@
 //  Created by Joel Joseph on 6/24/25.
 //
 
-import HealthKit
+// import HealthKit
 import Foundation
 
+/*
 /// Gets distance for workout type
 /// - Parameters:
 ///     - activityType: the type of activity we want distance for
@@ -90,3 +91,4 @@ func getDistanceQuantityType(for workout: HKWorkout) -> HKQuantityType? {
 }
 
 //HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)
+*/

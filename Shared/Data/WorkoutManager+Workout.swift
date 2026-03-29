@@ -5,12 +5,13 @@
 //  Created by Joel Joseph on 7/11/25.
 //
 
-import HealthKit
+// import HealthKit
 import Foundation
 
+/*
 #if os(watchOS)
 extension WorkoutManager: @preconcurrency HKLiveWorkoutBuilderDelegate {
-    
+
 }
 #endif
 
@@ -23,11 +24,11 @@ extension WorkoutManager {
             config.locationType = location
             return config
         }()
-        
+
         if location == .outdoor {
             self.routeBuilder = HKWorkoutRouteBuilder(healthStore: self.healthStore, device: .local())
         }
-        
+
         do {
             #if os(watchOS)
             session = try HKWorkoutSession(
@@ -40,32 +41,32 @@ extension WorkoutManager {
             self.log.error("Failed to start workout session: \(error.localizedDescription, privacy: .public)")
             return
         }
-        
+
         #if os(watchOS)
         builder?.dataSource = HKLiveWorkoutDataSource(
             healthStore: healthStore,
             workoutConfiguration: configuration
         )
         #endif
-        
+
         session?.delegate = self
-        
+
         #if os(watchOS)
         builder?.delegate = self
         #endif
     }
-    
+
     /// Prepares a workout and resets and cleans up session data
     func prepareWorkout() {
         session?.prepare()
     }
-    
+
     /// Starts a workout
     func startWorkout() async {
         let startDate = Date()
-        
+
         self.zones = await self.generateHeartRateZones()
-        
+
         do {
             session?.startActivity(with: startDate)
             #if os(watchOS)
@@ -76,17 +77,17 @@ extension WorkoutManager {
             return
         }
     }
-    
+
     /// Pauses a workout
     func pauseWorkout() {
         session?.pause()
     }
-    
+
     /// Resumes a workout
     func resumeWorkout() {
         session?.resume()
     }
-    
+
     /// Stops a workoutout
     func stopWorkout() {
         // If a workout is less than a minute we should not record it
@@ -104,7 +105,7 @@ extension WorkoutManager {
         #endif
         session?.end()
     }
-    
+
     /// Resets all of the data around workouts
     func resetWorkout() {
         if let workout,
@@ -112,11 +113,11 @@ extension WorkoutManager {
             let work = Workout(type: selectedSport, workout: workout)
             workouts.append(work)
         }
-        
+
         #if os(watchOS)
         builder = nil
         #endif
-        
+
         selectedSport = nil
         selectedWorkout = nil
         routeBuilder = nil
@@ -128,3 +129,4 @@ extension WorkoutManager {
         distance = 0
     }
 }
+*/

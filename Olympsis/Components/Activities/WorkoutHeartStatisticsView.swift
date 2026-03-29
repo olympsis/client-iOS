@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Charts
-import HealthKit
+// import HealthKit
 
 struct WorkoutHeartStatisticsView: View {
     let workout: Workout
@@ -164,6 +164,7 @@ struct WorkoutHeartStatisticsView: View {
         let timeSpent: TimeInterval
     }
     
+    /* HealthKit disabled
     /// Convert heart rate samples to chart data points
     private func heartRateDataPoints() -> [HeartRateDataPoint] {
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
@@ -174,6 +175,9 @@ struct WorkoutHeartStatisticsView: View {
             )
         }
     }
+    */
+    // Stub while HealthKit is disabled
+    private func heartRateDataPoints() -> [HeartRateDataPoint] { [] }
     
     /// Load heart rate zones from WorkoutManager
     private func loadHeartRateZones() async {
@@ -185,18 +189,22 @@ struct WorkoutHeartStatisticsView: View {
         workoutManager.zones = heartRateZones
     }
     
+    /* HealthKit disabled
     /// Calculate chart Y-axis domain for better zoom
     private func chartYDomain() -> ClosedRange<Double> {
         guard !workout.heartSamples.isEmpty else { return 60...200 }
-        
+
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         let heartRates = workout.heartSamples.map { $0.quantity.doubleValue(for: heartRateUnit) }
-        
+
         let minHR = heartRates.min() ?? 60
         let maxHR = heartRates.max() ?? 200
-        
+
         return (minHR - 5)...(maxHR + 10)
     }
+    */
+    // Stub while HealthKit is disabled
+    private func chartYDomain() -> ClosedRange<Double> { 60...200 }
     
     /// Local helper to determine heart rate zone
     private func getZoneFromHeartRate(_ heartRate: Double) -> Int {
@@ -219,27 +227,28 @@ struct WorkoutHeartStatisticsView: View {
         }
     }
     
+    /* HealthKit disabled
     /// Calculate time spent in each heart rate zone
     private func calculateZoneTimeSpent() {
         guard !heartRateZones.isEmpty && !workout.heartSamples.isEmpty else { return }
-        
+
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         var zoneTimeMap: [Int: TimeInterval] = [:]
-        
+
         // Initialize zone time tracking
         for i in 1...heartRateZones.count {
             zoneTimeMap[i] = 0
         }
-        
+
         // Sort samples by time to ensure proper duration calculation
         let sortedSamples = workout.heartSamples.sorted { $0.startDate < $1.startDate }
-        
+
         // Calculate time spent in each zone
         for i in 0..<sortedSamples.count {
             let sample = sortedSamples[i]
             let heartRate = sample.quantity.doubleValue(for: heartRateUnit)
             let zone = getZoneFromHeartRate(heartRate)
-            
+
             // Calculate sample duration (time between this sample and next)
             let sampleDuration: TimeInterval
             if i < sortedSamples.count - 1 {
@@ -252,38 +261,38 @@ struct WorkoutHeartStatisticsView: View {
                     sampleDuration = 1.0 // Fallback for single sample
                 }
             }
-            
+
             // Only count reasonable durations (avoid huge gaps)
             let clampedDuration = min(sampleDuration, 30.0) // Max 30 seconds between samples
             zoneTimeMap[zone, default: 0] += clampedDuration
         }
-        
+
         // Convert to ZoneTimeData array
         zoneTimeSpent = heartRateZones.enumerated().compactMap { index, zone in
             let zoneNumber = index + 1
             let timeSpent = zoneTimeMap[zoneNumber] ?? 0
-            
+
             // Only include zones with time spent > 0
             guard timeSpent > 0 else { return nil }
-            
+
             return ZoneTimeData(
                 zoneNumber: zoneNumber,
                 zoneName: zone.name,
                 timeSpent: timeSpent
             )
         }
-        
+
         // Debug logging
         print("Zone time calculation results:")
         for (zoneNumber, time) in zoneTimeMap.sorted(by: { $0.key < $1.key }) {
             print("Zone \(zoneNumber): \(formatDuration(time))")
         }
-        
+
         print("Heart Rate Zones:")
         for (index, zone) in heartRateZones.enumerated() {
             print("Zone \(index + 1): \(zone.name) - \(zone.minHeartRate)-\(zone.maxHeartRate) BPM")
         }
-        
+
         // Sample some heart rates to verify zone calculation
         if !sortedSamples.isEmpty {
             let sampleCount = min(5, sortedSamples.count)
@@ -296,6 +305,9 @@ struct WorkoutHeartStatisticsView: View {
             }
         }
     }
+    */
+    // Stub while HealthKit is disabled
+    private func calculateZoneTimeSpent() { }
     
     /// Get color for heart rate zone
     private func zoneColor(for zoneNumber: Int) -> Color {
@@ -317,6 +329,7 @@ struct WorkoutHeartStatisticsView: View {
     }
 }
 
+/* HealthKit disabled - Preview requires HKWorkout
 #Preview {
     // Create a sample workout for preview
     let sampleWorkout = Workout(
@@ -327,7 +340,8 @@ struct WorkoutHeartStatisticsView: View {
             end: Date()
         )
     )
-    
+
     WorkoutHeartStatisticsView(workout: sampleWorkout)
         .environment(WorkoutManager())
 }
+*/

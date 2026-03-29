@@ -7,11 +7,12 @@
 
 import os
 import SwiftUI
-import HealthKit
+// import HealthKit  // Commented out - HealthKit disabled
 import Foundation
 
+/* HealthKit disabled - entire class depends on HealthKit types
 class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate {
-    
+
     @Published var selectedSport: SPORTS? {
         didSet {
             Task {
@@ -22,12 +23,12 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             }
         }
     }
-    
+
     @Published var selectedWorkout: HKWorkoutActivityType?
     @Published var workout: HKWorkout?
-    
+
     @Published var state: WORKOUT_STATES = .pending
-    
+
     @Published var showingSummaryView: Bool = false {
         didSet {
             Task {
@@ -40,29 +41,29 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             }
         }
     }
-    
+
     @Published var isProcessingWorkout: Bool = false
-    
+
     @Published var averageHeartRate: Double = 0
     @Published var heartRate: Double = 0
     @Published var activeEnergy: Double = 0
     @Published var distance: Double = 0
-    
+
     @Published var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
-    
-    
-    
+
+
+
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?
     var builder: HKLiveWorkoutBuilder?
-    
+
     private var typesToShare: Set = [
         HKObjectType.workoutType(),
         HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
     ]
-    
+
     private var typesToRead: Set = [
         HKSampleType.workoutType(),
         HKSampleType.activitySummaryType(),
@@ -73,9 +74,9 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
         HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
         HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
     ]
-    
+
     private var log: Logger = Logger(subsystem: "com.olympsis.watchkit", category: "activity_manager")
-    
+
     @MainActor
     func requestHealthStoreAuthorization() async {
         do {
@@ -85,7 +86,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             return
         }
     }
-    
+
     func buildWorkout(_ workout: HKWorkoutActivityType, location: HKWorkoutSessionLocationType) {
         let configuration: HKWorkoutConfiguration = {
             let config = HKWorkoutConfiguration()
@@ -93,7 +94,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             config.locationType = location
             return config
         }()
-        
+
         do {
             session = try HKWorkoutSession(
                 healthStore: healthStore,
@@ -104,25 +105,25 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             log.error("Failed to start workout session: \(error.localizedDescription, privacy: .public)")
             return
         }
-        
+
         builder?.dataSource = HKLiveWorkoutDataSource(
             healthStore: healthStore,
             workoutConfiguration: configuration
         )
-        
+
         session?.delegate = self
         builder?.delegate = self
     }
-    
+
     /// Prepares a workout and resets and cleans up session data
     func prepareWorkout() {
         session?.prepare()
     }
-    
+
     /// Starts a workout
     func startWorkout() async {
         let startDate = Date()
-        
+
         do {
             session?.startActivity(with: startDate)
             try await builder?.beginCollection(at: startDate) // TODO: - CODE FAILS HERE
@@ -131,17 +132,17 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             return
         }
     }
-    
+
     /// Pauses a workout
     func pauseWorkout() {
         session?.pause()
     }
-    
+
     /// Resumes a workout
     func resumeWorkout() {
         session?.resume()
     }
-    
+
     /// Stops a workoutout
     func stopWorkout() {
         // If a workout is less than a minute we should not record it
@@ -153,7 +154,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
         }
         session?.end()
     }
-    
+
     /// Resets all of the data around workouts
     func resetWorkout() {
         selectedSport = nil
@@ -166,7 +167,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
         heartRate = 0
         distance = 0
     }
-    
+
     @MainActor
     func updateForStatistics(_ statistics: HKStatistics?) {
         guard let statistics = statistics else { return }
@@ -184,7 +185,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
             case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
                 if self.unit == UnitLength.kilometers {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
-                    
+
                 } else {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0
                 }
@@ -196,7 +197,7 @@ class ActivityManager: NSObject, ObservableObject, HKLiveWorkoutBuilderDelegate 
 }
 
 extension ActivityManager: HKWorkoutSessionDelegate {
-    
+
     @MainActor
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
         switch toState {
@@ -262,17 +263,17 @@ extension ActivityManager: HKWorkoutSessionDelegate {
             self.log.error("Workout state changed -> UNKNOWN STATE")
             return
         }
-        
+
         return
     }
-    
+
     @MainActor
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: any Error) {
         log.error("Workout session failed: \(error.localizedDescription, privacy: .public)")
         return
     }
-    
-    @MainActor 
+
+    @MainActor
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else { return }
@@ -282,6 +283,7 @@ extension ActivityManager: HKWorkoutSessionDelegate {
             updateForStatistics(statistics)
         }
     }
-    
+
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {}
 }
+End of commented out HealthKit code */

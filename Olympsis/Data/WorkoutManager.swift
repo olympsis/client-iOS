@@ -7,17 +7,21 @@
 
 import os
 import SwiftUI
-import HealthKit
+// import HealthKit
 import Foundation
 import CoreLocation
 
+/* HealthKit disabled - entire class depends on HealthKit types
+   (HKHealthStore, HKWorkoutSession, HKWorkoutRouteBuilder, HKWorkout,
+    HKWorkoutActivityType, HKSample, HKWorkoutEvent, HKQuantityType, HKUnit, etc.)
+
 class WorkoutManager: NSObject, ObservableObject {
-    
+
     @Published var workouts = [Workout]()
     @Published var samples: [HKSample] = []
     @Published var events: [HKWorkoutEvent] = []
     @Published var manager = CLLocationManager()
-    
+
     @Published var selectedSport: SPORTS? {
         didSet {
             Task {
@@ -28,13 +32,13 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
     }
-    
+
     @Published var selectedWorkout: HKWorkoutActivityType?
     @Published var workout: HKWorkout?
-    
+
     @Published var state: WORKOUT_STATES = .pending
     @Published var viewState: LOADING_STATE = .pending
-    
+
     @Published var showingSummaryView: Bool = false {
         didSet {
             Task {
@@ -47,26 +51,26 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
     }
-    
+
     @Published var isProcessingWorkout: Bool = false
-    
+
     @Published var averageHeartRate: Double = 0
     @Published var heartRate: Double = 0
     @Published var activeEnergy: Double = 0
     @Published var distance: Double = 0
-    
+
     @Published var unit: UnitLength = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
-    
+
     let healthStore = HKHealthStore()
     var session: HKWorkoutSession?
     var routeBuilder: HKWorkoutRouteBuilder?
     var backgroundActivity: CLBackgroundActivitySession?
     var log: Logger = Logger(subsystem: "com.olympsis.watchkit", category: "activity_manager")
-    
+
     #if os(watchOS)
     var builder: HKLiveWorkoutBuilder?
     #endif
-    
+
     private var typesToShare: Set = [
         HKObjectType.workoutType(),
         HKSeriesType.workoutRoute(),
@@ -74,7 +78,7 @@ class WorkoutManager: NSObject, ObservableObject {
         HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
     ]
-    
+
     private var typesToRead: Set = [
         HKSampleType.workoutType(),
         HKSeriesType.workoutRoute(),
@@ -88,12 +92,12 @@ class WorkoutManager: NSObject, ObservableObject {
         HKQuantityType.quantityType(forIdentifier: .stepCount)!,
         HKQuantityType.quantityType(forIdentifier: .cyclingCadence)!,
     ]
-    
+
     override init() {
         super.init()
         manager.delegate = self
     }
-    
+
     func checkAuthorizationStatus() -> Bool {
         let status = healthStore.authorizationStatus(for: .workoutType())
         if status == .sharingAuthorized {
@@ -102,7 +106,7 @@ class WorkoutManager: NSObject, ObservableObject {
             return false
         }
     }
-    
+
     @MainActor
     func requestHealthStoreAuthorization() async {
         do {
@@ -112,7 +116,7 @@ class WorkoutManager: NSObject, ObservableObject {
             return
         }
     }
-    
+
     @MainActor
     func updateForStatistics(_ statistics: HKStatistics?) {
         guard let statistics = statistics else { return }
@@ -130,7 +134,7 @@ class WorkoutManager: NSObject, ObservableObject {
             case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
                 if self.unit == UnitLength.kilometers {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
-                    
+
                 } else {
                     self.distance = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0
                 }
@@ -139,7 +143,7 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
     }
-    
+
 }
 
 extension WorkoutManager {
@@ -147,13 +151,13 @@ extension WorkoutManager {
         let now = Date()
         let calendar = Calendar.current
         let currentWeekday = calendar.component(.weekday, from: now)
-        let daysToMonday = (currentWeekday == 1) ? 7 : currentWeekday - 2  // 1 is Sunday, so we need to go back 6 days to get to Monday
+        let daysToMonday = (currentWeekday == 1) ? 7 : currentWeekday - 2
         let startOfWeek = calendar.date(byAdding: .day, value: -daysToMonday, to: now)!
         let endOfWeek = calendar.date(byAdding: .day, value: 6, to: startOfWeek)!
 
         return NSPredicate(format: "startDate >= %@ AND endDate <= %@", startOfWeek as CVarArg, endOfWeek as CVarArg)
     }
-    
+
     var monthPredicate: NSPredicate {
         let now = Date()
         let calendar = Calendar.current
@@ -162,7 +166,7 @@ extension WorkoutManager {
 
         return NSPredicate(format: "startDate >= %@ AND endDate <= %@", startOfMonth as CVarArg, endOfMonth as CVarArg)
     }
-    
+
     var yearPredicate: NSPredicate {
         let now = Date()
         let calendar = Calendar.current
@@ -172,3 +176,4 @@ extension WorkoutManager {
         return NSPredicate(format: "startDate >= %@ AND endDate <= %@", startOfYear as CVarArg, endOfYear as CVarArg)
     }
 }
+*/

@@ -8,7 +8,7 @@
 import os
 import MapKit
 import SwiftUI
-import HealthKit
+// import HealthKit
 
 struct WorkoutMapView: View {
     

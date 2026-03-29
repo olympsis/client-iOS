@@ -6,30 +6,44 @@
 //
 
 import SwiftUI
-import HealthKit
+// import HealthKit
 import Foundation
 import CoreLocation
 
+// MARK: - Simple replacement for HKWorkout (HealthKit disabled)
+struct WorkoutData {
+    let startDate: Date
+    let endDate: Date
+    var duration: TimeInterval { endDate.timeIntervalSince(startDate) }
+}
+
+// MARK: - Simple replacement for HKQuantitySample (HealthKit disabled)
+struct HeartRateSample {
+    let startDate: Date
+    let value: Double // BPM
+}
+
 @Observable
 class Workout: Identifiable {
-    
+
     let id = UUID()
     let type: SUPPORTED_SPORTS
-    
-    let workout: HKWorkout
-    
+    let workout: WorkoutData
+
     var cadence: Double?
-    
     var paceSegments: [PaceSegment] = []
-    var heartSamples: [HKQuantitySample] = []
+    var heartSamples: [HeartRateSample] = []
     var locationSamples: [CLLocation] = []
-    var distanceSamples: [HKQuantitySample] = []
-    
-    init(type: SUPPORTED_SPORTS, workout: HKWorkout) {
+
+    // Stored values (previously computed from HKWorkout statistics)
+    var storedTotalDistance: Double = 0
+    var storedTotalCaloriesBurned: Double = 0
+
+    init(type: SUPPORTED_SPORTS, workout: WorkoutData) {
         self.type = type
         self.workout = workout
     }
-    
+
     var name: String {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: workout.startDate)
@@ -44,42 +58,37 @@ class Workout: Identifiable {
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE" // EEEE will give you the full weekday name
+        dateFormatter.dateFormat = "EEEE"
         let dayOfWeek = dateFormatter.string(from: workout.startDate)
 
         return "\(dayOfWeek) \(timeOfDay)"
     }
-    
+
     var totalTime: String {
         let timeInterval = Int(workout.endDate.timeIntervalSince(workout.startDate))
         let minutes = timeInterval / 60
         let seconds = timeInterval % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
-    
+
     var averagePace: String {
         guard totalDistance > 0 else {
-            return "--:--" // or "N/A" for no distance
+            return "--:--"
         }
-        
         let totalMinutes = workout.duration / 60.0
-        let paceMinutesPerUnit = totalMinutes / totalDistance // Now correctly calculates pace per unit (km or mile)
-        
+        let paceMinutesPerUnit = totalMinutes / totalDistance
         let minutes = Int(paceMinutesPerUnit)
         let seconds = Int((paceMinutesPerUnit - Double(minutes)) * 60)
-        
         return String(format: "%d:%02d", minutes, seconds)
     }
-    
+
+    /// Average heart rate from stored samples (HealthKit disabled - returns 0)
     var averageHeartRate: Double {
         guard !heartSamples.isEmpty else { return 0 }
-        
-        let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-        let heartRateValues = heartSamples.map { $0.quantity.doubleValue(for: heartRateUnit) }
-        
+        let heartRateValues = heartSamples.map { $0.value }
         return heartRateValues.reduce(0, +) / Double(heartRateValues.count)
     }
-    
+
     var dateToString: String {
         let today = Date()
         let calendar = Calendar.current
@@ -90,66 +99,46 @@ class Workout: Identifiable {
                 return "Today"
             } else {
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "EEEE" // EEEE will give you the full weekday name
+                dateFormatter.dateFormat = "EEEE"
                 return String("\(dateFormatter.string(from: workout.startDate))")
             }
         } else {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM/dd/yy" // full date
+            dateFormatter.dateFormat = "MM/dd/yy"
             return String("\(dateFormatter.string(from: workout.startDate))")
         }
     }
-    
+
     var route2DPoints: [CLLocationCoordinate2D] {
         return locationSamples.map { $0.coordinate }
     }
-    
+
     var totalDistance: Double {
-        guard let quantityType = getDistanceQuantityType(for: workout),
-              let statistics = workout.allStatistics[quantityType],
-              let sum = statistics.sumQuantity() else {
-            return 0
-        }
-        // Return distance in user's preferred unit (miles or kilometers)
-        let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
-        if preferredUnit == UnitLength.kilometers {
-            return sum.doubleValue(for: HKUnit.meter()) / 1000.0 // Convert meters to kilometers
-        } else {
-            return sum.doubleValue(for: HKUnit.mile())
-        }
+        return storedTotalDistance
     }
-    
+
     var totalCaloriesBurned: Double {
-        guard let quantityType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
-              let statistics = workout.allStatistics[quantityType],
-              let average = statistics.sumQuantity() else {
-            return 0
-        }
-        return average.doubleValue(for: HKUnit.kilocalorie())
+        return storedTotalCaloriesBurned
     }
-    
+
     var totalElevationGain: Double {
         guard !locationSamples.isEmpty else { return 0 }
-        
-        // Get starting elevation (average of first 5 samples to avoid outliers)
+
         let startingSamples = Array(locationSamples.prefix(min(5, locationSamples.count)))
         let startingElevation = startingSamples.map { $0.altitude }.reduce(0, +) / Double(startingSamples.count)
-        
-        // Get all elevations and sort to find top 5 highest values
+
         let elevations = locationSamples.map { $0.altitude }
         let sortedElevations = elevations.sorted(by: >)
         let topFiveElevations = Array(sortedElevations.prefix(min(5, elevations.count)))
         let maxElevation = topFiveElevations.reduce(0, +) / Double(topFiveElevations.count)
-        
-        // Calculate gain from starting elevation to highest point average
+
         let elevationGainInMeters = max(0, maxElevation - startingElevation)
-        
-        // Return in appropriate units - feet for miles, meters for kilometers
+
         let preferredUnit = Locale.current.measurementSystem == "Metric" ? UnitLength.kilometers : UnitLength.miles
         if preferredUnit == UnitLength.miles {
-            return elevationGainInMeters * 3.28084 // Convert meters to feet
+            return elevationGainInMeters * 3.28084
         } else {
-            return elevationGainInMeters // Keep in meters
+            return elevationGainInMeters
         }
     }
 }
@@ -158,33 +147,29 @@ extension [Workout] {
     func workoutsWithinDateInterval(interval: DateInterval) -> [Workout] {
         return self.filter { $0.workout.startDate >= interval.start && $0.workout.startDate <= interval.end }
     }
-    
+
     func calculateTotalCalories() -> Int {
         return Int(self.reduce(0.0) { $0 + ($1.totalCaloriesBurned) })
     }
-       
+
     func totalCaloriesBurnedPerDay() -> [CaloricDailyAverage] {
        let calendar = Calendar.current
        var caloriesBurnedPerDay = [0, 0, 0, 0, 0, 0, 0]
        var workoutCountPerDay = [0, 0, 0, 0, 0, 0, 0]
-           
+
        for workout in self {
            let startDate = workout.workout.startDate
            let weekday = calendar.component(.weekday, from: startDate)
-           
-           // Adjust weekday index to be 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
            let index = (weekday + 5) % 7
            caloriesBurnedPerDay[index] += Int(workout.totalCaloriesBurned)
            workoutCountPerDay[index] += 1
        }
-       
+
        var caloricDailyAverages = [CaloricDailyAverage]()
-       
        for (index, totalCalories) in caloriesBurnedPerDay.enumerated() {
            _ = workoutCountPerDay[index]
            caloricDailyAverages.append(CaloricDailyAverage(id: index, count: totalCalories))
        }
-       
        return caloricDailyAverages
     }
 
@@ -196,24 +181,22 @@ extension [Workout] {
        }
        let range = calendar.range(of: .day, in: .month, for: startOfMonth)!
        let numDays = range.count
-       
+
        var caloriesBurnedPerDay = [Int]()
        for _ in 0..<numDays {
            caloriesBurnedPerDay.append(0)
        }
-       
+
        for workout in self {
            let startDate = workout.workout.startDate
-           let dayOfMonth = calendar.component(.day, from: startDate) - 1 // -1 to convert to 0-based index
+           let dayOfMonth = calendar.component(.day, from: startDate) - 1
            caloriesBurnedPerDay[dayOfMonth] += Int(workout.totalCaloriesBurned)
        }
-       
+
        var caloricDailyAverages = [CaloricDailyAverage]()
-       
        for (index, totalCalories) in caloriesBurnedPerDay.enumerated() {
-           caloricDailyAverages.append(CaloricDailyAverage(id: index+1, count: totalCalories)) // +1 to convert back to 1-based day
+           caloricDailyAverages.append(CaloricDailyAverage(id: index+1, count: totalCalories))
        }
-       
        return caloricDailyAverages
     }
 
@@ -221,26 +204,24 @@ extension [Workout] {
        let calendar = Calendar.current
        var caloriesBurnedPerMonth = [Int]()
        var workoutCountPerMonth = [Int]()
-       
+
        for _ in 0..<12 {
            caloriesBurnedPerMonth.append(0)
            workoutCountPerMonth.append(0)
        }
-       
+
        for workout in self {
            let startDate = workout.workout.startDate
-           let month = calendar.component(.month, from: startDate) - 1 // -1 to convert to 0-based index
+           let month = calendar.component(.month, from: startDate) - 1
            caloriesBurnedPerMonth[month] += Int(workout.totalCaloriesBurned)
            workoutCountPerMonth[month] += 1
        }
-       
+
        var caloricMonthlyAverages = [CaloricMonthlyAverage]()
-       
        for (index, totalCalories) in caloriesBurnedPerMonth.enumerated() {
            _ = workoutCountPerMonth[index]
-           caloricMonthlyAverages.append(CaloricMonthlyAverage(id: index, count: totalCalories)) // +1 to convert back to 1-based month
+           caloricMonthlyAverages.append(CaloricMonthlyAverage(id: index, count: totalCalories))
        }
-       
        return caloricMonthlyAverages
     }
 }
@@ -248,7 +229,7 @@ extension [Workout] {
 struct CaloricDailyAverage: Identifiable {
     let id: Int
     let count: Int
-    
+
     func dayAbbreviation() -> String {
         switch id {
         case 0: return "Mon"
@@ -266,7 +247,7 @@ struct CaloricDailyAverage: Identifiable {
 struct CaloricMonthlyAverage: Identifiable {
     let id: Int
     let count: Int
-    
+
     func monthAbbreviation() -> String {
         switch id {
         case 0: return "Jan"
@@ -291,7 +272,7 @@ struct DistanceSplit: Identifiable {
     let pace: Double
     let distance: Double // In meters
     let elevation: Int
-    
+
     func formatDistance(unit: UnitLength) -> Double {
         switch unit {
         case .miles:
@@ -311,8 +292,8 @@ struct WorkoutQueryConfig {
     let pageSize: Int
     let sports: [SUPPORTED_SPORTS]
     let dateRange: DateInterval?
-    let cursor: Date? // For pagination
-    
+    let cursor: Date?
+
     static let `default` = WorkoutQueryConfig(
         pageSize: 20,
         sports: SUPPORTED_SPORTS.allCases,
@@ -325,7 +306,7 @@ struct WorkoutDetails {
     let route: [CLLocation]
     let cadence: Double
     let paceSegments: [PaceSegment]
-    let heartRateSamples: [HKQuantitySample]
+    let heartRateSamples: [HeartRateSample]
     let splits: [PaceSegment]
 }
 
@@ -340,7 +321,7 @@ struct PaceSegment: Identifiable {
     let startTime: Date
     let endTime: Date
     let detailSamples: [PaceDetailSample] // Sub-segments for detailed analysis
-    
+
     init(segmentNumber: Int, distance: Double, duration: TimeInterval,
          elevationGain: Double, elevationLoss: Double, startTime: Date, endTime: Date,
          detailSamples: [PaceDetailSample] = []) {
@@ -353,7 +334,7 @@ struct PaceSegment: Identifiable {
         self.endTime = endTime
         self.detailSamples = detailSamples
     }
-    
+
     func getPace(for unit: UnitLength) -> Double {
         let conversionFactor: Double = unit == .kilometers ? 1000.0 : 1609.344
         let distanceInUnit = distance / conversionFactor
@@ -368,7 +349,7 @@ struct PaceDetailSample: Identifiable {
     let pace: Double // Pace in seconds per unit
     let startTime: Date
     let endTime: Date
-    
+
     init(distance: Double, duration: TimeInterval, pace: Double, startTime: Date, endTime: Date) {
         self.distance = distance
         self.duration = duration
@@ -412,6 +393,7 @@ struct DetailedWorkoutData {
     let minHeartRate: Double
 }
 
+/*
 // MARK: - Raw Sample Data
 struct WorkoutRawData {
     let locations: [CLLocation]
@@ -420,6 +402,7 @@ struct WorkoutRawData {
     let startDate: Date
     let endDate: Date
 }
+*/
 
 struct HeartRateZone {
     let name: String

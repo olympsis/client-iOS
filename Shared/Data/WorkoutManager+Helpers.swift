@@ -5,11 +5,12 @@
 //  Created by Joel Joseph on 6/22/25.
 //
 
-import HealthKit
+// import HealthKit
 import Foundation
 
+/*
 extension WorkoutManager {
-    
+
     /// Builds a date predicate for fetching workouts
     /// - Parameters:
     ///     - dateRange: a date interval consisting of a start and end date
@@ -18,7 +19,7 @@ extension WorkoutManager {
     /// - Returns: an optional predicate for both of those dates combined
     func buildDatePredicate(dateRange: DateInterval?, cursor: Date?) -> NSPredicate? {
         var predicates: [NSPredicate] = []
-        
+
         if let dateRange = dateRange {
             predicates.append(HKQuery.predicateForSamples(
                 withStart: dateRange.start,
@@ -26,7 +27,7 @@ extension WorkoutManager {
                 options: .strictStartDate
             ))
         }
-        
+
         if let cursor = cursor {
             // For pagination - fetch workouts before the cursor date
             predicates.append(NSPredicate(
@@ -35,10 +36,10 @@ extension WorkoutManager {
                 cursor as NSDate
             ))
         }
-        
+
         return predicates.isEmpty ? nil : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
-    
+
     /// Get cadence type for workout activity
     /// - Parameters:
     ///     - activityType: the workout activity type
@@ -53,5 +54,6 @@ extension WorkoutManager {
         default:
             return .stepCount  // Fallback
         }
-    }    
+    }
 }
+*/

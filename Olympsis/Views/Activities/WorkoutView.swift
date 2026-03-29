@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import HealthKit
+// import HealthKit
 import CoreLocation
 
 struct WorkoutView: View {
@@ -65,14 +65,15 @@ struct WorkoutView: View {
                 abs(sample1.startDate.timeIntervalSince(pointTimestamp)) < abs(sample2.startDate.timeIntervalSince(pointTimestamp))
             }
             
+            /* HealthKit disabled
             if let heartRateSample = closestHeartRateSample {
                 // Get heart rate value
                 let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
                 let heartRateValue = heartRateSample.quantity.doubleValue(for: heartRateUnit)
-                
+
                 // Determine zone using WorkoutManager
                 let zoneNumber = manager.getZoneFromHeartRate(heartRateValue)
-                
+
                 // Get zone color
                 let zoneColor = colorForZone(zoneNumber)
                 colors.append(zoneColor)
@@ -80,6 +81,9 @@ struct WorkoutView: View {
                 // Fallback to default color if no heart rate sample found
                 colors.append(Color.blue)
             }
+            */
+            // Fallback: use default color since HealthKit is disabled
+            colors.append(Color.blue)
         }
         
         return colors
@@ -305,9 +309,11 @@ struct WorkoutView: View {
     }
 }
 
+/* HealthKit disabled - Preview requires HKWorkout
 #Preview {
     NavigationStack {
         WorkoutView(activityName: "Friday Evening Run", workout: Workout(type: .running, workout: HKWorkout(activityType: .running, start: Date(), end: Date().addingTimeInterval(30 * 60))))
             .environment(WorkoutManager())
     }
 }
+*/

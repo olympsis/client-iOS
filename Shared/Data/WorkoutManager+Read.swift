@@ -6,12 +6,13 @@
 //
 
 import os
-import HealthKit
+// import HealthKit
 import Foundation
 import CoreLocation
 
+/*
 extension WorkoutManager {
-    
+
     /// Creates a predicate for fetching workouts from all supported sports
     private func createSportsWorkoutPredicate() -> NSCompoundPredicate {
         let workoutPredicates = SUPPORTED_SPORTS.allCases.map {
@@ -21,7 +22,7 @@ extension WorkoutManager {
             orPredicateWithSubpredicates: workoutPredicates
         )
     }
-    
+
     func fetchWorkoutsHistory(in datePredicate: String?) async {
         guard checkAuthorizationStatus() else {
             return
@@ -29,9 +30,9 @@ extension WorkoutManager {
         await MainActor.run {
             self.viewState = .loading
         }
-        
+
         let workoutPredicate = createSportsWorkoutPredicate()
-        
+
         do {
             let workouts: [Workout] = try await batchProcessWorkouts(
                 fetchWorkouts(predicate: workoutPredicate, batch: 10)
@@ -44,30 +45,30 @@ extension WorkoutManager {
             log.error("Failed to fetch workouts: \(error)")
         }
     }
-    
+
     func loadWorkouts(dateRange: DateInterval? = nil) async -> [Workout] {
         let datePredicate = buildDatePredicate(
             dateRange: dateRange,
             cursor: self.fetchingCursor
         )
-        
+
         let workoutPredicate = createSportsWorkoutPredicate()
-        
+
         // Combine workout predicate with date predicate using AND
         var predicates: [NSPredicate] = [workoutPredicate]
         if let datePredicate {
             predicates.append(datePredicate)
         }
-        
+
         let combinedPredicate = NSCompoundPredicate(
             andPredicateWithSubpredicates: predicates
         )
-        
+
         do {
             let workouts = try await fetchWorkouts(predicate: combinedPredicate)
             // Keep track of pointer in loaded workouts
             self.fetchingCursor = workouts.last?.startDate
-            
+
             // If we did get a full batch then we create a background task to fetch the rest
             if workouts.count == 20 {
                 self.backgroundTask = Task(priority: .background) {
@@ -77,7 +78,7 @@ extension WorkoutManager {
                     }
                 }
             }
-            
+
             let processedWorkouts = await batchProcessWorkouts(workouts)
             self.appendUniqueWorkouts(processedWorkouts)
             return processedWorkouts
@@ -86,7 +87,7 @@ extension WorkoutManager {
             return []
         }
     }
-    
+
     /// Appends workouts to the main workouts array, avoiding duplicates
     /// - Parameter newWorkouts: Array of workouts to append
     private func appendUniqueWorkouts(_ newWorkouts: [Workout]) {
@@ -94,7 +95,7 @@ extension WorkoutManager {
         let uniqueWorkouts = newWorkouts.filter { !existingWorkoutIds.contains($0.workout.uuid) }
         workouts.append(contentsOf: uniqueWorkouts)
     }
-    
+
     /// Queries HealthKit for the workout generic data
     /// - Parameters:
     ///     - predicate: filter to help us refine our query for the workouts
@@ -120,7 +121,7 @@ extension WorkoutManager {
             healthStore.execute(query)
         }
     }
-    
+
     /// Queries HealthKit for the location data for a workout
     /// - Parameters:
     ///     - workout: the workout we need to pull data form
@@ -129,9 +130,9 @@ extension WorkoutManager {
     func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [CLLocation] {
         // First get the workout routes
         let workoutRoutes = try await fetchWorkoutRoutes(for: workout)
-        
+
         guard !workoutRoutes.isEmpty else { return [] }
-        
+
         // Then fetch location data for each route using TaskGroup
         return try await withThrowingTaskGroup(of: (Int, [CLLocation]).self) { group in
             for (index, route) in workoutRoutes.enumerated() {
@@ -140,23 +141,23 @@ extension WorkoutManager {
                     return (index, locations)
                 }
             }
-            
+
             var routeSegments: [(index: Int, locations: [CLLocation])] = []
             for try await (index, locations) in group {
                 routeSegments.append((index: index, locations: locations))
             }
-            
+
             // Sort by route index, then by timestamp
             return routeSegments
                 .sorted { $0.index < $1.index }
                 .flatMap { $0.locations }
                 .sorted { $0.timestamp < $1.timestamp }
-            
+
             // Filter locations to every 0.5km
             // return filterLocationsByDistance(allLocations, minimumDistance: 500.0)
         }
     }
-    
+
     /// Filters location data to keep points that are at least a minimum distance apart
     /// - Parameters:
     ///   - locations: Array of CLLocation objects to filter
@@ -164,10 +165,10 @@ extension WorkoutManager {
     /// - Returns: Filtered array of locations
     private func filterLocationsByDistance(_ locations: [CLLocation], minimumDistance: Double) -> [CLLocation] {
         guard !locations.isEmpty else { return [] }
-        
+
         var filteredLocations: [CLLocation] = []
         var lastKeptLocation: CLLocation?
-        
+
         for location in locations {
             // Always keep the first location
             if lastKeptLocation == nil {
@@ -175,51 +176,51 @@ extension WorkoutManager {
                 lastKeptLocation = location
                 continue
             }
-            
+
             // Calculate distance from last kept location
             let distanceFromLast = location.distance(from: lastKeptLocation!)
-            
+
             // Keep location if it's far enough from the last kept location
             if distanceFromLast >= minimumDistance {
                 filteredLocations.append(location)
                 lastKeptLocation = location
             }
         }
-        
+
         // Always keep the last location if it's not already included
         if let lastLocation = locations.last,
            let lastKept = filteredLocations.last,
            lastLocation != lastKept {
             filteredLocations.append(lastLocation)
         }
-        
+
         return filteredLocations
     }
-    
+
     private func fetchWorkoutRoutes(for workout: HKWorkout) async throws -> [HKWorkoutRoute] {
         return try await withCheckedThrowingContinuation { continuation in
             let workoutPredicate = HKQuery.predicateForObjects(from: workout)
-            
+
             let query = HKSampleQuery(
                 sampleType: HKSeriesType.workoutRoute(),
                 predicate: workoutPredicate,
                 limit: HKObjectQueryNoLimit,
                 sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)]
             ) { (query, results, error) in
-                
+
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
                 }
-                
+
                 guard let workoutRouteSamples = results as? [HKWorkoutRoute] else {
                     continuation.resume(returning: [])
                     return
                 }
-                
+
                 continuation.resume(returning: workoutRouteSamples)
             }
-            
+
             self.healthStore.execute(query)
         }
     }
@@ -228,7 +229,7 @@ extension WorkoutManager {
         return try await withCheckedThrowingContinuation { continuation in
             var locations: [CLLocation] = []
             var hasError = false
-            
+
             let locationQuery = HKWorkoutRouteQuery(route: route) { (query, routeData, done, error) in
                 if let error = error {
                     if !hasError {
@@ -237,11 +238,11 @@ extension WorkoutManager {
                     }
                     return
                 }
-                
+
                 if let routeData = routeData {
                     locations.append(contentsOf: routeData)
                 }
-                
+
                 if done {
                     if !hasError {
                         // Sort locations by timestamp to ensure proper ordering
@@ -250,11 +251,11 @@ extension WorkoutManager {
                     }
                 }
             }
-            
+
             self.healthStore.execute(locationQuery)
         }
     }
-    
+
     /// Fetches running cadence by calculating steps per minute from total step count
     /// - Parameter workout: The HKWorkout to fetch cadence for
     /// - Returns: Running cadence in steps per minute, or nil if unavailable
@@ -267,42 +268,42 @@ extension WorkoutManager {
                 unit: HKUnit.count().unitDivided(by: .minute())
             )
         }
-        
+
         // For running, try step count first, then fall back to distance estimation
         if let cadence = await fetchStepCountCadence(for: workout) {
             // Only use step count if it's reasonable (160-200 steps/min for running)
             if cadence >= 140 && cadence <= 220 {
                 return cadence
             } else {
-                print("🏃‍♂️ Step count cadence (\(cadence)) seems unrealistic, using distance estimation instead")
+                print("Step count cadence (\(cadence)) seems unrealistic, using distance estimation instead")
             }
         }
-        
+
         // Fallback: Try to get cadence from workout statistics if available
         if let cadenceFromStats = workout.allStatistics[HKQuantityType.quantityType(forIdentifier: .runningSpeed)!] {
-            print("🏃‍♂️ Found running speed in workout statistics: \(cadenceFromStats)")
+            print("Found running speed in workout statistics: \(cadenceFromStats)")
         }
-        
+
         // Fallback: Estimate cadence using distance and typical running stride length
         if let totalDistance = workout.totalDistance?.doubleValue(for: HKUnit.meter()) {
             let activeWorkoutDuration = await calculateActiveWorkoutDurationFromEvents(workout: workout)
             let activeMinutes = activeWorkoutDuration / 60.0
-            
+
             // TODO: Update stride length calculation based on user's height
             // Current value is calibrated to match device measurements (e.g., Nike Run Club)
             // Formula for height-based stride: stride = height * 0.415 (for running)
             let estimatedStrideLength = 1.23 // meters - UPDATE THIS TO USE USER HEIGHT
-            
+
             let estimatedSteps = totalDistance / estimatedStrideLength
             let estimatedCadence = estimatedSteps / activeMinutes
-            
+
             // Round to 0 decimals
             return round(estimatedCadence)
         }
-        
+
         return nil
     }
-    
+
     /// Calculates the active workout duration by excluding paused periods
     /// - Parameter workout: The HKWorkout to analyze
     /// - Returns: Active duration in seconds
@@ -311,39 +312,39 @@ extension WorkoutManager {
             // No pause/resume events, return total workout duration
             return workout.duration
         }
-        
+
         var activeDuration: TimeInterval = 0
         var currentTime = workout.startDate
         var isPaused = false
-        
+
         // Sort events by start time
         let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
-        
+
         for event in sortedEvents {
             let eventTime = event.dateInterval.start
-            
+
             if !isPaused {
                 // Add active time from current position to pause
                 activeDuration += eventTime.timeIntervalSince(currentTime)
             }
-            
+
             if event.type == .pause {
                 isPaused = true
             } else if event.type == .resume {
                 isPaused = false
             }
-            
+
             currentTime = eventTime
         }
-        
+
         // Add remaining time if not paused at the end
         if !isPaused {
             activeDuration += workout.endDate.timeIntervalSince(currentTime)
         }
-        
+
         return activeDuration
     }
-    
+
     /// Fetches step count samples during active workout periods and calculates cadence
     /// - Parameter workout: The HKWorkout to fetch cadence for
     /// - Returns: Running cadence in steps per minute, or nil if unavailable
@@ -352,37 +353,37 @@ extension WorkoutManager {
         let bufferMinutes: TimeInterval = 5 * 60 // 5 minute buffer before/after
         let queryStart = workout.startDate.addingTimeInterval(-bufferMinutes)
         let queryEnd = workout.endDate.addingTimeInterval(bufferMinutes)
-        
+
         do {
             let allStepSamples = try await fetchStepCountSamples(
                 startDate: queryStart,
                 endDate: queryEnd
             )
-            
+
             // Filter and sum steps that overlap with active workout periods
             let activePeriods = getActiveWorkoutPeriods(for: workout)
             let totalActiveDuration = activePeriods.reduce(0) { $0 + $1.duration }
-            
+
             let stepsInActiveWorkout = calculateStepsInActivePeriods(
                 stepSamples: allStepSamples,
                 activePeriods: activePeriods
             )
-            
+
             guard stepsInActiveWorkout > 0, totalActiveDuration > 0 else {
                 return nil
             }
-            
+
             // Calculate cadence as steps per minute
             let activeMinutes = totalActiveDuration / 60.0
             let cadence = stepsInActiveWorkout / activeMinutes
-            
+
             return cadence
-            
+
         } catch {
             return nil
         }
     }
-    
+
     /// Calculates steps that occurred during active workout periods, avoiding double-counting
     /// - Parameters:
     ///   - stepSamples: All step count samples
@@ -391,43 +392,43 @@ extension WorkoutManager {
     private func calculateStepsInActivePeriods(stepSamples: [HKQuantitySample], activePeriods: [DateInterval]) -> Double {
         var totalSteps: Double = 0
         var processedTimeRanges: [DateInterval] = []
-        
+
         for activePeriod in activePeriods {
             // Find step samples that overlap with this active period
             let overlappingSamples = stepSamples.filter { sample in
                 let sampleInterval = DateInterval(start: sample.startDate, end: sample.endDate)
                 return sampleInterval.intersects(activePeriod)
             }
-            
+
             for sample in overlappingSamples {
                 let sampleInterval = DateInterval(start: sample.startDate, end: sample.endDate)
                 let intersection = activePeriod.intersection(with: sampleInterval)
-                
+
                 if let intersection = intersection {
                     // Check if we've already processed this time range
                     let alreadyProcessed = processedTimeRanges.contains { processed in
                         processed.intersects(intersection)
                     }
-                    
+
                     if !alreadyProcessed {
                         // Calculate proportion of steps for this intersection
                         let sampleDuration = sampleInterval.duration
                         let intersectionDuration = intersection.duration
                         let proportion = intersectionDuration / sampleDuration
-                        
+
                         let sampleSteps = sample.quantity.doubleValue(for: HKUnit.count())
                         let proportionalSteps = sampleSteps * proportion
-                        
+
                         totalSteps += proportionalSteps
                         processedTimeRanges.append(intersection)
                     }
                 }
             }
         }
-        
+
         return totalSteps
     }
-    
+
     /// Gets active workout periods excluding paused time
     /// - Parameter workout: The HKWorkout to analyze
     /// - Returns: Array of active time periods
@@ -436,17 +437,17 @@ extension WorkoutManager {
             // No pause/resume events, return entire workout duration
             return [DateInterval(start: workout.startDate, end: workout.endDate)]
         }
-        
+
         var activePeriods: [DateInterval] = []
         var currentStart = workout.startDate
         var isPaused = false
-        
+
         // Sort events by start time
         let sortedEvents = events.sorted { $0.dateInterval.start < $1.dateInterval.start }
-        
+
         for event in sortedEvents {
             let eventTime = event.dateInterval.start
-            
+
             if event.type == .pause && !isPaused {
                 // End current active period
                 activePeriods.append(DateInterval(start: currentStart, end: eventTime))
@@ -457,15 +458,15 @@ extension WorkoutManager {
                 isPaused = false
             }
         }
-        
+
         // Add final active period if not paused at the end
         if !isPaused && currentStart < workout.endDate {
             activePeriods.append(DateInterval(start: currentStart, end: workout.endDate))
         }
-        
+
         return activePeriods
     }
-    
+
     /// Fetches step count samples for a specific time period
     /// - Parameters:
     ///   - startDate: Start of the time period
@@ -475,15 +476,15 @@ extension WorkoutManager {
         guard let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             throw WorkoutError.failedQuery
         }
-        
+
         let predicate = HKQuery.predicateForSamples(
             withStart: startDate,
             end: endDate,
             options: .strictStartDate
         )
-        
+
         let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
                 sampleType: stepCountType,
@@ -502,23 +503,23 @@ extension WorkoutManager {
             self.healthStore.execute(query)
         }
     }
-    
+
     func fetchWorkoutAdditionalData(from workout: HKWorkout) async -> WorkoutDetails? {
         do {
             async let cadence = fetchRunningCadence(from: workout)
-            
+
             async let locationSamples = fetchWorkoutRoute(from: workout)
             async let heartRateSamples = fetchSamplesForUnit(from: workout, for: .heartRate)
             async let distanceSamples = fetchSamplesForUnit(
                 from: workout,
                 for: getDistanceType(for: workout.workoutActivityType)
             )
-            
+
             let (cd, ls, hs, ds) = try await (cadence, locationSamples, heartRateSamples, distanceSamples)
-            
+
             // Generate running splits using distance samples with optional elevation data from locations
             let splits = generateRunningSplits(from: ds, locations: ls, for: workout)
-            
+
             return WorkoutDetails(
                 route: ls,
                 cadence: cd ?? 0,
@@ -531,7 +532,7 @@ extension WorkoutManager {
             return nil
         }
     }
-    
+
     /// Process a batch of workouts to get heart rate and calorie data
     /// - Parameters:
     ///     - workouts: the batch of workouts to process
@@ -540,24 +541,24 @@ extension WorkoutManager {
     private func batchProcessWorkouts(_ workouts: [HKWorkout]) async -> [Workout] {
         // Group workouts by type for efficient processing
         let groupedWorkouts = Dictionary(grouping: workouts) { $0.workoutActivityType }
-        
+
         return await withTaskGroup(of: [Workout].self) { group in
             for (activityType, workoutsOfType) in groupedWorkouts {
                 group.addTask {
                     await self.processWorkoutBatch(workoutsOfType, activityType: activityType)
                 }
             }
-            
+
             var allProcessed: [Workout] = []
             for await batch in group {
                 allProcessed.append(contentsOf: batch)
             }
-            
+
             // Sort by date to maintain order
             return allProcessed.sorted { $0.workout.startDate > $1.workout.startDate }
         }
     }
-    
+
     /// Processes a workout batch by confirming the activity type and fetching the statistics for the workout batch
     /// - Parameters:
     ///     - workouts: the batch of workouts to process
@@ -567,7 +568,7 @@ extension WorkoutManager {
         guard let sport = sportFromActivityType(activity: activityType) else {
             return []
         }
-        
+
         return workouts.compactMap { workout -> Workout? in
             return Workout(
                 type: sport,
@@ -575,7 +576,7 @@ extension WorkoutManager {
             )
         }
     }
-    
+
     /// Queries HealthKit samples data from workout for a specific unit type
     /// - Parameters:
     ///     - workout: the workout we need to pull data for
@@ -584,10 +585,10 @@ extension WorkoutManager {
     /// - Returns: an array of HealthKit quantity samples
     private func fetchSamplesForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> [HKQuantitySample] {
         guard let type = HKQuantityType.quantityType(forIdentifier: quantityType) else { return [] }
-        
+
         let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
         var predicate = HKQuery.predicateForObjects(from: workout)
-        
+
         if quantityType == .heartRate {
             predicate = HKQuery.predicateForSamples(
                 withStart: workout.startDate,
@@ -612,7 +613,7 @@ extension WorkoutManager {
             self.healthStore.execute(query)
         }
     }
-    
+
     /// Queries HealthKit average statistic for a workout unit
     /// - Parameters:
     ///     - workout: the workout we are fetching the unit average from
@@ -622,9 +623,9 @@ extension WorkoutManager {
     /// - Returns: a double expressing the average of the statistic
     private func fetchAverageStatistic(from workout: HKWorkout, type: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double? {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: type) else { return nil }
-        
+
         let predicate = HKQuery.predicateForObjects(from: workout)
-        
+
         // Determine the correct statistics option based on quantity type
         let statisticsOption: HKStatisticsOptions = {
             switch type {
@@ -639,7 +640,7 @@ extension WorkoutManager {
                  .bloodPressureSystolic,
                  .bloodPressureDiastolic:
                 return .discreteAverage
-                
+
             // Cumulative types - use sum
             case .activeEnergyBurned,
                  .basalEnergyBurned,
@@ -650,13 +651,13 @@ extension WorkoutManager {
                  .flightsClimbed,
                  .swimmingStrokeCount:
                 return .cumulativeSum
-                
+
             default:
                 // For unknown types, check if it's cumulative
                 return quantityType.aggregationStyle == .cumulative ? .cumulativeSum : .discreteAverage
             }
         }()
-        
+
         return await withCheckedContinuation { continuation in
             let query = HKStatisticsQuery(
                 quantityType: quantityType,
@@ -682,8 +683,9 @@ extension WorkoutManager {
                     continuation.resume(returning: nil)
                 }
             }
-            
+
             self.healthStore.execute(query)
         }
     }
 }
+*/

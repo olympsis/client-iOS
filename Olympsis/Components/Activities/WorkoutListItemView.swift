@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import HealthKit
+// import HealthKit
 
 struct WorkoutListItem: View {
     
@@ -194,6 +194,8 @@ struct WorkoutListItem: View {
     }
 }
 
+/* HealthKit disabled - Preview requires HKWorkout
 #Preview {
     WorkoutListItem(workout: Workout(type: .soccer, workout: HKWorkout(activityType: .running, start: Calendar.current.date(byAdding: .second, value: -391, to: Date())!, end: Date())))
 }
+*/

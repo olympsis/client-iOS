@@ -6,12 +6,13 @@
 //
 
 import os
-import HealthKit
+// import HealthKit
 import Foundation
 import CoreLocation
 
+/* HealthKit disabled - entire file depends on HealthKit types (HKWorkout, HKQuery, HKSampleQuery, HKQuantityType, HKUnit, etc.)
 extension WorkoutManager {
-    
+
     func fetchWorkoutsHistory(in datePredicate: String?) async {
         guard checkAuthorizationStatus() else {
             return
@@ -27,7 +28,7 @@ extension WorkoutManager {
             self.viewState = .pending
         }
     }
-    
+
     func fetchAllWorkoutHistory(in datePredicate: String?) async -> [Workout] {
         var workouts = [Workout]()
         await withTaskGroup(of: [Workout].self) { group in
@@ -36,29 +37,29 @@ extension WorkoutManager {
                     return await self.fetchWorkoutHistory(for: sport.workoutActivityType, in: datePredicate)
                 }
             }
-            
+
             for await results in group {
                 workouts.append(contentsOf: results)
             }
         }
         return workouts
     }
-    
+
     func fetchWorkoutHistory(for workoutType: HKWorkoutActivityType, in datePredicate: String?) async -> [Workout] {
         let workoutPredicate = HKQuery.predicateForWorkouts(with: workoutType)
-        
+
         var combinations = [NSPredicate]()
         combinations.append(workoutPredicate)
         if let datePredicate {
             combinations.append(NSPredicate(format: datePredicate))
         }
-        
+
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: combinations)
 
         do {
             let workouts = try await fetchWorkouts(type: workoutType, predicate: predicate)
             var _workouts: [Workout] = []
-            
+
             await withTaskGroup(of: Workout?.self) { group in
                 for workout in workouts {
                     group.addTask {
@@ -66,7 +67,7 @@ extension WorkoutManager {
                             guard let activity = sportFromActivityType(activity: workoutType) else {
                                 throw WorkoutError.failedQuery
                             }
-                            
+
                             return Workout(
                                 type: activity,
                                 workout: workout
@@ -84,7 +85,7 @@ extension WorkoutManager {
                     }
                 }
             }
-            
+
             return _workouts
         } catch HKError.errorNoData {
             log.error("No data")
@@ -105,10 +106,10 @@ extension WorkoutManager {
         } catch {
             log.error("Failed to load weekly run history: \(error.localizedDescription)")
         }
-        
+
         return []
     }
-    
+
     func fetchWorkouts(type: HKWorkoutActivityType, predicate: NSPredicate) async throws -> [HKWorkout] {
         let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
         return try await withCheckedThrowingContinuation { continuation in
@@ -128,12 +129,12 @@ extension WorkoutManager {
             healthStore.execute(query)
         }
     }
-    
+
     func fetchAverageForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> Double {
         let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
         let type = HKQuantityType.quantityType(forIdentifier: quantityType)!
         let predicate = HKQuery.predicateForObjects(from: workout)
-        
+
         let unit = {
             if quantityType == .heartRate {
                 return HKUnit.count().unitDivided(by: HKUnit.minute())
@@ -147,7 +148,7 @@ extension WorkoutManager {
                 }
             }
         }()
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [dateSortDescriptor]) { (query, results, error) in
                 if let samples = results as? [HKQuantitySample] {
@@ -168,12 +169,12 @@ extension WorkoutManager {
             self.healthStore.execute(query)
         }
     }
-    
+
     func fetchSamplesForUnit(from workout: HKWorkout, for quantityType: HKQuantityTypeIdentifier) async throws -> [HKQuantitySample] {
         let dateSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
         let type = HKQuantityType.quantityType(forIdentifier: quantityType)!
         let predicate = HKQuery.predicateForObjects(from: workout)
-        
+
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(sampleType: type,
                                       predicate: predicate,
@@ -190,18 +191,18 @@ extension WorkoutManager {
             self.healthStore.execute(query)
         }
     }
-    
+
     func fetchWorkoutRoute(from workout: HKWorkout) async throws -> [CLLocation] {
         return try await withCheckedThrowingContinuation { continuation in
             let workoutPredicate = HKQuery.predicateForObjects(from: workout)
-            
+
             let query = HKSampleQuery(sampleType: HKSeriesType.workoutRoute(),
                                       predicate: workoutPredicate,
                                       limit: 0,
                                       sortDescriptors: nil) { (query, results, error) in
                 if let workoutRouteSamples = results as? [HKWorkoutRoute] {
                     var locations: [CLLocation] = []
-                                
+
                     let group = DispatchGroup()
                     for workoutRoute in workoutRouteSamples {
                         group.enter()
@@ -215,7 +216,7 @@ extension WorkoutManager {
                         }
                         self.healthStore.execute(locationQuery)
                     }
-                    
+
                     group.notify(queue: .main) {
                         continuation.resume(returning: locations)
                     }
@@ -229,3 +230,4 @@ extension WorkoutManager {
         }
     }
 }
+*/

@@ -7,7 +7,7 @@
 
 import Charts
 import SwiftUI
-import HealthKit
+// import HealthKit
 
 struct Activities: View {
     

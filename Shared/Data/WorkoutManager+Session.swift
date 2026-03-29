@@ -7,12 +7,12 @@
 
 import os
 import SwiftUI
-import HealthKit
+// import HealthKit
 import CoreLocation
 
-
+/*
 extension WorkoutManager: HKWorkoutSessionDelegate {
-    
+
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
         switch toState {
         case .notStarted:
@@ -41,27 +41,27 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
             Task { @MainActor in
                 do {
                     self.isProcessingWorkout = true
-                    
+
                     #if os(watchOS)
                     try await builder?.endCollection(at: date)
                     let workout = try await self.builder?.finishWorkout()
                     #endif
-                    
+
                     self.workout = workout
                     self.state = .ended
                     self.isProcessingWorkout = false
                     self.showingSummaryView = true
-                    
+
                     self.log.info("Workout state changed -> ENDED")
-                    
+
                     guard let routeBuilder,
                           let workout else {
                         return
                     }
-                    
+
 //                    stopListeningToLocationUpdates()
                     manager.stopUpdatingLocation()
-                    
+
                     try await routeBuilder.finishRoute(with: workout, metadata: [:])
                     log.info("Workout Route finished.")
                 } catch {
@@ -87,15 +87,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
             self.log.error("Workout state changed -> UNKNOWN STATE")
             return
         }
-        
+
         return
     }
-    
+
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: any Error) {
         log.error("Workout session failed: \(error.localizedDescription, privacy: .public)")
         return
     }
-    
+
     #if os(watchOS)
     @MainActor
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
@@ -107,15 +107,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
             updateForStatistics(statistics)
         }
     }
-    
+
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {}
     #endif
-    
+
     func workoutSession(_ workoutSession: HKWorkoutSession,
                                     didDisconnectFromRemoteDeviceWithError error: Error?) {
         log.log("\(#function): \(error)")
     }
-    
+
     /**
      In iOS, the sample app can go into the background and become suspended.
      When suspended, HealthKit gathers the data coming from the remote session.
@@ -140,3 +140,4 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
         }
     }
 }
+*/

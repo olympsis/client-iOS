@@ -7,18 +7,19 @@
 
 import Charts
 import SwiftUI
-import HealthKit
+// import HealthKit
 
 struct WorkoutStatistics: View {
     let workout: Workout
     @Binding var showHeartDetails: Bool
+    /* HealthKit disabled
     private var heartRateChartData: [(Date, Double)] {
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         return workout.heartSamples.map { sample in
             (sample.startDate, sample.quantity.doubleValue(for: heartRateUnit))
         }
     }
-    
+
     private var distanceChartData: [(Date, Double)] {
         let meterUnit = HKUnit.meter()
         var cumulativeDistance: Double = 0
@@ -27,6 +28,10 @@ struct WorkoutStatistics: View {
             return (sample.startDate, cumulativeDistance / 1000) // Convert to kilometers
         }
     }
+    */
+    // Stub replacements while HealthKit is disabled
+    private var heartRateChartData: [(Date, Double)] { [] }
+    private var distanceChartData: [(Date, Double)] { [] }
     
     var body: some View {
         ScrollView {
@@ -168,8 +173,10 @@ struct WorkoutStatistics: View {
     }
 }
 
+/* HealthKit disabled - Preview requires HKWorkout
 #Preview {
     NavigationView {
         WorkoutStatistics(workout: Workout(type: .running, workout: HKWorkout(activityType: .other, start: Date(), end: Date())), showHeartDetails: .constant(false))
     }
 }
+*/

@@ -6,25 +6,30 @@
 //
 
 import SwiftUI
-import HealthKit
+// import HealthKit  // Commented out - HealthKit disabled
 
 struct ActivitySummaryView: View {
-    
+
     @State private var durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .pad
         return formatter
     }()
-    
+
     private var sport: SUPPORTED_SPORTS? {
         return manager.selectedSport
     }
-    
+
+    /* HealthKit disabled - workout property uses HKWorkout
     private var ellapsedTime: Double {
         return Double(manager.workout?.duration ?? 0)
     }
-    
+    */
+    // Placeholder while HealthKit is disabled
+    private var ellapsedTime: Double { return 0 }
+
+    /* HealthKit disabled - uses HKQuantityType and HKUnit
     private var distanceText: Text {
         if manager.unit == UnitLength.kilometers {
             let distance = manager.workout?.statistics(for:
@@ -41,7 +46,11 @@ struct ActivitySummaryView: View {
             return Text("\(distance, specifier: "%.2f") mi")
         }
     }
-    
+    */
+    // Placeholder while HealthKit is disabled
+    private var distanceText: Text { return Text("0.00 mi") }
+
+    /* HealthKit disabled - uses HKQuantityType and HKUnit
     private var averagePaceText: Text {
         let mins = ellapsedTime/60
         if manager.unit == UnitLength.kilometers {
@@ -59,86 +68,97 @@ struct ActivitySummaryView: View {
             return Text("\(mins/distance, specifier: "%.2f") /mi")
         }
     }
-    
+    */
+    // Placeholder while HealthKit is disabled
+    private var averagePaceText: Text { return Text("0.00 /mi") }
+
+    /* HealthKit disabled - uses HKUnit and HKQuantityType
     private var averageHeartRate: Double {
         let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
         return manager.workout?.statistics(for: HKQuantityType.init(.heartRate))?.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
     }
-    
+    */
+    // Placeholder while HealthKit is disabled
+    private var averageHeartRate: Double { return 0 }
+
+    /* HealthKit disabled - uses HKQuantityType
     private var totalEnergyBurned: Double {
         return manager.workout?.statistics(for: HKQuantityType.init(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
     }
-    
+    */
+    // Placeholder while HealthKit is disabled
+    private var totalEnergyBurned: Double { return 0 }
+
     @Environment(\.dismiss) private var dismiss
     @Environment(WorkoutManager.self) private var manager
-    
+
     var body: some View {
         ScrollView {
             VStack {
                 if sport == .running || sport == .walking {
                     RunRoutePolylineView(coordinates: manager.locationPoints.map { $0.coordinate })
                 }
-                
+
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
                         Text("Total Time")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         Text(
                             durationFormatter.string(from: ellapsedTime) ?? ""
                         )
                         .font(.title2)
                         .fontWeight(.semibold)
                     }
-                    
+
                     Image(systemName: "clock")
                         .foregroundStyle(Color.Brand.secondary)
                         .imageScale(.large)
                         .fontWeight(.bold)
                         .padding(.all)
-                    
+
                     Spacer()
                 }
                 .padding(.bottom)
-                
-                
+
+
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Total distance")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         distanceText
                         .font(.title2)
                         .fontWeight(.semibold)
                     }
-                    
+
                     Spacer()
                 }
                 .padding(.bottom)
-                
+
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Avg Pace")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         averagePaceText
                         .font(.title2)
                         .fontWeight(.semibold)
                     }
                     Spacer()
                 }
-                
+
                 .padding(.bottom)
-                
+
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Avg Heart rate")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         HStack {
                             Text(
                                 averageHeartRate.formatted(
@@ -147,22 +167,22 @@ struct ActivitySummaryView: View {
                             )
                             .font(.title2)
                             .fontWeight(.semibold)
-                            
+
                             Image(systemName: "heart.fill")
                                 .foregroundStyle(.red)
                         }
                     }
-                    
+
                     Spacer()
                 }
                 .padding(.bottom)
-                
+
                 HStack(alignment: .bottom) {
                     VStack(alignment: .leading) {
                         Text("Calories Burned")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         Text(
                             Measurement (
                                 value: totalEnergyBurned,
@@ -178,7 +198,7 @@ struct ActivitySummaryView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     }
-                    
+
                     Image(systemName: "flame")
                         .foregroundStyle(.orange)
                         .imageScale(.large)
@@ -186,25 +206,27 @@ struct ActivitySummaryView: View {
                     Spacer()
                 }
                 .padding(.bottom)
-                
+
+                /* HealthKit disabled - ActivityRingsView depends on HKHealthStore
                 HStack() {
                     VStack(alignment: .leading) {
                         Text("Activity Rings")
                             .font(.caption)
                             .textCase(.uppercase)
-                        
+
                         ActivityRingsView(
                             healthStore: manager.healthStore
                         ).frame(width: 50, height: 50)
                     }
-                    
+
                     Spacer()
                 }.padding(.bottom)
-                
+                */
+
             }.scenePadding()
-            
-            
-            
+
+
+
             Button(action: {
                 manager.resetWorkout()
                 dismiss()

@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import HealthKit
-import WorkoutKit
+// import HealthKit
+// import WorkoutKit
 import Foundation
 
 enum ACCOUNT_STATE {
@@ -79,7 +79,7 @@ enum AuthNavigation: String, Hashable {
     case new = "NEW"
     case home = "HOME"
     case permissions = "PERMISSIONS"
-    
+
 }
 
 enum URL_ACTIONS: String {
@@ -87,14 +87,14 @@ enum URL_ACTIONS: String {
     case open_groups = "groups"
     case open_events = "events"
     case open_profile = "profile"
-    
+
     case open_notifications = "open-notifications"
     case open_home_messages = "open-home-messages"
     case open_group_messages = "open-group-messages"
-    
+
     case open_post_view = "open-post-view"
     case open_event_view = "open-event-view"
-    
+
 }
 
 enum ROUTES: Codable, Hashable {
@@ -119,7 +119,7 @@ enum GROUP_ROUTES: Codable, Hashable {
     case newPost
     case newEvent
     case clubMenu
-    
+
     case clubsList(id: String?=nil)
     case clubsMenu
 }
@@ -182,7 +182,7 @@ enum EVENT_STATUS: String {
 // MARK: - Sports
 
 enum SUPPORTED_SPORTS: String, CaseIterable {
-    
+
     case running = "running"
     case walking = "walking"
     case cycling = "cycling"
@@ -198,8 +198,8 @@ enum SUPPORTED_SPORTS: String, CaseIterable {
     case climbing = "climbing"
     case spike = "spike"
     case football = "football"
-    
-    
+
+
     func icon() -> Image {
         switch self {
         case .soccer:
@@ -234,7 +234,7 @@ enum SUPPORTED_SPORTS: String, CaseIterable {
             return Image(systemName: "figure.strengthtraining.traditional")
         }
     }
-    
+
     func getName() -> String {
         switch self {
         case .soccer:
@@ -269,40 +269,10 @@ enum SUPPORTED_SPORTS: String, CaseIterable {
             return "Weights"
         }
     }
-    
-    func getWorkoutActivityType() -> HKWorkoutActivityType {
-        switch self {
-        case .running:
-                .running
-        case .walking:
-                .walking
-        case .cycling:
-                .cycling
-        case .weights:
-                .other
-        case .soccer:
-                .soccer
-        case .volleyball:
-                .volleyball
-        case .basketball:
-                .basketball
-        case .pickleball:
-                .pickleball
-        case .racquetball:
-                .racquetball
-        case .tennis:
-                .tennis
-        case .golf:
-                .golf
-        case .hiking:
-                .hiking
-        case .climbing:
-                .climbing
-        case .spike:
-                .other
-        case .football:
-                .americanFootball
-        }
+
+    /// Stub - returns sport name string since HealthKit (HKWorkoutActivityType) is disabled
+    func getWorkoutActivityType() -> String {
+        return self.rawValue
     }
 }
 
@@ -317,7 +287,7 @@ enum MEMBER_ROLES: String, CaseIterable {
 enum GROUP_TYPE: String, CaseIterable {
     case Club = "club"
     case Organization = "organization"
-    
+
     func toInt() -> Int {
         switch self {
         case .Club:
@@ -352,7 +322,7 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
     case Yes = "yes"
     case Maybe = "maybe"
     case Waitlist = "waitlist"
-    
+
     func toInt() -> Int {
         switch self {
         case .Yes:
@@ -386,7 +356,7 @@ enum EVENT_SKILL_LEVELS: String, CaseIterable {
     case Beginner = "Beginner"
     case Amateur = "Amateur"
     case Expert = "Expert"
-    
+
     func toInt() -> Int {
         switch self {
         case .All:
@@ -624,7 +594,7 @@ enum CompetitionFormats: String, Codable, CaseIterable {
     case bestOf3 = "best_of_3"                      // First to win 2 games
     case bestOf5 = "best_of_5"                      // First to win 3 games
     case winnerStaysOn = "winner_stays_on"          // Winners keep playing, losers rotate out
-    
+
     // Team Formats (Soccer, Basketball, Volleyball, Football, Flag Football, Padel, Pickleball, Badminton, Ping-Pong, Racketball)
     case versus2 = "2v2"
     case versus3 = "3v3"
@@ -636,20 +606,20 @@ enum CompetitionFormats: String, Codable, CaseIterable {
     case versus9 = "9v9"
     case versus10 = "10v10"
     case versus11 = "11v11"
-    
+
     // Individual Sports (Running, Cycling)
     case timeTrial = "time_trial"                   // Athletes race against the clock
-    
+
     // Running
     case sprint = "sprint"                          // Short-distance race (e.g., 100m, 200m)
     case longDistance = "long_distance"             // Longer races (e.g., 5K, 10K, marathon)
     case relay = "relay"                            // Team race with baton passing
-    
+
     // Cycling
     case roadRace = "road_race"                     // Mass-start long-distance race
     case criterium = "criterium"                    // Short circuit, multiple laps
     case stageRace = "stage_race"                   // Multi-day competition (e.g., Tour de France)
-    
+
     // Golf
     case strokePlay = "stroke_play"                 // Total strokes over the round(s) determine the winner
     case matchPlay = "match_play"                   // Head-to-head format, winning holes instead of strokes
@@ -661,7 +631,7 @@ enum CompetitionFormats: String, Codable, CaseIterable {
     case shamble = "shamble"                        // Similar to scramble but players play from the best tee shot
     case modifiedStableford = "modified_stableford" // Variation of Stableford with adjusted point values
     case scratch = "scratch"                        // No handicaps, raw stroke count matters
-    
+
     // Climbing
     case bouldering = "bouldering"                  // Short, difficult climbing routes, no ropes
     case leadClimbing = "lead_climbing"             // Climbing as high as possible on a tall wall
@@ -684,6 +654,7 @@ enum DevicePlatform: String, Codable {
     case web = "web"
 }
 
+/*
 func sportFromActivityType(activity: HKWorkoutActivityType) -> SUPPORTED_SPORTS? {
     switch activity {
     case.americanFootball:
@@ -716,6 +687,7 @@ func sportFromActivityType(activity: HKWorkoutActivityType) -> SUPPORTED_SPORTS?
         return nil
     }
 }
+*/
 
 enum ACTIVITY_PAGES {
     case menu
@@ -729,7 +701,7 @@ enum ACTIVITY_GOALS: CaseIterable {
     case heart_rate
     case pace
     case zone
-    
+
     func toString() -> String {
         switch self {
         case .distance:
@@ -744,7 +716,7 @@ enum ACTIVITY_GOALS: CaseIterable {
             return "Zone"
         }
     }
-    
+
     func toIcon() -> Image {
         switch self {
         case .distance:

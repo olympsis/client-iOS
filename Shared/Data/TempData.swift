@@ -5,7 +5,7 @@
 //  Created by Joel Joseph on 5/26/23.
 //
 
-import HealthKit
+// import HealthKit
 import Foundation
 import CoreLocation
 
@@ -32,7 +32,7 @@ let EVENT_COMMENTS = [
 @MainActor
 let POSTS = [
     Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "It was a great day today", event: nil, images: nil, likes: [Reaction(id: "", userID: "", user: nil, createdAt: Date())], comments: [COMMENTS[0]], externalLink: "https://google.com", isSensitive: true, createdAt: Date(timeIntervalSince1970: TimeInterval(1639364779))),
-    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! 🏃‍♂️💨 Felt great and managed to beat my personal best time!", event: nil, images: [
+    Post(id: UUID().uuidString, type: "post", poster: USER_SNIPPETS[0], body: "Just finished an awesome 10-mile run! Felt great and managed to beat my personal best time!", event: nil, images: [
         "feed-images/9DC9A5CE-073E-4859-949C-9135D740DB85.jpeg",
         "feed-images/E9650FF7-5DE7-4D76-B886-7C3EC422A05E.jpeg",
         "feed-images/5D710804-0CAF-4371-8C88-0879B9FEF9F4.jpeg"
@@ -74,7 +74,7 @@ let CLUBS = [
     ⚠️ LIABILITY ⚠️
     You are responsible for your own injury/risk and medical care (ACL etc)
     You are responsible for any citation if you violate the law (carrying illegal item, creating a fight, parking on a wrong spot etc)
-    You are responsible for any fee if you damage public or private item that doesn’t belong to you (breaking a window etc)
+    You are responsible for any fee if you damage public or private item that doesn't belong to you (breaking a window etc)
     You are responsible for own personal belongings (watch, wallet etc)
     ====
     ♻️ Field Rules ♻️
@@ -247,17 +247,17 @@ let INVITATIONS = [
 
 @MainActor
 let POST_REPORTS = [
-    PostReport(id: UUID().uuidString, post: POSTS[0], type: "Sensitive Content", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
+    PostReport(id: UUID().uuidString, post: POSTS[0], type: "Sensitive Content", notes: "It's pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 @MainActor
 let EVENT_REPORTS = [
-    EventReport(id: UUID().uuidString, type: "Other Issue", event: EVENTS[0], notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
+    EventReport(id: UUID().uuidString, type: "Other Issue", event: EVENTS[0], notes: "It's pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 @MainActor
 let MEMBER_REPORTS = [
-    MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It’s pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
+    MemberReport(id: UUID().uuidString, member: USER_SNIPPETS[0], type: "Other Issue", notes: "It's pretty crazy what he posted here. We definitely should take this down before more people see this.", status: "pending", createdAt: Date(timeIntervalSince1970: TimeInterval(1711060275)))
 ]
 
 @MainActor
@@ -267,19 +267,19 @@ let SHARING_TEMPLATES = [
         timePosition: .bottom_leading,
         venuePosition: .bottom_leading
     ),
-    
+
     EventSharingTemplate(
         titlePosition: .bottom_leading,
         timePosition: .center,
         venuePosition: .bottom_leading
     ),
-    
+
     EventSharingTemplate(
         titlePosition: .center,
         timePosition: .center,
         venuePosition: .center
     ),
-    
+
     EventSharingTemplate(
         titlePosition: .bottom_center,
         timePosition: .center,
@@ -289,13 +289,13 @@ let SHARING_TEMPLATES = [
 
 @MainActor
 let SPORTS_TEMP = [
-    Sport(name: "⚽️ soccer", images: []),
-    Sport(name: "🏀 basketball", images: []),
-    Sport(name: "🏈 football", images: []),
-    Sport(name: "🏊‍♂️ swimming", images: []),
-    Sport(name: "🏃‍♂️ running", images: []),
-    Sport(name: "🏋️‍♂️ strength", images: []),
-    Sport(name: "🧘‍♂️ yoga", images: [])
+    Sport(name: "soccer", images: []),
+    Sport(name: "basketball", images: []),
+    Sport(name: "football", images: []),
+    Sport(name: "swimming", images: []),
+    Sport(name: "running", images: []),
+    Sport(name: "strength", images: []),
+    Sport(name: "yoga", images: [])
 ]
 
 @MainActor
@@ -307,11 +307,10 @@ let TAGS_TEMP = [
     Tag(name: "open-to-all"),
 ]
 
+@MainActor
 let WORKOUTS = [
     Workout(
         type: .soccer,
-        workout: HKWorkout(activityType: .other, start: Date(), end: Date())
+        workout: WorkoutData(startDate: Date(), endDate: Date())
     )
 ]
-
-

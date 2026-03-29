@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
-import HealthKit
+// import HealthKit  // Commented out - HealthKit disabled
 import Foundation
 
+/* HealthKit disabled - entire struct depends on HKHealthStore, HKQuery, HKActivitySummaryQuery
 struct ActivityRingsView: WKInterfaceObjectRepresentable {
     let healthStore: HKHealthStore
 
@@ -36,3 +37,4 @@ struct ActivityRingsView: WKInterfaceObjectRepresentable {
 
     }
 }
+End of commented out HealthKit code */
