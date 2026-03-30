@@ -203,17 +203,20 @@ struct ViewContainer: View {
         })
         .task {
             session.state = .loading
-            
+
             // Sets up navigation handler for notifications
             NotificationManager.shared.navigationHandler = { url in
                 if let route = handleInternalURL(url) {
                     handleRoute(route)
                 }
             }
-            
+
+            // Fetch fresh user data and notifications from the server
+            await initializeUpCheckInTasks()
+
             // GPS Location updates fallback
             setUpLocationFallback()
-            
+
             // Onboarding
             handleOnboardingSheet()
         }

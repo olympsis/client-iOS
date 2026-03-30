@@ -88,6 +88,9 @@ struct AuthView: View {
                                             currentView = .info
                                         }
                                     } else if resp == USER_STATUS.returning {
+                                        // Load cached user into session immediately so
+                                        // profile data is available before ViewContainer appears
+                                        session.user = cacheService.fetchUser()
                                         withAnimation {
                                             authStatus = .authenticated
                                         }
