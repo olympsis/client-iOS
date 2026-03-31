@@ -35,6 +35,8 @@ struct AuthUserInfo: View {
     
     @StateObject private var viewModel = UsernameSearchViewModel()
     
+    private let cacheService = CacheService()
+    
     private let log = Logger(
         subsystem: "com.olympsis.client", category: "user_info_view"
     )
@@ -133,8 +135,17 @@ struct AuthUserInfo: View {
                 .trimmingCharacters(in: .newlines)
                 .trimmingCharacters(in: .illegalCharacters)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-            _ = await session.userObserver.UpdateUserData(update: dao)
             
+            guard let user = await session.userObserver.UpdateUserData(update: dao) else {
+                state = .failure
+                return
+            }
+            
+            // Cache user data and load it into the session
+            session.user = user
+            cacheService.cacheUser(user: user)
+            
+            // Navigate to the sports view
             state = .success
             currentView = .sports
         }

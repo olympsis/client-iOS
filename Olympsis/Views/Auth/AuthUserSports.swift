@@ -49,7 +49,12 @@ struct AuthUserSports: View {
                 state = .failure
                 return
             }
+            
+            // Store user into cache and update session store
+            session.user = updates
             cacheService.cacheUser(user: updates)
+            
+            // Move user to the full application
             authType = nil
             authStatus = .authenticated
         }
