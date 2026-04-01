@@ -146,6 +146,9 @@ class SessionStore {
                             self.authStatus = .unauthenticated
                             return
                         }
+                        // Avoid redundant write — re-setting .authenticated
+                        // causes SwiftUI to recreate ViewContainer mid-checkIn
+                        guard self.authStatus != .authenticated else { return }
                         self.authStatus = .authenticated
                         return
                     }
