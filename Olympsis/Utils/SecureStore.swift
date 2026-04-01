@@ -10,7 +10,7 @@ import Foundation
 
 class SecureStore {
     
-    static let account = "olmypsis"
+    static let account = "olympsis"
     static let server = "api.olympsis.com"
     private let log = Logger(subsystem: "com.olympsis.client", category: "secure_store")
     
