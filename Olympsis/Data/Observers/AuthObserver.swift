@@ -66,7 +66,7 @@ class AuthObserver: ObservableObject {
             if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
                 guard let nonce = nonce else {
                     log.error("Invalid state: A login callback was received, but no login request was sent.")
-                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                    return .unknown
                 }
 
                 if let _ = appleIdCredential.email, let _ = appleIdCredential.fullName {

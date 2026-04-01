@@ -5,6 +5,7 @@
 //  Created by Joel on 12/26/23.
 //
 
+import os
 import CryptoKit
 import Foundation
 
@@ -14,15 +15,15 @@ func randomNonceString(length: Int = 32) -> String {
     var randomBytes = [UInt8](repeating: 0, count: length)
     let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
     if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
+        Logger(subsystem: "com.olympsis.client", category: "generic")
+            .error("SecRandomCopyBytes failed with OSStatus \(errorCode), falling back to UUID")
+        return UUID().uuidString
     }
 
-        let charset: [Character] =
+    let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
 
-        let nonce = randomBytes.map { byte in
+    let nonce = randomBytes.map { byte in
         // Pick a random character from the set, wrapping around if needed.
         charset[Int(byte) % charset.count]
     }

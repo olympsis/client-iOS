@@ -20,9 +20,7 @@ struct ViewContainer: View {
     @State private var groupRouter = GroupRouter()
     @State private var eventRouter = EventRouter()
     @State private var profileRouter = ProfileRouter()
-    
-    @State private var locationTask: Task<Void, Never>? = nil
-    
+
     @Environment(SessionStore.self) private var session
 
     /// Handles routing to the various tabs in the navigation bar
@@ -65,36 +63,8 @@ struct ViewContainer: View {
                 await session.getNotifications()
             }
             
-            // Load workouts if user has authorized us
-//            if session.workoutManager.checkAuthorizationStatus() {
-//                group.addTask {
-//                    _ = await session.workoutManager.loadWorkouts()
-//                }
-//            }
         }
     }
-    
-    /// Sets up a task that waits about 1 seconds before triggering
-    /// - Makes sure that we are still waiting on the location updates
-    /// - If the user has a hometown we use that fallback
-    /// - If not then we use the generic location fallback
-//    private func setUpLocationFallback() {
-//        locationTask = Task {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-//                Task { @MainActor in
-//                    guard session.state == .loading else { return }
-//                    guard let hometown = session.user?.hometown else {
-////                        await session.getNearbyData(location: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988))
-//                        session.state = .success
-//                        return
-//                    }
-//                    
-////                    await session.getNearbyData(location: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]))
-//                    session.state = .success
-//                }
-//            }
-//        }
-//    }
     
     /// If the user hasn't onboarded this will trigger the onboarding sheet to show.
     private func handleOnboardingSheet() {
@@ -187,20 +157,6 @@ struct ViewContainer: View {
             handleRoute(route)
         })
         .notificationSystem(manager: NotificationManager.shared)
-//        .onReceive(LocationManager.shared.location.publisher, perform: { location in
-//            // Triggered on any signification location changes update
-//            // We cancel the previously set location task and use our recent location
-//            guard session.state == .loading else { return }
-//            
-//            locationTask?.cancel()
-//            Task { @MainActor in
-//                // Will want to add saved added sports here later
-////                guard let user = session.user else { return }
-////                await session.getNearbyData(location: location, selectedSports: user.sports)
-//                
-//                session.state = .success
-//            }
-//        })
         .task {
             session.state = .loading
 
@@ -213,9 +169,6 @@ struct ViewContainer: View {
 
             // Fetch fresh user data and notifications from the server
             await initializeUpCheckInTasks()
-
-            // GPS Location updates fallback
-//            setUpLocationFallback()
 
             // Onboarding
             handleOnboardingSheet()

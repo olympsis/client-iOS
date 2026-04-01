@@ -284,11 +284,6 @@ class SessionStore {
     
     func getNotifications() async {
         self.notifications = []
-//        do {
-//            self.notifications = try await notificationService.GetNotifications().notifications
-//        } catch {
-//            log.error("Failed to get notifications. Error: \(error)")
-//        }
     }
     
     /// We want to dynamically fetch the clubs and organizations for each event
