@@ -24,6 +24,7 @@ enum AUTH_STATUS: String, CaseIterable {
     case not_finished
     case authenticated
     case unauthenticated
+    case fatal_error
 }
 
 enum CONNECTION_STATE {

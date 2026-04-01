@@ -33,6 +33,9 @@ struct OlympsisApp: App {
             case .unknown, .none:
                 LaunchScreen()
                     .environment(sessionStore)
+            case .fatal_error:
+                FatalScreen()
+                    .environment(sessionStore)
             case .authenticated:
                 ViewContainer()
                     .environment(sessionStore)

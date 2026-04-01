@@ -202,9 +202,9 @@ class ChatObserver: ObservableObject {
                   return msg
                 }
             case .none:
-                fatalError("Did not recieve string or data from socket.")
+                log.error("Did not recieve string or data from socket.")
             @unknown default:
-                fatalError("Did not recieve string or data from socket.")
+                log.error("Did not recieve string or data from socket.")
             }
         } catch {
             log.error("RecieveError: \(error.localizedDescription)")

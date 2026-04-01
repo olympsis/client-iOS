@@ -387,6 +387,7 @@
 		5DD751C22D60217A000B0640 /* NewEventParticipantsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */; };
 		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
 		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
+		5DD7A4C32F7CC08700A8C48C /* FatalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
 		5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6F2C41095600793FEB /* Events.xcstrings */; };
@@ -970,6 +971,7 @@
 		5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventParticipantsSettings.swift; sourceTree = "<group>"; };
 		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
+		5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalScreen.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
@@ -1897,6 +1899,7 @@
 				9A8FF0C028BB198C00DE4CF8 /* Auth */,
 				9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */,
 				5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */,
+				5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2708,6 +2711,7 @@
 				5D2F199E2C12CB1200D98222 /* FullImageViewer.swift in Sources */,
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
+				5DD7A4C32F7CC08700A8C48C /* FatalScreen.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				5DCAEA332B01A87E00B9C22A /* EventLevelView.swift in Sources */,
 				5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */,

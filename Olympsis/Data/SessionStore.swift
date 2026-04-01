@@ -122,9 +122,7 @@ class SessionStore {
                 tags = config.tags
                 sports = config.sports
             } catch {
-                #if !targetEnvironment(simulator)
-                fatalError("Failed to fetch application config. Error: \(error)")
-                #endif
+                self.authStatus = .fatal_error
             }
         }
     }
