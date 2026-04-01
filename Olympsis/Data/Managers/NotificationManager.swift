@@ -153,8 +153,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func checkAuthorizationStatus() async throws -> Bool {
         let status =  await center.notificationSettings()
         guard (status.authorizationStatus == .authorized) ||
-                (status.authorizationStatus == .provisional) ||
-                (status.authorizationStatus == .denied) else { return false }
+                (status.authorizationStatus == .provisional) else { return false }
         return true
     }
     
