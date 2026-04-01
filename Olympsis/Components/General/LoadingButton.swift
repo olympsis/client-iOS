@@ -9,11 +9,11 @@ import SwiftUI
 
 struct LoadingButton: View {
     
-    @State var text: String?
-    @State var image: Image?
-    @State var width: CGFloat = 150
-    @State var height: CGFloat = 40
-    @State var color: Color = Color.Brand.primary
+    var text: String?
+    var image: Image?
+    var width: CGFloat = 150
+    var height: CGFloat = 40
+    var color: Color = Color.Brand.primary
     
     @Binding var status: LOADING_STATE
     
@@ -21,18 +21,13 @@ struct LoadingButton: View {
         Group {
             if #available (iOS 26.0, *) {
                 if (self.status == .loading) {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                            .tint(.white)
-                            .frame(width: height, height: height)
-                            .glassEffect(.regular.tint(Color.Brand.primary), in: .rect(cornerRadius: 10))
-                        Spacer()
-                    }
+                    ProgressView()
+                        .tint(.white)
+                        .frame(width: height, height: height)
+                        .glassEffect(.regular.tint(Color.Brand.primary), in: .rect(cornerRadius: 10))
                 } else if (self.status == .pending) {
                     if (image == nil) {
                         HStack{
-                            Spacer()
                             Text(text ?? "")
                                 .italic()
                                 .font(.title3)
@@ -40,9 +35,8 @@ struct LoadingButton: View {
                                 .textCase(.uppercase)
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
-                            Spacer()
                         }
-                        .frame(minWidth: width)
+                        .frame(minWidth: width, maxWidth: .infinity)
                         .frame(height: height)
                         .glassEffect(.regular.tint(color).interactive())
                     } else {
@@ -52,28 +46,19 @@ struct LoadingButton: View {
                             .glassEffect(.regular.tint(color).interactive(), in: .rect(cornerRadius: 10))
                     }
                 } else if (self.status == .success) {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "checkmark")
-                            .imageScale(.large)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(width: height, height: height)
-                            .glassEffect(.regular.tint(.green), in: .rect(cornerRadius: 10))
-                        Spacer()
-                    }
-                       
+                    Image(systemName: "checkmark")
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(width: height, height: height)
+                        .glassEffect(.regular.tint(.green), in: .rect(cornerRadius: 10))
                 } else if (self.status == .failure) {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "xmark")
-                            .imageScale(.large)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(width: height, height: height)
-                            .glassEffect(.regular.tint(.red), in: .rect(cornerRadius: 10))
-                        Spacer()
-                    }
+                    Image(systemName: "xmark")
+                        .imageScale(.large)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(width: height, height: height)
+                        .glassEffect(.regular.tint(.red), in: .rect(cornerRadius: 10))
                 }
             } else {
                 if (self.status == .loading) {
@@ -96,7 +81,9 @@ struct LoadingButton: View {
                                 .textCase(.uppercase)
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
-                        }.frame(height: height)
+                        }
+                        .frame(minWidth: width, maxWidth: .infinity)
+                        .frame(height: height)
                     } else {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
