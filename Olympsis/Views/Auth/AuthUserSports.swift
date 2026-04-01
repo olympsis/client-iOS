@@ -45,7 +45,7 @@ struct AuthUserSports: View {
             state = .loading
             let dao = UserDao(sports: selectedSports.map { $0.name.components(separatedBy: " ")[1] })
             
-            guard let updates = await session.userObserver.UpdateUserData(update: dao) else {
+            guard let updates = await session.userObserver.updateUserData(update: dao) else {
                 state = .failure
                 return
             }

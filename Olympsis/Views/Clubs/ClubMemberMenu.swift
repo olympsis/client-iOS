@@ -47,7 +47,7 @@ struct ClubMemberMenu: View {
             blockedList.removeAll(where: { $0 == memberUID })
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let resp = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             isBlocked = false

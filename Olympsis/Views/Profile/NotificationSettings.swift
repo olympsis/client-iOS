@@ -52,7 +52,7 @@ struct NotificationSettings: View {
         
         let dao = UserDao(notificationPreference: update)
         isUpdating = true
-        guard let usr = await session.userObserver.UpdateUserData(update: dao) else {
+        guard let usr = await session.userObserver.updateUserData(update: dao) else {
             isUpdating = false
             return
         }

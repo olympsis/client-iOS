@@ -166,7 +166,7 @@ struct ViewContainer: View {
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {
                 session.user?.hasOnboarded = true
-                _ = await session.userObserver.UpdateUserData(update: UserDao(hasOnboarded: true))
+                _ = await session.userObserver.updateUserData(update: UserDao(hasOnboarded: true))
             }
         }, content: {
             Onboarding()

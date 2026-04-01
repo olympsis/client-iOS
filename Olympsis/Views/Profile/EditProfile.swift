@@ -73,7 +73,7 @@ struct EditProfile: View {
             }
 
             let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
-            guard let res = await userObserver.UpdateUserData(update: update) else {
+            guard let res = await userObserver.updateUserData(update: update) else {
                 status = .failure
                 return
             }
@@ -107,7 +107,7 @@ struct EditProfile: View {
 
         // update user data
         let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
-        guard let resp = await userObserver.UpdateUserData(update: update) else {
+        guard let resp = await userObserver.updateUserData(update: update) else {
             status = .failure
             return
         }

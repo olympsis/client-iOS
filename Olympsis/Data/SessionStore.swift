@@ -187,7 +187,7 @@ class SessionStore {
             guard let user = cacheService.fetchUser(),
                   var devices = user.notificationDevices else {
                 let dao = UserDao(notificationDevices: [device])
-                guard let user = await userObserver.UpdateUserData(update: dao) else {
+                guard let user = await userObserver.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -200,7 +200,7 @@ class SessionStore {
             guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
                 devices.append(device)
                 let dao = UserDao(notificationDevices: devices)
-                guard let user = await userObserver.UpdateUserData(update: dao) else {
+                guard let user = await userObserver.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -217,7 +217,7 @@ class SessionStore {
             devices[idx].token = dToken
             devices[idx].updatedAt = Date()
             let dao = UserDao(notificationDevices: devices)
-            guard let user = await userObserver.UpdateUserData(update: dao) else {
+            guard let user = await userObserver.updateUserData(update: dao) else {
                 log.error("Failed to update user with new device token.")
                 return
             }
@@ -235,7 +235,7 @@ class SessionStore {
         orgs = []
         
         do {
-            guard let resp = try await userObserver.CheckIn() else {
+            guard let resp = try await userObserver.checkIn() else {
                 return
             }
             if let usr = resp.user {
@@ -289,41 +289,6 @@ class SessionStore {
 //        } catch {
 //            log.error("Failed to get notifications. Error: \(error)")
 //        }
-    }
-    
-    func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
-        guard let user = self.user,
-              var sports = user.sports else {
-            return
-        }
-        
-        // selected sports in map view
-        if let sSports = selectedSports {
-            sports = sSports
-        }
-        
-        let sportsJoined = sports.joined(separator: ",")
-        
-        // convert radius to Int
-        var radius: Int {
-            guard let radius = self.radius else {
-                return 17000
-            }
-            return Int(radius)
-        }
-        guard let resp = await self.eventObserver.location(
-            longitude: location.longitude,
-            latitude: location.latitude,
-            radius: radius,
-            sports: sportsJoined) else {
-            return
-        }
-        
-        await MainActor.run {
-            self.venues = resp.venues ?? [Venue]()
-            resp.venues?.forEach { self.venues.append($0) }
-            resp.events?.forEach { self.events.insert($0) }
-        }
     }
     
     /// We want to dynamically fetch the clubs and organizations for each event

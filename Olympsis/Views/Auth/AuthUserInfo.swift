@@ -136,7 +136,7 @@ struct AuthUserInfo: View {
                 .trimmingCharacters(in: .illegalCharacters)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             
-            guard let user = await session.userObserver.UpdateUserData(update: dao) else {
+            guard let user = await session.userObserver.updateUserData(update: dao) else {
                 state = .failure
                 return
             }
@@ -183,7 +183,7 @@ struct AuthUserInfo: View {
                 return false
             }
             
-            let available = try await self.session.userObserver.UsernameAvailability(name: viewModel.debouncedSearchText)
+            let available = try await self.session.userObserver.usernameAvailability(name: viewModel.debouncedSearchText)
             guard available == true else {
                 handleUsernameStatus(.unavailable)
                 return false

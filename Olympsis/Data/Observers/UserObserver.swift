@@ -22,19 +22,19 @@ class UserObserver: ObservableObject {
         userService = UserService()
     }
     
-    func UsernameAvailability(name: String) async throws -> Bool {
+    func usernameAvailability(name: String) async throws -> Bool {
         let response = try await userService.UserNameAvailability(name: name)
         let object = try decoder.decode(UsernameAvailabilityResponse.self, from: response)
         return object.isAvailable
     }
     
-    func GetFriendRequests() async throws -> [FriendRequest]? {
+    func getFriendRequests() async throws -> [FriendRequest]? {
         let (data,_) = try await userService.GetFriendRequests()
         let object = try decoder.decode(FriendRequests.self, from: data)
         return object.requests
     }
     
-    func UpdateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> Friend? {
+    func updateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> Friend? {
         let (data,_) = try await userService.UpdateFriendRequest(id: id, dao: dao)
         let object = try decoder.decode(Friend.self, from: data)
         return object
@@ -46,7 +46,7 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func GetUserData() async throws -> User {
+    func getUserData() async throws -> User {
         let (data, resp) = try await userService.GetUserData()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             throw UserObserverError.NotFound
@@ -56,7 +56,7 @@ class UserObserver: ObservableObject {
     }
     
     // have this return a bool if status 200
-    func UpdateUserData(update: UserDao) async -> User? {
+    func updateUserData(update: UserDao) async -> User? {
         do {
             let (data, resp) = try await userService.UpdateUserData(update: update)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
@@ -69,7 +69,7 @@ class UserObserver: ObservableObject {
         }
     }
     
-    func SearchUsersByUsername(username: String) async throws -> [User] {
+    func searchUsersByUsername(username: String) async throws -> [User] {
         let (data, resp) = try await userService.SearchUsersByUsername(username: username)
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             return [User]()
@@ -87,7 +87,7 @@ class UserObserver: ObservableObject {
         return object
     }
     
-    func GetOrganizationInvitations() async throws -> [Invitation] {
+    func getOrganizationInvitations() async throws -> [Invitation] {
         let (data, resp) = try await userService.GetOrganizationInvitations()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             return [Invitation]()
@@ -96,7 +96,7 @@ class UserObserver: ObservableObject {
         return object.invitations
     }
     
-    func CheckIn() async throws -> CheckIn? {
+    func checkIn() async throws -> CheckIn? {
         let (data, resp) = try await userService.CheckIn()
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
             if ((resp as? HTTPURLResponse)?.statusCode == 401) {
