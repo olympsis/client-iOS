@@ -68,6 +68,13 @@ enum AppEnvironment {
         }
     }
 
+    // MARK: - Stripe
+
+    /// Stripe publishable key from Info.plist
+    var stripePublishableKey: String {
+        Bundle.main.object(forInfoDictionaryKey: "STRIPE_PUBLISHABLE_KEY") as? String ?? ""
+    }
+
     // MARK: - Auth headers
 
     /// Returns the appropriate auth headers for the current environment.

@@ -60,6 +60,8 @@
 	<string></string>
 	<key>STAGING_HOST</key>
 	<string></string>
+	<key>STRIPE_PUBLISHABLE_KEY</key>
+	<string>pk_test_51P33HvRxf68pt9NZdq8S4g8k8MzQAagKlJVnDyKBejU6lTMaxM6BRq9sMsgtLEriVN6Y3DOQasFJ7oj9Bhr7lh0A00HhrBBrwS</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>

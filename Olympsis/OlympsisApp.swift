@@ -52,7 +52,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         application.registerForRemoteNotifications()
-        StripeAPI.defaultPublishableKey = "pk_test_51P33HvRxf68pt9NZdq8S4g8k8MzQAagKlJVnDyKBejU6lTMaxM6BRq9sMsgtLEriVN6Y3DOQasFJ7oj9Bhr7lh0A00HhrBBrwS"
+        StripeAPI.defaultPublishableKey = AppEnvironment.current.stripePublishableKey
         QuickActionsManager.shared.setupShortcuts()
         return true
     }
