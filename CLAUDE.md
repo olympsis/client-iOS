@@ -66,7 +66,7 @@ The project consists of three main targets:
 - `Shared/` - Components shared between iOS and watchOS targets
 - `Utils/` - Utility functions and helpers
 - `Assets.xcassets/` - Images, colors, and assets
-- `Locatlization/` - String catalogs for internationalization
+- `Localization/` - String catalogs for internationalization
 
 ### watchOS App (`/Olympsis-Watchkit/`)
 - `Components/` - Watch-specific UI components
@@ -148,7 +148,7 @@ Components in `/Shared/` are available to both iOS and watchOS targets. When cre
 ### Localization
 - Uses `.xcstrings` files for internationalization
 - Organized by feature (Activities, Events, General, etc.)
-- Located in `Locatlization/Catalogues/`
+- Located in `Localization/Catalogues/`
 
 ### Custom Fonts
 - Uses Archivo font family with multiple weights and styles

@@ -1269,12 +1269,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		5D5BEF842BEFE85F008648C5 /* Locatlization */ = {
+		5D5BEF842BEFE85F008648C5 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
 				5D5BEF852BEFE872008648C5 /* Catalogues */,
 			);
-			path = Locatlization;
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		5D5BEF852BEFE872008648C5 /* Catalogues */ = {
@@ -1860,7 +1860,7 @@
 				9A8FF0CD28BB1AC900DE4CF8 /* Olympsis.entitlements */,
 				9A8FF0B028BB14BF00DE4CF8 /* OlympsisApp.swift */,
 				9A8FF0B428BB14C100DE4CF8 /* Assets.xcassets */,
-				5D5BEF842BEFE85F008648C5 /* Locatlization */,
+				5D5BEF842BEFE85F008648C5 /* Localization */,
 				BE9C45FB29E279B0008EA591 /* Utils */,
 				9A8FF0E528BBD7CA00DE4CF8 /* Fonts */,
 				9A8FF0BF28BB18C300DE4CF8 /* Data */,

@@ -117,7 +117,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         // Post Navigation
         if let groupID = currentNotification?.groupID,
            let postID = currentNotification?.postID,
-           let url = URL(string: "olympsis://posts?ID=\(postID)&?groupID=\(groupID)") {
+           let url = URL(string: "olympsis://posts?ID=\(postID)&groupID=\(groupID)") {
             dismiss()
             navigationHandler?(url)
             return
