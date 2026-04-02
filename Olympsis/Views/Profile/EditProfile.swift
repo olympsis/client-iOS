@@ -333,7 +333,6 @@ struct EditProfile: View {
                 }
             }
             
-            // NOTE: There is an extra padding to the right of the save button i need to fix it!!!
             if #available(iOS 26.0, *) {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action:{
@@ -346,7 +345,7 @@ struct EditProfile: View {
                     }){
                         LoadingButton(text: String(localized: "save", table: "General"), width: 50, status: $status)
                             .fixedSize()
-                    }
+                    }.buttonStyle(.plain)
                 }.sharedBackgroundVisibility(.hidden)
             } else {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -360,7 +359,7 @@ struct EditProfile: View {
                     }){
                         LoadingButton(text: String(localized: "save", table: "General"), width: 50, status: $status)
                             .fixedSize()
-                    }
+                    }.buttonStyle(.plain)
                 }
             }
         }
