@@ -48,7 +48,7 @@ struct NotificationView: View {
                         dragOffset.height = min(0, value.translation.height)
                         
                         // Calculate opacity based on drag distance
-                        let distance = abs(value.translation.height)
+//                        let distance = abs(value.translation.height)
     //                    opacity = max(0, 1-(distance / 100))
                     }
                     .onEnded { value in

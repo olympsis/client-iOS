@@ -61,7 +61,7 @@ struct WorkoutView: View {
             let pointTimestamp = workout.workout.startDate.addingTimeInterval(timeInterval * Double(index))
             
             // Find the closest heart rate sample to this timestamp
-            let closestHeartRateSample = sortedHeartSamples.min { sample1, sample2 in
+            _ = sortedHeartSamples.min { sample1, sample2 in
                 abs(sample1.startDate.timeIntervalSince(pointTimestamp)) < abs(sample2.startDate.timeIntervalSince(pointTimestamp))
             }
             

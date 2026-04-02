@@ -181,8 +181,8 @@ struct PostNotificationToast: View {
 
 #Preview {
     let metadata = NotificationMetadata(type: .newPost, userID: UUID().uuidString, username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC")
-    let newPostData = NotificationMetadata(type: .postLike, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC")
-    let newCommentData = NotificationMetadata(type: .postComment, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "International Soccer")
+//    let newPostData = NotificationMetadata(type: .postLike, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC")
+//    let newCommentData = NotificationMetadata(type: .postComment, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "International Soccer")
     
     RoundedRectangle(cornerRadius: 10)
         .frame(height: 60)

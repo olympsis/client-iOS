@@ -10,7 +10,8 @@ import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
 
-class NewPostManager: ObservableObject {
+@MainActor
+final class NewPostManager: ObservableObject {
     
     @Published var type: POST_TYPE
     @Published var body: String = ""
@@ -113,9 +114,7 @@ class NewPostManager: ObservableObject {
                 return nil
             }
             
-            DispatchQueue.main.async {
-                self.status = .success
-            }
+            self.status = .success
             
             return post
         } else {
@@ -133,9 +132,8 @@ class NewPostManager: ObservableObject {
                 return nil
             }
             
-            DispatchQueue.main.async {
-                self.status = .success
-            }
+            self.status = .success
+            
             return post
         }
     }

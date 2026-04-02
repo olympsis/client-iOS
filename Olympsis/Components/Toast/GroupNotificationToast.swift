@@ -131,7 +131,7 @@ struct GroupNotificationToast: View {
 }
 
 #Preview {
-    let metadata = NotificationMetadata(type: .newClubApplication, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
+//    let metadata = NotificationMetadata(type: .newClubApplication, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
     
     let status = NotificationMetadata(type: .clubApplicationUpdate, userID: UUID().uuidString,  username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
     

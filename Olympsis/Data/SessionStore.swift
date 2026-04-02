@@ -14,6 +14,7 @@ import FirebaseAuth
 import CoreLocation
 
 /// App session data, fetched every session, stored in memory until app is closed
+@MainActor
 @Observable
 class SessionStore {
     
@@ -171,8 +172,8 @@ class SessionStore {
                 return
             }
             
-            let uuid = await UIDevice.current.identifierForVendor?.uuidString
-            let model = await UIDevice.current.model
+            let uuid = UIDevice.current.identifierForVendor?.uuidString
+            let model = UIDevice.current.model
             let device = NotificationDevice(
                 deviceID: uuid,
                 token: dToken,
@@ -506,7 +507,7 @@ class SessionStore {
     func deleteAccount() async -> Bool {
         do {
             guard let user = Auth.auth().currentUser else { return false }
-            let signInWithApple = await SignInWithApple()
+            let signInWithApple = SignInWithApple()
             let appleIDCredential = try await signInWithApple()
             guard let appleIDToken = appleIDCredential.identityToken else {
                 log.error("Unable to fetdch identify token.")

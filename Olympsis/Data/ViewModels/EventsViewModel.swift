@@ -10,6 +10,7 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
+@MainActor
 @Observable
 class EventsViewModel {
     

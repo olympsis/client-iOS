@@ -12,6 +12,7 @@ import Foundation
 import FirebaseAuth
 import AuthenticationServices
 
+@MainActor
 class AuthObserver: ObservableObject {
 
     let decoder =  JSONDecoder()
@@ -74,9 +75,7 @@ class AuthObserver: ObservableObject {
                     /*
                         New User
                      */
-                    DispatchQueue.main.async {
-                        self.authType = .new
-                    }
+                    self.authType = .new
                     log.debug("New user signing in")
                     guard let idToken = appleIdCredential.identityToken
                               .flatMap({ String(data: $0, encoding: .utf8) }) else {
@@ -109,9 +108,7 @@ class AuthObserver: ObservableObject {
                     /*
                         Existing User
                      */
-                    DispatchQueue.main.async {
-                        self.authType = .returning
-                    }
+                    self.authType = .returning
                     log.debug("Existing user logging in")
                     guard let idToken = appleIdCredential.identityToken
                               .flatMap({ String(data: $0, encoding: .utf8) }) else {

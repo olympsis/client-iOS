@@ -218,9 +218,9 @@ struct EventNotificationToast: View {
 #Preview {
     let metadata = NotificationMetadata(type: .newEvent, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg")
     
-    let statusData = NotificationMetadata(type: .eventReminder, userID: UUID().uuidString,  username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg")
+//    let statusData = NotificationMetadata(type: .eventReminder, userID: UUID().uuidString,  username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg")
     
-    let participantData = NotificationMetadata(type: .eventParticipantUpdate, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg")
+//    let participantData = NotificationMetadata(type: .eventParticipantUpdate, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventName: "Sunday PickUp", eventImageURL: "event-images/soccer-0.jpg")
     
     RoundedRectangle(cornerRadius: 10)
         .frame(height: 60)
