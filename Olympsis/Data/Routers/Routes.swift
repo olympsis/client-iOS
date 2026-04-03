@@ -17,12 +17,16 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
     }
     
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+        #if DEBUG
         print("Invalid URL")
+        #endif
         return nil
     }
-    
+
     guard let action = components.host else {
+        #if DEBUG
         print("Unknown URL, we can't handle this one!")
+        #endif
         return nil
     }
     
@@ -44,14 +48,18 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
     
     case URL_ACTIONS.open_post_view.rawValue:
         guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
+            #if DEBUG
             print("Invalid URL: no post ID")
+            #endif
             return ROUTES.home()
         }
         return ROUTES.home(postId: id)
         
     case URL_ACTIONS.open_event_view.rawValue:
         guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
+            #if DEBUG
             print("Invalid URL: no event ID")
+            #endif
             return ROUTES.events()
         }
         return ROUTES.events(id: id)
@@ -74,7 +82,9 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
 /// That way events and groups can be shared and opened within the app if installed.
 func handleExternalURL(_ url: URL) -> ROUTES? {
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+        #if DEBUG
         print("Invalid external URL")
+        #endif
         return nil
     }
     

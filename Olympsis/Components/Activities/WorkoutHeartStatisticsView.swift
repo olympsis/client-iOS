@@ -283,6 +283,7 @@ struct WorkoutHeartStatisticsView: View {
         }
 
         // Debug logging
+        #if DEBUG
         print("Zone time calculation results:")
         for (zoneNumber, time) in zoneTimeMap.sorted(by: { $0.key < $1.key }) {
             print("Zone \(zoneNumber): \(formatDuration(time))")
@@ -304,6 +305,7 @@ struct WorkoutHeartStatisticsView: View {
                 print("HR: \(Int(hr)) -> Zone \(zone)")
             }
         }
+        #endif
     }
     */
     // Stub while HealthKit is disabled

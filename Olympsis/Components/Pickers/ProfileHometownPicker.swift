@@ -62,12 +62,16 @@ struct ProfileHometownPicker: View {
                                 switch value {
                                 case let .second(_, tapValue):
                                     guard let point = tapValue?.location else {
+                                        #if DEBUG
                                         print("Unable to retreive tap location from gesture data.")
+                                        #endif
                                         return
                                     }
                                     
                                     guard let coordinates = proxy.convert(point, from: .local) else {
+                                        #if DEBUG
                                         print("Unable to convert local point to coordinate on map.")
+                                        #endif
                                         return
                                     }
                                     
@@ -85,7 +89,9 @@ struct ProfileHometownPicker: View {
                                                 self.state = state
                                                 self.country = country
                                             } else {
+                                                #if DEBUG
                                                 print("Unable to get placemark information")
+                                                #endif
                                             }
                                         }
                                     }

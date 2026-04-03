@@ -66,7 +66,9 @@ func parseLocationData(_ locationString: String) -> String {
     dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
     
     for (index, line) in lines.enumerated() {
+        #if DEBUG
         print("Processing line \(index + 1): \(line)")
+        #endif
         
         // Parse key=value pairs
         var locationData: [String: String] = [:]
@@ -79,7 +81,9 @@ func parseLocationData(_ locationString: String) -> String {
             }
         }
         
+        #if DEBUG
         print("Parsed data: \(locationData)")
+        #endif
         
         // Extract and validate each value
         guard let latString = locationData["lat"],
@@ -92,7 +96,9 @@ func parseLocationData(_ locationString: String) -> String {
               let speedString = locationData["speed"],
               let speedAccuracyString = locationData["speedAccuracy"],
               let timestampString = locationData["timestamp"] else {
+            #if DEBUG
             print("Missing required fields in line \(index + 1)")
+            #endif
             continue
         }
         
@@ -105,12 +111,16 @@ func parseLocationData(_ locationString: String) -> String {
               let courseAccuracy = Double(courseAccuracyString),
               let speed = Double(speedString),
               let speedAccuracy = Double(speedAccuracyString) else {
+            #if DEBUG
             print("Failed to convert numeric values in line \(index + 1)")
+            #endif
             continue
         }
         
         guard let timestamp = dateFormatter.date(from: timestampString) else {
+            #if DEBUG
             print("Failed to parse timestamp '\(timestampString)' in line \(index + 1)")
+            #endif
             continue
         }
         
@@ -124,8 +134,10 @@ CLLocation(coordinate: CLLocationCoordinate2D(latitude: \(lat), longitude: \(lon
         locationStrings.append(locationString)
     }
     
+    #if DEBUG
     print("Successfully processed \(locationStrings.count) locations")
     debugPrint("let locations: [CLLocation] = [\(locationStrings.joined(separator: ", "))]")
+    #endif
     return "let locations: [CLLocation] = [\(locationStrings.joined(separator: ", "))]"
 }
 

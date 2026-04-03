@@ -31,15 +31,19 @@ struct FriendRequestView: View {
                 }
                 requests.removeAll(where: {$0.id == request.id})
             } catch {
+                #if DEBUG
                 print(error)
+                #endif
             }
         } else {
             do {
-                
+
                 let _ = try await observer.UpdateFriendRequest(id: request.id, dao: d)
                 requests.removeAll(where: {$0.id == request.id})
             } catch {
+                #if DEBUG
                 print(error)
+                #endif
             }
         }
         

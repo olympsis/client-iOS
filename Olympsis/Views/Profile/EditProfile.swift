@@ -383,7 +383,9 @@ struct EditProfile: View {
                             self.state = state
                             self.country = country
                         } else {
+                            #if DEBUG
                             print("Unable to get placemark information")
+                            #endif
                         }
                     }
                 }

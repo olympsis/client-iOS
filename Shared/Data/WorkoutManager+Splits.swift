@@ -369,10 +369,14 @@ extension WorkoutManager {
                 let event = sortedEvents[eventIndex]
                 if event.type == .pause {
                     isPaused = true
+                    #if DEBUG
                     print("DEBUG: Paused at \(event.dateInterval.start)")
+                    #endif
                 } else if event.type == .resume {
                     isPaused = false
+                    #if DEBUG
                     print("DEBUG: Resumed at \(event.dateInterval.start)")
+                    #endif
                 }
                 eventIndex += 1
             }
@@ -383,7 +387,9 @@ extension WorkoutManager {
             }
         }
 
+        #if DEBUG
         print("DEBUG: Filtered out \(locations.count - activeLocations.count) locations during paused periods")
+        #endif
         return activeLocations
     }
 }

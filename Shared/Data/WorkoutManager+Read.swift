@@ -275,13 +275,17 @@ extension WorkoutManager {
             if cadence >= 140 && cadence <= 220 {
                 return cadence
             } else {
+                #if DEBUG
                 print("Step count cadence (\(cadence)) seems unrealistic, using distance estimation instead")
+                #endif
             }
         }
 
         // Fallback: Try to get cadence from workout statistics if available
         if let cadenceFromStats = workout.allStatistics[HKQuantityType.quantityType(forIdentifier: .runningSpeed)!] {
+            #if DEBUG
             print("Found running speed in workout statistics: \(cadenceFromStats)")
+            #endif
         }
 
         // Fallback: Estimate cadence using distance and typical running stride length

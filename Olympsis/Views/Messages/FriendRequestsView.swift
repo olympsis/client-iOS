@@ -41,7 +41,9 @@ struct FriendRequestsView: View {
                 }
             } catch {
                 status = .failure
+                #if DEBUG
                 print(error)
+                #endif
             }
         }
         

@@ -24,7 +24,9 @@ struct RoomSettingsView: View {
             hasDeleted = true
             self.presentationMode.wrappedValue.dismiss()
         } else {
+            #if DEBUG
             print("failed to delete room")
+            #endif
         }
     }
     
