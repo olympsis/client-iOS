@@ -138,23 +138,21 @@ class SessionStore {
         #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
             guard let self = self else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                if (usr != nil) {
-                    guard self.authType != nil && self.authType == .new else {
-                        guard self.isRegisterComplete else {
-                            self.authStatus = .unauthenticated
-                            return
-                        }
-                        // Avoid redundant write — re-setting .authenticated
-                        // causes SwiftUI to recreate ViewContainer mid-checkIn
-                        guard self.authStatus != .authenticated else { return }
-                        self.authStatus = .authenticated
+            if (usr != nil) {
+                guard self.authType != nil && self.authType == .new else {
+                    guard self.isRegisterComplete else {
+                        self.authStatus = .unauthenticated
                         return
                     }
-                    self.authStatus = .unauthenticated
-                } else {
-                    self.authStatus = .unauthenticated
+                    // Avoid redundant write — re-setting .authenticated
+                    // causes SwiftUI to recreate ViewContainer mid-checkIn
+                    guard self.authStatus != .authenticated else { return }
+                    self.authStatus = .authenticated
+                    return
                 }
+                self.authStatus = .unauthenticated
+            } else {
+                self.authStatus = .unauthenticated
             }
         }
         #endif
