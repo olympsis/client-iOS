@@ -13,6 +13,7 @@ import Kingfisher
 struct EventListItem: View {
     
     @State var event: Event
+    var namespace: Namespace.ID? = nil
     @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
     @State private var venueState: LOADING_STATE = .pending
@@ -75,7 +76,7 @@ struct EventListItem: View {
     }
     
     var body: some View {
-        NavigationLink(destination: EventView(event: event).environment(event).environment(session)) {
+        NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
@@ -222,6 +223,7 @@ struct EventListItem: View {
                     }
                 }.clipShape(RoundedRectangle(cornerRadius: 10))
         }
+        .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
         .task {
             // Skip fetch if venue names are already available on the event
             guard event.venues.first?.name == nil else {

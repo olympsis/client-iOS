@@ -99,3 +99,33 @@ extension View {
         modifier(NotificationModifier(manager: manager))
     }
 }
+
+// MARK: - Zoom Navigation Transition (iOS 18+)
+
+/// Source side: marks the view as the zoom origin.
+struct ZoomTransitionSourceModifier: ViewModifier {
+    var id: String
+    var namespace: Namespace.ID?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *), let namespace {
+            content.matchedTransitionSource(id: id, in: namespace)
+        } else {
+            content
+        }
+    }
+}
+
+/// Destination side: zooms in from the matched source.
+struct ZoomTransitionModifier: ViewModifier {
+    var id: String
+    var namespace: Namespace.ID?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *), let namespace {
+            content.navigationTransition(.zoom(sourceID: id, in: namespace))
+        } else {
+            content
+        }
+    }
+}

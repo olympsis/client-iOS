@@ -16,6 +16,7 @@ struct ListView: View {
     @Binding var showMenu: Bool
     let numFiltersActive: Int
     
+    @Namespace private var heroNamespace
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
 
@@ -190,7 +191,7 @@ struct ListView: View {
                             ForEach(eventsGrouped, id: \.id) { group in
                                 Section {
                                     ForEach(group.events, id: \.id) { event in
-                                        EventListItem(event: event)
+                                        EventListItem(event: event, namespace: heroNamespace)
                                             .padding(.horizontal)
                                     }
                                 } header: {

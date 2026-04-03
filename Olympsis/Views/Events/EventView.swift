@@ -16,6 +16,7 @@ struct EventView: View {
     
     var event: Event
     var isFullScreen: Bool = false
+    var namespace: Namespace.ID? = nil
     
     @State private var venues = [Venue]()
     @State private var venuesTarget: Int = 0
@@ -180,6 +181,7 @@ struct EventView: View {
                 .edgesIgnoringSafeArea(.all)
         }
         .toolbarTitleDisplayMode(.inline)
+        .modifier(ZoomTransitionModifier(id: event.id, namespace: namespace))
         .navigationTitle(Text(event.title))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
