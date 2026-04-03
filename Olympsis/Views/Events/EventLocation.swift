@@ -6,48 +6,47 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct EventLocation: View {
-    
+
     @Binding var venues: [Venue]
     @Environment(Event.self) private var event: Event
-    
-    /// Map snapshot images keyed by VenueDescriptor hash for quick lookup
-    @State private var snapshots: [Int: UIImage] = [:]
-    
+
+    /// Map snapshot image URLs keyed by VenueDescriptor hash for quick lookup
+    @State private var snapshotURLs: [Int: URL] = [:]
+
     private let snapshotService = SnapshotService()
-    
+
     private var venueDescriptors: [VenueDescriptor] {
         return event.venues
     }
-    
-    /// Fetches all venue snapshots in parallel using a TaskGroup
+
+    /// Fetches all venue snapshot URLs in parallel using a TaskGroup
     private func fetchSnapshots() async {
-        await withTaskGroup(of: (Int, UIImage?).self) { group in
+        await withTaskGroup(of: (Int, URL?).self) { group in
             for descriptor in venueDescriptors {
                 let key = descriptor.hashValue
                 guard let coordinates = descriptor.location?.coordinates,
                       coordinates.count >= 2 else { continue }
-                
+
                 // GeoJSON is [longitude, latitude], API expects "lat,long"
                 let center = "\(coordinates[1]),\(coordinates[0])"
-                
+
                 group.addTask {
                     do {
-                        let (data, _) = try await snapshotService.getMapSnapshot(name: center)
-                        if let image = UIImage(data: data) {
-                            return (key, image)
-                        }
+                        let urlString = try await snapshotService.getMapSnapshotURL(name: center)
+                        return (key, generateImageURL(urlString))
                     } catch {
                         // Snapshot fetch failed — will show placeholder
                     }
                     return (key, nil)
                 }
             }
-            
-            for await (key, image) in group {
-                if let image {
-                    snapshots[key] = image
+
+            for await (key, url) in group {
+                if let url {
+                    snapshotURLs[key] = url
                 }
             }
         }
@@ -75,8 +74,16 @@ struct EventLocation: View {
                 ForEach(venueDescriptors, id: \.self) { descriptor in
                     VStack(alignment: .leading, spacing: 4) {
                         // Snapshot image or loading placeholder
-                        if let image = snapshots[descriptor.hashValue] {
-                            Image(uiImage: image)
+                        if let url = snapshotURLs[descriptor.hashValue] {
+                            KFImage(url)
+                                .placeholder {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(.quaternary)
+                                        .frame(height: 100)
+                                        .overlay {
+                                            ProgressView()
+                                        }
+                                }
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(height: 250)
