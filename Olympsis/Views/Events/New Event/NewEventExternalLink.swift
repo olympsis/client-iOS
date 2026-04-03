@@ -19,9 +19,10 @@ struct NewEventExternalLink: View {
     private func isValidURLFormat(_ urlString: String) -> Bool {
         guard let url = URL(string: urlString),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            components.host?.contains(".") == true,
-            !components.host!.hasPrefix("."),
-            !components.host!.hasSuffix("."),
+            let host = components.host,
+            host.contains("."),
+            !host.hasPrefix("."),
+            !host.hasSuffix("."),
             components.scheme != nil else {
             return false
         }

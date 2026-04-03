@@ -120,7 +120,8 @@ struct EventActionButtons: View {
     }
     
     private func leadToMaps(for venue: Venue){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
+        guard let url = URL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])") else { return }
+        UIApplication.shared.open(url)
     }
     
     var body: some View {

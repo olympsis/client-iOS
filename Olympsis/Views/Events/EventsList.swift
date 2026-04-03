@@ -30,8 +30,8 @@ struct EventsList: View {
                 )}
             )
             
-            if index != nil {
-                groups[index!].events.append(e)
+            if let index {
+                groups[index].events.append(e)
                 return
             } else {
                 let newGroup = DayGroup(date: e.startTime, events: [e])
