@@ -30,7 +30,7 @@ struct EventTypePicker: View {
                         Text(displayName(.Regular))
                             .bold()
                     }
-                    Text("An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only.")
+                    Text(String(localized: "event-type-regular-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -43,7 +43,7 @@ struct EventTypePicker: View {
                         Text(displayName(.League))
                             .bold()
                     }
-                    Text("A recurring competitive season where teams or individuals play a series of matches over time.")
+                    Text(String(localized: "event-type-league-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.vertical)
@@ -57,7 +57,7 @@ struct EventTypePicker: View {
                         Text(displayName(.Tournament))
                             .bold()
                     }
-                    Text("A competitive event where individuals or teams compete in a structured format to determine a winner.")
+                    Text(String(localized: "event-type-tournament-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.vertical)
@@ -71,7 +71,7 @@ struct EventTypePicker: View {
                         Text(displayName(.Class))
                             .bold()
                     }
-                    Text("A structured training session or instructional event led by a coach or instructor.")
+                    Text(String(localized: "event-type-class-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.vertical)
@@ -81,13 +81,13 @@ struct EventTypePicker: View {
 
             }
             .padding(.top)
-            .navigationTitle("Type")
+            .navigationTitle(String(localized: "event-type-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     if #available(iOS 26.0, *) {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { dismiss() }) {
-                                Text("DONE")
+                                Text(String(localized: "done", table: "General"))
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .padding(.horizontal)
@@ -98,7 +98,7 @@ struct EventTypePicker: View {
                     } else {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { dismiss() }) {
-                                Text("DONE")
+                                Text(String(localized: "done", table: "General"))
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .padding(.horizontal)

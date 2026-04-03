@@ -24,12 +24,12 @@ struct AccountDeleteSignin: View {
         VStack {
             HStack {
                 Button(action: { dismiss() }) {
-                    Text("Cancel")
+                    Text(String(localized: "cancel", table: "General"))
                 }
                 Spacer()
             }.padding(.all)
             
-            Text("Are you sure? Sign in again to confirm.")
+            Text(String(localized: "delete-account-confirm", table: "Settings"))
                 .bold()
                 .font(.largeTitle)
                 .multilineTextAlignment(.center)

@@ -42,20 +42,20 @@ struct MemberReportListItem: View {
                             await closeReport()
                         }
                     } label: {
-                        Text("Close Report")
+                        Text(String(localized: "report-close", table: "Settings"))
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
             HStack{
-                Text("Reason:")
+                Text(String(localized: "report-reason", table: "Settings"))
                     .fontWeight(.bold)
                 Text(report.type)
                 Spacer()
             }
             HStack(alignment: .top) {
-                Text("Notes:")
+                Text(String(localized: "report-notes", table: "Settings"))
                     .fontWeight(.bold)
                 Text(notes)
                 Spacer()

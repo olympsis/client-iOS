@@ -21,7 +21,7 @@ struct EventLevelView: View {
                         .foregroundColor(Color("color-tert"))
                     }
                     
-                    Text("Beginner")
+                    Text(String(localized: "level-beginner", table: "Events"))
                 }
             } else if level == 2 {
                 VStack(alignment: .center){
@@ -36,7 +36,7 @@ struct EventLevelView: View {
                         .foregroundColor(Color("color-tert"))
                     }
                     
-                    Text("Amateur")
+                    Text(String(localized: "level-amateur", table: "Events"))
                 }
             } else if level == 3 {
                 VStack(alignment: .center){
@@ -55,7 +55,7 @@ struct EventLevelView: View {
                         .foregroundColor(Color("color-tert"))
                     }
                     
-                    Text("Expert")
+                    Text(String(localized: "level-expert", table: "Events"))
                 }
             } else {
                 VStack(alignment: .center){
@@ -78,7 +78,7 @@ struct EventLevelView: View {
                         .foregroundColor(Color("color-tert"))
                     }
                     
-                    Text("Any Level")
+                    Text(String(localized: "level-any", table: "Events"))
                 }
             }
         }.padding(.trailing)

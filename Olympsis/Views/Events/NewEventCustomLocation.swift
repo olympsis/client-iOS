@@ -26,7 +26,7 @@ struct NewEventCustomLocation: View {
                                 viewModel.locationInfo?.name = name
                                 dismiss()
                             }) {
-                                Text("Done")
+                                Text(String(localized: "done", table: "General"))
                                     .fontWeight(.bold)
                             }
                         }

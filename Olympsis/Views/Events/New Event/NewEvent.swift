@@ -106,7 +106,7 @@ struct NewEvent: View {
                     )
                     
                     VStack(alignment: .leading){
-                        TextField("Event Title", text: $manager.title)
+                        TextField(String(localized: "new-event-title-placeholder", table: "Events"), text: $manager.title)
                             .focused($titleFocus)
                             .padding(.leading)
                             .modifier(InputFieldModifier())

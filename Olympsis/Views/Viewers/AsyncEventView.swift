@@ -52,7 +52,7 @@ struct AsyncEventView: View {
                             }
                         }
                     }
-                    .navigationTitle("Event")
+                    .navigationTitle(String(localized: "event-title", table: "Events"))
                     .navigationBarBackButtonHidden()
                     .navigationBarTitleDisplayMode(.inline)
             case .success:
@@ -65,10 +65,10 @@ struct AsyncEventView: View {
                     Image("illustrations/sorry")
                         .resizable()
                         .frame(width: 250, height: 250)
-                    Text("Failed to get Event.")
+                    Text(String(localized: "event-failed-to-load", table: "Events"))
                         .fontWeight(.bold)
                     Button(action: { Task { await fetchEvent() }}) {
-                        Text("Try again")
+                        Text(String(localized: "event-try-again", table: "Events"))
                     }
                 }
                 .padding(.vertical, 100)
@@ -87,7 +87,7 @@ struct AsyncEventView: View {
                         }
                     }
                 }
-                .navigationTitle("Event")
+                .navigationTitle(String(localized: "event-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
             }
         }

@@ -44,11 +44,11 @@ struct NewEventAdvancedSettings: View {
             if (!manager.organizers.isEmpty) {
                 VStack(alignment: .leading){
                     Toggle(isOn: $hidePoster) {
-                        Text("Hide Poster")
+                        Text(String(localized: "advanced-settings-hide-poster", table: "Events"))
                             .font(.headline)
                             .bold()
                     }
-                    Text("Only show the event's organizers")
+                    Text(String(localized: "advanced-settings-hide-poster-desc", table: "Events"))
                         .foregroundColor(.gray)
                         .font(.subheadline)
                 }.padding([.top, .horizontal])

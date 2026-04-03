@@ -239,7 +239,7 @@ struct EventVenuePicker: View {
                         }
                     } else {
                         VStack {
-                            Text("Search for locations or")
+                            Text(String(localized: "event-search-locations-or", table: "Events"))
                             Button(action: { showCustom.toggle() }) {
                                 Text(String(localized: "set-custom-location-text", table: "Events"))
                                     .font(.callout)
@@ -252,7 +252,7 @@ struct EventVenuePicker: View {
                         .padding(.top, 50)
                 case .failure:
                     VStack {
-                        Text("Search for locations or")
+                        Text(String(localized: "event-search-locations-or", table: "Events"))
                         Button(action: { showCustom.toggle() }) {
                             Text(String(localized: "set-custom-location-text", table: "Events"))
                                 .font(.callout)

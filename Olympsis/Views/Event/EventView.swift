@@ -151,7 +151,7 @@ struct EventView: View {
                     VStack(alignment: .leading) {
                         
                         if event.type == "tournament" {
-                            Text("Tournament")
+                            Text(String(localized: "event-tournament", table: "Events"))
                                 .font(.caption)
                                 .padding(.leading)
                                 .bold()
@@ -205,7 +205,7 @@ struct EventView: View {
                         // MARK: - Detail/Body
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Details")
+                                Text(String(localized: "event-details", table: "Events"))
                                     .font(.title2)
                                     .bold()
                                 Rectangle()
@@ -241,7 +241,7 @@ struct EventView: View {
                         if !venues.isEmpty {
                             Group {
                                 HStack {
-                                    Text("Venue(s)")
+                                    Text(String(localized: "event-venues", table: "Events"))
                                         .font(.title2)
                                         .bold()
                                 }

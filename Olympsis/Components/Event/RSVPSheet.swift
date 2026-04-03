@@ -101,7 +101,7 @@ struct RSVPSheet: View {
                             case .loading:
                                 ProgressView()
                             case .pending, .success:
-                                Text("I'm in!")
+                                Text(String(localized: "rsvp-yes", table: "Events"))
                                     .textCase(.uppercase)
                                     .foregroundStyle(.white)
                                     .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
@@ -124,7 +124,7 @@ struct RSVPSheet: View {
                             case .loading:
                                 ProgressView()
                             case .pending, .success:
-                                Text("Maybe")
+                                Text(String(localized: "rsvp-maybe", table: "Events"))
                                     .textCase(.uppercase)
                                     .foregroundStyle(.white)
                                     .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
@@ -143,9 +143,9 @@ struct RSVPSheet: View {
             HStack {
                 Toggle(isOn: $isAnonymous) {
                     VStack(alignment: .leading) {
-                        Text("Hide my RSVP")
+                        Text(String(localized: "rsvp-hide", table: "Events"))
                             .fontWeight(.medium)
-                        Text("Keep your attendance private from others.")
+                        Text(String(localized: "rsvp-hide-desc", table: "Events"))
                             .lineLimit(2)
                             .font(.callout)
                             .foregroundStyle(.gray)

@@ -64,7 +64,7 @@ struct NewEventExternalLink: View {
                         // Title field
                         HStack {
                             TextField(text: $links[index].title) {
-                                Text("Title")
+                                Text(String(localized: "event-notification-title-label", table: "Events"))
                             }
                             .padding(.horizontal)
                             .disableAutocorrection(true)
@@ -102,7 +102,7 @@ struct NewEventExternalLink: View {
                 
                 // Add link button
                 Button(action: { addLink() }) {
-                    Label("Add Link", systemImage: "plus.circle.fill")
+                    Label(String(localized: "event-add-link", table: "Events"), systemImage: "plus.circle.fill")
                         .font(.subheadline)
                 }
                 .padding(.top, 4)

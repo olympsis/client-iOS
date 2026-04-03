@@ -17,7 +17,7 @@ struct ShareMenu: View {
     var body: some View {
         VStack {
             Group {
-                Text("Share Event")
+                Text(String(localized: "event-share", table: "Events"))
                     .padding(.top)
                     .fontWeight(.bold)
                 

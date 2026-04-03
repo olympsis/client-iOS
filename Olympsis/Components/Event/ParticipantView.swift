@@ -78,7 +78,7 @@ struct ParticipantView: View {
                         .fontWeight(.medium)
                     
                     if isUserAnonymous && (session.user?.userID == participant.user?.userID) {
-                        Text("(You)")
+                        Text(String(localized: "event-participant-you", table: "Events"))
                             .fontWeight(.bold)
                             .foregroundStyle(Color.Brand.tertiary)
                     }

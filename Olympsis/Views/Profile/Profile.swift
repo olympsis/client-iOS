@@ -55,7 +55,7 @@ struct Profile: View {
                             .overlay {
                                 HStack(alignment: .center) {
                                     Image(systemName: "calendar.badge.checkmark")
-                                    Text("Past Events")
+                                    Text(String(localized: "profile-past-events", table: "Profile"))
                                         .fontWeight(.medium)
                                 }
                             }

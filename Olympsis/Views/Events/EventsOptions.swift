@@ -98,7 +98,7 @@ struct EventsOptions: View {
                         }
                     }
                     
-                    Text("Search Radius:")
+                    Text(String(localized: "event-search-radius", table: "Events"))
                         .bold()
                         .padding(.top, 20)
                         .padding(.leading)
@@ -113,7 +113,7 @@ struct EventsOptions: View {
                     }
                     .padding(.leading)
                     
-                    Text("Sports:")
+                    Text(String(localized: "event-sports-filter", table: "Events"))
                         .bold()
                         .padding(.leading)
                     

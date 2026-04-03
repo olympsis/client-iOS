@@ -32,7 +32,7 @@ struct EventNotification: View {
     
     var body: some View {
         VStack {
-            Text("What would you like to say to the participants?")
+            Text(String(localized: "event-notification-prompt", table: "Events"))
                 .font(.title)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
@@ -40,27 +40,27 @@ struct EventNotification: View {
             
             // MARK: - Title
             VStack(alignment: .leading){
-                Text("Title")
+                Text(String(localized: "event-notification-title-label", table: "Events"))
                     .font(.title3)
                     .bold()
-                Text("What is the nature of this notification?")
+                Text(String(localized: "event-notification-title-hint", table: "Events"))
                     .font(.subheadline)
                 
-                TextField("Pick up reminder", text: $title)
+                TextField(String(localized: "event-notification-title-placeholder", table: "Events"), text: $title)
                     .padding(.leading)
                     
             }
             
             // MARK: - Content
             VStack(alignment: .leading){
-                Text("Content")
+                Text(String(localized: "event-notification-content-label", table: "Events"))
                     .font(.title3)
                     .bold()
-                Text("What do you want to tell them?")
+                Text(String(localized: "event-notification-content-hint", table: "Events"))
                     .font(.subheadline)
                     
                 
-                TextField("Don't forget your gear", text: $content)
+                TextField(String(localized: "event-notification-content-placeholder", table: "Events"), text: $content)
                     .padding(.leading)
                     
             }

@@ -40,12 +40,12 @@ struct EventOrganizersPickerView: View {
             HStack {
                 Spacer()
                 Spacer()
-                Text("Organizers")
+                Text(String(localized: "event-organizers", table: "Events"))
                     .fontWeight(.bold)
                 Spacer()
                 
                 Button(action: { dismiss() }) {
-                    Text("DONE")
+                    Text(String(localized: "done", table: "General"))
                         .font(.caption)
                         .foregroundStyle(.white)
                         .padding(.horizontal)

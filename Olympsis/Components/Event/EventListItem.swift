@@ -102,7 +102,7 @@ struct EventListItem: View {
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                 
-                                Text("At \(venueLocationName)")
+                                Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
                                     .font(.body)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
@@ -117,7 +117,7 @@ struct EventListItem: View {
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
                                 
-                                Text("\(event.participants.count) Participants")
+                                Text("\(event.participants.count) \(String(localized: "event-participants", table: "Events"))")
                                     .font(.caption)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
@@ -153,7 +153,7 @@ struct EventListItem: View {
                             // MARK: - Competition Tag
                             if event.isCompetition() {
                                 HStack {
-                                    Text("Tournament")
+                                    Text(String(localized: "event-tournament", table: "Events"))
                                         .font(.caption)
                                         .fontWeight(.bold)
                                         .padding([.leading, .trailing], 2.5)
@@ -279,7 +279,7 @@ struct _TrailingView: View {
                                 transaction.animation = .linear(duration: 0.5).repeatForever(autoreverses: true)
                             }
                             .onAppear { isBlinking.toggle() }
-                        Text("Live")
+                        Text(String(localized: "status-live", table: "Events"))
                             .bold()
                             .font(.callout)
                     }.foregroundStyle(.red)
@@ -290,7 +290,7 @@ struct _TrailingView: View {
             case .ended:
                 VStack (alignment: .trailing){
                     HStack {
-                        Text("Ended")
+                        Text(String(localized: "status-ended", table: "Events"))
                             .bold()
                             .font(.callout)
                     }.foregroundStyle(.gray)

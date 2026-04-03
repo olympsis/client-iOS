@@ -41,7 +41,7 @@ struct SearchNearbyFields: View {
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                             showCancel = false
                         }){
-                            Text("Cancel")
+                            Text(String(localized: "cancel", table: "General"))
                                 .foregroundColor(.gray)
                                 .frame(height: 40)
                                 .padding(.top)
@@ -65,7 +65,7 @@ struct SearchNearbyFields: View {
                     }
                 }
             }
-            .navigationTitle("Nearby Fields")
+            .navigationTitle(String(localized: "event-nearby-fields", table: "Events"))
             .navigationBarTitleDisplayMode(.inline)
             .tint(Color("primary-color"))
         }

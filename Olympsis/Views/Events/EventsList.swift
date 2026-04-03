@@ -78,7 +78,7 @@ struct EventsList: View {
 //                        .datePickerStyle(.compact)
 //                }
             }
-            .navigationTitle("Events")
+            .navigationTitle(String(localized: "events-title", table: "Events"))
             .navigationBarTitleDisplayMode(.inline)
         }
     }

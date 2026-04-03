@@ -48,11 +48,11 @@ struct EventVenuePickerView: View {
             // MARK: - Hide Locations
             VStack(alignment: .leading){
                 Toggle(isOn: $hideLocation) {
-                    Text("Hide Locations")
+                    Text(String(localized: "event-hide-locations", table: "Events"))
                         .font(.headline)
                         .bold()
                 }
-                Text("Show locations after RSVP")
+                Text(String(localized: "event-show-locations-after-rsvp", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
             }.padding([.bottom, .horizontal])

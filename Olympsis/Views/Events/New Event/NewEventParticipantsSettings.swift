@@ -35,7 +35,7 @@ struct NewEventParticipantsSettings: View {
                     .font(.subheadline)
                 
                 HStack {
-                    TextField("Limit", value: $minParticipants, formatter: formatter)
+                    TextField(String(localized: "event-limit", table: "Events"), value: $minParticipants, formatter: formatter)
                         .keyboardType(.numberPad)
                         .padding(.leading)
 
@@ -55,7 +55,7 @@ struct NewEventParticipantsSettings: View {
                     .font(.subheadline)
                 
                 HStack {
-                    TextField("Limit", value: $maxParticipants, formatter: formatter)
+                    TextField(String(localized: "event-limit", table: "Events"), value: $maxParticipants, formatter: formatter)
                         .keyboardType(.numberPad)
                         .padding(.leading)
 
@@ -80,11 +80,11 @@ struct NewEventParticipantsSettings: View {
             // MARK: - Hide Participants
             VStack(alignment: .leading){
                 Toggle(isOn: $hideParticipants) {
-                    Text("Hide Participants List")
+                    Text(String(localized: "event-hide-participants-list", table: "Events"))
                         .font(.headline)
                         .bold()
                 }
-                Text("Show participants list after RSVP")
+                Text(String(localized: "event-show-participants-after-rsvp", table: "Events"))
                     .foregroundColor(.gray)
                     .font(.subheadline)
             }.padding([.top, .horizontal])

@@ -209,7 +209,7 @@ struct EventParticipantsViewExt: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Participants")
+            Text(String(localized: "event-participants", table: "Events"))
                 .font(.headline)
                 .padding([.leading, .top])
             
@@ -227,7 +227,7 @@ struct EventParticipantsViewExt: View {
                     if canRemoveParticipant(p) {
                         Menu {
                             Button(action: { Task { await removeParticipant(p) }}) {
-                                Text("Remove Participant")
+                                Text(String(localized: "event-remove-participant", table: "Events"))
                             }
                         } label: {
                             Image(systemName: "ellipsis")

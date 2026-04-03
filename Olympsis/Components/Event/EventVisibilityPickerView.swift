@@ -64,7 +64,7 @@ struct EventVisibilityPickerView: View {
                     if #available(iOS 26.0, *) {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { dismiss() }) {
-                                Text("DONE")
+                                Text(String(localized: "done", table: "General"))
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .padding(.horizontal)
@@ -75,7 +75,7 @@ struct EventVisibilityPickerView: View {
                     } else {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: { dismiss() }) {
-                                Text("DONE")
+                                Text(String(localized: "done", table: "General"))
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .padding(.horizontal)
