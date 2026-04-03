@@ -73,21 +73,25 @@ struct ListView: View {
         return CLLocation(latitude: location.latitude, longitude: location.longitude)
     }
     
+    /// Shared fetch logic. When `isRefresh` is true, skips the .loading state
+    /// change to avoid a view rebuild that causes ScrollView to get stuck.
     @MainActor
-    private func fetchEvents() async {
-        state = .loading
-        
+    private func fetchEvents(isRefresh: Bool = false) async {
+        if !isRefresh {
+            state = .loading
+        }
+
         var tags: String? = nil
         var sports: String? = nil
-        
+
         if (!manager.tags.isEmpty) {
             tags = manager.getTagsString()
         }
-        
+
         if (!manager.sports.isEmpty) {
             sports = manager.getSportsString()
         }
-        
+
         // Use fallback location
         guard let resp = await session.eventObserver.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
@@ -98,13 +102,11 @@ struct ListView: View {
             state = .failure
             return
         }
-        
+
         resp.forEach { event in
-            if (session.events.contains(where: { $0.id != event.id })) {
-                session.events.insert(event)
-            }
+            session.events.insert(event)
         }
-        
+
         state = .success
     }
     
@@ -235,10 +237,12 @@ struct ListView: View {
                 }
             }
             .refreshable {
-                Task { @MainActor in
-                    guard state != .loading else { return }
-                    await self.fetchEvents()
-                }
+                guard state != .loading else { return }
+                // Unstructured Task prevents cancellation from killing the network request,
+                // while awaiting .value keeps the refresh spinner visible until completion.
+                await Task { @MainActor in
+                    await self.fetchEvents(isRefresh: true)
+                }.value
             }
             .searchable(text: $searchText, placement: .toolbar, prompt: "Event title")
         }

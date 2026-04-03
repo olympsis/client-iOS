@@ -223,6 +223,11 @@ struct EventListItem: View {
                 }.clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .task {
+            // Skip fetch if venue names are already available on the event
+            guard event.venues.first?.name == nil else {
+                venueState = .success
+                return
+            }
             venueState = .loading
             venues = await session.fetchVenues(in: event.venues)
             venueState = .success

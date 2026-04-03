@@ -464,7 +464,8 @@ class ApplicationConfiguration: Codable {
 }
 
 struct DayGroup: Identifiable {
-    let id = UUID()
+    /// Use date as stable identity so SwiftUI can diff sections properly
+    var id: Date { date }
     let date: Date
     var events: [Event]
     
