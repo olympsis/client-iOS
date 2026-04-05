@@ -95,10 +95,16 @@ struct AuthUserSports: View {
                 }.padding([.top, .horizontal])
             }.padding(.top, -8)
             
-            Button(action: { updateUser() }) {
-                LoadingButton(text: String(localized: "done", table: "General"), status: $state)
-                    .padding(.top, -8)
-                    .padding(.horizontal)
+            HStack {
+                Spacer()
+                
+                Button(action: { updateUser() }) {
+                    LoadingButton(text: String(localized: "done", table: "General"), status: $state)
+                        .padding(.top, -8)
+                        .padding(.horizontal)
+                }
+                
+                Spacer()
             }
         }
     }

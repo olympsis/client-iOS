@@ -58,7 +58,7 @@ struct InvitationDTO: Codable {
     let subjectID: String
     var status: String
     let createdAt: Date?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case type
@@ -67,6 +67,17 @@ struct InvitationDTO: Codable {
         case subjectID = "subject_id"
         case status
         case createdAt = "created_at"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(type, forKey: .type)
+        try container.encode(sender, forKey: .sender)
+        try container.encode(recipient, forKey: .recipient)
+        try container.encode(subjectID, forKey: .subjectID)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 
@@ -110,10 +121,18 @@ struct Comment: Codable {
         self.createdAt = try parseDate(from: createdAtString)
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     static func == (lhs: Comment, rhs: Comment) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case text
@@ -127,12 +146,20 @@ struct CommentDao: Codable {
     let text: String
     var userID: String?
     let createdAt: Date?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case text
         case userID = "user_id"
         case createdAt = "created_at"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(userID, forKey: .userID)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 
@@ -163,6 +190,14 @@ struct Reaction: Codable, Identifiable {
         self.createdAt = try parseDate(from: createdAtString)
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case userID = "user_id"
@@ -265,6 +300,14 @@ class Member: Codable, Identifiable, ObservableObject {
         }
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(role, forKey: .role)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encodeIfPresent(joinedAt?.ISO8601Format(), forKey: .joinedAt)
+    }
+
     func checkBlockStatus(_ user: User) {
         guard let blockedUsers = user.blockedUsers,
               let data = self.user,
@@ -337,6 +380,15 @@ class MemberDao: Codable, Identifiable {
         } else {
             joinedAt = try container.decodeIfPresent(Date.self, forKey: .joinedAt)
         }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(role, forKey: .role)
+        try container.encodeIfPresent(data, forKey: .data)
+        try container.encodeIfPresent(joinedAt?.ISO8601Format(), forKey: .joinedAt)
     }
 }
 

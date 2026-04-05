@@ -370,10 +370,16 @@ struct AuthUserInfo: View {
                 Spacer(minLength: 50)
             }.padding(.top, -8)
             
-            Button(action: { updateUser() }) {
-                LoadingButton(text: String(localized: "continue", table: "General"), status: $state)
-                    .padding(.top, -8)
-                    .padding(.horizontal)
+            HStack {
+                Spacer()
+                
+                Button(action: { updateUser() }) {
+                    LoadingButton(text: String(localized: "continue", table: "General"), status: $state)
+                        .padding(.top, -8)
+                        .padding(.horizontal)
+                }
+                
+                Spacer()
             }
         }
     }

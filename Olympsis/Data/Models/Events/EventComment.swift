@@ -46,7 +46,7 @@ class EventComment: Codable {
         try container.encode(id, forKey: .id)
         try container.encodeIfPresent(user, forKey: .user)
         try container.encode(text, forKey: .text)
-        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
     }
 }
 
@@ -92,7 +92,7 @@ class EventCommentDao: Codable {
         try container.encodeIfPresent(userID, forKey: .userID)
         try container.encodeIfPresent(text, forKey: .text)
         try container.encode(eventID, forKey: .eventID)
-        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 

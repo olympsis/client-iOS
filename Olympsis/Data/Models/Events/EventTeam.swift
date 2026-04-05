@@ -65,9 +65,9 @@ class Team: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(members, forKey: .members)
         try container.encode(eventID, forKey: .eventID)
-        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
     }
-    
+
     static func == (lhs: Team, rhs: Team) -> Bool {
         return lhs.id == rhs.id
     }
@@ -115,7 +115,7 @@ class TeamDao: Codable {
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(members, forKey: .members)
         try container.encodeIfPresent(eventID, forKey: .eventID)
-        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 

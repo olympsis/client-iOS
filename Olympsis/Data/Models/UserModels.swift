@@ -286,7 +286,7 @@ struct UserDao: Codable {
             try container.encodeIfPresent(genderString, forKey: .gender)
         }
         
-        try container.encodeIfPresent(birthdate, forKey: .birthdate)
+        try container.encodeIfPresent(birthdate?.ISO8601Format(), forKey: .birthdate)
         try container.encodeIfPresent(imageURL, forKey: .imageURL)
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(visibility, forKey: .visibility)

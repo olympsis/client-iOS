@@ -145,4 +145,17 @@ struct PostDTO: Codable {
         case externalLink = "external_link"
         case createdAt = "created_at"
     }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(type, forKey: .type)
+        try container.encodeIfPresent(poster, forKey: .poster)
+        try container.encodeIfPresent(groupID, forKey: .groupID)
+        try container.encodeIfPresent(body, forKey: .body)
+        try container.encodeIfPresent(eventID, forKey: .eventID)
+        try container.encodeIfPresent(images, forKey: .images)
+        try container.encode(isSensitive, forKey: .isSensitive)
+        try container.encodeIfPresent(externalLink, forKey: .externalLink)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
+    }
 }
