@@ -31,13 +31,19 @@ class AuthObserver: ObservableObject {
         }
     }
     
-    func login(token: String) async throws {
+    func login(token: String) async throws -> USER_STATUS {
         let req = AuthRequest(token: token)
-        let (data, _) = try await authService.login(request: req)
+        let (data, resp) = try await authService.login(request: req)
+
+        if let httpResp = resp as? HTTPURLResponse, httpResp.statusCode == 404 {
+            return .not_finished
+        }
+
         let object = try decoder.decode(User.self, from: data)
-        
+
         // store user data
         cacheService.cacheUser(user: object)
+        return .returning
     }
     
     func updateUser(_ dao: AuthUserDao) async throws -> Bool {
@@ -123,8 +129,13 @@ class AuthObserver: ObservableObject {
                             return USER_STATUS.unknown
                         }
                         
-                        try await login(token: token)
-                        
+                        let status = try await login(token: token)
+
+                        // user not found on server
+                        if status == .not_finished {
+                            return USER_STATUS.not_finished
+                        }
+
                         let user = cacheService.fetchUser()
                         guard user?.firstName != "",
                             user?.username != "",
@@ -132,7 +143,7 @@ class AuthObserver: ObservableObject {
                               user?.visibility != "" else {
                             return USER_STATUS.not_finished
                         }
-                        
+
                         return USER_STATUS.returning
                     } catch {
                         log.error("Authentication Failed: \(error.localizedDescription)")
