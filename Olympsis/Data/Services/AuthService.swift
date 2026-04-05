@@ -30,7 +30,7 @@ class AuthService {
     
     func modify(request: AuthUserDao) async throws -> (Data, URLResponse){
         let endpoint = Endpoint("/v1/auth/modify")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(request))
+        return try await http.Request(.PUT, endpoint, body: EncodeToData(request))
     }
     
     func deleteAccount() async throws -> (Data, URLResponse){
