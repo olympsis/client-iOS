@@ -227,7 +227,7 @@ struct AuthUserInfo: View {
                                     .padding(.all)
                                     .modifier(InputFieldModifier())
                                     .autocorrectionDisabled(true)
-                                    .textContentType(.name)
+                                    .textContentType(.givenName)
                                     .textInputAutocapitalization(.words)
                             }
                         }
