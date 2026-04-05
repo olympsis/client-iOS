@@ -227,6 +227,7 @@ struct AuthUserInfo: View {
                                     .padding(.all)
                                     .modifier(InputFieldModifier())
                                     .autocorrectionDisabled(true)
+                                    .textContentType(.name)
                                     .textInputAutocapitalization(.words)
                             }
                         }
@@ -241,6 +242,7 @@ struct AuthUserInfo: View {
                                     .padding(.all)
                                     .modifier(InputFieldModifier())
                                     .autocorrectionDisabled(true)
+                                    .textContentType(.familyName)
                                     .textInputAutocapitalization(.words)
                             }
                         }
@@ -256,6 +258,7 @@ struct AuthUserInfo: View {
                                     .modifier(InputFieldModifier())
                                     .autocorrectionDisabled(true)
                                     .textInputAutocapitalization(.never)
+                                    .textContentType(.emailAddress)
                                     .keyboardType(.emailAddress)
                             }
                         }
