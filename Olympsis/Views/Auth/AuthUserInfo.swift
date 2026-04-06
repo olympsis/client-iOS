@@ -68,6 +68,16 @@ struct AuthUserInfo: View {
         case gender
     }
     
+    /**
+     Just a function to handle displaying to the user that the action has failed
+     */
+    private func handleFailure() {
+        state = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.state = .pending
+        }
+    }
+    
     @MainActor
     func updateUser() {
         guard state != .loading else { return }
@@ -137,7 +147,7 @@ struct AuthUserInfo: View {
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             
             guard let user = await session.userObserver.updateUserData(update: dao) else {
-                state = .failure
+                handleFailure()
                 return
             }
             

@@ -15,7 +15,11 @@ import AuthenticationServices
 @MainActor
 class AuthObserver: ObservableObject {
 
-    let decoder =  JSONDecoder()
+    let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        return d
+    }()
     let secureStore = SecureStore()
     let authService = AuthService()
     let cacheService = CacheService()

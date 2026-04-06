@@ -19,6 +19,7 @@ class UserObserver: ObservableObject {
     
     init() {
         decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         userService = UserService()
     }
     

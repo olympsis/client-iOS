@@ -13,6 +13,7 @@ class UploadObserver: ObservableObject {
     
     init() {
         decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         uploadService = UploadService()
     }
     
