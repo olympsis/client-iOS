@@ -43,7 +43,12 @@ struct AuthUserSports: View {
         
         Task {
             state = .loading
-            let dao = UserDao(sports: selectedSports.map { $0.name.components(separatedBy: " ")[1] })
+            let parts = selectedSports.map { sport -> String in
+                let components = sport.name.components(separatedBy: " ")
+                // Strip emoji prefix if present (e.g. "⚽ soccer" -> "soccer")
+                return components.count > 1 ? components.dropFirst().joined(separator: " ") : components[0]
+            }
+            let dao = UserDao(sports: parts)
             
             guard let updates = await session.userObserver.updateUserData(update: dao) else {
                 state = .failure

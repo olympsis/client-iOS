@@ -347,7 +347,7 @@ struct PostFooter: View {
             return
         }
         let dao = ReactionDao(userID: userID)
-        guard let id = await session.postObserver.addLike(id: post.id, like: dao) else {
+        guard let id = await session.postObserver?.addLike(id: post.id, like: dao) else {
             return
         }
         let snippet = UserSnippet(userID: userID, username: user.username ?? "", imageURL: user.imageURL ?? "")
@@ -359,7 +359,7 @@ struct PostFooter: View {
     private func removeLike() async {
         guard let user = session.user, let userID = user.userID,
               let like = post.likes.first(where: { $0.userID == userID }),
-              await session.postObserver.deleteLike(id: post.id, likeID: like.id) else {
+              await session.postObserver?.deleteLike(id: post.id, likeID: like.id) ?? false else {
             return
         }
         post.likes.removeAll(where: {$0.userID == like.userID})

@@ -134,7 +134,7 @@ struct PostMenu: View {
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver.deletePost(postID: post.id) else {
+                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
                 return
             }
 
@@ -144,13 +144,13 @@ struct PostMenu: View {
                     let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
-            
+
             // remove post
             feedModel.posts[clubID]?.removeAll(where: { $0.id == post.id })
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver.deletePost(postID: post.id) else {
+                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
                 return
             }
             
