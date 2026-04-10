@@ -29,14 +29,19 @@ struct User: Codable, Hashable {
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
 
+    // Compare all fields so SwiftUI detects changes when profile data is updated
     static func == (lhs: User, rhs: User) -> Bool {
-        guard let lhsID = lhs.userID,
-              let rhsID = rhs.userID else {
-            return false
-        }
-        return lhsID == rhsID
+        return lhs.userID == rhs.userID
+            && lhs.username == rhs.username
+            && lhs.firstName == rhs.firstName
+            && lhs.lastName == rhs.lastName
+            && lhs.imageURL == rhs.imageURL
+            && lhs.bio == rhs.bio
+            && lhs.sports == rhs.sports
+            && lhs.visibility == rhs.visibility
+            && lhs.hometown == rhs.hometown
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
         case username

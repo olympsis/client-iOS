@@ -91,6 +91,9 @@ struct EditProfile: View {
             session.user = res
             cacheService.cacheUser(user: res)
             status = .success
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                dismiss()
+            }
             return
         }
         
