@@ -238,10 +238,14 @@ struct NewEvent: View {
                 }
                 
                 // MARK: - Action Button
-                VStack(alignment: .center){
+                HStack {
+                    Spacer()
+                    
                     Button(action: { handleEventCreation(value) }) {
                         LoadingButton(text: String(localized: "new-event-create-text", table: "Events"), width: 150, height: 50, status: $manager.status)
                     }
+                    
+                    Spacer()
                 }.listRowBackground(Color.clear)
                 
             }

@@ -54,7 +54,17 @@ struct EditProfile: View {
     
     var log = Logger(subsystem: "com.olympsis.client", category: "edit_profile_view")
     
-    func UpdateProfile() async {
+    /**
+     Just a function to handle displaying to the user that the action has failed
+     */
+    private func handleFailure() {
+        status = .failure
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.status = .pending
+        }
+    }
+    
+    private func updateProfile() async {
         var imageURL: String = ""
         status = .loading
         // new image
@@ -63,7 +73,7 @@ struct EditProfile: View {
         // check for updated image
         guard let data = selectedPhotoData else {
             guard let user = session.user else {
-                status = .failure
+                handleFailure()
                 return
             }
             
@@ -74,7 +84,7 @@ struct EditProfile: View {
 
             let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
             guard let res = await userObserver.updateUserData(update: update) else {
-                status = .failure
+                handleFailure()
                 return
             }
             
@@ -85,13 +95,14 @@ struct EditProfile: View {
         }
         
         guard (await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
-            status = .failure
+            handleFailure()
             return
         }
         
         imageURL = "profile-images/\(imageId).jpeg"
         
         guard let user = session.user else {
+            handleFailure()
             return
         }
         
@@ -108,13 +119,17 @@ struct EditProfile: View {
         // update user data
         let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
         guard let resp = await userObserver.updateUserData(update: update) else {
-            status = .failure
+            handleFailure()
             return
         }
         
         session.user = resp
         cacheService.cacheUser(user: resp)
         status = .success
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            dismiss()
+        }
     }
     
     var body: some View {
@@ -337,29 +352,27 @@ struct EditProfile: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action:{
                         Task {
-                            await UpdateProfile()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                dismiss()
-                            }
+                            await updateProfile()
                         }
                     }){
                         LoadingButton(text: String(localized: "save", table: "General"), width: 50, status: $status)
                             .fixedSize()
-                    }.buttonStyle(.plain)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(status != .pending)
                 }.sharedBackgroundVisibility(.hidden)
             } else {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action:{
                         Task {
-                            await UpdateProfile()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                dismiss()
-                            }
+                            await updateProfile()
                         }
                     }){
                         LoadingButton(text: String(localized: "save", table: "General"), width: 50, status: $status)
                             .fixedSize()
-                    }.buttonStyle(.plain)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(status != .pending)
                 }
             }
         }
