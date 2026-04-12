@@ -134,7 +134,7 @@ let EVENTS = [
             Organizer(type: GROUP_TYPE.Club, id: CLUBS[1].id)
         ],
         venues: VENUE_DESCRIPTORS,
-        mediaURL: "event-images/soccer-0.jpg",
+        mediaURL: "event-media/0713b70f-4bbc-49ac-b417-7f98ff70f57e.jpg",
         mediaType: .image,
         title: "Pick Up Soccer International",
         body: "Lets go play boys!!!",

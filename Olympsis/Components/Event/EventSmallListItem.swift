@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct EventSmallListItem: View {
     
@@ -16,8 +17,8 @@ struct EventSmallListItem: View {
         return event.title
     }
     
-    private var imageURL: String {
-        return event.mediaURL
+    private var imageURL: URL? {
+        return generateImageURL(event.mediaURL)
     }
     
     private var fieldName: String {
@@ -46,46 +47,58 @@ struct EventSmallListItem: View {
     
     var body: some View {
         HStack {
-            Image(imageURL)
+            KFImage(imageURL)
+                .placeholder {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(.gray)
+                        .overlay {
+                            Image(systemName: "photo")
+                                .foregroundStyle(Color(Color.Background.secondary))
+                        }
+                }
                 .resizable()
                 .scaledToFill()
-                .frame(width: 50, height: 50)
+                .frame(width: 100, height: 100)
                 .clipped()
                 .cornerRadius(radius: 10, corners: .allCorners)
             
             VStack(alignment: .leading) {
                 Text(title)
-                    
-                Text(fieldName)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+                
+                Text(event.timeToString() + " at " + event.getStartHourAndMinute())
+                    .font(.callout)
                     .foregroundStyle(.gray)
-                    .font(.caption)
                 
             }
             
             Spacer()
-            
+        }
+        .padding()
+        .clipShape(Rectangle())
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(Color(Color.Background.secondary))
+        }
+        .overlay(alignment: .bottomTrailing) {
             HStack {
-                Image(systemName: "person.3.sequence.fill")
-                    .foregroundColor(iconColor)
-                    .imageScale(.small)
-                Text("\(participantsCount)")
-                    .foregroundColor(.primary)
-                    .font(.caption)
-            }.padding(.trailing)
-        }.clipShape(Rectangle())
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color(Color.Background.secondary))
+                Image(systemName: "person.3.fill")
+                Text("\(event.participants.count)")
+                    .font(.callout)
             }
-        .padding(.horizontal)
-            .onTapGesture {
-                self.showDetails.toggle()
-            }
-            .fullScreenCover(isPresented: $showDetails) {
-                EventView(event: event)
-                    .environment(event)
-                    .presentationDetents([.large])
-            }
+            .padding()
+            .foregroundStyle(.primary)
+        }
+        .padding(.horizontal, 10)
+        .onTapGesture {
+            self.showDetails.toggle()
+        }
+        .fullScreenCover(isPresented: $showDetails) {
+            EventView(event: event)
+                .environment(event)
+                .presentationDetents([.large])
+        }
     }
 }
 

@@ -106,7 +106,7 @@ func formatAbbreviatedTimestamp(_ date: Date?) -> String {
 func formatDateFromTimestamp(_ date: Date?) -> String {
     // Safely unwrap the optional date
     guard let date = date else {
-        return "Contact Me"
+        return "Unknown"
     }
     
     let formatter = DateFormatter()
@@ -131,7 +131,7 @@ func formatDateFromTimestamp(_ date: Date?) -> String {
 func formatTimeFromTimestamp(_ date: Date?) -> String {
     // Safely unwrap the optional date
     guard let date = date else {
-        return "Contact Me"
+        return "Unknown"
     }
     
     let formatter = DateFormatter()
