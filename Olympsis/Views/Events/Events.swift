@@ -93,9 +93,6 @@ struct Events: View {
                     UpNextEvents(events: events)
                 case .new:
                     NewEvent(manager: NewEventManager())
-                case .settings:
-                    EventsOptions(availableSports: [], selectedSports: viewModel.sports)
-                        .environment(router)
                 }
             })
             .task {

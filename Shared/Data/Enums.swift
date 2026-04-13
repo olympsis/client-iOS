@@ -141,7 +141,6 @@ enum EVENT_ROUTES: Codable, Hashable {
     case event(event: Event)
     case upNextEvents(events: [Event])
     case new
-    case settings
 }
 
 enum PROFILE_ROUTES: String {

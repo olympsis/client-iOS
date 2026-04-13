@@ -492,7 +492,6 @@
 		9A9AD8942955FB900096D65B /* FriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9AD8932955FB900096D65B /* FriendRequestView.swift */; };
 		9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */; };
 		9AA5F617294DB0F900219B95 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F616294DB0F900219B95 /* LoadingButton.swift */; };
-		9AA5F619294DCBF700219B95 /* EventsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F618294DCBF700219B95 /* EventsOptions.swift */; };
 		9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6AC2903AF2F0003D501 /* Trophy.swift */; };
 		9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6AE2903AF360003D501 /* Badge.swift */; };
 		9AAAA6B12903BA6E0003D501 /* UserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */; };
@@ -1082,7 +1081,6 @@
 		9A9AD8932955FB900096D65B /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
 		9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelTemplate.swift; sourceTree = "<group>"; };
 		9AA5F616294DB0F900219B95 /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
-		9AA5F618294DCBF700219B95 /* EventsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsOptions.swift; sourceTree = "<group>"; };
 		9AAAA6AC2903AF2F0003D501 /* Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trophy.swift; sourceTree = "<group>"; };
 		9AAAA6AE2903AF360003D501 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		9AAAA6B02903BA6E0003D501 /* UserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataResponse.swift; sourceTree = "<group>"; };
@@ -2205,7 +2203,6 @@
 			children = (
 				5D18BD202B3A190000F90777 /* Edit Event */,
 				5DBB94C32B028D310031876D /* New Event */,
-				9AA5F618294DCBF700219B95 /* EventsOptions.swift */,
 				9AB02F5829024D24008C07F1 /* MapView.swift */,
 				5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */,
 				5D9DB7F32D5E628800438FA7 /* Events.swift */,
@@ -2905,7 +2902,6 @@
 				5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */,
 				5D117A752E25B423002380DE /* ActivityCountdownView.swift in Sources */,
 				9AB02F5B29024D2E008C07F1 /* Profile.swift in Sources */,
-				9AA5F619294DCBF700219B95 /* EventsOptions.swift in Sources */,
 				9AD208FC293432A4007A62C4 /* ClubMenu.swift in Sources */,
 				5D9557A42A6C5E3F006A1EF8 /* FindingEvents.swift in Sources */,
 				5D78BDEC2C0D880A00F170D6 /* EventVenuePickerView.swift in Sources */,
