@@ -13,6 +13,7 @@ struct EventLocation: View {
 
     @Binding var venues: [Venue]
     @Environment(Event.self) private var event: Event
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     /// Map snapshot image URLs keyed by VenueDescriptor hash for quick lookup
     @State private var snapshotURLs: [Int: URL] = [:]
@@ -71,8 +72,8 @@ struct EventLocation: View {
         guard let coordinates = descriptor.location?.coordinates,
               coordinates.count >= 2 else { return }
         
-        let latitude = coordinates[0]
-        let longitude = coordinates[1]
+        let latitude = coordinates[1]
+        let longitude = coordinates[0]
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         let placemark = MKPlacemark(coordinate: coordinate)
@@ -89,6 +90,66 @@ struct EventLocation: View {
         mapItem.openInMaps(launchOptions: options)
     }
     
+    /// Reusable venue card for a single descriptor
+    @ViewBuilder
+    private func venueCard(for descriptor: VenueDescriptor) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // Snapshot image or loading placeholder
+            if let url = snapshotURLs[descriptor.hashValue] {
+                KFImage(url)
+                    .placeholder {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.quaternary)
+                            .frame(height: 100)
+                            .overlay {
+                                ProgressView()
+                            }
+                    }
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .clipped()
+                    .cornerRadius(radius: 10, corners: .allCorners)
+            } else {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.quaternary)
+                    .frame(height: 100)
+                    .overlay {
+                        ProgressView()
+                    }
+            }
+
+            HStack {
+                Image(systemName: "location.fill")
+                    .imageScale(.large)
+
+                VStack(alignment: .leading) {
+                    // Venue name
+                    Text(descriptor.name ?? "Venue")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+
+                    // Full address or coordinates fallback
+                    let sub = subtitle(for: descriptor)
+                    if !sub.isEmpty {
+                        Text(sub)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+            }
+        }.onTapGesture {
+            openMapsForCoordinates(for: descriptor)
+        }
+    }
+
+    /// Two-column grid layout for iPad
+    private var iPadColumns: [GridItem] {
+        [GridItem(.flexible()), GridItem(.flexible())]
+    }
+
     var body: some View {
         if !venues.isEmpty {
             Group {
@@ -97,56 +158,18 @@ struct EventLocation: View {
                         .font(.title2)
                         .bold()
                 }
-                ForEach(venueDescriptors, id: \.self) { descriptor in
-                    VStack(alignment: .leading, spacing: 4) {
-                        // Snapshot image or loading placeholder
-                        if let url = snapshotURLs[descriptor.hashValue] {
-                            KFImage(url)
-                                .placeholder {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.quaternary)
-                                        .frame(height: 100)
-                                        .overlay {
-                                            ProgressView()
-                                        }
-                                }
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 250)
-                                .clipped()
-                                .cornerRadius(radius: 10, corners: .allCorners)
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.quaternary)
-                                .frame(height: 100)
-                                .overlay {
-                                    ProgressView()
-                                }
+
+                if horizontalSizeClass == .regular {
+                    // iPad: two-column grid
+                    LazyVGrid(columns: iPadColumns, spacing: 16) {
+                        ForEach(venueDescriptors, id: \.self) { descriptor in
+                            venueCard(for: descriptor)
                         }
-                        
-                        HStack {
-                            Image(systemName: "location.fill")
-                                .imageScale(.large)
-                            
-                            VStack(alignment: .leading) {
-                                // Venue name
-                                Text(descriptor.name ?? "Venue")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .lineLimit(1)
-                                
-                                // Full address or coordinates fallback
-                                let sub = subtitle(for: descriptor)
-                                if !sub.isEmpty {
-                                    Text(sub)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                        .lineLimit(1)
-                                }
-                            }
-                        }
-                    }.onTapGesture {
-                        openMapsForCoordinates(for: descriptor)
+                    }.padding(.horizontal)
+                } else {
+                    // iPhone: single-column list
+                    ForEach(venueDescriptors, id: \.self) { descriptor in
+                        venueCard(for: descriptor)
                     }
                 }
             }
