@@ -21,6 +21,7 @@ struct HTMLTextView: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let tv = UITextView()
         tv.isEditable = false
+        tv.textColor = .label 
         tv.isScrollEnabled = false
         tv.backgroundColor = .clear
         tv.textContainerInset = .zero
@@ -52,6 +53,9 @@ struct HTMLTextView: UIViewRepresentable {
         let mutable = NSMutableAttributedString(attributedString: finalAttr)
         mutable.addAttribute(.font,
                              value: UIFont.systemFont(ofSize: fontSize),
+                             range: NSRange(location: 0, length: mutable.length))
+        mutable.addAttribute(.foregroundColor,
+                             value: UIColor.label,
                              range: NSRange(location: 0, length: mutable.length))
         tv.attributedText = mutable
 
