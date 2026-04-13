@@ -82,13 +82,15 @@ struct EventSmallListItem: View {
                 .foregroundStyle(Color(Color.Background.secondary))
         }
         .overlay(alignment: .bottomTrailing) {
-            HStack {
-                Image(systemName: "person.3.fill")
-                Text("\(event.participants.count)")
-                    .font(.callout)
+            if event.participants.count > 0 {
+                HStack {
+                    Image(systemName: "person.3.fill")
+                    Text("\(event.participants.count)")
+                        .font(.callout)
+                }
+                .padding()
+                .foregroundStyle(.primary)
             }
-            .padding()
-            .foregroundStyle(.primary)
         }
         .padding(.horizontal, 10)
     }
