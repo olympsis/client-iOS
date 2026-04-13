@@ -85,6 +85,12 @@ struct Events: View {
                     } else {
                         EventsList(events: Array(session.events))
                     }
+                case .event(let event):
+                    EventView(event: event)
+                        .environment(event)
+                        .environment(session)
+                case .upNextEvents(let events):
+                    UpNextEvents(events: events)
                 case .new:
                     NewEvent(manager: NewEventManager())
                 case .settings:

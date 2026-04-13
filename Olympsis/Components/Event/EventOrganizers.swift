@@ -91,10 +91,12 @@ struct EventOrganizers: View {
                                     GroupBadgeView(size: .small, type: organizer.type, imageURL: generateImageURL(url))
                                     Text(club.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 } else {
                                     GroupBadgeView(size: .small, type: organizer.type)
                                     Text(club.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         case .Organization:
@@ -103,10 +105,12 @@ struct EventOrganizers: View {
                                     GroupBadgeView(size: .small, type: organizer.type, imageURL: generateImageURL(url))
                                     Text(org.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 } else {
                                     GroupBadgeView(size: .small, type: organizer.type)
                                     Text(org.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         }

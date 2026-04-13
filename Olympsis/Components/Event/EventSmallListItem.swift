@@ -11,7 +11,6 @@ import Kingfisher
 struct EventSmallListItem: View {
     
     @State var event: Event
-    @State private var showDetails: Bool = false
     
     private var title: String {
         return event.title
@@ -66,6 +65,7 @@ struct EventSmallListItem: View {
                 Text(title)
                     .fontWeight(.bold)
                     .foregroundStyle(.primary)
+                    .multilineTextAlignment(.leading)
                 
                 Text(event.timeToString() + " at " + event.getStartHourAndMinute())
                     .font(.callout)
@@ -91,14 +91,6 @@ struct EventSmallListItem: View {
             .foregroundStyle(.primary)
         }
         .padding(.horizontal, 10)
-        .onTapGesture {
-            self.showDetails.toggle()
-        }
-        .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: event)
-                .environment(event)
-                .presentationDetents([.large])
-        }
     }
 }
 

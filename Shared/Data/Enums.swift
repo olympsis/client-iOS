@@ -138,6 +138,8 @@ enum EVENT_ROUTES: Codable, Hashable {
         ID: String?=nil,
         openEvents: Bool?=nil
     )
+    case event(event: Event)
+    case upNextEvents(events: [Event])
     case new
     case settings
 }

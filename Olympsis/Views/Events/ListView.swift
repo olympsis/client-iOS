@@ -53,6 +53,14 @@ struct ListView: View {
             .filter { $0.title.localizedLowercase.contains(searchText.localizedLowercase) }
     }
     
+    private var nextEvents: [Event] {
+        guard let user = session.user,
+              let userID = user.userID else {
+            return []
+        }
+        return events.rsvpedEvents(userID: userID)
+    }
+    
     private var eventsGrouped: [DayGroup] {
         return events
             .eventsGroupedByDay()
@@ -188,6 +196,14 @@ struct ListView: View {
                         }.padding(.top, 50)
                     } else {
                         LazyVStack(pinnedViews: [.sectionHeaders]) {
+                            
+                            // MARK: - Up Next Events
+                            if nextEvents.count > 0 && searchText.isEmpty {
+                                UpNextEvent(events: nextEvents, namespace: heroNamespace)
+                                    .padding(.vertical, 10)
+                            }
+                            
+                            // MARK: - Events List
                             ForEach(eventsGrouped, id: \.id) { group in
                                 Section {
                                     ForEach(group.events, id: \.id) { event in

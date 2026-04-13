@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 @Observable
-class Event: Decodable, Identifiable, Hashable {
+class Event: Codable, Identifiable, Hashable {
     let id: String
     let poster: UserSnippet?
     var organizers: [Organizer]
@@ -223,7 +223,52 @@ class Event: Decodable, Identifiable, Hashable {
         
         recurrenceConfig = try container.decodeIfPresent(EventRecurrenceConfig.self, forKey: .recurrenceConfig)
     }
-    
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(poster, forKey: .poster)
+        try container.encode(organizers, forKey: .organizers)
+        try container.encode(venues, forKey: .venues)
+
+        try container.encode(mediaURL, forKey: .mediaURL)
+        // Encode as lowercase string to match what the API expects
+        try container.encode(mediaType.rawValue, forKey: .mediaType)
+
+        try container.encode(title, forKey: .title)
+        try container.encode(body, forKey: .body)
+        try container.encode(tags, forKey: .tags)
+        try container.encode(sports, forKey: .sports)
+
+        try container.encodeIfPresent(config, forKey: .config)
+        try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
+
+        // Encode dates as ISO8601 strings to match the decoder's expected format
+        try container.encode(startTime.ISO8601Format(), forKey: .startTime)
+        try container.encode(stopTime.ISO8601Format(), forKey: .stopTime)
+
+        try container.encode(participants, forKey: .participants)
+        try container.encode(participantsWaitlist, forKey: .participantsWaitlist)
+        try container.encodeIfPresent(participantsConfig, forKey: .participantsConfig)
+
+        try container.encode(teams, forKey: .teams)
+        try container.encode(teamsWaitlist, forKey: .teamsWaitlist)
+        try container.encodeIfPresent(teamsConfig, forKey: .teamsConfig)
+
+        try container.encode(comments, forKey: .comments)
+
+        try container.encode(visibility, forKey: .visibility)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(isSensitive, forKey: .isSensitive)
+
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
+        try container.encodeIfPresent(canceledAt?.ISO8601Format(), forKey: .canceledAt)
+
+        try container.encodeIfPresent(recurrenceConfig, forKey: .recurrenceConfig)
+    }
+
     func update(from event: Event) {
         self.title = event.title
         self.body = event.body
@@ -619,6 +664,13 @@ extension [Event] {
             .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
             .sorted { $0.startTime < $1.startTime }
             .first
+    }
+    
+    /// Returns all of the events that the user has RSVPed to
+    func rsvpedEvents(userID: String) -> [Event] {
+        return self
+            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .sorted { $0.startTime < $1.startTime }
     }
     
     /// Returns a filtered array of the events by club ID

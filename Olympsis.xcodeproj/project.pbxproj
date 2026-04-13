@@ -276,9 +276,10 @@
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
 		5D860C532C0EDA860046457E /* VenueSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */; };
 		5D860C552C0FCFBB0046457E /* VenueDescriptorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */; };
-		5D86CD182F8C5DD0003C1857 /* UpNextEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86CD172F8C5DD0003C1857 /* UpNextEvents.swift */; };
+		5D86CD182F8C5DD0003C1857 /* UpNextEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86CD172F8C5DD0003C1857 /* UpNextEvent.swift */; };
 		5D86CD1A2F8C6503003C1857 /* BasicButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86CD192F8C6503003C1857 /* BasicButtonLabel.swift */; };
 		5D86CD1C2F8C6917003C1857 /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86CD1B2F8C6917003C1857 /* HTMLTextView.swift */; };
+		5D86CD202F8D2C0C003C1857 /* UpNextEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86CD1F2F8D2C0C003C1857 /* UpNextEvents.swift */; };
 		5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F42C76D82400AAF374 /* ImageSaver.swift */; };
 		5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */; };
 		5D8958F92C76E4B000AAF374 /* ShareMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8958F82C76E4B000AAF374 /* ShareMenu.swift */; };
@@ -841,9 +842,10 @@
 		5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueMediumListItem.swift; sourceTree = "<group>"; };
 		5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueSearchViewModel.swift; sourceTree = "<group>"; };
 		5D860C542C0FCFBB0046457E /* VenueDescriptorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDescriptorView.swift; sourceTree = "<group>"; };
-		5D86CD172F8C5DD0003C1857 /* UpNextEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextEvents.swift; sourceTree = "<group>"; };
+		5D86CD172F8C5DD0003C1857 /* UpNextEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextEvent.swift; sourceTree = "<group>"; };
 		5D86CD192F8C6503003C1857 /* BasicButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButtonLabel.swift; sourceTree = "<group>"; };
 		5D86CD1B2F8C6917003C1857 /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		5D86CD1F2F8D2C0C003C1857 /* UpNextEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextEvents.swift; sourceTree = "<group>"; };
 		5D877B2B2E289A73000DEAC8 /* DistanceActivityMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceActivityMetrics.swift; sourceTree = "<group>"; };
 		5D8958F42C76D82400AAF374 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		5D8958F62C76DE5000AAF374 /* SquareIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareIconButton.swift; sourceTree = "<group>"; };
@@ -2220,7 +2222,8 @@
 				5D2EA5FB2DC538D70016C934 /* CalendarEventEditView.swift */,
 				5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */,
 				5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */,
-				5D86CD172F8C5DD0003C1857 /* UpNextEvents.swift */,
+				5D86CD172F8C5DD0003C1857 /* UpNextEvent.swift */,
+				5D86CD1F2F8D2C0C003C1857 /* UpNextEvents.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2658,6 +2661,7 @@
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				3AC4A26EAE6B436E809F8879 /* AppEnvironment.swift in Sources */,
 				5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */,
+				5D86CD202F8D2C0C003C1857 /* UpNextEvents.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
 				9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */,
 				5DC8B48C2E05CE6C008C9052 /* ActivityGoalButton.swift in Sources */,
@@ -2893,7 +2897,7 @@
 				5DF945B02BFC292D00BE3C63 /* MemberBlockingConfirmation.swift in Sources */,
 				9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */,
 				5DBB94DD2B125C230031876D /* GroupSelection.swift in Sources */,
-				5D86CD182F8C5DD0003C1857 /* UpNextEvents.swift in Sources */,
+				5D86CD182F8C5DD0003C1857 /* UpNextEvent.swift in Sources */,
 				5D666A892BF664BA001EE754 /* CropViewModel.swift in Sources */,
 				5DB096162E07415600BB924A /* ActivitiesTypePicker.swift in Sources */,
 				9A9AD8942955FB900096D65B /* FriendRequestView.swift in Sources */,

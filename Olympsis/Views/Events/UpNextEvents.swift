@@ -1,8 +1,8 @@
 //
-//  UpNext.swift
+//  UpNextEvents.swift
 //  Olympsis
 //
-//  Created by Joel Joseph on 4/12/26.
+//  Created by Joel Joseph on 4/13/26.
 //
 
 import SwiftUI
@@ -10,33 +10,20 @@ import SwiftUI
 struct UpNextEvents: View {
     
     var events: [Event]
-    var namespace: Namespace.ID? = nil
-    @Environment(SessionStore.self) private var session
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text("Up Next")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                Spacer()
-                
-                Button(action: {}) {
-                    BasicButtonLabel(text: "View all", color: Color.Background.secondary)
-                }
-            }.padding(.horizontal, 10)
-            
-            if let event = events.first {
-                NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
+        ScrollView {
+            ForEach(events) { event in
+                NavigationLink(value: EVENT_ROUTES.event(event: event)) {
                     EventSmallListItem(event: event)
-                }.modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
+                }
             }
-        }
+        }.navigationTitle(Text("Upcoming Events"))
     }
 }
 
 #Preview {
-    UpNextEvents(events: EVENTS)
-        .environment(SessionStore())
+    NavigationStack {
+        UpNextEvents(events: EVENTS)
+    }
 }
