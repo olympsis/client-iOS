@@ -175,7 +175,7 @@ let EVENTS = [
         mediaURL: "soccer-0",
         mediaType: .image,
         title: "Pick Up Soccer International",
-        body: "Lets go play boys!!!",
+        body: "<p>Adult Pickleball is back on for spring! 🌸 Event is on the 5th floor. Bring a paddle and a friend (let me know if you need one)</p><p>This is the location: 217 E. 87th St, New York, NY</p><p></p><p>In association with the Phoenix sober movement </p>",
         tags: [],
         sports: ["soccer"],
         config: EventConfig(

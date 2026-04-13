@@ -93,7 +93,8 @@ struct EventView: View {
                             
                             Spacer()
                         }
-                        Text(event.body)
+                        
+                        ExpandableHTMLText(html: event.body)
                     }
                     .padding(.top, 10)
                     .padding([.horizontal, .bottom])
