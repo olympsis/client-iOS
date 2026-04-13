@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 3/28/25.
 //
 
+import MapKit
 import SwiftUI
 import Kingfisher
 
@@ -63,6 +64,31 @@ struct EventLocation: View {
         return ""
     }
     
+    /// Opens maps for the given coordinates
+    /// - Parameter coordinates: `[Double]` of positional meters
+    /// - Parameter venueName: `String` of venue name
+    private func openMapsForCoordinates(for descriptor: VenueDescriptor) {
+        guard let coordinates = descriptor.location?.coordinates,
+              coordinates.count >= 2 else { return }
+        
+        let latitude = coordinates[0]
+        let longitude = coordinates[1]
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = descriptor.name
+        
+        let regionDistance: CLLocationDistance = 1000
+        let regionSpan = MKCoordinateRegion(center: coordinate, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        
+        mapItem.openInMaps(launchOptions: options)
+    }
+    
     var body: some View {
         if !venues.isEmpty {
             Group {
@@ -119,6 +145,8 @@ struct EventLocation: View {
                                 }
                             }
                         }
+                    }.onTapGesture {
+                        openMapsForCoordinates(for: descriptor)
                     }
                 }
             }
