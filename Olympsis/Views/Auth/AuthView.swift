@@ -116,9 +116,11 @@ struct AuthView: View {
                     .signInWithAppleButtonStyle(.white)
                     .frame(height: 50)
                     .overlay {
-                        Color.gray
-                            .opacity(enableLogin ? 0.0 : 0.9)
-                            .cornerRadius(radius: 5, corners: .allCorners)
+                        if !enableLogin {
+                            Color.gray
+                                .opacity(0.9)
+                                .cornerRadius(radius: 5, corners: .allCorners)
+                        }
                     }
                     .padding(.horizontal, 50)
                     .padding(.bottom, 50)
