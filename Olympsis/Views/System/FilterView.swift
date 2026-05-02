@@ -9,7 +9,6 @@ import MapKit
 import SwiftUI
 
 struct FilterView: View {
-    @Bindable var manager: SearchManager
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     
@@ -17,16 +16,16 @@ struct FilterView: View {
         guard let user = session.user, let hometown = user.hometown else {
             return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.76553, longitude: -73.97770), latitudinalMeters: 4000, longitudinalMeters: 4000)
         }
-        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 4000, longitudinalMeters: 4000)
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 4000, longitudinalMeters: 4000)
     }
     
     @Environment(SessionStore.self) private var session
-    
+    @Environment(SearchManager.self) private var manager
     @AppStorage("searchRadius") private var searchRadius: Double?
     
     private func updateMapRegion() {
         // Get the current center
-        let center = session.locationManager.location ?? fallbackLocation.center
+        let center = LocationManager.shared.location ?? fallbackLocation.center
         
         // Calculate the span to show the radius with padding
         let radiusInDegrees = (manager.radius * 1.5) / 69.2  // Convert meters to degrees with 50% padding
@@ -60,6 +59,8 @@ struct FilterView: View {
     }
     
     var body: some View {
+        @Bindable var manager = manager
+        
         ScrollView {
             
             Spacer(minLength: 15)
@@ -68,7 +69,7 @@ struct FilterView: View {
                 Map(position: $cameraPosition) {
                     // Add a MapCircle for precise radius visualization
                     MapCircle(
-                        center: session.locationManager.location ?? fallbackLocation.center,
+                        center: LocationManager.shared.location ?? fallbackLocation.center,
                         radius: manager.radius * 1609.34  // Convert miles to meters (1 mile = 1609.34 meters)
                     )
                     .strokeStyle(style: .init(lineWidth: 2, dash: [6, 6]))
@@ -202,6 +203,7 @@ struct FilterView: View {
 }
 
 #Preview {
-    FilterView(manager: SearchManager())
+    FilterView()
         .environment(SessionStore())
+        .environment(SearchManager())
 }

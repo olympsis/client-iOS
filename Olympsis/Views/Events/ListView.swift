@@ -9,14 +9,14 @@ import MapKit
 import SwiftUI
 
 struct ListView: View {
-    
-    
+
     @Binding var state: VIEW_STATE
     @Binding var searchText: String
     @Binding var showNewEvent: Bool
     @Binding var showMenu: Bool
-    @Binding var numFiltersActive: Int
+    let numFiltersActive: Int
     
+    @Namespace private var heroNamespace
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
 
@@ -53,6 +53,14 @@ struct ListView: View {
             .filter { $0.title.localizedLowercase.contains(searchText.localizedLowercase) }
     }
     
+    private var nextEvents: [Event] {
+        guard let user = session.user,
+              let userID = user.userID else {
+            return []
+        }
+        return events.rsvpedEvents(userID: userID)
+    }
+    
     private var eventsGrouped: [DayGroup] {
         return events
             .eventsGroupedByDay()
@@ -62,33 +70,37 @@ struct ListView: View {
         guard let user = session.user, let hometown = user.hometown else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
-        return CLLocation(latitude: hometown[0], longitude: hometown[1])
+        return CLLocation(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0])
     }
     
     private var currentLocation: CLLocation {
-        guard session.locationManager.isLocationAuthorized,
-            let location = session.locationManager.location else {
+        guard LocationManager.shared.isLocationAuthorized,
+            let location = LocationManager.shared.location else {
             return fallbackLocation
         }
         
         return CLLocation(latitude: location.latitude, longitude: location.longitude)
     }
     
+    /// Shared fetch logic. When `isRefresh` is true, skips the .loading state
+    /// change to avoid a view rebuild that causes ScrollView to get stuck.
     @MainActor
-    private func fetchEvents() async {
-        state = .loading
-        
+    private func fetchEvents(isRefresh: Bool = false) async {
+        if !isRefresh {
+            state = .loading
+        }
+
         var tags: String? = nil
         var sports: String? = nil
-        
+
         if (!manager.tags.isEmpty) {
             tags = manager.getTagsString()
         }
-        
+
         if (!manager.sports.isEmpty) {
             sports = manager.getSportsString()
         }
-        
+
         // Use fallback location
         guard let resp = await session.eventObserver.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
@@ -99,13 +111,11 @@ struct ListView: View {
             state = .failure
             return
         }
-        
+
         resp.forEach { event in
-            if (session.events.contains(where: { $0.id != event.id })) {
-                session.events.insert(event)
-            }
+            session.events.insert(event)
         }
-        
+
         state = .success
     }
     
@@ -149,82 +159,74 @@ struct ListView: View {
     }
     
     var body: some View {
-        VStack {
-            switch state {
-            case .pending, .success:
-                if events.isEmpty {
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            SearchBar(text: $searchText)
-                                .padding(.horizontal, 10)
+        ScrollViewReader { proxy in
+            ScrollView {
+                HStack(alignment: .bottom) {
+                    Spacer()
+                    DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+                        .frame(width: 120)
+                    
+                    FilterButton(numActive: .constant(numFiltersActive), action: { showMenu.toggle() })
+                }
+                .zIndex(2)
+                .frame(height: 40)
+                .padding(.horizontal)
+                
+                switch state {
+                case .pending, .success:
+                    if events.isEmpty {
+                        VStack {
+                            Image("illustrations/search")
+                                .resizable()
+                                .padding(.top)
+                                .frame(width: 150, height: 110)
                             
-                            HStack(alignment: .bottom) {
-                                Spacer()
-                                DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                                    .frame(width: 120)
-                                
-                                FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
-                            }
-                            .padding(.top, 10)
-                            .frame(height: 40)
-                            .padding(.horizontal)
-                        }
-                        .padding(.top)
-                        .padding(.bottom, 50)
-                        
-                        Image("illustrations/search")
-                            .resizable()
-                            .padding(.top)
-                            .frame(width: 150, height: 110)
-                        
-                        Text(String(localized: "no-events-title", table: "Events"))
-                            .font(.body)
-                            .padding(.top)
-                            .fontWeight(.bold)
-                            .padding(.bottom, 5)
-                            .multilineTextAlignment(.center)
-                        
-                        Text(String(localized: "no-events-sub-title", table: "Events"))
-                            .font(.callout)
-                            .padding(.bottom)
-                            .padding(.horizontal)
-                            .multilineTextAlignment(.center)
-                    }
-                    .refreshable {
-                        Task {
-                            await fetchEvents()
-                        }
-                    }
-                } else {
-                    ScrollViewReader { proxy in
-                        List {
-                            VStack(spacing: 0) {
-                                SearchBar(text: $searchText)
-                                    .padding(.horizontal, 10)
-                                
-                                HStack(alignment: .bottom) {
-                                    Spacer()
-                                    DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                                        .frame(width: 120)
-                                    
-                                    FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
-                                }
-                                .frame(height: 40)
+                            Text(String(localized: "no-events-title", table: "Events"))
+                                .font(.body)
+                                .padding(.top)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 5)
+                                .multilineTextAlignment(.center)
+                            
+                            Text(String(localized: "no-events-sub-title", table: "Events"))
+                                .font(.callout)
+                                .padding(.bottom)
                                 .padding(.horizontal)
+                                .multilineTextAlignment(.center)
+                        }.padding(.top, 50)
+                    } else {
+                        LazyVStack(pinnedViews: [.sectionHeaders]) {
+                            
+                            // MARK: - Up Next Events
+                            if nextEvents.count > 0 && searchText.isEmpty {
+                                UpNextEvent(events: nextEvents, namespace: heroNamespace)
+                                    .padding(.vertical, 10)
                             }
                             
+                            // MARK: - Events List
                             ForEach(eventsGrouped, id: \.id) { group in
-                                Section(header: Text(group.dayInString.capitalized).fontWeight( group.dayInString == "Today" ? .bold : .regular)) {
+                                Section {
                                     ForEach(group.events, id: \.id) { event in
-                                        EventListItem(event: event)
-                                            .scrollContentBackground(.hidden)
+                                        EventListItem(event: event, namespace: heroNamespace)
+                                            .padding(.horizontal)
                                     }
-                                }
-                                .id(group.date)
+                                } header: {
+                                    HStack {
+                                        Text(group.dayInString.capitalized)
+                                            .padding(.leading)
+                                            .padding(.vertical, 5)
+                                            .fontWeight(group.dayInString == "Today" ? .bold : .regular)
+                                        
+                                        Spacer()
+                                    }
+                                    .background(Color.Background.secondary)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal)
+                                    .allowsHitTesting(false)
+                                    .zIndex(1)
+                                }.id(group.date)
                             }
-                        }
-                        .listStyle(.plain)
-                        .onChange(of: selectedDate) { oldValue, newValue in
+                        }.onChange(of: selectedDate) { oldValue, newValue in
                             if let closestDate = findClosestDate(to: newValue, in: eventsGrouped) {
                                 withAnimation {
                                     proxy.scrollTo(closestDate, anchor: .top)
@@ -232,81 +234,42 @@ struct ListView: View {
                             }
                         }
                     }
-                    .refreshable {
-                        Task {
-                            guard state != .loading else { return }
-                            await self.fetchEvents()
-                        }
-                    }
-                }
-            case .loading:
-                ScrollView {
-                    VStack(spacing: 0) {
-                        SearchBar(text: $searchText)
-                            .padding(.horizontal, 10)
-                        
-                        HStack(alignment: .bottom) {
-                            Spacer()
-                            DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                                .frame(width: 120)
-                            
-                            FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
-                        }
-                        .padding(.top, 10)
-                        .frame(height: 40)
-                        .padding(.horizontal)
-                    }
-                    .padding(.top)
-                    .padding(.bottom, 50)
-                    
+                case .loading:
                     ProgressView()
-                }
-            case .failure:
-                ScrollView {
-                    VStack(spacing: 0) {
-                        SearchBar(text: $searchText)
-                            .padding(.horizontal, 10)
+                        .padding(.top, 50)
+                case .failure:
+                    VStack {
+                        Image("illustrations/error")
+                            .resizable()
+                            .frame(width: 170, height: 150)
+                        Text(String(localized: "failed-events-title", table: "Events"))
+                            .padding(.top)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 5)
                         
-                        HStack(alignment: .bottom) {
-                            Spacer()
-                            DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                                .frame(width: 120)
-                            
-                            FilterButton(numActive: $numFiltersActive, action: { showMenu.toggle() })
-                        }
-                        .padding(.top, 10)
-                        .frame(height: 40)
-                        .padding(.horizontal)
-                    }
-                    .padding(.top)
-                    .padding(.bottom, 50)
-                    
-                    Image("illustrations/error")
-                        .resizable()
-                        .frame(width: 170, height: 150)
-                    Text(String(localized: "failed-events-title", table: "Events"))
-                        .padding(.top)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 5)
-                    
-                    Text(String(localized: "failed-events-sub-title", table: "Events"))
-                        .padding(.horizontal)
-                        .multilineTextAlignment(.center)
-                    
-                    Spacer()
-                }
-                .refreshable {
-                    Task {
-                        await fetchEvents()
-                    }
+                        Text(String(localized: "failed-events-sub-title", table: "Events"))
+                            .padding(.horizontal)
+                            .multilineTextAlignment(.center)
+                    }.padding(.top, 50)
                 }
             }
+            .refreshable {
+                guard state != .loading else { return }
+                // Unstructured Task prevents cancellation from killing the network request,
+                // while awaiting .value keeps the refresh spinner visible until completion.
+                await Task { @MainActor in
+                    await self.fetchEvents(isRefresh: true)
+                }.value
+            }
+            .searchable(text: $searchText, placement: .toolbar, prompt: "Event title")
         }
     }
 }
 
 #Preview {
-    ListView(state: .constant(.pending), searchText: .constant(""), showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: .constant(0))
-        .environment(SessionStore())
-        .environment(SearchManager())
+    NavigationStack {
+        ListView(state: .constant(.pending), searchText: .constant(""), showNewEvent: .constant(false), showMenu: .constant(false), numFiltersActive: 0)
+            .environment(SessionStore())
+            .environment(SearchManager())
+    }
 }

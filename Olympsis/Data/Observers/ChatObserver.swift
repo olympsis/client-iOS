@@ -7,11 +7,14 @@
 
 import os
 import Foundation
+#if !DEV
 import FirebaseAuth
+#endif
 
 class ChatObserver: ObservableObject {
-    
+
     private let host: String
+    private let useHTTPS: Bool
     private let cache = CacheService()
     private let decoder = JSONDecoder()
     private let service = ChatService()
@@ -20,17 +23,15 @@ class ChatObserver: ObservableObject {
     private var request: URLRequest? = nil
     private var webSocketTask: URLSessionWebSocketTask? = nil
     private let log = Logger(subsystem: "com.olympsis.client", category: "chat_observer")
-    
+
     init() {
-        #if targetEnvironment(simulator)
-            host = "localhost:8082"
-        #else
-            host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-        #endif
+        let env = AppEnvironment.current
+        host = env.chatHost
+        useHTTPS = env.useHTTPS
     }
     
-    func CreateRoom(group: String, groupType: String, name: String, type: String, uuid: String) async -> Room? {
-        let room = Room(name: name, type: type, group: GroupModel(id: group, type: groupType), members: [ChatMember(id: nil, uuid: uuid, status: "live")], history: nil)
+    func CreateRoom(group: String, groupType: String, name: String, type: String, userID: String) async -> Room? {
+        let room = Room(name: name, type: type, group: GroupModel(id: group, type: groupType), members: [ChatMember(id: nil, userID: userID, status: "live")], history: nil)
         do {
             let (data,resp) = try await service.createRoom(room: room)
             guard (resp as? HTTPURLResponse)?.statusCode == 201 else {
@@ -128,11 +129,8 @@ class ChatObserver: ObservableObject {
     }
     
     func initiateSocketConnection(id: String) async {
-        #if targetEnvironment(simulator)
-            self.request = URLRequest(url: URL(string: "ws://\(host)/v1/chats/\(id)/ws")!)
-        #else
-            self.request = URLRequest(url: URL(string: "wss://\(host)/v1/chats/\(id)/ws")!)
-        #endif
+        let scheme = useHTTPS ? "wss" : "ws"
+        self.request = URLRequest(url: URL(string: "\(scheme)://\(host)/v1/chats/\(id)/ws")!)
 
         guard var request = request else {
             return
@@ -153,11 +151,13 @@ class ChatObserver: ObservableObject {
         await self.authenticateWebSocket()
     }
     
+    /// Authenticates the websocket connection.
+    /// In DEV mode, sends the DEV_USER_ID. In staging/production, sends the Firebase token.
     func authenticateWebSocket() async {
         do {
             let encoder = JSONEncoder()
-            let token = try await Auth.auth().currentUser?.getIDToken()
-            if let data = try? encoder.encode(["token": token]) {
+            let headers = try await AppEnvironment.authHeaders()
+            if let data = try? encoder.encode(headers) {
                 let message = URLSessionWebSocketTask.Message.data(data)
                 try await self.webSocketTask?.send(message)
                 log.info("Socket Connection Authenticated!")
@@ -202,9 +202,9 @@ class ChatObserver: ObservableObject {
                   return msg
                 }
             case .none:
-                fatalError("Did not recieve string or data from socket.")
+                log.error("Did not recieve string or data from socket.")
             @unknown default:
-                fatalError("Did not recieve string or data from socket.")
+                log.error("Did not recieve string or data from socket.")
             }
         } catch {
             log.error("RecieveError: \(error.localizedDescription)")

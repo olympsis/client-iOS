@@ -22,16 +22,20 @@ struct PostMenu: View {
     @EnvironmentObject private var feedModel: FeedViewModel
     @Environment(\.dismiss) private var dismiss
     
+    private var selectedGroup: GroupSelection? {
+        return session.groupsManager.selected
+    }
+    
     private var isAdmin: Bool {
         guard let user = session.user,
-              let uuid = user.uuid,
-              let group = session.selectedGroup else {
+              let userID = user.userID,
+              let group = selectedGroup else {
             return false
         }
         if group.type == GROUP_TYPE.Club {
             guard post.type == "post",
                   let club = group.club,
-                  let member = club.members.first(where: { $0.user?.uuid == uuid }) else {
+                  let member = club.members.first(where: { $0.user?.userID == userID }) else {
                 return false
             }
             return member.role != "member"
@@ -42,14 +46,14 @@ struct PostMenu: View {
     
     private var isPoster: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return post.poster?.uuid == uuid
+        return post.poster?.userID == userID
     }
     
     private var isPinned: Bool {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return false
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -71,7 +75,7 @@ struct PostMenu: View {
     }
     
     private func pinPost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -98,7 +102,7 @@ struct PostMenu: View {
     }
     
     private func unPinPost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -124,13 +128,13 @@ struct PostMenu: View {
     }
     
     private func deletePost() async {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return
         }
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver.deletePost(postID: post.id) else {
+                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
                 return
             }
 
@@ -140,13 +144,13 @@ struct PostMenu: View {
                     let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
-            
+
             // remove post
             feedModel.posts[clubID]?.removeAll(where: { $0.id == post.id })
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver.deletePost(postID: post.id) else {
+                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
                 return
             }
             

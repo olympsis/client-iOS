@@ -14,22 +14,9 @@ import FirebaseAuth
 import CoreLocation
 
 /// App session data, fetched every session, stored in memory until app is closed
+@MainActor
 @Observable
 class SessionStore {
-    
-    /// Global variable to keep track of the first lcation recieved when the app is opened.
-    /// We have to wait on the gps system to give us a location. Sometimes this may take longer than the startup sequence.
-    /// So we load in data from a fall back location until we get the location from the gps module.
-    var locationRecieved: Bool = false {
-        didSet {
-            Task {
-                guard let location = locationManager.location else {
-                    return
-                }
-                await getNearbyData(location: location)
-            }
-        }
-    }
     
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
@@ -53,22 +40,6 @@ class SessionStore {
     var invitations = [Invitation]() // Invitations Cache
     var notifications = [NotificationItem]()
     
-    // groups & posts
-    var selectedGroup: GroupSelection? {
-        didSet {
-            guard let selectedGroup else {
-                return
-            }
-            if let club = selectedGroup.club {
-                selectedGroupID = club.id
-            }
-            if let org = selectedGroup.organization {
-                selectedGroupID = org.id
-            }
-        }
-    }
-    var groups: [GroupSelection] = [GroupSelection]()
-    
     // Observers
     var authObserver = AuthObserver()
     var feedObserver = FeedObserver()
@@ -76,24 +47,25 @@ class SessionStore {
     var userObserver = UserObserver()
     var clubObserver = ClubObserver()
     var orgObserver = OrgObserver()
-    var postObserver = PostObserver()
+    var postObserver: PostObserver?
     var fieldObserver = FieldObserver()
     var eventObserver = EventObserver()
-    var locationManager = LocationManager()
+    var workoutManager = WorkoutManager()
     var managementObserver = ManagementObserver()
     var notificationService = NotificationService()
-    var notificationsManager = NotificationManager()
+    
+    var groupsManager = GroupsManager()
 
     // This variable helps us keep track of the user's current location. It also includes a fallback to a location
     // This fallback location is a second location in case we are unable to find the user's current location
     // In this case we check to see if they have a stored location(hometown)
     // If not then we default to new york city
     var currentLocation: MKCoordinateRegion {
-        guard let location = locationManager.location else {
+        guard let location = LocationManager.shared.location else {
             guard let user = user, let hometown = user.hometown else {
                 return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
             }
-            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 5000, longitudinalMeters: 5000)
+            return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
     }
@@ -142,8 +114,6 @@ class SessionStore {
     private var log = Logger(subsystem: "com.olympsis.client", category: "session_store")
     
     init() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.delegate = notificationsManager
         authStatus = .unknown
         user = cacheService.fetchUser()
         
@@ -153,113 +123,118 @@ class SessionStore {
                 tags = config.tags
                 sports = config.sports
             } catch {
-                #if !targetEnvironment(simulator)
-                fatalError("Failed to fetch application config. Error: \(error)")
-                #endif
+                self.authStatus = .fatal_error
             }
         }
     }
     
     func listenToAuthStateChanges() {
+        #if DEV
+        // In local development we skip Firebase auth entirely and treat the
+        // hardcoded dev user as already authenticated. The actual user ID is
+        // supplied via the DEV_USER_ID key in Info.plist (see AppEnvironment).
+        // Check-in and notifications are handled by ViewContainer's .task block.
+        self.authStatus = .authenticated
+        #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
             guard let self = self else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                if (usr != nil) {
-                    guard self.authType != nil && self.authType == .new else {
-                        guard self.isRegisterComplete else {
-                            self.authStatus = .unauthenticated
-                            return
-                        }
-                        self.authStatus = .authenticated
+            if (usr != nil) {
+                guard self.authType != nil && self.authType == .new else {
+                    guard self.isRegisterComplete else {
+                        self.authStatus = .unauthenticated
                         return
                     }
-                    self.authStatus = .unauthenticated
-                } else {
-                    self.authStatus = .unauthenticated
+                    // Avoid redundant write — re-setting .authenticated
+                    // causes SwiftUI to recreate ViewContainer mid-checkIn
+                    guard self.authStatus != .authenticated else { return }
+                    self.authStatus = .authenticated
+                    return
                 }
+                self.authStatus = .unauthenticated
+            } else {
+                self.authStatus = .unauthenticated
             }
         }
+        #endif
     }
     
     func updateNotifications() async {
         do {
-            if try await notificationsManager.checkAuthorizationStatus() {
-                guard let dToken = dToken else {
-                    log.error("Failed to grab notification token from cache.")
-                    return
-                }
-                
-                let uuid = await UIDevice.current.identifierForVendor?.uuidString
-                let model = await UIDevice.current.model
-                let device = NotificationDevice(
-                    deviceID: uuid,
-                    token: dToken,
-                    platform: .ios,
-                    model: model,
-                    active: true,
-                    createdAt: Date(),
-                    updatedAt: nil
-                )
-                
-                // Check for existing devices
-                guard let user = cacheService.fetchUser(),
-                      var devices = user.notificationDevices else {
-                    let dao = UserDao(notificationDevices: [device])
-                    guard let user = await userObserver.UpdateUserData(update: dao) else {
-                        log.error("Failed to update user with new device token.")
-                        return
-                    }
-                    cacheService.cacheUser(user: user)
-                    self.user = user
-                    return
-                }
-                
-                // Check for this device
-                guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
-                    devices.append(device)
-                    let dao = UserDao(notificationDevices: devices)
-                    guard let user = await userObserver.UpdateUserData(update: dao) else {
-                        log.error("Failed to update user with new device token.")
-                        return
-                    }
-                    cacheService.cacheUser(user: user)
-                    self.user = user
-                    return
-                }
-                
-                // Make sure that it's not the same
-                guard devices[idx].token != dToken else {
-                    return
-                }
-                
-                devices[idx].token = dToken
-                devices[idx].updatedAt = Date()
-                let dao = UserDao(notificationDevices: devices)
-                guard let user = await userObserver.UpdateUserData(update: dao) else {
+            guard try await NotificationManager.shared.checkAuthorizationStatus() else {
+                log.error("Failed to get authorization status.")
+                return
+            }
+            
+            guard let dToken = dToken else {
+                log.error("Failed to grab notification token from cache.")
+                return
+            }
+            
+            let uuid = UIDevice.current.identifierForVendor?.uuidString
+            let model = UIDevice.current.model
+            let device = NotificationDevice(
+                deviceID: uuid,
+                token: dToken,
+                platform: .ios,
+                model: model,
+                active: true,
+                createdAt: Date(),
+                updatedAt: nil
+            )
+            
+            // Check for existing devices
+            guard let user = cacheService.fetchUser(),
+                  var devices = user.notificationDevices else {
+                let dao = UserDao(notificationDevices: [device])
+                guard let user = await userObserver.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
                 cacheService.cacheUser(user: user)
                 self.user = user
-            } else {
-                log.debug("Notification authorization is invalid.")
                 return
-                
             }
+            
+            // Check for this device
+            guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
+                devices.append(device)
+                let dao = UserDao(notificationDevices: devices)
+                guard let user = await userObserver.updateUserData(update: dao) else {
+                    log.error("Failed to update user with new device token.")
+                    return
+                }
+                cacheService.cacheUser(user: user)
+                self.user = user
+                return
+            }
+            
+            // Make sure that it's not the same
+            guard devices[idx].token != dToken else {
+                return
+            }
+            
+            devices[idx].token = dToken
+            devices[idx].updatedAt = Date()
+            let dao = UserDao(notificationDevices: devices)
+            guard let user = await userObserver.updateUserData(update: dao) else {
+                log.error("Failed to update user with new device token.")
+                return
+            }
+            cacheService.cacheUser(user: user)
+            self.user = user
         } catch {
             log.error("Failed to check authorization status: \(error.localizedDescription)")
             return
         }
     }
     
-    func CheckIn() async {
+    func checkIn() async {
         
         clubs = []
         orgs = []
-        groups = []
         
         do {
-            guard let resp = try await userObserver.CheckIn() else {
+            guard let resp = try await userObserver.checkIn() else {
                 return
             }
             if let usr = resp.user {
@@ -273,44 +248,41 @@ class SessionStore {
                 c.forEach { c in
                     self.clubs.insert(c)
                     let group = GroupSelection(type: .Club, club: c, organization: nil, posts: nil)
-                    self.groups.append(group)
-                    
-                    if selectedGroupID == c.id {
-                        selectedGroup = group
-                    }
+                    groupsManager.add(group)
                 }
             }
             if let o = resp.organizations {
                 o.forEach { o in
                     self.orgs.insert(o)
                     let group = GroupSelection(type: .Organization, club: nil, organization: o, posts: nil)
-                    self.groups.append(group)
-                    
-                    if selectedGroupID == o.id {
-                        selectedGroup = group
-                    }
+                    groupsManager.add(group)
                 }
             }
             if let i = resp.invitations {
                 invitations = i
             }
             
-            if selectedGroup == nil {
-                selectedGroup = groups.first
-            }
-            
+            groupsManager.restore()
             authStatus = .authenticated
         } catch let DecodingError.dataCorrupted(context) {
+            #if DEBUG
             print(context)
+            #endif
         } catch let DecodingError.keyNotFound(key, context) {
+            #if DEBUG
             print("Key '\(key)' not found:", context.debugDescription)
             print("codingPath:", context.codingPath)
+            #endif
         } catch let DecodingError.valueNotFound(value, context) {
+            #if DEBUG
             print("Value '\(value)' not found:", context.debugDescription)
             print("codingPath:", context.codingPath)
+            #endif
         } catch let DecodingError.typeMismatch(type, context)  {
+            #if DEBUG
             print("Type '\(type)' mismatch:", context.debugDescription)
             print("codingPath:", context.codingPath)
+            #endif
         } catch {
             authStatus = .unauthenticated
             log.error("Failed to check user in: \(error.localizedDescription)")
@@ -318,46 +290,7 @@ class SessionStore {
     }
     
     func getNotifications() async {
-        do {
-            self.notifications = try await notificationService.GetNotifications().notifications
-        } catch {
-            log.error("Failed to get notifications. Error: \(error)")
-        }
-    }
-    
-    func getNearbyData(location: CLLocationCoordinate2D, selectedSports: [String]?=nil) async {
-        guard let user = self.user,
-              var sports = user.sports else {
-            return
-        }
-        
-        // selected sports in map view
-        if let sSports = selectedSports {
-            sports = sSports
-        }
-        
-        let sportsJoined = sports.joined(separator: ",")
-        
-        // convert radius to Int
-        var radius: Int {
-            guard let radius = self.radius else {
-                return 17000
-            }
-            return Int(radius)
-        }
-        guard let resp = await self.eventObserver.location(
-            longitude: location.longitude,
-            latitude: location.latitude,
-            radius: radius,
-            sports: sportsJoined) else {
-            return
-        }
-        
-        await MainActor.run {
-            self.venues = resp.venues ?? [Venue]()
-            resp.venues?.forEach { self.venues.append($0) }
-            resp.events?.forEach { self.events.insert($0) }
-        }
+        self.notifications = []
     }
     
     /// We want to dynamically fetch the clubs and organizations for each event
@@ -508,6 +441,7 @@ class SessionStore {
             log.error("Failed to find club data remotely")
             return nil
         }
+        clubs.insert(club)
         return club
     }
     
@@ -549,14 +483,13 @@ class SessionStore {
             log.error("Failed to find organization data remotely")
             return nil
         }
+        self.orgs.insert(org)
         return org
     }
     
     /// Logout user from application
-    ///
-    /// Clears cache from all data
-    ///
-    /// Calls firebase API to sign out user
+    /// - Clears cache from all data
+    /// - Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
         
@@ -572,18 +505,15 @@ class SessionStore {
         return
     }
     
-    
     /// Deletes the user's account from application
-    ///
-    /// Makes a call to firebase servers to delete account.
-    ///
-    /// Makes a call to Olympsis servers to delete account
-    ///
-    /// Clears cache of all data
+    /// - Makes a call to firebase servers to delete account.
+    /// - Makes a call to Olympsis servers to delete account
+    /// - Clears cache of all data
+    /// - Returns: a boolean of wether or not we were successful in deleting the user's account
     func deleteAccount() async -> Bool {
         do {
             guard let user = Auth.auth().currentUser else { return false }
-            let signInWithApple = await SignInWithApple()
+            let signInWithApple = SignInWithApple()
             let appleIDCredential = try await signInWithApple()
             guard let appleIDToken = appleIDCredential.identityToken else {
                 log.error("Unable to fetdch identify token.")

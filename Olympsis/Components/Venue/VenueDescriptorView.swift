@@ -123,17 +123,6 @@ struct VenueDescriptorView: View {
             self.location = CLLocationCoordinate2D(latitude: v.location.coordinates[1], longitude: v.location.coordinates[0])
             self.camera = MapCameraPosition.camera(MapCamera(centerCoordinate: self.location, distance: 1000))
         }
-        .onTapGesture {
-            guard let _venue = venue else {
-                UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(location.latitude),\(location.longitude)")! as URL)
-                return
-            }
-            if _venue.description == "external" {
-                UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(_venue.location.coordinates[1]),\(_venue.location.coordinates[0])")! as URL)
-            } else {
-                self.showVenue.toggle()
-            }
-        }
         .sheet(isPresented: $showVenue) {
             if let v = venue {
                 VenueView(venue: v)

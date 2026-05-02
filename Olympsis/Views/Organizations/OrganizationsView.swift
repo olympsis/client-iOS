@@ -18,7 +18,7 @@ struct OrganizationsView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var organizationID: String {
-        guard let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = session.groupsManager.selected,
               let organization = selectedGroup.organization else {
             return ""
         }
@@ -73,7 +73,7 @@ struct OrganizationsView: View {
                     }
                     
                 }.refreshable {
-                    guard let location = session.locationManager.location else {
+                    guard let location = LocationManager.shared.location else {
                         return
                     }
                     
@@ -106,7 +106,7 @@ struct OrganizationsView: View {
             .navigationTitle("Organizations")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                guard let location = session.locationManager.location else {
+                guard let location = LocationManager.shared.location else {
                     return
                 }
                 

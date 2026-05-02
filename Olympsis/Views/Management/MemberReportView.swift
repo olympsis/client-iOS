@@ -29,7 +29,7 @@ struct MemberReportView: View {
             return
         }
         var groupID = ""
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             return
         }
         if let club = selectedGroup.club {
@@ -169,6 +169,6 @@ struct MemberReportView: View {
 }
 
 #Preview {
-    MemberReportView(member: Member(id: "", role: "", user: UserSnippet(uuid: "", username: "johndoe"), joinedAt: Date()))
+    MemberReportView(member: Member(id: "", role: "", user: UserSnippet(userID: "", username: "johndoe"), joinedAt: Date()))
         .environment(SessionStore())
 }

@@ -34,7 +34,7 @@ struct OrgMenu: View {
     
     var role: String {
         guard let user = session.user,
-              let member = organization.members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = organization.members.first(where: {$0.user?.userID == user.userID}) else {
             return "member"
         }
         return member.role ?? ""
@@ -108,10 +108,10 @@ struct OrgMenu: View {
                     MenuButton(icon: Image(systemName: "plus.circle.fill"), text: "Create a New Group", action: {
                         self.showNewClub.toggle()
                     })
-                    
-                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: "Search for clubs", action: {
-                        self.showClubs.toggle()
-                    })
+
+                    NavigationLink(destination: ClubsList()) {
+                        MenuLabel(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"))
+                    }
 
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: "Leave Organization", action: {
                         showAlert = false
@@ -146,9 +146,6 @@ struct OrgMenu: View {
             }
             .fullScreenCover(isPresented: $showMembers) {
                 ManagersListView(organization: organization)
-            }
-            .fullScreenCover(isPresented: $showClubs) {
-                ClubsList2()
             }
             .alert(isPresented: $showAlert) {
                 switch alertType {
@@ -194,8 +191,8 @@ struct OrgMenu: View {
                             Task { // Perform delete operation
                                 let res = await session.orgObserver.deleteOrganization(id: organization.id)
                                 if res {
-                                    session.selectedGroup = session.groups.first
-                                    session.groups.removeAll(where: { $0.organization?.id == organization.id })
+                                    guard let selection = session.groupsManager.selected else { return }
+                                    session.groupsManager.remove(selection)
                                 }
                                 dismiss()
                             }

@@ -12,7 +12,7 @@ struct EventMiddleView: View {
     
     @State private var isBlinking: Bool = false
     @State private var timeDifference: String = ""
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     var startTime: Date {
         return event.startTime;
@@ -67,7 +67,7 @@ struct EventMiddleView: View {
                     switch event.getEventStatus() {
                     case .pending:
                         VStack {
-                            Text("Pending")
+                            Text(String(localized: "status-pending", table: "Events"))
                                 .foregroundColor(.yellow)
                             Text(startTime.formatted(.dateTime.hour().minute()))
                                 .foregroundColor(.green)
@@ -84,7 +84,7 @@ struct EventMiddleView: View {
                                         isBlinking.toggle()
                                     }
                                 }
-                            Text("Live")
+                            Text(String(localized: "status-live", table: "Events"))
                                 .bold()
                                 .foregroundColor(.red)
                         }
@@ -99,7 +99,7 @@ struct EventMiddleView: View {
                             }
                     case .ended:
                         VStack {
-                            Text("Ended")
+                            Text(String(localized: "status-ended", table: "Events"))
                                 .foregroundColor(.gray)
                                 .bold()
                             Text(event.stopTime.formatted(.dateTime.hour().minute()))
@@ -131,5 +131,5 @@ struct EventMiddleView: View {
 
 #Preview {
     EventMiddleView()
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }

@@ -10,7 +10,8 @@ import SwiftUI
 import Foundation
 import _PhotosUI_SwiftUI
 
-class NewPostManager: ObservableObject {
+@MainActor
+final class NewPostManager: ObservableObject {
     
     @Published var type: POST_TYPE
     @Published var body: String = ""
@@ -113,9 +114,7 @@ class NewPostManager: ObservableObject {
                 return nil
             }
             
-            DispatchQueue.main.async {
-                self.status = .success
-            }
+            self.status = .success
             
             return post
         } else {
@@ -133,9 +132,8 @@ class NewPostManager: ObservableObject {
                 return nil
             }
             
-            DispatchQueue.main.async {
-                self.status = .success
-            }
+            self.status = .success
+            
             return post
         }
     }
@@ -188,11 +186,11 @@ class NewPostManager: ObservableObject {
         an optional `Post`object if the user data is valid
      */
     func generateNewPost(id: String, user: User, dto: PostDTO) -> Post? {
-        guard let uuid = user.uuid,
+        guard let userID = user.userID,
               let username = user.username else {
                   return nil
               }
-        let snippet = UserSnippet(uuid: uuid, username: username, imageURL: user.imageURL)
+        let snippet = UserSnippet(userID: userID, username: username, imageURL: user.imageURL)
         return Post(
             id: id,
             type: dto.type ?? "post",

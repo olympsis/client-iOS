@@ -12,7 +12,7 @@ import CoreLocation
 
 struct HometownPicker: View {
     
-    @Binding var hometown: [Double]
+    @Binding var hometown: GeoJSON?
     @State private var city: String = ""
     @State private var state: String = ""
     @State private var country: String = ""
@@ -77,19 +77,23 @@ struct HometownPicker: View {
                                 switch value {
                                 case let .second(_, tapValue):
                                     guard let point = tapValue?.location else {
+                                        #if DEBUG
                                         print("Unable to retreive tap location from gesture data.")
+                                        #endif
                                         return
                                     }
                                     
                                     guard let coordinates = proxy.convert(point, from: .local) else {
+                                        #if DEBUG
                                         print("Unable to convert local point to coordinate on map.")
+                                        #endif
                                         return
                                     }
                                     
                                     withAnimation {
                                         pin = coordinates
-                                        hometown.append(coordinates.latitude)
-                                        hometown.append(coordinates.longitude)
+                                        // GeoJSON stores [longitude, latitude]
+                                        hometown = GeoJSON(type: "Point", coordinates: [coordinates.longitude, coordinates.latitude])
                                         getPlacemark(from: coordinates) { placemark in
                                             if let placemark = placemark {
                                                 let city = placemark.locality ?? ""
@@ -100,7 +104,9 @@ struct HometownPicker: View {
                                                 self.state = state
                                                 self.country = country
                                             } else {
+                                                #if DEBUG
                                                 print("Unable to get placemark information")
+                                                #endif
                                             }
                                         }
                                     }
@@ -114,5 +120,5 @@ struct HometownPicker: View {
 }
 
 #Preview {
-    HometownPicker(hometown: .constant([]))
+    HometownPicker(hometown: .constant(nil))
 }

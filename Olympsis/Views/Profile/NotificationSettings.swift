@@ -16,8 +16,6 @@ struct NotificationSettings: View {
     @State private var pushEnabled: Bool = false
     @State private var emailEnabled: Bool = false
     
-    @State private var notifications = NotificationManager()
-    
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     
@@ -54,7 +52,7 @@ struct NotificationSettings: View {
         
         let dao = UserDao(notificationPreference: update)
         isUpdating = true
-        guard let usr = await session.userObserver.UpdateUserData(update: dao) else {
+        guard let usr = await session.userObserver.updateUserData(update: dao) else {
             isUpdating = false
             return
         }
@@ -93,8 +91,8 @@ struct NotificationSettings: View {
                             .onChange(of: pushEnabled) { _, newValue in
                                 Task {
                                     if pushEnabled {
-                                        await notifications.requestAuthorization()
-                                        guard try await notifications.checkAuthorizationStatus() else {
+                                        await NotificationManager.shared.requestAuthorization()
+                                        guard try await NotificationManager.shared.checkAuthorizationStatus() else {
                                             await updateNotificationSettings()
                                             return
                                         }
@@ -150,7 +148,7 @@ struct NotificationSettings: View {
         .task {
             do {
                 isUpdating = true
-                let status = try await notifications.checkAuthorizationStatus()
+                let status = try await NotificationManager.shared.checkAuthorizationStatus()
                 isEnabled = status
                 
                 if (isEnabled) {

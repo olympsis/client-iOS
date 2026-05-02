@@ -10,62 +10,52 @@ import Kingfisher
 
 struct PostNotificationToast: View {
     
-    var type: POST_TOAST_TYPES
-    var content: String
     var metadata: NotificationMetadata
     
-    init(content: String, metadata: NotificationMetadata) {
-        self.type = POST_TOAST_TYPES(rawValue: metadata.type) ?? .like
-        self.content = content
-        self.metadata = metadata
+    private var content: String {
+        switch metadata.type {
+        case .newPost:
+            return "created a new post!"
+        default:
+            return metadata.type == .postLike ? "liked your post!" : "left a comment on your post!"
+        }
     }
     
-    var imageURL: URL? {
+    private var imageURL: URL? {
         if let userImage = metadata.userImageURL {
             return generateImageURL(userImage)
         }
         return nil
     }
     
-    var groupName: String {
+    private var groupName: String {
         guard let groupName = metadata.groupName else {
             return "olympsis"
         }
         return groupName
     }
     
-    var username: String {
+    private var username: String {
         guard let username = metadata.username else {
             return "olympsis-user"
         }
         return username
     }
     
-    var postImageURL: URL? {
+    private var postImageURL: URL? {
         guard let postImg = metadata.postImageURL else {
             return nil
         }
         return generateImageURL(postImg)
     }
     
-    var timestamp: Int {
-        guard let time = metadata.timestamp else {
-            return Int(Date.now.timeIntervalSince1970)
-        }
-        return time
-    }
-    
-    
-    let size: CGFloat = 40
-    
-    @State private var postImageFailed = false
-    @State private var profileImageFailed = false
+    private let size: CGFloat = 40
     
     var body: some View {
         Group {
-            switch type {
+            switch metadata.type {
             case .newPost:
-                HStack(alignment: .top, spacing: 10) {
+                HStack(alignment: .center, spacing: 10) {
                     KFImage(imageURL)
                         .placeholder({
                             Circle()
@@ -75,86 +65,30 @@ struct PostNotificationToast: View {
                                     ProgressView()
                                 }
                         })
-                        .onFailure { _ in
-                            profileImageFailed = true
-                        }
-                        .cacheOriginalImage()
-                        .setProcessor(postUserImageNotificationProcessor())
-                        .resizable()
-                        .clipShape(Circle())
-                        .frame(width: size, height: size)
-                        .overlay {
-                            if profileImageFailed {
-                                Circle()
-                                    .frame(width: size, height: size)
-                                    .overlay {
-                                        Image(systemName: "person.fill")
-                                            .resizable()
-                                            .frame(width: 18, height: 18)
-                                            .foregroundStyle(Color.foreground)
-                                    }
-                            }
-                        }
-                    
-                    HStack(alignment: .bottom) {
-                        Group {
-                            Text("[\(groupName)]")
-                            +
-                            Text(username)
-                                .fontWeight(.bold)
-                            +
-                            Text(" \(content)")
-                        }
-                        .font(.callout)
-                    }.frame(minHeight: 40)
-                    
-                    Spacer()
-                    
-                    KFImage(postImageURL)
-                        .cacheOriginalImage()
-                        .setProcessor(postImageNotificationProcessor())
-                        .resizable()
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
-                        .frame(width: size, height: size)
-                }
-            case .like, .comment:
-                HStack(alignment: .top, spacing: 10) {
-                    KFImage(imageURL)
-                        .placeholder({
+                        .onFailureView({
                             Circle()
                                 .frame(width: size, height: size)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color.Background.tertiary)
                                 .overlay {
-                                    ProgressView()
+                                    Image(systemName: "person.fill")
+                                        .resizable()
+                                        .frame(width: 18, height: 18)
+                                        .foregroundStyle(Color.gray)
                                 }
                         })
-                        .onFailure { _ in
-                            profileImageFailed = true
-                        }
                         .cacheOriginalImage()
                         .setProcessor(postUserImageNotificationProcessor())
                         .resizable()
                         .clipShape(Circle())
                         .frame(width: size, height: size)
-                        .overlay {
-                            if profileImageFailed {
-                                Circle()
-                                    .frame(width: size, height: size)
-                                    .overlay {
-                                        Image(systemName: "person.fill")
-                                            .resizable()
-                                            .frame(width: 18, height: 18)
-                                            .foregroundStyle(Color.foreground)
-                                    }
-                            }
-                        }
                     
                     HStack(alignment: .bottom) {
                         Group {
                             Text("[\(groupName)] ")
+                                .fontWeight(.bold)
                             +
                             Text(username)
-                                .fontWeight(.bold)
+                                .fontWeight(.medium)
                             +
                             Text(" \(content)")
                         }
@@ -163,12 +97,82 @@ struct PostNotificationToast: View {
                     
                     Spacer()
                     
-                    KFImage(postImageURL)
+                    if postImageURL != nil {
+                        KFImage(postImageURL)
+                            .cacheOriginalImage()
+                            .setProcessor(postImageNotificationProcessor())
+                            .resizable()
+                            .onFailureView({
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.Background.tertiary)
+                                    .overlay {
+                                        Image(systemName: "photo.fill")
+                                            .foregroundStyle(Color.gray)
+                                    }
+                            })
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .frame(width: size, height: size+10)
+                    }
+                }
+            default: // Like | Coment
+                HStack(alignment: .center, spacing: 10) {
+                    KFImage(imageURL)
+                        .placeholder({
+                            Circle()
+                                .frame(width: size, height: size)
+                                .foregroundStyle(.white)
+                                .overlay {
+                                    ProgressView()
+                                }
+                        })
+                        .onFailureView({
+                            Circle()
+                                .frame(width: size, height: size)
+                                .foregroundStyle(Color.Background.tertiary)
+                                .overlay {
+                                    Image(systemName: "person.fill")
+                                        .resizable()
+                                        .frame(width: 18, height: 18)
+                                        .foregroundStyle(Color.gray)
+                                }
+                        })
                         .cacheOriginalImage()
-                        .setProcessor(postImageNotificationProcessor())
+                        .setProcessor(postUserImageNotificationProcessor())
                         .resizable()
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .clipShape(Circle())
                         .frame(width: size, height: size)
+                    
+                    HStack(alignment: .bottom) {
+                        Group {
+                            Text("[\(groupName)] ")
+                                .fontWeight(.bold)
+                            +
+                            Text(username)
+                                .fontWeight(.medium)
+                            +
+                            Text(" \(content)")
+                        }
+                        .font(.callout)
+                    }.frame(minHeight: 40)
+                    
+                    Spacer()
+                    
+                    if postImageURL != nil {
+                        KFImage(postImageURL)
+                            .cacheOriginalImage()
+                            .setProcessor(postImageNotificationProcessor())
+                            .resizable()
+                            .onFailureView({
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.Background.tertiary)
+                                    .overlay {
+                                        Image(systemName: "photo.fill")
+                                            .foregroundStyle(Color.gray)
+                                    }
+                            })
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .frame(width: size, height: size+10)
+                    }
                 }
             }
         }.padding(.horizontal)
@@ -176,6 +180,15 @@ struct PostNotificationToast: View {
 }
 
 #Preview {
-    let metadata = NotificationMetadata(userId: UUID().uuidString, username: "johndoe", postId: UUID().uuidString, groupName: "SLCFC", timestamp: 1725008123)
-    PostNotificationToast(content: "liked your post", metadata: metadata)
+    let metadata = NotificationMetadata(type: .newPost, userID: UUID().uuidString, username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC")
+//    let newPostData = NotificationMetadata(type: .postLike, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "SLCFC")
+//    let newCommentData = NotificationMetadata(type: .postComment, userID: UUID().uuidString, username: "janedoe", postID: UUID().uuidString, groupName: "International Soccer")
+    
+    RoundedRectangle(cornerRadius: 10)
+        .frame(height: 60)
+        .padding(.horizontal, 10)
+        .foregroundStyle(Color.Background.secondary)
+        .overlay {
+            PostNotificationToast(metadata: metadata)
+        }
 }

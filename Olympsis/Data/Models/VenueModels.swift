@@ -20,7 +20,7 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
     let city: String
     let state: String
     let country: String
-    
+    let fullAddress: String?
     let bookingURL: String?
     let requiresBooking: Bool
     
@@ -35,11 +35,12 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
         case city
         case state
         case country
+        case fullAddress = "full_address"
         case bookingURL = "booking_url"
         case requiresBooking = "requires_booking"
     }
     
-    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String, bookingURL: String?=nil, requiresBooking: Bool=false) {
+    init(id: String, name: String, owner: Ownership, description: String, sports: [String], images: [String], location: GeoJSON, city: String, state: String, country: String, fullAddress: String?=nil, bookingURL: String?=nil, requiresBooking: Bool=false) {
         self.id = id
         self.name = name
         self.owner = owner
@@ -50,12 +51,12 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
         self.city = city
         self.state = state
         self.country = country
-        
+        self.fullAddress = fullAddress
         self.bookingURL = bookingURL
         self.requiresBooking = requiresBooking
     }
     
-    convenience init(name: String, location: GeoJSON, city: String, state: String, country: String) {
+    convenience init(name: String, location: GeoJSON, city: String, state: String, country: String, fullAddress: String?=nil) {
         self.init(
             id: UUID().uuidString, 
             name: name,
@@ -66,6 +67,7 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
             city: city,
             state: state,
             country: country,
+            fullAddress: fullAddress,
             bookingURL: nil,
             requiresBooking: false
         )
@@ -83,6 +85,7 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
         self.city = try container.decode(String.self, forKey: .city)
         self.state = try container.decode(String.self, forKey: .state)
         self.country = try container.decode(String.self, forKey: .country)
+        self.fullAddress = try container.decodeIfPresent(String.self, forKey: .fullAddress)
         self.bookingURL = try container.decodeIfPresent(String.self, forKey: .bookingURL)
         self.requiresBooking = try container.decodeIfPresent(Bool.self, forKey: .requiresBooking) ?? false
     }
@@ -172,14 +175,16 @@ struct VenueDescriptor: Codable, Hashable {
     var state: String?
     var country: String?
     var location: GeoJSON?
+    var fullAddress: String?
     
-    init(id: String?=nil, name: String?, city: String?, state: String?, country: String?, location: GeoJSON?=nil) {
+    init(id: String?=nil, name: String?, city: String?, state: String?, country: String?, location: GeoJSON?=nil, fullAddress: String?=nil) {
         self.id = id
         self.name = name
         self.city = city
         self.state = state
         self.country = country
         self.location = location
+        self.fullAddress = fullAddress
     }
     
     func isInternal() -> Bool {
@@ -201,5 +206,15 @@ struct VenueDescriptor: Codable, Hashable {
                 continuation.resume(returning: placemarks ?? [])
             }
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case city
+        case state
+        case country
+        case location
+        case fullAddress = "full_address"
     }
 }

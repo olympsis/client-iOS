@@ -13,7 +13,7 @@ func getPlacemark(from coordinates: CLLocationCoordinate2D, completion: @escapin
     let geocoder = CLGeocoder()
     
     geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-        if let error = error {
+        if error != nil {
             completion(nil)
             return
         }

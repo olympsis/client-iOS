@@ -1,0 +1,88 @@
+//
+//  DistanceActivityPreparation.swift
+//  Olympsis
+//
+//  Created by Joel Joseph on 7/20/24.
+//
+
+import SwiftUI
+
+struct DistanceActivityPreparation: View {
+    
+    var sport: SUPPORTED_SPORTS
+    @State private var pickedGoal: ACTIVITY_GOALS?
+    @State private var showGoalPicker: Bool = false
+    @State private var showLiveActivity: Bool = false
+    
+    private var goals: [ACTIVITY_GOALS] {
+        return ACTIVITY_GOALS.allCases.filter { $0 != .zone }
+    }
+    
+    @Environment(\.dismiss) private var dismiss
+    @Environment(WorkoutManager.self) private var manager
+    
+    @AppStorage("run_type") private var runType: String?
+    
+    var body: some View {
+        ScrollView {
+            if !manager.hasLocationAccess {
+                Group {
+                    Image(systemName: "location.slash")
+                    Text("Location disabled. Go to Olympsis iOS App to enable.")
+                        .font(.caption)
+                }.padding(.bottom, 10)
+            }
+            
+            NavigationLink(destination: {
+                ActivityView(selectedSport: sport)
+                    .environment(manager)
+            }) {
+                Circle()
+                    .frame(width: 120, height: 120)
+                    .foregroundStyle(Color.colorPrime)
+                    .overlay {
+                        VStack {
+                            Text("Start")
+                                .textCase(.uppercase)
+                                .italic()
+                                .font(.system(size: 30))
+                                .fontWeight(.bold)
+                        }
+                    }
+            }
+            .buttonStyle(PlainButtonStyle())
+            .onChange(of: manager.state, { oldValue, newValue in
+                if newValue == .ended {
+                   dismiss()
+                }
+            })
+            
+            // MARK: - Options
+            VStack {
+                HStack {
+                    Text("Goals")
+                    Spacer()
+                }
+                
+                ForEach(goals, id: \.self) { goal in
+                    NavigationLink {
+                        ActivityGoalSetter(goal: goal)
+                    } label: {
+                        ActivityGoalButton(goal: goal)
+                    }.buttonStyle(PlainButtonStyle())
+
+                }
+            }
+            .padding(.top)
+            .scenePadding()
+            .fullScreenCover(isPresented: $showLiveActivity, content: {
+                ActivityView(selectedSport: .running)
+            })
+        }
+    }
+}
+
+#Preview {
+    DistanceActivityPreparation(sport: .soccer)
+        .environment(WorkoutManager())
+}

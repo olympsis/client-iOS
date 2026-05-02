@@ -9,14 +9,14 @@ import SwiftUI
 
 struct LaunchScreen: View {
     
-    @Environment(SessionStore.self) private var session
-    var appVersion: String {
+    private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             return version
         } else {
             return "0.0"
         }
     }
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         ZStack {
@@ -44,8 +44,7 @@ struct LaunchScreen: View {
     }
 }
 
-struct LaunchScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        LaunchScreen()
-    }
+#Preview {
+    LaunchScreen()
+        .environment(SessionStore())
 }

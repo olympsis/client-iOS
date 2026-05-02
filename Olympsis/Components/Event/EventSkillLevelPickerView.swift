@@ -24,7 +24,7 @@ struct EventSkillLevelPickerView: View {
                         Text(EVENT_SKILL_LEVELS.All.rawValue)
                             .bold()
                     }
-                    Text("All players regardless of their skill level is invited to this event.")
+                    Text(String(localized: "skill-level-all-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -37,7 +37,7 @@ struct EventSkillLevelPickerView: View {
                         Text(EVENT_SKILL_LEVELS.Beginner.rawValue)
                             .bold()
                     }
-                    Text("All players at a beginner skill level and up are invited to join this event.")
+                    Text(String(localized: "skill-level-beginner-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.vertical)
@@ -51,7 +51,7 @@ struct EventSkillLevelPickerView: View {
                         Text(EVENT_SKILL_LEVELS.Amateur.rawValue)
                             .bold()
                     }
-                    Text("All players at an Amateur skill level and up are invited to this event.")
+                    Text(String(localized: "skill-level-amateur-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -64,7 +64,7 @@ struct EventSkillLevelPickerView: View {
                         Text(EVENT_SKILL_LEVELS.Expert.rawValue)
                             .bold()
                     }
-                    Text("All players at an Expert skill level and up are inivited to this event.")
+                    Text(String(localized: "skill-level-expert-desc", table: "Events"))
                         .font(.callout)
                         .padding(.horizontal)
                 }.padding(.horizontal)
@@ -73,12 +73,12 @@ struct EventSkillLevelPickerView: View {
                 Spacer()
                 
             }.padding(.top)
-            .navigationTitle("Skill Level")
+            .navigationTitle(String(localized: "skill-level-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { dismiss() }) {
-                            Text("DONE")
+                            Text(String(localized: "done", table: "General"))
                                 .font(.caption)
                                 .foregroundStyle(.white)
                                 .padding(.horizontal)

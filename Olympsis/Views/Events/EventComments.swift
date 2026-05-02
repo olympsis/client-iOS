@@ -19,30 +19,30 @@ struct EventComments: View {
     
     private let service = EventObserver()
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     private var isPosterOrAdmin: Bool {
         
         // check to see if you're the poster
         guard let user = session.user,
-           let uuid = user.uuid else {
+           let userID = user.userID else {
             return false
         }
         
-        if event.poster?.uuid == uuid {
+        if event.poster?.userID == userID {
             return true
         }
         
         if clubs.first(where: { e in
-            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+            e.members.contains { ($0.user?.userID == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) }
         }) != nil {
             return true
         }
         
         
         if organizations.first(where: { e in
-            e.members.contains { $0.user?.uuid == uuid }
+            e.members.contains { $0.user?.userID == userID }
         }) != nil {
             return true
         }
@@ -67,7 +67,7 @@ struct EventComments: View {
                     return
                 }
                 
-                let snippet = UserSnippet(uuid: user.uuid,firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
+                let snippet = UserSnippet(userID: user.userID,firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
                 
                 let comment = EventComment(id: id, user: snippet, text: text, createdAt: Date())
                 event.comments.append(comment)
@@ -130,6 +130,10 @@ struct EventComments: View {
                             Color.Background.secondary
                         }
                         .clipShape(Capsule())
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                        }
                     
                     Button(action: { addComment() }) {
                         switch state {
@@ -141,6 +145,10 @@ struct EventComments: View {
                                 }
                                 .foregroundStyle(.white)
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         case .loading:
                             ProgressView()
                                 .padding(10)
@@ -148,6 +156,10 @@ struct EventComments: View {
                                     Color.Brand.primary
                                 }
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         case .failure:
                             Image(systemName: "xmark")
                                 .padding(10)
@@ -156,12 +168,18 @@ struct EventComments: View {
                                 }
                                 .foregroundStyle(.white)
                                 .clipShape(Circle())
+                                .overlay {
+                                    Circle()
+                                        .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                }
                         }
                     }
                 }
             }
             
-            ForEach(event.comments, id: \.id) { comment in
+            ForEach(event.comments.sorted(by: { eventA, eventB in
+                eventA.createdAt > eventB.createdAt
+            }), id: \.id) { comment in
                 EventCommentListItem(comment: comment)
                     .contextMenu {
                         if (isPosterOrAdmin) {
@@ -180,6 +198,6 @@ struct EventComments: View {
 
 #Preview {
     EventComments(clubs: .constant([]), organizations: .constant([]))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

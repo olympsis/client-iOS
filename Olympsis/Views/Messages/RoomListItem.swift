@@ -18,10 +18,10 @@ struct RoomListItem: View {
     
     var isJoined: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return room.members.contains(where: {$0.uuid == uuid})
+        return room.members.contains(where: {$0.userID == userID})
     }
     
     var body: some View {
@@ -48,11 +48,11 @@ struct RoomListItem: View {
                         }
                         guard let id = room.id,
                                 let user = session.user,
-                              let uuid = user.uuid else {
+                              let userID = user.userID else {
                             state = .failure
                             return
                         }
-                        let member = ChatMember(id: nil, uuid: uuid, status: "live")
+                        let member = ChatMember(id: nil, userID: userID, status: "live")
                         let res = await observer.JoinRoom(id: id, member: member)
                         if let r = res {
                             let index = self.$rooms.firstIndex(where: {$0.id == r.id})

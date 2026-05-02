@@ -44,9 +44,10 @@ struct UserDataListView: View {
     
     func inviteUser() async {
         self.status = .loading
-        guard let sender = session.user?.uuid,
-            let recipient = data.uuid,
-              let organizationID = session.selectedGroup?.organization?.id else {
+        guard let sender = session.user?.userID,
+            let recipient = data.userID,
+              let selectedGroup = session.groupsManager.selected,
+              let organizationID = selectedGroup.organization?.id else {
             handleFailure()
             return
         }

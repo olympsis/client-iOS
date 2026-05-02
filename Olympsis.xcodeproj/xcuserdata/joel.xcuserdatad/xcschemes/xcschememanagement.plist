@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>OlympsisTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>OlympsisWatchkit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>Promises (Playground) 1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -69,7 +79,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>5DBF2B822E42E34C0025B0FE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5DD0E3F22AC889F900C85B94</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5DDCB9772C4C487500AE6C7A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -13,6 +13,7 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 import UserNotifications
+import StripePaymentSheet
 import AuthenticationServices
 
 @main
@@ -21,7 +22,6 @@ struct OlympsisApp: App {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
     
     @State private var sessionStore = SessionStore()
-    @StateObject private var toastManager = ToastManager()
     @StateObject private var quickActionsManager = QuickActionsManager.shared
     
     @Environment(\.scenePhase) private var scenePhase
@@ -32,6 +32,9 @@ struct OlympsisApp: App {
             switch authStatus {
             case .unknown, .none:
                 LaunchScreen()
+                    .environment(sessionStore)
+            case .fatal_error:
+                FatalScreen()
                     .environment(sessionStore)
             case .authenticated:
                 ViewContainer()
@@ -44,6 +47,7 @@ struct OlympsisApp: App {
     }
 }
 
+// MARK: - Handle App Setup
 class AppDelegate: NSObject, UIApplicationDelegate {
     @AppStorage("deviceToken") private var dToken: String?
     let logger = Logger(subsystem: "com.olympsis.client", category: "app_delegate")
@@ -51,7 +55,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         application.registerForRemoteNotifications()
-        
+        StripeAPI.defaultPublishableKey = AppEnvironment.current.stripePublishableKey
         QuickActionsManager.shared.setupShortcuts()
         return true
     }
@@ -67,6 +71,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+// MARK: - Handle Notifications Handling
 extension AppDelegate : UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -79,9 +84,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 
-
+// MARK: - Handle Quick Actions
 class CustomSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    let logger = Logger(subsystem: "com.olympsis.client", category: "scene_delegate")
+    
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         completionHandler(QuickActionsManager.shared.handleShortcutItem(shortcutItem: shortcutItem))
     }
 }
+

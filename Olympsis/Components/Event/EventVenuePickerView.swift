@@ -9,13 +9,13 @@ import SwiftUI
 
 struct EventVenuePickerView: View {
     
-    @State var manager: NewEventManager
+    let manager: NewEventManager
     @State private var search: String = ""
     @State private var showPicker: Bool = false
+    @State private var hideLocation: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-    
     
     var body: some View {
         VStack {
@@ -35,25 +35,52 @@ struct EventVenuePickerView: View {
                 Spacer()
                 
             }.frame(height: 44)
-            ScrollView {
-                Button(action: { showPicker.toggle() }) {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text(String(localized: "add-a-location-text", table: "Events"))
-                    }
-                    .modifier(InputFieldModifier())
-                    .padding(.horizontal)
-                }.padding(.vertical)
-                
+            
+            Button(action: { showPicker.toggle() }) {
+                HStack {
+                    Image(systemName: "plus")
+                    Text(String(localized: "add-a-location-text", table: "Events"))
+                }
+                .modifier(InputFieldModifier())
+                .padding(.horizontal)
+            }.padding(.vertical)
+            
+            // MARK: - Hide Locations
+            VStack(alignment: .leading){
+                Toggle(isOn: $hideLocation) {
+                    Text(String(localized: "event-hide-locations", table: "Events"))
+                        .font(.headline)
+                        .bold()
+                }
+                Text(String(localized: "event-show-locations-after-rsvp", table: "Events"))
+                    .foregroundColor(.gray)
+                    .font(.subheadline)
+            }.padding([.bottom, .horizontal])
+            
+            List {
                 ForEach(manager.selectedVenues, id: \.id) {
                     VenueMediumListItem(item: $0)
                 }
                 .onDelete(perform: manager.deleteVenues)
-                .padding(.horizontal)
-            }.sheet(isPresented: $showPicker, content: {
+            }
+            .sheet(isPresented: $showPicker, content: {
                 EventVenuePicker(manager: manager)
                     .environment(session)
             })
+        }
+        .onAppear {
+            // Set variable from manager
+            guard let config = manager.config else { return }
+            hideLocation = config.hideLocation ?? false
+        }
+        .onDisappear {
+            // Handle hide location config
+            guard var config = manager.config else {
+                manager.config = .init(hideLocation: hideLocation ? true : nil)
+                return
+            }
+            config.hideLocation = hideLocation ? true : nil
+            manager.config = config
         }
     }
 }

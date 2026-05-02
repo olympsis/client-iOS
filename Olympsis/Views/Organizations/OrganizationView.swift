@@ -35,56 +35,55 @@ struct OrganizationView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            GroupFeed(showNewPost: $showNewPost, showNewEvent: $showNewEvent)
-                .sheet(isPresented: $showSelector, content: {
-                    GroupSelector()
-                        .presentationDetents([.medium])
-                })
-                .sheet(isPresented: $showEULA, content: {
-                    EndUserLicenseAgreement()
-                })
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        HStack {
-                            Text(org.name)
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.6)
-                                
-                            Image(systemName: "chevron.down")
-                                 .imageScale(.small)
-                            Spacer()
-                        }
-                        .frame(width: SCREEN_WIDTH/2, alignment: .leading)
-                        .onTapGesture {
-                            self.showSelector.toggle()
-                        }
+        GroupFeed(showNewPost: $showNewPost, showNewEvent: $showNewEvent)
+            .sheet(isPresented: $showSelector, content: {
+                GroupSelector()
+                    .presentationDetents([.medium])
+            })
+            .sheet(isPresented: $showEULA, content: {
+                EndUserLicenseAgreement()
+            })
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    HStack {
+                        Text(org.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            
+                        Image(systemName: "chevron.down")
+                             .imageScale(.small)
+                        Spacer()
                     }
-                    
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Menu {
-                            Button(action: {
-                                // You need to have accepted EULA before being able to make a post
-                                guard acceptedEULA else {
-                                    self.showEULA.toggle()
-                                    return
-                                }
-                                self.showNewPost.toggle()
-                            }) {
-                                Text("New Post")
-                            }
-                            Button(action: { self.showNewEvent.toggle() }) {
-                                Text("New Event")
-                            }
-                        } label: {
-                            Image(systemName: "plus.square.dashed")
-                                .foregroundStyle(Color.foreground)
-                                .imageScale(.large)
-                        }
+                    .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                    .onTapGesture {
+                        self.showSelector.toggle()
                     }
-                    
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button(action: {
+                            // You need to have accepted EULA before being able to make a post
+                            guard acceptedEULA else {
+                                self.showEULA.toggle()
+                                return
+                            }
+                            self.showNewPost.toggle()
+                        }) {
+                            Text("New Post")
+                        }
+                        Button(action: { self.showNewEvent.toggle() }) {
+                            Text("New Event")
+                        }
+                    } label: {
+                        Image(systemName: "plus.square.dashed")
+                            .foregroundStyle(Color.foreground)
+                            .imageScale(.large)
+                    }
+                }
+                
 //                    ToolbarItem(placement: .topBarTrailing) {
 //                        NavigationLink(destination: GroupMessages()) {
 //                            Image(systemName: "bubble.left.and.bubble.right")
@@ -92,38 +91,39 @@ struct OrganizationView: View {
 //                                .imageScale(.large)
 //                        }
 //                    }
-                    
-                    ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink {
-                            OrgMenu()
-                                .environmentObject(org)
-                                .environment(session)
-                        } label: {
-                            if let logo = org.logo,
-                               let url = generateImageURL(logo) {
-                                KFImage(url)
-                                    .placeholder({
-                                        GroupBadgeLoadingView()
-                                    })
-                                    .resizable()
-                                    .cacheOriginalImage()
-                                    .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 80, height: 80)))
-                                    .frame(width: 35, height: 35)
-                                    .scaledToFill()
-                                    .clipped()
-                                    .clipShape(Circle())
-                            } else {
-                                ClubDefaultBadge()
-                            }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        OrgMenu()
+                            .environmentObject(org)
+                            .environment(session)
+                    } label: {
+                        if let logo = org.logo,
+                           let url = generateImageURL(logo) {
+                            KFImage(url)
+                                .placeholder({
+                                    GroupBadgeLoadingView()
+                                })
+                                .resizable()
+                                .cacheOriginalImage()
+                                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 80, height: 80)))
+                                .frame(width: 35, height: 35)
+                                .scaledToFill()
+                                .clipped()
+                                .clipShape(Circle())
+                        } else {
+                            ClubDefaultBadge()
                         }
                     }
                 }
-        }
+            }
     }
 }
 
 #Preview {
-    OrganizationView(org: ORGANIZATIONS[0])
-        .environment(SessionStore())
+    NavigationStack {
+        OrganizationView(org: ORGANIZATIONS[0])
+            .environment(SessionStore())
+    }
 }
 

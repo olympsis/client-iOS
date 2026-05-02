@@ -25,14 +25,14 @@ struct EventsModalView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Nearby Events")
+                Text(String(localized: "event-nearby", table: "Events"))
                     .font(.system(.headline))
                 
                 Spacer()
                 
                 Button(action:{ self.showMoreEvents.toggle() }){
                     HStack {
-                        Text("More")
+                        Text(String(localized: "more", table: "General"))
                             .bold()
                         Image(systemName: "chevron.down")
                     }.padding(.trailing)
@@ -54,7 +54,7 @@ struct EventsModalView: View {
                 .padding(.top, -20)
             } else {
                 VStack {
-                    Text("No events found in your area. Change location settings or")
+                    Text(String(localized: "event-no-events-found", table: "Events"))
                         .italic()
                         .font(.callout)
                         .padding(.horizontal)

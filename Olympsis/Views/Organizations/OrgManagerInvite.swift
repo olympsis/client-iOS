@@ -23,7 +23,7 @@ struct OrgManagerInvite: View {
                 SearchBar(text: $text, onCommit: {
                     Task {
                         do {
-                            users = try await session.userObserver.SearchUsersByUsername(username: text)
+                            users = try await session.userObserver.searchUsersByUsername(username: text)
                         } catch {
                             log.error("Failed to search for users: \(error.localizedDescription)")
                         }
@@ -36,7 +36,7 @@ struct OrgManagerInvite: View {
                     Spacer()
                 } else {
                     ScrollView {
-                        ForEach(users, id: \.uuid) { user in
+                        ForEach(users, id: \.userID) { user in
                             UserDataListView(data: user)
                         }
                     }

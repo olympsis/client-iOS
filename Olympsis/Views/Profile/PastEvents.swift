@@ -16,27 +16,29 @@ struct PastEvents: View {
     @Environment(SessionStore.self) private var session
     
     var body: some View {
-        VStack {
-            if !pastEvents.isEmpty {
-                ForEach(pastEvents, id: \.id) { event in
-                    EventListItem(event: event)
-                        .padding(.horizontal, 10)
+        ScrollView {
+            VStack {
+                if !pastEvents.isEmpty {
+                    ForEach(pastEvents, id: \.id) { event in
+                        EventListItem(event: event)
+                            .padding(.horizontal, 10)
+                    }
+                } else {
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Text(String(localized: "no-past-events", table: "Profile"))
+                                .padding(.top)
+                            Text(String(localized: "go-find-some", table: "Profile"))
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.gray)
+                        }.padding(.top, 50)
+                        Spacer()
+                    }
                 }
-            } else {
-                HStack {
-                    Spacer()
-                    VStack {
-                        Text(String(localized: "no-past-events", table: "Profile"))
-                            .padding(.top)
-                        Text(String(localized: "go-find-some", table: "Profile"))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.gray)
-                    }.padding(.top, 50)
-                    Spacer()
-                }
-            }
-        }.padding(.bottom)
+            }.padding(.bottom)
+        }
     }
 }
 

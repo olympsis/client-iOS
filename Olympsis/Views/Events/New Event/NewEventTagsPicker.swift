@@ -80,4 +80,5 @@ struct NewEventTagsPicker: View {
 
 #Preview {
     NewEventTagsPicker(tags: TAGS_TEMP, selectedTags: .constant([Tag(name: "beginner-friendly")]))
+        .padding(.horizontal)
 }

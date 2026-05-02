@@ -14,34 +14,39 @@ import Foundation
 class NewEventManager {
     
     var type: EVENT_TYPES = .Regular
+    var validationStatus: NEW_EVENT_ERROR?
     
     var selectedTags: [Tag]
     var selectedSports: [Sport]
     
     var title: String
     var body: String
-    var externalLink: String
+    var externalLinks: [EventLink]
     var status: LOADING_STATE = .pending
     
     // Organizers
+    var poster: UserSnippet?
     var organizers: [GroupSelection]
+    var sponsors: [Sponsor]
     
     // Timestamps
     var startDate: Date
     var endDate: Date
     
-    // Location
-    var selectedVenues = [Venue]() {
-        didSet {
-            selectedVenueDescriptors = selectedVenues.map {
-                if $0.description == "external" {
-                    return VenueDescriptor(name: $0.name, city: $0.city, state: $0.state, country: $0.country, location: $0.location)
-                } else {
-                    return VenueDescriptor(id: $0.id, name: $0.name, city: $0.city, state: $0.state, country: $0.country)
-                }
-            }
-        }
+    var startDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: startDate)
     }
+    
+    var endDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
+        return dateFormatter.string(from: endDate)
+    }
+    
+    // Location(s)
+    var selectedVenues = [Venue]()
     var selectedVenueDescriptors = [VenueDescriptor]()
     
     // Image
@@ -67,12 +72,35 @@ class NewEventManager {
     var sports: [Sport] = []
     
     // More Options
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     var visibility: EVENT_VISIBILITY_TYPES = .Public
     
     var customVenueSearch: String = ""
     
     var recurrenceOptions: EventRecurrenceOptions?
+    
+    // MARK: - Geocode Cache
+    
+    /// Cached geocode results keyed by coordinate string (lat/lon rounded to 4 dp ≈ 11m).
+    /// Persists for the lifetime of the event creation flow and is explicitly cleared on exit.
+    struct GeocodeResult {
+        let city: String
+        let state: String
+        let country: String
+        let fullAddress: String?
+    }
+    var geocodeCache: [String: GeocodeResult] = [:]
+    
+    /// Returns a stable cache key for a coordinate pair, rounded to ~11m precision.
+    func geocodeCacheKey(lat: Double, lon: Double) -> String {
+        String(format: "%.4f_%.4f", lat, lon)
+    }
+    
+    /// Clears the geocode cache. Call this when the user exits the new event flow.
+    func clearGeocodeCache() {
+        geocodeCache.removeAll()
+    }
 
     private var eventObserver = EventObserver()
     private var uploadObserver = UploadObserver()
@@ -88,11 +116,12 @@ class NewEventManager {
         self.body = ""
         self.selectedVenues = venues
         self.organizers = organizers
+        self.sponsors = []
         
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(60 * 60 * 24)
         
-        self.externalLink = ""
+        self.externalLinks = []
         
         if venues.count > 0 {
             selectedVenueDescriptors = venues.map {
@@ -101,6 +130,87 @@ class NewEventManager {
         }
     }
     
+    /// Handles adding a new venue to the manager
+    /// - Parameters venue: the venue we are adding to the manager
+    func addVenueDescriptor(_ venue: Venue) {
+        let descriptor = VenueDescriptor(
+            id: venue.description == "external" ? nil : venue.id,
+            name: venue.name,
+            city: venue.city,
+            state: venue.state,
+            country: venue.country,
+            location: venue.location,
+            fullAddress: venue.fullAddress
+        )
+        
+        selectedVenues.append(venue)
+        selectedVenueDescriptors.append(descriptor)
+    }
+    
+    /// Handles removing a venue descriptor from the manager
+    /// - Parameters venue: the venue we are removing from the manager
+    func removeVenueDescriptor(_ descriptor: VenueDescriptor) {
+        selectedVenueDescriptors.removeAll(where: { $0.name == descriptor.name })
+        selectedVenues.removeAll(where: { $0.name == descriptor.name })
+    }
+    
+    /// Validates the new event view
+    ///
+    /// This function makes sure that we have the right data populated.
+    /// If we are missing some data we want to scroll the user down to where they need add more information
+    ///
+    /// - Parameter value: The scroll view proxy needed to scroll the user down to the specific location
+    ///
+    /// - Returns an optional `NEW_EVENT_ERROR` to let us know what went wrong
+    func validateEvent(value: ScrollViewProxy) -> NEW_EVENT_ERROR? {
+        // make sure we have a title
+        guard !title.isEmpty else {
+            Task { @MainActor in
+                validationStatus = .noTitle
+                withAnimation {
+                    value.scrollTo(1)
+                }
+            }
+            return .noTitle
+        }
+        
+        // make sure end date is greater than start
+        guard endDate > startDate else {
+            Task { @MainActor in
+                validationStatus = .unexpected
+                withAnimation {
+                    value.scrollTo(3)
+                }
+            }
+            return .unexpected
+        }
+        
+        // make sure we have a description
+        guard !body.isEmpty else {
+            Task { @MainActor in
+                validationStatus = .noDescription
+                withAnimation {
+                    value.scrollTo(4)
+                }
+            }
+            return .noDescription
+        }
+        
+        // make sure we have selected venues
+        guard !selectedVenueDescriptors.isEmpty else {
+            Task { @MainActor in
+                validationStatus = .noSelectedField
+                withAnimation {
+                    value.scrollTo(5)
+                }
+            }
+            return .noSelectedField
+        }
+        
+        return nil
+    }
+    
+    /// Triggers the create event action
     func createEvent(user: User) async throws -> String? {
         guard let dto = generateEventDTO() else {
             throw NewEventError.invalidData
@@ -176,8 +286,7 @@ class NewEventManager {
         guard !self.title.isEmpty,
               !self.body.isEmpty,
               (self.selectedImageData != nil || self.image != ""),
-              !self.selectedVenueDescriptors.isEmpty,
-              self.organizers.count > 0 else {
+              !self.selectedVenueDescriptors.isEmpty else {
             log.error("Failed to generate new event: invalid data")
             return nil
         }
@@ -190,13 +299,20 @@ class NewEventManager {
             title: self.title,
             body: self.body,
             tags: self.selectedTags.map { $0.name },
-            sports: self.selectedSports.map { $0.name.components(separatedBy: " ")[1] },
+            // Split on space to extract the sport identifier (e.g. "Sport Basketball" → "Basketball").
+            // Falls back to the full name if there's no space, avoiding an index out-of-bounds crash.
+            sports: self.selectedSports.map { sport in
+                let parts = sport.name.components(separatedBy: " ")
+                return parts.count > 1 ? parts[1] : sport.name
+            },
+            config: self.config,
             formatConfig: self.formatConfig,
             startTime: self.startDate,
             stopTime: self.endDate,
             participantsConfig: self.participantsConfig,
+            teamsConfig: self.teamsConfig,
             visibility: self.visibility,
-            externalLink: self.externalLink.isEmpty ? nil : self.externalLink
+            externalLinks: self.externalLinks.isEmpty ? nil : self.externalLinks
         )
         
         return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)

@@ -27,18 +27,18 @@ struct GroupMessages: View {
     
     private var joinedRooms: [Room] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return rooms //[Room]()
         }
-        return rooms.filter({$0.members.contains(where: {$0.uuid == uuid })})
+        return rooms.filter({$0.members.contains(where: {$0.userID == userID })})
     }
     
     private var notJoinedRooms: [Room] {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return [Room]()
         }
-        return rooms.filter({ !($0.members.contains(where: { $0.uuid == uuid })) })
+        return rooms.filter({ !($0.members.contains(where: { $0.userID == userID })) })
     }
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_messages_view")
@@ -46,7 +46,7 @@ struct GroupMessages: View {
     @MainActor
     func fetchChatRooms() async {
         state = .loading
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = session.groupsManager.selected else {
             log.error("Failed to find the selected group!")
             state = .failure
             return
@@ -260,11 +260,11 @@ struct GroupMessages: View {
                 }
             }
             .task {
-                session.notificationsManager.inMessageView = true
+                NotificationManager.shared.inMessageView = true
                 await fetchChatRooms()
             }
             .onDisappear {
-                session.notificationsManager.inMessageView = false
+                NotificationManager.shared.inMessageView = false
             }
             .fullScreenCover(isPresented: $showNewRoom) {
                 GroupNewRoom(rooms: $rooms)

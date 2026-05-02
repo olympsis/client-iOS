@@ -12,9 +12,14 @@ import Foundation
 import FirebaseAuth
 import AuthenticationServices
 
+@MainActor
 class AuthObserver: ObservableObject {
 
-    let decoder =  JSONDecoder()
+    let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        return d
+    }()
     let secureStore = SecureStore()
     let authService = AuthService()
     let cacheService = CacheService()
@@ -30,13 +35,19 @@ class AuthObserver: ObservableObject {
         }
     }
     
-    func login(token: String) async throws {
+    func login(token: String) async throws -> USER_STATUS {
         let req = AuthRequest(token: token)
-        let (data, _) = try await authService.login(request: req)
+        let (data, resp) = try await authService.login(request: req)
+
+        if let httpResp = resp as? HTTPURLResponse, httpResp.statusCode == 404 {
+            return .not_finished
+        }
+
         let object = try decoder.decode(User.self, from: data)
-        
+
         // store user data
         cacheService.cacheUser(user: object)
+        return .returning
     }
     
     func updateUser(_ dao: AuthUserDao) async throws -> Bool {
@@ -66,7 +77,7 @@ class AuthObserver: ObservableObject {
             if let appleIdCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
                 guard let nonce = nonce else {
                     log.error("Invalid state: A login callback was received, but no login request was sent.")
-                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                    return .unknown
                 }
 
                 if let _ = appleIdCredential.email, let _ = appleIdCredential.fullName {
@@ -74,20 +85,19 @@ class AuthObserver: ObservableObject {
                     /*
                         New User
                      */
-                    DispatchQueue.main.async {
-                        self.authType = .new
-                    }
+                    self.authType = .new
                     log.debug("New user signing in")
-                    guard let email = appleIdCredential.email,
-                          let fullName = appleIdCredential.fullName,
-                          let firstName = fullName.givenName,
-                          let lastName = fullName.familyName,
-                          let idToken = appleIdCredential.identityToken
+                    guard let idToken = appleIdCredential.identityToken
                               .flatMap({ String(data: $0, encoding: .utf8) }) else {
                         return USER_STATUS.unknown
                     }
                     
-                    let creds = OAuthProvider.appleCredential(withIDToken: idToken, rawNonce: nonce, fullName: fullName)
+                    // Name/email may be nil if Apple doesn't return them
+                    let email = appleIdCredential.email ?? ""
+                    let firstName = appleIdCredential.fullName?.givenName ?? ""
+                    let lastName = appleIdCredential.fullName?.familyName ?? ""
+                    
+                    let creds = OAuthProvider.appleCredential(withIDToken: idToken, rawNonce: nonce, fullName: appleIdCredential.fullName)
                     
                     do {
                         try await Auth.auth().signIn(with: creds)
@@ -108,9 +118,7 @@ class AuthObserver: ObservableObject {
                     /*
                         Existing User
                      */
-                    DispatchQueue.main.async {
-                        self.authType = .returning
-                    }
+                    self.authType = .returning
                     log.debug("Existing user logging in")
                     guard let idToken = appleIdCredential.identityToken
                               .flatMap({ String(data: $0, encoding: .utf8) }) else {
@@ -125,15 +133,21 @@ class AuthObserver: ObservableObject {
                             return USER_STATUS.unknown
                         }
                         
-                        try await login(token: token)
-                        
+                        let status = try await login(token: token)
+
+                        // user not found on server
+                        if status == .not_finished {
+                            return USER_STATUS.not_finished
+                        }
+
                         let user = cacheService.fetchUser()
-                        guard user?.username != "",
+                        guard user?.firstName != "",
+                            user?.username != "",
                               user?.sports != nil,
                               user?.visibility != "" else {
                             return USER_STATUS.not_finished
                         }
-                        
+
                         return USER_STATUS.returning
                     } catch {
                         log.error("Authentication Failed: \(error.localizedDescription)")

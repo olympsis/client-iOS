@@ -11,16 +11,21 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+@Observable
+class LocationManager: NSObject, CLLocationManagerDelegate {
     
-    @Published var manager = CLLocationManager()
-    @Published var location: CLLocationCoordinate2D?
-    @Published var region : MKCoordinateRegion = .init()
+    static let shared = LocationManager()
     
-    @Published var isLocationAuthorized: Bool = false
-    @Published var isLocationServicesEnabled: Bool = false
+    var manager = CLLocationManager()
+    var location: CLLocationCoordinate2D? // Last known location
+    var region : MKCoordinateRegion = .init()
     
+    var isLocationAuthorized: Bool = false
+    var isLocationServicesEnabled: Bool = false
+    
+    @ObservationIgnored
     @AppStorage("latitude") private var latitude: Double?
+    @ObservationIgnored
     @AppStorage("longitude") private var longitude: Double?
     
     var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "location_manager")

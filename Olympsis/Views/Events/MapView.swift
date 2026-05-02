@@ -48,7 +48,7 @@ struct MapView: View {
         guard let user = session.user, let hometown = user.hometown else {
             return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
-        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown[0], longitude: hometown[1]), latitudinalMeters: 5000, longitudinalMeters: 5000)
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 5000, longitudinalMeters: 5000)
     }
     
     var body: some View {
@@ -76,7 +76,7 @@ struct MapView: View {
         .ignoresSafeArea(edges: .all)
         .mapStyle(.standard(elevation: .realistic))
         .alert(isPresented: $showError){
-            Alert(title: Text("Permission Denied"), message: Text("To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."), dismissButton: .default(Text("Goto Settings"), action: {
+            Alert(title: Text(String(localized: "event-permission-denied-title", table: "Events")), message: Text(String(localized: "event-permission-denied-message", table: "Events")), dismissButton: .default(Text(String(localized: "event-goto-settings", table: "Events")), action: {
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }))
         }

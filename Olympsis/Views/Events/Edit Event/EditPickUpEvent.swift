@@ -15,7 +15,7 @@ struct EditPickUpEvent: View {
     @State private var eventStartTime:          Date = Date()
     @State private var eventStopTime:           Date = Date().addingTimeInterval(30 * 60)
     @State private var eventImageURL:           String = ""
-    @State private var eventSport:              SPORTS = .soccer
+    @State private var eventSport:              SUPPORTED_SPORTS = .soccer
     @State private var eventLevel:              Int    = 0
     @State private var eventMaxParticipants:    Double = 0
     @State private var eventMinParticipants:    Double = 0
@@ -35,7 +35,7 @@ struct EditPickUpEvent: View {
     @State private var showSkillLevelPicker: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     var startTimeString: String {
@@ -333,5 +333,5 @@ struct EditPickUpEvent: View {
 
 #Preview {
     EditPickUpEvent()
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }

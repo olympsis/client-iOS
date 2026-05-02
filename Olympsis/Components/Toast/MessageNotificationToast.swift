@@ -10,29 +10,17 @@
 import SwiftUI
 
 struct MessageNotificationToast: View {
-    
-    var type: MESSAGE_TOAST_TYPES
-    var content: String
     var metadata: NotificationMetadata
-    
-    init(content: String, metadata: NotificationMetadata) {
-        self.type = MESSAGE_TOAST_TYPES(rawValue: metadata.type) ?? .newMessage
-        self.content = content
-        self.metadata = metadata
+    var content: String {
+        return ""
     }
     
     var body: some View {
         Group {
-            switch type {
-            case .messageRequest:
+            switch metadata.type {
+            case .groupMessage:
                 EmptyView()
-            case .newMessage:
-                EmptyView()
-            case .newGroupMessage:
-                EmptyView()
-            case .addedToGroup:
-                EmptyView()
-            case .removedFromGroup:
+            default:
                 EmptyView()
             }
         }.padding(.horizontal)
@@ -40,5 +28,6 @@ struct MessageNotificationToast: View {
 }
 
 #Preview {
-    MessageNotificationToast(content: "", metadata: NotificationMetadata(type: "new_message"))
+    let metadata = NotificationMetadata(type: .groupMessage, userID: UUID().uuidString,  username: "johndoe", postID: UUID().uuidString, groupName: "SLCFC", eventImageURL: "event-images/soccer-0.jpg")
+    MessageNotificationToast(metadata: metadata)
 }

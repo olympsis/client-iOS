@@ -33,6 +33,7 @@ struct SportsPicker: View {
                                 Circle().stroke(Color.Brand.secondary, lineWidth: 3)
                             }
                         }
+                    Text(sport.name)
                 }.buttonStyle(PlainButtonStyle())
             }.frame(height: 103)
         }

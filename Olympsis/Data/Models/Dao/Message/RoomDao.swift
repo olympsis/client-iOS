@@ -22,7 +22,12 @@ class RoomDao: Dao {
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.owner = try container.decodeIfPresent(String.self, forKey: .owner)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.type = try container.decodeIfPresent(String.self, forKey: .type)
+        self.members = try container.decodeIfPresent([ChatMember].self, forKey: .members)
+        try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {

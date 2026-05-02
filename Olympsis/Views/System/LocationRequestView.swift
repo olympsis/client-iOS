@@ -10,7 +10,7 @@ import SwiftUI
 struct LocationRequestView: View {
     
     @State private var location = LocationManager()
-    @State private var coordinates: [Double] = []
+    @State private var coordinates: GeoJSON?
     @State private var showHomeTown: Bool = false
     @State private var showExplination: Bool = false
     @State private var status: LOADING_STATE = .pending

@@ -8,7 +8,6 @@
 import SwiftUI
 import Foundation
 import Kingfisher
-import AlertToast
 import NotificationCenter
 
 class ToastManager: ObservableObject {
@@ -86,17 +85,11 @@ class ToastManager: ObservableObject {
             
             let prefetcher = ImagePrefetcher(urls: images)
             prefetcher.start()
-
-            var url: URL?
-            
-            if let urlString = metadata.url {
-                url = URL(string: urlString)
-            }
             
             await self.showToast(
                 ToastContent(
                     view: { view },
-                    url: url
+                    url: nil
                 ),
                 position: position
             )

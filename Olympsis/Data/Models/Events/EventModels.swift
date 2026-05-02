@@ -8,7 +8,8 @@
 import Foundation
 import CoreLocation
 
-class Event: Decodable, Identifiable, ObservableObject, Hashable {
+@Observable
+class Event: Codable, Identifiable, Hashable {
     let id: String
     let poster: UserSnippet?
     var organizers: [Organizer]
@@ -22,23 +23,24 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
     var tags: [String]
     var sports: [String]
 
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     
-    @Published var startTime: Date
-    @Published var stopTime: Date
+    var startTime: Date
+    var stopTime: Date
     
-    @Published var participants: [Participant]
-    @Published var participantsWaitlist: [Participant]
+    var participants: [Participant]
+    var participantsWaitlist: [Participant]
     var participantsConfig: ParticipantsConfig?
     
-    @Published var teams: [Team]
-    @Published var teamsWaitlist: [Team]
+    var teams: [Team]
+    var teamsWaitlist: [Team]
     var teamsConfig: TeamsConfig?
     
-    @Published var comments: [EventComment]
+    var comments: [EventComment]
     
     var visibility: EVENT_VISIBILITY_TYPES
-    var externalLink: String?
+    var externalLinks: [EventLink]?
     var isSensitive: Bool
     
     let createdAt: Date
@@ -52,7 +54,6 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         case poster
         case organizers
         case venues
-        case venue // For backwards compatibility
         
         case mediaURL = "media_url"
         case mediaType = "media_type"
@@ -62,6 +63,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         case tags
         case sports
         
+        case config
         case formatConfig = "format_config"
         
         case startTime = "start_time"
@@ -78,7 +80,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         case comments
         
         case visibility
-        case externalLink = "external_link"
+        case externalLinks = "external_links"
         case isSensitive = "is_sensitive"
         
         case createdAt = "created_at"
@@ -98,6 +100,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
          body: String,
          tags: [String] = [],
          sports: [String] = [],
+         config: EventConfig? = nil,
          formatConfig: EventFormatConfig? = nil,
          startTime: Date,
          stopTime: Date,
@@ -109,7 +112,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
          teamsConfig: TeamsConfig? = nil,
          comments: [EventComment] = [],
          visibility: EVENT_VISIBILITY_TYPES,
-         externalLink: String? = nil,
+         externalLinks: [EventLink]? = nil,
          isSensitive: Bool = false,
          createdAt: Date,
          updatedAt: Date? = nil,
@@ -129,6 +132,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         self.tags = tags
         self.sports = sports
         
+        self.config = config
         self.formatConfig = formatConfig
         
         self.startTime = startTime
@@ -145,7 +149,7 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         self.comments = comments
         
         self.visibility = visibility
-        self.externalLink = externalLink
+        self.externalLinks = externalLinks
         self.isSensitive = isSensitive
         
         self.createdAt = createdAt
@@ -163,23 +167,19 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         poster = try container.decodeIfPresent(UserSnippet.self, forKey: .poster)
         organizers = try container.decodeIfPresent([Organizer].self, forKey: .organizers) ?? []
         
-        // Handle venues with backwards compatibility
-        if let singleVenue = try container.decodeIfPresent(VenueDescriptor.self, forKey: .venue) {
-            venues = [singleVenue]
-        } else {
-            venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues) ?? []
-        }
+        venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues) ?? []
         
         // Decode media properties with conversion
         mediaURL = try container.decode(String.self, forKey: .mediaURL)
         let mediaTypeRawValue = try container.decode(String.self, forKey: .mediaType)
-        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue) ?? .image // Provide a default value
+        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.lowercased()) ?? .image
         
         title = try container.decode(String.self, forKey: .title)
         body = try container.decode(String.self, forKey: .body)
         tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
         sports = try container.decodeIfPresent([String].self, forKey: .sports) ?? []
         
+        config = try container.decodeIfPresent(EventConfig.self, forKey: .config)
         formatConfig = try container.decodeIfPresent(EventFormatConfig.self, forKey: .formatConfig)
         
         /// Since we know created_at parsing works, use the same approach for start_time
@@ -199,11 +199,9 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         
         comments = try container.decodeIfPresent([EventComment].self, forKey: .comments) ?? []
         
-        // Decode visibility with conversion
-        let visibilityRawValue = try container.decode(Int.self, forKey: .visibility)
-        visibility = numberToEventVisibilityType(visibilityRawValue)
+        visibility = try container.decode(EVENT_VISIBILITY_TYPES.self, forKey: .visibility)
         
-        externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        externalLinks = try container.decodeIfPresent([EventLink].self, forKey: .externalLinks)
         isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
         
         // Handle createdAt date from string
@@ -225,7 +223,52 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         
         recurrenceConfig = try container.decodeIfPresent(EventRecurrenceConfig.self, forKey: .recurrenceConfig)
     }
-    
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(poster, forKey: .poster)
+        try container.encode(organizers, forKey: .organizers)
+        try container.encode(venues, forKey: .venues)
+
+        try container.encode(mediaURL, forKey: .mediaURL)
+        // Encode as lowercase string to match what the API expects
+        try container.encode(mediaType.rawValue, forKey: .mediaType)
+
+        try container.encode(title, forKey: .title)
+        try container.encode(body, forKey: .body)
+        try container.encode(tags, forKey: .tags)
+        try container.encode(sports, forKey: .sports)
+
+        try container.encodeIfPresent(config, forKey: .config)
+        try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
+
+        // Encode dates as ISO8601 strings to match the decoder's expected format
+        try container.encode(startTime.ISO8601Format(), forKey: .startTime)
+        try container.encode(stopTime.ISO8601Format(), forKey: .stopTime)
+
+        try container.encode(participants, forKey: .participants)
+        try container.encode(participantsWaitlist, forKey: .participantsWaitlist)
+        try container.encodeIfPresent(participantsConfig, forKey: .participantsConfig)
+
+        try container.encode(teams, forKey: .teams)
+        try container.encode(teamsWaitlist, forKey: .teamsWaitlist)
+        try container.encodeIfPresent(teamsConfig, forKey: .teamsConfig)
+
+        try container.encode(comments, forKey: .comments)
+
+        try container.encode(visibility, forKey: .visibility)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(isSensitive, forKey: .isSensitive)
+
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
+        try container.encodeIfPresent(canceledAt?.ISO8601Format(), forKey: .canceledAt)
+
+        try container.encodeIfPresent(recurrenceConfig, forKey: .recurrenceConfig)
+    }
+
     func update(from event: Event) {
         self.title = event.title
         self.body = event.body
@@ -235,10 +278,11 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
         self.stopTime = event.stopTime
         self.mediaURL = event.mediaURL
         self.visibility = event.visibility
-        self.externalLink = event.externalLink
+        self.externalLinks = event.externalLinks
         self.organizers = event.organizers
         self.tags = event.tags
         self.sports = event.sports
+        self.config = config
         self.formatConfig = event.formatConfig
         self.participantsConfig = event.participantsConfig
         self.teams = event.teams
@@ -251,9 +295,29 @@ class Event: Decodable, Identifiable, ObservableObject, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
+        hasher.combine(id)
     }
 }
+
+/// Represents an external link attached to an event, matching the server's EventLink struct.
+struct EventLink: Codable, Hashable, Identifiable {
+    var id: String { "\(title)_\(url)" }
+    var title: String
+    var url: String
+}
+
+struct EventConfig: Codable {
+    var hidePoster: Bool? = nil
+    
+    // Hide Pre-RSVP
+    var hideLocation: Bool? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        case hidePoster = "hide_poster"
+        case hideLocation = "hide_location"
+    }
+}
+
 
 class EventDao: Codable, Identifiable, ObservableObject {
     let poster: String?
@@ -265,6 +329,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var body: String?
     var tags: [String]?
     let sports: [String]?
+    var config: EventConfig?
     var formatConfig: EventFormatConfig?
     var startTime: Date?
     var stopTime: Date?
@@ -276,7 +341,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     let createdAt: Date?
     let updatedAt: Date?
     let canceledAt: Date?
-    var externalLink: String?
+    var externalLinks: [EventLink]?
     var isSensitive: Bool?
     var recurrenceConfig: EventRecurrenceConfig?
     
@@ -290,6 +355,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case body
         case sports
         case tags
+        case config
         case formatConfig = "format_config"
         case startTime = "start_time"
         case stopTime = "stop_time"
@@ -302,7 +368,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case canceledAt = "canceled_at"
-        case externalLink = "external_link"
+        case externalLinks = "external_links"
         case recurrenceConfig = "recurrence_config"
     }
     
@@ -316,6 +382,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         body: String? = nil,
         tags: [String]? = nil,
         sports: [String]? = nil,
+        config: EventConfig? = nil,
         formatConfig: EventFormatConfig? = nil,
         startTime: Date? = nil,
         stopTime: Date? = nil,
@@ -328,7 +395,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         updatedAt: Date? = nil,
         canceledAt: Date? = nil,
         isSensitive: Bool? = nil,
-        externalLink: String? = nil,
+        externalLinks: [EventLink]? = nil,
         recurrenceConfig: EventRecurrenceConfig? = nil
     ) {
         self.poster = poster
@@ -340,6 +407,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = body
         self.sports = sports
         self.tags = tags
+        self.config = config
         self.formatConfig = formatConfig
         self.startTime = startTime
         self.stopTime = stopTime
@@ -352,7 +420,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.updatedAt = updatedAt
         self.canceledAt = canceledAt
         self.isSensitive = isSensitive
-        self.externalLink = externalLink
+        self.externalLinks = externalLinks
         self.recurrenceConfig = recurrenceConfig
     }
     
@@ -364,9 +432,9 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
         self.mediaURL = try container.decodeIfPresent(String.self, forKey: .mediaURL)
         
-        // Decode mediaType with conversion from Int if needed
+        // Decode mediaType — API sends uppercase (e.g. "IMAGE")
         if let mediaTypeRaw = try container.decodeIfPresent(String.self, forKey: .mediaType) {
-            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw)
+            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.lowercased())
         } else {
             self.mediaType = nil
         }
@@ -375,6 +443,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
+        self.config = try container.decodeIfPresent(EventConfig.self, forKey: .config)
         self.formatConfig = try container.decodeIfPresent(EventFormatConfig.self, forKey: .formatConfig)
         
         // Decode timestamps to Date objects
@@ -395,12 +464,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.teamsConfig = try container.decodeIfPresent(TeamsConfig.self, forKey: .teamsConfig)
         self.teams = try container.decodeIfPresent([Team].self, forKey: .teams)
         
-        // Decode visibility with conversion from Int if needed
-        if let visibilityInt = try container.decodeIfPresent(Int.self, forKey: .visibility) {
-            self.visibility = numberToEventVisibilityType(visibilityInt)
-        } else {
-            self.visibility = nil
-        }
+        self.visibility = try container.decodeIfPresent(EVENT_VISIBILITY_TYPES.self, forKey: .visibility)
         
         // Decode timestamps to Date objects
         if let createdAtInt = try container.decodeIfPresent(Int.self, forKey: .createdAt) {
@@ -422,7 +486,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         }
         
         self.isSensitive = try container.decodeIfPresent(Bool.self, forKey: .isSensitive) ?? false
-        self.externalLink = try container.decodeIfPresent(String.self, forKey: .externalLink)
+        self.externalLinks = try container.decodeIfPresent([EventLink].self, forKey: .externalLinks)
         self.recurrenceConfig = try container.decodeIfPresent(EventRecurrenceConfig.self, forKey: .recurrenceConfig)
     }
     
@@ -438,6 +502,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(tags, forKey: .tags)
+        try container.encodeIfPresent(config, forKey: .config)
         try container.encodeIfPresent(formatConfig, forKey: .formatConfig)
         try container.encodeIfPresent(startTime?.ISO8601Format(), forKey: .startTime)
         try container.encodeIfPresent(stopTime?.ISO8601Format(), forKey: .stopTime)
@@ -445,12 +510,12 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(participants, forKey: .participants)
         try container.encodeIfPresent(teamsConfig, forKey: .teamsConfig)
         try container.encodeIfPresent(teams, forKey: .teams)
-        try container.encodeIfPresent(visibility?.toInt(), forKey: .visibility)
+        try container.encodeIfPresent(visibility?.rawValue, forKey: .visibility)
         try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
         try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
         try container.encodeIfPresent(canceledAt?.ISO8601Format(), forKey: .canceledAt)
         try container.encodeIfPresent(isSensitive, forKey: .isSensitive)
-        try container.encodeIfPresent(externalLink, forKey: .externalLink)
+        try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(recurrenceConfig, forKey: .recurrenceConfig)
     }
 }
@@ -473,7 +538,7 @@ struct NewEventDao: Codable {
     enum CodingKeys: String, CodingKey {
         case event
         case includeHost = "include_host"
-        case recurrence = "recurrence"
+        case recurrence
     }
 }
 
@@ -594,11 +659,18 @@ extension Event {
 extension [Event] {
     
     /// Returns the most recent event for the user
-    func mostRecentForUser(uuid: String) -> Event? {
+    func mostRecentForUser(userID: String) -> Event? {
         return self
-            .filter { $0.participants.first(where: { $0.user?.uuid == uuid }) != nil }
+            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
             .sorted { $0.startTime < $1.startTime }
             .first
+    }
+    
+    /// Returns all of the events that the user has RSVPed to
+    func rsvpedEvents(userID: String) -> [Event] {
+        return self
+            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .sorted { $0.startTime < $1.startTime }
     }
     
     /// Returns a filtered array of the events by club ID

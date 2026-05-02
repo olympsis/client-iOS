@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.olympsis.client</string>
+		<string>com.olympsis.client.watchkit</string>
+	</array>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -15,16 +22,23 @@
 			</array>
 		</dict>
 	</array>
+	<key>CHAT</key>
+	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
-	<string>localhost</string>
+	<string>192.168.1.156</string>
+	<key>DEV_USER_ID</key>
+	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
 	<key>Enable Multiple Windows</key>
 	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>HOST</key>
 	<string>api.olympsis.com</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<dict>
 		<key>NSPrivacyAccessedAPIType</key>
@@ -39,7 +53,13 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<key>STAGING_CHAT</key>
+	<string></string>
+	<key>STAGING_HOST</key>
+	<string></string>
+	<key>STRIPE_PUBLISHABLE_KEY</key>
+	<string>pk_test_51P33HvRxf68pt9NZdq8S4g8k8MzQAagKlJVnDyKBejU6lTMaxM6BRq9sMsgtLEriVN6Y3DOQasFJ7oj9Bhr7lh0A00HhrBBrwS</string>
 	<key>Scene Configuration</key>
 	<dict/>
 	<key>UIAppFonts</key>
@@ -73,6 +93,10 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>processing</string>
+		<string>fetch</string>
+		<string>location</string>
+		<string>nearby-interaction</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>

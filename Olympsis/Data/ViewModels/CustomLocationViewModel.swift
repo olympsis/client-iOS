@@ -9,6 +9,7 @@ import MapKit
 import SwiftUI
 
 struct LocationInfo {
+    var name: String
     var coordinate: CLLocationCoordinate2D
     var city: String
     var state: String
@@ -43,6 +44,7 @@ class CustomLocationViewModel {
                     let country = placemark.country ?? "Unknown"
                     
                     self.locationInfo = LocationInfo(
+                        name: "Custom Location",
                         coordinate: coordinate,
                         city: city,
                         state: state,

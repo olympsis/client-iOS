@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Archivo-Black.ttf</string>
+		<string>Archivo-BlackItalic.ttf</string>
+		<string>Archivo-Bold.ttf</string>
+		<string>Archivo-BoldItalic.ttf</string>
+		<string>Archivo-ExtraBold.ttf</string>
+		<string>Archivo-ExtraBoldItalic.ttf</string>
+		<string>Archivo-ExtraLight.ttf</string>
+		<string>Archivo-ExtraLightItalic.ttf</string>
+		<string>Archivo-Italic.ttf</string>
+		<string>Archivo-Light.ttf</string>
+		<string>Archivo-LightItalic.ttf</string>
+		<string>Archivo-Medium.ttf</string>
+		<string>Archivo-MediumItalic.ttf</string>
+		<string>Archivo-Regular.ttf</string>
+		<string>Archivo-SemiBold.ttf</string>
+		<string>Archivo-SemiBoldItalic.ttf</string>
+		<string>Archivo-Thin.ttf</string>
+		<string>Archivo-ThinItalic.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>workout-processing</string>
+	</array>
+</dict>
+</plist>

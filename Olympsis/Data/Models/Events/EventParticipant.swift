@@ -11,22 +11,26 @@ class Participant: Codable, Hashable {
     var id: String
     var user: UserSnippet?
     var status: EVENT_RSVP_STATUS
+    var isAnonymous: Bool
     var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case user
         case status
+        case isAnonymous = "is_anonymous"
         case createdAt = "created_at"
     }
     
     init(id: String,
          user: UserSnippet? = nil,
          status: EVENT_RSVP_STATUS,
+         isAnonymous: Bool = false,
          createdAt: Date) {
         self.id = id
         self.user = user
         self.status = status
+        self.isAnonymous = isAnonymous
         self.createdAt = createdAt
     }
     
@@ -45,6 +49,8 @@ class Participant: Codable, Hashable {
         let rawStatus = try container.decode(Int.self, forKey: .status)
         status = numberToEventRSVPStatus(rawStatus)
         
+        isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous) ?? false
+        
         // Handle date decoding with string support
         if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt),
            let parsedDate = dateFormatter.date(from: createdAtString) {
@@ -61,6 +67,7 @@ class Participant: Codable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encodeIfPresent(user, forKey: .user)
         try container.encode(status.toInt(), forKey: .status)
+        try container.encodeIfPresent(isAnonymous, forKey: .isAnonymous)
         try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
     }
     
@@ -78,6 +85,7 @@ class ParticipantDao: Codable {
     var userID: String?
     var status: EVENT_RSVP_STATUS?
     var eventID: String?
+    var isAnonymous: Bool?
     var createdAt: Date?
     
     enum CodingKeys: String, CodingKey {
@@ -85,6 +93,7 @@ class ParticipantDao: Codable {
         case userID = "user_id"
         case status
         case eventID = "event_id"
+        case isAnonymous = "is_anonymous"
         case createdAt = "created_at"
     }
     
@@ -92,11 +101,13 @@ class ParticipantDao: Codable {
          userID: String? = nil,
          status: EVENT_RSVP_STATUS? = nil,
          eventID: String? = nil,
+         isAnonymous: Bool? = nil,
          createdAt: Date? = nil) {
         self.id = id
         self.userID = userID
         self.status = status
         self.eventID = eventID
+        self.isAnonymous = isAnonymous
         self.createdAt = createdAt
     }
     
@@ -109,6 +120,7 @@ class ParticipantDao: Codable {
         status = numberToEventRSVPStatus(statusInt)
         
         eventID = try container.decodeIfPresent(String.self, forKey: .eventID)
+        isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
         createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
     }
     
@@ -118,25 +130,31 @@ class ParticipantDao: Codable {
         try container.encodeIfPresent(userID, forKey: .userID)
         try container.encodeIfPresent(status?.toInt(), forKey: .status)
         try container.encodeIfPresent(eventID, forKey: .eventID)
+        try container.encodeIfPresent(isAnonymous, forKey: .isAnonymous)
         try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 
 class ParticipantsConfig: Codable {
-    var hasWaitlist: Bool?
+    var hasWaitlist: Bool? // Enables a wait-list
+    var hideParticipants: Bool? // Hide Pre-RSVP
+    
     var minParticipants: Int?
     var maxParticipants: Int?
     
     enum CodingKeys: String, CodingKey {
         case hasWaitlist = "has_waitlist"
+        case hideParticipants = "hide_participants"
         case minParticipants = "min_participants"
         case maxParticipants = "max_participants"
     }
     
     init(hasWaitlist: Bool? = nil,
+         hideParticipants: Bool? = nil,
          minParticipants: Int? = nil,
          maxParticipants: Int? = nil) {
         self.hasWaitlist = hasWaitlist
+        self.hideParticipants = hideParticipants
         self.minParticipants = minParticipants
         self.maxParticipants = maxParticipants
     }
@@ -144,6 +162,7 @@ class ParticipantsConfig: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         hasWaitlist = try container.decodeIfPresent(Bool.self, forKey: .hasWaitlist)
+        hideParticipants = try container.decodeIfPresent(Bool.self, forKey: .hideParticipants)
         minParticipants = try container.decodeIfPresent(Int.self, forKey: .minParticipants)
         maxParticipants = try container.decodeIfPresent(Int.self, forKey: .maxParticipants)
     }
@@ -151,6 +170,7 @@ class ParticipantsConfig: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(hasWaitlist, forKey: .hasWaitlist)
+        try container.encodeIfPresent(hideParticipants, forKey: .hideParticipants)
         try container.encodeIfPresent(minParticipants, forKey: .minParticipants)
         try container.encodeIfPresent(maxParticipants, forKey: .maxParticipants)
     }

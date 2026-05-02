@@ -65,3 +65,67 @@ struct SmallPillModifier: ViewModifier {
             .clipShape(Capsule())
     }
 }
+
+struct NotificationModifier: ViewModifier {
+    var manager: NotificationManager
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .top) {
+                if let notification = manager.currentNotification, manager.isShowing {
+                    NotificationView(
+                        metadata: notification,
+                        onTap: { manager.handleTap() },
+                        onDismiss: { manager.dismiss() }
+                    )
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: .top)
+                                .combined(with: .opacity),
+                            removal: .opacity
+                        )
+                    )
+                    .zIndex(999)
+                    .allowsHitTesting(true) // Only the notification itself is tappable
+                }
+            }
+    }
+}
+
+extension View {
+    func notificationSystem(manager: NotificationManager) -> some View {
+        modifier(NotificationModifier(manager: manager))
+    }
+}
+
+// MARK: - Zoom Navigation Transition (iOS 18+)
+
+/// Source side: marks the view as the zoom origin.
+struct ZoomTransitionSourceModifier: ViewModifier {
+    var id: String
+    var namespace: Namespace.ID?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *), let namespace {
+            content.matchedTransitionSource(id: id, in: namespace)
+        } else {
+            content
+        }
+    }
+}
+
+/// Destination side: zooms in from the matched source.
+struct ZoomTransitionModifier: ViewModifier {
+    var id: String
+    var namespace: Namespace.ID?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *), let namespace {
+            content.navigationTransition(.zoom(sourceID: id, in: namespace))
+        } else {
+            content
+        }
+    }
+}

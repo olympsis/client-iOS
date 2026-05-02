@@ -12,18 +12,19 @@ import NotificationCenter
 
 struct Home: View {
     
-    @State public var router: HomeRouter
+    @Binding var router: HomeRouter
     
     @State private var showDetail = false
     @State private var showMoreFields = false
+    @State private var showRequestLocation: Bool = false
     
     @Environment(SessionStore.self) private var session
     
-    private var log = Logger(subsystem: "com.olympsis.client", category: "home_view")
-    
-    init(router: HomeRouter = HomeRouter()) {
-        self._router = .init(initialValue: router)
+    private var hasLocation: Bool {
+        return LocationManager.shared.isAuthorized
     }
+    
+    private let log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     var body: some View {
         NavigationStack(path: $router.navPath) {
@@ -62,13 +63,29 @@ struct Home: View {
             .disabled(session.state == .loading)
             .redacted(reason: session.state == .loading ? .placeholder : [])
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Olympsis")
-                        .textCase(.uppercase)
-                        .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Olympsis")
+                            .fixedSize()
+                            .textCase(.uppercase)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Olympsis")
+                            .fixedSize()
+                            .textCase(.uppercase)
+                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                    }
                 }
                 
                 ToolbarItemGroup(placement: .topBarTrailing) {
+                    if !hasLocation {
+                        Button(action: { self.showRequestLocation.toggle() }) {
+                            Image(systemName: "location.slash")
+                                .foregroundStyle(.gray)
+                        }
+                    }
 // DISABLED FOR NOW
 //                    Button(action: { router.navigate(to: .messages) }) {
 //                        ZStack(alignment: .topTrailing) {
@@ -125,28 +142,18 @@ struct Home: View {
                         .navigationBarBackButtonHidden()
                 }
             })
-            .onReceive(session.locationManager.$location) { newLoc in
-                
-                // make sure new location is valid
-                guard newLoc != nil else {
-                    return
+            .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
+                Task {
+                    await session.updateNotifications()
                 }
-                // we have to wait an undetermined amount of time to hear back from the gps to get location
-                // so i used on recieve and after that info is delivered we can start fetching for fields by location
-                guard !session.locationRecieved else {
-                    return
-                }
-                
-                // prevents us from doing this everytime we get new info from gps
-                // thus we only load data the first time
-                session.locationRecieved = true
-                
+            }) {
+                LocationRequestView()
             }
         }
     }
 }
 
 #Preview {
-    Home()
+    Home(router: .constant(HomeRouter()))
         .environment(SessionStore())
 }

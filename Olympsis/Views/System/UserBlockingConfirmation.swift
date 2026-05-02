@@ -38,7 +38,7 @@ struct UserBlockingConfirmation: View {
     func block() async {
         status = .loading
         guard let _user = session.user,
-              let memberUID = user.uuid else {
+              let memberUID = user.userID else {
             handleFailure()
             onComplete(false)
             log.error("Failed to get required data from session store to block user")
@@ -49,7 +49,7 @@ struct UserBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let user = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let user = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             session.user = user
@@ -58,7 +58,7 @@ struct UserBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let user = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let user = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             session.user = user

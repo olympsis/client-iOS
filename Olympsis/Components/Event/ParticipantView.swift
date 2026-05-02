@@ -10,10 +10,19 @@ import SwiftUI
 /// A view that shows a picture of a participant
 struct ParticipantView: View {
     
-    @State var participant: Participant
+    var participant: Participant
+    var posterOrAdminViewing: Bool = false
+    
+    private var isUserAnonymous: Bool {
+        // Posters or admins get full viewing rights
+        if posterOrAdminViewing { return false }
+        
+        return participant.isAnonymous
+    }
     
     private var imageURL: URL? {
-        guard let data = participant.user,
+        guard !isUserAnonymous,
+            let data = participant.user,
               let img = data.imageURL else {
             return nil
         }
@@ -35,15 +44,55 @@ struct ParticipantView: View {
         }
     }
     
+    private var name: String {
+        guard let first = participant.user?.firstName,
+              let last = participant.user?.lastName else {
+            return "Olympsis User"
+        }
+        
+        return isUserAnonymous ? "Anonymous User" : "\(first) \(last)"
+    }
+    
+    private var username: String {
+        guard let username = participant.user?.username else {
+            return "olympsis-user"
+        }
+        
+        return isUserAnonymous ? "@anon-user" : "@\(username)"
+    }
+    
+    @Environment(SessionStore.self) private var session
+    
     var body: some View {
-        UserBadgeView(size: .medium, imageURL: imageURL)
-            .overlay {
-                Circle()
-                    .stroke(ringColor, lineWidth: 2)
+        HStack {
+            UserBadgeView(size: .small, imageURL: imageURL)
+                .overlay {
+                    Circle()
+                        .stroke(ringColor, lineWidth: 2)
+                }
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(name)
+                        .font(.callout)
+                        .fontWeight(.medium)
+                    
+                    if isUserAnonymous && (session.user?.userID == participant.user?.userID) {
+                        Text(String(localized: "event-participant-you", table: "Events"))
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.Brand.tertiary)
+                    }
+                }
+                
+                Text(username)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
             }
+        }
     }
 }
 
 #Preview {
     ParticipantView(participant: EVENTS[0].participants[0])
+        .environment(SessionStore())
 }

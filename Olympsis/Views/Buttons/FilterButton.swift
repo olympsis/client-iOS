@@ -33,9 +33,9 @@ struct FilterButton: View {
                     .font(.callout)
                     .fontWeight(.medium)
             }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }

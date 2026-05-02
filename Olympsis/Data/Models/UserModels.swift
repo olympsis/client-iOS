@@ -8,7 +8,7 @@
 import Foundation
 
 struct User: Codable, Hashable {
-    var uuid: String?
+    var userID: String?
     var username: String?
     let firstName: String?
     let lastName: String?
@@ -25,20 +25,25 @@ struct User: Codable, Hashable {
     var blockedUsers: [String]?
     var reportedPosts: [String]?
     var reportedEvents: [String]?
-    var hometown: [Double]?
+    var hometown: GeoJSON?
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
-    
+
+    // Compare all fields so SwiftUI detects changes when profile data is updated
     static func == (lhs: User, rhs: User) -> Bool {
-        guard let lhsID = lhs.uuid,
-              let rhsID = rhs.uuid else {
-            return false
-        }
-        return lhsID == rhsID
+        return lhs.userID == rhs.userID
+            && lhs.username == rhs.username
+            && lhs.firstName == rhs.firstName
+            && lhs.lastName == rhs.lastName
+            && lhs.imageURL == rhs.imageURL
+            && lhs.bio == rhs.bio
+            && lhs.sports == rhs.sports
+            && lhs.visibility == rhs.visibility
+            && lhs.hometown == rhs.hometown
     }
-    
+
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case username
         case firstName = "first_name"
         case lastName = "last_name"
@@ -61,7 +66,7 @@ struct User: Codable, Hashable {
     }
     
     init(
-        uuid: String?=nil,
+        userID: String?=nil,
         username: String?=nil,
         firstName: String?=nil,
         lastName: String?=nil,
@@ -78,11 +83,11 @@ struct User: Codable, Hashable {
         blockedUsers: [String]?=nil,
         reportedPosts: [String]?=nil,
         reportedEvents: [String]?=nil,
-        hometown: [Double]?=nil,
+        hometown: GeoJSON?=nil,
         notificationDevices: [NotificationDevice]? = nil,
         notificationPreference: NotificationPreference? = nil
     ){
-        self.uuid = uuid
+        self.userID = userID
         self.username = username
         self.firstName = firstName
         self.lastName = lastName
@@ -106,18 +111,18 @@ struct User: Codable, Hashable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+
+        userID = try container.decodeIfPresent(String.self, forKey: .userID)
         username = try container.decodeIfPresent(String.self, forKey: .username)
         firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        
+
         if let genderString = try container.decodeIfPresent(String.self, forKey: .gender) {
            gender = Gender(rawValue: genderString)
         } else {
             gender = nil
         }
-        
+
         birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
@@ -130,7 +135,7 @@ struct User: Codable, Hashable {
         blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
         reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
         reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
-        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        hometown = try container.decodeIfPresent(GeoJSON.self, forKey: .hometown)
         notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
         notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
     }
@@ -138,7 +143,7 @@ struct User: Codable, Hashable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encodeIfPresent(uuid, forKey: .uuid)
+        try container.encodeIfPresent(userID, forKey: .userID)
         try container.encodeIfPresent(username, forKey: .username)
         try container.encodeIfPresent(firstName, forKey: .firstName)
         try container.encodeIfPresent(lastName, forKey: .lastName)
@@ -166,7 +171,7 @@ struct User: Codable, Hashable {
 }
 
 struct UserDao: Codable {
-    var uuid: String?
+    var userID: String?
     var username: String?
     var bio: String?
     var gender: Gender?
@@ -181,12 +186,12 @@ struct UserDao: Codable {
     var blockedUsers: [String]?
     var reportedPosts: [String]?
     var reportedEvents: [String]?
-    var hometown: [Double]?
+    var hometown: GeoJSON?
     var notificationDevices: [NotificationDevice]?
     var notificationPreference: NotificationPreference?
 
     init(
-        uuid: String?=nil, 
+        userID: String?=nil, 
         username: String?=nil,
         bio: String?=nil,
         gender: Gender?=nil,
@@ -201,11 +206,11 @@ struct UserDao: Codable {
         blockedUsers: [String]?=nil,
         reportedPosts: [String]?=nil,
         reportedEvents: [String]?=nil,
-        hometown: [Double]?=nil,
+        hometown: GeoJSON?=nil,
         notificationDevices: [NotificationDevice]? = nil,
         notificationPreference: NotificationPreference? = nil
     ){
-        self.uuid = uuid
+        self.userID = userID
         self.username = username
         self.bio = bio
         self.gender = gender
@@ -226,7 +231,7 @@ struct UserDao: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case username
         case bio
         case gender
@@ -249,7 +254,7 @@ struct UserDao: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        userID = try container.decodeIfPresent(String.self, forKey: .userID)
         username = try container.decodeIfPresent(String.self, forKey: .username)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         
@@ -270,15 +275,15 @@ struct UserDao: Codable {
         blockedUsers = try container.decodeIfPresent([String].self, forKey: .blockedUsers)
         reportedPosts = try container.decodeIfPresent([String].self, forKey: .reportedPosts)
         reportedEvents = try container.decodeIfPresent([String].self, forKey: .reportedEvents)
-        hometown = try container.decodeIfPresent([Double].self, forKey: .hometown)
+        hometown = try container.decodeIfPresent(GeoJSON.self, forKey: .hometown)
         notificationDevices = try container.decodeIfPresent([NotificationDevice].self, forKey: .notificationDevices)
         notificationPreference = try container.decodeIfPresent(NotificationPreference.self, forKey: .notificationPreference)
     }
-        
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encodeIfPresent(uuid, forKey: .uuid)
+        try container.encodeIfPresent(userID, forKey: .userID)
         try container.encodeIfPresent(username, forKey: .username)
         try container.encodeIfPresent(bio, forKey: .bio)
         
@@ -286,7 +291,7 @@ struct UserDao: Codable {
             try container.encodeIfPresent(genderString, forKey: .gender)
         }
         
-        try container.encodeIfPresent(birthdate, forKey: .birthdate)
+        try container.encodeIfPresent(birthdate?.ISO8601Format(), forKey: .birthdate)
         try container.encodeIfPresent(imageURL, forKey: .imageURL)
         try container.encodeIfPresent(sports, forKey: .sports)
         try container.encodeIfPresent(visibility, forKey: .visibility)
@@ -304,7 +309,7 @@ struct UserDao: Codable {
 }
 
 struct UserData: Codable, Hashable {
-    let uuid: String
+    let userID: String
     let firstName: String
     let lastName: String
     let username: String
@@ -318,11 +323,11 @@ struct UserData: Codable, Hashable {
     let organizations: [String]
     
     static func == (lhs: UserData, rhs: UserData) -> Bool {
-        return lhs.uuid == rhs.uuid
+        return lhs.userID == rhs.userID
     }
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case firstName = "first_name"
         case lastName = "last_name"
         case username
@@ -339,7 +344,7 @@ struct UserData: Codable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         firstName = try container.decode(String.self, forKey: .firstName)
         lastName = try container.decode(String.self, forKey: .lastName)
         username = try container.decode(String.self, forKey: .username)
@@ -362,7 +367,7 @@ struct UserData: Codable, Hashable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(uuid, forKey: .uuid)
+        try container.encode(userID, forKey: .userID)
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(username, forKey: .username)
@@ -412,14 +417,14 @@ struct LocationResponse: Decodable {
 }
 
 struct UserSnippet: Codable, Hashable {
-    var uuid: String?
+    var userID: String?
     var username: String?
     var firstName: String?
     var lastName: String?
     var imageURL: String?
     
-    init(uuid: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, imageURL: String? = nil) {
-        self.uuid = uuid
+    init(userID: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, imageURL: String? = nil) {
+        self.userID = userID
         self.username = username
         self.firstName = firstName
         self.lastName = lastName
@@ -429,7 +434,7 @@ struct UserSnippet: Codable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        self.userID = try container.decodeIfPresent(String.self, forKey: .userID)
         self.username = try container.decodeIfPresent(String.self, forKey: .username)
         self.firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         self.lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
@@ -437,7 +442,7 @@ struct UserSnippet: Codable, Hashable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
         case username
         case firstName = "first_name"
         case lastName = "last_name"
@@ -570,13 +575,8 @@ struct NotificationDevice: Codable, Hashable {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         // Convert Date objects to ISO strings
-        let createdAtString = dateFormatter.string(from: createdAt)
-        try container.encode(createdAtString, forKey: .createdAt)
-        
-        if let updatedAt = updatedAt {
-            let updatedAtString = dateFormatter.string(from: updatedAt)
-            try container.encode(updatedAtString, forKey: .updatedAt)
-        }
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
     }
     
     static func == (lhs: NotificationDevice, rhs: NotificationDevice) -> Bool {

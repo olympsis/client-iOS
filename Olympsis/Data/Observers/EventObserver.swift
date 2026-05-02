@@ -10,7 +10,11 @@ import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields
 class EventObserver: ObservableObject{
-    private let decoder = JSONDecoder()
+    private let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        return d
+    }()
     private let eventService = EventService()
     private let log = Logger(subsystem: "com.olympsis.client", category: "event_observer")
     
@@ -79,9 +83,9 @@ class EventObserver: ObservableObject{
         return nil
     }
     
-    func getUserPastEvents(uuid: String) async -> [Event] {
+    func getUserPastEvents(userID: String) async -> [Event] {
         do {
-            let (data, resp) = try await eventService.getUserPastEvents(uuid: uuid)
+            let (data, resp) = try await eventService.getUserPastEvents(userID: userID)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 return []
             }

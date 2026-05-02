@@ -52,7 +52,7 @@ struct PostListItem: View {
             }
         }
         .fullScreenCover(isPresented: $showComments) {
-            if let club = session.selectedGroup?.club {
+            if let club = session.groupsManager.selected?.club {
                 PostComments(club: club)
                     .environmentObject(post)
             }
@@ -85,8 +85,12 @@ struct PostHeader: View {
     @EnvironmentObject private var post: Post
     @Environment(SessionStore.self) private var session
     
+    private var selectedGroup: GroupSelection? {
+        return session.groupsManager.selected
+    }
+    
     private var isOrg: Bool {
-        guard let selectedGroup = session.selectedGroup,
+        guard let selectedGroup = selectedGroup,
               selectedGroup.organization != nil else {
             return false
         }
@@ -102,7 +106,7 @@ struct PostHeader: View {
     }
     
     private var orgImageURL: String {
-        guard let club = session.selectedGroup?.club,
+        guard let club = selectedGroup?.club,
               let org = club.parent,
               let image = org.logo else {
             return GenerateImageURL("https://api.olympsis.com")
@@ -121,7 +125,7 @@ struct PostHeader: View {
     }
     
     private var orgName: String {
-        guard let club = session.selectedGroup?.club,
+        guard let club = selectedGroup?.club,
               let org = club.parent,
               let name = org.name,
               name != "" else {
@@ -131,7 +135,7 @@ struct PostHeader: View {
     }
     
     private func isPinned() -> Bool {
-        guard let selectedGroup = session.selectedGroup else {
+        guard let selectedGroup = selectedGroup else {
             return false
         }
         if selectedGroup.type == GROUP_TYPE.Club {
@@ -339,26 +343,26 @@ struct PostFooter: View {
     
     private func like() async {
         guard let user = session.user,
-            let uuid = user.uuid else {
+            let userID = user.userID else {
             return
         }
-        let dao = ReactionDao(uuid: uuid)
-        guard let id = await session.postObserver.addLike(id: post.id, like: dao) else {
+        let dao = ReactionDao(userID: userID)
+        guard let id = await session.postObserver?.addLike(id: post.id, like: dao) else {
             return
         }
-        let snippet = UserSnippet(uuid: uuid, username: user.username ?? "", imageURL: user.imageURL ?? "")
-        let like = Reaction(id: id, uuid: uuid, user: snippet, createdAt: Date())
+        let snippet = UserSnippet(userID: userID, username: user.username ?? "", imageURL: user.imageURL ?? "")
+        let like = Reaction(id: id, userID: userID, user: snippet, createdAt: Date())
         isLiked = true
         post.likes.append(like)
     }
     
     private func removeLike() async {
-        guard let user = session.user, let uuid = user.uuid,
-              let like = post.likes.first(where: { $0.uuid == uuid }),
-              await session.postObserver.deleteLike(id: post.id, likeID: like.id) else {
+        guard let user = session.user, let userID = user.userID,
+              let like = post.likes.first(where: { $0.userID == userID }),
+              await session.postObserver?.deleteLike(id: post.id, likeID: like.id) ?? false else {
             return
         }
-        post.likes.removeAll(where: {$0.uuid == like.uuid})
+        post.likes.removeAll(where: {$0.userID == like.userID})
         isLiked = false
     }
     
@@ -418,8 +422,8 @@ struct PostFooter: View {
             .padding(.all, 5)
             .task {
                 if let user = session.user,
-                      let uuid = user.uuid,
-                      ((post.likes.first(where: { $0.uuid == uuid })) != nil) {
+                      let userID = user.userID,
+                      ((post.likes.first(where: { $0.userID == userID })) != nil) {
                     self.isLiked = true
                 }
             }

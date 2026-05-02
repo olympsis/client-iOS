@@ -7,11 +7,12 @@
 
 import Foundation
 
-class Club: Decodable, Identifiable, ObservableObject, Hashable {
+@Observable
+class Club: Decodable, Identifiable, Hashable {
 
     let id: String
     let parent: OrganizationDao?
-    @Published var name: String
+    var name: String
     var logo: String?
     var banner: String?
     var sports: [String]
@@ -21,7 +22,7 @@ class Club: Decodable, Identifiable, ObservableObject, Hashable {
     let country: String
     let location: GeoJSON
     let visibility: String
-    @Published var members: [Member]
+    var members: [Member]
     var blackList: [String]?
     let rules: [String]
     var tags: [String]
@@ -219,18 +220,18 @@ class ClubDao: Codable, Identifiable {
 
 class ClubInvite: Codable, Identifiable {
     let id: String
-    let uuid: String
+    let userID: String
     let clubID: String
     let status: String
     let createdAt: Date
     
     init(id: String,
-         uuid: String,
+         userID: String,
          clubID: String,
          status: String,
          createdAt: Date) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.clubID = clubID
         self.status = status
         self.createdAt = createdAt
@@ -247,7 +248,7 @@ class ClubInvite: Codable, Identifiable {
         
         // Decode regular properties
         id = try container.decode(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         clubID = try container.decode(String.self, forKey: .clubID)
         status = try container.decode(String.self, forKey: .status)
         
@@ -267,9 +268,18 @@ class ClubInvite: Codable, Identifiable {
         }
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(clubID, forKey: .clubID)
+        try container.encode(status, forKey: .status)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case clubID = "club_id"
         case status
         case createdAt = "created_at"
@@ -362,6 +372,14 @@ class ClubApplication: Codable, Identifiable {
         }
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(applicant, forKey: .applicant)
+        try container.encode(status, forKey: .status)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case applicant
@@ -382,15 +400,15 @@ struct ClubApplicationsResponse: Codable {
 
 class ClubInvitation: Decodable, Identifiable {
     let id: String
-    let uuid: String
+    let userID: String
     let clubID: String
     let status: String
     let data: Club?
     let createdAt: Date
     
-    init(id: String, uuid: String, clubID: String, status: String, data: Club?, createdAt: Date) {
+    init(id: String, userID: String, clubID: String, status: String, data: Club?, createdAt: Date) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.clubID = clubID
         self.status = status
         self.data = data
@@ -408,7 +426,7 @@ class ClubInvitation: Decodable, Identifiable {
         
         // Decode regular properties
         id = try container.decode(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         clubID = try container.decode(String.self, forKey: .clubID)
         status = try container.decode(String.self, forKey: .status)
         data = try container.decodeIfPresent(Club.self, forKey: .data)
@@ -431,7 +449,7 @@ class ClubInvitation: Decodable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case clubID = "club_id"
         case status
         case data
@@ -458,7 +476,6 @@ struct ClubSnippet: Codable {
     let country: String
     let visibility: String
 }
-
 
 struct OrgSnippet: Codable {
     let id: String

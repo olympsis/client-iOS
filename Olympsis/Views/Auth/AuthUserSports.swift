@@ -43,13 +43,23 @@ struct AuthUserSports: View {
         
         Task {
             state = .loading
-            let dao = UserDao(sports: selectedSports.map { $0.name.components(separatedBy: " ")[1] })
+            let parts = selectedSports.map { sport -> String in
+                let components = sport.name.components(separatedBy: " ")
+                // Strip emoji prefix if present (e.g. "⚽ soccer" -> "soccer")
+                return components.count > 1 ? components.dropFirst().joined(separator: " ") : components[0]
+            }
+            let dao = UserDao(sports: parts)
             
-            guard let updates = await session.userObserver.UpdateUserData(update: dao) else {
+            guard let updates = await session.userObserver.updateUserData(update: dao) else {
                 state = .failure
                 return
             }
+            
+            // Store user into cache and update session store
+            session.user = updates
             cacheService.cacheUser(user: updates)
+            
+            // Move user to the full application
             authType = nil
             authStatus = .authenticated
         }
@@ -80,20 +90,26 @@ struct AuthUserSports: View {
                                 .padding(.horizontal)
                                 .padding(.vertical, 10)
                                 .background(.regularMaterial)
-                                .background(Color.gray.opacity(0.7))
+                                .background(isSportSelected(sport) ? Color.Brand.secondary.opacity(0.7) : Color.gray.opacity(0.7))
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                                 .background {
-                                    RoundedRectangle(cornerRadius: 20).stroke(isSportSelected(sport) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: 2)
+                                    RoundedRectangle(cornerRadius: 20).stroke(isSportSelected(sport) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: isSportSelected(sport) ? 4 : 2)
                                 }
                         }
                     }
                 }.padding([.top, .horizontal])
             }.padding(.top, -8)
             
-            Button(action: { updateUser() }) {
-                LoadingButton(text: String(localized: "done", table: "General"), status: $state)
-                    .padding(.top, -8)
-                    .padding(.horizontal)
+            HStack {
+                Spacer()
+                
+                Button(action: { updateUser() }) {
+                    LoadingButton(text: String(localized: "done", table: "General"), status: $state)
+                        .padding(.top, -8)
+                        .padding(.horizontal)
+                }
+                
+                Spacer()
             }
         }
     }

@@ -35,7 +35,9 @@ struct LookUp: View {
                 }
             }
         } catch {
+            #if DEBUG
             print(error)
+            #endif
             await MainActor.run {
                 status = .failure
             }

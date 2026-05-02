@@ -49,8 +49,6 @@ struct SimpleButtonLabel: View {
     }
 }
 
-struct SimpleButtonLabel_Previews: PreviewProvider {
-    static var previews: some View {
-        SimpleButtonLabel(text: "continue", style: .outline)
-    }
+#Preview {
+    SimpleButtonLabel(text: "continue", style: .outline)
 }

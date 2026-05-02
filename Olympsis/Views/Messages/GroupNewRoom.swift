@@ -23,8 +23,8 @@ struct GroupNewRoom: View {
                 state = .loading
             }
             guard let user = session.user,
-                  let uuid = user.uuid,
-                  let selectedGroup = session.selectedGroup else {
+                  let userID = user.userID,
+                  let selectedGroup = session.groupsManager.selected else {
                 return
             }
             
@@ -32,7 +32,7 @@ struct GroupNewRoom: View {
                 guard let id = selectedGroup.club?.id else {
                     return
                 }
-                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", uuid: uuid)
+                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
                 if let r = res {
                     rooms.append(r)
                 }
@@ -44,7 +44,7 @@ struct GroupNewRoom: View {
                 guard let id = selectedGroup.organization?.id else {
                     return
                 }
-                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", uuid: uuid)
+                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
                 if let r = res {
                     rooms.append(r)
                 }

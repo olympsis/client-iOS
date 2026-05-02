@@ -58,7 +58,7 @@ struct InvitationDTO: Codable {
     let subjectID: String
     var status: String
     let createdAt: Date?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case type
@@ -67,6 +67,17 @@ struct InvitationDTO: Codable {
         case subjectID = "subject_id"
         case status
         case createdAt = "created_at"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(type, forKey: .type)
+        try container.encode(sender, forKey: .sender)
+        try container.encode(recipient, forKey: .recipient)
+        try container.encode(subjectID, forKey: .subjectID)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 
@@ -110,10 +121,18 @@ struct Comment: Codable {
         self.createdAt = try parseDate(from: createdAtString)
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     static func == (lhs: Comment, rhs: Comment) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case text
@@ -125,14 +144,22 @@ struct Comment: Codable {
 struct CommentDao: Codable {
     let id: String?
     let text: String
-    var uuid: String?
+    var userID: String?
     let createdAt: Date?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case text
-        case uuid
+        case userID = "user_id"
         case createdAt = "created_at"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(text, forKey: .text)
+        try container.encodeIfPresent(userID, forKey: .userID)
+        try container.encodeIfPresent(createdAt?.ISO8601Format(), forKey: .createdAt)
     }
 }
 
@@ -142,13 +169,13 @@ struct Reaction: Codable, Identifiable {
     }
     
     let id: String
-    let uuid: String
+    let userID: String
     let user: UserSnippet?
     let createdAt: Date
     
-    init(id: String = UUID().uuidString, uuid: String = UUID().uuidString, user: UserSnippet? = nil, createdAt: Date = Date()) {
+    init(id: String = UUID().uuidString, userID: String = UUID().uuidString, user: UserSnippet? = nil, createdAt: Date = Date()) {
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.user = user
         self.createdAt = createdAt
     }
@@ -156,16 +183,24 @@ struct Reaction: Codable, Identifiable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
-        self.uuid = try container.decode(String.self, forKey: .uuid)
+        self.userID = try container.decode(String.self, forKey: .userID)
         self.user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
         self.createdAt = try parseDate(from: createdAtString)
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case user
         case createdAt = "created_at"
     }
@@ -173,10 +208,10 @@ struct Reaction: Codable, Identifiable {
 
 struct ReactionDao: Codable {
     
-    let uuid: String
+    let userID: String
     
     enum CodingKeys: String, CodingKey {
-        case uuid
+        case userID = "user_id"
     }
 }
 
@@ -265,10 +300,18 @@ class Member: Codable, Identifiable, ObservableObject {
         }
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(role, forKey: .role)
+        try container.encodeIfPresent(user, forKey: .user)
+        try container.encodeIfPresent(joinedAt?.ISO8601Format(), forKey: .joinedAt)
+    }
+
     func checkBlockStatus(_ user: User) {
         guard let blockedUsers = user.blockedUsers,
               let data = self.user,
-              let memberUID = data.uuid else {
+              let memberUID = data.userID else {
             self.isBlocked = false
             return
         }
@@ -288,19 +331,19 @@ class Member: Codable, Identifiable, ObservableObject {
 class MemberDao: Codable, Identifiable {
     
     let id: String?
-    let uuid: String
+    let userID: String
     let role: String
     let data: User?
     let joinedAt: Date?
     
     init(id: String?,
-         uuid: String,
+         userID: String,
          role: String,
          data: User?,
          joinedAt: Date?) {
         
         self.id = id
-        self.uuid = uuid
+        self.userID = userID
         self.role = role
         self.data = data
         self.joinedAt = joinedAt
@@ -308,7 +351,7 @@ class MemberDao: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case uuid
+        case userID = "user_id"
         case role
         case data
         case joinedAt = "joined_at"
@@ -319,7 +362,7 @@ class MemberDao: Codable, Identifiable {
         
         // Decode regular properties
         id = try container.decodeIfPresent(String.self, forKey: .id)
-        uuid = try container.decode(String.self, forKey: .uuid)
+        userID = try container.decode(String.self, forKey: .userID)
         role = try container.decode(String.self, forKey: .role)
         data = try container.decodeIfPresent(User.self, forKey: .data)
         
@@ -337,6 +380,15 @@ class MemberDao: Codable, Identifiable {
         } else {
             joinedAt = try container.decodeIfPresent(Date.self, forKey: .joinedAt)
         }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(role, forKey: .role)
+        try container.encodeIfPresent(data, forKey: .data)
+        try container.encodeIfPresent(joinedAt?.ISO8601Format(), forKey: .joinedAt)
     }
 }
 
@@ -464,7 +516,8 @@ class ApplicationConfiguration: Codable {
 }
 
 struct DayGroup: Identifiable {
-    let id = UUID()
+    /// Use date as stable identity so SwiftUI can diff sections properly
+    var id: Date { date }
     let date: Date
     var events: [Event]
     

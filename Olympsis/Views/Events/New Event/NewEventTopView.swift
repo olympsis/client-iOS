@@ -47,18 +47,17 @@ struct NewEventTopView: View {
                                 .foregroundStyle(.white)
                         }
                         
-                    }.padding(.horizontal)
-                        .padding(.vertical, 5)
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color("color-prime"))
-                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 5)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color("color-prime"))
+                    }
                 }
                 
                 Spacer()
             }
-            .padding(.horizontal)
-            .padding(.vertical)
             .fullScreenCover(isPresented: $showTypePicker) {
                 EventTypePicker(type: $eventType)
             }

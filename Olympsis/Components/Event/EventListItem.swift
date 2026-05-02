@@ -13,6 +13,7 @@ import Kingfisher
 struct EventListItem: View {
     
     @State var event: Event
+    var namespace: Namespace.ID? = nil
     @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
     @State private var venueState: LOADING_STATE = .pending
@@ -33,16 +34,25 @@ struct EventListItem: View {
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
     
-    private var title: String {
-        return event.title
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let user = session.user,
+              user.userID != event.poster?.userID,
+              let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+            return !hideLocation
+        }
+        return true
     }
     
     private var imageURL: URL? {
         return generateImageURL(event.mediaURL)
-    }
-    
-    private var venueDescriptors: [VenueDescriptor] {
-        return event.venues
     }
     
     private var venueLocationName: String {
@@ -65,12 +75,8 @@ struct EventListItem: View {
         return sport.prefix(1).capitalized + sport.dropFirst()
     }
     
-    private var eventStartDate: String {
-        return event.timeToString()
-    }
-    
     var body: some View {
-        Button(action:{ self.showDetails.toggle() }) {
+        NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
@@ -97,10 +103,11 @@ struct EventListItem: View {
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                 
-                                Text("At \(venueLocationName)")
+                                Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
                                     .font(.body)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
+                                    .redacted(reason: canShowLocation ? [] : .placeholder)
                             }
                             
                             Spacer()
@@ -111,7 +118,7 @@ struct EventListItem: View {
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
                                 
-                                Text("\(event.participants.count) Participants")
+                                Text("\(event.participants.count) \(String(localized: "event-participants", table: "Events"))")
                                     .font(.caption)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
@@ -122,8 +129,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             .offset(x: 2, y: 8)
                         }
                         
@@ -134,7 +144,7 @@ struct EventListItem: View {
                                 Image(systemName: "calendar")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
-                                Text(eventStartDate)
+                                Text(event.timeToString())
                                     .font(.callout)
                                     .foregroundStyle(.white)
                             }
@@ -144,7 +154,7 @@ struct EventListItem: View {
                             // MARK: - Competition Tag
                             if event.isCompetition() {
                                 HStack {
-                                    Text("Tournament")
+                                    Text(String(localized: "event-tournament", table: "Events"))
                                         .font(.caption)
                                         .fontWeight(.bold)
                                         .padding([.leading, .trailing], 2.5)
@@ -173,8 +183,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                             
                             // MARK: - Start Time
                             HStack {
@@ -192,8 +205,11 @@ struct EventListItem: View {
                                 Color.black
                                     .opacity(0.21)
                             )
-                            .border(Color.black.opacity(0.15), width: 1)
                             .clipShape(Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                            }
                         }
                     }
                     .padding([.leading, .trailing], 7)
@@ -205,16 +221,17 @@ struct EventListItem: View {
                             .opacity(0.95)
                             .mask(gradient)
                     }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                }.clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .fullScreenCover(isPresented: $showDetails) {
-            EventView(event: event)
-                .presentationDetents([.large])
-        }
+        .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
         .task {
+            // Skip fetch if venue names are already available on the event
+            guard event.venues.first?.name == nil else {
+                venueState = .success
+                return
+            }
             venueState = .loading
-            venues = await session.fetchVenues(in: venueDescriptors)
+            venues = await session.fetchVenues(in: event.venues)
             venueState = .success
         }
     }
@@ -269,7 +286,7 @@ struct _TrailingView: View {
                                 transaction.animation = .linear(duration: 0.5).repeatForever(autoreverses: true)
                             }
                             .onAppear { isBlinking.toggle() }
-                        Text("Live")
+                        Text(String(localized: "status-live", table: "Events"))
                             .bold()
                             .font(.callout)
                     }.foregroundStyle(.red)
@@ -280,7 +297,7 @@ struct _TrailingView: View {
             case .ended:
                 VStack (alignment: .trailing){
                     HStack {
-                        Text("Ended")
+                        Text(String(localized: "status-ended", table: "Events"))
                             .bold()
                             .font(.callout)
                     }.foregroundStyle(.gray)

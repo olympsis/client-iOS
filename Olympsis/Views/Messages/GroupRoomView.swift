@@ -37,21 +37,21 @@ struct GroupRoomView: View {
         }
     }
     
-    private func getUserData(uuid: String) -> UserSnippet? {
-        guard let selectedGroup = session.selectedGroup else {
+    private func getUserData(userID: String) -> UserSnippet? {
+        guard let selectedGroup = session.groupsManager.selected else {
             log.error("Failed to find the selected group!")
             return nil
         }
         if selectedGroup.type == .Club {
             guard let members = selectedGroup.club?.members,
-                  let user = members.first(where: {$0.user?.uuid == uuid}) else {
+                  let user = members.first(where: {$0.user?.userID == userID}) else {
                 log.error("Failed to find club's members")
                 return nil
             }
             return user.user
         } else {
             guard let members = selectedGroup.organization?.members,
-                  let user = members.first(where: {$0.user?.uuid == uuid}) else {
+                  let user = members.first(where: {$0.user?.userID == userID}) else {
                 log.error("Failed to find club's members")
                 return nil
             }
@@ -69,7 +69,7 @@ struct GroupRoomView: View {
                             ProgressView()
                         case .success:
                             ForEach(viewModel.messages, id: \.timestamp){ message in
-                                MessageView(room: room, user: getUserData(uuid: message.sender), message: message)
+                                MessageView(room: room, user: getUserData(userID: message.sender), message: message)
                                     .id(message.id)
                                     .padding(.top)
                             }
@@ -105,7 +105,7 @@ struct GroupRoomView: View {
                     if !viewModel.text.isEmpty {
                         Button(action: {
                             Task {
-                                _ = await viewModel.sendMessage(uuid: session.user?.uuid)
+                                _ = await viewModel.sendMessage(userID: session.user?.userID)
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                              to: nil, from: nil, for: nil)
                             }
@@ -134,7 +134,7 @@ struct GroupRoomView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{
                         Task {
-                            session.notificationsManager.inMessageView = false
+                            NotificationManager.shared.inMessageView = false
                             await viewModel.disconnect()
                             dismiss()
                         }
@@ -154,12 +154,12 @@ struct GroupRoomView: View {
                 }
             }
             .task {
-                session.notificationsManager.inMessageView = true
+                NotificationManager.shared.inMessageView = true
                 await viewModel.loadInitialData()
                 await viewModel.startWebSocketConnection()
             }
             .onDisappear {
-                session.notificationsManager.inMessageView = false
+                NotificationManager.shared.inMessageView = false
                 Task {
                     await viewModel.disconnect()
                 }

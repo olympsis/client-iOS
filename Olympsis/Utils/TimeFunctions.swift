@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 6/3/23.
 //
 
+// import HealthKit
 import Foundation
 
 func calculateTimeAgo(from date: Date, shortned: Bool = false) -> String {
@@ -105,7 +106,7 @@ func formatAbbreviatedTimestamp(_ date: Date?) -> String {
 func formatDateFromTimestamp(_ date: Date?) -> String {
     // Safely unwrap the optional date
     guard let date = date else {
-        return "Contact Me"
+        return "Unknown"
     }
     
     let formatter = DateFormatter()
@@ -130,7 +131,7 @@ func formatDateFromTimestamp(_ date: Date?) -> String {
 func formatTimeFromTimestamp(_ date: Date?) -> String {
     // Safely unwrap the optional date
     guard let date = date else {
-        return "Contact Me"
+        return "Unknown"
     }
     
     let formatter = DateFormatter()
@@ -182,4 +183,11 @@ func parseDate(from dateString: String) throws -> Date {
     
 
     throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Unable to parse date string: \(dateString)"))
+}
+
+/// Returns formatted start date/time for a workout (HealthKit disabled - uses WorkoutData)
+func getWorkoutStartDateTime(from workout: WorkoutData) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "M/dd/yy - h:mm a"
+    return dateFormatter.string(from: workout.startDate)
 }

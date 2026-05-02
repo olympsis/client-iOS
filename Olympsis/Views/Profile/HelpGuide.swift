@@ -14,54 +14,44 @@ struct HelpGuide: View {
     var body: some View {
         ScrollView {
             HStack {
-                Text("Getting Help")
+                Text(String(localized: "help-title", table: "Settings"))
                     .font(.title3)
                     .bold()
                     .padding(.all)
                 Spacer()
             }
             
-            Text("At Olympsis, we're committed to providing you with the best possible experience. If you encounter any issues, have questions, or need assistance, we have several channels available to help you.")
+            Text(String(localized: "help-intro", table: "Settings"))
                 .padding(.horizontal)
             
             GroupBox {
-                Text("""
-                    If you come across a bug or technical issue within the app, you can report it through our dedicated bug report option in the profile settings. Please provide as much detail as possible, including steps to reproduce the issue, screenshots or screen recordings if applicable, and any relevant information about your device and app version. Your detailed reports help us identify and resolve problems more efficiently.
-                """)
+                Text(String(localized: "help-bug-reports-body", table: "Settings"))
             } label: {
-                Text("Bug Reports")
+                Text(String(localized: "help-bug-reports", table: "Settings"))
             }
             
             GroupBox {
-                Text("""
-                    If you encounter any inappropriate events, posts, or malicious user behavior, you can file reports directly within the app. Simply navigate to the right settings menu and follow the prompts to submit your report. Our team will review and take appropriate action to ensure a safe and positive environment for all users.
-                """)
+                Text(String(localized: "help-user-reports-body", table: "Settings"))
             } label: {
-                Text("Event, Post, or User Reports")
+                Text(String(localized: "help-user-reports", table: "Settings"))
             }
             
             GroupBox {
-                Text("""
-                    For general inquiries, feedback, or if you need to share visual aids like pictures or videos, you can reach out to our support team by emailing contact@olympsis.com. Our dedicated support staff will assist you promptly and professionally.
-                """)
+                Text(String(localized: "help-email-body", table: "Settings"))
             } label: {
-                Text("Email Support")
+                Text(String(localized: "help-email", table: "Settings"))
             }
             
             GroupBox {
-                Text("""
-                    You can also connect with us through our social media channels. Follow us on Twitter, Facebook, and Instagram for updates, announcements, and community engagement. Our social media team is actively monitoring these channels and can provide assistance or redirect your inquiries to the appropriate support channels.
-                """)
+                Text(String(localized: "help-social-body", table: "Settings"))
             } label: {
-                Text("Social Media")
+                Text(String(localized: "help-social", table: "Settings"))
             }
             
-            Text("""
-                We value your feedback and strive to address any concerns or issues you may have. Don't hesitate to reach out to us through any of the available channels, and we'll do our best to help you have a seamless and enjoyable experience with Olympsis.
-            """)
+            Text(String(localized: "help-closing", table: "Settings"))
             .padding(.horizontal)
         }
-        .navigationTitle("Help")
+        .navigationTitle(String(localized: "setting-help", table: "Settings"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {

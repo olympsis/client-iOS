@@ -8,9 +8,10 @@
 import SwiftUI
 import Foundation
 
-class EventRouter: ObservableObject {
+@Observable
+class EventRouter {
     
-    @Published var navPath = NavigationPath()
+    var navPath = NavigationPath()
     
     @MainActor
     func navigate(to destination: EVENT_ROUTES) {

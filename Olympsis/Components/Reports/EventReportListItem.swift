@@ -42,26 +42,26 @@ struct EventReportListItem: View {
                             await closeReport()
                         }
                     } label: {
-                        Text("Close Report")
+                        Text(String(localized: "report-close", table: "Settings"))
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
             HStack{
-                Text("Reason:")
+                Text(String(localized: "report-reason", table: "Settings"))
                     .fontWeight(.bold)
                 Text(report.type)
                 Spacer()
             }
             HStack(alignment: .top) {
-                Text("Notes:")
+                Text(String(localized: "report-notes", table: "Settings"))
                     .fontWeight(.bold)
                 Text(notes)
                 Spacer()
             }
             HStack {
-                Text("Created at:")
+                Text(String(localized: "report-created-at", table: "Settings"))
                     .fontWeight(.bold)
                 Text(calculateTimeAgo(from: report.createdAt))
                 Spacer()
@@ -76,6 +76,7 @@ struct EventReportListItem: View {
         .fullScreenCover(isPresented: $showEvent, content: {
             if let e = report.event {
                 EventView(event: e)
+                    .environment(e)
             }
         })
     }

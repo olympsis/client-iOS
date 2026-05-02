@@ -17,7 +17,6 @@ struct Profile: View {
     enum ProfileTabs: Int {
         case achievements
         case groupsEnrolled
-        case pastEvents
     }
     
     var username: String {
@@ -45,88 +44,98 @@ struct Profile: View {
                             .padding(.bottom, 30)
                     }
                     
-                    HStack() {
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .achievements
+                    NavigationLink(destination: PastEvents()) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 60)
+                            .foregroundStyle(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.foreground.opacity(0.2), lineWidth: 1)
                             }
-                        }) {
-                            VStack {
-                                Text(String(localized: "awards", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                    
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
+                            .overlay {
+                                HStack(alignment: .center) {
+                                    Image(systemName: "calendar.badge.checkmark")
+                                    Text(String(localized: "profile-past-events", table: "Profile"))
+                                        .fontWeight(.medium)
+                                }
                             }
-                        }
-                        
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .groupsEnrolled
-                            }
-                        }) {
-                            VStack {
-                                Text(String(localized: "groups", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            withAnimation(.smooth) {
-                                selectedTab = .pastEvents
-                            }
-                        }) {
-                            VStack {
-                                Text(String(localized: "past-events", table: "Profile"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundStyle(selectedTab == .pastEvents ? Color.foreground : Color.clear)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
+                    }.padding([.bottom, .horizontal])
                     
-                    switch selectedTab {
-                    case .achievements:
-                        Awards()
-                            .environment(session)
-                        
-                    case .groupsEnrolled:
-                        GroupsEnrolled()
-                            .environment(session)
-                        
-                    case .pastEvents:
-                        PastEvents()
-                            .environment(session)
-                    }
+//                    HStack() {
+//                        Button(action: {
+//                            withAnimation(.smooth) {
+//                                selectedTab = .achievements
+//                            }
+//                        }) {
+//                            VStack {
+//                                Text(String(localized: "awards", table: "Profile"))
+//                                    .font(.callout)
+//                                    .fontWeight(.medium)
+//                                    
+//                                
+//                                Rectangle()
+//                                    .frame(height: 1)
+//                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
+//                            }
+//                        }
+//                        
+//                        
+//                        Spacer()
+//                        
+//                        Button(action: {
+//                            withAnimation(.smooth) {
+//                                selectedTab = .groupsEnrolled
+//                            }
+//                        }) {
+//                            VStack {
+//                                Text(String(localized: "groups", table: "Profile"))
+//                                    .font(.callout)
+//                                    .fontWeight(.medium)
+//                                
+//                                Rectangle()
+//                                    .frame(height: 1)
+//                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
+//                            }
+//                        }
+//                        
+//                        Spacer()
+//                    }
+//                    .padding(.bottom, 10)
+//                    .padding(.horizontal)
+//                    
+//                    switch selectedTab {
+//                    case .achievements:
+//                        Awards()
+//                            .environment(session)
+//                        
+//                    case .groupsEnrolled:
+//                        GroupsEnrolled()
+//                            .environment(session)
+//                    }
 
                 }
                 .fullScreenCover(isPresented: $showMenu, content: {
                     ProfileMenu()
                 })
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text(username)
-                            .foregroundColor(.primary)
-                            .font(.title2)
-                            .fontWeight(.regular)
+                    if #available(iOS 26.0, *) {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text(username)
+                                .fixedSize()
+                                .font(.title2)
+                                .fontWeight(.regular)
+                                .foregroundColor(.primary)
+                        }.sharedBackgroundVisibility(.hidden)
+                    } else {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text(username)
+                                .fixedSize()
+                                .font(.title2)
+                                .fontWeight(.regular)
+                                .foregroundColor(.primary)
+                        }
                     }
+                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
                             Image(systemName: "slider.horizontal.3")
@@ -136,10 +145,10 @@ struct Profile: View {
                 }
                 .task {
                     Task {
-                        guard let uuid = session.user?.uuid else {
+                        guard let userID = session.user?.userID else {
                             return
                         }
-                        let pastEvents = await session.eventObserver.getUserPastEvents(uuid: uuid)
+                        let pastEvents = await session.eventObserver.getUserPastEvents(userID: userID)
                         session.pastEvents = Set(pastEvents)
                     }
                 }

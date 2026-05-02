@@ -38,7 +38,7 @@ struct ClubMemberMenu: View {
     func unBlock() async {
         guard let user = session.user,
               let data = member.user,
-              let memberUID = data.uuid else {
+              let memberUID = data.userID else {
             log.error("Failed to get required data from session store to un-block user")
             return
         }
@@ -47,7 +47,7 @@ struct ClubMemberMenu: View {
             blockedList.removeAll(where: { $0 == memberUID })
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let resp = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             isBlocked = false

@@ -9,10 +9,9 @@ import os
 import SwiftUI
 
 struct AsyncEventView: View {
-    
+
     @State public var eventId: String
     @State private var event: Event?
-    @State private var title: String = "Event"
     @State private var state: VIEW_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
@@ -28,7 +27,6 @@ struct AsyncEventView: View {
             log.error("Failed to fetch event:\(eventId, privacy: .public)")
             return
         }
-        self.title = event.title
         self.event = event
         state = .success
     }
@@ -54,23 +52,23 @@ struct AsyncEventView: View {
                             }
                         }
                     }
-                    .navigationTitle(title)
+                    .navigationTitle(String(localized: "event-title", table: "Events"))
                     .navigationBarBackButtonHidden()
                     .navigationBarTitleDisplayMode(.inline)
             case .success:
                 if let event {
                     EventView(event: event)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .environment(event)
                 }
             case .failure:
                 VStack {
                     Image("illustrations/sorry")
                         .resizable()
                         .frame(width: 250, height: 250)
-                    Text("Failed to get Event.")
+                    Text(String(localized: "event-failed-to-load", table: "Events"))
                         .fontWeight(.bold)
                     Button(action: { Task { await fetchEvent() }}) {
-                        Text("Try again")
+                        Text(String(localized: "event-try-again", table: "Events"))
                     }
                 }
                 .padding(.vertical, 100)
@@ -89,10 +87,8 @@ struct AsyncEventView: View {
                         }
                     }
                 }
-                .navigationTitle(title)
-                .navigationBarBackButtonHidden()
+                .navigationTitle(String(localized: "event-title", table: "Events"))
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar(event != nil ? .hidden : .visible, for: .tabBar)
             }
         }
         .task {

@@ -37,7 +37,7 @@ struct NewEventImagePicker: View {
                         if manager.selectedImage == nil {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 100, height: 150)
-                                .foregroundStyle(Color.gray.opacity(0.2))
+                                .foregroundStyle(Color.Background.secondary)
                                 .overlay {
                                     Image(systemName: "plus")
                                         .foregroundStyle(Color("foreground"))

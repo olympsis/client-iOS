@@ -7,12 +7,17 @@
 
 import os
 import SwiftUI
-import AlertToast
+//import AlertToast
 import AuthenticationServices
 
 struct AuthView: View {
     
     @Binding var currentView: AuthTab
+    
+    // Bindings to pass Apple credential data back to AuthContainer
+    @Binding var appleFirstName: String?
+    @Binding var appleLastName: String?
+    @Binding var appleEmail: String?
     
     @State private var showToast: Bool = false
     @State private var enableLogin: Bool = false
@@ -63,6 +68,14 @@ struct AuthView: View {
                             request.requestedScopes = [.fullName, .email]
                         },
                         onCompletion: { result in
+                            // Capture Apple credential data for AuthUserInfo
+                            if case .success(let authorization) = result,
+                               let cred = authorization.credential as? ASAuthorizationAppleIDCredential {
+                                appleFirstName = cred.fullName?.givenName
+                                appleLastName = cred.fullName?.familyName
+                                appleEmail = cred.email
+                            }
+                            
                             Task {
                                 do {
                                     withAnimation {
@@ -75,12 +88,15 @@ struct AuthView: View {
                                             currentView = .info
                                         }
                                     } else if resp == USER_STATUS.returning {
+                                        // Load cached user into session immediately so
+                                        // profile data is available before ViewContainer appears
+                                        session.user = cacheService.fetchUser()
                                         withAnimation {
                                             authStatus = .authenticated
                                         }
                                     } else if resp == USER_STATUS.not_finished {
                                         withAnimation {
-                                            authStatus = .authenticated
+                                            currentView = .info
                                         }
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
@@ -100,9 +116,11 @@ struct AuthView: View {
                     .signInWithAppleButtonStyle(.white)
                     .frame(height: 50)
                     .overlay {
-                        Color.gray
-                            .opacity(enableLogin ? 0.0 : 0.9)
-                            .cornerRadius(radius: 5, corners: .allCorners)
+                        if !enableLogin {
+                            Color.gray
+                                .opacity(0.9)
+                                .cornerRadius(radius: 5, corners: .allCorners)
+                        }
                     }
                     .padding(.horizontal, 50)
                     .padding(.bottom, 50)
@@ -120,7 +138,6 @@ struct AuthView: View {
                                 .padding(.bottom, 35)
                         }
                 }
-                
             }.background {
                 Rectangle()
                     .foregroundStyle(.black)
@@ -129,9 +146,6 @@ struct AuthView: View {
                     .ignoresSafeArea(edges: .bottom)
             }
         }
-        .toast(isPresenting: $showToast, duration: 100, tapToDismiss: true, alert: {
-            AlertToast(displayMode: .hud, type: .regular, title: String(localized: "generic-server-error", table: "General"), style: .style(backgroundColor: .red, titleColor: .white))
-        })
         .background {
             Image("basketball-bw")
                 .resizable()
@@ -151,6 +165,6 @@ struct AuthView: View {
 }
 
 #Preview {
-    AuthView(currentView: .constant(.auth))
+    AuthView(currentView: .constant(.auth), appleFirstName: .constant(nil), appleLastName: .constant(nil), appleEmail: .constant(nil))
         .environment(SessionStore())
 }

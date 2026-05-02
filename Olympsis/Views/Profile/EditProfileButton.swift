@@ -10,10 +10,11 @@ import SwiftUI
 struct EditProfileButton: View {
    
     @State var showEditProfile = false
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
         VStack(alignment: .center){
-            Button(action:{self.showEditProfile.toggle()}){
+            NavigationLink(destination: EditProfile().environment(session)) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 250, height: 35)
@@ -24,15 +25,13 @@ struct EditProfileButton: View {
                         .font(.callout)
                 }
             }
-            .fullScreenCover(isPresented: $showEditProfile) {
-                EditProfile()
-            }
         }.frame(width: SCREEN_WIDTH)
     }
 }
 
-struct EditProfileButton_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    NavigationStack {
         EditProfileButton()
+            .environment(SessionStore())
     }
 }

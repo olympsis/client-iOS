@@ -17,12 +17,8 @@ struct ClubView: View {
     @State private var showSelector = false
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var club: Club
+    var club: Club
     @Environment(SessionStore.self) private var session
-    
-    init(club: Club) {
-        self._club = StateObject(wrappedValue: club)
-    }
     
     var acceptedEULA: Bool {
         guard let user = session.user,
@@ -42,20 +38,39 @@ struct ClubView: View {
                 EndUserLicenseAgreement()
             })
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack(alignment: .center) {
-                        Text(club.name)
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.6)
-                       Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                        Spacer()
-                    }
-                    .frame(width: SCREEN_WIDTH/2, alignment: .leading)
-                    .onTapGesture {
-                        self.showSelector.toggle()
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        HStack(alignment: .center) {
+                            Text(club.name)
+                                .font(.title)
+                                .lineLimit(1)
+                                .fontWeight(.bold)
+                                .minimumScaleFactor(0.6)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                            Spacer()
+                        }
+                        .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                        .onTapGesture {
+                            self.showSelector.toggle()
+                        }
+                    }.sharedBackgroundVisibility(.hidden)
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        HStack(alignment: .center) {
+                            Text(club.name)
+                                .font(.title)
+                                .lineLimit(1)
+                                .fontWeight(.bold)
+                                .minimumScaleFactor(0.6)
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                            Spacer()
+                        }
+                        .frame(width: SCREEN_WIDTH/2, alignment: .leading)
+                        .onTapGesture {
+                            self.showSelector.toggle()
+                        }
                     }
                 }
                 
@@ -92,7 +107,7 @@ struct ClubView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         ClubMenu()
-                            .environmentObject(club)
+                            .environment(club)
                             .environment(session)
                     } label: {
                         if let logo = club.logo,

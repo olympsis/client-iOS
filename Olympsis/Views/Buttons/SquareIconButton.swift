@@ -18,15 +18,20 @@ struct SquareIconButton: View {
     var body: some View {
         Button(action: action) {
             VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.Background.tertiary)
-                        .frame(width: size.width, height: size.height)
-                    icon
-                        .resizable()
-                        .foregroundStyle(Color.foreground)
-                        .frame(width: imageSize.width, height: imageSize.height)
-                }
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(Color.Background.tertiary)
+                    .frame(width: size.width, height: size.height)
+                    .foregroundColor(Color.Background.secondary)
+                    .overlay {
+                        icon
+                            .resizable()
+                            .foregroundStyle(Color.foreground)
+                            .frame(width: imageSize.width, height: imageSize.height)
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    }
                 
                 Text(text)
                     .font(.caption)

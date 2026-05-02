@@ -81,10 +81,10 @@ class RoomViewModel {
         }
     }
     
-    func sendMessage(uuid: String?) async -> Bool {
-        guard !text.isEmpty, let uuid = uuid else { return false }
+    func sendMessage(userID: String?) async -> Bool {
+        guard !text.isEmpty, let userID = userID else { return false }
         
-        let message = Message(type: "text", sender: uuid, body: text)
+        let message = Message(type: "text", sender: userID, body: text)
         let success = await observer.sendMessage(msg: message)
         
         if success {

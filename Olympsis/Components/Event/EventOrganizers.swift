@@ -32,6 +32,15 @@ struct EventOrganizers: View {
         return generateImageURL(img)
     }
     
+    private var canShowPoster: Bool {
+        guard let config = event.config,
+              let hidePoster = config.hidePoster else {
+            return true
+        }
+        
+        return !hidePoster
+    }
+    
     private var posterName: String {
         guard let data = event.poster,
               let firstName = data.firstName,
@@ -56,16 +65,18 @@ struct EventOrganizers: View {
                 .bold()
             
             // MARK: - Poster
-            HStack {
-                UserBadgeView(size: .small, imageURL: imageURL)
-                
-                VStack(alignment: .leading) {
-                    Text(posterName)
-                        .font(.callout)
-                        .fontWeight(.bold)
-                    Text(posterUsername)
-                        .font(.caption)
-                        .foregroundStyle(.gray)
+            if canShowPoster {
+                HStack {
+                    UserBadgeView(size: .small, imageURL: imageURL)
+                    
+                    VStack(alignment: .leading) {
+                        Text(posterName)
+                            .font(.callout)
+                            .fontWeight(.bold)
+                        Text(posterUsername)
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                    }
                 }
             }
             
@@ -80,10 +91,12 @@ struct EventOrganizers: View {
                                     GroupBadgeView(size: .small, type: organizer.type, imageURL: generateImageURL(url))
                                     Text(club.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 } else {
                                     GroupBadgeView(size: .small, type: organizer.type)
                                     Text(club.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         case .Organization:
@@ -92,10 +105,12 @@ struct EventOrganizers: View {
                                     GroupBadgeView(size: .small, type: organizer.type, imageURL: generateImageURL(url))
                                     Text(org.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 } else {
                                     GroupBadgeView(size: .small, type: organizer.type)
                                     Text(org.name)
                                         .fontWeight(.bold)
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
                         }

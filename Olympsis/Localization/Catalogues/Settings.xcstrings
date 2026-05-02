@@ -1,0 +1,1022 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "about-olympsis-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At Olympsis, we are a small but passionate company committed to fostering a vibrant community of athletes and sports enthusiasts. Our mission is to bring people together through the love of sports and physical activity.\n\nWe believe that sports have the power to unite people, promote healthy lifestyles, and create lasting bonds of friendship and camaraderie. Whether you're a seasoned athlete or just starting your fitness journey, Olympsis provides a platform for you to connect with like-minded individuals, organize events, and discover new sports and activities.\n\nOur dedicated team works tirelessly to deliver an amazing experience for our users. We understand the importance of having a reliable and user-friendly platform that makes it easy to find and join events, connect with others, and stay motivated on your fitness journey.\n\nWhile we may be a small company, we are driven by a big dream – to create a world where sports bring people together, promote inclusivity, and foster a sense of community. We are committed to constantly improving our platform, listening to your feedback, and introducing new features that enhance your experience.\n\nJoin us on this exciting journey, and let's get out there and play together!"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Olympsis, somos una empresa pequeña pero apasionada comprometida con fomentar una comunidad vibrante de atletas y entusiastas del deporte. Nuestra misión es unir a las personas a través del amor por el deporte y la actividad física.\n\nCreemos que el deporte tiene el poder de unir a las personas, promover estilos de vida saludables y crear lazos duraderos de amistad y camaradería. Ya seas un atleta experimentado o estés comenzando tu viaje de fitness, Olympsis te ofrece una plataforma para conectarte con personas afines, organizar eventos y descubrir nuevos deportes y actividades.\n\nNuestro equipo dedicado trabaja incansablemente para ofrecer una experiencia increíble a nuestros usuarios. Entendemos la importancia de tener una plataforma confiable y fácil de usar que facilite encontrar y unirse a eventos, conectarse con otros y mantenerse motivado en tu viaje de fitness.\n\nAunque somos una empresa pequeña, estamos impulsados por un gran sueño: crear un mundo donde el deporte una a las personas, promueva la inclusión y fomente un sentido de comunidad. Estamos comprometidos a mejorar constantemente nuestra plataforma, escuchar tus comentarios e introducir nuevas funciones que mejoren tu experiencia.\n\n¡Únete a nosotros en este emocionante viaje y salgamos a jugar juntos!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chez Olympsis, nous sommes une petite entreprise passionnée engagée à favoriser une communauté dynamique d'athlètes et de passionnés de sport. Notre mission est de rassembler les gens à travers l'amour du sport et de l'activité physique.\n\nNous croyons que le sport a le pouvoir d'unir les gens, de promouvoir des modes de vie sains et de créer des liens durables d'amitié et de camaraderie. Que vous soyez un athlète chevronné ou que vous commenciez votre parcours de remise en forme, Olympsis vous offre une plateforme pour vous connecter avec des personnes partageant les mêmes idées, organiser des événements et découvrir de nouveaux sports et activités.\n\nNotre équipe dévouée travaille sans relâche pour offrir une expérience incroyable à nos utilisateurs. Nous comprenons l'importance d'avoir une plateforme fiable et conviviale qui facilite la recherche et la participation à des événements, la connexion avec les autres et la motivation dans votre parcours de remise en forme.\n\nBien que nous soyons une petite entreprise, nous sommes animés par un grand rêve : créer un monde où le sport rassemble les gens, favorise l'inclusion et cultive un sentiment de communauté. Nous nous engageons à améliorer constamment notre plateforme, à écouter vos commentaires et à introduire de nouvelles fonctionnalités qui améliorent votre expérience.\n\nRejoignez-nous dans cette aventure passionnante et allons jouer ensemble !"
+          }
+        }
+      }
+    },
+    "about-olympsis-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About Olympsis"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acerca de Olympsis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À propos d'Olympsis"
+          }
+        }
+      }
+    },
+    "delete-account-confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure? Sign in again to confirm."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Estás seguro? Inicia sesión de nuevo para confirmar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Êtes-vous sûr ? Connectez-vous à nouveau pour confirmer."
+          }
+        }
+      }
+    },
+    "delete-account-warning-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting your account means that you will loose all of your info on Olympsis"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar tu cuenta significa que perderás toda tu información en Olympsis"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La suppression de votre compte signifie que vous perdrez toutes vos informations sur Olympsis"
+          }
+        }
+      }
+    },
+    "delete-account-warning-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estas seguro"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es-tu sûr?"
+          }
+        }
+      }
+    },
+    "failed-reports-load-text": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to load list. Pull to refresh or"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar la lista. Tire para actualizar o"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du chargement de la liste. Tirer pour actualiser ou"
+          }
+        }
+      }
+    },
+    "help-bug-reports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bug Reports"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informes de errores"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapports de bugs"
+          }
+        }
+      }
+    },
+    "help-bug-reports-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you come across a bug or technical issue within the app, you can report it through our dedicated bug report option in the profile settings. Please provide as much detail as possible, including steps to reproduce the issue, screenshots or screen recordings if applicable, and any relevant information about your device and app version. Your detailed reports help us identify and resolve problems more efficiently."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si encuentras un error o problema técnico dentro de la aplicación, puedes reportarlo a través de nuestra opción dedicada de informe de errores en la configuración del perfil. Por favor proporciona la mayor cantidad de detalles posible, incluyendo los pasos para reproducir el problema, capturas de pantalla o grabaciones de pantalla si corresponde, y cualquier información relevante sobre tu dispositivo y versión de la aplicación. Tus informes detallados nos ayudan a identificar y resolver problemas de manera más eficiente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si vous rencontrez un bug ou un problème technique dans l'application, vous pouvez le signaler via notre option dédiée de rapport de bugs dans les paramètres du profil. Veuillez fournir autant de détails que possible, y compris les étapes pour reproduire le problème, des captures d'écran ou des enregistrements d'écran le cas échéant, ainsi que toute information pertinente sur votre appareil et la version de l'application. Vos rapports détaillés nous aident à identifier et résoudre les problèmes plus efficacement."
+          }
+        }
+      }
+    },
+    "help-closing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We value your feedback and strive to address any concerns or issues you may have. Don't hesitate to reach out to us through any of the available channels, and we'll do our best to help you have a seamless and enjoyable experience with Olympsis."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valoramos tus comentarios y nos esforzamos por abordar cualquier inquietud o problema que puedas tener. No dudes en comunicarte con nosotros a través de cualquiera de los canales disponibles, y haremos todo lo posible para ayudarte a tener una experiencia fluida y agradable con Olympsis."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous apprécions vos commentaires et nous nous efforçons de répondre à toutes vos préoccupations ou problèmes. N'hésitez pas à nous contacter via l'un des canaux disponibles, et nous ferons de notre mieux pour vous aider à avoir une expérience fluide et agréable avec Olympsis."
+          }
+        }
+      }
+    },
+    "help-email": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email Support"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soporte por correo electrónico"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support par e-mail"
+          }
+        }
+      }
+    },
+    "help-email-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For general inquiries, feedback, or if you need to share visual aids like pictures or videos, you can reach out to our support team by emailing contact@olympsis.com. Our dedicated support staff will assist you promptly and professionally."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para consultas generales, comentarios o si necesitas compartir ayudas visuales como fotos o videos, puedes comunicarte con nuestro equipo de soporte enviando un correo electrónico a contact@olympsis.com. Nuestro personal de soporte dedicado te asistirá de manera rápida y profesional."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour les demandes générales, les commentaires ou si vous avez besoin de partager des aides visuelles comme des photos ou des vidéos, vous pouvez contacter notre équipe de support en envoyant un e-mail à contact@olympsis.com. Notre personnel de support dédié vous assistera rapidement et professionnellement."
+          }
+        }
+      }
+    },
+    "help-intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At Olympsis, we're committed to providing you with the best possible experience. If you encounter any issues, have questions, or need assistance, we have several channels available to help you."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Olympsis, estamos comprometidos a brindarte la mejor experiencia posible. Si encuentras algún problema, tienes preguntas o necesitas asistencia, tenemos varios canales disponibles para ayudarte."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chez Olympsis, nous nous engageons à vous offrir la meilleure expérience possible. Si vous rencontrez des problèmes, avez des questions ou avez besoin d'aide, nous avons plusieurs canaux disponibles pour vous aider."
+          }
+        }
+      }
+    },
+    "help-social": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Social Media"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redes sociales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseaux sociaux"
+          }
+        }
+      }
+    },
+    "help-social-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can also connect with us through our social media channels. Follow us on Twitter, Facebook, and Instagram for updates, announcements, and community engagement. Our social media team is actively monitoring these channels and can provide assistance or redirect your inquiries to the appropriate support channels."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "También puedes conectarte con nosotros a través de nuestros canales de redes sociales. Síguenos en Twitter, Facebook e Instagram para actualizaciones, anuncios y participación comunitaria. Nuestro equipo de redes sociales monitorea activamente estos canales y puede brindarte asistencia o redirigir tus consultas a los canales de soporte apropiados."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous pouvez également nous contacter via nos réseaux sociaux. Suivez-nous sur Twitter, Facebook et Instagram pour les mises à jour, les annonces et l'engagement communautaire. Notre équipe des réseaux sociaux surveille activement ces canaux et peut vous fournir une assistance ou rediriger vos demandes vers les canaux de support appropriés."
+          }
+        }
+      }
+    },
+    "help-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getting Help"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtener ayuda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtenir de l'aide"
+          }
+        }
+      }
+    },
+    "help-user-reports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event, Post, or User Reports"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informes de eventos, publicaciones o usuarios"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signalements d'événements, de publications ou d'utilisateurs"
+          }
+        }
+      }
+    },
+    "help-user-reports-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you encounter any inappropriate events, posts, or malicious user behavior, you can file reports directly within the app. Simply navigate to the right settings menu and follow the prompts to submit your report. Our team will review and take appropriate action to ensure a safe and positive environment for all users."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si encuentras eventos, publicaciones o comportamiento de usuario inapropiados, puedes presentar informes directamente dentro de la aplicación. Simplemente navega al menú de configuración correspondiente y sigue las indicaciones para enviar tu informe. Nuestro equipo revisará y tomará las medidas apropiadas para garantizar un entorno seguro y positivo para todos los usuarios."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si vous rencontrez des événements, des publications ou des comportements d'utilisateurs inappropriés, vous pouvez déposer des signalements directement dans l'application. Naviguez simplement vers le menu de paramètres approprié et suivez les instructions pour soumettre votre signalement. Notre équipe examinera et prendra les mesures appropriées pour garantir un environnement sûr et positif pour tous les utilisateurs."
+          }
+        }
+      }
+    },
+    "logging-out-warning-body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to logout?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Estás seguro de que quieres cerrar sesión?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Êtes-vous sûr de vouloir vous déconnecter?"
+          }
+        }
+      }
+    },
+    "logging-out-warning-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logging out?"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cerrar sesión?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déconnexion ?"
+          }
+        }
+      }
+    },
+    "no-blocked-users-text": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No blocked users"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay usuarios bloqueados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun utilisateur bloqué"
+          }
+        }
+      }
+    },
+    "notifications-email-sub-title": {
+      "comment": "Notify the user of what we are asking about in terms of notifications through emails",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Olympsis to send you email notifications of special announcements and other important updates"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permita que Olympsis le envíe notificaciones por correo electrónico sobre anuncios especiales y otras actualizaciones importantes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez Olympsis à vous envoyer des notifications par e-mail d'annonces spéciales et d'autres mises à jour importantes"
+          }
+        }
+      }
+    },
+    "notifications-email-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email notifications"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notificaciones por correo electrónico"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications par e-mail"
+          }
+        }
+      }
+    },
+    "notifications-push-sub-title": {
+      "comment": "Notify the user of what we are asking about in terms of notifications through push notifications",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Olympsis to send you push notifications to this device, like event updates and club notifications"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permita que Olympsis le envíe notificaciones push a este dispositivo, como actualizaciones de eventos y notificaciones del club."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser Olympsis à vous envoyer des notifications push sur cet appareil, comme des mises à jour d'événements et des notifications de club"
+          }
+        }
+      }
+    },
+    "notifications-push-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push notifications"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notificaciones push"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification push"
+          }
+        }
+      }
+    },
+    "notifications-setting-sub-title": {
+      "comment": "Explain to the user why we want to send them notifications",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Olympsis to keep you up to date on what's happening in your community. This includes event updates, club notifications, and more."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite que Olympsis te mantenga al tanto de lo que ocurre en tu comunidad. Esto incluye actualizaciones de eventos, notificaciones del club y más."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olympsis vous tient informé(e) de l'actualité de votre communauté : mises à jour d'événements, notifications de club, etc."
+          }
+        }
+      }
+    },
+    "notifications-setting-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow notifications"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir notificaciones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser les notifications"
+          }
+        }
+      }
+    },
+    "notifications-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notificaciones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        }
+      }
+    },
+    "report-button-text": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapport"
+          }
+        }
+      }
+    },
+    "report-close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close Report"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar informe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clôturer le signalement"
+          }
+        }
+      }
+    },
+    "report-created-at": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created at:"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creado el:"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créé le :"
+          }
+        }
+      }
+    },
+    "report-notes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes:"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notas:"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes :"
+          }
+        }
+      }
+    },
+    "report-reason": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reason:"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Razón:"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raison :"
+          }
+        }
+      }
+    },
+    "report-sub-title": {
+      "comment": "Tell the user why we want them to report bugs and other issues",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the app or a feature is not working as expected, please let us know the details so we can make Olympsis better"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si la aplicación o una función no funciona como se esperaba, háganos saber los detalles para que podamos mejorar Olympsis."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si l'application ou une fonctionnalité ne fonctionne pas comme prévu, veuillez nous en informer afin que nous puissions améliorer Olympsis."
+          }
+        }
+      }
+    },
+    "report-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report a problem"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informar un problema"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signaler un problème"
+          }
+        }
+      }
+    },
+    "setting-about-us": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About us"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobre nosotros"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A propos de nous"
+          }
+        }
+      }
+    },
+    "setting-blocked-users": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocked users"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usuarios bloqueados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisateurs bloqués"
+          }
+        }
+      }
+    },
+    "setting-bug-report": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report a bug"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informar un error"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signaler un problème"
+          }
+        }
+      }
+    },
+    "setting-delete-account": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete account"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer compte"
+          }
+        }
+      }
+    },
+    "setting-help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Help"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayuda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aide"
+          }
+        }
+      }
+    },
+    "setting-logout": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logout"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déconnexion"
+          }
+        }
+      }
+    },
+    "setting-notifications": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification settings"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuración de notificaciones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paramètres de notification"
+          }
+        }
+      }
+    },
+    "setting-privacy-policy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy policy"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Règles de confidentialité"
+          }
+        }
+      }
+    },
+    "setting-terms-of-use": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of use"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condiciones de uso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions d'utilisation "
+          }
+        }
+      }
+    },
+    "settings-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paramètres"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

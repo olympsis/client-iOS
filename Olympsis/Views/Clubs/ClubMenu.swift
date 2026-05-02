@@ -28,13 +28,13 @@ struct ClubMenu: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     @Environment(SessionStore.self) private var session
     
     // user's role
     var role: String {
         guard let user = session.user,
-              let member = club.members.first(where: {$0.user?.uuid == user.uuid}) else {
+              let member = club.members.first(where: {$0.user?.userID == user.userID}) else {
             return "member"
         }
         return member.role ?? ""
@@ -51,44 +51,54 @@ struct ClubMenu: View {
             ScrollView(showsIndicators: false) {
                     
                 ClubLogoBanner()
-                    .environmentObject(club)
+                    .environment(club)
                 
-                VStack {
-                    if club.visibility == "private" {
-                        HStack {
-                            Image(systemName: "lock.fill")
+                HStack(alignment: .bottom) {
+                    VStack {
+                        if club.visibility == "private" {
+                            HStack {
+                                Image(systemName: "lock.fill")
+                                
+                                Text(String(localized: "private-club", table: "General"))
+                                    .font(.callout)
+                                Spacer()
+                            }.frame(height: 20)
                             
-                            Text(String(localized: "private-club", table: "General"))
-                                .font(.callout)
-                            Spacer()
-                        }.frame(height: 20)
-                            
-                    } else {
+                        } else {
+                            HStack {
+                                Image(systemName: "globe.americas.fill")
+                                Text(String(localized: "public-club", table: "General"))
+                                    .font(.callout)
+                                Spacer()
+                            }
+                            .frame(height: 20)
+                            .foregroundStyle(Color.foreground)
+                        }
+                        
                         HStack {
-                            Image(systemName: "globe.americas.fill")
-                            Text(String(localized: "public-club", table: "General"))
+                            Text(String(localized: "\(club.members.count) member", table: "General"))
                                 .font(.callout)
                             Spacer()
                         }
-                        .frame(height: 20)
                         .foregroundStyle(Color.foreground)
+                        
                     }
+// Disabled until payments are working
+//                    NavigationLink(destination: ClubWalletView().environment(club)) {
+//                        Image(systemName: "wallet.bifold")
+//                        Text("Wallet")
+//                    }
+//                    .padding(.horizontal)
+//                    .padding(.vertical, 10)
+//                    .modifier(BackgroundPillModifier())
                     
-                    HStack {
-                        Text(String(localized: "\(club.members.count) member", table: "General"))
-                            .font(.callout)
-                        Spacer()
-                    }
-                    .foregroundStyle(Color.foreground)
-                    
-                }.padding(.vertical)
-                    .padding(.horizontal)
+                }.padding(.all)
                 
                 VStack {
                     if role != "member" {
                         NavigationLink {
                             ClubEditor()
-                                .environmentObject(club)
+                                .environment(club)
                                 .environment(session)
                         } label: {
                             MenuLabel(icon: Image(systemName: "pencil"), text: String(localized: "club-menu-edit-club", table: "Groups"))
@@ -121,13 +131,13 @@ struct ClubMenu: View {
                         MenuLabel(icon: Image(systemName: "plus.circle.fill"), text: String(localized: "club-menu-create-group", table: "Groups"), type: .normal)
                     }
                     
-                    MenuButton(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"), action: {
-                        self.showClubs.toggle()
-                    })
+                    NavigationLink(destination: ClubsList()) {
+                        MenuLabel(icon: Image(systemName: "magnifyingglass"), text: String(localized: "club-menu-search-clubs", table: "Groups"))
+                    }
                     
                     NavigationLink {
                         MembersListView()
-                            .environmentObject(club)
+                            .environment(club)
                     } label: {
                         MenuLabel(icon: Image(systemName: "person.3"), text: String(localized: "group-menu-members", table: "Groups"))
                     }
@@ -162,9 +172,6 @@ struct ClubMenu: View {
             .fullScreenCover(isPresented: $showOrganizations) {
                 OrganizationsView()
             }
-            .fullScreenCover(isPresented: $showClubs) {
-                ClubsList2()
-            }
             .fullScreenCover(isPresented: $showReports, content: {
                 GroupReports()
             })
@@ -178,13 +185,9 @@ struct ClubMenu: View {
                         secondaryButton: .destructive(Text(String(localized: "option-leave", table: "Groups")), action: {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.leaveClub(id: club.id)
-                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                
+                                guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
-                                session.selectedGroup = nil
-                                if let next = session.groups.first {
-                                    session.selectedGroup = next
-                                }
+                                session.groupsManager.remove(selected)
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     session.clubsState = .success
@@ -201,13 +204,9 @@ struct ClubMenu: View {
                         secondaryButton: .destructive(Text(String(localized: "option-delete", table: "Groups")), action: {
                             Task { // Perform delete operation
                                 _ = await session.clubObserver.deleteClub(id: club.id)
-                                session.groups.removeAll(where: { $0.id == session.selectedGroup?.id })
-                                
+                                guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
-                                session.selectedGroup = nil
-                                if let next = session.groups.first {
-                                    session.selectedGroup = next
-                                }
+                                session.groupsManager.remove(selected)
 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     session.clubsState = .success
@@ -232,6 +231,6 @@ struct ClubMenu: View {
 
 #Preview {
     ClubMenu()
-        .environmentObject(CLUBS[0])
+        .environment(CLUBS[0])
         .environment(SessionStore())
 }

@@ -19,8 +19,24 @@ struct EventParticipants: View {
     
     @State private var showParticipants = false
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
+    @Environment(SessionStore.self) private var session: SessionStore
     
+    /// Compute wether or not we can allow the users to see the participants list
+    /// If hide participants is set to true then we only show the participants when the user has RSVPed
+    private var canShowParticipants: Bool {
+        guard let config = event.participantsConfig,
+              let hideParticipants = config.hideParticipants else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard let user = session.user,
+              event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+            return !hideParticipants
+        }
+        return true
+    }
     
     /// An array of the event's participants
     /// If the array is less than 5 we will pad it with dummy participants so that the UI can look consistent
@@ -28,6 +44,7 @@ struct EventParticipants: View {
         return event.participants
     }
     
+    /// Convert the participants status and return it's string
     private var participantsStatus: String {
         switch event.getEventStatus() {
         case .ended:
@@ -39,6 +56,35 @@ struct EventParticipants: View {
         }
     }
     
+    /// If you are the poster or admin there is a lot more you can see and do
+    private var isPosterOrAdmin: Bool {
+        
+        // check to see if you're the poster
+        guard let user = session.user,
+           let userID = user.userID else {
+            return false
+        }
+        
+        if event.poster?.userID == userID {
+            return true
+        }
+        
+        if clubs.first(where: { e in
+            e.members.contains { ($0.user?.userID == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+        }) != nil {
+            return true
+        }
+        
+        
+        if organizations.first(where: { e in
+            e.members.contains { $0.user?.userID == userID }
+        }) != nil {
+            return true
+        }
+        
+        return false
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("\(event.participants.count) \(participantsStatus)")
@@ -46,69 +92,23 @@ struct EventParticipants: View {
                 .fontWeight(.bold)
             
             ForEach(event.participants.prefix(3), id: \.id) { ptp in
-                HStack {
-                    if let url = ptp.user?.imageURL {
-                        UserBadgeView(size: .small, imageURL: generateImageURL(url))
-                        
-                        VStack(alignment: .leading) {
-                            if let firstName = ptp.user?.firstName,
-                               let lastName = ptp.user?.lastName {
-                                Text("\(firstName) \(lastName)")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            } else {
-                                Text("Olympsis User")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
-                            
-                            if let username = ptp.user?.username {
-                                Text("@\(username)")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            } else {
-                                Text("olympsis-user")
-                                    .font(.caption)
-                            }
-                        }
-                    } else {
-                        UserBadgeView(size: .small)
-                        
-                        VStack(alignment: .leading) {
-                            if let firstName = ptp.user?.firstName,
-                               let lastName = ptp.user?.lastName {
-                                Text("\(firstName) \(lastName)")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            } else {
-                                Text("Olympsis User")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                            }
-                            
-                            if let username = ptp.user?.username {
-                                Text("@\(username)")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            } else {
-                                Text("olympsis-user")
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                }
-            }
+                ParticipantView(participant: ptp, posterOrAdminViewing: isPosterOrAdmin)
+                    .environment(session)
+            }.redacted(reason: canShowParticipants ? [] : .placeholder)
             
-            if (event.participants.count > 3) {
+            if (event.participants.count > 3 && canShowParticipants) {
                 Button(action: { showParticipants.toggle() }) {
                     Text("+\(event.participants.count-3) \(String(localized: "more", table: "General"))...")
+                        .font(.callout)
+                        .fontWeight(.medium)
                 }.padding(.top)
             }
         }
         .padding(.all)
         .sheet(isPresented: $showParticipants, content: {
             EventParticipantsViewExt(clubs: $clubs, organizations: $organizations)
-                .environmentObject(event)
+                .environment(event)
+                .presentationDragIndicator(.visible)
         })
     }
 }
@@ -117,7 +117,7 @@ struct EventParticipants: View {
 /// A view that has simple chart about an event and the ratio of yes to maybe
 struct EventRSVPChart: View {
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     var yesCount: Int {
         let yesNum = event.participants.filter { p in
@@ -136,7 +136,7 @@ struct EventRSVPChart: View {
     var body: some View {
         Chart {
             BarMark(
-                x: .value("Responses", "yes"),
+                x: .value("Responses", "I'm in!"),
                 y: .value("Total Count", yesCount)
             ).foregroundStyle(Color("color-prime"))
             BarMark(
@@ -157,7 +157,7 @@ struct EventParticipantsViewExt: View {
     @Binding var organizations: [Organization]
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
     var participants: [Participant] {
@@ -168,23 +168,23 @@ struct EventParticipantsViewExt: View {
         
         // check to see if you're the poster
         guard let user = session.user,
-           let uuid = user.uuid else {
+           let userID = user.userID else {
             return false
         }
         
-        if event.poster?.uuid == uuid {
+        if event.poster?.userID == userID {
             return true
         }
         
         if clubs.first(where: { e in
-            e.members.contains { ($0.user?.uuid == uuid) && ($0.role != MEMBER_ROLES.Member.rawValue) }
+            e.members.contains { ($0.user?.userID == userID) && ($0.role != MEMBER_ROLES.Member.rawValue) }
         }) != nil {
             return true
         }
         
         
         if organizations.first(where: { e in
-            e.members.contains { $0.user?.uuid == uuid }
+            e.members.contains { $0.user?.userID == userID }
         }) != nil {
             return true
         }
@@ -194,10 +194,10 @@ struct EventParticipantsViewExt: View {
     
     func canRemoveParticipant(_ participant: Participant) -> Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return uuid != participant.user?.uuid && isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended
+        return userID != participant.user?.userID && isPosterOrAdmin && event.getEventStatus() != EVENT_STATUS.ended
     }
     
     func removeParticipant(_ participant: Participant) async {
@@ -208,29 +208,26 @@ struct EventParticipantsViewExt: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                }.padding(.leading)
-                Text("Participants")
-                Spacer()
-            }.padding(.vertical)
+        VStack(alignment: .leading) {
+            Text(String(localized: "event-participants", table: "Events"))
+                .font(.headline)
+                .padding([.leading, .top])
             
             EventRSVPChart()
-                .environmentObject(event)
+                .environment(event)
                 .frame(height: 250)
             
             ForEach(participants, id: \.self) { p in
                 HStack {
-                    ParticipantView(participant: p)
-                    Text(p.user?.username ?? "olympsis_user")
+                    ParticipantView(participant: p, posterOrAdminViewing: isPosterOrAdmin)
+                        .environment(event)
+                        .environment(session)
                     Spacer()
                     
                     if canRemoveParticipant(p) {
                         Menu {
                             Button(action: { Task { await removeParticipant(p) }}) {
-                                Text("Remove Participant")
+                                Text(String(localized: "event-remove-participant", table: "Events"))
                             }
                         } label: {
                             Image(systemName: "ellipsis")
@@ -247,12 +244,12 @@ struct EventParticipantsViewExt: View {
 
 #Preview {
     EventParticipants(clubs: .constant([]), organizations: .constant([]))
+        .environment(EVENTS[0])
         .environment(SessionStore())
-        .environmentObject(EVENTS[0])
 }
 
 #Preview {
     EventParticipantsViewExt(clubs: .constant([]), organizations: .constant([]))
         .environment(SessionStore())
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
 }

@@ -5,6 +5,7 @@
 //  Created by Joel Joseph on 7/18/23.
 //
 
+import os
 import SwiftUI
 
 struct NotificationsView: View {
@@ -13,6 +14,8 @@ struct NotificationsView: View {
     
     @Environment(HomeRouter.self) private var router
     @Environment(SessionStore.self) private var session
+    
+    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notifications_view")
     
     var body: some View {
         ScrollView {
@@ -25,7 +28,7 @@ struct NotificationsView: View {
                 }
             } else {
                 VStack {
-                    Text("No new notifications")
+                    Text("Olympsis Notifications will live here.")
                     HStack {
                         Spacer()
                     }
@@ -56,9 +59,15 @@ struct NotificationsView: View {
                 }
         )
         .task {
-            notifications = session.invitations.map({ i in
-                NotificationModel(id: UUID().uuidString, type: "invitation", invite: i, body: "")
-            })
+            do {
+                guard try await !NotificationManager.shared.checkAuthorizationStatus() else {
+                    return
+                }
+                await NotificationManager.shared.requestAuthorization()
+                await session.updateNotifications()
+            } catch {
+                log.error("Failed to determine or request notifications authorization. Error: \(error.localizedDescription)")
+            }
         }
     }
 }

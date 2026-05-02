@@ -49,7 +49,7 @@ struct NewOrganization: View {
                     Member(
                         id: UUID().uuidString,
                         role: "owner",
-                        user: UserSnippet(uuid: user.uuid, username: user.username, imageURL: user.imageURL),
+                        user: UserSnippet(userID: user.userID, username: user.username, imageURL: user.imageURL),
                         joinedAt: Date()
                     )
                 ],
@@ -60,9 +60,9 @@ struct NewOrganization: View {
             )
             
             let group = GroupSelection(type: GROUP_TYPE.Organization, club: nil, organization: org, posts: nil)
-            session.groups.append(group)
-            session.selectedGroup = group
-
+            session.groupsManager.add(group)
+            session.groupsManager.select(group)
+            
             viewModel.showToast = true
             viewModel.status = .success
             dismiss()

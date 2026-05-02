@@ -17,7 +17,7 @@ struct VenueInfo: View {
     @State private var locality: String = "Custom Coordinates"
     @State private var showSheet: Bool = false
     
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     
     /// Venue(s) name
     ///
@@ -56,7 +56,9 @@ struct VenueInfo: View {
                     return
                 }
                 if venue.description == "external" {
-                    UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
+                    if let url = URL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])") {
+                        UIApplication.shared.open(url)
+                    }
                 } else {
                     self.venue = venue
                 }
@@ -75,6 +77,6 @@ struct VenueInfo: View {
 
 #Preview {
     VenueInfo(venues: .constant([Venue]()), venuesTarget: .constant(0), state: .constant(.pending))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

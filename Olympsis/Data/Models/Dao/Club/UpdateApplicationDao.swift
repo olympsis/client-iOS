@@ -17,7 +17,9 @@ class UpdateApplicationDao: Dao {
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.status = try container.decode(String.self, forKey: .status)
+        try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {

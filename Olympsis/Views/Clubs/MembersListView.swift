@@ -10,13 +10,13 @@ import SwiftUI
 struct MembersListView: View {
     
     @State private var text: String = ""
-    @EnvironmentObject private var club: Club
+    @Environment(Club.self) private var club
     
     private var members: [Member] {
         return club.members
-            .filter {
-                $0.user?.username != nil && text.isEmpty ||
-                $0.user?.username != nil && $0.user?.username!.lowercased().contains(text.lowercased()) ?? false
+            .filter { member in
+                guard let username = member.user?.username else { return false }
+                return text.isEmpty || username.lowercased().contains(text.lowercased())
             }
             .sorted(by: { (member1, member2) -> Bool in
                 if member1.role == MEMBER_ROLES.Owner.rawValue {
@@ -42,7 +42,7 @@ struct MembersListView: View {
             VStack (spacing: 5) {
                 ForEach(members) { member in
                     MemberListItem(member: member)
-                        .environmentObject(club)
+                        .environment(club)
                 }.padding(.top)
             }
         }
@@ -54,7 +54,7 @@ struct MembersListView: View {
 #Preview {
     NavigationStack {
         MembersListView()
-            .environmentObject(CLUBS[0])
+            .environment(CLUBS[0])
             .environment(SessionStore())
     }
 }

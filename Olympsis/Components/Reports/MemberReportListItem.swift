@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MemberReportListItem: View {
     
-    @State var club: Club
+    var club: Club
     @State var report: MemberReport
     @StateObject private var observer = ManagementObserver()
     
@@ -42,27 +42,27 @@ struct MemberReportListItem: View {
                             await closeReport()
                         }
                     } label: {
-                        Text("Close Report")
+                        Text(String(localized: "report-close", table: "Settings"))
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
             HStack{
-                Text("Reason:")
+                Text(String(localized: "report-reason", table: "Settings"))
                     .fontWeight(.bold)
                 Text(report.type)
                 Spacer()
             }
             HStack(alignment: .top) {
-                Text("Notes:")
+                Text(String(localized: "report-notes", table: "Settings"))
                     .fontWeight(.bold)
                 Text(notes)
                 Spacer()
             }
             if let m = report.member {
                 MemberListItem(member: Member(id: nil, role: "member", user: m, joinedAt: nil), enableMenu: false)
-                    .environmentObject(club)
+                    .environment(club)
             }
             
             HStack {

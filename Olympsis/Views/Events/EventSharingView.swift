@@ -199,7 +199,7 @@ struct EventSharingView: View {
         VStack {
             HStack {
                 Button(action: { dismiss() }) {
-                    Text("Cancel")
+                    Text(String(localized: "cancel", table: "General"))
                 }
                 Spacer()
             }.padding(.horizontal)

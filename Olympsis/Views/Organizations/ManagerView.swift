@@ -21,10 +21,10 @@ struct ManagerView: View {
     }
     
     var memberIsUser: Bool {
-        guard let user = session.user, let uuid = user.uuid else {
+        guard let user = session.user, let userID = user.userID else {
             return false
         }
-        return uuid == member.user?.uuid
+        return userID == member.user?.userID
     }
     
     var body: some View {

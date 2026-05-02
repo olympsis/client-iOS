@@ -16,6 +16,15 @@ class GroupSelection: Identifiable, Equatable {
     let organization: Organization?
     var posts: [Post]?
     
+    var groupID: String? {
+        switch type {
+        case .Club:
+            return club?.id
+        case .Organization:
+            return organization?.id
+        }
+    }
+    
     init(type: GROUP_TYPE, club: Club?=nil, organization: Organization?=nil, posts: [Post]? = nil) {
         self.type = type
         self.club = club

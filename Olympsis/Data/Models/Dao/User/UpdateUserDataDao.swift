@@ -28,7 +28,15 @@ class UpdateUserDataDao: Dao {
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.username = try container.decodeIfPresent(String.self, forKey: .username)
+        self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        self.imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
+        self.clubs = try container.decodeIfPresent([String].self, forKey: .clubs)
+        self.isPublic = try container.decodeIfPresent(Bool.self, forKey: .isPublic)
+        self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
+        self.deviceToken = try container.decodeIfPresent(String.self, forKey: .deviceToken)
+        try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {

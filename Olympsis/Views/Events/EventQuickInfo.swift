@@ -19,9 +19,28 @@ struct EventQuickInfo: View {
     @Binding var venuesState: LOADING_STATE
     @State private var showCalendarEditor: Bool = false
     
+    @Environment(SessionStore.self) private var session
+    
     private let store = EKEventStore()
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_quick_info_view")
+    
+    /// Compute wether or not we can allow the users to see the locations
+    /// If hide participants is set to true then we only show the locations when the user has RSVPed
+    private var canShowLocation: Bool {
+        guard let user = session.user,
+              user.userID != event.poster?.userID,
+              let config = event.config,
+              let hideLocation = config.hideLocation else {
+            return true
+        }
+        
+        // Reveal after user has RSVPed
+        guard event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+            return !hideLocation
+        }
+        return true
+    }
     
     /// Opens maps for the given coordinates
     /// - Parameter coordinates: `[Double]` of positional meters
@@ -74,6 +93,7 @@ struct EventQuickInfo: View {
         VStack(alignment: .leading, spacing: 10) {
 
             VenueInfo(venues: $venues, venuesTarget: $venuesTarget, state: $venuesState)
+                .redacted(reason: canShowLocation ? [] : .placeholder)
                 .zIndex(1)
                 .id(1)
             
@@ -112,4 +132,6 @@ struct EventQuickInfo: View {
 
 #Preview {
     EventQuickInfo(event: EVENTS[0], venues: .constant([]), venuesTarget: .constant(0), venuesState: .constant(.success))
+        .environment(EVENTS[0])
+        .environment(SessionStore())
 }

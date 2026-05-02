@@ -17,13 +17,12 @@ struct EventActionButtons: View {
     @Binding var organizations: [Organization]
     
     @State private var showMenu: Bool = false
+    @State private var showRSVPSheet: Bool = false
     @State private var state: LOADING_STATE = .pending
     
     @Environment(\.openURL) private var openURL
-    @EnvironmentObject private var event: Event
+    @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
-    
-    private let notificationManager = NotificationManager()
     
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
@@ -42,44 +41,43 @@ struct EventActionButtons: View {
     
     private var hasRSVP: Bool {
         guard let user = session.user,
-              let uuid = user.uuid else {
+              let userID = user.userID else {
             return false
         }
-        return event.participants.first(where: { $0.user?.uuid == uuid }) != nil
+        return event.participants.first(where: { $0.user?.userID == userID }) != nil
     }
     
-    @MainActor
-    private func rsvp(status: String) {
-        guard state != .loading else { return }
-        
-        Task {
-            guard let user = session.user,
-                  let _ = user.uuid else {
-                handleFailure()
-                return
-            }
-            
-            do {
-                state = .loading
-                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
-                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
-                
-                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
-                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
-                event.participants.append(participant)
-                
-                handleSuccess()
-                await notificationManager.setEventLocalNotification(event)
-                guard let extLink = event.externalLink,
-                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-                    return
-                }
-                openURL(url)
-            } catch {
-                handleFailure()
-            }
-        }
-    }
+//    @MainActor
+//    private func rsvp(status: String) {
+//        guard state != .loading else { return }
+//        
+//        Task {
+//            guard let user = session.user,
+//                  let _ = user.uuid else {
+//                handleFailure()
+//                return
+//            }
+//            
+//            do {
+//                state = .loading
+//                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
+//                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
+//                
+//                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
+//                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
+//                event.participants.append(participant)
+//                
+//                handleSuccess()
+//                guard let extLink = event.externalLink,
+//                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
+//                    return
+//                }
+//                openURL(url)
+//            } catch {
+//                handleFailure()
+//            }
+//        }
+//    }
     
     @MainActor
     func cancel() {
@@ -89,7 +87,7 @@ struct EventActionButtons: View {
             state = .loading
             
             guard let user = session.user,
-                  let uuid = user.uuid else {
+                  let userID = user.userID else {
                 handleFailure()
                 return
             }
@@ -100,8 +98,7 @@ struct EventActionButtons: View {
                 return
             }
             
-            event.participants.removeAll(where: { $0.user?.uuid == uuid })
-            await notificationManager.removeEventLocalNotification(event.id)
+            event.participants.removeAll(where: { $0.user?.userID == userID })
             handleSuccess()
         }
     }
@@ -123,7 +120,8 @@ struct EventActionButtons: View {
     }
     
     private func leadToMaps(for venue: Venue){
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
+        guard let url = URL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])") else { return }
+        UIApplication.shared.open(url)
     }
     
     var body: some View {
@@ -142,6 +140,10 @@ struct EventActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            }
                         
                         VStack {
                             VStack {
@@ -155,6 +157,7 @@ struct EventActionButtons: View {
                                 .fontWeight(.bold)
                         }.foregroundStyle(Color.foreground)
                     }.redacted(reason: venueState != .success ? .placeholder : [])
+                        .modifier(BackgroundPillModifier())
                 }.disabled(venueState != .success ? true : false)
 
             } else {
@@ -167,6 +170,10 @@ struct EventActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color.Background.secondary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            }
                         
                         VStack {
                             VStack {
@@ -177,7 +184,7 @@ struct EventActionButtons: View {
                             }
                             
                             if let venue = venues.first {
-                                Text(event.estimatedTimeToVenue(venue: venue, session.locationManager.location))
+                                Text(event.estimatedTimeToVenue(venue: venue, LocationManager.shared.location))
                                     .font(.caption)
                                     .fontWeight(.bold)
                                     .redacted(reason: venueState != .success ? .placeholder : [])
@@ -196,6 +203,11 @@ struct EventActionButtons: View {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(maxWidth: .infinity, idealHeight: 60)
                     .foregroundColor(Color.Background.secondary)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    }
+                    
                 VStack {
                     if event.visibility == EVENT_VISIBILITY_TYPES.Private {
                         VStack {
@@ -226,11 +238,12 @@ struct EventActionButtons: View {
                     if let maxPtp = event.participantsConfig?.maxParticipants,
                        let hasWaitlist = event.participantsConfig?.hasWaitlist,
                        hasWaitlist && (event.participants.count >= maxPtp) {
-                        Button(action: { rsvp(status: "waitlist") }) {
+                        Button(action: { showRSVPSheet.toggle() }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
                                     .foregroundColor(Color.Brand.tertiary)
+
                                 VStack {
                                     if state == .loading {
                                         ProgressView()
@@ -250,18 +263,12 @@ struct EventActionButtons: View {
                             }.foregroundStyle(.white)
                         }
                     } else {
-                        Menu {
-                            Button(action: { rsvp(status: "maybe") }) {
-                                Text("Maybe")
-                            }
-                            Button(action:{ rsvp(status: "yes") }){
-                                Text("I'm In")
-                            }
-                        } label: {
+                        Button(action: { showRSVPSheet.toggle() }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
                                     .foregroundColor(Color.Brand.primary)
+
                                 VStack {
                                     if state == .loading {
                                         ProgressView()
@@ -289,6 +296,7 @@ struct EventActionButtons: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(maxWidth: .infinity, idealHeight: 60)
                                 .foregroundColor(Color.red)
+
                             VStack {
                                 if state == .loading {
                                     ProgressView()
@@ -312,7 +320,7 @@ struct EventActionButtons: View {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundColor(Color.red)
                         .frame(maxWidth: .infinity, idealHeight: 60)
-                        
+                    
                     VStack {
                         VStack {
                             Image(systemName: "circle.fill")
@@ -349,6 +357,10 @@ struct EventActionButtons: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(maxWidth: .infinity, idealHeight: 60)
                         .foregroundColor(Color.Background.secondary)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                        }
                     VStack {
                         VStack {
                             Image(systemName: "ellipsis")
@@ -360,20 +372,26 @@ struct EventActionButtons: View {
                             .fontWeight(.bold)
                     }.foregroundStyle(Color.foreground)
                 }
-            }.sheet(isPresented: $showMenu) {
+            }
+            .sheet(isPresented: $showMenu) {
                 EventMenu(clubs: $clubs, organizations: $organizations)
-                    .environmentObject(event)
+                    .environment(event)
                     .presentationDetents([.medium])
             }
             
         }
         .frame(height: 60)
         .padding(.horizontal)
+        .sheet(isPresented: $showRSVPSheet){
+            RSVPSheet(event: event)
+                .environment(session)
+                .presentationDetents([.height(235)])
+        }
     }
 }
 
 #Preview {
     EventActionButtons(venues: .constant(VENUES), venueState: .constant(.pending), clubs: .constant(CLUBS), organizations: .constant(ORGANIZATIONS))
-        .environmentObject(EVENTS[0])
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

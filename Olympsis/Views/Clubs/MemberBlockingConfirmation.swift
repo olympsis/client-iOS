@@ -40,7 +40,7 @@ struct MemberBlockingConfirmation: View {
         status = .loading
         guard let user = session.user,
               let data = member.user,
-              let memberUID = data.uuid else {
+              let memberUID = data.userID else {
             handleFailure()
             log.error("Failed to get required data from session store to block user")
             return
@@ -50,7 +50,7 @@ struct MemberBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let resp = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             member.isBlocked = true
@@ -60,7 +60,7 @@ struct MemberBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.UpdateUserData(update: dto) else {
+            guard let resp = await session.userObserver.updateUserData(update: dto) else {
                 return
             }
             member.isBlocked = true

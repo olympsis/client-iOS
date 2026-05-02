@@ -8,36 +8,31 @@
 import Hermes
 import SwiftUI
 import Foundation
-import FirebaseAuth
 
 class VenueService {
-    
+
     private var http: Courrier
-    
+
     init() {
-        #if targetEnvironment(simulator)
-            self.http = Courrier(.HTTP, host: "localhost")
-        #else
-            let host = Bundle.main.object(forInfoDictionaryKey: "HOST") as? String ?? ""
-            self.http = Courrier(.HTTPS, host: host)
-        #endif
+        let env = AppEnvironment.current
+        self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
     }
-    
+
     func getVenues(long: Double, lat: Double, radius: Int, sports: String) async throws -> (Data, URLResponse) {
-        let token = try await Auth.auth().currentUser?.getIDToken()
+        let headers = try await AppEnvironment.authHeaders()
         let endpoint = Endpoint("/v1/venues", queryItems: [
             URLQueryItem(name: "longitude", value: String(long)),
             URLQueryItem(name: "latitude", value: String(lat)),
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sports", value: String(sports))
         ])
-        
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+
+        return try await http.Request(.GET, endpoint, headers: headers)
     }
-    
+
     func getVenue(id: String) async throws -> (Data, URLResponse) {
-        let token = try await Auth.auth().currentUser?.getIDToken()
+        let headers = try await AppEnvironment.authHeaders()
         let endpoint = Endpoint("/v1/venues/\(id)")
-        return try await http.Request(.GET, endpoint, headers: ["Authorization": token ?? ""])
+        return try await http.Request(.GET, endpoint, headers: headers)
     }
 }

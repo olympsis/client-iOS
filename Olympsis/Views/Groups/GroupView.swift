@@ -10,11 +10,12 @@ import SwiftUI
 
 struct GroupView: View {
     
-    @StateObject public var router: GroupRouter
+    @Binding public var router: GroupRouter
+    @State private var manager = SearchManager()
     @Environment(SessionStore.self) private var session
     
     private var selectedGroup: GroupSelection? {
-        guard let group = session.selectedGroup else {
+        guard let group = session.groupsManager.selected else {
             return nil
         }
         
@@ -29,11 +30,10 @@ struct GroupView: View {
         return selectedGroup!.type
     }
     
-    private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "group_view")
-    
-    init(router: GroupRouter = GroupRouter()) {
-        self._router = StateObject(wrappedValue: router)
-    }
+    private let log: Logger = Logger(
+        subsystem: "com.olympsis.client",
+        category: "group_view"
+    )
     
     var body: some View {
         NavigationStack(path: $router.navPath) {
@@ -42,41 +42,46 @@ struct GroupView: View {
                 case .loading:
                     ClubLoadingView()
                 case .success, .pending:
-                    if selectedGroup != nil {
+                    if let selectedGroup {
                         switch selecteGroupType {
                         case .Club:
-                            if let club = selectedGroup?.club {
+                            if let club = selectedGroup.club {
                                 ClubView(club: club)
                                     .id(club.id)
-                                    .task {
-                                        await session.updateNotifications()
-                                    }
                             }
                         case .Organization:
-                            if let org = selectedGroup?.organization {
+                            if let org = selectedGroup.organization {
                                 OrganizationView(org: org)
                                     .id(org.id)
-                                    .task {
-                                        await session.updateNotifications()
-                                    }
                             }
                         }
                     } else {
                         ClubsList()
                     }
                 case .failure:
-                    ClubsList()
+                    FatalErrorView()
                 }
-            }.task {
-                if session.groups.isEmpty {
-                    await session.CheckIn()
+            }
+            .navigationDestination(for: GROUP_ROUTES.self, destination: { route in
+                switch route {
+                case .clubsList(let id):
+                    if let id {
+                        AsyncClubView(clubID: id)
+                    } else {
+                        ClubsList()
+                    }
+                default:
+                    FatalErrorView()
                 }
+            })
+            .task {
+                await session.updateNotifications()
             }
         }
     }
 }
 
 #Preview {
-    GroupView()
+    GroupView(router: .constant(GroupRouter()))
         .environment(SessionStore())
 }

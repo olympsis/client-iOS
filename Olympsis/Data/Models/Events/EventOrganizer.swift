@@ -23,11 +23,15 @@ struct Organizer: Codable, Identifiable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Decode the type first by getting the raw Int value
-        let typeInt = try container.decode(Int.self, forKey: .type)
-        self.type = numberToGroupType(number: typeInt)
-        
+
+        // API sends type as uppercase string (e.g. "GROUP", "ORGANIZATION"), fall back to legacy int
+        if let typeString = try? container.decode(String.self, forKey: .type) {
+            self.type = stringToGroupType(typeString)
+        } else {
+            let typeInt = try container.decode(Int.self, forKey: .type)
+            self.type = numberToGroupType(number: typeInt)
+        }
+
         // Decode the id
         self.id = try container.decode(String.self, forKey: .id)
     }
