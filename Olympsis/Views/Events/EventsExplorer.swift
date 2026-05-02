@@ -16,21 +16,36 @@ struct EventsExplorer: View {
     
     @State private var manager = SearchManager()
     @State private var viewModel = EventsViewModel()
+    
     @Environment(SessionStore.self) private var session
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @Namespace private var namespace
     
     var body: some View {
-        Group {
-            Map()
-        }.sheet(isPresented: .constant(true)) {
-            ExplorerList()
-            .environment(session)
-            .environment(manager)
-            .environment(viewModel)
-            .presentationDragIndicator(.visible)
-            .presentationDetents([.height(100), .medium, .large])
+        switch horizontalSizeClass {
+        case .regular: // iPad
+            HStack {
+                Map()
+                
+                ExplorerList(searchText: $viewModel.searchText)
+                    .environment(session)
+                    .environment(manager)
+                    .environment(viewModel)
+            }
+        default:
+            Group {
+                Map()
+            }.sheet(isPresented: .constant(true)) {
+                ExplorerList(searchText: $viewModel.searchText)
+                .environment(session)
+                .environment(manager)
+                .environment(viewModel)
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.height(100), .medium, .large])
+            }
         }
+        
     }
 }
 

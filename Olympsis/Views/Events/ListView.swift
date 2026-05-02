@@ -171,9 +171,6 @@ struct ListView: View {
 //                    Picker {
 //                        
 //                    }
-                    
-                    Text("\(events.count) events nearby")
-                        .padding(.top)
                 }
                 .zIndex(2)
                 .frame(height: 40)

@@ -1864,6 +1864,52 @@
         }
       }
     },
+    "failed-venues-sub-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We ran into an issue pulling up venues. Try again in a bit!"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuvimos un problema al cargar los lugares. ¡Inténtalo de nuevo en un momento!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous avons rencontré un problème lors de l'affichage des lieux. Réessayez dans quelques instants !"
+          }
+        }
+      }
+    },
+    "failed-venues-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whoops! Error loading venues. ⚠️"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Ups! Error al cargar lugares. ⚠️"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oups ! Erreur lors du chargement des lieux. ⚠️"
+          }
+        }
+      }
+    },
     "hosted-title": {
       "extractionState": "manual",
       "localizations": {
@@ -2573,6 +2619,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Veuillez sélectionner un sport"
+          }
+        }
+      }
+    },
+    "no-venues-sub-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn’t find any sports venues nearby. Try widening your search radius or adjusting your filters to see more spots to play."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No encontramos lugares deportivos cerca. Prueba a ampliar tu radio de búsqueda o a ajustar tus filtros para ver más sitios para jugar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous n'avons trouvé aucun lieu sportif à proximité. Essayez d'élargir votre rayon de recherche ou d'ajuster vos filtres pour voir plus d'endroits où jouer."
+          }
+        }
+      }
+    },
+    "no-venues-title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No venues found in your area 📍"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontraron lugares en tu zona 📍"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun lieu trouvé dans votre région 📍"
           }
         }
       }
