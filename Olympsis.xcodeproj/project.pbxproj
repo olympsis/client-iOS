@@ -171,6 +171,8 @@
 		5D20625E2B1435F300A9D408 /* OrgApplicationListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625D2B1435F300A9D408 /* OrgApplicationListItem.swift */; };
 		5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20625F2B14463400A9D408 /* OrgListItem.swift */; };
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
+		5D22D67F2FA6502B00CCF4C3 /* EventsExplorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */; };
+		5D22D6812FA6578300CCF4C3 /* ExplorerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */; };
 		5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D23BC4E2E5F752600077879 /* RSVPSheet.swift */; };
 		5D2540EC2F56644D00D53F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */; };
 		5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26182F2D715AE300FE2923 /* CalendarManager.swift */; };
@@ -732,6 +734,8 @@
 		5D20625D2B1435F300A9D408 /* OrgApplicationListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplicationListItem.swift; sourceTree = "<group>"; };
 		5D20625F2B14463400A9D408 /* OrgListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItem.swift; sourceTree = "<group>"; };
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
+		5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsExplorer.swift; sourceTree = "<group>"; };
+		5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerList.swift; sourceTree = "<group>"; };
 		5D23BC4E2E5F752600077879 /* RSVPSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPSheet.swift; sourceTree = "<group>"; };
 		5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D26182F2D715AE300FE2923 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
@@ -2221,6 +2225,8 @@
 				5D7DF3C12E693CF80090761E /* NewEventCustomLocation.swift */,
 				5D86CD172F8C5DD0003C1857 /* UpNextEvent.swift */,
 				5D86CD1F2F8D2C0C003C1857 /* UpNextEvents.swift */,
+				5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */,
+				5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2615,6 +2621,7 @@
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
 				5D204B4E2DA2C92300B67F5D /* EventTeam.swift in Sources */,
+				5D22D6812FA6578300CCF4C3 /* ExplorerList.swift in Sources */,
 				5D2F19AB2C1417A700D98222 /* GroupBadgeLoadingView.swift in Sources */,
 				5D204B5C2DA2D19000B67F5D /* EventError.swift in Sources */,
 				9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */,
@@ -2865,6 +2872,7 @@
 				5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */,
 				9AB02F5729024D04008C07F1 /* Home.swift in Sources */,
 				9A5D3365292AAA71008CF61D /* PostListItem.swift in Sources */,
+				5D22D67F2FA6502B00CCF4C3 /* EventsExplorer.swift in Sources */,
 				5D67494A2A73339E00AEC868 /* EventView.swift in Sources */,
 				5D204B582DA2CB8900B67F5D /* EventModels.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,

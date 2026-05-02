@@ -734,3 +734,21 @@ enum ACTIVITY_GOALS: CaseIterable {
         }
     }
 }
+
+enum EVENT_EXPLORER_STATE: String, Codable, CaseIterable {
+    var id: Self { self }
+
+    case events = "events"
+    case venues = "venues"
+
+    /// Localized label for this page, used by the explorer picker.
+    /// Keys live in `Events.xcstrings` as `event-explorer-state-events` / `event-explorer-state-venues`.
+    var localized: String {
+        switch self {
+        case .events:
+            return String(localized: "event-explorer-state-events", table: "Events")
+        case .venues:
+            return String(localized: "event-explorer-state-venues", table: "Events")
+        }
+    }
+}

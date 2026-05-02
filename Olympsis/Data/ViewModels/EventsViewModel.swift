@@ -31,7 +31,7 @@ class EventsViewModel {
     }
     
     var state: VIEW_STATE = .loading
-    var page: EVENTS_PAGE_STATE = .list
+    var page: EVENT_EXPLORER_STATE = .events
     
     private var lastUpdate: Date?
     
@@ -56,7 +56,7 @@ class EventsViewModel {
         selectedTags: [String] = [String](),
         selectedSports: [String] = [String](),
         state: VIEW_STATE = .pending,
-        page: EVENTS_PAGE_STATE = .list,
+        page: EVENT_EXPLORER_STATE = .events,
         lastUpdate: Date? = nil
     ) {
         self.searchText = searchText
