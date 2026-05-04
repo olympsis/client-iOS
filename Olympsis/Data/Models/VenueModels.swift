@@ -270,6 +270,13 @@ struct BlackoutTimeSlot: Codable, Hashable {
         self.date = date
         self.reason = reason
     }
+
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let dateString = try c.decode(String.self, forKey: .date)
+        self.date = try parseDate(from: dateString)
+        self.reason = try c.decodeIfPresent(String.self, forKey: .reason)
+    }
 }
 
 /// An override of regular hours on a specific date (e.g. holiday hours).
@@ -279,11 +286,27 @@ struct SpecialTimeSlot: Codable, Hashable {
     let close: String
     let reason: String?
 
+    enum CodingKeys: String, CodingKey {
+        case date
+        case open
+        case close
+        case reason
+    }
+
     init(date: Date, open: String, close: String, reason: String? = nil) {
         self.date = date
         self.open = open
         self.close = close
         self.reason = reason
+    }
+
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let dateString = try c.decode(String.self, forKey: .date)
+        self.date = try parseDate(from: dateString)
+        self.open = try c.decode(String.self, forKey: .open)
+        self.close = try c.decode(String.self, forKey: .close)
+        self.reason = try c.decodeIfPresent(String.self, forKey: .reason)
     }
 }
 
@@ -842,8 +865,19 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
 
         self.amenities = try c.decodeIfPresent([String].self, forKey: .amenities) ?? []
 
-        self.createdAt = try c.decodeIfPresent(Date.self, forKey: .createdAt)
-        self.updatedAt = try c.decodeIfPresent(Date.self, forKey: .updatedAt)
+        // The API serializes timestamps as ISO-8601 strings, not Doubles —
+        // route them through the project's `parseDate` helper to match the
+        // rest of the codebase (see Club / Event decoders).
+        if let createdAtString = try c.decodeIfPresent(String.self, forKey: .createdAt) {
+            self.createdAt = try parseDate(from: createdAtString)
+        } else {
+            self.createdAt = nil
+        }
+        if let updatedAtString = try c.decodeIfPresent(String.self, forKey: .updatedAt) {
+            self.updatedAt = try parseDate(from: updatedAtString)
+        } else {
+            self.updatedAt = nil
+        }
 
         self.owner = try c.decodeIfPresent(Ownership.self, forKey: .owner)
             ?? Ownership(name: "", type: "")
@@ -1046,16 +1080,9 @@ struct VenuesResponse: Codable {
     let totalVenues: Int
     let venues: [Venue]
 
-    /// Legacy alias — points at `venues`.
-    var fields: [Venue] { venues }
-
     enum CodingKeys: String, CodingKey {
         case totalVenues = "total_venues"
         case venues
-
-        // Legacy keys still accepted on decode.
-        case totalFields = "total_fields"
-        case fields
     }
 
     init(totalVenues: Int, venues: [Venue]) {
@@ -1065,16 +1092,8 @@ struct VenuesResponse: Codable {
 
     init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        if let v = try c.decodeIfPresent([Venue].self, forKey: .venues) {
-            self.venues = v
-        } else {
-            self.venues = try c.decodeIfPresent([Venue].self, forKey: .fields) ?? []
-        }
-        if let n = try c.decodeIfPresent(Int.self, forKey: .totalVenues) {
-            self.totalVenues = n
-        } else {
-            self.totalVenues = try c.decodeIfPresent(Int.self, forKey: .totalFields) ?? self.venues.count
-        }
+        self.venues = try c.decode([Venue].self, forKey: .venues)
+        self.totalVenues = try c.decode(Int.self, forKey: .totalVenues)
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -1202,6 +1221,43 @@ struct VenueReservation: Codable, Identifiable, Hashable {
         case createdBy = "created_by"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try c.decode(String.self, forKey: .id)
+        self.venueID = try c.decode(String.self, forKey: .venueID)
+        self.venueUnitID = try c.decode(String.self, forKey: .venueUnitID)
+        self.transactionID = try c.decode(String.self, forKey: .transactionID)
+        self.userID = try c.decode(String.self, forKey: .userID)
+        self.clubID = try c.decodeIfPresent(String.self, forKey: .clubID)
+        self.organizationID = try c.decodeIfPresent(String.self, forKey: .organizationID)
+
+        // All Date fields come in as ISO-8601 strings; route through the
+        // shared `parseDate` so the decoder accepts every shape we've seen
+        // from the backend (see TimeFunctions.swift for the format list).
+        self.startDate = try parseDate(from: c.decode(String.self, forKey: .startDate))
+        self.endDate = try parseDate(from: c.decode(String.self, forKey: .endDate))
+
+        self.timezone = try c.decode(String.self, forKey: .timezone)
+        self.currency = try c.decode(String.self, forKey: .currency)
+        self.amountPaidMinor = try c.decode(Int64.self, forKey: .amountPaidMinor)
+        self.status = try c.decode(String.self, forKey: .status)
+
+        if let expiresAtString = try c.decodeIfPresent(String.self, forKey: .expiresAt) {
+            self.expiresAt = try parseDate(from: expiresAtString)
+        } else {
+            self.expiresAt = nil
+        }
+
+        self.createdBy = try c.decode(String.self, forKey: .createdBy)
+        self.createdAt = try parseDate(from: c.decode(String.self, forKey: .createdAt))
+
+        if let updatedAtString = try c.decodeIfPresent(String.self, forKey: .updatedAt) {
+            self.updatedAt = try parseDate(from: updatedAtString)
+        } else {
+            self.updatedAt = nil
+        }
     }
 }
 

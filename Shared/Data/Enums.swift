@@ -752,3 +752,8 @@ enum EVENT_EXPLORER_STATE: String, Codable, CaseIterable {
         }
     }
 }
+
+enum LIST_ITEM_SCALE {
+    case small
+    case regular
+}

@@ -10,7 +10,7 @@ import SwiftUI
 import Foundation
 
 /// Field Observer is a class object that keeps tracks of and fetches fields
-class FieldObserver: ObservableObject{
+class VenueObserver: ObservableObject{
     private let decoder = JSONDecoder()
     private let fieldService = VenueService()
     private let log = Logger(subsystem: "com.olympsis.client", category: "field_observer")
@@ -20,14 +20,14 @@ class FieldObserver: ObservableObject{
     /// - Parameter latitude: `Double` latitudonal memters of location
     /// - Parameter radius: `Int` radius of surface area for search
     /// - Returns: a `[Venue]` an optional venue array containing the venues in that location
-    func fetchFields(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Venue]? {
+    func fetchVenues(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Venue]? {
         do {
             let (data, resp) = try await fieldService.getVenues(long: longitude, lat: latitude, radius: radius, sports: sports)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 return nil
             }
             let object = try decoder.decode(VenuesResponse.self, from: data)
-            return object.fields
+            return object.venues
         } catch {
             log.error("Failed to fetch venues: \(error)")
         }

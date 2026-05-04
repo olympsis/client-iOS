@@ -89,13 +89,13 @@ struct Events: View {
                 })
                 .task {
                     LocationManager.shared.requestLocation()
-                    
+
                     // Grab sports and tags from session
                     manager.tags = session.tags
                     manager.sports = session.sports
                     viewModel.tags = session.tags
                     viewModel.sports = session.sports
-                    
+
                     // Add user's sports on the filter by default
                     if let user = session.user {
                         if let sports = user.sports {
@@ -103,8 +103,15 @@ struct Events: View {
                             viewModel.selectedSports = sports
                         }
                     }
-                    
-                    await viewModel.fetchEvents(session)
+
+                    // Give Core Location up to 1 s to deliver a fresh fix
+                    // before we kick off the network call. If nothing comes
+                    // through in time, `viewModel.currentLocation` falls back
+                    // to its built-in default — same query, just with the
+                    // fallback coords.
+                    _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
+
+                    await viewModel.fetchData(session)
                 }
         }
     }

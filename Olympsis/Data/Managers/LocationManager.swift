@@ -50,6 +50,31 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         manager.requestWhenInUseAuthorization()
         manager.startMonitoringSignificantLocationChanges()
     }
+
+    /// Wait up to `timeout` seconds for the first location fix to land in
+    /// `location`. Polls every 50 ms (cheap enough at this cadence and keeps
+    /// the implementation independent of the delegate callback). Returns the
+    /// coordinate if one arrived in time, otherwise `nil` so callers can
+    /// decide whether to fall back to a stored hometown / default location.
+    @MainActor
+    func waitForLocation(timeout: TimeInterval = 1.0) async -> CLLocationCoordinate2D? {
+        // Already have a fix — no need to wait.
+        if let loc = location { return loc }
+
+        let deadline = Date().addingTimeInterval(timeout)
+        let pollNanos: UInt64 = 50_000_000 // 50 ms
+
+        while Date() < deadline {
+            if let loc = location { return loc }
+            do {
+                try await Task.sleep(nanoseconds: pollNanos)
+            } catch {
+                // Task cancelled — bail out with whatever we have.
+                return location
+            }
+        }
+        return location
+    }
     
     func changeLocationRegion(location: CLLocationCoordinate2D) {
         region = MKCoordinateRegion(center: location, latitudinalMeters: 10000, longitudinalMeters: 10000)

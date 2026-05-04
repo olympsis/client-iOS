@@ -11,9 +11,18 @@ import CoreLocation
 struct ExplorerList: View {
     
     @Binding var searchText: String
-    
+    var scale: Int = 1
+
     @State private var todayDate = Date()
     @State private var selectedDate = Date()
+
+    /// Map the numeric scale that callers (e.g. the iPad split layout)
+    /// pass us into the `EventListItem`-flavored enum. Anything above the
+    /// default of 1 is treated as "compress" mode — today there are only
+    /// two visual variants, so we collapse the spectrum into them here.
+    private var listItemScale: LIST_ITEM_SCALE {
+        scale > 1 ? .small : .regular
+    }
     
     @Environment(SessionStore.self) private var session
     @Environment(SearchManager.self) private var manager
@@ -172,7 +181,7 @@ struct ExplorerList: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: SCREEN_WIDTH/2)
+                    .frame(width: SCREEN_WIDTH/3)
                     
                     
                     Spacer()
@@ -215,7 +224,7 @@ struct ExplorerList: View {
                                 ForEach(eventsGrouped, id: \.id) { group in
                                     Section {
                                         ForEach(group.events, id: \.id) { event in
-                                            EventListItem(event: event, namespace: heroNamespace)
+                                            EventListItem(event: event, scale: listItemScale, namespace: heroNamespace)
                                                 .padding(.horizontal)
                                         }
                                     } header: {
@@ -285,7 +294,7 @@ struct ExplorerList: View {
                             }.padding(.top, 50)
                         } else {
                             ForEach(session.venues) {
-                                VenueListItem(venue: $0)
+                                VenueListItem(venue: $0, scale: listItemScale)
                             }
                         }
                     case .loading:

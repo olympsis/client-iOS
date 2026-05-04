@@ -13,7 +13,9 @@ import Kingfisher
 struct EventListItem: View {
     
     @State var event: Event
+    var scale: LIST_ITEM_SCALE = .regular
     var namespace: Namespace.ID? = nil
+    
     @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
     @State private var venueState: LOADING_STATE = .pending
@@ -74,7 +76,56 @@ struct EventListItem: View {
         }
         return sport.prefix(1).capitalized + sport.dropFirst()
     }
-    
+
+    // MARK: - Scale-derived sizing
+    //
+    // Centralizes every scale-sensitive value in one place so the body
+    // doesn't sprout a `scale == .regular ? ... : ...` ternary at every
+    // call site. `.small` is used inside the iPad split-view explorer
+    // where the list takes up roughly a third of the screen and needs
+    // every element to compress proportionally.
+
+    private var imageHeight: CGFloat {
+        scale == .regular ? 250 : 180
+    }
+
+    /// Height of the bottom info overlay. Trimmed in `.small` so two lines
+    /// of meta still fit without truncating titles.
+    private var overlayHeight: CGFloat {
+        scale == .regular ? 100 : 78
+    }
+
+    private var titleFont: Font {
+        scale == .regular ? .title3 : .headline
+    }
+
+    private var locationFont: Font {
+        scale == .regular ? .body : .subheadline
+    }
+
+    private var dateFont: Font {
+        scale == .regular ? .callout : .footnote
+    }
+
+    /// Used by the participant / sport / time / tournament capsules.
+    private var tagFont: Font {
+        scale == .regular ? .caption : .caption2
+    }
+
+    /// Inner padding on the capsule tags — we drop 2 pts in `.small` so
+    /// the row of capsules still fits the narrower layout.
+    private var tagPadding: CGFloat {
+        scale == .regular ? 5 : 3
+    }
+
+    private var overlayHorizontalPadding: CGFloat {
+        scale == .regular ? 7 : 6
+    }
+
+    private var overlayBottomPadding: CGFloat {
+        scale == .regular ? 7 : 12
+    }
+
     var body: some View {
         NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
             KFImage(imageURL)
@@ -90,41 +141,43 @@ struct EventListItem: View {
                 .scaledToFill()
                 .clipped()
                 .zIndex(1)
-                .frame(height: 250)
+                .frame(height: imageHeight)
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 5) {
                         Spacer()
                         HStack {
-                            
+
                             // MARK: - Title and Location
                             VStack(alignment: .leading) {
                                 Text(event.title)
-                                    .font(.title3)
+                                    .font(titleFont)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
-                                
+                                    .lineLimit(1)
+
                                 Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
-                                    .font(.body)
+                                    .font(locationFont)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
+                                    .lineLimit(1)
                                     .redacted(reason: canShowLocation ? [] : .placeholder)
                             }
-                            
+
                             Spacer()
-                            
+
                             // MARK: - Participants
                             HStack {
                                 Image(systemName: "person.2.fill")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
-                                
+
                                 Text("\(event.participants.count) \(String(localized: "event-participants", table: "Events"))")
-                                    .font(.caption)
+                                    .font(tagFont)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                     .padding(.trailing, 2.5)
                             }
-                            .padding(5)
+                            .padding(tagPadding)
                             .background(
                                 Color.black
                                     .opacity(0.21)
@@ -136,31 +189,32 @@ struct EventListItem: View {
                             }
                             .offset(x: 2, y: 8)
                         }
-                        
+
                         HStack(alignment: .center, spacing: 5) {
-                            
+
                             // MARK: - Date
                             HStack {
                                 Image(systemName: "calendar")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
                                 Text(event.timeToString())
-                                    .font(.callout)
+                                    .font(dateFont)
                                     .foregroundStyle(.white)
+                                    .lineLimit(1)
                             }
-                            
+
                             Spacer()
 
                             // MARK: - Competition Tag
                             if event.isCompetition() {
                                 HStack {
                                     Text(String(localized: "event-tournament", table: "Events"))
-                                        .font(.caption)
+                                        .font(tagFont)
                                         .fontWeight(.bold)
                                         .padding([.leading, .trailing], 2.5)
                                         .foregroundStyle(Color.Brand.quaternary)
                                 }
-                                .padding(5)
+                                .padding(tagPadding)
                                 .background(
                                     Color.black
                                         .opacity(0.21)
@@ -168,17 +222,17 @@ struct EventListItem: View {
                                 .border(Color.black.opacity(0.15), width: 1)
                                 .clipShape(Capsule())
                             }
-                            
-                            
+
+
                             // MARK: - Primary Sport Tag
                             HStack {
                                 Text(eventSport)
-                                    .font(.caption)
+                                    .font(tagFont)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                     .padding([.leading, .trailing], 2.5)
                             }
-                            .padding(5)
+                            .padding(tagPadding)
                             .background(
                                 Color.black
                                     .opacity(0.21)
@@ -188,19 +242,19 @@ struct EventListItem: View {
                                 Capsule()
                                     .stroke(Color.black.opacity(0.15), lineWidth: 1)
                             }
-                            
+
                             // MARK: - Start Time
                             HStack {
                                 Image(systemName: "clock")
                                     .imageScale(.small)
                                     .foregroundStyle(.white)
                                 Text(event.getStartHourAndMinute())
-                                    .font(.caption)
+                                    .font(tagFont)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                     .padding(.trailing, 2.5)
                             }
-                            .padding(5)
+                            .padding(tagPadding)
                             .background(
                                 Color.black
                                     .opacity(0.21)
@@ -212,9 +266,9 @@ struct EventListItem: View {
                             }
                         }
                     }
-                    .padding([.leading, .trailing], 7)
-                    .padding(.bottom, 6)
-                    .frame(height: 100)
+                    .padding([.leading, .trailing], overlayHorizontalPadding)
+                    .padding(.bottom, overlayBottomPadding)
+                    .frame(height: overlayHeight)
                     .background {
                         Rectangle()
                             .fill(.ultraThinMaterial)
@@ -317,8 +371,14 @@ struct _TrailingView: View {
     }
 }
 
-#Preview {
+#Preview("Regular") {
     EventListItem(event: EVENTS[0])
+        .environment(SessionStore())
+        .padding(.horizontal, 10)
+}
+
+#Preview("Small") {
+    EventListItem(event: EVENTS[0], scale: .small)
         .environment(SessionStore())
         .padding(.horizontal, 10)
 }
