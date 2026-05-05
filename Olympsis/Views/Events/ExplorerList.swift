@@ -165,24 +165,29 @@ struct ExplorerList: View {
         }()
         let eventsGrouped = events.eventsGroupedByDay()
 
-        return ScrollViewReader { proxy in
-            ScrollView {
-                HStack {
-                    Spacer()
-                    
-                    Picker("Page", selection: $vm.page) {
-                        ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
-                            Text(page.localized).tag(page)
-                        }
+        // Picker lives in a sticky header *outside* the ScrollView.
+        // Inside the scroll view it competed for gestures with the
+        // sheet's `presentationContentInteraction(.scrolls)` and the
+        // segmented control would intermittently swallow taps; pulling
+        // it out also keeps it visible at the top of the sheet while
+        // the user scrolls the list.
+        return VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Picker("Page", selection: $vm.page) {
+                    ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
+                        Text(page.localized).tag(page)
                     }
-                    .pickerStyle(.segmented)
-                    .frame(width: SCREEN_WIDTH/3)
-                    
-                    
-                    Spacer()
-                }.padding(.vertical)
-                
-                switch vm.page {
+                }
+                .pickerStyle(.segmented)
+                .frame(width: SCREEN_WIDTH/3)
+                Spacer()
+            }
+            .padding(.vertical)
+
+            ScrollViewReader { proxy in
+                ScrollView {
+                    switch vm.page {
                 case .events:
                     switch vm.state {
                     case .pending, .success:
@@ -328,6 +333,7 @@ struct ExplorerList: View {
                                 .padding(.horizontal)
                                 .multilineTextAlignment(.center)
                         }.padding(.top, 50)
+                    }
                     }
                 }
             }
