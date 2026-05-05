@@ -25,9 +25,7 @@ struct EventListItem: View {
     /// underlying `NavigationStack` from a separate presentation.
     var onTap: (() -> Void)? = nil
 
-    @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
-    @State private var venueState: LOADING_STATE = .pending
     
     @State private var showDetails = false
     @Environment(SessionStore.self) private var session
@@ -67,16 +65,19 @@ struct EventListItem: View {
     }
     
     private var venueLocationName: String {
-        guard let first = event.venues.first,
-              let name = first.name else {
-            guard let venue = venues.first else {
-                return "Custom Location";
-            }
-            
+        guard let first = event.venues.first else {
+            return "Custom Location"
+        }
+        // Prefer the name embedded on the descriptor — most events ship
+        // with one and we never need to round-trip the cache.
+        if let name = first.name { return name }
+        // Otherwise fall back to the cached venue (hydrated in bulk by
+        // `EventsViewModel.loadEvents`).
+        if let id = first.id,
+           let venue = session.venues.first(where: { $0.id == id }) {
             return venue.name
         }
-        
-        return name
+        return "Custom Location"
     }
     
     private var eventSport: String {
@@ -304,16 +305,6 @@ struct EventListItem: View {
             }
         }
         .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
-        .task {
-            // Skip fetch if venue names are already available on the event
-            guard event.venues.first?.name == nil else {
-                venueState = .success
-                return
-            }
-            venueState = .loading
-            venues = await session.fetchVenues(in: event.venues)
-            venueState = .success
-        }
     }
 }
 

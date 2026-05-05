@@ -179,6 +179,28 @@ class EventsViewModel {
 
         lastUpdate = Date()
         resp.forEach { session.events.insert($0) }
+
+        // Batch-hydrate venue descriptors that don't carry their own name.
+        // Previously each `EventListItem` ran its own `.task` to fetch the
+        // missing venues, producing N parallel requests on first show; this
+        // collapses them into one deduped pass keyed by venue id.
+        var seenIDs = Set<String>()
+        var missing: [VenueDescriptor] = []
+        for event in resp {
+            for descriptor in event.venues {
+                // Already has a usable name on the descriptor itself.
+                if descriptor.name != nil { continue }
+                // Need an id to fetch the full venue.
+                guard let id = descriptor.id, !seenIDs.contains(id) else { continue }
+                // Skip if the cache already has it.
+                if session.venues.contains(where: { $0.id == id }) { continue }
+                seenIDs.insert(id)
+                missing.append(descriptor)
+            }
+        }
+        if !missing.isEmpty {
+            _ = await session.fetchVenues(in: missing)
+        }
         return true
     }
 
