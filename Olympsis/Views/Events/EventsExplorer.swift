@@ -23,18 +23,28 @@ private struct VenueUnitFootprint: Identifiable {
     let coordinates: [CLLocationCoordinate2D]
 }
 
+/// Integer grid-cell coordinate. Used as the bucketing key for the
+/// cluster algorithm — `Hashable` on two `Int`s is roughly 10× faster
+/// than `String(format: "%.6f,%.6f", ...)` and sidesteps the per-event
+/// string allocation. Stable across rebuilds because the same point at
+/// the same zoom always maps to the same `(lat, lng)` cell index.
+private struct CellKey: Hashable {
+    let lat: Int
+    let lng: Int
+}
+
 /// A bucket of events that collapse into a single annotation at the
 /// current zoom. Single-event clusters render as `EventAnnotation`;
 /// multi-event clusters render as `EventClusterAnnotation`.
 private struct EventCluster: Identifiable {
-    let id: String   // grid-cell key, stable across rebuilds
+    let id: CellKey   // grid-cell key, stable across rebuilds
     let coordinate: CLLocationCoordinate2D
     let events: [Event]
 }
 
 /// Same shape as `EventCluster` but for venue pins.
 private struct VenueClusterItem: Identifiable {
-    let id: String
+    let id: CellKey
     let coordinate: CLLocationCoordinate2D
     let venues: [Venue]
 }
@@ -178,19 +188,16 @@ struct EventsExplorer: View {
         // approaches the span of a single building.
         let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
 
-        // Bucket: grid key → events + coordinates contributing to it.
-        var buckets: [String: [(event: Event, coord: CLLocationCoordinate2D)]] = [:]
+        // Bucket: integer grid-cell key → events + coordinates contributing to it.
+        var buckets: [CellKey: [(event: Event, coord: CLLocationCoordinate2D)]] = [:]
 
         for event in visibleEvents {
             guard let coord = eventCoordinate(for: event) else { continue }
-            // Snap each coordinate to its grid cell. Using `.down` keeps
-            // adjacent points stable as the camera shifts (vs. `.toNearest`
-            // which would flicker pins across cell boundaries).
-            let bucketLat = (coord.latitude / cellSize).rounded(.down) * cellSize
-            let bucketLng = (coord.longitude / cellSize).rounded(.down) * cellSize
-            // Round the key string aggressively so floating-point jitter
-            // doesn't produce two effectively-identical keys.
-            let key = String(format: "%.6f,%.6f", bucketLat, bucketLng)
+            // Snap each coordinate to its grid cell index. `Int(.rounded(.down))`
+            // gives stable, jitter-free buckets that hash trivially.
+            let bucketLat = Int((coord.latitude / cellSize).rounded(.down))
+            let bucketLng = Int((coord.longitude / cellSize).rounded(.down))
+            let key = CellKey(lat: bucketLat, lng: bucketLng)
             buckets[key, default: []].append((event, coord))
         }
 
@@ -278,13 +285,13 @@ struct EventsExplorer: View {
     /// Memoized through `cachedVenueClusters`.
     private func computeVenueClusters() -> [VenueClusterItem] {
         let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
-        var buckets: [String: [(venue: Venue, coord: CLLocationCoordinate2D)]] = [:]
+        var buckets: [CellKey: [(venue: Venue, coord: CLLocationCoordinate2D)]] = [:]
 
         for venue in session.venues {
             guard let coord = venueCoordinate(for: venue) else { continue }
-            let bucketLat = (coord.latitude / cellSize).rounded(.down) * cellSize
-            let bucketLng = (coord.longitude / cellSize).rounded(.down) * cellSize
-            let key = String(format: "%.6f,%.6f", bucketLat, bucketLng)
+            let bucketLat = Int((coord.latitude / cellSize).rounded(.down))
+            let bucketLng = Int((coord.longitude / cellSize).rounded(.down))
+            let key = CellKey(lat: bucketLat, lng: bucketLng)
             buckets[key, default: []].append((venue, coord))
         }
 
