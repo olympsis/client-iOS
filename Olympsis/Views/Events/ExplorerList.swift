@@ -11,6 +11,10 @@ import CoreLocation
 struct ExplorerList: View {
     
     @Binding var searchText: String
+    /// Optional router so list items can push onto the shared
+    /// `NavigationStack` even when the list is hosted inside a sheet
+    /// (where `NavigationLink` can't see the parent stack).
+    var router: EventRouter? = nil
     var scale: Int = 1
 
     @State private var todayDate = Date()
@@ -224,7 +228,14 @@ struct ExplorerList: View {
                                 ForEach(eventsGrouped, id: \.id) { group in
                                     Section {
                                         ForEach(group.events, id: \.id) { event in
-                                            EventListItem(event: event, scale: listItemScale, namespace: heroNamespace)
+                                            EventListItem(
+                                                event: event,
+                                                scale: listItemScale,
+                                                namespace: heroNamespace,
+                                                onTap: router.map { router in
+                                                    { router.navigate(to: .event(event: event)) }
+                                                }
+                                            )
                                                 .padding(.horizontal)
                                         }
                                     } header: {
@@ -293,8 +304,14 @@ struct ExplorerList: View {
                                     .multilineTextAlignment(.center)
                             }.padding(.top, 50)
                         } else {
-                            ForEach(session.venues) {
-                                VenueListItem(venue: $0, scale: listItemScale)
+                            ForEach(session.venues) { venue in
+                                VenueListItem(
+                                    venue: venue,
+                                    scale: listItemScale,
+                                    onTap: router.map { router in
+                                        { router.navigate(to: .venue(venue: venue)) }
+                                    }
+                                )
                             }
                         }
                     case .loading:

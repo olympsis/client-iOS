@@ -11,11 +11,17 @@ import Kingfisher
 
 /// A view that shows an event's data at a glance. A list item.
 struct EventListItem: View {
-    
+
     @State var event: Event
     var scale: LIST_ITEM_SCALE = .regular
     var namespace: Namespace.ID? = nil
-    
+    /// Optional tap override. When provided we drop the implicit
+    /// `NavigationLink` and let the caller drive navigation through a
+    /// router — needed when the list lives inside a sheet (e.g. mobile
+    /// `ExplorerList`), since `NavigationLink` can't push onto the
+    /// underlying `NavigationStack` from a separate presentation.
+    var onTap: (() -> Void)? = nil
+
     @State private var venues: [Venue] = []
     @State private var status: LOADING_STATE = .loading
     @State private var venueState: LOADING_STATE = .pending
@@ -126,9 +132,9 @@ struct EventListItem: View {
         scale == .regular ? 7 : 12
     }
 
-    var body: some View {
-        NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
-            KFImage(imageURL)
+    @ViewBuilder
+    private var cardContent: some View {
+        KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(.gray)
@@ -276,6 +282,23 @@ struct EventListItem: View {
                             .mask(gradient)
                     }
                 }.clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    var body: some View {
+        Group {
+            if let onTap {
+                // Caller is handling navigation (typically via a router
+                // because we're inside a sheet that doesn't share the
+                // parent's `NavigationStack`).
+                Button(action: onTap) {
+                    cardContent
+                }
+                .buttonStyle(.plain)
+            } else {
+                NavigationLink(destination: EventView(event: event, namespace: namespace).environment(event).environment(session)) {
+                    cardContent
+                }
+            }
         }
         .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
         .task {

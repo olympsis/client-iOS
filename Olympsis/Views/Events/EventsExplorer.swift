@@ -11,7 +11,7 @@ import SwiftUI
 /// Threshold (in latitude degrees) below which we start rendering each venue's
 /// unit polygons on top of its pin. ~0.003° ≈ 300 m N–S, i.e. the user has
 /// zoomed in close enough that the unit footprints are large on screen.
-private let kVenueUnitPolygonZoomThreshold: Double = 0.003
+private let kVenueUnitPolygonZoomThreshold: Double = 0.009
 
 /// One outer-ring polygon ready for `MapPolygon`. We flatten Polygon /
 /// MultiPolygon geometries into this so a single `ForEach` can render them
@@ -62,6 +62,12 @@ struct EventsExplorer: View {
 
     /// Latest camera span — drives the unit-polygon visibility threshold.
     @State private var cameraLatitudeSpan: Double = 0.05
+
+    /// Mobile-only: whether the bottom-sheet explorer is up. We dismiss
+    /// it whenever the user pushes onto the navigation stack so the
+    /// pushed detail view gets the full screen, then bring it back when
+    /// the stack empties out (i.e. they popped back to the explorer).
+    @State private var showExplorerSheet: Bool = true
 
     @Environment(SessionStore.self) private var session
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -213,6 +219,18 @@ struct EventsExplorer: View {
         }
     }
 
+    /// Tapping a cluster smoothly zooms the camera in toward its centroid
+    /// — once the new span drops below the per-cell threshold the cluster
+    /// will naturally split into individual pins on the next render.
+    private func zoomToCluster(at coordinate: CLLocationCoordinate2D) {
+        let zoomedSpan = max(cameraLatitudeSpan / 3, 0.0008)
+        let region = MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: zoomedSpan, longitudeDelta: zoomedSpan)
+        )
+        withAnimation { camera = .region(region) }
+    }
+
     /// Pin coordinate for a venue. Uses the Point shim on `GeoJSON.coordinates`;
     /// returns `nil` when the venue lacks a usable Point (e.g. polygon-only
     /// data) so we can skip rendering an off-coast pin.
@@ -273,8 +291,16 @@ struct EventsExplorer: View {
             ) {
                 if cluster.events.count == 1, let event = cluster.events.first {
                     EventAnnotation(event: event)
+                        // Tapping a single-event pin pushes the event
+                        // detail onto the parent `NavigationStack` via
+                        // the shared router.
+                        .onTapGesture { router.navigate(to: .event(event: event)) }
                 } else {
                     EventClusterAnnotation(events: cluster.events)
+                        // Tapping a cluster zooms in toward its centroid;
+                        // splitting the cluster automatically once the
+                        // camera span drops below the cell threshold.
+                        .onTapGesture { zoomToCluster(at: cluster.coordinate) }
                 }
             }
             .annotationTitles(.hidden)
@@ -292,8 +318,10 @@ struct EventsExplorer: View {
                 if cluster.venues.count == 1, let venue = cluster.venues.first {
                     VenueAnnotation(venue: venue)
                         .environment(session)
+                        .onTapGesture { router.navigate(to: .venue(venue: venue)) }
                 } else {
                     VenueClusterAnnotation(venues: cluster.venues)
+                        .onTapGesture { zoomToCluster(at: cluster.coordinate) }
                 }
             }
             .annotationTitles(.hidden)
@@ -348,7 +376,7 @@ struct EventsExplorer: View {
             HStack {
                 mapView
 
-                ExplorerList(searchText: $viewModel.searchText, scale: 2)
+                ExplorerList(searchText: $viewModel.searchText, router: router, scale: 2)
                     .frame(maxWidth: SCREEN_WIDTH/2.5)
                     .environment(session)
                     .environment(manager)
@@ -356,13 +384,36 @@ struct EventsExplorer: View {
             }
         default:
             mapView
-                .sheet(isPresented: .constant(true)) {
-                    ExplorerList(searchText: $viewModel.searchText)
+                .sheet(isPresented: $showExplorerSheet) {
+                    // Pass the parent's router into the sheet so the list
+                    // items push onto the underlying NavigationStack
+                    // (NavigationLink alone can't reach across a sheet
+                    // boundary).
+                    ExplorerList(searchText: $viewModel.searchText, router: router)
                         .environment(session)
                         .environment(manager)
                         .environment(viewModel)
                         .presentationDragIndicator(.visible)
                         .presentationDetents([.height(100), .medium, .large])
+                        // Zillow-style: let map gestures pass through the
+                        // sheet's backdrop while the user is at the small
+                        // or medium detents. At `.large` the sheet covers
+                        // the map fully so we let it behave modally.
+                        .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+                        // The sheet is the explorer surface — it should
+                        // never get accidentally dismissed by a swipe-down
+                        // (there's no "no sheet" state for this screen).
+                        .interactiveDismissDisabled()
+                        // Scrolls inside the list shouldn't drag the
+                        // sheet up; the user resizes it via the grabber.
+                        .presentationContentInteraction(.scrolls)
+                }
+                // Hide the explorer sheet whenever a detail page is
+                // pushed onto the stack and bring it back on pop. We key
+                // off `navPath.count` directly because `NavigationPath`
+                // isn't `Equatable` — count changes on every push/pop.
+                .onChange(of: router.navPath.count) { _, newCount in
+                    showExplorerSheet = (newCount == 0)
                 }
         }
     }

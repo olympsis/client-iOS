@@ -14,6 +14,11 @@ struct VenueListItem: View {
     /// Mirrors `EventListItem.scale` so a single value threaded through
     /// `ExplorerList` controls both card sizes consistently in split view.
     var scale: LIST_ITEM_SCALE = .regular
+    /// When provided, tapping the card runs this closure instead of
+    /// presenting the local `showDetail` sheet — used by `ExplorerList`
+    /// to push onto the shared `EventRouter` from inside the bottom
+    /// sheet (where a sheet-on-sheet would be jank).
+    var onTap: (() -> Void)? = nil
 
     @State var showDetail = false // show field view detail
     @State var showReport = false // show make a report view
@@ -119,7 +124,13 @@ struct VenueListItem: View {
         
         .padding(.horizontal, 10)
         .onTapGesture {
-            self.showDetail.toggle()
+            // Router-driven navigation wins over the local sheet when
+            // a caller has wired one up (see `ExplorerList`).
+            if let onTap {
+                onTap()
+            } else {
+                self.showDetail.toggle()
+            }
         }
     }
 }
