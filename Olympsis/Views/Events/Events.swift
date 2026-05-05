@@ -28,6 +28,10 @@ struct Events: View {
             EventsExplorer(router: $router, showMenu: $showMenu, showNewEvent: $showNewEvent)
                 .environment(session)
                 .environment(manager)
+                // Single shared `EventsViewModel` for the whole tab —
+                // the explorer picks it up via @Environment so the
+                // parent's fetches actually update what the user sees.
+                .environment(viewModel)
                 .toolbar {
                     if #available(iOS 26.0, *) {
                         ToolbarItem(placement: .topBarLeading) {

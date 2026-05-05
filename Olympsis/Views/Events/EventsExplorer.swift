@@ -50,8 +50,13 @@ struct EventsExplorer: View {
     @Binding var showMenu: Bool
     @Binding var showNewEvent: Bool
 
-    @State private var manager = SearchManager()
-    @State private var viewModel = EventsViewModel()
+    // Both of these come from the parent `Events` view so the explorer,
+    // the filter sheet, and the bottom-sheet `ExplorerList` all read /
+    // write the same state. Previously each owned a private copy, which
+    // is why a fetch driven from the parent never moved the explorer's
+    // `state` out of `.pending` etc.
+    @Environment(EventsViewModel.self) private var viewModel
+    @Environment(SearchManager.self) private var manager
 
     /// Camera position. Switched into `.userLocation(fallback:)` on first
     /// appear so the map opens centered on the user as soon as Core
@@ -73,6 +78,10 @@ struct EventsExplorer: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Namespace private var namespace
+
+    // The two environment-injected `@Observable`s above can't directly
+    // produce SwiftUI `Binding`s, so the body re-derives them via
+    // `@Bindable` (see body's first line).
 
     // MARK: - Derived data
 
@@ -371,16 +380,20 @@ struct EventsExplorer: View {
     // MARK: - Body
 
     var body: some View {
+        // `@Bindable` re-derives a `Binding` over an `@Observable`
+        // sourced from the environment — needed because `$viewModel...`
+        // doesn't compile on `@Environment`-injected observables.
+        @Bindable var viewModel = viewModel
+
         switch horizontalSizeClass {
         case .regular: // iPad
             HStack {
                 mapView
 
+                // Environment values are inherited automatically; no
+                // need to re-inject `session`/`manager`/`viewModel` here.
                 ExplorerList(searchText: $viewModel.searchText, router: router, scale: 2)
                     .frame(maxWidth: SCREEN_WIDTH/2.5)
-                    .environment(session)
-                    .environment(manager)
-                    .environment(viewModel)
             }
         default:
             mapView
@@ -388,7 +401,9 @@ struct EventsExplorer: View {
                     // Pass the parent's router into the sheet so the list
                     // items push onto the underlying NavigationStack
                     // (NavigationLink alone can't reach across a sheet
-                    // boundary).
+                    // boundary). Sheet content does *not* inherit the
+                    // host view's environment automatically, so the
+                    // three injections below stay.
                     ExplorerList(searchText: $viewModel.searchText, router: router)
                         .environment(session)
                         .environment(manager)
@@ -422,4 +437,6 @@ struct EventsExplorer: View {
 #Preview {
     EventsExplorer(router: .constant(EventRouter()), showMenu: .constant(false), showNewEvent: .constant(false))
         .environment(SessionStore())
+        .environment(SearchManager())
+        .environment(EventsViewModel())
 }

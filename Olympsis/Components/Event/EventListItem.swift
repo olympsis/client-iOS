@@ -12,7 +12,10 @@ import Kingfisher
 /// A view that shows an event's data at a glance. A list item.
 struct EventListItem: View {
 
-    @State var event: Event
+    // `Event` is already a reference type, so `@State` adds a per-row
+    // storage allocation that buys nothing. A plain `let` is enough —
+    // mutations to event properties propagate via `@Observable`.
+    let event: Event
     var scale: LIST_ITEM_SCALE = .regular
     var namespace: Namespace.ID? = nil
     /// Optional tap override. When provided we drop the implicit

@@ -10,7 +10,9 @@ import Kingfisher
 
 struct VenueListItem: View {
 
-    @State var venue: Venue
+    // `Venue` is a reference type — a plain `let` avoids the per-row
+    // `@State` storage allocation and we never reassign it locally.
+    let venue: Venue
     /// Mirrors `EventListItem.scale` so a single value threaded through
     /// `ExplorerList` controls both card sizes consistently in split view.
     var scale: LIST_ITEM_SCALE = .regular
@@ -20,8 +22,8 @@ struct VenueListItem: View {
     /// sheet (where a sheet-on-sheet would be jank).
     var onTap: (() -> Void)? = nil
 
-    @State var showDetail = false // show field view detail
-    @State var showReport = false // show make a report view
+    @State private var showDetail = false // show field view detail
+    @State private var showReport = false // show make a report view
     @Environment(SessionStore.self) private var session
 
     var fieldCityString: String {
