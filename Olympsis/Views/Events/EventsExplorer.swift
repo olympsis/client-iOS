@@ -78,12 +78,6 @@ struct EventsExplorer: View {
     /// Latest camera span — drives the unit-polygon visibility threshold.
     @State private var cameraLatitudeSpan: Double = 0.05
 
-    /// Mobile-only: whether the bottom-sheet explorer is up. We dismiss
-    /// it whenever the user pushes onto the navigation stack so the
-    /// pushed detail view gets the full screen, then bring it back when
-    /// the stack empties out (i.e. they popped back to the explorer).
-    @State private var showExplorerSheet: Bool = true
-
     /// Memoized cluster results. Recomputing the grid on every body
     /// re-evaluation showed up in profiling — these caches are only
     /// invalidated when the underlying inputs (counts + zoom bucket)
@@ -436,8 +430,22 @@ struct EventsExplorer: View {
                     .frame(maxWidth: SCREEN_WIDTH/2.5)
             }
         default:
+            // The sheet's visibility is derived directly from the
+            // router's nav path: shown when we're at the explorer root,
+            // hidden whenever a detail view is on the stack. Driving it
+            // off the same source-of-truth as the NavigationStack means
+            // the dismiss and push animate in the same transaction
+            // (vs. the previous setup where an `onChange` flipped a
+            // `@State` flag a frame after the push had already begun).
+            // The setter is a no-op because `interactiveDismissDisabled`
+            // already blocks swipe-to-dismiss; SwiftUI never has a
+            // reason to flip the flag itself.
+            let sheetBinding = Binding<Bool>(
+                get: { router.navPath.isEmpty },
+                set: { _ in }
+            )
             mapView
-                .sheet(isPresented: $showExplorerSheet) {
+                .sheet(isPresented: sheetBinding) {
                     // Pass the parent's router into the sheet so the list
                     // items push onto the underlying NavigationStack
                     // (NavigationLink alone can't reach across a sheet
@@ -462,13 +470,6 @@ struct EventsExplorer: View {
                         // Scrolls inside the list shouldn't drag the
                         // sheet up; the user resizes it via the grabber.
                         .presentationContentInteraction(.scrolls)
-                }
-                // Hide the explorer sheet whenever a detail page is
-                // pushed onto the stack and bring it back on pop. We key
-                // off `navPath.count` directly because `NavigationPath`
-                // isn't `Equatable` — count changes on every push/pop.
-                .onChange(of: router.navPath.count) { _, newCount in
-                    showExplorerSheet = (newCount == 0)
                 }
         }
     }

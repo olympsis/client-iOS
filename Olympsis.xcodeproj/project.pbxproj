@@ -404,6 +404,7 @@
 		5DDE415F2F7437DE00D7E1EA /* NewEventOrganizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */; };
 		5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F632C8758ED001A9861 /* AsyncPostView.swift */; };
 		5DE67F662C87E2E9001A9861 /* AsyncEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */; };
+		5DEAEC012E10000000000001 /* EventAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEAEC002E10000000000001 /* EventAnnotation.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */; };
@@ -478,7 +479,6 @@
 		9A81B63A2925D0F3009CA6ED /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6392925D0F3009CA6ED /* UploadService.swift */; };
 		9A81B63E2925DE1A009CA6ED /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B63D2925DE1A009CA6ED /* LocationManager.swift */; };
 		9A81B6422925E50C009CA6ED /* EventListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6412925E50C009CA6ED /* EventListItem.swift */; };
-		5DEAEC012E10000000000001 /* EventAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEAEC002E10000000000001 /* EventAnnotation.swift */; };
 		9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6452925EAE6009CA6ED /* EventObserver.swift */; };
 		9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64A2925EC79009CA6ED /* EventService.swift */; };
 		9A81B64D2925EED1009CA6ED /* EventsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B64C2925EED1009CA6ED /* EventsModalView.swift */; };
@@ -985,7 +985,6 @@
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalScreen.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
-		5DEAEC002E10000000000001 /* EventAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
 		5DDD5E6F2C41095600793FEB /* Events.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Events.xcstrings; sourceTree = "<group>"; };
@@ -996,6 +995,7 @@
 		5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventOrganizers.swift; sourceTree = "<group>"; };
 		5DE67F632C8758ED001A9861 /* AsyncPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPostView.swift; sourceTree = "<group>"; };
 		5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventView.swift; sourceTree = "<group>"; };
+		5DEAEC002E10000000000001 /* EventAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnnotation.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationPicker.swift; sourceTree = "<group>"; };
@@ -3235,7 +3235,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.3;
+				MARKETING_VERSION = 0.9.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3291,7 +3291,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.3;
+				MARKETING_VERSION = 0.9.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
