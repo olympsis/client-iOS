@@ -25,7 +25,7 @@
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
-	<string>192.168.108.12</string>
+	<string>192.168.1.156</string>
 	<key>DEV_USER_ID</key>
 	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
 	<key>Enable Multiple Windows</key>

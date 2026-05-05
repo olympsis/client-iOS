@@ -116,7 +116,7 @@ struct VenueListItem: View {
                         .imageScale(.large)
                 }.frame(height: 40)
             }
-            .padding(.top, 10)
+            .padding(.vertical, 10)
             .padding(.horizontal)
             .sheet(isPresented: $showDetail) {
                 VenueView(venue: venue)

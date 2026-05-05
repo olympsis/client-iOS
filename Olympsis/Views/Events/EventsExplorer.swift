@@ -411,10 +411,18 @@ struct EventsExplorer: View {
         .onChange(of: venuesClusterKey, initial: true) { _, _ in
             cachedVenueClusters = computeVenueClusters()
         }
-        .onAppear {
-            if case .automatic = camera {
-                camera = .userLocation(fallback: .region(session.currentLocation))
-            }
+        // Snap the camera to the user on first appear. We were relying on
+        // `MapCameraPosition.userLocation(fallback:)` to do this implicitly,
+        // but its follow mode only kicks in on the next CL update — when
+        // permission is already granted and a fix is cached, the map can
+        // sit on the fallback region indefinitely. Awaiting a real fix
+        // here and then setting `.region(...)` explicitly forces the
+        // camera to move to the user's actual location on launch.
+        .task {
+            // Don't fight the user if they've already panned away.
+            guard case .automatic = camera else { return }
+            _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
+            withAnimation { camera = .region(session.currentLocation) }
         }
     }
 
