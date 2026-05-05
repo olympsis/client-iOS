@@ -78,6 +78,13 @@ struct EventsExplorer: View {
     /// Latest camera span — drives the unit-polygon visibility threshold.
     @State private var cameraLatitudeSpan: Double = 0.05
 
+    /// Last detent the user dragged the explorer sheet to. We persist
+    /// it in `@State` so it survives the dismiss / re-present cycle that
+    /// happens when the user pushes a detail view and pops back —
+    /// without this the sheet would always re-open at the initial
+    /// (smallest) detent.
+    @State private var sheetDetent: PresentationDetent = .medium
+
     /// Memoized cluster results. Recomputing the grid on every body
     /// re-evaluation showed up in profiling — these caches are only
     /// invalidated when the underlying inputs (counts + zoom bucket)
@@ -457,7 +464,14 @@ struct EventsExplorer: View {
                         .environment(manager)
                         .environment(viewModel)
                         .presentationDragIndicator(.visible)
-                        .presentationDetents([.height(100), .medium, .large])
+                        // `selection: $sheetDetent` makes the sheet
+                        // re-open at whatever detent it was last in,
+                        // restoring the user's chosen position after
+                        // a navigate-then-back round trip.
+                        .presentationDetents(
+                            [.height(100), .medium, .large],
+                            selection: $sheetDetent
+                        )
                         // Zillow-style: let map gestures pass through the
                         // sheet's backdrop while the user is at the small
                         // or medium detents. At `.large` the sheet covers
