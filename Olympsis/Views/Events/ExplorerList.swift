@@ -304,14 +304,20 @@ struct ExplorerList: View {
                                     .multilineTextAlignment(.center)
                             }.padding(.top, 50)
                         } else {
-                            ForEach(session.venues) { venue in
-                                VenueListItem(
-                                    venue: venue,
-                                    scale: listItemScale,
-                                    onTap: router.map { router in
-                                        { router.navigate(to: .venue(venue: venue)) }
-                                    }
-                                )
+                            // `LazyVStack` so a long venues list only
+                            // realizes the cards currently on screen,
+                            // matching the events branch and avoiding
+                            // a wave of `KFImage` decodes on first show.
+                            LazyVStack {
+                                ForEach(session.venues) { venue in
+                                    VenueListItem(
+                                        venue: venue,
+                                        scale: listItemScale,
+                                        onTap: router.map { router in
+                                            { router.navigate(to: .venue(venue: venue)) }
+                                        }
+                                    )
+                                }
                             }
                         }
                     case .loading:
