@@ -148,6 +148,12 @@ struct EventListItem: View {
                         }
                 }
                 .resizable()
+                .cacheOriginalImage()
+                // Decode the image at a list-card resolution rather than
+                // its native size — saves both the decode CPU and the
+                // memory cost of holding 4K-ish JPEGs for cards that
+                // top out around 1000pt wide.
+                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 1000, height: 600)))
                 .scaledToFill()
                 .clipped()
                 .zIndex(1)
