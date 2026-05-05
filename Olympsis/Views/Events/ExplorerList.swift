@@ -149,9 +149,7 @@ struct ExplorerList: View {
     }
     
     var body: some View {
-        // @Bindable lets us derive Bindings from the @Observable view model.
-        // It must live inside `body` (or be declared with @Bindable var) because
-        // the view model itself comes from @Environment, not @State.
+
         @Bindable var vm = viewModel
 
         // Single per-render snapshot used by every consumer below.
@@ -165,12 +163,6 @@ struct ExplorerList: View {
         }()
         let eventsGrouped = events.eventsGroupedByDay()
 
-        // Picker lives in a sticky header *outside* the ScrollView.
-        // Inside the scroll view it competed for gestures with the
-        // sheet's `presentationContentInteraction(.scrolls)` and the
-        // segmented control would intermittently swallow taps; pulling
-        // it out also keeps it visible at the top of the sheet while
-        // the user scrolls the list.
         return VStack(spacing: 0) {
             HStack {
                 Spacer()

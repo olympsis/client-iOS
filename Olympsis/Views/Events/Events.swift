@@ -90,7 +90,7 @@ struct Events: View {
                     case .new:
                         NewEvent(manager: NewEventManager())
                     case .venue(let venue):
-                        VenueView(venue: venue)
+                        VenueView(venue: venue, isFullScreen: true)
                             .environment(session)
                     }
                 })

@@ -377,9 +377,6 @@ struct EventsExplorer: View {
     }
 
     // MARK: - Map view
-    //
-    // Computed (not stored in a `let`) so SwiftUI re-evaluates the
-    // `MapContentBuilder` closure each time `body` runs.
 
     @ViewBuilder
     private var mapView: some View {
@@ -387,8 +384,6 @@ struct EventsExplorer: View {
             // System blue dot.
             UserAnnotation()
 
-            // Switch the pin source by the active tab. `if/else` rather
-            // than `switch` for `MapContentBuilder` compatibility.
             if viewModel.page == .events {
                 eventsMapContent
             } else {
@@ -411,13 +406,6 @@ struct EventsExplorer: View {
         .onChange(of: venuesClusterKey, initial: true) { _, _ in
             cachedVenueClusters = computeVenueClusters()
         }
-        // Snap the camera to the user on first appear. We were relying on
-        // `MapCameraPosition.userLocation(fallback:)` to do this implicitly,
-        // but its follow mode only kicks in on the next CL update — when
-        // permission is already granted and a fix is cached, the map can
-        // sit on the fallback region indefinitely. Awaiting a real fix
-        // here and then setting `.region(...)` explicitly forces the
-        // camera to move to the user's actual location on launch.
         .task {
             // Don't fight the user if they've already panned away.
             guard case .automatic = camera else { return }
@@ -429,9 +417,6 @@ struct EventsExplorer: View {
     // MARK: - Body
 
     var body: some View {
-        // `@Bindable` re-derives a `Binding` over an `@Observable`
-        // sourced from the environment — needed because `$viewModel...`
-        // doesn't compile on `@Environment`-injected observables.
         @Bindable var viewModel = viewModel
 
         switch horizontalSizeClass {
@@ -439,8 +424,6 @@ struct EventsExplorer: View {
             HStack {
                 mapView
 
-                // Environment values are inherited automatically; no
-                // need to re-inject `session`/`manager`/`viewModel` here.
                 ExplorerList(searchText: $viewModel.searchText, router: router, scale: 2)
                     .frame(maxWidth: SCREEN_WIDTH/2.5)
             }
@@ -461,21 +444,11 @@ struct EventsExplorer: View {
             )
             mapView
                 .sheet(isPresented: sheetBinding) {
-                    // Pass the parent's router into the sheet so the list
-                    // items push onto the underlying NavigationStack
-                    // (NavigationLink alone can't reach across a sheet
-                    // boundary). Sheet content does *not* inherit the
-                    // host view's environment automatically, so the
-                    // three injections below stay.
                     ExplorerList(searchText: $viewModel.searchText, router: router)
                         .environment(session)
                         .environment(manager)
                         .environment(viewModel)
                         .presentationDragIndicator(.visible)
-                        // `selection: $sheetDetent` makes the sheet
-                        // re-open at whatever detent it was last in,
-                        // restoring the user's chosen position after
-                        // a navigate-then-back round trip.
                         .presentationDetents(
                             [.height(100), .medium, .large],
                             selection: $sheetDetent
