@@ -34,46 +34,26 @@ struct ExplorerList: View {
     
     @Namespace private var heroNamespace
     
-    private var events: [Event] {
-        guard !searchText.isEmpty else {
-            return Array(session.events)
-                // Check if any selected tag is in the event's tags
-                .filter { event in
-                    manager.selectedTags.isEmpty ||
-                    manager.selectedTags.contains { tag in event.tags.contains(tag) }
-                }
-                // Check if any selected sport is in the event's sports
-                .filter { event in
-                    manager.selectedSports.isEmpty ||
-                    manager.selectedSports.contains { sport in event.sports.contains(sport) }
-                }
-        }
-        return Array(session.events)
-            // Check if any selected tag is in the event's tags
+    /// Filtered events for the current tags / sports / search query.
+    /// Body computes this once into a local `let` and passes it to every
+    /// downstream consumer (`isEmpty` check, group banner, ForEach,
+    /// nextEvents) — avoids re-running `Array(session.events)` and three
+    /// `.filter`s on every property access during a render pass.
+    private func computeEvents() -> [Event] {
+        var result = Array(session.events)
             .filter { event in
                 manager.selectedTags.isEmpty ||
-                manager.selectedTags.contains { selectedTag in event.tags.contains(selectedTag) }
+                manager.selectedTags.contains { tag in event.tags.contains(tag) }
             }
-            // Check if any selected sport is in the event's sports
             .filter { event in
                 manager.selectedSports.isEmpty ||
-                manager.selectedSports.contains { selectedSport in event.sports.contains(selectedSport) }
+                manager.selectedSports.contains { sport in event.sports.contains(sport) }
             }
-            // Filter by search text in the title
-            .filter { $0.title.localizedLowercase.contains(searchText.localizedLowercase) }
-    }
-    
-    private var nextEvents: [Event] {
-        guard let user = session.user,
-              let userID = user.userID else {
-            return []
+        if !searchText.isEmpty {
+            let needle = searchText.localizedLowercase
+            result = result.filter { $0.title.localizedLowercase.contains(needle) }
         }
-        return events.rsvpedEvents(userID: userID)
-    }
-    
-    private var eventsGrouped: [DayGroup] {
-        return events
-            .eventsGroupedByDay()
+        return result
     }
     
     private var fallbackLocation: CLLocation {
@@ -173,8 +153,19 @@ struct ExplorerList: View {
         // It must live inside `body` (or be declared with @Bindable var) because
         // the view model itself comes from @Environment, not @State.
         @Bindable var vm = viewModel
-        
-        ScrollViewReader { proxy in
+
+        // Single per-render snapshot used by every consumer below.
+        // Previously each computed property re-allocated the array and
+        // re-ran every filter on every access (`isEmpty`, `nextEvents`,
+        // `eventsGrouped`, ForEach, onChange handler).
+        let events = computeEvents()
+        let nextEvents: [Event] = {
+            guard let userID = session.user?.userID else { return [] }
+            return events.rsvpedEvents(userID: userID)
+        }()
+        let eventsGrouped = events.eventsGroupedByDay()
+
+        return ScrollViewReader { proxy in
             ScrollView {
                 HStack {
                     Spacer()
