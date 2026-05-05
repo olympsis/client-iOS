@@ -74,6 +74,14 @@ struct EventsExplorer: View {
     /// the stack empties out (i.e. they popped back to the explorer).
     @State private var showExplorerSheet: Bool = true
 
+    /// Memoized cluster results. Recomputing the grid on every body
+    /// re-evaluation showed up in profiling — these caches are only
+    /// invalidated when the underlying inputs (counts + zoom bucket)
+    /// actually change, via the `.onChange(initial: true)` modifiers
+    /// on `mapView`.
+    @State private var cachedEventClusters: [EventCluster] = []
+    @State private var cachedVenueClusters: [VenueClusterItem] = []
+
     @Environment(SessionStore.self) private var session
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -141,15 +149,30 @@ struct EventsExplorer: View {
         return nil
     }
 
-    /// Cluster events into grid cells sized relative to the current camera
-    /// span, so the same algorithm produces tighter clusters when zoomed
-    /// out and looser ones when zoomed in. Each cell collects the events
-    /// whose coordinates round to that bucket, and the resulting pin sits
-    /// at the centroid of the bucket's events.
-    ///
-    /// Rebuilt on every body re-evaluation, which is cheap relative to
-    /// the typical event count and keeps the cluster snap to the camera.
-    private var eventClusters: [EventCluster] {
+    /// Snapped span used as the zoom-component of the cluster cache key.
+    /// Rounding to 3 decimal places means tiny camera jitter doesn't
+    /// invalidate the cache — clusters refresh only when the user
+    /// meaningfully zooms in or out.
+    private var snappedClusterSpan: Double {
+        (cameraLatitudeSpan * 1000).rounded() / 1000
+    }
+
+    /// Inputs that, when changed, force a recompute of the events
+    /// cluster grid: events count + the user's id (they may not be
+    /// participating yet, then RSVP) + the zoom bucket.
+    private var eventsClusterKey: String {
+        "\(session.events.count)|\(session.user?.userID ?? "")|\(snappedClusterSpan)"
+    }
+
+    /// Same idea for venues, but no user-id dependency.
+    private var venuesClusterKey: String {
+        "\(session.venues.count)|\(snappedClusterSpan)"
+    }
+
+    /// Build the events cluster grid from the current state. Called only
+    /// when `eventsClusterKey` changes (see `.onChange(initial: true)`),
+    /// not on every body render.
+    private func computeEventClusters() -> [EventCluster] {
         // Floor on cell size: prevents the grid from collapsing to zero
         // when the camera is at maximum zoom and `cameraLatitudeSpan`
         // approaches the span of a single building.
@@ -249,10 +272,11 @@ struct EventsExplorer: View {
         return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
     }
 
-    /// Same grid-bucketing approach as `eventClusters`, applied to venues.
-    /// Single-venue cells render as full `VenueAnnotation`s; multi-venue
-    /// cells render as a `+N` `VenueClusterAnnotation`.
-    private var venueClusters: [VenueClusterItem] {
+    /// Same grid-bucketing approach as `computeEventClusters`, for
+    /// venues. Single-venue cells render as full `VenueAnnotation`s;
+    /// multi-venue cells render as a `+N` `VenueClusterAnnotation`.
+    /// Memoized through `cachedVenueClusters`.
+    private func computeVenueClusters() -> [VenueClusterItem] {
         let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
         var buckets: [String: [(venue: Venue, coord: CLLocationCoordinate2D)]] = [:]
 
@@ -289,7 +313,7 @@ struct EventsExplorer: View {
 
     @MapContentBuilder
     private var eventsMapContent: some MapContent {
-        ForEach(eventClusters) { cluster in
+        ForEach(cachedEventClusters) { cluster in
             // Single-event "cluster" → render the event's image directly.
             // Multi-event cluster → render a stacked-thumbnail badge with
             // a count chip so the user can tap to zoom in / disambiguate.
@@ -318,7 +342,7 @@ struct EventsExplorer: View {
 
     @MapContentBuilder
     private var venuesMapContent: some MapContent {
-        ForEach(venueClusters) { cluster in
+        ForEach(cachedVenueClusters) { cluster in
             Annotation(
                 cluster.venues.first?.name ?? "",
                 coordinate: cluster.coordinate,
@@ -369,6 +393,15 @@ struct EventsExplorer: View {
         }
         .onMapCameraChange(frequency: .onEnd) { context in
             cameraLatitudeSpan = context.region.span.latitudeDelta
+        }
+        // Refresh the cluster caches when their inputs change.
+        // `initial: true` makes it fire once on first appear so the
+        // caches are populated before the user starts panning.
+        .onChange(of: eventsClusterKey, initial: true) { _, _ in
+            cachedEventClusters = computeEventClusters()
+        }
+        .onChange(of: venuesClusterKey, initial: true) { _, _ in
+            cachedVenueClusters = computeVenueClusters()
         }
         .onAppear {
             if case .automatic = camera {
