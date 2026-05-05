@@ -23,6 +23,27 @@ private struct VenueUnitFootprint: Identifiable {
     let coordinates: [CLLocationCoordinate2D]
 }
 
+/// A bucket of events that collapse into a single annotation at the
+/// current zoom. Single-event clusters render as `EventAnnotation`;
+/// multi-event clusters render as `EventClusterAnnotation`.
+private struct EventCluster: Identifiable {
+    let id: String   // grid-cell key, stable across rebuilds
+    let coordinate: CLLocationCoordinate2D
+    let events: [Event]
+}
+
+/// Same shape as `EventCluster` but for venue pins.
+private struct VenueClusterItem: Identifiable {
+    let id: String
+    let coordinate: CLLocationCoordinate2D
+    let venues: [Venue]
+}
+
+/// Number of grid cells per screen-height of latitude. Tuned so that
+/// items within ~1/12 of the visible map (≈ a thumb-width on screen)
+/// collapse into a cluster. Larger numbers → less aggressive clustering.
+private let kClusterCellsPerScreen: Double = 12
+
 struct EventsExplorer: View {
 
     @Binding var router: EventRouter
@@ -32,15 +53,14 @@ struct EventsExplorer: View {
     @State private var manager = SearchManager()
     @State private var viewModel = EventsViewModel()
 
-    /// Camera position for the map. We start in `.userLocation` follow mode
-    /// so the map opens centered on the user as soon as Core Location reports
-    /// a fix; the fallback region (hometown → NYC) covers the moments before
-    /// that or when location permission is denied. The user breaks out of
-    /// follow mode automatically by panning.
+    /// Camera position. Switched into `.userLocation(fallback:)` on first
+    /// appear so the map opens centered on the user as soon as Core
+    /// Location reports a fix; the fallback region (hometown → NYC) covers
+    /// the moments before that or when permission is denied. The user
+    /// breaks out of follow mode automatically by panning.
     @State private var camera: MapCameraPosition = .automatic
 
-    /// Latest camera span — used to decide whether unit polygons should be
-    /// drawn. Updated via `onMapCameraChange`.
+    /// Latest camera span — drives the unit-polygon visibility threshold.
     @State private var cameraLatitudeSpan: Double = 0.05
 
     @Environment(SessionStore.self) private var session
@@ -50,77 +70,103 @@ struct EventsExplorer: View {
 
     // MARK: - Derived data
 
-    /// Venues to drop pins for, depending on the picker selection.
-    /// - `.events` → venues attached to events the current user has RSVPed
-    ///   to AND whose `config.hideLocation` is not `true`.
-    /// - `.venues` → every venue in the session cache.
-    private var mapVenues: [Venue] {
-        switch viewModel.page {
-        case .events:
-            return rsvpedEventVenues()
-        case .venues:
-            return session.venues
-        }
-    }
-
-    /// Unit footprints to render. Empty unless we're on the venues tab AND
-    /// the user has zoomed in past the threshold — pulling these onto the
-    /// map at low zoom levels would just render as fuzzy dots.
-    private var visibleUnitFootprints: [VenueUnitFootprint] {
-        guard viewModel.page == .venues,
-              cameraLatitudeSpan < kVenueUnitPolygonZoomThreshold else {
-            return []
-        }
-        return footprints(for: mapVenues)
-    }
-
-    /// For the events tab: collect every venue referenced by an event the
-    /// user can see on the map.
+    /// Events to drop pins for on the events tab.
     ///
-    /// Inclusion rule:
-    /// - The user is a participant (they've RSVPed) — always show, since
-    ///   `hideLocation` is the "hide pre-RSVP" flag and post-RSVP they're
-    ///   entitled to the venue.
-    /// - OR the event isn't `.Private` AND `config.hideLocation != true`.
-    ///
-    /// We resolve each `VenueDescriptor` against `session.venues` so we have
-    /// full geo data for the pin; descriptors with no matching cached venue
-    /// are dropped here and re-attempted by the hydration `.task` below.
-    private func rsvpedEventVenues() -> [Venue] {
+    /// Inclusion rule mirrors the previous logic: the user is a participant
+    /// (RSVPed → always show, since `hideLocation` is the "hide pre-RSVP"
+    /// flag), OR the event isn't `.Private` AND `config.hideLocation != true`.
+    /// We pull the coordinate straight off the event's first
+    /// `VenueDescriptor.location` so events render even when the
+    /// corresponding `Venue` hasn't landed in the session cache yet.
+    private var visibleEvents: [Event] {
         let userID = session.user?.userID
-        var seen = Set<String>()
-        var result: [Venue] = []
-
-        for event in session.events {
+        return Array(session.events).filter { event in
             let userIsParticipant: Bool = {
                 guard let id = userID else { return false }
                 return event.participants.contains(where: { $0.user?.userID == id })
             }()
             let isPrivate = event.visibility == .Private
             let locationHidden = event.config?.hideLocation == true
+            return userIsParticipant || (!isPrivate && !locationHidden)
+        }
+    }
 
-            let canShow = userIsParticipant || (!isPrivate && !locationHidden)
-            guard canShow else { continue }
+    /// Unit footprints to render. Empty unless we're on the venues tab AND
+    /// the user has zoomed in past the threshold.
+    private var visibleUnitFootprints: [VenueUnitFootprint] {
+        guard viewModel.page == .venues,
+              cameraLatitudeSpan < kVenueUnitPolygonZoomThreshold else {
+            return []
+        }
+        return footprints(for: session.venues)
+    }
 
-            for descriptor in event.venues {
-                // Match by ID first (internal venues), then fall back to
-                // name + coords for external / seed-style venues that come
-                // through without a backend ID.
-                let match = session.venues.first { venue in
-                    if let id = descriptor.id, venue.id == id { return true }
-                    if let name = descriptor.name, venue.name == name,
-                       let loc = descriptor.location, loc == venue.location {
-                        return true
-                    }
-                    return false
+    /// Coordinate to drop a pin at for an event. Prefers the event's first
+    /// `VenueDescriptor.location` (the embedded snapshot the backend ships
+    /// with the event), falling back to the cached `Venue` when the
+    /// descriptor lacks coordinates.
+    private func eventCoordinate(for event: Event) -> CLLocationCoordinate2D? {
+        for descriptor in event.venues {
+            // 1. Embedded location on the descriptor — most common case.
+            if let loc = descriptor.location {
+                let coords = loc.coordinates
+                if coords.count >= 2 {
+                    return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
                 }
-                if let venue = match, !seen.contains(venue.id) {
-                    seen.insert(venue.id)
-                    result.append(venue)
+            }
+            // 2. Look up the resolved venue in the cache.
+            if let id = descriptor.id,
+               let venue = session.venues.first(where: { $0.id == id }) {
+                let coords = venue.location.coordinates
+                if coords.count >= 2 {
+                    return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
                 }
             }
         }
-        return result
+        return nil
+    }
+
+    /// Cluster events into grid cells sized relative to the current camera
+    /// span, so the same algorithm produces tighter clusters when zoomed
+    /// out and looser ones when zoomed in. Each cell collects the events
+    /// whose coordinates round to that bucket, and the resulting pin sits
+    /// at the centroid of the bucket's events.
+    ///
+    /// Rebuilt on every body re-evaluation, which is cheap relative to
+    /// the typical event count and keeps the cluster snap to the camera.
+    private var eventClusters: [EventCluster] {
+        // Floor on cell size: prevents the grid from collapsing to zero
+        // when the camera is at maximum zoom and `cameraLatitudeSpan`
+        // approaches the span of a single building.
+        let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
+
+        // Bucket: grid key → events + coordinates contributing to it.
+        var buckets: [String: [(event: Event, coord: CLLocationCoordinate2D)]] = [:]
+
+        for event in visibleEvents {
+            guard let coord = eventCoordinate(for: event) else { continue }
+            // Snap each coordinate to its grid cell. Using `.down` keeps
+            // adjacent points stable as the camera shifts (vs. `.toNearest`
+            // which would flicker pins across cell boundaries).
+            let bucketLat = (coord.latitude / cellSize).rounded(.down) * cellSize
+            let bucketLng = (coord.longitude / cellSize).rounded(.down) * cellSize
+            // Round the key string aggressively so floating-point jitter
+            // doesn't produce two effectively-identical keys.
+            let key = String(format: "%.6f,%.6f", bucketLat, bucketLng)
+            buckets[key, default: []].append((event, coord))
+        }
+
+        return buckets.map { (key, items) -> EventCluster in
+            let lats = items.map { $0.coord.latitude }
+            let lngs = items.map { $0.coord.longitude }
+            let centerLat = lats.reduce(0, +) / Double(lats.count)
+            let centerLng = lngs.reduce(0, +) / Double(lngs.count)
+            return EventCluster(
+                id: key,
+                coordinate: CLLocationCoordinate2D(latitude: centerLat, longitude: centerLng),
+                events: items.map(\.event)
+            )
+        }
     }
 
     /// Flattens each unit's `Polygon` / `MultiPolygon` geometry into a list
@@ -167,100 +213,141 @@ struct EventsExplorer: View {
         }
     }
 
-    /// For an event venue we may not have the full `Venue` object in cache
-    /// yet — kick off a hydration pass for any descriptors that pass the
-    /// same inclusion rule used by `rsvpedEventVenues()` so the pins show
-    /// up as soon as the request resolves.
-    @MainActor
-    private func hydrateRsvpedVenuesIfNeeded() async {
-        guard viewModel.page == .events else { return }
-        let userID = session.user?.userID
-
-        var missing: [VenueDescriptor] = []
-        for event in session.events {
-            let userIsParticipant: Bool = {
-                guard let id = userID else { return false }
-                return event.participants.contains(where: { $0.user?.userID == id })
-            }()
-            let isPrivate = event.visibility == .Private
-            let locationHidden = event.config?.hideLocation == true
-            let canShow = userIsParticipant || (!isPrivate && !locationHidden)
-            guard canShow else { continue }
-
-            for descriptor in event.venues {
-                guard let id = descriptor.id else { continue }
-                if !session.venues.contains(where: { $0.id == id }) {
-                    missing.append(descriptor)
-                }
-            }
-        }
-        guard !missing.isEmpty else { return }
-        _ = await session.fetchVenues(in: missing)
+    /// Pin coordinate for a venue. Uses the Point shim on `GeoJSON.coordinates`;
+    /// returns `nil` when the venue lacks a usable Point (e.g. polygon-only
+    /// data) so we can skip rendering an off-coast pin.
+    private func venueCoordinate(for venue: Venue) -> CLLocationCoordinate2D? {
+        let coords = venue.location.coordinates
+        guard coords.count >= 2 else { return nil }
+        return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
     }
 
-    // MARK: - Body
+    /// Same grid-bucketing approach as `eventClusters`, applied to venues.
+    /// Single-venue cells render as full `VenueAnnotation`s; multi-venue
+    /// cells render as a `+N` `VenueClusterAnnotation`.
+    private var venueClusters: [VenueClusterItem] {
+        let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
+        var buckets: [String: [(venue: Venue, coord: CLLocationCoordinate2D)]] = [:]
 
-    var body: some View {
-        let map = Map(position: $camera) {
-            // System-rendered blue dot for the user's current location.
-            // Requires the Info.plist location-permission keys (already
-            // configured for this app).
-            UserAnnotation()
+        for venue in session.venues {
+            guard let coord = venueCoordinate(for: venue) else { continue }
+            let bucketLat = (coord.latitude / cellSize).rounded(.down) * cellSize
+            let bucketLng = (coord.longitude / cellSize).rounded(.down) * cellSize
+            let key = String(format: "%.6f,%.6f", bucketLat, bucketLng)
+            buckets[key, default: []].append((venue, coord))
+        }
 
-            ForEach(mapVenues, id: \.id) { venue in
-                Annotation(
-                    venue.name,
-                    coordinate: pinCoordinate(for: venue),
-                    anchor: .bottom
-                ) {
-                    VenueAnnotation(venue: venue)
-                        .environment(session)
+        return buckets.map { (key, items) -> VenueClusterItem in
+            let lats = items.map { $0.coord.latitude }
+            let lngs = items.map { $0.coord.longitude }
+            let centerLat = lats.reduce(0, +) / Double(lats.count)
+            let centerLng = lngs.reduce(0, +) / Double(lngs.count)
+            return VenueClusterItem(
+                id: key,
+                coordinate: CLLocationCoordinate2D(latitude: centerLat, longitude: centerLng),
+                venues: items.map(\.venue)
+            )
+        }
+    }
+
+    // MARK: - Map content
+    //
+    // Each tab gets its own `@MapContentBuilder` property so the pins are
+    // sourced from the right collection — events read straight from
+    // `session.events` (using the embedded `VenueDescriptor.location`)
+    // instead of routing through the venue cache, which is why event
+    // pins weren't showing up before: the descriptor → cached venue
+    // lookup would silently fail when `session.venues` didn't contain
+    // a matching id.
+
+    @MapContentBuilder
+    private var eventsMapContent: some MapContent {
+        ForEach(eventClusters) { cluster in
+            // Single-event "cluster" → render the event's image directly.
+            // Multi-event cluster → render a stacked-thumbnail badge with
+            // a count chip so the user can tap to zoom in / disambiguate.
+            Annotation(
+                cluster.events.first?.title ?? "",
+                coordinate: cluster.coordinate,
+                anchor: .bottom
+            ) {
+                if cluster.events.count == 1, let event = cluster.events.first {
+                    EventAnnotation(event: event)
+                } else {
+                    EventClusterAnnotation(events: cluster.events)
                 }
             }
+            .annotationTitles(.hidden)
+        }
+    }
 
-            ForEach(visibleUnitFootprints) { footprint in
-                MapPolygon(coordinates: footprint.coordinates)
-                    .foregroundStyle(.colorPrime.opacity(0.25))
-                    .stroke(.colorPrime, lineWidth: 1.5)
+    @MapContentBuilder
+    private var venuesMapContent: some MapContent {
+        ForEach(venueClusters) { cluster in
+            Annotation(
+                cluster.venues.first?.name ?? "",
+                coordinate: cluster.coordinate,
+                anchor: .bottom
+            ) {
+                if cluster.venues.count == 1, let venue = cluster.venues.first {
+                    VenueAnnotation(venue: venue)
+                        .environment(session)
+                } else {
+                    VenueClusterAnnotation(venues: cluster.venues)
+                }
+            }
+            .annotationTitles(.hidden)
+        }
+
+        // Unit polygons (only when zoomed in close).
+        ForEach(visibleUnitFootprints) { footprint in
+            MapPolygon(coordinates: footprint.coordinates)
+                .foregroundStyle(.colorPrime.opacity(0.25))
+                .stroke(.colorPrime, lineWidth: 1.5)
+        }
+    }
+
+    // MARK: - Map view
+    //
+    // Computed (not stored in a `let`) so SwiftUI re-evaluates the
+    // `MapContentBuilder` closure each time `body` runs.
+
+    @ViewBuilder
+    private var mapView: some View {
+        Map(position: $camera) {
+            // System blue dot.
+            UserAnnotation()
+
+            // Switch the pin source by the active tab. `if/else` rather
+            // than `switch` for `MapContentBuilder` compatibility.
+            if viewModel.page == .events {
+                eventsMapContent
+            } else {
+                venuesMapContent
             }
         }
         .mapControls {
-            // Adds the standard "recenter on me" puck so the user can jump
-            // back to their current location after panning around.
             MapUserLocationButton()
             MapCompass()
         }
         .onMapCameraChange(frequency: .onEnd) { context in
             cameraLatitudeSpan = context.region.span.latitudeDelta
         }
-        // Re-key the hydration task on the events count too. The parent
-        // `Events` view fetches events asynchronously into `session.events`
-        // *after* `EventsExplorer` first appears, so a key of just
-        // `viewModel.page` would fire once on the empty set and never again.
-        // Including the count makes the task re-run whenever events arrive.
-        .task(id: "\(viewModel.page.rawValue)-\(session.events.count)") {
-            await hydrateRsvpedVenuesIfNeeded()
-        }
         .onAppear {
-            // Switch from `.automatic` into user-follow mode on first
-            // appear. We can't initialize it that way at the property
-            // declaration because `session.currentLocation` (the fallback)
-            // isn't accessible there — `@Environment` isn't available in
-            // property initializers. The follow mode breaks the moment the
-            // user pans the map, so this is purely the launch behavior.
             if case .automatic = camera {
                 camera = .userLocation(fallback: .region(session.currentLocation))
             }
         }
+    }
 
+    // MARK: - Body
+
+    var body: some View {
         switch horizontalSizeClass {
         case .regular: // iPad
             HStack {
-                map
+                mapView
 
-                // `scale: 2` flips `EventListItem` into its `.small` layout
-                // so each card fits the narrower split-view column without
-                // truncating titles / clipping the meta row.
                 ExplorerList(searchText: $viewModel.searchText, scale: 2)
                     .frame(maxWidth: SCREEN_WIDTH/2.5)
                     .environment(session)
@@ -268,30 +355,16 @@ struct EventsExplorer: View {
                     .environment(viewModel)
             }
         default:
-            Group {
-                map
-            }.sheet(isPresented: .constant(true)) {
-                ExplorerList(searchText: $viewModel.searchText)
-                    .environment(session)
-                    .environment(manager)
-                    .environment(viewModel)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.height(100), .medium, .large])
-            }
+            mapView
+                .sheet(isPresented: .constant(true)) {
+                    ExplorerList(searchText: $viewModel.searchText)
+                        .environment(session)
+                        .environment(manager)
+                        .environment(viewModel)
+                        .presentationDragIndicator(.visible)
+                        .presentationDetents([.height(100), .medium, .large])
+                }
         }
-    }
-
-    /// Defensive coordinate extraction — `Venue.location.coordinates` is the
-    /// Point shim from `GeoJSON`, which can be empty for unit-only or
-    /// polygon-only venues. We fall back to (0, 0) in that case so the
-    /// annotation still renders rather than crashing on an out-of-bounds
-    /// access; the pin will be off-coast and harmless.
-    private func pinCoordinate(for venue: Venue) -> CLLocationCoordinate2D {
-        let coords = venue.location.coordinates
-        guard coords.count >= 2 else {
-            return CLLocationCoordinate2D(latitude: 0, longitude: 0)
-        }
-        return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
     }
 }
 

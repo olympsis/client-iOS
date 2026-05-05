@@ -67,7 +67,30 @@ struct VenueAnnotation: View {
     }
 }
 
+/// Pin shown when multiple venues collapse into a single cluster at the
+/// current zoom level. Mirrors `EventClusterAnnotation` so events and
+/// venues feel consistent at low zoom levels.
+struct VenueClusterAnnotation: View {
+
+    var venues: [Venue]
+
+    var body: some View {
+        Text("+\(venues.count)")
+            .font(.subheadline)
+            .fontWeight(.bold)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Circle().fill(.colorPrime))
+            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+    }
+}
+
 #Preview {
     VenueAnnotation(venue: VENUES[0])
         .environment(SessionStore())
+}
+
+#Preview("Cluster") {
+    VenueClusterAnnotation(venues: VENUES)
 }
