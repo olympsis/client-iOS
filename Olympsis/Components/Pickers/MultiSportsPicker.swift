@@ -14,17 +14,21 @@ struct MultiSportsPicker: View {
     @Environment(\.dismiss) private var dismiss
     
     func toggleSport(_ sport: Sport) {
-        let name = sport.name.components(separatedBy: " ")[1]
+        // Sport names are single tokens — either a plain word ("soccer",
+        // "pickleball") or hyphen-joined for multi-word sports ("flag-
+        // football"). The previous splits on " " and indexed `[1]`
+        // assumed a leading icon/emoji prefix that no longer exists,
+        // and crashed for any single-word name.
+        let name = sport.name
         guard !selectedSports.contains(name) else {
             selectedSports.remove(name)
             return
         }
         selectedSports.insert(name)
     }
-    
+
     func isSelected(_ sport: Sport) -> Bool {
-        let name = sport.name.components(separatedBy: " ")[1]
-        return selectedSports.contains(name)
+        return selectedSports.contains(sport.name)
     }
     
     var body: some View {
