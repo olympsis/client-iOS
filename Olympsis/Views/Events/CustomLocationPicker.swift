@@ -48,6 +48,30 @@ struct CustomLocationPicker: View {
                 MapPitchToggle()
                 MapUserLocationButton()
             }
+            // On first appear, await a Core Location fix (up to 1s)
+            // and snap the camera to it. We can't rely on
+            // `MapCameraPosition.userLocation(fallback:)` here — its
+            // follow mode only re-centers on the *next* CL update, so
+            // when permission is already granted and a fix is cached
+            // the camera can sit on the fallback region indefinitely.
+            // The `.automatic` guard means we only do this on launch:
+            // once the user pans the map themselves we don't yank
+            // them back.
+            .task {
+                guard case .automatic = position else { return }
+                LocationManager.shared.requestLocation()
+                _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
+                let coord = LocationManager.shared.location
+                    ?? CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
+                withAnimation {
+                    position = .region(
+                        MKCoordinateRegion(
+                            center: coord,
+                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                        )
+                    )
+                }
+            }
         }
     }
 }
