@@ -530,6 +530,18 @@ struct EventsExplorer: View {
                 .spring(response: 0.35, dampingFraction: 0.86),
                 value: viewModel.isSearchActive
             )
+            // When the user opens search from a fully-collapsed drawer
+            // (`.small`), promote it to `.medium` so there's actually
+            // list content visible behind the floating bar to filter
+            // against. `.medium` and `.large` are left alone — the
+            // first already shows half the list, and the second is
+            // already at full-screen.
+            .onChange(of: viewModel.isSearchActive) { _, isActive in
+                guard isActive, sheetDetent == .small else { return }
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.86)) {
+                    sheetDetent = .medium
+                }
+            }
         }
     }
 }

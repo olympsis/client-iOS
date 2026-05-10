@@ -190,16 +190,33 @@ struct ExplorerList: View {
 
         return VStack(spacing: 8) {
 
-            // MARK: - Search row
+            // MARK: - Picker + actions row
             //
-            // Sits below the drag indicator and above the picker.
-            // The search bar only shows when the host drawer is fully
-            // expanded (or there's no drawer); otherwise we just keep
-            // the calendar + filter buttons so the collapsed drawer
-            // header stays compact.
-            if isFullyExpanded {
-                HStack(spacing: 8) {
-                    
+            // Picker on the leading edge, calendar + filter buttons on
+            // the trailing edge, with a `Spacer` in between so the
+            // buttons hug the right and the picker hugs the left.
+            // Floating search bar in `EventsExplorer` replaces the
+            // old in-drawer search field, so this row no longer has a
+            // text input — just the segmented control and the two
+            // action buttons. Buttons are gated on `isFullyExpanded`
+            // so the collapsed drawer header doesn't double up with
+            // the `FloatingDrawerActions` chips outside the drawer.
+            HStack(spacing: 8) {
+                Picker("Page", selection: $vm.page) {
+                    ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
+                        Text(page.localized).tag(page)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: SCREEN_WIDTH/3)
+
+                // Spacer + action buttons only when fully extended.
+                // When the drawer is collapsed there's nothing to push
+                // against, and `FloatingDrawerActions` already surfaces
+                // the same calendar/filter chips outside the drawer.
+                if isFullyExpanded {
+                    Spacer()
+
                     Button {
                         showDatePicker = true
                     } label: {
@@ -235,24 +252,10 @@ struct ExplorerList: View {
                         )
                     }
                 }
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .animation(.spring(response: 0.3, dampingFraction: 0.86), value: isFullyExpanded)
             }
-
-            // MARK: - Picker
-            HStack {
-                Spacer()
-                Picker("Page", selection: $vm.page) {
-                    ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
-                        Text(page.localized).tag(page)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: SCREEN_WIDTH/3)
-                Spacer()
-            }
+            .padding(.horizontal)
             .padding(.bottom, 8)
+            .animation(.spring(response: 0.3, dampingFraction: 0.86), value: isFullyExpanded)
 
             ScrollViewReader { proxy in
                 ScrollView {
