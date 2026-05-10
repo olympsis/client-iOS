@@ -15,10 +15,35 @@ struct ExplorerList: View {
     /// `NavigationStack` even when the list is hosted inside a sheet
     /// (where `NavigationLink` can't see the parent stack).
     var router: EventRouter? = nil
+    /// Bound to the parent's filter-sheet state. Pass through from
+    /// `EventsExplorer` so the in-drawer filter button toggles the
+    /// existing `FilterView` sheet that lives on `Events`.
+    var showMenu: Binding<Bool>? = nil
+    /// Lifted to the parent so the floating drawer-actions overlay
+    /// and the in-drawer calendar share the same picked date — both
+    /// pickers should scroll the list to the same place.
+    var selectedDate: Binding<Date>? = nil
+    /// `true` when the host drawer is fully expanded (or when there's
+    /// no drawer at all, e.g. the iPad split layout). When `false` we
+    /// hide the search bar and only show the action buttons in the
+    /// header so the collapsed drawer reads as a compact toolbar.
+    var isFullyExpanded: Bool = true
     var scale: Int = 1
 
     @State private var todayDate = Date()
-    @State private var selectedDate = Date()
+    /// Local fallback when no `selectedDate` binding is provided
+    /// (preview / standalone use).
+    @State private var localSelectedDate = Date()
+
+    /// One source of truth for the date — caller's binding when given,
+    /// the local fallback otherwise. Used by both the popover picker
+    /// and the `.onChange` scroll-to handler below.
+    private var dateBinding: Binding<Date> {
+        selectedDate ?? $localSelectedDate
+    }
+    /// Drives the calendar popover that lets the user jump the list
+    /// to a specific date.
+    @State private var showDatePicker = false
 
     /// Map the numeric scale that callers (e.g. the iPad split layout)
     /// pass us into the `EventListItem`-flavored enum. Anything above the
@@ -163,7 +188,60 @@ struct ExplorerList: View {
         }()
         let eventsGrouped = events.eventsGroupedByDay()
 
-        return VStack(spacing: 0) {
+        return VStack(spacing: 8) {
+
+            // MARK: - Search row
+            //
+            // Sits below the drag indicator and above the picker.
+            // The search bar only shows when the host drawer is fully
+            // expanded (or there's no drawer); otherwise we just keep
+            // the calendar + filter buttons so the collapsed drawer
+            // header stays compact.
+            if isFullyExpanded {
+                HStack(spacing: 8) {
+                    SearchBar(text: $searchText)
+                    
+                    Button {
+                        showDatePicker = true
+                    } label: {
+                        Image(systemName: "calendar")
+                            .imageScale(.medium)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                            .frame(width: 38, height: 38)
+                    }
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .popover(isPresented: $showDatePicker) {
+                        DatePicker(
+                            "",
+                            selection: dateBinding,
+                            in: todayDate...,
+                            displayedComponents: .date
+                        )
+                        .datePickerStyle(.graphical)
+                        .padding()
+                        // Without an explicit min width the popover
+                        // container squishes to the source button's
+                        // width on compact size classes and the
+                        // day-grid columns end up overlapping.
+                        .frame(minWidth: 320)
+                        .presentationCompactAdaptation(.popover)
+                    }
+
+                    if let showMenu = showMenu {
+                        FilterButton(
+                            numActive: .constant(vm.numFiltersActive),
+                            action: { showMenu.wrappedValue.toggle() }
+                        )
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top, 8)
+                .animation(.spring(response: 0.3, dampingFraction: 0.86), value: isFullyExpanded)
+            }
+
+            // MARK: - Picker
             HStack {
                 Spacer()
                 Picker("Page", selection: $vm.page) {
@@ -175,7 +253,7 @@ struct ExplorerList: View {
                 .frame(width: SCREEN_WIDTH/3)
                 Spacer()
             }
-            .padding(.vertical)
+            .padding(.bottom, 8)
 
             ScrollViewReader { proxy in
                 ScrollView {
@@ -242,7 +320,7 @@ struct ExplorerList: View {
                                         .zIndex(1)
                                     }.id(group.date)
                                 }
-                            }.onChange(of: selectedDate) { oldValue, newValue in
+                            }.onChange(of: dateBinding.wrappedValue) { oldValue, newValue in
                                 if let closestDate = findClosestDate(to: newValue, in: eventsGrouped) {
                                     withAnimation {
                                         proxy.scrollTo(closestDate, anchor: .top)

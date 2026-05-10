@@ -405,6 +405,7 @@
 		5DE67F642C8758ED001A9861 /* AsyncPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F632C8758ED001A9861 /* AsyncPostView.swift */; };
 		5DE67F662C87E2E9001A9861 /* AsyncEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */; };
 		5DEAEC012E10000000000001 /* EventAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEAEC002E10000000000001 /* EventAnnotation.swift */; };
+		5DEAEC032E11000000000001 /* ExplorerDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEAEC022E11000000000001 /* ExplorerDrawer.swift */; };
 		5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */; };
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */; };
@@ -996,6 +997,7 @@
 		5DE67F632C8758ED001A9861 /* AsyncPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPostView.swift; sourceTree = "<group>"; };
 		5DE67F652C87E2E9001A9861 /* AsyncEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventView.swift; sourceTree = "<group>"; };
 		5DEAEC002E10000000000001 /* EventAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnnotation.swift; sourceTree = "<group>"; };
+		5DEAEC022E11000000000001 /* ExplorerDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerDrawer.swift; sourceTree = "<group>"; };
 		5DEC47AB2BCB8C7A0095F606 /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationPicker.swift; sourceTree = "<group>"; };
@@ -1817,6 +1819,7 @@
 			isa = PBXGroup;
 			children = (
 				9A81B6222924771A009CA6ED /* SearchBar.swift */,
+				5DEAEC022E11000000000001 /* ExplorerDrawer.swift */,
 				9AA5F616294DB0F900219B95 /* LoadingButton.swift */,
 				9AC5BABE295E5460003E851B /* ScrollingHStackModifier.swift */,
 				9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */,
@@ -2645,6 +2648,7 @@
 				5D20625A2B142D4700A9D408 /* ManagersListView.swift in Sources */,
 				5DD751C02D601946000B0640 /* NewEventAdvancedSettings.swift in Sources */,
 				9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */,
+				5DEAEC032E11000000000001 /* ExplorerDrawer.swift in Sources */,
 				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
 				5D666A992BF7C84A001EE754 /* MediaPicker.swift in Sources */,

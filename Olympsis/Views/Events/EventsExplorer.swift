@@ -78,12 +78,18 @@ struct EventsExplorer: View {
     /// Latest camera span — drives the unit-polygon visibility threshold.
     @State private var cameraLatitudeSpan: Double = 0.05
 
-    /// Last detent the user dragged the explorer sheet to. We persist
-    /// it in `@State` so it survives the dismiss / re-present cycle that
-    /// happens when the user pushes a detail view and pops back —
-    /// without this the sheet would always re-open at the initial
-    /// (smallest) detent.
-    @State private var sheetDetent: PresentationDetent = .medium
+    /// Last detent the user dragged the explorer drawer to. Persisted
+    /// in `@State` on the explorer (which survives navigation push /
+    /// pop as the NavigationStack root) so the drawer re-opens at the
+    /// user's chosen position after they've drilled into a detail view
+    /// and come back.
+    @State private var sheetDetent: DrawerDetent = .medium
+
+    /// Date the user last picked from either the in-drawer calendar
+    /// or the floating-toolbar calendar. Lifted up here so both
+    /// pickers share state and selecting from either scrolls the
+    /// list to the same place.
+    @State private var selectedDate: Date = Date()
 
     /// Memoized cluster results. Recomputing the grid on every body
     /// re-evaluation showed up in profiling — these caches are only
@@ -424,48 +430,144 @@ struct EventsExplorer: View {
             HStack {
                 mapView
 
-                ExplorerList(searchText: $viewModel.searchText, router: router, scale: 2)
-                    .frame(maxWidth: SCREEN_WIDTH/2.5)
+                // iPad split view always shows the full list — no
+                // collapsed-drawer state to worry about.
+                ExplorerList(
+                    searchText: $viewModel.searchText,
+                    router: router,
+                    showMenu: $showMenu,
+                    selectedDate: $selectedDate,
+                    isFullyExpanded: true,
+                    scale: 2
+                )
+                .frame(maxWidth: SCREEN_WIDTH/2.5)
             }
         default:
-            // The sheet's visibility is derived directly from the
-            // router's nav path: shown when we're at the explorer root,
-            // hidden whenever a detail view is on the stack. Driving it
-            // off the same source-of-truth as the NavigationStack means
-            // the dismiss and push animate in the same transaction
-            // (vs. the previous setup where an `onChange` flipped a
-            // `@State` flag a frame after the push had already begun).
-            // The setter is a no-op because `interactiveDismissDisabled`
-            // already blocks swipe-to-dismiss; SwiftUI never has a
-            // reason to flip the flag itself.
-            let sheetBinding = Binding<Bool>(
-                get: { router.navPath.isEmpty },
-                set: { _ in }
-            )
             mapView
-                .sheet(isPresented: sheetBinding) {
-                    ExplorerList(searchText: $viewModel.searchText, router: router)
-                        .environment(session)
-                        .environment(manager)
-                        .environment(viewModel)
-                        .presentationDragIndicator(.visible)
-                        .presentationDetents(
-                            [.height(100), .medium, .large],
-                            selection: $sheetDetent
+                .overlay(alignment: .bottom) {
+                    ExplorerDrawer(
+                        detent: $sheetDetent,
+                        topAccessory: {
+                            // Floating actions toolbar — sits *just
+                            // above* the drawer's grabber and rides
+                            // up with the drawer because it shares
+                            // the drawer's slide offset. Hidden at
+                            // `.large` since the in-drawer header
+                            // surfaces the same buttons.
+                            HStack {
+                                Spacer()
+                                if sheetDetent != .large {
+                                    FloatingDrawerActions(
+                                        selectedDate: $selectedDate,
+                                        showMenu: $showMenu,
+                                        numFiltersActive: viewModel.numFiltersActive
+                                    )
+                                    .transition(
+                                        .opacity.combined(
+                                            with: .move(edge: .bottom)
+                                        )
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                        }
+                    ) {
+                        // Only show the search bar when the drawer is
+                        // dragged all the way up; below that we let
+                        // the collapsed header read as a toolbar.
+                        ExplorerList(
+                            searchText: $viewModel.searchText,
+                            router: router,
+                            showMenu: $showMenu,
+                            selectedDate: $selectedDate,
+                            isFullyExpanded: sheetDetent == .large
                         )
-                        // Zillow-style: let map gestures pass through the
-                        // sheet's backdrop while the user is at the small
-                        // or medium detents. At `.large` the sheet covers
-                        // the map fully so we let it behave modally.
-                        .presentationBackgroundInteraction(.enabled(upThrough: .medium))
-                        // The sheet is the explorer surface — it should
-                        // never get accidentally dismissed by a swipe-down
-                        // (there's no "no sheet" state for this screen).
-                        .interactiveDismissDisabled()
-                        // Scrolls inside the list shouldn't drag the
-                        // sheet up; the user resizes it via the grabber.
-                        .presentationContentInteraction(.scrolls)
+                            .environment(session)
+                            .environment(manager)
+                            .environment(viewModel)
+                    }
                 }
+                .animation(
+                    .spring(response: 0.35, dampingFraction: 0.86),
+                    value: sheetDetent
+                )
+        }
+    }
+}
+
+/// Floating calendar + filter buttons shown above the drawer when it
+/// isn't fully extended. Both render as circular glass-effect chips
+/// (iOS 26+) or `.regularMaterial`-filled circles on older systems.
+/// Sharing `selectedDate` means picking from here or the in-drawer
+/// calendar scrolls the list to the same group.
+private struct FloatingDrawerActions: View {
+
+    @Binding var selectedDate: Date
+    @Binding var showMenu: Bool
+    let numFiltersActive: Int
+
+    @State private var showDatePicker = false
+    @State private var todayDate = Date()
+
+    var body: some View {
+        HStack(spacing: 8) {
+            // Calendar
+            CircularChip(systemImage: "calendar") {
+                showDatePicker = true
+            }
+            .popover(isPresented: $showDatePicker) {
+                DatePicker(
+                    "",
+                    selection: $selectedDate,
+                    in: todayDate...,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
+                .padding()
+                // The graphical picker needs ~320pt wide to lay out
+                // its day grid without horizontal squish; without an
+                // explicit frame the popover container collapses to
+                // the source button's width on compact widths.
+                .frame(minWidth: 320)
+                .presentationCompactAdaptation(.popover)
+            }
+
+            // Filters — just the slider glyph per spec; the
+            // active-count badge lives on the in-drawer `FilterButton`
+            // already, so no number here.
+            CircularChip(systemImage: "slider.vertical.3") {
+                showMenu.toggle()
+            }
+        }
+    }
+}
+
+/// 44×44 round button used by the floating drawer toolbar. Glass on
+/// iOS 26+, `.regularMaterial` fallback below that.
+private struct CircularChip: View {
+    let systemImage: String
+    let action: () -> Void
+
+    var body: some View {
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                Image(systemName: systemImage)
+                    .imageScale(.medium)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.primary)
+                    .frame(width: 44, height: 44)
+            }
+            .glassEffect(.regular.interactive(), in: .circle)
+        } else {
+            Button(action: action) {
+                Image(systemName: systemImage)
+                    .imageScale(.medium)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.primary)
+                    .frame(width: 44, height: 44)
+                    .background(.regularMaterial, in: Circle())
+            }
         }
     }
 }
