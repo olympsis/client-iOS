@@ -53,7 +53,7 @@ struct Events: View {
                         Button(action:{ router.navigate(to: .new) }){
                             Image(systemName: "plus")
                                 .imageScale(.large)
-                        }.frame(width: 41)
+                        }
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
