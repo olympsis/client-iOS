@@ -443,55 +443,93 @@ struct EventsExplorer: View {
                 .frame(maxWidth: SCREEN_WIDTH/2.5)
             }
         default:
-            mapView
-                .overlay(alignment: .bottom) {
-                    ExplorerDrawer(
-                        detent: $sheetDetent,
-                        topAccessory: {
-                            // Floating actions toolbar — sits *just
-                            // above* the drawer's grabber and rides
-                            // up with the drawer because it shares
-                            // the drawer's slide offset. Hidden at
-                            // `.large` since the in-drawer header
-                            // surfaces the same buttons.
-                            HStack {
-                                Spacer()
-                                if sheetDetent != .large {
-                                    FloatingDrawerActions(
-                                        selectedDate: $selectedDate,
-                                        showMenu: $showMenu,
-                                        numFiltersActive: viewModel.numFiltersActive
-                                    )
-                                    .transition(
-                                        .opacity.combined(
-                                            with: .move(edge: .bottom)
+            // ZStack lets us decouple keyboard avoidance per-layer:
+            //  • Layer 1 (map + drawer) ignores `.keyboard` so its
+            //    frame doesn't shrink when the keyboard appears —
+            //    without this, the overlay's bottom edge moves up
+            //    with the keyboard and drags the whole drawer (and
+            //    `ExplorerList` inside it) up too.
+            //  • Layer 2 (floating search bar) deliberately does NOT
+            //    ignore `.keyboard`, so SwiftUI's automatic avoidance
+            //    lifts it above the keyboard while its `TextField`
+            //    is first responder.
+            ZStack(alignment: .bottom) {
+                mapView
+                    .overlay(alignment: .bottom) {
+                        ExplorerDrawer(
+                            detent: $sheetDetent,
+                            topAccessory: {
+                                // Floating actions toolbar — sits *just
+                                // above* the drawer's grabber and rides
+                                // up with the drawer because it shares
+                                // the drawer's slide offset. Hidden at
+                                // `.large` since the in-drawer header
+                                // surfaces the same buttons.
+                                HStack {
+                                    Spacer()
+                                    if sheetDetent != .large {
+                                        FloatingDrawerActions(
+                                            selectedDate: $selectedDate,
+                                            showMenu: $showMenu,
+                                            numFiltersActive: viewModel.numFiltersActive
                                         )
-                                    )
+                                        .transition(
+                                            .opacity.combined(
+                                                with: .move(edge: .bottom)
+                                            )
+                                        )
+                                    }
                                 }
+                                .padding(.horizontal)
+                                .padding(.bottom, 8)
                             }
-                            .padding(.horizontal)
-                            .padding(.bottom, 8)
+                        ) {
+                            // Only show the search bar when the drawer is
+                            // dragged all the way up; below that we let
+                            // the collapsed header read as a toolbar.
+                            ExplorerList(
+                                searchText: $viewModel.searchText,
+                                router: router,
+                                showMenu: $showMenu,
+                                selectedDate: $selectedDate,
+                                isFullyExpanded: sheetDetent == .large
+                            )
+                                .environment(session)
+                                .environment(manager)
+                                .environment(viewModel)
                         }
-                    ) {
-                        // Only show the search bar when the drawer is
-                        // dragged all the way up; below that we let
-                        // the collapsed header read as a toolbar.
-                        ExplorerList(
-                            searchText: $viewModel.searchText,
-                            router: router,
-                            showMenu: $showMenu,
-                            selectedDate: $selectedDate,
-                            isFullyExpanded: sheetDetent == .large
-                        )
-                            .environment(session)
-                            .environment(manager)
-                            .environment(viewModel)
                     }
+                    // Pin this layer's frame against the keyboard.
+                    // Applied to the composite (mapView + drawer overlay)
+                    // so the overlay's bottom edge stays at the screen
+                    // bottom even when the keyboard is up.
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
+
+                // Floating search bar lives in a sibling ZStack layer
+                // (not as another overlay on the map) so it can have
+                // its own keyboard-avoidance behavior independently of
+                // the drawer layer above. Toggled by the magnifying-
+                // glass button in the parent `Events` toolbar.
+                if viewModel.isSearchActive {
+                    FloatingSearchBar(
+                        text: $viewModel.searchText,
+                        isActive: $viewModel.isSearchActive
+                    )
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    .transition(
+                        .move(edge: .bottom).combined(with: .opacity)
+                    )
                 }
-                .animation(
-                    .spring(response: 0.35, dampingFraction: 0.86),
-                    value: sheetDetent
-                )
+            }
+            .animation(
+                .spring(response: 0.35, dampingFraction: 0.86),
+                value: sheetDetent
+            )
+            .animation(
+                .spring(response: 0.35, dampingFraction: 0.86),
+                value: viewModel.isSearchActive
+            )
         }
     }
 }
@@ -539,6 +577,100 @@ private struct FloatingDrawerActions: View {
             CircularChip(systemImage: "slider.vertical.3") {
                 showMenu.toggle()
             }
+        }
+    }
+}
+
+/// Photos-style floating search bar that appears at the bottom of the
+/// explorer when the user taps the magnifying-glass button in the
+/// `Events` toolbar. Owns its own `@FocusState` so it can auto-focus
+/// on appear — this is what summons the keyboard. Because the drawer
+/// has opted out of `.keyboard` safe-area avoidance, this bar is the
+/// one thing that actually rides above the keyboard.
+private struct FloatingSearchBar: View {
+
+    @Binding var text: String
+    @Binding var isActive: Bool
+
+    /// `@FocusState` lets us programmatically focus the field on appear
+    /// and also force-resign focus when the user taps the cancel button.
+    /// SwiftUI's automatic keyboard avoidance only kicks in for the
+    /// currently-focused responder, so this is what makes the bar lift
+    /// up over the keyboard.
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        // Two separate glass surfaces — the search pill expands to fill
+        // remaining width, the cancel circle is fixed at 44×44. Matches
+        // the iOS 26 Photos layout where the input and the dismiss
+        // affordance read as independent controls (rather than living
+        // inside the same pill).
+        HStack(spacing: 8) {
+            searchPill
+            cancelButton
+        }
+        .onAppear {
+            // Small delay so the appearance transition finishes before
+            // the keyboard animation starts — without this, the keyboard
+            // sometimes summons before the bar has slid into place,
+            // which looks janky.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                isFocused = true
+            }
+        }
+    }
+
+    /// Capsule containing the magnifying glass + text field. `maxWidth:
+    /// .infinity` is what lets it absorb the leftover horizontal space
+    /// after the fixed-width cancel button takes its 44pt.
+    @ViewBuilder
+    private var searchPill: some View {
+        let core = HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+
+            TextField(
+                String(localized: "search", table: "General"),
+                text: $text
+            )
+            .focused($isFocused)
+            .keyboardType(.webSearch)
+            .submitLabel(.search)
+            .textFieldStyle(.plain)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+
+        if #available(iOS 26.0, *) {
+            core.glassEffect(.regular, in: .capsule)
+        } else {
+            core.background(.regularMaterial, in: Capsule())
+        }
+    }
+
+    /// 44×44 circular glass button with a big plain `xmark`. Clears
+    /// the query, resigns focus (which dismisses the keyboard via
+    /// `@FocusState`), and toggles the bar back off.
+    @ViewBuilder
+    private var cancelButton: some View {
+        let button = Button {
+            text = ""
+            isFocused = false
+            isActive = false
+        } label: {
+            Image(systemName: "xmark")
+                .imageScale(.large)
+                .fontWeight(.semibold)
+                .foregroundStyle(.primary)
+                .frame(width: 44, height: 44)
+        }
+        .accessibilityLabel(Text("Cancel search"))
+
+        if #available(iOS 26.0, *) {
+            button.glassEffect(.regular.interactive(), in: .circle)
+        } else {
+            button.background(.regularMaterial, in: Circle())
         }
     }
 }

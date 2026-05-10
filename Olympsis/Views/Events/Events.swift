@@ -54,6 +54,17 @@ struct Events: View {
                             Image(systemName: "plus")
                                 .imageScale(.large)
                         }
+                        // Reveals the floating search bar at the bottom
+                        // of the explorer. The bar itself lives in
+                        // `EventsExplorer` as a `.safeAreaInset(.bottom)`
+                        // so it rides above the keyboard on focus
+                        // (Photos-style) without dragging the drawer up.
+                        Button(action: {
+                            viewModel.isSearchActive.toggle()
+                        }) {
+                            Image(systemName: "magnifyingglass")
+                                .imageScale(.large)
+                        }
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {

@@ -131,6 +131,13 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
             )
         }
         .offset(y: liveOffset)
+        // Pin the drawer to its detent regardless of the keyboard.
+        // Without this, focusing a TextField (e.g. the floating search
+        // bar) inflates the bottom safe area by the keyboard height
+        // and shoves the entire drawer upward. Anything that needs to
+        // ride above the keyboard (the search bar itself) opts back in
+        // via `.safeAreaInset(edge: .bottom)` on a different layer.
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

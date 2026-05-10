@@ -15,6 +15,11 @@ import CoreLocation
 class EventsViewModel {
     
     var searchText = ""
+    /// Drives the floating search bar at the bottom of `EventsExplorer`.
+    /// Toggled by the magnifying-glass button in the `Events` toolbar so
+    /// the bar slides up over the keyboard on demand instead of living
+    /// inside the drawer.
+    var isSearchActive: Bool = false
     var events = [Event]()
     
     var radius: Double = 10

@@ -199,7 +199,6 @@ struct ExplorerList: View {
             // header stays compact.
             if isFullyExpanded {
                 HStack(spacing: 8) {
-                    SearchBar(text: $searchText)
                     
                     Button {
                         showDatePicker = true
