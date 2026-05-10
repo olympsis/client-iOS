@@ -471,7 +471,8 @@ struct EventsExplorer: View {
                                         FloatingDrawerActions(
                                             selectedDate: $selectedDate,
                                             showMenu: $showMenu,
-                                            numFiltersActive: viewModel.numFiltersActive
+                                            numFiltersActive: viewModel.numFiltersActive,
+                                            showCalendar: viewModel.page == .events
                                         )
                                         .transition(
                                             .opacity.combined(
@@ -556,31 +557,37 @@ private struct FloatingDrawerActions: View {
     @Binding var selectedDate: Date
     @Binding var showMenu: Bool
     let numFiltersActive: Int
+    /// Hides the calendar chip when the user is on the venues tab —
+    /// venues aren't date-bound, so the date picker is meaningless
+    /// there and would duplicate UI shown elsewhere.
+    let showCalendar: Bool
 
     @State private var showDatePicker = false
     @State private var todayDate = Date()
 
     var body: some View {
         HStack(spacing: 8) {
-            // Calendar
-            CircularChip(systemImage: "calendar") {
-                showDatePicker = true
-            }
-            .popover(isPresented: $showDatePicker) {
-                DatePicker(
-                    "",
-                    selection: $selectedDate,
-                    in: todayDate...,
-                    displayedComponents: .date
-                )
-                .datePickerStyle(.graphical)
-                .padding()
-                // The graphical picker needs ~320pt wide to lay out
-                // its day grid without horizontal squish; without an
-                // explicit frame the popover container collapses to
-                // the source button's width on compact widths.
-                .frame(minWidth: 320)
-                .presentationCompactAdaptation(.popover)
+            // Calendar — events tab only.
+            if showCalendar {
+                CircularChip(systemImage: "calendar") {
+                    showDatePicker = true
+                }
+                .popover(isPresented: $showDatePicker) {
+                    DatePicker(
+                        "",
+                        selection: $selectedDate,
+                        in: todayDate...,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+                    .padding()
+                    // The graphical picker needs ~320pt wide to lay out
+                    // its day grid without horizontal squish; without an
+                    // explicit frame the popover container collapses to
+                    // the source button's width on compact widths.
+                    .frame(minWidth: 320)
+                    .presentationCompactAdaptation(.popover)
+                }
             }
 
             // Filters — just the slider glyph per spec; the

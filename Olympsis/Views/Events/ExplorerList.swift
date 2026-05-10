@@ -217,32 +217,38 @@ struct ExplorerList: View {
                 if isFullyExpanded {
                     Spacer()
 
-                    Button {
-                        showDatePicker = true
-                    } label: {
-                        Image(systemName: "calendar")
-                            .imageScale(.medium)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.primary)
-                            .frame(width: 38, height: 38)
-                    }
-                    .background(.regularMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .popover(isPresented: $showDatePicker) {
-                        DatePicker(
-                            "",
-                            selection: dateBinding,
-                            in: todayDate...,
-                            displayedComponents: .date
-                        )
-                        .datePickerStyle(.graphical)
-                        .padding()
-                        // Without an explicit min width the popover
-                        // container squishes to the source button's
-                        // width on compact size classes and the
-                        // day-grid columns end up overlapping.
-                        .frame(minWidth: 320)
-                        .presentationCompactAdaptation(.popover)
+                    // Calendar only on the events tab — venues aren't
+                    // date-bound, so the date popover would be a no-op
+                    // there (and `FloatingDrawerActions` hides it for
+                    // the same reason).
+                    if vm.page == .events {
+                        Button {
+                            showDatePicker = true
+                        } label: {
+                            Image(systemName: "calendar")
+                                .imageScale(.medium)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.primary)
+                                .frame(width: 38, height: 38)
+                        }
+                        .background(.regularMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .popover(isPresented: $showDatePicker) {
+                            DatePicker(
+                                "",
+                                selection: dateBinding,
+                                in: todayDate...,
+                                displayedComponents: .date
+                            )
+                            .datePickerStyle(.graphical)
+                            .padding()
+                            // Without an explicit min width the popover
+                            // container squishes to the source button's
+                            // width on compact size classes and the
+                            // day-grid columns end up overlapping.
+                            .frame(minWidth: 320)
+                            .presentationCompactAdaptation(.popover)
+                        }
                     }
 
                     if let showMenu = showMenu {
