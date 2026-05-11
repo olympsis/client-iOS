@@ -12,22 +12,14 @@ import Kingfisher
 /// A view that shows an event's data at a glance. A list item.
 struct EventListItem: View {
 
-    // `Event` is already a reference type, so `@State` adds a per-row
-    // storage allocation that buys nothing. A plain `let` is enough —
-    // mutations to event properties propagate via `@Observable`.
     let event: Event
     var scale: LIST_ITEM_SCALE = .regular
     var namespace: Namespace.ID? = nil
-    /// Optional tap override. When provided we drop the implicit
-    /// `NavigationLink` and let the caller drive navigation through a
-    /// router — needed when the list lives inside a sheet (e.g. mobile
-    /// `ExplorerList`), since `NavigationLink` can't push onto the
-    /// underlying `NavigationStack` from a separate presentation.
     var onTap: (() -> Void)? = nil
 
+    @State private var showDetails = false
     @State private var status: LOADING_STATE = .loading
     
-    @State private var showDetails = false
     @Environment(SessionStore.self) private var session
     
     private let gradient = LinearGradient(
@@ -41,7 +33,10 @@ struct EventListItem: View {
         endPoint: .bottom
     )
     
-    private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_list_item")
+    private let log: Logger = Logger(
+        subsystem: "com.olympsis.client",
+        category: "event_list_item"
+    )
     
     /// Compute wether or not we can allow the users to see the locations
     /// If hide participants is set to true then we only show the locations when the user has RSVPed
@@ -60,10 +55,12 @@ struct EventListItem: View {
         return true
     }
     
+    /// Compute event image url
     private var imageURL: URL? {
         return generateImageURL(event.mediaURL)
     }
     
+    /// Compute the event's location name
     private var venueLocationName: String {
         guard let first = event.venues.first else {
             return "Custom Location"
@@ -80,6 +77,7 @@ struct EventListItem: View {
         return "Custom Location"
     }
     
+    /// Compute the event sports type
     private var eventSport: String {
         guard let sport = event.sports.first else {
             return "Activity"
