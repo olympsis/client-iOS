@@ -208,25 +208,11 @@ struct ExplorerList: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: SCREEN_WIDTH/3)
-
-                // Spacer + action buttons only when fully extended.
-                // When the drawer is collapsed there's nothing to push
-                // against, and `FloatingDrawerActions` already surfaces
-                // the same calendar/filter chips outside the drawer.
+                .padding(.horizontal)
+                
                 if isFullyExpanded {
                     Spacer()
 
-                    // Calendar only on the events tab — venues aren't
-                    // date-bound, so the date popover would be a no-op
-                    // there (and `FloatingDrawerActions` hides it for
-                    // the same reason).
-                    //
-                    // `Group { if available ... else ... }` lets the
-                    // popover attach once to the resulting view rather
-                    // than being duplicated in both branches. Matches
-                    // the liquid-glass treatment used by `CircularChip`
-                    // and `FloatingSearchBar` for visual consistency.
                     if vm.page == .events {
                         Group {
                             if #available(iOS 26.0, *) {

@@ -429,18 +429,41 @@ struct EventsExplorer: View {
         case .regular: // iPad
             HStack {
                 mapView
+                    // Date + filter cluster parked on the map's
+                    // trailing edge, beneath the system `MapCompass`
+                    // / `MapUserLocationButton` controls. The iPad
+                    // layout has no floating drawer, so without this
+                    // the calendar and filter actions had no home on
+                    // the map side of the split.
+                    //
+                    // `~100pt` top padding clears the system controls
+                    // stack (≈ 44pt button × 2 + spacing). Trailing
+                    // padding (12pt) matches the inset MapKit uses
+                    // for its own controls so the columns visually
+                    // line up.
+                    .overlay(alignment: .topTrailing) {
+                        FloatingDrawerActions(
+                            selectedDate: $selectedDate,
+                            showMenu: $showMenu,
+                            numFiltersActive: viewModel.numFiltersActive,
+                            showCalendar: viewModel.page == .events,
+                            axis: .vertical
+                        )
+                        .padding(.top, 120)
+                        .padding(.trailing, 13)
+                    }
 
-                // iPad split view always shows the full list — no
-                // collapsed-drawer state to worry about.
+                // Expanded set to false to prevent filter & date buttons
+                // from squishing out the view page picker
                 ExplorerList(
                     searchText: $viewModel.searchText,
                     router: router,
                     showMenu: $showMenu,
                     selectedDate: $selectedDate,
-                    isFullyExpanded: true,
+                    isFullyExpanded: false,
                     scale: 2
                 )
-                .frame(maxWidth: SCREEN_WIDTH/2.5)
+                .frame(maxWidth: SCREEN_WIDTH/2.4)
             }
         default:
             // ZStack lets us decouple keyboard avoidance per-layer:
@@ -561,12 +584,21 @@ private struct FloatingDrawerActions: View {
     /// venues aren't date-bound, so the date picker is meaningless
     /// there and would duplicate UI shown elsewhere.
     let showCalendar: Bool
+    /// Layout direction of the chip stack. `.horizontal` (default)
+    /// matches the floating bar above the compact drawer; `.vertical`
+    /// is used on iPad where the chips park beneath the `MapCompass`
+    /// on the map's trailing edge.
+    var axis: Axis = .horizontal
 
     @State private var showDatePicker = false
     @State private var todayDate = Date()
 
     var body: some View {
-        HStack(spacing: 8) {
+        let layout: AnyLayout = axis == .horizontal
+            ? AnyLayout(HStackLayout(spacing: 8))
+            : AnyLayout(VStackLayout(spacing: 8))
+
+        layout {
             // Calendar — events tab only.
             if showCalendar {
                 CircularChip(systemImage: "calendar") {
