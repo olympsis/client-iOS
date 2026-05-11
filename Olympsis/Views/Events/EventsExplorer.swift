@@ -463,7 +463,7 @@ struct EventsExplorer: View {
                     isFullyExpanded: false,
                     scale: 2
                 )
-                .frame(maxWidth: SCREEN_WIDTH/2.4)
+                .frame(maxWidth: SCREEN_WIDTH/2.3)
             }
         default:
             // ZStack lets us decouple keyboard avoidance per-layer:

@@ -79,7 +79,10 @@ struct Events: View {
                         await viewModel.fetchEvents(session, force: filtersChanged)
                     }
                 }, content: {
-                    FilterView()
+                    // `showTags: false` on the venues tab — venues
+                    // don't carry user-defined tags, so the tags
+                    // section in the filter sheet is just noise there.
+                    FilterView(showTags: viewModel.page == .events)
                         .environment(session)
                         .environment(manager)
                         .presentationDragIndicator(.visible)
