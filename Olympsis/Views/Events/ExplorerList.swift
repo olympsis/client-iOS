@@ -221,18 +221,39 @@ struct ExplorerList: View {
                     // date-bound, so the date popover would be a no-op
                     // there (and `FloatingDrawerActions` hides it for
                     // the same reason).
+                    //
+                    // `Group { if available ... else ... }` lets the
+                    // popover attach once to the resulting view rather
+                    // than being duplicated in both branches. Matches
+                    // the liquid-glass treatment used by `CircularChip`
+                    // and `FloatingSearchBar` for visual consistency.
                     if vm.page == .events {
-                        Button {
-                            showDatePicker = true
-                        } label: {
-                            Image(systemName: "calendar")
-                                .imageScale(.medium)
-                                .fontWeight(.medium)
-                                .foregroundStyle(.primary)
-                                .frame(width: 38, height: 38)
+                        Group {
+                            if #available(iOS 26.0, *) {
+                                Button {
+                                    showDatePicker = true
+                                } label: {
+                                    Image(systemName: "calendar")
+                                        .imageScale(.medium)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(.primary)
+                                        .frame(width: 38, height: 38)
+                                }
+                                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 10))
+                            } else {
+                                Button {
+                                    showDatePicker = true
+                                } label: {
+                                    Image(systemName: "calendar")
+                                        .imageScale(.medium)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(.primary)
+                                        .frame(width: 38, height: 38)
+                                }
+                                .background(.regularMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
                         }
-                        .background(.regularMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .popover(isPresented: $showDatePicker) {
                             DatePicker(
                                 "",

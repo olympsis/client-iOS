@@ -13,7 +13,10 @@ struct FilterButton: View {
     var action: () -> Void
     
     var body: some View {
-        Button(action: action) {
+        // Inner button content is identical across OS versions; only the
+        // surface treatment (liquid glass vs. material) differs, so we
+        // bind it to a `let` and apply the conditional background after.
+        let button = Button(action: action) {
             HStack(spacing: 5) {
                 if (numActive > 0) {
                     Text("\(numActive)")
@@ -28,7 +31,7 @@ struct FilterButton: View {
                         .imageScale(.small)
                         .fontWeight(.medium)
                 }
-                
+
                 Text(String(localized: "filters", table: "General"))
                     .font(.callout)
                     .fontWeight(.medium)
@@ -36,8 +39,15 @@ struct FilterButton: View {
             .padding(.horizontal)
             .padding(.vertical, 8)
         }
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+
+        if #available(iOS 26.0, *) {
+            button
+                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 10))
+        } else {
+            button
+                .background(.regularMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
     }
 }
 
