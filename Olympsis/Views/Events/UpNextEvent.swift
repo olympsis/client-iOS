@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct UpNextEvent: View {
-    
+
     var events: [Event]
+    var router: EventRouter? = nil
     var namespace: Namespace.ID? = nil
 
     var body: some View {
@@ -27,9 +28,14 @@ struct UpNextEvent: View {
             }.padding(.horizontal, 10)
 
             if let event = events.first {
-                NavigationLink(value: EVENT_ROUTES.event(event: event)) {
+                Button {
+                    router?.navigate(to: .event(event: event))
+                } label: {
                     EventSmallListItem(event: event)
-                }.modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
+                        .contentShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+                .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
             }
         }
     }

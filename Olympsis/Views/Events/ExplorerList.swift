@@ -315,7 +315,11 @@ struct ExplorerList: View {
                                 
                                 // MARK: - Up Next Events
                                 if nextEvents.count > 0 && searchText.isEmpty {
-                                    UpNextEvent(events: nextEvents, namespace: heroNamespace)
+                                    UpNextEvent(
+                                        events: nextEvents,
+                                        router: router,
+                                        namespace: heroNamespace
+                                    )
                                         .padding(.vertical, 10)
                                 }
                                 
