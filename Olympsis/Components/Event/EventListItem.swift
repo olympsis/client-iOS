@@ -102,7 +102,7 @@ struct EventListItem: View {
     /// Height of the bottom info overlay. Trimmed in `.small` so two lines
     /// of meta still fit without truncating titles.
     private var overlayHeight: CGFloat {
-        scale == .regular ? 100 : 78
+        scale == .regular ? 100 : 85
     }
 
     private var titleFont: Font {
@@ -136,6 +136,43 @@ struct EventListItem: View {
         scale == .regular ? 7 : 12
     }
 
+    /// Pill showing the participant count. Pulled into its own
+    /// `@ViewBuilder` so both the regular layout (title + location
+    /// stacked on the left, capsule on the right) and the small
+    /// layout (title spanning the card, location + capsule sharing
+    /// a row below) can render the exact same chip without
+    /// duplicating its styling.
+    ///
+    /// The downward offset that the regular layout uses to dangle
+    /// this chip below the title/location pair is applied at the
+    /// call site — in the small layout the chip sits inline with the
+    /// location text, so the same offset would push it into the
+    /// date row underneath.
+    @ViewBuilder
+    private var participantsCapsule: some View {
+        HStack {
+            Image(systemName: "person.2.fill")
+                .imageScale(.small)
+                .foregroundStyle(.white)
+
+            Text("\(event.participants.count) \(String(localized: "event-participants", table: "Events"))")
+                .font(tagFont)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .padding(.trailing, 2.5)
+        }
+        .padding(tagPadding)
+        .background(
+            Color.black
+                .opacity(0.21)
+        )
+        .clipShape(Capsule())
+        .overlay {
+            Capsule()
+                .stroke(Color.black.opacity(0.15), lineWidth: 1)
+        }
+    }
+
     @ViewBuilder
     private var cardContent: some View {
         KFImage(imageURL)
@@ -157,49 +194,64 @@ struct EventListItem: View {
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 5) {
                         Spacer()
-                        HStack {
 
-                            // MARK: - Title and Location
-                            VStack(alignment: .leading) {
-                                Text(event.title)
-                                    .font(titleFont)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.white)
-                                    .lineLimit(1)
+                        if scale == .small {
+                            // Small layout: title gets the full card
+                            // width on its own row, then location and
+                            // participants share the row below. Lets
+                            // long titles breathe in the narrower
+                            // small-card variant rather than being
+                            // truncated to half the width by the
+                            // participants chip sitting next to them.
+                            Text(event.title)
+                                .font(titleFont)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, alignment: .leading)
 
+                            HStack {
                                 Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
                                     .font(locationFont)
                                     .opacity(0.8)
                                     .foregroundStyle(.white)
                                     .lineLimit(1)
                                     .redacted(reason: canShowLocation ? [] : .placeholder)
+                                
+                                Spacer()
+                                
+                                participantsCapsule
                             }
-
-                            Spacer()
-
-                            // MARK: - Participants
+                        } else {
                             HStack {
-                                Image(systemName: "person.2.fill")
-                                    .imageScale(.small)
-                                    .foregroundStyle(.white)
 
-                                Text("\(event.participants.count) \(String(localized: "event-participants", table: "Events"))")
-                                    .font(tagFont)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.white)
-                                    .padding(.trailing, 2.5)
+                                // MARK: - Title and Location
+                                VStack(alignment: .leading) {
+                                    Text(event.title)
+                                        .font(titleFont)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.white)
+                                        .lineLimit(1)
+
+                                    Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
+                                        .font(locationFont)
+                                        .opacity(0.8)
+                                        .foregroundStyle(.white)
+                                        .lineLimit(1)
+                                        .redacted(reason: canShowLocation ? [] : .placeholder)
+                                }
+
+                                Spacer()
+
+                                // MARK: - Participants
+                                participantsCapsule
+                                    // Regular layout dangles the
+                                    // chip below the title/location
+                                    // VStack — the small layout
+                                    // doesn't because the chip lives
+                                    // inline with the location text.
+                                    .offset(x: 2, y: 8)
                             }
-                            .padding(tagPadding)
-                            .background(
-                                Color.black
-                                    .opacity(0.21)
-                            )
-                            .clipShape(Capsule())
-                            .overlay {
-                                Capsule()
-                                    .stroke(Color.black.opacity(0.15), lineWidth: 1)
-                            }
-                            .offset(x: 2, y: 8)
                         }
 
                         HStack(alignment: .center, spacing: 5) {
