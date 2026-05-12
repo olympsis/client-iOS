@@ -121,14 +121,38 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: largeHeight)
-            .background(
-                UnevenRoundedRectangle(
-                    topLeadingRadius: cornerRadius,
-                    topTrailingRadius: cornerRadius
-                )
-                .fill(Color(uiColor: .systemBackground))
-                .ignoresSafeArea(edges: .bottom)
-            )
+            .background {
+                // The drawer's surface. On iOS 26 we render it with
+                // the system liquid-glass material so the map can
+                // bleed through, matching the look of a system sheet.
+                // Older versions fall back to an opaque
+                // `systemBackground` since `glassEffect(_:in:)` only
+                // exists in iOS 26+.
+                //
+                // `ignoresSafeArea(edges: .bottom)` keeps the surface
+                // running off the bottom of the screen even when the
+                // drawer's frame ends above the home indicator, so
+                // there's no exposed seam between the drawer and the
+                // screen edge.
+                if #available(iOS 26.0, *) {
+                    Color.clear
+                        .glassEffect(
+                            .regular,
+                            in: UnevenRoundedRectangle(
+                                topLeadingRadius: cornerRadius,
+                                topTrailingRadius: cornerRadius
+                            )
+                        )
+                        .ignoresSafeArea(edges: .bottom)
+                } else {
+                    UnevenRoundedRectangle(
+                        topLeadingRadius: cornerRadius,
+                        topTrailingRadius: cornerRadius
+                    )
+                    .fill(Color(uiColor: .systemBackground))
+                    .ignoresSafeArea(edges: .bottom)
+                }
+            }
         }
         .offset(y: liveOffset)
         // Pin the drawer to its detent regardless of the keyboard.
