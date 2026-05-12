@@ -768,35 +768,6 @@ private struct FloatingSearchBar: View {
     }
 }
 
-/// 44×44 round button used by the floating drawer toolbar. Glass on
-/// iOS 26+, `.regularMaterial` fallback below that.
-private struct CircularChip: View {
-    let systemImage: String
-    let action: () -> Void
-
-    var body: some View {
-        if #available(iOS 26.0, *) {
-            Button(action: action) {
-                Image(systemName: systemImage)
-                    .imageScale(.medium)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.primary)
-                    .frame(width: 44, height: 44)
-            }
-            .glassEffect(.regular.interactive(), in: .circle)
-        } else {
-            Button(action: action) {
-                Image(systemName: systemImage)
-                    .imageScale(.medium)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.primary)
-                    .frame(width: 44, height: 44)
-                    .background(.regularMaterial, in: Circle())
-            }
-        }
-    }
-}
-
 /// Wrapper for the cluster-tap sheet binding. We can't bind a raw
 /// `[Event]` to `.sheet(item:)` because `Array` isn't `Identifiable`,
 /// so this gives the sheet a stable identity per tap (a fresh `UUID`

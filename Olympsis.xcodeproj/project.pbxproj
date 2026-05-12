@@ -173,6 +173,7 @@
 		5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062632B144A1F00A9D408 /* OrganizationsView.swift */; };
 		5D22D67F2FA6502B00CCF4C3 /* EventsExplorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */; };
 		5D22D6812FA6578300CCF4C3 /* ExplorerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */; };
+		5D22D6972FB2B8ED00CCF4C3 /* CircularChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D22D6962FB2B8ED00CCF4C3 /* CircularChip.swift */; };
 		5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D23BC4E2E5F752600077879 /* RSVPSheet.swift */; };
 		5D2540EC2F56644D00D53F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */; };
 		5D2618302D715AE300FE2923 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D26182F2D715AE300FE2923 /* CalendarManager.swift */; };
@@ -738,6 +739,7 @@
 		5D2062632B144A1F00A9D408 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsExplorer.swift; sourceTree = "<group>"; };
 		5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerList.swift; sourceTree = "<group>"; };
+		5D22D6962FB2B8ED00CCF4C3 /* CircularChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularChip.swift; sourceTree = "<group>"; };
 		5D23BC4E2E5F752600077879 /* RSVPSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPSheet.swift; sourceTree = "<group>"; };
 		5D2540EB2F56644D00D53F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D26182F2D715AE300FE2923 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
@@ -1826,6 +1828,7 @@
 				5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */,
 				5D4B0A5F2D96DA0300475A0C /* GroupBadgeView.swift */,
 				5D86CD1B2F8C6917003C1857 /* HTMLTextView.swift */,
+				5D22D6962FB2B8ED00CCF4C3 /* CircularChip.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -2810,6 +2813,7 @@
 				9AD20906293446A4007A62C4 /* UserPeek.swift in Sources */,
 				5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */,
 				5DC8B4412E05BF09008C9052 /* WorkoutManager+Location.swift in Sources */,
+				5D22D6972FB2B8ED00CCF4C3 /* CircularChip.swift in Sources */,
 				5DC8B4422E05BF09008C9052 /* WorkoutHeatMapView.swift in Sources */,
 				5DC8B4432E05BF09008C9052 /* WorkoutManager+Session.swift in Sources */,
 				5DC8B4442E05BF09008C9052 /* WorkoutSplitsView.swift in Sources */,

@@ -28,10 +28,8 @@ struct Events: View {
             EventsExplorer(router: $router, showMenu: $showMenu, showNewEvent: $showNewEvent)
                 .environment(session)
                 .environment(manager)
-                // Single shared `EventsViewModel` for the whole tab —
-                // the explorer picks it up via @Environment so the
-                // parent's fetches actually update what the user sees.
                 .environment(viewModel)
+                .toolbarBackground(.hidden, for: .navigationBar)
                 .toolbar {
                     if #available(iOS 26.0, *) {
                         ToolbarItem(placement: .topBarLeading) {
@@ -50,21 +48,8 @@ struct Events: View {
                     }
                     
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button(action:{ router.navigate(to: .new) }){
-                            Image(systemName: "plus")
-                                .imageScale(.large)
-                        }
-                        // Reveals the floating search bar at the bottom
-                        // of the explorer. The bar itself lives in
-                        // `EventsExplorer` as a `.safeAreaInset(.bottom)`
-                        // so it rides above the keyboard on focus
-                        // (Photos-style) without dragging the drawer up.
-                        Button(action: {
-                            viewModel.isSearchActive.toggle()
-                        }) {
-                            Image(systemName: "magnifyingglass")
-                                .imageScale(.large)
-                        }
+                        CircularChip(systemImage: "plus", action: { router.navigate(to: .new)})
+                        CircularChip(systemImage: "magnifyingglass", action: { viewModel.isSearchActive.toggle() })
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
