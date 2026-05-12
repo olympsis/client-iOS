@@ -288,6 +288,9 @@ struct NewEvent: View {
                 PostMediaViolation()
             })
             .task {
+                if let user = session.user {
+                    manager.poster = user.toSnippet()
+                }
                 guard let first = session.sports.first else { return }
                 manager.selectedSports.append(first)
             }

@@ -170,6 +170,23 @@ struct User: Codable, Hashable {
     }
 }
 
+extension User {
+    /// Project the full `User` down to the `UserSnippet` shape used
+    /// by embedded references (post authors, comment authors, RSVP
+    /// rows, etc.). Centralizes the field mapping so call sites stop
+    /// hand-rolling `UserSnippet(userID:, username:, imageURL:)` and
+    /// drift can't sneak in if `UserSnippet` ever grows new fields.
+    func toSnippet() -> UserSnippet {
+        UserSnippet(
+            userID: userID,
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            imageURL: imageURL
+        )
+    }
+}
+
 struct UserDao: Codable {
     var userID: String?
     var username: String?

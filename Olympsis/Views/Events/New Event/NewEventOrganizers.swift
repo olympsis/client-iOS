@@ -14,7 +14,7 @@ struct NewEventOrganizers: View {
     var posterURL: URL? {
         guard let poster = manager.poster,
               let imgURL = poster.imageURL else { return nil }
-        return URL(string: imgURL)
+        return generateImageURL(imgURL)
     }
     
     var posterName: String {
