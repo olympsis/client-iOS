@@ -99,6 +99,12 @@ struct EventsExplorer: View {
     @State private var cachedEventClusters: [EventCluster] = []
     @State private var cachedVenueClusters: [VenueClusterItem] = []
 
+    /// Set when the user taps a multi-event cluster pin on the map.
+    /// Drives the disambiguation sheet that lists the events grouped
+    /// by day (same headers `ExplorerList` uses). `nil` while the
+    /// sheet is dismissed.
+    @State private var clusterSheet: ClusterEventsSheetData?
+
     @Environment(SessionStore.self) private var session
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -344,10 +350,15 @@ struct EventsExplorer: View {
                         .onTapGesture { router.navigate(to: .event(event: event)) }
                 } else {
                     EventClusterAnnotation(events: cluster.events)
-                        // Tapping a cluster zooms in toward its centroid;
-                        // splitting the cluster automatically once the
-                        // camera span drops below the cell threshold.
-                        .onTapGesture { zoomToCluster(at: cluster.coordinate) }
+                        // Tapping a multi-event cluster pops the
+                        // disambiguation sheet listing every event
+                        // in the cluster grouped by day. Zooming
+                        // wasn't sufficient when several events
+                        // share a venue and can't be separated by
+                        // zoom alone.
+                        .onTapGesture {
+                            clusterSheet = ClusterEventsSheetData(events: cluster.events)
+                        }
                 }
             }
             .annotationTitles(.hidden)
@@ -425,6 +436,10 @@ struct EventsExplorer: View {
     var body: some View {
         @Bindable var viewModel = viewModel
 
+        // `Group` wrapper exists so the `.sheet(item:)` for the
+        // cluster disambiguation list can attach once across both
+        // size classes rather than being duplicated on each branch.
+        Group {
         switch horizontalSizeClass {
         case .regular: // iPad
             HStack {
@@ -566,6 +581,16 @@ struct EventsExplorer: View {
                     sheetDetent = .medium
                 }
             }
+        }
+        }
+        // Cluster-tap disambiguation sheet. Attached to the outer
+        // `Group` so it works in both the compact and iPad layouts.
+        // Tapping an event in the sheet dismisses it and pushes the
+        // event detail onto the parent `NavigationStack` via the
+        // shared router — same path the single-event pin uses.
+        .sheet(item: $clusterSheet) { data in
+            ClusterEventsSheet(events: data.events, router: router)
+                .environment(session)
         }
     }
 }
@@ -752,6 +777,104 @@ private struct CircularChip: View {
                     .background(.regularMaterial, in: Circle())
             }
         }
+    }
+}
+
+/// Wrapper for the cluster-tap sheet binding. We can't bind a raw
+/// `[Event]` to `.sheet(item:)` because `Array` isn't `Identifiable`,
+/// so this gives the sheet a stable identity per tap (a fresh `UUID`
+/// on each cluster-tap) and carries the event list as payload.
+private struct ClusterEventsSheetData: Identifiable {
+    let id = UUID()
+    let events: [Event]
+}
+
+/// Sheet shown when a multi-event cluster pin is tapped. Mirrors the
+/// day-grouped layout used by `ExplorerList` (pinned section headers
+/// reading "Today", "Tomorrow", weekday names, …) so the user gets
+/// the same scanning experience whether they're browsing the drawer
+/// list or disambiguating a map cluster.
+private struct ClusterEventsSheet: View {
+
+    let events: [Event]
+    /// Class-typed router from the parent so an event tap inside the
+    /// sheet can dismiss and then push onto the existing
+    /// `NavigationStack` in `Events.swift` — `NavigationLink`
+    /// wouldn't see that stack from inside a presented sheet.
+    let router: EventRouter
+
+    @Environment(\.dismiss) private var dismiss
+    /// iPad sheets are wide enough to fit two cards per row; iPhone
+    /// stays single-column so each card keeps its full-width look.
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    /// Two flexible columns on iPad, one everywhere else. Drives both
+    /// the `LazyVGrid` column count and the per-card `scale` so cards
+    /// in the 2-col layout get the compact treatment.
+    private var columns: [GridItem] {
+        horizontalSizeClass == .regular
+            ? [GridItem(.flexible(), spacing: 10),
+               GridItem(.flexible(), spacing: 10)]
+            : [GridItem(.flexible())]
+    }
+
+    private var cardScale: LIST_ITEM_SCALE {
+        horizontalSizeClass == .regular ? .small : .regular
+    }
+
+    var body: some View {
+        // `pinnedViews: [.sectionHeaders]` keeps the day label
+        // visible as the user scrolls past it, matching the in-drawer
+        // list's behavior.
+        ScrollView {
+            LazyVStack(pinnedViews: [.sectionHeaders]) {
+                ForEach(events.eventsGroupedByDay(), id: \.id) { group in
+                    Section {
+                        // Inner `LazyVGrid` flows cards into the
+                        // column count from `columns`. With one column
+                        // it collapses to the previous single-card-
+                        // per-row look; with two it gives iPad sheets
+                        // a denser layout.
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(group.events, id: \.id) { event in
+                                EventListItem(
+                                    event: event,
+                                    scale: cardScale,
+                                    onTap: {
+                                        // Tear down the sheet first,
+                                        // then push the detail. Doing
+                                        // both in the same closure is
+                                        // the standard sheet → push
+                                        // handoff; the animations
+                                        // overlap cleanly.
+                                        dismiss()
+                                        router.navigate(to: .event(event: event))
+                                    }
+                                )
+                            }
+                        }
+                        .padding(.horizontal)
+                    } header: {
+                        HStack {
+                            Text(group.dayInString.capitalized)
+                                .padding(.leading)
+                                .padding(.vertical, 5)
+                                .fontWeight(group.dayInString == "Today" ? .bold : .regular)
+
+                            Spacer()
+                        }
+                        .background(Color.Background.secondary)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding(.horizontal)
+                        .allowsHitTesting(false)
+                        .zIndex(1)
+                    }.id(group.date)
+                }
+            }
+            .padding(.top)
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
     }
 }
 
