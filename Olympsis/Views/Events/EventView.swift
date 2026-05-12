@@ -54,6 +54,40 @@ struct EventView: View {
         return true
     }
     
+    /// `true` when this event belongs to a recurring series — either
+    /// as the parent that defines the recurrence rule, or as a child
+    /// instance. Used to gate the "This is a recurring event" banner
+    /// and the upcoming-occurrences pill row.
+    private var isRecurringEvent: Bool {
+        event.recurrenceConfig != nil
+    }
+
+    /// Future occurrences in this event's recurring series, sorted
+    /// oldest → newest, *including the current event*. Including self
+    /// keeps the existence check trivial — show the pill row when
+    /// `count > 1`, since that guarantees at least one sibling to
+    /// navigate to.
+    ///
+    /// Series membership is matched on the parent ID: a child carries
+    /// its parent's id on `recurrenceConfig.parentEventID`, while the
+    /// parent itself implicitly is its own series root, so we treat
+    /// `event.id` as the parent id when `parentEventID` is `nil`.
+    /// This pulls candidates from `session.events`, which is whatever
+    /// has been hydrated into the session — sufficient for the common
+    /// case where the explorer fetch has already loaded the series.
+    private var upcomingRecurrences: [Event] {
+        guard isRecurringEvent else { return [] }
+        let now = Date()
+        let parentID = event.recurrenceConfig?.parentEventID ?? event.id
+        return Array(session.events)
+            .filter { other in
+                other.startTime > now
+                    && (other.id == parentID
+                        || other.recurrenceConfig?.parentEventID == parentID)
+            }
+            .sorted { $0.startTime < $1.startTime }
+    }
+
     /// Opens an external link URL in the browser.
     private func openExternalURL(_ link: EventLink) {
         let raw = link.url.contains("://") ? link.url : "https://" + link.url
@@ -68,6 +102,62 @@ struct EventView: View {
             ScrollViewReader { proxy in
                 VStack(alignment: .leading) {
                     
+                    // Shows a recurring event caption and dates if possible
+                    if isRecurringEvent {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(alignment: .bottom, spacing: 5) {
+                                Image(systemName: "arrow.clockwise")
+                                    .imageScale(.small)
+                                    .foregroundStyle(Color.Brand.tertiary)
+                                
+                                Text("This is a recurring event")
+                                    .italic()
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            }.padding(.leading)
+
+                            // Pill row only when there's at least one
+                            // other upcoming occurrence to navigate
+                            // to. `upcomingRecurrences` includes self,
+                            // so `> 1` is the "has siblings" check.
+                            // We then filter self out at render time
+                            // — the user doesn't need a pill that
+                            // points at the page they're already on.
+                            if upcomingRecurrences.count > 1 {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 8) {
+                                        ForEach(
+                                            upcomingRecurrences.filter { $0.id != event.id },
+                                            id: \.id
+                                        ) { sibling in
+                                            NavigationLink(value: EVENT_ROUTES.event(event: sibling)) {
+                                                Text(sibling.timeToString())
+                                                    .font(.caption)
+                                                    .fontWeight(.medium)
+                                                    .padding(.horizontal, 12)
+                                                    .padding(.vertical, 6)
+                                                    .background(Color.Background.secondary)
+                                                    .clipShape(Capsule())
+                                                    .foregroundStyle(.primary)
+                                            }
+                                            // `.plain` keeps the pill
+                                            // from picking up the
+                                            // system accent tint that
+                                            // a default NavigationLink
+                                            // would apply to its label.
+                                            .buttonStyle(.plain)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                        .padding(.bottom, 10)
+                        .padding(.top, isFullScreen ? 50 : 0)
+                    }
+                    
+                    
+                    
                     // MARK: - Event Quick Info
                     EventQuickInfo(
                         event: event,
@@ -75,8 +165,8 @@ struct EventView: View {
                         venuesTarget: $venuesTarget,
                         venuesState: $venueState
                     )
-                    .padding(.top, isFullScreen ? 50 : 0)
                     .padding(.bottom, 10)
+                    .padding(.top, (isFullScreen && !isRecurringEvent) ? 50 : 0)
                     .id(1)
                     
                     // MARK: - Event Media
