@@ -442,44 +442,61 @@ struct EventsExplorer: View {
         Group {
         switch horizontalSizeClass {
         case .regular: // iPad
-            HStack {
-                mapView
-                    // Date + filter cluster parked on the map's
-                    // trailing edge, beneath the system `MapCompass`
-                    // / `MapUserLocationButton` controls. The iPad
-                    // layout has no floating drawer, so without this
-                    // the calendar and filter actions had no home on
-                    // the map side of the split.
-                    //
-                    // `~100pt` top padding clears the system controls
-                    // stack (≈ 44pt button × 2 + spacing). Trailing
-                    // padding (12pt) matches the inset MapKit uses
-                    // for its own controls so the columns visually
-                    // line up.
-                    .overlay(alignment: .topTrailing) {
-                        FloatingDrawerActions(
-                            selectedDate: $selectedDate,
-                            showMenu: $showMenu,
-                            numFiltersActive: viewModel.numFiltersActive,
-                            showCalendar: viewModel.page == .events,
-                            axis: .vertical
-                        )
-                        .padding(.top, 120)
-                        .padding(.trailing, 13)
+            // Layout shift from the old `HStack { map, list }`:
+            //   • `mapView` is now the root and spans the full width.
+            //   • `ExplorerList` is attached as a trailing
+            //     `.safeAreaInset` so the map renders *behind* it,
+            //     letting the iOS 26 glass material pick up the live
+            //     map through the panel.
+            //   • System `MapCompass` / `MapUserLocationButton` and the
+            //     floating chip column follow the inset map's safe
+            //     area, so they sit on the visible map portion to the
+            //     left of the panel rather than hiding behind it.
+            mapView
+                .overlay(alignment: .topTrailing) {
+                    FloatingDrawerActions(
+                        selectedDate: $selectedDate,
+                        showMenu: $showMenu,
+                        numFiltersActive: viewModel.numFiltersActive,
+                        showCalendar: viewModel.page == .events,
+                        axis: .vertical
+                    )
+                    .padding(.top, 120)
+                    // `.safeAreaInset(edge: .trailing)` below already
+                    // shrinks `mapView`'s effective frame so that its
+                    // trailing edge sits flush against the glass panel.
+                    // The overlay anchors to that inner frame, so 13pt
+                    // is enough to match MapKit's own control inset —
+                    // no need to subtract the panel width here.
+                    .padding(.trailing, 13)
+                }
+                .safeAreaInset(edge: .trailing, spacing: 0) {
+                    // Expanded set to false to prevent filter & date
+                    // buttons from squishing out the view page picker.
+                    ExplorerList(
+                        searchText: $viewModel.searchText,
+                        router: router,
+                        showMenu: $showMenu,
+                        selectedDate: $selectedDate,
+                        isFullyExpanded: false,
+                        scale: 2
+                    )
+                    .frame(width: SCREEN_WIDTH/2.3)
+                    .background {
+                        // iOS 26: liquid-glass surface — the
+                        // full-width map underneath blurs through.
+                        // Older systems get an opaque `systemBackground`
+                        // since `glassEffect(_:in:)` is iOS 26+ only.
+                        if #available(iOS 26.0, *) {
+                            Color.clear
+                                .glassEffect(.regular, in: .rect)
+                                .ignoresSafeArea()
+                        } else {
+                            Color(uiColor: .systemBackground)
+                                .ignoresSafeArea()
+                        }
                     }
-
-                // Expanded set to false to prevent filter & date buttons
-                // from squishing out the view page picker
-                ExplorerList(
-                    searchText: $viewModel.searchText,
-                    router: router,
-                    showMenu: $showMenu,
-                    selectedDate: $selectedDate,
-                    isFullyExpanded: false,
-                    scale: 2
-                )
-                .frame(maxWidth: SCREEN_WIDTH/2.3)
-            }
+                }
         default:
             // ZStack lets us decouple keyboard avoidance per-layer:
             //  • Layer 1 (map + drawer) ignores `.keyboard` so its
