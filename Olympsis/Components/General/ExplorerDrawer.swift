@@ -20,7 +20,10 @@
 import SwiftUI
 
 /// One of three discrete heights the drawer can rest at.
-enum DrawerDetent: CaseIterable, Hashable {
+///
+/// Backed by a `String` raw value so callers can persist the user's
+/// last-chosen detent through `@AppStorage` — see `EventsExplorer.sheetDetent`.
+enum DrawerDetent: String, CaseIterable, Hashable {
     case small
     case medium
     case large

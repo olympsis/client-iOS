@@ -79,11 +79,13 @@ struct EventsExplorer: View {
     @State private var cameraLatitudeSpan: Double = 0.05
 
     /// Last detent the user dragged the explorer drawer to. Persisted
-    /// in `@State` on the explorer (which survives navigation push /
-    /// pop as the NavigationStack root) so the drawer re-opens at the
-    /// user's chosen position after they've drilled into a detail view
-    /// and come back.
-    @State private var sheetDetent: DrawerDetent = .medium
+    /// via `@AppStorage` so the drawer not only re-opens at the user's
+    /// chosen position after they drill into a detail view and come
+    /// back, but also remembers the position across app launches — if
+    /// someone always works with the list fully expanded (`.large`),
+    /// the explorer will open there next time too. Stored as the
+    /// detent's raw string value (see `DrawerDetent`).
+    @AppStorage("event_explorer_sheet_detent") private var sheetDetent: DrawerDetent = .medium
 
     /// Date the user last picked from either the in-drawer calendar
     /// or the floating-toolbar calendar. Lifted up here so both
