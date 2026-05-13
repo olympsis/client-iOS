@@ -54,10 +54,8 @@ struct EventView: View {
         return true
     }
     
-    /// `true` when this event belongs to a recurring series — either
-    /// as the parent that defines the recurrence rule, or as a child
-    /// instance. Used to gate the "This is a recurring event" banner
-    /// and the upcoming-occurrences pill row.
+    /// Compute wether or not this event is a recurring one
+    /// We show the caption and the list of the recurring events
     private var isRecurringEvent: Bool {
         event.recurrenceConfig != nil
     }
@@ -116,13 +114,6 @@ struct EventView: View {
                                     .foregroundStyle(.gray)
                             }.padding(.leading)
 
-                            // Pill row only when there's at least one
-                            // other upcoming occurrence to navigate
-                            // to. `upcomingRecurrences` includes self,
-                            // so `> 1` is the "has siblings" check.
-                            // We then filter self out at render time
-                            // — the user doesn't need a pill that
-                            // points at the page they're already on.
                             if upcomingRecurrences.count > 1 {
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 8) {
@@ -139,16 +130,10 @@ struct EventView: View {
                                                     .background(Color.Background.secondary)
                                                     .clipShape(Capsule())
                                                     .foregroundStyle(.primary)
-                                            }
-                                            // `.plain` keeps the pill
-                                            // from picking up the
-                                            // system accent tint that
-                                            // a default NavigationLink
-                                            // would apply to its label.
-                                            .buttonStyle(.plain)
+                                                    .border(Color.black.opacity(0.15), width: 1)
+                                            }.buttonStyle(.plain)
                                         }
-                                    }
-                                    .padding(.horizontal)
+                                    }.padding(.horizontal)
                                 }
                             }
                         }

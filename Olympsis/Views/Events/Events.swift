@@ -48,8 +48,20 @@ struct Events: View {
                     }
                     
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        CircularChip(systemImage: "plus", action: { router.navigate(to: .new)})
-                        CircularChip(systemImage: "magnifyingglass", action: { viewModel.isSearchActive.toggle() })
+                        if #available(iOS 26.0, *) {
+                            Button(action: { router.navigate(to: .new) }) {
+                                Image(systemName: "plus")
+                            }
+                        } else {
+                            CircularChip(systemImage: "plus", action: { router.navigate(to: .new) })
+                        }
+                        if #available(iOS 26.0, *) {
+                            Button(action: { viewModel.isSearchActive.toggle() }) {
+                                Image(systemName: "magnifyingglass")
+                            }
+                        } else {
+                            CircularChip(systemImage: "magnifyingglass", action: { viewModel.isSearchActive.toggle() })
+                        }
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
