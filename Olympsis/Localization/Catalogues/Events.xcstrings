@@ -1,3409 +1,3409 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "add-a-comment": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add a comment"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "add-a-comment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a comment"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir un comentario"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un comentario"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter un commentaire"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un commentaire"
           }
         }
       }
     },
-    "add-a-location-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add a location"
+    "add-a-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a location"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agregar una ubicación"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar una ubicación"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter un lieu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un lieu"
           }
         }
       }
     },
-    "add-to-calendar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add to calendar"
+    "add-to-calendar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to calendar"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir al calendario"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir al calendario"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter au calendrier"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter au calendrier"
           }
         }
       }
     },
-    "advanced-settings-external-link": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "External links"
+    "advanced-settings-external-link" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "External links"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enlace externo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace externo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lien externels"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lien externels"
           }
         }
       }
     },
-    "advanced-settings-external-link-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Redirect participants to this URL after RSVP"
+    "advanced-settings-external-link-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redirect participants to this URL after RSVP"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Redirigir a los participantes a esta URL después de RSVP"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redirigir a los participantes a esta URL después de RSVP"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rediriger les participants vers cette URL après RSVP"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediriger les participants vers cette URL après RSVP"
           }
         }
       }
     },
-    "advanced-settings-formatting": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Event formatting"
+    "advanced-settings-formatting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event formatting"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formato de eventos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato de eventos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formatage des événements"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatage des événements"
           }
         }
       }
     },
-    "advanced-settings-hide-poster": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide Poster"
+    "advanced-settings-hide-poster" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide Poster"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar publicador"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar publicador"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masquer l'auteur"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer l'auteur"
           }
         }
       }
     },
-    "advanced-settings-hide-poster-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only show the event's organizers"
+    "advanced-settings-hide-poster-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only show the event's organizers"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Solo mostrar los organizadores del evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo mostrar los organizadores del evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher uniquement les organisateurs de l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher uniquement les organisateurs de l'événement"
           }
         }
       }
     },
-    "advanced-settings-max-participants-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set the event’s participant capacity"
+    "advanced-settings-max-participants-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set the event’s participant capacity"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Establecer la capacidad de participantes del evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer la capacidad de participantes del evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Définir la capacité des participants à l’événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir la capacité des participants à l’événement"
           }
         }
       }
     },
-    "advanced-settings-max-participants-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Max participants"
+    "advanced-settings-max-participants-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max participants"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Máximo de participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máximo de participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nombre maximal de participants"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre maximal de participants"
           }
         }
       }
     },
-    "advanced-settings-min-participants-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Least number of participants required"
+    "advanced-settings-min-participants-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Least number of participants required"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se requiere el menor número de participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere el menor número de participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nombre minimum de participants requis"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre minimum de participants requis"
           }
         }
       }
     },
-    "advanced-settings-min-participants-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Min participants"
+    "advanced-settings-min-participants-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min participants"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mínimo de participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mínimo de participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nombre minimum de participants"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre minimum de participants"
           }
         }
       }
     },
-    "advanced-settings-participants": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limit participants"
+    "advanced-settings-participants" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit participants"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limitar participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limitar participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limiter les participants"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limiter les participants"
           }
         }
       }
     },
-    "advanced-settings-recurrence-end-date-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "When do you want the recurrence to stop?"
+    "advanced-settings-recurrence-end-date-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When do you want the recurrence to stop?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Cuando quieres que se detenga la recurrencia?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuando quieres que se detenga la recurrencia?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quand souhaitez-vous que la récidive s'arrête ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quand souhaitez-vous que la récidive s'arrête ?"
           }
         }
       }
     },
-    "advanced-settings-recurrence-end-date-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "End date"
+    "advanced-settings-recurrence-end-date-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End date"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fecha de finalización"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de finalización"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Date de fin"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date de fin"
           }
         }
       }
     },
-    "advanced-settings-recurrence-every-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Every"
+    "advanced-settings-recurrence-every-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cada"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chaque"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque"
           }
         }
       }
     },
-    "advanced-settings-recurrence-frequency-monthly": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "monthly"
+    "advanced-settings-recurrence-frequency-monthly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "monthly"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "mensual"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mensual"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "par mois"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "par mois"
           }
         }
       }
     },
-    "advanced-settings-recurrence-frequency-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How often do you want this event to happen"
+    "advanced-settings-recurrence-frequency-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How often do you want this event to happen"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Con qué frecuencia quieres que ocurra este evento?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Con qué frecuencia quieres que ocurra este evento?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À quelle fréquence souhaitez-vous que cet événement se produise ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À quelle fréquence souhaitez-vous que cet événement se produise ?"
           }
         }
       }
     },
-    "advanced-settings-recurrence-frequency-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recurrence frequency"
+    "advanced-settings-recurrence-frequency-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurrence frequency"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Frecuencia de recurrencia"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frecuencia de recurrencia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fréquence de récurrence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fréquence de récurrence"
           }
         }
       }
     },
-    "advanced-settings-recurrence-frequency-weekly": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "weekly"
+    "advanced-settings-recurrence-frequency-weekly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weekly"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "semanalmente"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "semanalmente"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "par semaine"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "par semaine"
           }
         }
       }
     },
-    "advanced-settings-recurring": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recurring event"
+    "advanced-settings-recurring" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurring event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Evento recurrente"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento recurrente"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événement récurrent"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événement récurrent"
           }
         }
       }
     },
-    "advanced-settings-select-formats": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Competition formats"
+    "advanced-settings-select-formats" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Competition formats"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formatos de competición"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos de competición"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les formats de compétition"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les formats de compétition"
           }
         }
       }
     },
-    "advanced-settings-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced settings"
+    "advanced-settings-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced settings"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configuración avanzada"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración avanzada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paramètres avancés"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres avancés"
           }
         }
       }
     },
-    "advanced-settings-tournament-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toggle competition mode-casual or tournament?"
+    "advanced-settings-tournament-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle competition mode-casual or tournament?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cambiar modo competición: ¿casual o torneo?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar modo competición: ¿casual o torneo?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Basculer en mode compétition : décontracté ou tournoi?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basculer en mode compétition : décontracté ou tournoi?"
           }
         }
       }
     },
-    "advanced-settings-tournament-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Is a Tournament?"
+    "advanced-settings-tournament-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is a Tournament?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Es un torneo?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Es un torneo?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Est-ce un tournoi?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Est-ce un tournoi?"
           }
         }
       }
     },
-    "advanced-settings-waitlist-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "If the number of participants exceeds the capacity, allow them to join a waitlist"
+    "advanced-settings-waitlist-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If the number of participants exceeds the capacity, allow them to join a waitlist"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Si el número de participantes excede la capacidad, permítales unirse a una lista de espera."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si el número de participantes excede la capacidad, permítales unirse a una lista de espera."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Si le nombre de participants dépasse la capacité, autorisez-les à rejoindre une liste d'attente"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si le nombre de participants dépasse la capacité, autorisez-les à rejoindre une liste d'attente"
           }
         }
       }
     },
-    "advanced-settings-waitlist-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Allow Waitlist"
+    "advanced-settings-waitlist-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Waitlist"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permitir lista de espera"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir lista de espera"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Autoriser la liste d'attente"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser la liste d'attente"
           }
         }
       }
     },
-    "edit-venues-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit location(s)"
+    "edit-venues-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit location(s)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Editar ubicación(es)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar ubicación(es)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Modifier le(s) lieu(x)"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier le(s) lieu(x)"
           }
         }
       }
     },
-    "event-action-directions": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Directions"
+    "event-action-directions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Directions"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Instrucciones"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instrucciones"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Instructions"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instructions"
           }
         }
       }
     },
-    "event-add-link": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add Link"
+    "event-add-link" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Link"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agregar enlace"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar enlace"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter un lien"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un lien"
           }
         }
       }
     },
-    "event-at-location": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "At"
+    "event-at-location" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À"
           }
         }
       }
     },
-    "event-comments-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comments"
+    "event-comments-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comments"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comentarios"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comentarios"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commentaires"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commentaires"
           }
         }
       }
     },
-    "event-delete-recurring-warning-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This event is part of a recurring event. Would you like to delete the individual event or the entire series?"
+    "event-delete-recurring-warning-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This event is part of a recurring event. Would you like to delete the individual event or the entire series?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este evento forma parte de un evento recurrente. ¿Quieres eliminarlo individualmente o toda la serie?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este evento forma parte de un evento recurrente. ¿Quieres eliminarlo individualmente o toda la serie?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cet événement fait partie d'un événement récurrent. Souhaitez-vous supprimer l'événement en question ou la série entière ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet événement fait partie d'un événement récurrent. Souhaitez-vous supprimer l'événement en question ou la série entière ?"
           }
         }
       }
     },
-    "event-delete-recurring-warning-title1": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete this event"
+    "event-delete-recurring-warning-title1" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar este evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar este evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer cet événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer cet événement"
           }
         }
       }
     },
-    "event-delete-recurring-warning-title2": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete all events"
+    "event-delete-recurring-warning-title2" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar todos los eventos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar todos los eventos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer tous les événements"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer tous les événements"
           }
         }
       }
     },
-    "event-details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Details"
+    "event-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detalles"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Détails"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détails"
           }
         }
       }
     },
-    "event-details-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Details"
+    "event-details-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detalles"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalles"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Détails"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détails"
           }
         }
       }
     },
-    "event-explorer-state-events": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Events"
+    "event-explorer-state-events" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eventos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événements"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements"
           }
         }
       }
     },
-    "event-explorer-state-venues": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Venues"
+    "event-explorer-state-venues" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venues"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lugares"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lugares"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieux"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieux"
           }
         }
       }
     },
-    "event-failed-to-load": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Failed to get Event."
+    "event-failed-to-load" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to get Event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se pudo obtener el evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo obtener el evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impossible de récupérer l'événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de récupérer l'événement."
           }
         }
       }
     },
-    "event-formats-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formats"
+    "event-formats-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formats"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formatos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Formats"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formats"
           }
         }
       }
     },
-    "event-goto-settings": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Goto Settings"
+    "event-goto-settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goto Settings"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ir a Ajustes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ir a Ajustes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aller aux Réglages"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aller aux Réglages"
           }
         }
       }
     },
-    "event-hide-locations": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide Locations"
+    "event-hide-locations" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide Locations"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar ubicaciones"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar ubicaciones"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masquer les lieux"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer les lieux"
           }
         }
       }
     },
-    "event-hide-participants-list": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide Participants List"
+    "event-hide-participants-list" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide Participants List"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar lista de participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar lista de participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masquer la liste des participants"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer la liste des participants"
           }
         }
       }
     },
-    "event-limit": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limit"
+    "event-limit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Límite"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Límite"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limite"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limite"
           }
         }
       }
     },
-    "event-menu-delete": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove event"
+    "event-menu-delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer l'événement"
           }
         }
       }
     },
-    "event-menu-issue": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Report an issue"
+    "event-menu-issue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report an issue"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Informar un problema"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informar un problema"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Signaler un problème"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaler un problème"
           }
         }
       }
     },
-    "event-nearby": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nearby Events"
+    "event-nearby" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby Events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eventos cercanos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos cercanos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événements à proximité"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements à proximité"
           }
         }
       }
     },
-    "event-nearby-fields": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nearby Fields"
+    "event-nearby-fields" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby Fields"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Campos cercanos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campos cercanos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terrains à proximité"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terrains à proximité"
           }
         }
       }
     },
-    "event-no-events-found": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No events found in your area. Change location settings or"
+    "event-no-events-found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No events found in your area. Change location settings or"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron eventos en tu área. Cambia la configuración de ubicación o"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron eventos en tu área. Cambia la configuración de ubicación o"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun événement trouvé dans votre zone. Modifiez les paramètres de localisation ou"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun événement trouvé dans votre zone. Modifiez les paramètres de localisation ou"
           }
         }
       }
     },
-    "event-notification-content-hint": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What do you want to tell them?"
+    "event-notification-content-hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What do you want to tell them?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Qué quieres decirles?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué quieres decirles?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Que voulez-vous leur dire ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Que voulez-vous leur dire ?"
           }
         }
       }
     },
-    "event-notification-content-label": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Content"
+    "event-notification-content-label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contenido"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contenido"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contenu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contenu"
           }
         }
       }
     },
-    "event-notification-content-placeholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Don't forget your gear"
+    "event-notification-content-placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't forget your gear"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No olvides tu equipo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No olvides tu equipo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "N'oubliez pas votre équipement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "N'oubliez pas votre équipement"
           }
         }
       }
     },
-    "event-notification-prompt": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What would you like to say to the participants?"
+    "event-notification-prompt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What would you like to say to the participants?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Qué les gustaría decir a los participantes?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué les gustaría decir a los participantes?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Que souhaitez-vous dire aux participants ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Que souhaitez-vous dire aux participants ?"
           }
         }
       }
     },
-    "event-notification-title-hint": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What is the nature of this notification?"
+    "event-notification-title-hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is the nature of this notification?"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Cuál es la naturaleza de esta notificación?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuál es la naturaleza de esta notificación?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quelle est la nature de cette notification ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelle est la nature de cette notification ?"
           }
         }
       }
     },
-    "event-notification-title-label": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Title"
+    "event-notification-title-label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Título"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Titre"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titre"
           }
         }
       }
     },
-    "event-notification-title-placeholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick up reminder"
+    "event-notification-title-placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick up reminder"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recordatorio de recogida"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordatorio de recogida"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rappel de ramassage"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rappel de ramassage"
           }
         }
       }
     },
-    "event-organizers": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organizers"
+    "event-organizers" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizers"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organizadores"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizadores"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organisateurs"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisateurs"
           }
         }
       }
     },
-    "event-participant-you": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(You)"
+    "event-participant-you" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(You)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(Tú)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Tú)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(Vous)"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Vous)"
           }
         }
       }
     },
-    "event-participants": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Participants"
+    "event-participants" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Participants"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Participantes"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Participantes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Participants"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Participants"
           }
         }
       }
     },
-    "event-permission-denied-message": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."
+    "event-permission-denied-message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To use Olympsis's map features you need to allow us to use your location when in use of the app for accurate information."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para usar las funciones del mapa de Olympsis necesitas permitirnos usar tu ubicación cuando la aplicación está en uso para obtener información precisa."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para usar las funciones del mapa de Olympsis necesitas permitirnos usar tu ubicación cuando la aplicación está en uso para obtener información precisa."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pour utiliser les fonctionnalités de carte d'Olympsis, vous devez nous autoriser à utiliser votre position lorsque l'application est en cours d'utilisation pour des informations précises."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour utiliser les fonctionnalités de carte d'Olympsis, vous devez nous autoriser à utiliser votre position lorsque l'application est en cours d'utilisation pour des informations précises."
           }
         }
       }
     },
-    "event-permission-denied-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permission Denied"
+    "event-permission-denied-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission Denied"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permiso denegado"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permiso denegado"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permission refusée"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission refusée"
           }
         }
       }
     },
-    "event-remove-participant": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove Participant"
+    "event-remove-participant" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Participant"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar participante"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar participante"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retirer le participant"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le participant"
           }
         }
       }
     },
-    "event-search-locations-or": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search for locations or"
+    "event-search-locations-or" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for locations or"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Busca ubicaciones o"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca ubicaciones o"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rechercher des lieux ou"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher des lieux ou"
           }
         }
       }
     },
-    "event-search-radius": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search Radius:"
+    "event-search-radius" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Radius:"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radio de búsqueda:"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radio de búsqueda:"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rayon de recherche :"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rayon de recherche :"
           }
         }
       }
     },
-    "event-share": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Share Event"
+    "event-share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Compartir evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Partager l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager l'événement"
           }
         }
       }
     },
-    "event-show-locations-after-rsvp": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show locations after RSVP"
+    "event-show-locations-after-rsvp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show locations after RSVP"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar ubicaciones después de confirmar asistencia"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar ubicaciones después de confirmar asistencia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher les lieux après confirmation de présence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les lieux après confirmation de présence"
           }
         }
       }
     },
-    "event-show-participants-after-rsvp": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show participants list after RSVP"
+    "event-show-participants-after-rsvp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show participants list after RSVP"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar lista de participantes después de confirmar asistencia"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar lista de participantes después de confirmar asistencia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher la liste des participants après confirmation de présence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher la liste des participants après confirmation de présence"
           }
         }
       }
     },
-    "event-sports-filter": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sports:"
+    "event-sports-filter" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sports:"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deportes:"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deportes:"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sports :"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sports :"
           }
         }
       }
     },
-    "event-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Event"
+    "event-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événement"
           }
         }
       }
     },
-    "event-tournament": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tournament"
+    "event-tournament" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tournament"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Torneo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torneo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tournoi"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tournoi"
           }
         }
       }
     },
-    "event-try-again": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Try again"
+    "event-try-again" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Intentar de nuevo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intentar de nuevo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réessayer"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
           }
         }
       }
     },
-    "event-type-class-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A structured training session or instructional event led by a coach or instructor."
+    "event-type-class-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A structured training session or instructional event led by a coach or instructor."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una sesión de entrenamiento estructurada o evento instructivo dirigido por un entrenador o instructor."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una sesión de entrenamiento estructurada o evento instructivo dirigido por un entrenador o instructor."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une séance d'entraînement structurée ou un événement pédagogique dirigé par un entraîneur ou un instructeur."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une séance d'entraînement structurée ou un événement pédagogique dirigé par un entraîneur ou un instructeur."
           }
         }
       }
     },
-    "event-type-league-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A recurring competitive season where teams or individuals play a series of matches over time."
+    "event-type-league-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A recurring competitive season where teams or individuals play a series of matches over time."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una temporada competitiva recurrente donde equipos o individuos juegan una serie de partidos a lo largo del tiempo."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una temporada competitiva recurrente donde equipos o individuos juegan una serie de partidos a lo largo del tiempo."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une saison compétitive récurrente où des équipes ou des individus jouent une série de matchs au fil du temps."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une saison compétitive récurrente où des équipes ou des individus jouent une série de matchs au fil du temps."
           }
         }
       }
     },
-    "event-type-regular-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only."
+    "event-type-regular-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un juego informal, para que la gente venga a jugar sin necesidad de registro previo. Puede ser público o solo por invitación."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un juego informal, para que la gente venga a jugar sin necesidad de registro previo. Puede ser público o solo por invitación."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un jeu informel, où les gens peuvent venir jouer sans inscription préalable. Peut être défini comme public ou sur invitation uniquement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un jeu informel, où les gens peuvent venir jouer sans inscription préalable. Peut être défini comme public ou sur invitation uniquement."
           }
         }
       }
     },
-    "event-type-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
+    "event-type-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
           }
         }
       }
     },
-    "event-type-tournament-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A competitive event where individuals or teams compete in a structured format to determine a winner."
+    "event-type-tournament-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A competitive event where individuals or teams compete in a structured format to determine a winner."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un evento competitivo donde individuos o equipos compiten en un formato estructurado para determinar un ganador."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un evento competitivo donde individuos o equipos compiten en un formato estructurado para determinar un ganador."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un événement compétitif où des individus ou des équipes s'affrontent dans un format structuré pour déterminer un gagnant."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un événement compétitif où des individus ou des équipes s'affrontent dans un format structuré pour déterminer un gagnant."
           }
         }
       }
     },
-    "event-venues": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Venue(s)"
+    "event-venues" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venue(s)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lugar(es)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lugar(es)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieu(x)"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieu(x)"
           }
         }
       }
     },
-    "events-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Events"
+    "events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eventos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événements"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements"
           }
         }
       }
     },
-    "failed-events-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "We ran into an issue pulling up events. Try again in a bit!"
+    "failed-events-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We ran into an issue pulling up events. Try again in a bit!"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tuvimos un problema al abrir los eventos. ¡Inténtalo de nuevo en un momento!"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuvimos un problema al abrir los eventos. ¡Inténtalo de nuevo en un momento!"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nous avons rencontré un problème lors de l'affichage des événements. Réessayez dans quelques instants !"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous avons rencontré un problème lors de l'affichage des événements. Réessayez dans quelques instants !"
           }
         }
       }
     },
-    "failed-events-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Whoops! Error loading events. ⚠️"
+    "failed-events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whoops! Error loading events. ⚠️"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¡Ups! Error al cargar eventos. ⚠️"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Ups! Error al cargar eventos. ⚠️"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oups ! Erreur lors du chargement des événements. ⚠️"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oups ! Erreur lors du chargement des événements. ⚠️"
           }
         }
       }
     },
-    "failed-venues-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "We ran into an issue pulling up venues. Try again in a bit!"
+    "failed-venues-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We ran into an issue pulling up venues. Try again in a bit!"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tuvimos un problema al cargar los lugares. ¡Inténtalo de nuevo en un momento!"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuvimos un problema al cargar los lugares. ¡Inténtalo de nuevo en un momento!"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nous avons rencontré un problème lors de l'affichage des lieux. Réessayez dans quelques instants !"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous avons rencontré un problème lors de l'affichage des lieux. Réessayez dans quelques instants !"
           }
         }
       }
     },
-    "failed-venues-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Whoops! Error loading venues. ⚠️"
+    "failed-venues-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whoops! Error loading venues. ⚠️"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¡Ups! Error al cargar lugares. ⚠️"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Ups! Error al cargar lugares. ⚠️"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oups ! Erreur lors du chargement des lieux. ⚠️"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oups ! Erreur lors du chargement des lieux. ⚠️"
           }
         }
       }
     },
-    "hosted-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hosted by"
+    "hosted-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hosted by"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organizado por"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizado por"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organisé par"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisé par"
           }
         }
       }
     },
-    "level-amateur": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Amateur"
+    "level-amateur" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amateur"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Amateur"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amateur"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Amateur"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amateur"
           }
         }
       }
     },
-    "level-any": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any Level"
+    "level-any" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any Level"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cualquier nivel"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier nivel"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout niveau"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout niveau"
           }
         }
       }
     },
-    "level-beginner": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Beginner"
+    "level-beginner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beginner"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Principiante"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principiante"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Débutant"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débutant"
           }
         }
       }
     },
-    "level-expert": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Expert"
+    "level-expert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expert"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Experto"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experto"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Expert"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expert"
           }
         }
       }
     },
-    "location-name-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location name"
+    "location-name-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location name"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nombre de la ubicación"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la ubicación"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nom du lieu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom du lieu"
           }
         }
       }
     },
-    "locations-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location(s)"
+    "locations-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location(s)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ubicación(es)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieu(x)"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieu(x)"
           }
         }
       }
     },
-    "nearby-events-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nearby events"
+    "nearby-events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eventos cercanos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos cercanos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événements à proximité"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements à proximité"
           }
         }
       }
     },
-    "new-event-create-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create event"
+    "new-event-create-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crear evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Créer un événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un événement"
           }
         }
       }
     },
-    "new-event-description-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Give details about the event"
+    "new-event-description-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Give details about the event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dar detalles sobre el evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dar detalles sobre el evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Donnez des détails sur l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donnez des détails sur l'événement"
           }
         }
       }
     },
-    "new-event-description-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Description"
+    "new-event-description-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Descripción"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Description"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
           }
         }
       }
     },
-    "new-event-image": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Image"
+    "new-event-image" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imagen"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagen"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Image"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image"
           }
         }
       }
     },
-    "new-event-location-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location(s) of the event"
+    "new-event-location-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location(s) of the event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ubicación(es) del evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es) del evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieu(x) de l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieu(x) de l'événement"
           }
         }
       }
     },
-    "new-event-location-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location(s)"
+    "new-event-location-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location(s)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ubicación(es)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación(es)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieu(x)"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieu(x)"
           }
         }
       }
     },
-    "new-event-organizer-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The clubs/organizations affiliated with this event"
+    "new-event-organizer-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The clubs/organizations affiliated with this event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Los clubes/organizaciones afiliados a este evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los clubes/organizaciones afiliados a este evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les clubs/organisations affiliés à cet événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les clubs/organisations affiliés à cet événement"
           }
         }
       }
     },
-    "new-event-organizer-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organizers(s)"
+    "new-event-organizer-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizers(s)"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organizador(es)"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizador(es)"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Organisateurs"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisateurs"
           }
         }
       }
     },
-    "new-event-sport-action-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select sport"
+    "new-event-sport-action-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select sport"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleccione el deporte"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccione el deporte"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sélectionnez un sport"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionnez un sport"
           }
         }
       }
     },
-    "new-event-sport-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick your event’s sport activity"
+    "new-event-sport-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick your event’s sport activity"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige la actividad deportiva de tu evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige la actividad deportiva de tu evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez l'activité sportive de votre événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez l'activité sportive de votre événement"
           }
         }
       }
     },
-    "new-event-sports-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sport"
+    "new-event-sports-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sport"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deporte"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deporte"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sportif"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sportif"
           }
         }
       }
     },
-    "new-event-start-time-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Date/Time"
+    "new-event-start-time-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Date/Time"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fecha/hora de inicio"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha/hora de inicio"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Date/heure de début"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date/heure de début"
           }
         }
       }
     },
-    "new-event-stop-time-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop Date/Time"
+    "new-event-stop-time-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop Date/Time"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fecha/hora de parada"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha/hora de parada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Date/heure d'arrêt"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date/heure d'arrêt"
           }
         }
       }
     },
-    "new-event-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What to call the event"
+    "new-event-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What to call the event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Cómo llamar al evento?"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo llamar al evento?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comment appeler l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment appeler l'événement"
           }
         }
       }
     },
-    "new-event-tags-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tags make your event easier to discover"
+    "new-event-tags-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags make your event easier to discover"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las etiquetas facilitan el descubrimiento de tu evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las etiquetas facilitan el descubrimiento de tu evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les tags facilitent la découverte de votre événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les tags facilitent la découverte de votre événement"
           }
         }
       }
     },
-    "new-event-tags-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tags"
+    "new-event-tags-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Etiquetas"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiquetas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tags"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tags"
           }
         }
       }
     },
-    "new-event-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Title"
+    "new-event-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Título"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Titre"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titre"
           }
         }
       }
     },
-    "new-event-title-placeholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Event Title"
+    "new-event-title-placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event Title"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Título del evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Título del evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Titre de l'événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titre de l'événement"
           }
         }
       }
     },
-    "new-event-view-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New event"
+    "new-event-view-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New event"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuevo evento"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo evento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nouvel événement"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel événement"
           }
         }
       }
     },
-    "new-events-view-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Events"
+    "new-events-view-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eventos"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eventos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Événements"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événements"
           }
         }
       }
     },
-    "no-events-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Looks like there aren’t any sports events in your area right now. Why not be the first to start one? Gather players, set the time, and get the game going! Or try adjusting your filters to see more events nearby."
+    "no-events-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looks like there aren’t any sports events in your area right now. Why not be the first to start one? Gather players, set the time, and get the game going! Or try adjusting your filters to see more events nearby."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Parece que no hay eventos deportivos en tu zona ahora mismo. ¿Por qué no ser el primero en empezar uno? ¡Reúne a los jugadores, fija la hora y que empiece el partido! O prueba a ajustar tus filtros para ver más eventos cerca."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece que no hay eventos deportivos en tu zona ahora mismo. ¿Por qué no ser el primero en empezar uno? ¡Reúne a los jugadores, fija la hora y que empiece el partido! O prueba a ajustar tus filtros para ver más eventos cerca."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il semble qu'il n'y ait aucun événement sportif dans votre région en ce moment. Pourquoi ne pas être le premier à en organiser un ? Rassemblez les joueurs, programmez l'heure et lancez la partie ! Ou ajustez vos filtres pour voir plus d'événements à proximité."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il semble qu'il n'y ait aucun événement sportif dans votre région en ce moment. Pourquoi ne pas être le premier à en organiser un ? Rassemblez les joueurs, programmez l'heure et lancez la partie ! Ou ajustez vos filtres pour voir plus d'événements à proximité."
           }
         }
       }
     },
-    "no-events-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No events found—time to make one happen! ⚡"
+    "no-events-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No events found—time to make one happen! ⚡"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron eventos: ¡es hora de crear uno! ⚡"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron eventos: ¡es hora de crear uno! ⚡"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun événement trouvé — il est temps d'en organiser un ! ⚡"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun événement trouvé — il est temps d'en organiser un ! ⚡"
           }
         }
       }
     },
-    "no-selected-sport": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please select a sport"
+    "no-selected-sport" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a sport"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Por favor seleccione un deporte"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor seleccione un deporte"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Veuillez sélectionner un sport"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez sélectionner un sport"
           }
         }
       }
     },
-    "no-venues-sub-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "We couldn’t find any sports venues nearby. Try widening your search radius or adjusting your filters to see more spots to play."
+    "no-venues-found-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No venues found near you"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No encontramos lugares deportivos cerca. Prueba a ampliar tu radio de búsqueda o a ajustar tus filtros para ver más sitios para jugar."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron lugares cerca de ti"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nous n'avons trouvé aucun lieu sportif à proximité. Essayez d'élargir votre rayon de recherche ou d'ajuster vos filtres pour voir plus d'endroits où jouer."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun lieu trouvé près de chez vous"
           }
         }
       }
     },
-    "no-venues-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No venues found in your area 📍"
+    "no-venues-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn’t find any sports venues nearby. Try widening your search radius or adjusting your filters to see more spots to play."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron lugares en tu zona 📍"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No encontramos lugares deportivos cerca. Prueba a ampliar tu radio de búsqueda o a ajustar tus filtros para ver más sitios para jugar."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun lieu trouvé dans votre région 📍"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous n'avons trouvé aucun lieu sportif à proximité. Essayez d'élargir votre rayon de recherche ou d'ajuster vos filtres pour voir plus d'endroits où jouer."
           }
         }
       }
     },
-    "no-venues-found-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No venues found near you"
+    "no-venues-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No venues found in your area 📍"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontraron lugares cerca de ti"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontraron lugares en tu zona 📍"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun lieu trouvé près de chez vous"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun lieu trouvé dans votre région 📍"
           }
         }
       }
     },
-    "participants-status-attended": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Attended"
+    "participants-status-attended" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attended"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Asistió"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistió"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Assisté"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assisté"
           }
         }
       }
     },
-    "participants-status-attending": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Attending"
+    "participants-status-attending" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attending"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Asistente"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asistente"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Présent"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Présent"
           }
         }
       }
     },
-    "participants-status-going": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Going"
+    "participants-status-going" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Going"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yendo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yendo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En allant"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En allant"
           }
         }
       }
     },
-    "pick-a-location-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick a location"
+    "pick-a-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a location"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elija una ubicación"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elija una ubicación"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisir un lieu"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un lieu"
           }
         }
       }
     },
-    "remove-a-comment": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove comment"
+    "remove-a-comment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove comment"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar comentario"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar comentario"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer le commentaire"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer le commentaire"
           }
         }
       }
     },
-    "rsvp-hide": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide my RSVP"
+    "rsvp-hide" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide my RSVP"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar mi confirmación"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar mi confirmación"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masquer ma réponse"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer ma réponse"
           }
         }
       }
     },
-    "rsvp-hide-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep your attendance private from others."
+    "rsvp-hide-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your attendance private from others."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mantén tu asistencia privada de los demás."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén tu asistencia privada de los demás."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gardez votre présence privée des autres."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez votre présence privée des autres."
           }
         }
       }
     },
-    "rsvp-maybe": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Maybe"
+    "rsvp-maybe" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tal vez"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tal vez"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Peut-être"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peut-être"
           }
         }
       }
     },
-    "rsvp-yes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I'm in!"
+    "rsvp-yes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm in!"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¡Voy!"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Voy!"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "J'y serai !"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'y serai !"
           }
         }
       }
     },
-    "set-custom-location-name": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom location name"
+    "set-custom-location-name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom location name"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nombre de ubicación personalizado"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de ubicación personalizado"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nom de lieu personnalisé"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de lieu personnalisé"
           }
         }
       }
     },
-    "set-custom-location-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set custom location"
+    "set-custom-location-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set custom location"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Establecer ubicación personalizada"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer ubicación personalizada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Définir un lieu personnalisé"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir un lieu personnalisé"
           }
         }
       }
     },
-    "skill-level-all-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All players regardless of their skill level is invited to this event."
+    "skill-level-all-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All players regardless of their skill level is invited to this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos los jugadores, independientemente de su nivel de habilidad, están invitados a este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los jugadores, independientemente de su nivel de habilidad, están invitados a este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tous les joueurs, quel que soit leur niveau, sont invités à cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les joueurs, quel que soit leur niveau, sont invités à cet événement."
           }
         }
       }
     },
-    "skill-level-amateur-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All players at an Amateur skill level and up are invited to this event."
+    "skill-level-amateur-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All players at an Amateur skill level and up are invited to this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos los jugadores con nivel amateur o superior están invitados a este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los jugadores con nivel amateur o superior están invitados a este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tous les joueurs de niveau amateur et plus sont invités à cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les joueurs de niveau amateur et plus sont invités à cet événement."
           }
         }
       }
     },
-    "skill-level-beginner-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All players at a beginner skill level and up are invited to join this event."
+    "skill-level-beginner-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All players at a beginner skill level and up are invited to join this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos los jugadores con nivel principiante o superior están invitados a unirse a este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los jugadores con nivel principiante o superior están invitados a unirse a este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tous les joueurs de niveau débutant et plus sont invités à rejoindre cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les joueurs de niveau débutant et plus sont invités à rejoindre cet événement."
           }
         }
       }
     },
-    "skill-level-expert-desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All players at an Expert skill level and up are inivited to this event."
+    "skill-level-expert-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All players at an Expert skill level and up are inivited to this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todos los jugadores con nivel experto o superior están invitados a este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los jugadores con nivel experto o superior están invitados a este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tous les joueurs de niveau expert et plus sont invités à cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les joueurs de niveau expert et plus sont invités à cet événement."
           }
         }
       }
     },
-    "skill-level-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skill Level"
+    "skill-level-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skill Level"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nivel de habilidad"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nivel de habilidad"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Niveau de compétence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niveau de compétence"
           }
         }
       }
     },
-    "sponsors-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sponsors"
+    "sponsors-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sponsors"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Patrocinadores"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patrocinadores"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commanditaires"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commanditaires"
           }
         }
       }
     },
-    "status-cancel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "status-cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelar"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Annuler"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
           }
         }
       }
     },
-    "status-ended": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ended"
+    "status-ended" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ended"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terminado"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminado"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terminé"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé"
           }
         }
       }
     },
-    "status-live": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Live"
+    "status-live" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vivir"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vivir"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En direct"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En direct"
           }
         }
       }
     },
-    "status-pending": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pending"
+    "status-pending" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pending"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pendiente"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pendiente"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En attente"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente"
           }
         }
       }
     },
-    "status-rsvp": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "RSVP"
+    "status-rsvp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSVP"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "RSVP"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSVP"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "RSVP"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSVP"
           }
         }
       }
     },
-    "status-waitlist": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Waitlist"
+    "status-waitlist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waitlist"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lista de espera"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de espera"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Liste d'attente"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste d'attente"
           }
         }
       }
     },
-    "tap-anywhere-text": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap anywhere on the map to drop a pin"
+    "tap-anywhere-text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap anywhere on the map to drop a pin"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toque en cualquier lugar del mapa para colocar un pin."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque en cualquier lugar del mapa para colocar un pin."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appuyez n'importe où sur la carte pour déposer une épingle"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appuyez n'importe où sur la carte pour déposer une épingle"
           }
         }
       }
     },
-    "visibility-group": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Group"
+    "visibility-group" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grupo"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Group"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group"
           }
         }
       }
     },
-    "visibility-group-details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any members associated to any of the hosting groups for this event will be able to interact with this event."
+    "visibility-group-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any members associated to any of the hosting groups for this event will be able to interact with this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cualquier miembro asociado a cualquiera de los grupos anfitriones de este evento podrá interactuar con este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier miembro asociado a cualquiera de los grupos anfitriones de este evento podrá interactuar con este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tous les membres associés à l'un des groupes d'hébergement de cet événement pourront interagir avec cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les membres associés à l'un des groupes d'hébergement de cet événement pourront interagir avec cet événement."
           }
         }
       }
     },
-    "visibility-private": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Private"
+    "visibility-private" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Privado"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privado"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Privé"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privé"
           }
         }
       }
     },
-    "visibility-private-details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only you, the participants and those whom you have shared the event with can interact with this event."
+    "visibility-private-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only you, the participants and those whom you have shared the event with can interact with this event."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sólo usted, los participantes y aquellos con quienes ha compartido el evento pueden interactuar con este evento."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sólo usted, los participantes y aquellos con quienes ha compartido el evento pueden interactuar con este evento."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seuls vous, les participants et ceux avec qui vous avez partagé l'événement pouvez interagir avec cet événement."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seuls vous, les participants et ceux avec qui vous avez partagé l'événement pouvez interagir avec cet événement."
           }
         }
       }
     },
-    "visibility-public": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plublic"
+    "visibility-public" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Público"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Público"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Public"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public"
           }
         }
       }
     },
-    "visibility-public-details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anyone on olympsis can see this event and interact with it."
+    "visibility-public-details" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anyone on olympsis can see this event and interact with it."
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cualquiera en Olympsis puede ver este evento e interactuar con él."
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquiera en Olympsis puede ver este evento e interactuar con él."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toute personne sur Olympsis peut voir cet événement et interagir avec lui."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toute personne sur Olympsis peut voir cet événement et interagir avec lui."
           }
         }
       }
     },
-    "visibility-title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Visibility"
+    "visibility-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibility"
           }
         },
-        "es-419": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Visibilidad"
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibilidad"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Visibilité"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visibilité"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }
