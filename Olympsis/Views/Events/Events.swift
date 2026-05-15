@@ -17,7 +17,11 @@ struct Events: View {
     @State private var showMenu: Bool = false
     @State private var showNewEvent: Bool = false
     
-    @State private var manager = SearchManager()
+    // `persistKey: "events"` wires the manager to UserDefaults so the
+    // user's selected tags / sports survive across app launches.
+    // Without a key the manager stays transient (used by clubs /
+    // groups filter sheets which intentionally don't persist).
+    @State private var manager = SearchManager(persistKey: "events")
     @State private var viewModel = EventsViewModel()
     @Environment(SessionStore.self) private var session
     
@@ -65,20 +69,28 @@ struct Events: View {
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
-                    // Detect if filters actually changed so we can force a fresh fetch
-                    let filtersChanged = manager.selectedTags != viewModel.selectedTags
-                        || manager.selectedSports != viewModel.selectedSports
-                    
+                    // Decide whether the dismiss should trigger a network
+                    // fetch or just a local re-filter.
+                    let oldTags = Set(viewModel.selectedTags)
+                    let oldSports = Set(viewModel.selectedSports)
+                    let newTags = Set(manager.selectedTags)
+                    let newSports = Set(manager.selectedSports)
+
+                    let hasAdditions = !newTags.isSubset(of: oldTags)
+                        || !newSports.isSubset(of: oldSports)
+                    let clearedAllFilters = newTags.isEmpty && newSports.isEmpty
+                        && (!oldTags.isEmpty || !oldSports.isEmpty)
+                    let needsFetch = hasAdditions || clearedAllFilters
+
                     viewModel.selectedTags = manager.selectedTags
                     viewModel.selectedSports = manager.selectedSports
-                    
-                    Task {
-                        await viewModel.fetchEvents(session, force: filtersChanged)
+
+                    if needsFetch {
+                        Task {
+                            await viewModel.fetchEvents(session, force: true)
+                        }
                     }
                 }, content: {
-                    // `showTags: false` on the venues tab — venues
-                    // don't carry user-defined tags, so the tags
-                    // section in the filter sheet is just noise there.
                     FilterView(showTags: viewModel.page == .events)
                         .environment(session)
                         .environment(manager)
@@ -114,13 +126,25 @@ struct Events: View {
                     viewModel.tags = session.tags
                     viewModel.sports = session.sports
 
-                    // Add user's sports on the filter by default
-                    if let user = session.user {
-                        if let sports = user.sports {
-                            manager.selectedSports = sports
-                            viewModel.selectedSports = sports
-                        }
+                    // First-launch seed: only apply the user's preferred
+                    // sports when nothing has ever been persisted. If the
+                    // user has touched the filter sheet before — even to
+                    // clear it — we respect that and skip the seed.
+                    // `manager` already hydrated `selectedSports` /
+                    // `selectedTags` from `UserDefaults` in its init, so
+                    // this branch is the only place defaults are applied.
+                    if !manager.hasPersistedSelections,
+                       let sports = session.user?.sports {
+                        manager.selectedSports = sports
+                        manager.persistSelections()
                     }
+
+                    // Mirror the (persisted or seeded) selection onto the
+                    // viewModel so the very first fetch uses it and the
+                    // dismiss-diff in the filter sheet has the right
+                    // "previous" baseline.
+                    viewModel.selectedSports = manager.selectedSports
+                    viewModel.selectedTags = manager.selectedTags
 
                     // Give Core Location up to 1 s to deliver a fresh fix
                     // before we kick off the network call. If nothing comes
