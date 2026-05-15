@@ -17,11 +17,10 @@ struct Events: View {
     @State private var showMenu: Bool = false
     @State private var showNewEvent: Bool = false
     
-    // `persistKey: "events"` wires the manager to UserDefaults so the
-    // user's selected tags / sports survive across app launches.
-    // Without a key the manager stays transient (used by clubs /
-    // groups filter sheets which intentionally don't persist).
-    @State private var manager = SearchManager(persistKey: "events")
+    // `SearchManager` hydrates `selectedTags` / `selectedSports` from
+    // UserDefaults in its init, so the user's filter choices survive
+    // across app launches without any work here.
+    @State private var manager = SearchManager()
     @State private var viewModel = EventsViewModel()
     @Environment(SessionStore.self) private var session
     
