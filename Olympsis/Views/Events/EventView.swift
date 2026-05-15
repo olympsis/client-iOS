@@ -130,7 +130,10 @@ struct EventView: View {
                                                     .background(Color.Background.secondary)
                                                     .clipShape(Capsule())
                                                     .foregroundStyle(.primary)
-                                                    .border(Color.black.opacity(0.15), width: 1)
+                                                    .overlay(
+                                                        Capsule()
+                                                            .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                                                    )
                                             }.buttonStyle(.plain)
                                         }
                                     }.padding(.horizontal)

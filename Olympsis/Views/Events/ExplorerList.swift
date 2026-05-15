@@ -424,6 +424,9 @@ struct ExplorerList: View {
                         }.padding(.top, 50)
                     }
                     }
+                    
+                    // Bottom padding to make sure we can scroll all the way up
+                    Spacer(minLength: 150)
                 }
             }
         }
