@@ -66,11 +66,15 @@ struct EventSmallListItem: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
-                
+                    // Cap wrap at 3 lines — long titles in the Up Next
+                    // section can otherwise push the time row off the
+                    // card height. Anything beyond gets truncated.
+                    .lineLimit(3)
+
                 Text(event.timeToString() + " at " + event.getStartHourAndMinute())
                     .font(.callout)
                     .foregroundStyle(.gray)
-                
+
             }
             
             Spacer()
@@ -84,12 +88,14 @@ struct EventSmallListItem: View {
         .overlay(alignment: .bottomTrailing) {
             if event.participants.count > 0 {
                 HStack {
+                    Spacer()
                     Image(systemName: "person.3.fill")
                     Text("\(event.participants.count)")
                         .font(.callout)
                 }
                 .padding()
                 .foregroundStyle(.primary)
+                .allowsHitTesting(false)
             }
         }
         .padding(.horizontal, 10)

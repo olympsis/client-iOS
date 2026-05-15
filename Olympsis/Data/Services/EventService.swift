@@ -55,6 +55,20 @@ class EventService {
         let endpoint = Hermes.Endpoint("/v1/events", queryItems: queries)
         return try await http.Request(.GET, endpoint, headers: headers)
     }
+    
+    func getPastEvents(skip: Int, limit: Int) async throws -> (Data, URLResponse) {
+        let headers = try await AppEnvironment.authHeaders()
+
+        var queries = [
+            URLQueryItem(name: "status", value: "ended"),
+        ]
+
+        queries.append(URLQueryItem(name: "skip", value: String(skip)))
+        queries.append(URLQueryItem(name: "limit", value: String(limit)))
+
+        let endpoint = Hermes.Endpoint("/v1/events", queryItems: queries)
+        return try await http.Request(.GET, endpoint, headers: headers)
+    }
 
     func getEventsByField(id: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()

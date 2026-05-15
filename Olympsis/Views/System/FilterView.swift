@@ -19,6 +19,11 @@ struct FilterView: View {
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 4000, longitudinalMeters: 4000)
     }
     
+    /// Whether to render the tags section. Defaults to `true` so
+    /// existing callers (events filter) are unchanged; callers like
+    /// the venues / clubs filter pass `false` to omit the tags block.
+    var showTags: Bool = true
+
     @Environment(SessionStore.self) private var session
     @Environment(SearchManager.self) private var manager
     @AppStorage("searchRadius") private var searchRadius: Double?
@@ -156,39 +161,41 @@ struct FilterView: View {
             }
             .padding(.horizontal, 10)
             
-            VStack(alignment: .leading) {
-                Text(tagsHeaderString)
-                    .fontWeight(.medium)
-                Text(String(localized: "tags-sub-title", table: "General"))
-                    .font(.callout)
-                    .foregroundStyle(.gray)
+            if showTags {
+                VStack(alignment: .leading) {
+                    Text(tagsHeaderString)
+                        .fontWeight(.medium)
+                    Text(String(localized: "tags-sub-title", table: "General"))
+                        .font(.callout)
+                        .foregroundStyle(.gray)
 
-                WrappingHStack(alignment: .bottomLeading) {
-                    ForEach(manager.tags, id: \.name) { tag in
-                        Button(action: { manager.selectTag(tag) }) {
-                            Text("\(tag.name.capitalized.replacingOccurrences(of: "-", with: " "))")
-                                .padding(.horizontal)
-                                .padding(.vertical, 10)
-                                .background(.regularMaterial)
-                                .background(Color.gray.opacity(0.7))
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                                .background {
-                                    RoundedRectangle(cornerRadius: 20).stroke(manager.isTagSelected(tag) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: 2)
-                                }
+                    WrappingHStack(alignment: .bottomLeading) {
+                        ForEach(manager.tags, id: \.name) { tag in
+                            Button(action: { manager.selectTag(tag) }) {
+                                Text("\(tag.name.capitalized.replacingOccurrences(of: "-", with: " "))")
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 10)
+                                    .background(.regularMaterial)
+                                    .background(Color.gray.opacity(0.7))
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 20).stroke(manager.isTagSelected(tag) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: 2)
+                                    }
+                            }
                         }
                     }
                 }
+                .padding()
+                .background {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.ultraThinMaterial)
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.Background.secondary, lineWidth: 2)
+                }
+                .padding(.horizontal, 10)
             }
-            .padding()
-            .background {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.ultraThinMaterial)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.Background.secondary, lineWidth: 2)
-            }
-            .padding(.horizontal, 10)
         }
         .task {
             #if targetEnvironment(simulator)

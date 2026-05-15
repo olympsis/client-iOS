@@ -55,6 +55,23 @@ class EventObserver: ObservableObject{
         return nil
     }
     
+    func fetchPastEvents(skip: Int = 0, limit: Int = 100) async -> [Event] {
+        do {
+            let (data, resp) = try await eventService.getPastEvents(skip: skip, limit: limit)
+            guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                if (resp as? HTTPURLResponse)?.statusCode == 204 {
+                    return []
+                }
+                return []
+            }
+            let object = try decoder.decode(EventsResponse.self, from: data)
+            return object.events
+        } catch {
+            log.error("\(error)")
+        }
+        return []
+    }
+    
     func fetchEventsByFieldID(_ id: String) async -> [Event]? {
         do {
             let (data, resp) = try await eventService.getEventsByField(id: id)

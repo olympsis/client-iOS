@@ -162,11 +162,15 @@ struct ListView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 HStack(alignment: .bottom) {
-                    Spacer()
-                    DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
-                        .frame(width: 120)
+//                    Spacer()
+//                    DatePicker("",selection: $selectedDate, in: todayDate..., displayedComponents: [.date])
+//                        .frame(width: 120)
+//                    
+//                    FilterButton(numActive: .constant(numFiltersActive), action: { showMenu.toggle() })
                     
-                    FilterButton(numActive: .constant(numFiltersActive), action: { showMenu.toggle() })
+//                    Picker {
+//                        
+//                    }
                 }
                 .zIndex(2)
                 .frame(height: 40)

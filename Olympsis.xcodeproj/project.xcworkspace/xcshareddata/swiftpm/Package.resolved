@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher.git",
       "state" : {
-        "revision" : "2015fda791daa72c8058619545a593bf8c1dd59f",
-        "version" : "8.5.0"
+        "revision" : "c152c1915f60c51e4afa0752656993ee5b3c63db",
+        "version" : "8.8.1"
       }
     },
     {
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stripe/stripe-ios-spm",
       "state" : {
-        "revision" : "5ee61da37766ab74bf213805483fb2c6647e69ae",
-        "version" : "24.20.0"
+        "revision" : "f4f28a0b358011089e4538059d443eccff183382",
+        "version" : "24.25.0"
       }
     },
     {

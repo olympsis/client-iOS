@@ -77,61 +77,27 @@ struct ViewContainer: View {
     }
     
     var body: some View {
-        VStack {
-            if #available(iOS 26.0, *) {
-                TabView(selection: $currentTab) {
-                    Tab("", systemImage: "calendar", value: .events) {
-                        Events(router: $eventRouter)
-                            .tag(ViewTab.events)
-                            .environment(session)
-                    }
-                    
-                    Tab("", systemImage: "person.circle", value: .profile) {
-                        Profile()
-                            .tag(ViewTab.profile)
-                            .environment(session)
-                    }
-                }
-            } else {
-                TabView(selection: $currentTab) {
-                    Home(router: $homeRouter)
-                        .tag(ViewTab.home)
-                        .toolbar(.hidden, for: .tabBar)
-                        .environment(session)
-                    
-                    GroupView(router: $groupRouter)
-                        .tag(ViewTab.club)
-                        .toolbar(.hidden, for: .tabBar)
-                        .environment(session)
-                    
-                    Events(router: $eventRouter)
-                        .tag(ViewTab.events)
-                        .toolbar(.hidden, for: .tabBar)
-                        .environment(session)
-                    
-                    Activities()
-                        .tag(ViewTab.activity)
-                        .toolbar(.hidden, for: .tabBar)
-                        .environment(session)
-                        .environment(session.workoutManager)
-                    
-                    Profile()
-                        .tag(ViewTab.profile)
-                        .toolbar(.hidden, for: .tabBar)
-                        .environment(session)
-                }
-                .padding(.bottom, -10)
-                
+        ZStack(alignment: .bottom) {
+            TabView(selection: $currentTab) {
+                Events(router: $eventRouter)
+                    .tag(ViewTab.events)
+                    .toolbar(.hidden, for: .tabBar)
+                    .environment(session)
+
+                Profile()
+                    .tag(ViewTab.profile)
+                    .toolbar(.hidden, for: .tabBar)
+                    .environment(session)
+            }
+
+            VStack(spacing: 0) {
+                Spacer()
                 TabBar(
                     currentTab: $currentTab,
-                    homeRouter: homeRouter,
-                    groupRouter: groupRouter,
                     eventRouter: eventRouter,
                     profileRouter: profileRouter
                 )
-                .overlay(Rectangle().frame(height: 0.2).foregroundColor(.foreground).padding(.top, 2), alignment: .top)
-                .ignoresSafeArea(.keyboard)
-            }
+            }.ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             Task {

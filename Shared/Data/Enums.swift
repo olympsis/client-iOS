@@ -141,6 +141,7 @@ enum EVENT_ROUTES: Codable, Hashable {
     case event(event: Event)
     case upNextEvents(events: [Event])
     case new
+    case venue(venue: Venue)
 }
 
 enum PROFILE_ROUTES: String {
@@ -733,4 +734,27 @@ enum ACTIVITY_GOALS: CaseIterable {
             return Image(systemName: "rectangle.grid.1x2")
         }
     }
+}
+
+enum EVENT_EXPLORER_STATE: String, Codable, CaseIterable {
+    var id: Self { self }
+
+    case events = "events"
+    case venues = "venues"
+
+    /// Localized label for this page, used by the explorer picker.
+    /// Keys live in `Events.xcstrings` as `event-explorer-state-events` / `event-explorer-state-venues`.
+    var localized: String {
+        switch self {
+        case .events:
+            return String(localized: "event-explorer-state-events", table: "Events")
+        case .venues:
+            return String(localized: "event-explorer-state-venues", table: "Events")
+        }
+    }
+}
+
+enum LIST_ITEM_SCALE {
+    case small
+    case regular
 }

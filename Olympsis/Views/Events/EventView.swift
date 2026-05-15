@@ -54,6 +54,38 @@ struct EventView: View {
         return true
     }
     
+    /// Compute wether or not this event is a recurring one
+    /// We show the caption and the list of the recurring events
+    private var isRecurringEvent: Bool {
+        event.recurrenceConfig != nil
+    }
+
+    /// Future occurrences in this event's recurring series, sorted
+    /// oldest → newest, *including the current event*. Including self
+    /// keeps the existence check trivial — show the pill row when
+    /// `count > 1`, since that guarantees at least one sibling to
+    /// navigate to.
+    ///
+    /// Series membership is matched on the parent ID: a child carries
+    /// its parent's id on `recurrenceConfig.parentEventID`, while the
+    /// parent itself implicitly is its own series root, so we treat
+    /// `event.id` as the parent id when `parentEventID` is `nil`.
+    /// This pulls candidates from `session.events`, which is whatever
+    /// has been hydrated into the session — sufficient for the common
+    /// case where the explorer fetch has already loaded the series.
+    private var upcomingRecurrences: [Event] {
+        guard isRecurringEvent else { return [] }
+        let now = Date()
+        let parentID = event.recurrenceConfig?.parentEventID ?? event.id
+        return Array(session.events)
+            .filter { other in
+                other.startTime > now
+                    && (other.id == parentID
+                        || other.recurrenceConfig?.parentEventID == parentID)
+            }
+            .sorted { $0.startTime < $1.startTime }
+    }
+
     /// Opens an external link URL in the browser.
     private func openExternalURL(_ link: EventLink) {
         let raw = link.url.contains("://") ? link.url : "https://" + link.url
@@ -68,6 +100,52 @@ struct EventView: View {
             ScrollViewReader { proxy in
                 VStack(alignment: .leading) {
                     
+                    // Shows a recurring event caption and dates if possible
+                    if isRecurringEvent {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(alignment: .bottom, spacing: 5) {
+                                Image(systemName: "arrow.clockwise")
+                                    .imageScale(.small)
+                                    .foregroundStyle(Color.Brand.tertiary)
+                                
+                                Text("This is a recurring event")
+                                    .italic()
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                            }.padding(.leading)
+
+                            if upcomingRecurrences.count > 1 {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 8) {
+                                        ForEach(
+                                            upcomingRecurrences.filter { $0.id != event.id },
+                                            id: \.id
+                                        ) { sibling in
+                                            NavigationLink(value: EVENT_ROUTES.event(event: sibling)) {
+                                                Text(sibling.timeToString())
+                                                    .font(.caption)
+                                                    .fontWeight(.medium)
+                                                    .padding(.horizontal, 12)
+                                                    .padding(.vertical, 6)
+                                                    .background(Color.Background.secondary)
+                                                    .clipShape(Capsule())
+                                                    .foregroundStyle(.primary)
+                                                    .overlay(
+                                                        Capsule()
+                                                            .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                                                    )
+                                            }.buttonStyle(.plain)
+                                        }
+                                    }.padding(.horizontal)
+                                }
+                            }
+                        }
+                        .padding(.bottom, 10)
+                        .padding(.top, isFullScreen ? 50 : 0)
+                    }
+                    
+                    
+                    
                     // MARK: - Event Quick Info
                     EventQuickInfo(
                         event: event,
@@ -75,8 +153,8 @@ struct EventView: View {
                         venuesTarget: $venuesTarget,
                         venuesState: $venueState
                     )
-                    .padding(.top, isFullScreen ? 50 : 0)
                     .padding(.bottom, 10)
+                    .padding(.top, (isFullScreen && !isRecurringEvent) ? 50 : 0)
                     .id(1)
                     
                     // MARK: - Event Media
@@ -160,12 +238,20 @@ struct EventView: View {
                     }
                     
                     // MARK: - Comments
-                    EventComments(clubs: $clubs, organizations: $organizations)
-                        .environment(event)
-                        .padding(.top)
-                        .id(8)
+                    // Hand the ScrollView proxy down so the comment
+                    // input can scroll itself flush above the keyboard
+                    // on focus — see `EventComments.scrollProxy` for
+                    // why the automatic SwiftUI avoidance isn't enough.
+                    EventComments(
+                        clubs: $clubs,
+                        organizations: $organizations,
+                        scrollProxy: proxy
+                    )
+                    .environment(event)
+                    .padding(.top)
+                    .id(8)
                     
-                    Spacer(minLength: 50)
+                    Spacer(minLength: 70)
                 }
                 .onChange(of: venuesTarget) { _, newValue in
                     proxy.scrollTo(newValue, anchor: .top)

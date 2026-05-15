@@ -13,6 +13,7 @@ import CoreLocation
 struct VenueView: View {
     
     @State var venue: Venue
+    var isFullScreen: Bool = false
     @State private var status: LOADING_STATE = .loading
     @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) private var presentationMode
@@ -34,25 +35,27 @@ struct VenueView: View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading) {
                 // MARK: - Name
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text(venue.name)
-                            .font(.title)
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                            .bold()
+                if !isFullScreen {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(venue.name)
+                                .font(.title)
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                                .bold()
+                            
+                            Spacer()
+                            
+                            Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .imageScale(.large)
+                            }
+                            .clipShape(Circle())
+                        }.padding(.horizontal)
                         
-                        Spacer()
-                        
-                        Button(action:{ self.presentationMode.wrappedValue.dismiss() }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .imageScale(.large)
-                        }
-                        .clipShape(Circle())
-                    }.padding(.horizontal)
-                    
-                    Text(fieldLocation)
-                        .padding(.leading)
+                        Text(fieldLocation)
+                            .padding(.leading)
+                    }
                 }
                 
                 // MARK: - Images
@@ -73,12 +76,14 @@ struct VenueView: View {
                 // MARK: - Action Buttons
                 VenueActionButtons(venue: venue)
                 
-                //MARK: - Events View
+                // MARK: - Details
+                VenueDetails(venue: venue)
+                
+                //MARK: - Events
                 VenueEventsView(venue: $venue)
                 
-            }       
-        }
-        .padding(.top)
+            }.navigationTitle(venue.name)
+        }.padding(.top, isFullScreen ? 0 : 10)
     }
 }
 
@@ -429,6 +434,9 @@ struct VenueEventsView: View {
                 VStack(alignment: .center){
                     Text("There are no events at this location 🥹")
                         .padding(.all)
+                    
+                    Spacer(minLength: 100)
+                    
                 }.frame(maxWidth: .infinity)
             } else {
                 ScrollView(showsIndicators: false) {
@@ -440,7 +448,7 @@ struct VenueEventsView: View {
                         Text("Failed to load events")
                             .foregroundColor(.red)
                             .padding(.top)
-                    }else {
+                    } else {
                         ForEach(fieldEvents) { event in
                             EventListItem(event: event)
                                 .onTapGesture {
@@ -448,6 +456,8 @@ struct VenueEventsView: View {
                                 }
                         }
                     }
+                    
+                    Spacer(minLength: 70)
                 }
             }
         }
@@ -460,7 +470,14 @@ struct VenueEventsView: View {
     }
 }
 
-#Preview {
+#Preview("Sheet") {
     VenueView(venue: VENUES[0])
         .environment(SessionStore())
+}
+
+#Preview("Full Screen") {
+    NavigationStack {
+        VenueView(venue: VENUES[0], isFullScreen: true)
+            .environment(SessionStore())
+    }
 }
