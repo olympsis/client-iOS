@@ -321,6 +321,9 @@
 		5D9F69492BB9C1390057D205 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F69482BB9C1390057D205 /* PrivacyPolicy.swift */; };
 		5D9F694B2BB9F7F90057D205 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F694A2BB9F7F90057D205 /* AboutUs.swift */; };
 		5D9F694D2BBA0B3A0057D205 /* HelpGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F694C2BBA0B3A0057D205 /* HelpGuide.swift */; };
+		5DA15B3D2FB7A088008F5B90 /* CourtIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA15B3C2FB7A088008F5B90 /* CourtIcon.swift */; };
+		5DA15B3F2FB7A09A008F5B90 /* TransitLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA15B3E2FB7A09A008F5B90 /* TransitLabel.swift */; };
+		5DA15B412FB7A748008F5B90 /* VenueDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA15B402FB7A748008F5B90 /* VenueDetails.swift */; };
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
 		5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3DF412D9A180E00CEE236 /* SearchManager.swift */; };
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
@@ -892,6 +895,9 @@
 		5D9F69482BB9C1390057D205 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
 		5D9F694A2BB9F7F90057D205 /* AboutUs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		5D9F694C2BBA0B3A0057D205 /* HelpGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpGuide.swift; sourceTree = "<group>"; };
+		5DA15B3C2FB7A088008F5B90 /* CourtIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourtIcon.swift; sourceTree = "<group>"; };
+		5DA15B3E2FB7A09A008F5B90 /* TransitLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitLabel.swift; sourceTree = "<group>"; };
+		5DA15B402FB7A748008F5B90 /* VenueDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetails.swift; sourceTree = "<group>"; };
 		5DA38B352BF39856008C5C74 /* VenueTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTips.swift; sourceTree = "<group>"; };
 		5DA3DF412D9A180E00CEE236 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
@@ -1765,6 +1771,9 @@
 				5D5170E02C27270F0035C1F1 /* VenueAnnotation.swift */,
 				5D7DF3C52E6C8ADF0090761E /* VenuePickerListItem.swift */,
 				5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */,
+				5DA15B3C2FB7A088008F5B90 /* CourtIcon.swift */,
+				5DA15B3E2FB7A09A008F5B90 /* TransitLabel.swift */,
+				5DA15B402FB7A748008F5B90 /* VenueDetails.swift */,
 			);
 			path = Venue;
 			sourceTree = "<group>";
@@ -2628,6 +2637,7 @@
 				5D11905E2E39072B00574041 /* ClubWalletChangeAccount.swift in Sources */,
 				5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
+				5DA15B412FB7A748008F5B90 /* VenueDetails.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
 				5D204B4E2DA2C92300B67F5D /* EventTeam.swift in Sources */,
 				5D22D6812FA6578300CCF4C3 /* ExplorerList.swift in Sources */,
@@ -2846,6 +2856,7 @@
 				9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */,
 				5D38BD9F2C169B24003EEF90 /* LogViewer.swift in Sources */,
 				5D6C013F2C07BB45006A264C /* Onboard-AboutOlympsis.swift in Sources */,
+				5DA15B3D2FB7A088008F5B90 /* CourtIcon.swift in Sources */,
 				5D86CD1C2F8C6917003C1857 /* HTMLTextView.swift in Sources */,
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
 				5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */,
@@ -2868,6 +2879,7 @@
 				9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */,
 				5D92BA9A2C83FDDB00B19BD4 /* GroupNotificationToast.swift in Sources */,
 				5DDE415F2F7437DE00D7E1EA /* NewEventOrganizers.swift in Sources */,
+				5DA15B3F2FB7A09A008F5B90 /* TransitLabel.swift in Sources */,
 				9A81B6462925EAE6009CA6ED /* EventObserver.swift in Sources */,
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
 				5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */,

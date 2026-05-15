@@ -76,7 +76,10 @@ struct VenueView: View {
                 // MARK: - Action Buttons
                 VenueActionButtons(venue: venue)
                 
-                //MARK: - Events View
+                // MARK: - Details
+                VenueDetails(venue: venue)
+                
+                //MARK: - Events
                 VenueEventsView(venue: $venue)
                 
             }.navigationTitle(venue.name)
@@ -431,6 +434,9 @@ struct VenueEventsView: View {
                 VStack(alignment: .center){
                     Text("There are no events at this location 🥹")
                         .padding(.all)
+                    
+                    Spacer(minLength: 100)
+                    
                 }.frame(maxWidth: .infinity)
             } else {
                 ScrollView(showsIndicators: false) {
@@ -450,6 +456,8 @@ struct VenueEventsView: View {
                                 }
                         }
                     }
+                    
+                    Spacer(minLength: 70)
                 }
             }
         }

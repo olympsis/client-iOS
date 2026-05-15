@@ -235,12 +235,20 @@ struct EventView: View {
                     }
                     
                     // MARK: - Comments
-                    EventComments(clubs: $clubs, organizations: $organizations)
-                        .environment(event)
-                        .padding(.top)
-                        .id(8)
+                    // Hand the ScrollView proxy down so the comment
+                    // input can scroll itself flush above the keyboard
+                    // on focus — see `EventComments.scrollProxy` for
+                    // why the automatic SwiftUI avoidance isn't enough.
+                    EventComments(
+                        clubs: $clubs,
+                        organizations: $organizations,
+                        scrollProxy: proxy
+                    )
+                    .environment(event)
+                    .padding(.top)
+                    .id(8)
                     
-                    Spacer(minLength: 50)
+                    Spacer(minLength: 70)
                 }
                 .onChange(of: venuesTarget) { _, newValue in
                     proxy.scrollTo(newValue, anchor: .top)

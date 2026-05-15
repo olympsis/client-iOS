@@ -8,17 +8,41 @@
 import SwiftUI
 
 struct EventComments: View {
-    
+
     @Binding var clubs: [Club]
     @Binding var organizations: [Organization]
-    
+    /// Optional proxy from the enclosing `EventView` ScrollView. When
+    /// supplied, focusing the comment field triggers an explicit
+    /// `scrollTo` that pins the *visible* bottom of the input row to
+    /// the top of the keyboard. SwiftUI's automatic keyboard avoidance
+    /// only aligns the inner `TextField` responder, which means the
+    /// outer Capsule decoration (the `.padding(10)` around the
+    /// TextField) ends up a few points behind the keyboard. Scrolling
+    /// to the HStack's id with `anchor: .bottom` corrects that so the
+    /// whole pill + send-button row sits flush above the keyboard.
+    var scrollProxy: ScrollViewProxy? = nil
+
+    /// Stable id used as the `scrollTo` target. Lives here as a typed
+    /// constant rather than a raw string scattered through the view
+    /// body so a rename only happens in one place.
+    private let inputRowID = "commentInputRow"
+
+    /// How far above the keyboard the input row should sit once the
+    /// focus-driven `scrollTo` runs. Implemented as `.padding(.bottom,
+    /// _)` on the scroll target so the anchor calculation in
+    /// `scrollTo(anchor: .bottom)` includes the gap automatically.
+    /// As a side effect the same gap appears between the input row
+    /// and the first comment below it, which reads as natural
+    /// separation between the compose field and the list.
+    private let inputBottomPadding: CGFloat = 16
+
     @State private var text: String = ""
     @State private var state: LOADING_STATE = .pending
-    
+
     @FocusState private var fieldIsFocused: Bool
-    
+
     private let service = EventObserver()
-    
+
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
     
@@ -172,6 +196,38 @@ struct EventComments: View {
                                     Circle()
                                         .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
                                 }
+                        }
+                    }
+                }
+                // Extra bottom padding becomes part of the scroll
+                // target's frame because `.id` is applied *after* it.
+                // The manual `scrollTo(_, anchor: .bottom)` below
+                // aligns this padded bottom with the keyboard top, so
+                // the visible HStack ends up `inputBottomPadding`
+                // points above the keyboard instead of flush with it
+                // — the "bit more padding under it" you asked for.
+                .padding(.bottom, inputBottomPadding)
+                // Anchor for the manual focus-driven scroll. Tagging
+                // the whole HStack (not just the TextField inside)
+                // means the *visible* bottom of the row — including
+                // the send button, which is the tallest element —
+                // is what gets aligned with the keyboard top.
+                .id(inputRowID)
+                .onChange(of: fieldIsFocused) { _, isFocused in
+                    guard isFocused, let proxy = scrollProxy else { return }
+                    // The keyboard's present animation runs ~0.25s on
+                    // iOS, and we have to scroll *after* the safe-area
+                    // inset has been applied — otherwise we'd be
+                    // scrolling into the pre-keyboard layout and the
+                    // field would end up partially hidden again. The
+                    // 0.3s delay gives the system room to settle, then
+                    // our `scrollTo` takes over from SwiftUI's
+                    // automatic avoidance (which only aligns the inner
+                    // TextField responder, leaving the decorative
+                    // Capsule + button slightly behind the keyboard).
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.easeOut(duration: 0.25)) {
+                            proxy.scrollTo(inputRowID, anchor: .bottom)
                         }
                     }
                 }
