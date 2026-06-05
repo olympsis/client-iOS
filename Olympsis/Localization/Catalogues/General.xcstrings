@@ -419,7 +419,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Continue"
+            "value" : "Continuer"
           }
         }
       }
@@ -1445,13 +1445,13 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ahorrar"
+            "value" : "Guardar"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Valider"
+            "value" : "Enregistrer"
           }
         }
       }

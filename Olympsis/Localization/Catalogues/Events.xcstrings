@@ -3186,13 +3186,13 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "RSVP"
+            "value" : "Asistir"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "RSVP"
+            "value" : "Participer"
           }
         }
       }
@@ -3261,7 +3261,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Group"
+            "value" : "Groupe"
           }
         }
       }

@@ -54,35 +54,40 @@ struct EventView: View {
         return true
     }
     
+    /// Every event in this event's recurring series, pulled from the
+    /// session's hydrated events. Covers both backend-linked recurrences
+    /// (shared `recurrenceConfig.parentEventID`) and scraped series
+    /// (same title + same coordinates, different dates) — see
+    /// `Array<Event>.recurringSeries(of:)`.
+    private var seriesEvents: [Event] {
+        Array(session.events).recurringSeries(of: event)
+    }
+
     /// Compute wether or not this event is a recurring one
-    /// We show the caption and the list of the recurring events
+    /// We show the caption and the list of the recurring events.
+    ///
+    /// A backend-linked recurrence is "recurring" on its own (the config
+    /// is authoritative even before siblings load). A *scraped* series only
+    /// reads as recurring once we actually have more than one occurrence
+    /// hydrated, otherwise a plain one-off event would falsely show the
+    /// banner.
     private var isRecurringEvent: Bool {
-        event.recurrenceConfig != nil
+        event.recurrenceConfig != nil || seriesEvents.count > 1
     }
 
     /// Future occurrences in this event's recurring series, sorted
-    /// oldest → newest, *including the current event*. Including self
-    /// keeps the existence check trivial — show the pill row when
-    /// `count > 1`, since that guarantees at least one sibling to
-    /// navigate to.
+    /// oldest → newest, *including the current event* when it's still
+    /// upcoming. Including self keeps the existence check trivial — show
+    /// the pill row when `count > 1`, since that guarantees at least one
+    /// sibling to navigate to.
     ///
-    /// Series membership is matched on the parent ID: a child carries
-    /// its parent's id on `recurrenceConfig.parentEventID`, while the
-    /// parent itself implicitly is its own series root, so we treat
-    /// `event.id` as the parent id when `parentEventID` is `nil`.
-    /// This pulls candidates from `session.events`, which is whatever
-    /// has been hydrated into the session — sufficient for the common
-    /// case where the explorer fetch has already loaded the series.
+    /// Candidates come from `session.events` (whatever the explorer fetch
+    /// has hydrated) re-stitched into a series by `recurringSeries(of:)`.
     private var upcomingRecurrences: [Event] {
         guard isRecurringEvent else { return [] }
         let now = Date()
-        let parentID = event.recurrenceConfig?.parentEventID ?? event.id
-        return Array(session.events)
-            .filter { other in
-                other.startTime > now
-                    && (other.id == parentID
-                        || other.recurrenceConfig?.parentEventID == parentID)
-            }
+        return seriesEvents
+            .filter { $0.startTime > now }
             .sorted { $0.startTime < $1.startTime }
     }
 

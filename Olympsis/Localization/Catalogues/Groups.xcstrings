@@ -134,7 +134,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit club"
+            "value" : "Modifier le club"
           }
         }
       }
@@ -295,7 +295,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Applications"
+            "value" : "Candidatures"
           }
         }
       }

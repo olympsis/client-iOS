@@ -171,12 +171,17 @@ class SessionStore {
             }
             
             let uuid = UIDevice.current.identifierForVendor?.uuidString
-            let model = UIDevice.current.model
             let device = NotificationDevice(
                 deviceID: uuid,
                 token: dToken,
-                platform: .ios,
-                model: model,
+                // Nest under device_info to match the server schema — the old
+                // flat platform/model keys were dropped on decode, which is why
+                // device_info was stored empty.
+                deviceInfo: DeviceInfo(
+                    platform: "ios",
+                    osVersion: UIDevice.current.systemVersion,
+                    deviceModel: UIDevice.current.model
+                ),
                 active: true,
                 createdAt: Date(),
                 updatedAt: nil
@@ -208,12 +213,16 @@ class SessionStore {
                 return
             }
             
-            // Make sure that it's not the same
-            guard devices[idx].token != dToken else {
+            // Re-send only if the token OR the device info changed. The
+            // device_info check also heals rows registered before the nested
+            // device_info fix, whose stored info is empty — on the next call
+            // it differs from the freshly built one, so we push the update.
+            guard devices[idx].token != dToken || devices[idx].deviceInfo != device.deviceInfo else {
                 return
             }
-            
+
             devices[idx].token = dToken
+            devices[idx].deviceInfo = device.deviceInfo
             devices[idx].updatedAt = Date()
             let dao = UserDao(notificationDevices: devices)
             guard let user = await userObserver.updateUserData(update: dao) else {

@@ -654,6 +654,73 @@ extension Event {
         formatter.locale = Locale(identifier: "en_US")
         return formatter.string(from: self.stopTime)
     }
+
+    /// Pin coordinate derived from the first `VenueDescriptor` that carries
+    /// an embedded GeoJSON Point. Returns `nil` when no descriptor ships a
+    /// point (e.g. location-hidden events). Reads only the embedded snapshot
+    /// — no session/venue-cache lookup — so it's safe to call from model
+    /// code and produces a stable value for series matching.
+    var primaryCoordinate: CLLocationCoordinate2D? {
+        for descriptor in venues {
+            let coords = descriptor.location?.coordinates ?? []
+            if coords.count >= 2 {
+                return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
+            }
+        }
+        return nil
+    }
+
+    /// Stable key for the recurring series this event belongs to, or `nil`
+    /// if it can't be placed in one (no recurrence link *and* no coordinate
+    /// to match scraped siblings against).
+    ///
+    /// Two distinct flavors of "recurring" collapse onto the same key:
+    ///   1. **Backend-linked** — events that share a
+    ///      `recurrenceConfig.parentEventID`. The series root has no parent
+    ///      id, so it treats its own `id` as the root.
+    ///   2. **Scraped** — events our data scraper ingested as independent
+    ///      rows but that are clearly the same recurring event: identical
+    ///      title hosted at the exact same coordinates, only the date
+    ///      differs. We re-stitch those here by `title + coordinate`.
+    ///
+    /// Coordinates are rounded to 5 decimal places (~1.1 m) so sub-meter
+    /// floating-point noise in the feed doesn't split one venue into
+    /// several series, while still being effectively "exact".
+    var recurringSeriesKey: String? {
+        if let config = recurrenceConfig {
+            return "linked:\(config.parentEventID ?? id)"
+        }
+        guard let coord = primaryCoordinate else { return nil }
+        let lat = (coord.latitude * 1e5).rounded() / 1e5
+        let lng = (coord.longitude * 1e5).rounded() / 1e5
+        let name = title
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        return "scraped:\(name)|\(lat)|\(lng)"
+    }
+}
+
+extension [Event] {
+
+    /// Every event that shares `event`'s recurring-series key, including
+    /// `event` itself. Returns just `[event]` when the event isn't part of
+    /// a series (so callers can treat "not recurring" as a single-element
+    /// result). See `Event.recurringSeriesKey` for what counts as a series.
+    func recurringSeries(of event: Event) -> [Event] {
+        guard let key = event.recurringSeriesKey else { return [event] }
+        return filter { $0.recurringSeriesKey == key }
+    }
+
+    /// The occurrence to surface for a series: the soonest one that hasn't
+    /// started yet. Falls back to the most recent past occurrence only when
+    /// every occurrence is already over (we don't expect past events on the
+    /// map, but this keeps the helper from returning `nil` for any
+    /// non-empty series).
+    func soonestUpcoming() -> Event? {
+        let now = Date()
+        let sorted = self.sorted { $0.startTime < $1.startTime }
+        return sorted.first(where: { $0.startTime >= now }) ?? sorted.last
+    }
 }
 
 extension [Event] {

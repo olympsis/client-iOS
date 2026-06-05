@@ -333,12 +333,32 @@ struct EventsExplorer: View {
     // lookup would silently fail when `session.venues` didn't contain
     // a matching id.
 
+    /// When every event collapsed into a cluster belongs to the *same*
+    /// recurring series — a backend-linked recurrence or a scraped
+    /// same-title / same-coordinate series — the "+N" badge is misleading:
+    /// the pins are all the same event repeating on different dates, not N
+    /// different things to disambiguate. In that case we surface a single
+    /// image pin for the soonest upcoming occurrence. Returns `nil` for any
+    /// cluster that mixes series (or contains an unrelated one-off), so it
+    /// falls back to the normal cluster badge.
+    private func recurringRepresentative(for cluster: EventCluster) -> Event? {
+        guard cluster.events.count > 1 else { return nil }
+        let keys = cluster.events.map { $0.recurringSeriesKey }
+        // All events must carry the *same, non-nil* key to count as one
+        // series. `keys.first` is doubly-optional (optional element of the
+        // array, itself an optional key); `?? nil` flattens it.
+        guard let key = keys.first ?? nil, keys.allSatisfy({ $0 == key }) else {
+            return nil
+        }
+        return cluster.events.soonestUpcoming()
+    }
+
     @MapContentBuilder
     private var eventsMapContent: some MapContent {
         ForEach(cachedEventClusters) { cluster in
             // Single-event "cluster" → render the event's image directly.
-            // Multi-event cluster → render a stacked-thumbnail badge with
-            // a count chip so the user can tap to zoom in / disambiguate.
+            // Same-series cluster → one image pin for the next occurrence.
+            // Otherwise → a "+N" count badge to tap-to-disambiguate.
             Annotation(
                 cluster.events.first?.title ?? "",
                 coordinate: cluster.coordinate,
@@ -350,6 +370,12 @@ struct EventsExplorer: View {
                         // detail onto the parent `NavigationStack` via
                         // the shared router.
                         .onTapGesture { router.navigate(to: .event(event: event)) }
+                } else if let representative = recurringRepresentative(for: cluster) {
+                    // Same recurring event repeating at this spot — show one
+                    // clean image pin for the next occurrence instead of a
+                    // "+N" badge. The event detail surfaces the other dates.
+                    EventAnnotation(event: representative)
+                        .onTapGesture { router.navigate(to: .event(event: representative)) }
                 } else {
                     EventClusterAnnotation(events: cluster.events)
                         // Tapping a multi-event cluster pops the

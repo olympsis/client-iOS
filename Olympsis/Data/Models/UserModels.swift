@@ -528,92 +528,98 @@ struct NotificationPreference: Codable, Hashable {
     }
 }
 
+/// Hardware / OS metadata for a push-notification device.
+///
+/// Mirrors the server's `DeviceInfo` (models/general.go). These fields MUST be
+/// sent nested under `device_info` — the server's `NotificationDevice` has no
+/// top-level `platform`/`model` keys, so the old flat encoding was silently
+/// dropped on decode and `device_info` was stored as empty strings.
+struct DeviceInfo: Codable, Hashable {
+    var platform: String?
+    var osVersion: String?
+    var deviceModel: String?
+
+    enum CodingKeys: String, CodingKey {
+        case platform
+        case osVersion = "os_version"
+        case deviceModel = "device_model"
+    }
+}
+
 struct NotificationDevice: Codable, Hashable {
     var deviceID: String?
     var token: String?
-    var platform: DevicePlatform?  // ios, android, web
-    var model: String?
+    var deviceInfo: DeviceInfo?
     var active: Bool?
     let createdAt: Date
     var updatedAt: Date?
-    
-    init(deviceID: String?, token: String?, platform: DevicePlatform?, model: String?, active: Bool?, createdAt: Date, updatedAt: Date?) {
+
+    init(deviceID: String?, token: String?, deviceInfo: DeviceInfo?, active: Bool?, createdAt: Date, updatedAt: Date?) {
         self.deviceID = deviceID
         self.token = token
-        self.platform = platform
-        self.model = model
+        self.deviceInfo = deviceInfo
         self.active = active
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         // Decode regular properties normally
         deviceID = try container.decodeIfPresent(String.self, forKey: .deviceID)
         token = try container.decodeIfPresent(String.self, forKey: .token)
-        platform = try container.decodeIfPresent(DevicePlatform.self, forKey: .platform)
-        model = try container.decodeIfPresent(String.self, forKey: .model)
+        deviceInfo = try container.decodeIfPresent(DeviceInfo.self, forKey: .deviceInfo)
         active = try container.decodeIfPresent(Bool.self, forKey: .active)
-        
+
         // Custom date decoding
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
+
         if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt) {
             createdAt = dateFormatter.date(from: createdAtString) ?? Date()
         } else {
             createdAt = Date()
         }
-        
+
         if let updatedAtString = try container.decodeIfPresent(String.self, forKey: .updatedAt) {
             updatedAt = dateFormatter.date(from: updatedAtString)
         } else {
             updatedAt = nil
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         // Encode regular properties
         try container.encodeIfPresent(deviceID, forKey: .deviceID)
         try container.encodeIfPresent(token, forKey: .token)
-        try container.encodeIfPresent(platform, forKey: .platform)
-        try container.encodeIfPresent(model, forKey: .model)
+        try container.encodeIfPresent(deviceInfo, forKey: .deviceInfo)
         try container.encodeIfPresent(active, forKey: .active)
-        
-        // Custom date encoding to ISO 8601 string
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
+
         // Convert Date objects to ISO strings
         try container.encode(createdAt.ISO8601Format(), forKey: .createdAt)
         try container.encodeIfPresent(updatedAt?.ISO8601Format(), forKey: .updatedAt)
     }
-    
+
     static func == (lhs: NotificationDevice, rhs: NotificationDevice) -> Bool {
         return
             lhs.token == rhs.token &&
-            lhs.model == rhs.model &&
-            lhs.platform == rhs.platform
+            lhs.deviceID == rhs.deviceID
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(token)
-        hasher.combine(model)
-        hasher.combine(platform)
+        hasher.combine(deviceID)
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case deviceID = "device_id"
         case token
-        case platform
-        case model
+        case deviceInfo = "device_info"
         case active
         case createdAt = "created_at"
         case updatedAt = "updated_at"
