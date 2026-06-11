@@ -50,7 +50,7 @@ struct Profile: View {
                             .foregroundStyle(Color.Background.secondary)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.Foreground.default.opacity(0.2), lineWidth: 1)
+                                    .stroke(Color.border, lineWidth: 1)
                             }
                             .overlay {
                                 HStack(alignment: .center) {
@@ -150,7 +150,7 @@ struct Profile: View {
                         session.pastEvents = Set(pastEvents)
                     }
                 }
-            }
+            }.background(Color.Background.primary)
         }
     }
 }

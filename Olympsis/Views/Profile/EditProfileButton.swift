@@ -19,6 +19,11 @@ struct EditProfileButton: View {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 250, height: 35)
                         .foregroundColor(Color(Color.Background.secondary))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.border, lineWidth: 1)
+                        }
+                    
                     Text(String(localized: "edit-profile", table: "Profile"))
                         .foregroundColor(Color.Foreground.default)
                         .bold()

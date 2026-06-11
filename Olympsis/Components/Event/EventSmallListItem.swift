@@ -10,38 +10,31 @@ import Kingfisher
 
 struct EventSmallListItem: View {
     
-    @State var event: Event
+    var event: Event
     
-    private var title: String {
-        return event.title
+    private var type: String {
+        guard let isTournament = event.formatConfig?.isCompetition else {
+            return "PICKUP"
+        }
+        return isTournament ? "TOURNAMENT" : "PICK UP"
     }
     
     private var imageURL: URL? {
         return generateImageURL(event.mediaURL)
     }
     
-    private var fieldName: String {
-        
-        return ""
-    }
-    
-    var participantsCount: Int {
-        return event.participants.count
-    }
-    
-    var minParticipantsCount: Int {
-        guard let minParticipants = event.participantsConfig?.minParticipants else {
-            return 0
+    @ContentBuilder
+    var participantsView: some View {
+        HStack {
+            Spacer()
+            Image(systemName: "person.3.fill")
+            Text("\(event.participants.count)")
+                .font(.callout)
         }
-        return Int(minParticipants)
-    }
-    
-    var iconColor: Color {
-        if (minParticipantsCount != 0) && (participantsCount != 0) && (participantsCount < minParticipantsCount) {
-            return .yellow
-        } else {
-            return Color("color-prime")
-        }
+        .padding(.trailing)
+        .foregroundStyle(.primary)
+        .allowsHitTesting(false)
+        .opacity(event.participants.count > 0 ? 1 : 0)
     }
     
     var body: some View {
@@ -59,50 +52,42 @@ struct EventSmallListItem: View {
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipped()
-                .cornerRadius(radius: 10, corners: .allCorners)
+                .cornerRadius(radius: 10, corners: [.topLeft, .bottomLeft])
             
             VStack(alignment: .leading) {
-                Text(title)
+                Text(type)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.Foreground.yellow)
+                
+                Text(event.title)
                     .fontWeight(.bold)
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
-                    // Cap wrap at 3 lines — long titles in the Up Next
-                    // section can otherwise push the time row off the
-                    // card height. Anything beyond gets truncated.
                     .lineLimit(3)
 
                 Text(event.timeToString() + " at " + event.getStartHourAndMinute())
-                    .font(.callout)
+                    .font(.caption)
                     .foregroundStyle(.gray)
+                
+                participantsView
 
-            }
-            
-            Spacer()
+            }.padding(.leading, 5)
         }
-        .padding()
         .clipShape(Rectangle())
         .background {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color(Color.Background.secondary))
-        }
-        .overlay(alignment: .bottomTrailing) {
-            if event.participants.count > 0 {
-                HStack {
-                    Spacer()
-                    Image(systemName: "person.3.fill")
-                    Text("\(event.participants.count)")
-                        .font(.callout)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.border, lineWidth: 1)
                 }
-                .padding()
-                .foregroundStyle(.primary)
-                .allowsHitTesting(false)
-            }
         }
-        .padding(.horizontal, 10)
     }
 }
 
 #Preview {
     EventSmallListItem(event: EVENTS[0])
         .environment(SessionStore())
+        .padding(.horizontal)
 }
