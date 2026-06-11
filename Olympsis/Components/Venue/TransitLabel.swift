@@ -10,6 +10,7 @@ import SwiftUI
 struct TransitLabel: View {
 
     var transit: TransitLine
+    var scale: LIST_ITEM_SCALE = .regular
 
     /// Pick black or white based on the perceived brightness of the line
     /// color. Uses Rec. 601 luma (same formula browsers use for
@@ -42,19 +43,26 @@ struct TransitLabel: View {
                     .foregroundStyle(foreground)
             }
             
-            HStack(alignment: .top) {
-                Text(transit.type.prefix(1).uppercased())
-                +
-                Text(transit.type.dropFirst(1))
-                Text(transit.system)
-                    .font(.caption)
-                    .foregroundStyle(.gray)
+            if scale == .regular {
+                HStack(alignment: .top) {
+                    Text(transit.type.prefix(1).uppercased())
+                    +
+                    Text(transit.type.dropFirst(1))
+                    Text(transit.system)
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
             }
         }
     }
 }
 
-#Preview {
+#Preview("Regular") {
     let transit = TransitLine(id: UUID().uuidString, type: "subway", name: "Q", system: "MTA", color: "#FCCC0A", iconURL: "", locality: "", administrativeArea: "", countryCode: "")
     TransitLabel(transit: transit)
+}
+
+#Preview("Small") {
+    let transit = TransitLine(id: UUID().uuidString, type: "subway", name: "Q", system: "MTA", color: "#FCCC0A", iconURL: "", locality: "", administrativeArea: "", countryCode: "")
+    TransitLabel(transit: transit, scale: .small)
 }

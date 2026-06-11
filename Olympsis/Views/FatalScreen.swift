@@ -23,7 +23,7 @@ struct FatalScreen: View {
                 .ignoresSafeArea(.all)
                 .foregroundColor(Color("dark-color"))
             VStack {
-                Image("white-logo")
+                Image("logo/white")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .padding(.top, 50)

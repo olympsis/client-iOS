@@ -7,45 +7,29 @@
 
 import SwiftUI
 import Kingfisher
+import CoreLocation
 
 struct VenueListItem: View {
 
-    // `Venue` is a reference type — a plain `let` avoids the per-row
-    // `@State` storage allocation and we never reassign it locally.
     let venue: Venue
-    /// Mirrors `EventListItem.scale` so a single value threaded through
-    /// `ExplorerList` controls both card sizes consistently in split view.
     var scale: LIST_ITEM_SCALE = .regular
-    /// When provided, tapping the card runs this closure instead of
-    /// presenting the local `showDetail` sheet — used by `ExplorerList`
-    /// to push onto the shared `EventRouter` from inside the bottom
-    /// sheet (where a sheet-on-sheet would be jank).
     var onTap: (() -> Void)? = nil
 
-    @State private var showDetail = false // show field view detail
-    @State private var showReport = false // show make a report view
+    @State private var showDetail = false
+    @State private var showReport = false
     @Environment(SessionStore.self) private var session
 
     var fieldCityString: String {
         return venue.city + ", " + venue.state
     }
 
-    func leadToMaps() {
-        UIApplication.shared.open(NSURL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])")! as URL)
-    }
-
     // MARK: - Scale-derived sizing
-    //
-    // Mirrors the values used by `EventListItem` so the two list items
-    // line up when shown side by side. The image fills the available
-    // width (no hardcoded pixel width) and just controls its height.
-
     private var imageHeight: CGFloat {
-        scale == .regular ? 250 : 180
+        scale == .regular ? 100 : 80
     }
 
     private var titleFont: Font {
-        scale == .regular ? .title2 : .headline
+        scale == .regular ? .headline : .subheadline
     }
 
     private var subtitleFont: Font {
@@ -64,10 +48,98 @@ struct VenueListItem: View {
     private var directionsGlyph: (width: CGFloat, height: CGFloat) {
         scale == .regular ? (25, 20) : (20, 16)
     }
+    
+    private var sports: String {
+        guard let sport = venue.sports.first else {
+            return "\(venue.sports.count) sports"
+        }
+        // Capitalize just the first letter ("soccer" -> "Soccer") while
+        // leaving the rest of the string untouched.
+        return sport.prefix(1).uppercased() + sport.dropFirst()
+    }
+
+    /// The dot-separated subheader, e.g. "Public • 2 Grass • Lights".
+    /// Built from the bits most useful at a glance: access type, the
+    /// bookable-unit count + their dominant surface, and whether the venue
+    /// is lit. Each piece is only appended when it has a value, so a sparse
+    /// venue degrades gracefully (e.g. just "Public").
+    private var subheader: String {
+        var parts: [String] = []
+
+        parts.append(venue.isPublic() ? "Public" : "Private")
+
+        if !venue.units.isEmpty {
+            if let surface = dominantSurface {
+                parts.append("\(venue.units.count) \(surface)")
+            } else {
+                let noun = venue.units.count == 1 ? "Court" : "Courts"
+                parts.append("\(venue.units.count) \(noun)")
+            }
+        }
+
+        if venue.features.illuminated {
+            parts.append("Lights")
+        }
+
+        return parts.joined(separator: " • ")
+    }
+
+    /// Most common surface across the venue's units, formatted for display
+    /// ("artificial_grass" → "Artificial Grass"). Returns `nil` when no unit
+    /// reports a surface so the subheader can fall back to a court count.
+    private var dominantSurface: String? {
+        let surfaces = venue.units.map(\.surface).filter { !$0.isEmpty }
+
+        // Tally each surface, then take the most frequent one.
+        var counts: [String: Int] = [:]
+        for surface in surfaces {
+            counts[surface, default: 0] += 1
+        }
+        guard let raw = counts.max(by: { $0.value < $1.value })?.key else {
+            return nil
+        }
+
+        // "artificial_grass" -> "Artificial Grass"
+        let words = raw.replacingOccurrences(of: "_", with: " ").split(separator: " ")
+        return words
+            .map { $0.prefix(1).uppercased() + $0.dropFirst() }
+            .joined(separator: " ")
+    }
+
+    /// Straight-line distance from the user to the venue, e.g. "1.2 mi".
+    /// Returns `nil` when we don't yet have a fix on the user's location so
+    /// the bottom row can omit it rather than show a bogus value.
+    private var distanceString: String? {
+        guard let location = LocationManager.shared.location else { return nil }
+
+        let current = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let target = CLLocation(latitude: venue.location.coordinates[1],
+                                longitude: venue.location.coordinates[0])
+        let miles = current.distance(from: target) / 1609.344
+        return String(format: "%.1f mi", miles)
+    }
+
+    /// Bottom-row label: the primary sport, plus distance when available
+    /// ("Soccer • 1.2 mi").
+    private var sportsAndDistance: String {
+        guard let distanceString else { return sports }
+        return "\(sports) • \(distanceString)"
+    }
+
+    /// Font for the bottom "sport • distance" row. Drops to `.caption` in
+    /// `.small` so it stays proportional to the smaller image and title.
+    private var detailFont: Font {
+        scale == .regular ? .callout : .caption
+    }
+
+    /// Diameter of the transit badges, scaled down with the rest of the
+    /// card so the stack stays proportional in the `.small` variant.
+    private var transitDiameter: CGFloat {
+        scale == .regular ? 28 : 22
+    }
 
     var body: some View {
-        VStack(spacing: 0) {
-
+        HStack {
             // MARK: - Image
             Group {
                 if let img = venue.images.first,
@@ -76,23 +148,17 @@ struct VenueListItem: View {
                         .placeholder { ImageLoadingView() }
                         .resizable()
                         .cacheOriginalImage()
-                        // Match `EventListItem`: fill the column, crop to
-                        // the configured height. The processor is sized
-                        // generously enough for the regular variant and
-                        // re-used for `.small` (Kingfisher will downscale).
                         .setProcessor(venueImageProcessor(size: CGSize(width: 1000, height: 600)))
                         .scaledToFill()
                 } else {
                     ImageLoadingFailedView()
                 }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: imageHeight)
+            .frame(width: imageHeight, height: imageHeight)
             .clipped()
             .clipShape(RoundedRectangle(cornerRadius: 10))
-
-            // MARK: - Bottom info row (kept under the image, scales down)
-            HStack {
+            
+            VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
                     Text(venue.name)
                         .font(titleFont)
@@ -100,34 +166,35 @@ struct VenueListItem: View {
                         .foregroundColor(.primary)
                         .lineLimit(1)
                     
-                    Text(fieldCityString)
+                    Text(subheader)
                         .foregroundColor(.gray)
                         .font(subtitleFont)
                         .lineLimit(1)
-                }.frame(height: infoRowHeight)
+                }
+                .frame(height: infoRowHeight)
+                
+             
+                HStack {
+                    Text(sportsAndDistance)
+                        .font(detailFont)
+                        .lineLimit(1)
 
-                Spacer()
+                    Spacer()
 
-                Button(action: { leadToMaps() }) {
-                    Image(systemName: "car")
-                        .resizable()
-                        .frame(width: directionsGlyph.width, height: directionsGlyph.height)
-                        .foregroundColor(.primary)
-                        .imageScale(.large)
-                }.frame(height: 40)
-            }
-            .padding(.vertical, 10)
-            .padding(.horizontal)
-            .sheet(isPresented: $showDetail) {
-                VenueView(venue: venue)
-                    .presentationDetents([.large])
-            }
+                    if !venue.transitLines.isEmpty {
+                        TransitStack(transits: venue.transitLines,
+                                     diameter: transitDiameter)
+                    }
+                }
+            }.padding(.leading, 10)
         }
-        
+        .padding(.vertical, 10)
+        .sheet(isPresented: $showDetail) {
+            VenueView(venue: venue)
+                .presentationDetents([.large])
+        }
         .padding(.horizontal, 10)
         .onTapGesture {
-            // Router-driven navigation wins over the local sheet when
-            // a caller has wired one up (see `ExplorerList`).
             if let onTap {
                 onTap()
             } else {
@@ -138,11 +205,11 @@ struct VenueListItem: View {
 }
 
 #Preview("Regular") {
-    VenueListItem(venue: VENUES[0])
+    VenueListItem(venue: VENUES[4])
         .environment(SessionStore())
 }
 
 #Preview("Small") {
-    VenueListItem(venue: VENUES[0])
+    VenueListItem(venue: VENUES[4], scale: .small)
         .environment(SessionStore())
 }

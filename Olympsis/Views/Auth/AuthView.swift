@@ -37,7 +37,7 @@ struct AuthView: View {
     var body: some View {
         VStack {
             VStack {
-                Image("white-logo")
+                Image("logo/white")
                     .resizable()
                     .frame(width: 250, height: 250)
             }.frame(height: SCREEN_HEIGHT/3)

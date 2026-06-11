@@ -274,6 +274,7 @@
 		5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */; };
 		5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
+		5D8023522FDA784F00AACE12 /* TransitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8023512FDA784F00AACE12 /* TransitStack.swift */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */; };
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
@@ -847,6 +848,7 @@
 		5D7DF3C72E6E1B210090761E /* VenuePickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenuePickerButton.swift; sourceTree = "<group>"; };
 		5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRoutePolylineView.swift; sourceTree = "<group>"; };
 		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		5D8023512FDA784F00AACE12 /* TransitStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitStack.swift; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
 		5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePicker.swift; sourceTree = "<group>"; };
 		5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueMediumListItem.swift; sourceTree = "<group>"; };
@@ -1774,6 +1776,7 @@
 				5DA15B3C2FB7A088008F5B90 /* CourtIcon.swift */,
 				5DA15B3E2FB7A09A008F5B90 /* TransitLabel.swift */,
 				5DA15B402FB7A748008F5B90 /* VenueDetails.swift */,
+				5D8023512FDA784F00AACE12 /* TransitStack.swift */,
 			);
 			path = Venue;
 			sourceTree = "<group>";
@@ -2439,7 +2442,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					5DBF2B822E42E34C0025B0FE = {
 						CreatedOnToolsVersion = 16.0;
@@ -2956,6 +2959,7 @@
 				5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
 				5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */,
+				5D8023522FDA784F00AACE12 /* TransitStack.swift in Sources */,
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,
 				5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */,
 				5D2062642B144A1F00A9D408 /* OrganizationsView.swift in Sources */,
@@ -3072,7 +3076,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -3098,7 +3102,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olympsis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Olympsis";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Release;
 		};

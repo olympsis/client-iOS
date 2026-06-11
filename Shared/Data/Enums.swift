@@ -230,7 +230,7 @@ enum SUPPORTED_SPORTS: String, CaseIterable {
         case .climbing:
             return Image(systemName: "figure.climbing")
         case .spike:
-            return Image("logo-spikeball")
+            return Image("logo/spikeball")
         case .football:
             return Image(systemName: "figure.american.football")
         case .weights:
@@ -755,6 +755,11 @@ enum EVENT_EXPLORER_STATE: String, Codable, CaseIterable {
 }
 
 enum LIST_ITEM_SCALE {
+    case small
+    case regular
+}
+
+enum TRANSIT_SCALE {
     case small
     case regular
 }

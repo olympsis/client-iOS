@@ -25,7 +25,7 @@ struct LaunchScreen: View {
                 .foregroundColor(Color("dark-color"))
             VStack {
                 Spacer()
-                Image("white-logo")
+                Image("logo/white")
                     .resizable()
                     .frame(width: 250, height: 250)
                 Spacer()
