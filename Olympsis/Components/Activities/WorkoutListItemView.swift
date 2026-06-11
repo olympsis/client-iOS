@@ -62,7 +62,7 @@ struct WorkoutListItem: View {
             HStack {
                 RoundedRectangle(cornerRadius: 20)
                     .frame(width: 85, height: 85)
-                    .foregroundStyle(Color.foreground)
+                    .foregroundStyle(Color.Foreground.default)
                     .overlay {
                         workout.type.icon()
                             .resizable()
@@ -77,7 +77,7 @@ struct WorkoutListItem: View {
                     VStack(alignment: .leading) {
                         Text(workout.dateToString)
                             .bold()
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                         
                         Text(workoutName)
                             .foregroundStyle(.gray)

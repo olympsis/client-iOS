@@ -32,7 +32,7 @@ struct ActivityPreparationSettings: View {
                                     .foregroundStyle(runType != "indoor" ? Color.colorSecnd : Color.Background.primary)
                                     .overlay {
                                         Text("Outdoor")
-                                            .foregroundStyle(runType != "indoor" ? Color.white : Color.foreground)
+                                            .foregroundStyle(runType != "indoor" ? Color.white : Color.Foreground.default)
                                     }
                             }.buttonStyle(PlainButtonStyle())
                                 
@@ -42,7 +42,7 @@ struct ActivityPreparationSettings: View {
                                     .foregroundStyle(runType == "indoor" ? Color.Brand.secondary : Color.Background.primary)
                                     .overlay {
                                         Text("Indoor")
-                                            .foregroundStyle(runType == "indoor" ? Color.white : Color.foreground)
+                                            .foregroundStyle(runType == "indoor" ? Color.white : Color.Foreground.default)
                                     }
                             }.buttonStyle(PlainButtonStyle())
                         }

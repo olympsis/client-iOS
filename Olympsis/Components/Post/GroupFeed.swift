@@ -91,7 +91,7 @@ struct GroupFeed: View {
                                             .lineLimit(1)
                                         Image(systemName: "chevron.down")
                                     }
-                                }.foregroundStyle(Color.foreground)
+                                }.foregroundStyle(Color.Foreground.default)
                             }.fullScreenCover(isPresented: $showEvents, content: {
                                 EventsList(events: groupEvents)
                             })
@@ -121,7 +121,7 @@ struct GroupFeed: View {
                                 .overlay {
                                     VStack {
                                         Text("No posts found")
-                                            .foregroundStyle(Color.foreground)
+                                            .foregroundStyle(Color.Foreground.default)
                                         
                                         Button(action: { self.showNewPost.toggle() }) {
                                             Text("Create One")
@@ -151,7 +151,7 @@ struct GroupFeed: View {
                                     Text("😣")
                                         .font(.title)
                                     Text("Failed to load posts")
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Foreground.default)
                                     Button(action: {
                                         Task { 
                                             await self.viewModel.getLatestPosts(session: session)

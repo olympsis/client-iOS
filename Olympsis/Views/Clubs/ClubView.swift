@@ -91,7 +91,7 @@ struct ClubView: View {
                         }
                     } label: {
                         Image(systemName: "plus")
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                             .imageScale(.large)
                     }
                 }
@@ -99,7 +99,7 @@ struct ClubView: View {
 //                ToolbarItem(placement: .topBarTrailing) {
 //                    NavigationLink(destination: GroupMessages()) {
 //                        Image(systemName: "bubble.left.and.bubble.right")
-//                            .foregroundStyle(Color.foreground)
+//                            .foregroundStyle(Color.Foreground.default)
 //                            .imageScale(.large)
 //                    }
 //                }

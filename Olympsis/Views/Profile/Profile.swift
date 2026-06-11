@@ -50,7 +50,7 @@ struct Profile: View {
                             .foregroundStyle(Color.Background.secondary)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.foreground.opacity(0.2), lineWidth: 1)
+                                    .stroke(Color.Foreground.default.opacity(0.2), lineWidth: 1)
                             }
                             .overlay {
                                 HStack(alignment: .center) {
@@ -75,7 +75,7 @@ struct Profile: View {
 //                                
 //                                Rectangle()
 //                                    .frame(height: 1)
-//                                    .foregroundStyle(selectedTab == .achievements ? Color.foreground : Color.clear)
+//                                    .foregroundStyle(selectedTab == .achievements ? Color.Foreground.default : Color.clear)
 //                            }
 //                        }
 //                        
@@ -94,7 +94,7 @@ struct Profile: View {
 //                                
 //                                Rectangle()
 //                                    .frame(height: 1)
-//                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.foreground : Color.clear)
+//                                    .foregroundStyle(selectedTab == .groupsEnrolled ? Color.Foreground.default : Color.clear)
 //                            }
 //                        }
 //                        
@@ -139,7 +139,7 @@ struct Profile: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action:{ self.showMenu.toggle() }){
                             Image(systemName: "slider.horizontal.3")
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                         }
                     }
                 }

@@ -40,7 +40,7 @@ struct NewEventImagePicker: View {
                                 .foregroundStyle(Color.Background.secondary)
                                 .overlay {
                                     Image(systemName: "plus")
-                                        .foregroundStyle(Color("foreground"))
+                                        .foregroundStyle(Color.Foreground.default)
                                 }
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 10)

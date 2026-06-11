@@ -14,14 +14,14 @@ struct RoomListItemTemplate: View {
                 .frame(width: 50)
                 .overlay(alignment: .center) {
                     Image(systemName: "rectangle.3.group.fill")
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
                 .padding(.horizontal)
             
             Text("room.name")
                 .font(.body)
                 .lineLimit(1)
-                .foregroundColor(Color.foreground)
+                .foregroundColor(Color.Foreground.default)
             
             Spacer()
             LoadingButton(text: "Join", width: 100, status: .constant(.pending))

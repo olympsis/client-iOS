@@ -18,13 +18,13 @@ struct Onboard_AboutEvents: View {
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color.foreground)
+                .foregroundStyle(Color.Foreground.default)
             
             Text(String(localized: "onboarding-events-sub-title", table: "Onboarding"))
                 .font(.title2)
                 .multilineTextAlignment(.center)
                 .padding([.horizontal, .vertical])
-                .foregroundStyle(Color.foreground)
+                .foregroundStyle(Color.Foreground.default)
             
             Image("illustrations/world")
                 .resizable()

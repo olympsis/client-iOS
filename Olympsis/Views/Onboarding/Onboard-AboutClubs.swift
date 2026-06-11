@@ -18,14 +18,14 @@ struct Onboard_AboutClubs: View {
                 .fontWeight(.bold)
                 .padding([.top, .horizontal])
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color.foreground)
+                .foregroundStyle(Color.Foreground.default)
             
             Text(String(localized: "onboarding-clubs-sub-title", table: "Onboarding"))
                 .font(.title2)
                 .padding(.vertical)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
-                .foregroundStyle(Color.foreground)
+                .foregroundStyle(Color.Foreground.default)
             
             Image("illustrations/goals")
                 .resizable()
@@ -43,7 +43,7 @@ struct Onboard_AboutClubs: View {
                     .background {
                         Circle()
                             .frame(width: 50, height: 50)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                     }
             }
             

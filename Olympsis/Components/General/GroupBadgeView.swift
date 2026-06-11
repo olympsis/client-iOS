@@ -50,7 +50,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "building.fill")
                                         .resizable()
                                         .frame(width: 10, height: 18)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Foreground.default)
                                 }
                             }
                     }
@@ -89,7 +89,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "building.fill")
                                         .resizable()
                                         .frame(width: 20, height: 30)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Foreground.default)
                                 }
                             }
                     }
@@ -128,7 +128,7 @@ struct GroupBadgeView: View {
                                     Image(systemName: "building.fill")
                                         .resizable()
                                         .frame(width: 35, height: 50)
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Foreground.default)
                                 }
                             }
                     }

@@ -76,7 +76,7 @@ struct NewEventOrganizers: View {
 //                        .foregroundStyle(Color.Background.secondary)
 //                        .overlay {
 //                            RoundedRectangle(cornerRadius: 10)
-//                                .stroke(Color.foreground.opacity(0.2), lineWidth: 1)
+//                                .stroke(Color.Foreground.default.opacity(0.2), lineWidth: 1)
 //                        }
 //                        .overlay {
 //                            Text("Add an organizer")
@@ -91,7 +91,7 @@ struct NewEventOrganizers: View {
 //                        .foregroundStyle(Color.Background.secondary)
 //                        .overlay {
 //                            RoundedRectangle(cornerRadius: 10)
-//                                .stroke(Color.foreground.opacity(0.2), lineWidth: 1)
+//                                .stroke(Color.Foreground.default.opacity(0.2), lineWidth: 1)
 //                        }
 //                        .overlay {
 //                            Text("Add a sponsor")

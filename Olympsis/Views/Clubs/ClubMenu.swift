@@ -72,7 +72,7 @@ struct ClubMenu: View {
                                 Spacer()
                             }
                             .frame(height: 20)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                         }
                         
                         HStack {
@@ -80,7 +80,7 @@ struct ClubMenu: View {
                                 .font(.callout)
                             Spacer()
                         }
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         
                     }
 // Disabled until payments are working

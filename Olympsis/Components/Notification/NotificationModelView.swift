@@ -40,10 +40,10 @@ struct NotificationModelView: View {
                     Text(notification.title)
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                     Text(notification.body)
                         .font(.caption)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
                 
                 Spacer()

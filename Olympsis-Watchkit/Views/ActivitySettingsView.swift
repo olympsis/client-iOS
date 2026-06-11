@@ -29,7 +29,7 @@ struct ActivitySettingsView: View {
                                 .foregroundStyle(unitType != "miles" ? Color.Brand.primary : Color.Background.primary)
                                 .overlay {
                                     Text("Kilometers")
-                                        .foregroundStyle(unitType != "miles" ? Color.white : Color.foreground)
+                                        .foregroundStyle(unitType != "miles" ? Color.white : Color.Foreground.default)
                                 }
                                 .overlay {
                                     if unitType == "kilometers" {
@@ -45,7 +45,7 @@ struct ActivitySettingsView: View {
                                 .foregroundStyle(unitType == "miles" ? Color.Brand.primary : Color.Background.primary)
                                 .overlay {
                                     Text("Miles")
-                                        .foregroundStyle(unitType == "miles" ? Color.white : Color.foreground)
+                                        .foregroundStyle(unitType == "miles" ? Color.white : Color.Foreground.default)
                                 }
                                 .overlay {
                                     if unitType == "miles" {

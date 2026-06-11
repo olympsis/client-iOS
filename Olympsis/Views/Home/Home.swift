@@ -90,7 +90,7 @@ struct Home: View {
 //                    Button(action: { router.navigate(to: .messages) }) {
 //                        ZStack(alignment: .topTrailing) {
 //                            Image(systemName: "bubble.left.and.bubble.right")
-//                                .foregroundStyle(Color.foreground)
+//                                .foregroundStyle(Color.Foreground.default)
 //                            
 //                            if session.invitations.count > 0 {
 //                                NotificationCountView(value: $session.invitations.count)
@@ -104,7 +104,7 @@ struct Home: View {
                     Button(action: { router.navigate(to: .notifications) }) {
                         ZStack(alignment: .topTrailing) {
                             Image(systemName: "bell")
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                                 
                             if session.notifications.contains(where: { !$0.isRead }) {
                                 NotificationCountView(value: session.notifications.count(where: { !$0.isRead }))

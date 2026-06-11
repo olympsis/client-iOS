@@ -380,7 +380,7 @@ struct _TrailingView: View {
         if (minParticipantsCount != 0) && (participantsCount != 0) && (participantsCount < minParticipantsCount) {
             return .yellow
         } else {
-            return .foreground
+            return .Foreground.default
         }
     }
     

@@ -220,7 +220,7 @@ struct VenueActionButtons: View {
                             Text(estimatedTimeToField)
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundColor(bookingURL != nil ? Color.foreground : .white)
+                        }.foregroundColor(bookingURL != nil ? Color.Foreground.default : .white)
                     }
                 }
                 
@@ -255,7 +255,7 @@ struct VenueActionButtons: View {
                                     Text("Public")
                                         .font(.caption)
                                         .fontWeight(.bold)
-                                }.foregroundColor(Color("foreground"))
+                                }.foregroundColor(Color.Foreground.default)
                             } else {
                                 VStack {
                                     Image(systemName: "lock.fill")
@@ -264,7 +264,7 @@ struct VenueActionButtons: View {
                                     Text("Private")
                                         .font(.caption)
                                         .fontWeight(.bold)
-                                }.foregroundColor(Color("foreground"))
+                                }.foregroundColor(Color.Foreground.default)
                             }
                         }
                     }
@@ -309,7 +309,7 @@ struct VenueActionButtons: View {
                             Text("Event")
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundStyle(canCreateEvent == false ? .gray : Color("foreground"))
+                        }.foregroundStyle(canCreateEvent == false ? .gray : Color.Foreground.default)
                     }
                 }
                 .disabled(canCreateEvent == false ? true : false)
@@ -337,7 +337,7 @@ struct VenueActionButtons: View {
                             Text("More")
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundColor(Color("foreground"))
+                        }.foregroundColor(Color.Foreground.default)
                     }
                 }.fullScreenCover(isPresented: $showReport, content: {
                     FieldReportView(field: venue)

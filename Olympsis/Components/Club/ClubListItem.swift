@@ -73,7 +73,7 @@ struct ClubListItem: View {
                         .font(.title3)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
-                        .foregroundColor(Color.foreground)
+                        .foregroundColor(Color.Foreground.default)
                     
                     HStack {
                         Image(systemName: "mappin.and.ellipse")

@@ -161,7 +161,7 @@ struct EditProfile: View {
                                     Image(systemName: "person.fill")
                                         .resizable()
                                         .frame(width: 40, height: 40)
-                                        .foregroundStyle(Color("foreground"))
+                                        .foregroundStyle(Color.Foreground.default)
                                 }.frame(width: 100, height: 100)
                             } else {
                                 ZStack {
@@ -178,7 +178,7 @@ struct EditProfile: View {
                             Image(systemName: "person.fill")
                                 .resizable()
                                 .frame(width: 40, height: 40)
-                                .foregroundStyle(Color("foreground"))
+                                .foregroundStyle(Color.Foreground.default)
                         }.frame(width: 100, height: 100)
                     }
                 }
@@ -340,6 +340,7 @@ struct EditProfile: View {
             Spacer()
             
         }
+        .background(Color.Background.primary)
         .navigationTitle(String(localized: "edit-profile", table: "Profile"))
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)

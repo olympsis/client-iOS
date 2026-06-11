@@ -25,7 +25,7 @@ struct SquareIconButton: View {
                     .overlay {
                         icon
                             .resizable()
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                             .frame(width: imageSize.width, height: imageSize.height)
                     }
                     .overlay {
@@ -35,7 +35,7 @@ struct SquareIconButton: View {
                 
                 Text(text)
                     .font(.caption)
-                    .foregroundStyle(Color.foreground)
+                    .foregroundStyle(Color.Foreground.default)
             }
         }
     }

@@ -20,7 +20,7 @@ struct EventSharingTemplateView: View {
                     HStack {
                         Rectangle()
                             .frame(width: 40, height: 10)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                         Spacer()
                     }
                     .padding(.top)
@@ -32,10 +32,10 @@ struct EventSharingTemplateView: View {
                         VStack(alignment: .leading, spacing: 5) {
                             Rectangle()
                                 .frame(width: 30, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                             Rectangle()
                                 .frame(width: 55, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                         }.padding(.leading, 10)
                         Spacer()
                     }.padding(.bottom, 5)
@@ -44,17 +44,17 @@ struct EventSharingTemplateView: View {
                 VStack(spacing: 2) {
                     Rectangle()
                         .frame(width: 30, height: 10)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         .padding(.top)
                     
                     HStack {
                         VStack(spacing: 2) {
                             Rectangle()
                                 .frame(width: 50, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                             Rectangle()
                                 .frame(width: 50, height: 10)
-                                .foregroundStyle(Color.foreground)
+                                .foregroundStyle(Color.Foreground.default)
                         }.padding(.leading, 10)
                         Spacer()
                     }.padding(.top, 5)
@@ -63,30 +63,30 @@ struct EventSharingTemplateView: View {
                 VStack(spacing: 2) {
                     Rectangle()
                         .frame(width: 10, height: 20)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         .padding(.vertical)
                     Rectangle()
                         .frame(width: 45, height: 10)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                     Rectangle()
                         .frame(width: 60, height: 10)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         .padding(.bottom, 5)
                 }
             case 2:
                 VStack(spacing: 2) {
                     Rectangle()
                         .frame(width: 30, height: 10)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         .padding(.vertical)
                     
                     VStack(spacing: 2) {
                         Rectangle()
                             .frame(width: 45, height: 10)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                         Rectangle()
                             .frame(width: 60, height: 10)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                     }.padding(.bottom, 5)
                 }
             default:

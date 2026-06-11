@@ -20,7 +20,7 @@ struct EditProfileButton: View {
                         .frame(width: 250, height: 35)
                         .foregroundColor(Color(Color.Background.secondary))
                     Text(String(localized: "edit-profile", table: "Profile"))
-                        .foregroundColor(Color.foreground)
+                        .foregroundColor(Color.Foreground.default)
                         .bold()
                         .font(.callout)
                 }

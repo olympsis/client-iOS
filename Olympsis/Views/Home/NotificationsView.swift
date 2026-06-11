@@ -40,7 +40,7 @@ struct NotificationsView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action:{ router.navigateBack() }) {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
                 .id(UUID())
             }

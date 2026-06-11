@@ -144,7 +144,7 @@ struct FilterView: View {
                                 .background(Color.gray.opacity(0.7))
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                                 .background {
-                                    RoundedRectangle(cornerRadius: 20).stroke(manager.isSportSelected(sport) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: 2)
+                                    RoundedRectangle(cornerRadius: 20).stroke(manager.isSportSelected(sport) ? Color.Brand.secondary : Color.Foreground.default.opacity(0.5), lineWidth: 2)
                                 }
                         }
                     }
@@ -179,7 +179,7 @@ struct FilterView: View {
                                     .background(Color.gray.opacity(0.7))
                                     .clipShape(RoundedRectangle(cornerRadius: 20))
                                     .background {
-                                        RoundedRectangle(cornerRadius: 20).stroke(manager.isTagSelected(tag) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: 2)
+                                        RoundedRectangle(cornerRadius: 20).stroke(manager.isTagSelected(tag) ? Color.Brand.secondary : Color.Foreground.default.opacity(0.5), lineWidth: 2)
                                     }
                             }
                         }

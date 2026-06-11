@@ -14,7 +14,7 @@ struct ClubDefaultBadge: View {
             .frame(width: 35, height: 35)
             .overlay {
                 Image(systemName: "person.2.fill")
-                    .foregroundStyle(Color.foreground)
+                    .foregroundStyle(Color.Foreground.default)
                     .imageScale(.small)
             }
     }

@@ -109,7 +109,7 @@ struct TabBar: View {
             Image(systemName: "calendar")
                 .imageScale(.medium)
                 .fontWeight(.semibold)
-                .foregroundStyle(isSelected ? Color.white : Color.foreground)
+                .foregroundStyle(isSelected ? Color.white : Color.Foreground.default)
 
         case .profile:
             TabBarProfileLabel(currentTab: $currentTab)
@@ -172,7 +172,7 @@ private struct GlassPillBackground: ViewModifier {
                 .background(.regularMaterial, in: Capsule())
                 .overlay(
                     Capsule()
-                        .stroke(Color.foreground.opacity(0.12), lineWidth: 0.5)
+                        .stroke(Color.Brand.primary.opacity(0.12), lineWidth: 0.5)
                 )
                 .shadow(color: Color.black.opacity(0.08), radius: 6, y: 2)
         }

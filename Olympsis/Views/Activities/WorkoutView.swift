@@ -146,7 +146,7 @@ struct WorkoutView: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 20)
                         .frame(width: 100, height: 100)
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                         .overlay {
                             workout.type.icon()
                                 .resizable()
@@ -162,7 +162,7 @@ struct WorkoutView: View {
                             .italic()
                             .lineLimit(1)
                             .minimumScaleFactor(0.6)
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                         
                         Text("Miles")
                             .foregroundColor(.gray)

@@ -14,7 +14,7 @@ struct ActivityGoalButton: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(height: 45)
-            .foregroundStyle(Color.foreground)
+            .foregroundStyle(Color.Foreground.default)
             .overlay {
                 HStack {
                     Text(goal.toString())

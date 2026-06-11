@@ -35,9 +35,9 @@ struct MenuButton: View {
                     HStack(alignment: .center) {
                         
                         icon
-                            .foregroundStyle(Color("foreground"))
+                            .foregroundStyle(Color.Foreground.default)
                         Text(text)
-                            .foregroundStyle(Color("foreground"))
+                            .foregroundStyle(Color.Foreground.default)
                             .multilineTextAlignment(.leading)
                         Spacer()
                     }.padding(.horizontal)

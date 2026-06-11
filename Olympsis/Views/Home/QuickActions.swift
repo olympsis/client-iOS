@@ -80,7 +80,7 @@ struct QuickActions: View {
                 }
                 .frame(height: 65)
                 .padding(.horizontal)
-                .foregroundStyle(Color.foreground)
+                .foregroundStyle(Color.Foreground.default)
                 .background {
                     Rectangle()
                         .foregroundStyle(Color.Background.secondary)

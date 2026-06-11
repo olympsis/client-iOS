@@ -100,7 +100,7 @@ struct GroupMessages: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(lineWidth: 1)
                                     Text("Joined")
-                                        .foregroundColor(Color.foreground)
+                                        .foregroundColor(Color.Foreground.default)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 }
@@ -124,7 +124,7 @@ struct GroupMessages: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(lineWidth: 1)
                                     Text("Not Joined")
-                                        .foregroundColor(Color.foreground)
+                                        .foregroundColor(Color.Foreground.default)
                                         .font(.caption)
                                         .textCase(.uppercase)
                                 }
@@ -145,7 +145,7 @@ struct GroupMessages: View {
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
-                                                .foregroundStyle(Color.foreground)
+                                                .foregroundStyle(Color.Foreground.default)
                                             
                                             Button(action: { selectedView = 1 }) {
                                                 Text("Check Rooms")
@@ -184,7 +184,7 @@ struct GroupMessages: View {
                                     .overlay {
                                         VStack {
                                             Text("No rooms found")
-                                                .foregroundStyle(Color.foreground)
+                                                .foregroundStyle(Color.Foreground.default)
                                             
                                             Button(action: { self.showNewRoom.toggle() }) {
                                                 Text("Create One")
@@ -226,7 +226,7 @@ struct GroupMessages: View {
                                 VStack {
                                     Text("😞")
                                     Text("Failed to load rooms")
-                                        .foregroundStyle(Color.foreground)
+                                        .foregroundStyle(Color.Foreground.default)
                                     
                                     Button(action: {
                                         Task {

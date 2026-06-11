@@ -155,7 +155,7 @@ struct EventActionButtons: View {
                             Text(String(localized: "event-action-directions", table: "Events"))
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundStyle(Color.foreground)
+                        }.foregroundStyle(Color.Foreground.default)
                     }.redacted(reason: venueState != .success ? .placeholder : [])
                         .modifier(BackgroundPillModifier())
                 }.disabled(venueState != .success ? true : false)
@@ -193,7 +193,7 @@ struct EventActionButtons: View {
                                     .font(.caption)
                                     .fontWeight(.bold)
                             }
-                        }.foregroundStyle(Color.foreground)
+                        }.foregroundStyle(Color.Foreground.default)
                     }
                 }.disabled(venueState != .success ? true : false)
             }
@@ -226,7 +226,7 @@ struct EventActionButtons: View {
                             Text(String(localized: "visibility-public", table: "Events"))
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundStyle(Color.foreground)
+                        }.foregroundStyle(Color.Foreground.default)
                     }
                 }
             }
@@ -370,7 +370,7 @@ struct EventActionButtons: View {
                         Text(String(localized: "more", table: "General"))
                             .font(.caption)
                             .fontWeight(.bold)
-                    }.foregroundStyle(Color.foreground)
+                    }.foregroundStyle(Color.Foreground.default)
                 }
             }
             .sheet(isPresented: $showMenu) {

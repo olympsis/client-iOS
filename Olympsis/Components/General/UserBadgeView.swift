@@ -42,7 +42,7 @@ struct UserBadgeView: View {
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: 18, height: 18)
-                                    .foregroundStyle(Color.foreground)
+                                    .foregroundStyle(Color.Foreground.default)
                             }
                     }
                 }
@@ -77,7 +77,7 @@ struct UserBadgeView: View {
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: 30, height: 30)
-                                    .foregroundStyle(Color.foreground)
+                                    .foregroundStyle(Color.Foreground.default)
                             }
                     }
                 }
@@ -112,7 +112,7 @@ struct UserBadgeView: View {
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: 50, height: 50)
-                                    .foregroundStyle(Color.foreground)
+                                    .foregroundStyle(Color.Foreground.default)
                             }
                     }
                 }

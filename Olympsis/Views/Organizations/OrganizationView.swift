@@ -79,7 +79,7 @@ struct OrganizationView: View {
                         }
                     } label: {
                         Image(systemName: "plus.square.dashed")
-                            .foregroundStyle(Color.foreground)
+                            .foregroundStyle(Color.Foreground.default)
                             .imageScale(.large)
                     }
                 }
@@ -87,7 +87,7 @@ struct OrganizationView: View {
 //                    ToolbarItem(placement: .topBarTrailing) {
 //                        NavigationLink(destination: GroupMessages()) {
 //                            Image(systemName: "bubble.left.and.bubble.right")
-//                                .foregroundStyle(Color.foreground)
+//                                .foregroundStyle(Color.Foreground.default)
 //                                .imageScale(.large)
 //                        }
 //                    }

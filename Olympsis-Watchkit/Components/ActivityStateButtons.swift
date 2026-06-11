@@ -65,7 +65,7 @@ struct ActivityStateButtons: View {
                     .font(.title2)
                     .frame(height: 75)
                     .frame(maxWidth: isPaused ? 75 : .infinity)
-                    .background(Color.foreground)
+                    .background(Color.Foreground.default)
                     .clipShape(RoundedRectangle(cornerRadius: isPaused ? 100 : 30))
             }
             .buttonStyle(.plain)

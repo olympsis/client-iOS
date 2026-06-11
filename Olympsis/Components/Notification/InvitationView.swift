@@ -84,7 +84,7 @@ struct InvitationView: View {
                             } else if phase.error != nil {
                                 ZStack {
                                     Rectangle()
-                                        .stroke(Color("foreground"), lineWidth: 1.0)
+                                        .stroke(Color.Foreground.default, lineWidth: 1.0)
                                         .frame(width: 50, height: 50)
                                     Image(systemName: "exclamationmark.triangle.fill")
                                         .foregroundColor(.red)
@@ -95,7 +95,7 @@ struct InvitationView: View {
                                     Rectangle()
                                         .opacity(0.1)
                                         .frame(width: 50, height: 50)
-                                        .accentColor(Color("foreground"))
+                                        .accentColor(Color.Foreground.default)
                                     ProgressView()
                                 }
                             }

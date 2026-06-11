@@ -37,7 +37,7 @@ struct NewEventRecurringSettings: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.foreground, lineWidth: recurrenceFrequency == .monthly ? 0 : 2)
+                            .stroke(Color.Foreground.default, lineWidth: recurrenceFrequency == .monthly ? 0 : 2)
                     )
                     
                     Button(action: { recurrenceFrequency = .monthly }) {
@@ -49,7 +49,7 @@ struct NewEventRecurringSettings: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.foreground, lineWidth: recurrenceFrequency == .monthly ? 2 : 0)
+                            .stroke(Color.Foreground.default, lineWidth: recurrenceFrequency == .monthly ? 2 : 0)
                     )
                     
                     Spacer()

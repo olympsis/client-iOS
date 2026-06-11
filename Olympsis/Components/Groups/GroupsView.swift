@@ -27,7 +27,7 @@ struct GroupsView: View {
                                     .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "person.3.fill")
-                                            .foregroundStyle(Color.foreground)
+                                            .foregroundStyle(Color.Foreground.default)
                                     }
                                 VStack {
                                     if let club = clubs.first(where: { $0.id == organizer.id }) {
@@ -49,7 +49,7 @@ struct GroupsView: View {
                                     .foregroundStyle(Color.gray.opacity(0.3))
                                     .overlay {
                                         Image(systemName: "building.fill")
-                                            .foregroundStyle(Color.foreground)
+                                            .foregroundStyle(Color.Foreground.default)
                                     }
                                 VStack {
                                     if let org = organizations.first(where: { $0.id == organizer.id }){

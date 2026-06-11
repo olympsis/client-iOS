@@ -13,7 +13,7 @@ struct WorkoutSmallListItemView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .foregroundStyle(Color.foreground)
+            .foregroundStyle(Color.purple)
             .frame(height: 80)
             .overlay {
                 VStack {

@@ -27,9 +27,9 @@ struct MenuLabel: View {
                 HStack(alignment: .center) {
                     
                     icon
-                        .foregroundStyle(Color("foreground"))
+                        .foregroundStyle(Color.Foreground.default)
                     Text(text)
-                        .foregroundStyle(Color("foreground"))
+                        .foregroundStyle(Color.Foreground.default)
                     Spacer()
                 }
                 .padding(.horizontal)

@@ -26,7 +26,7 @@ struct HomeMessagesView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { router.navigateBack() }) {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
                 .disabled(false)
             }
@@ -38,12 +38,12 @@ struct HomeMessagesView: View {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(action: {}) {
                     Image(systemName: "plus")
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
                 
                 Button(action: {}) {
                     Image(systemName: "gearshape")
-                        .foregroundStyle(Color.foreground)
+                        .foregroundStyle(Color.Foreground.default)
                 }
             }
         }
@@ -54,7 +54,7 @@ struct SettingStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         Label(configuration)
             .labelStyle(.iconOnly)
-            .foregroundStyle(Color.foreground)
+            .foregroundStyle(Color.Foreground.default)
     }
 }
 

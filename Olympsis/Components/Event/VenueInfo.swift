@@ -42,10 +42,10 @@ struct VenueInfo: View {
                 Text(name)
                     .font(.title3)
                     .bold()
-                    .foregroundStyle(Color("foreground"))
+                    .foregroundStyle(Color.Foreground.default)
                     
                 Text(locality)
-                    .foregroundStyle(Color("foreground"))
+                    .foregroundStyle(Color.Foreground.default)
             }
         }
         .onTapGesture {

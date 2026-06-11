@@ -93,7 +93,7 @@ struct AuthUserSports: View {
                                 .background(isSportSelected(sport) ? Color.Brand.secondary.opacity(0.7) : Color.gray.opacity(0.7))
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                                 .background {
-                                    RoundedRectangle(cornerRadius: 20).stroke(isSportSelected(sport) ? Color.Brand.secondary : Color.foreground.opacity(0.5), lineWidth: isSportSelected(sport) ? 4 : 2)
+                                    RoundedRectangle(cornerRadius: 20).stroke(isSportSelected(sport) ? Color.Brand.secondary : Color.Foreground.default.opacity(0.5), lineWidth: isSportSelected(sport) ? 4 : 2)
                                 }
                         }
                     }

@@ -56,7 +56,7 @@ struct EventMedia: View {
                     .foregroundStyle(.gray)
                     .overlay {
                         Image(systemName: "photo")
-                            .foregroundStyle(Color("foreground"))
+                            .foregroundStyle(Color.Foreground.default)
                     }
             }
             .resizable()

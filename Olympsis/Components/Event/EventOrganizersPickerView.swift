@@ -87,7 +87,7 @@ struct EventOrganizersPickerView: View {
                                     .foregroundStyle(Color.Background.secondary)
                                 Image(systemName: "person.3.fill")
                                     .imageScale(.large)
-                                    .foregroundStyle(Color.foreground)
+                                    .foregroundStyle(Color.Foreground.default)
                             }
                             
                             if let club = session.clubs.first(where: { $0.id == organizer.club?.id }) {
@@ -114,7 +114,7 @@ struct EventOrganizersPickerView: View {
                                     .foregroundStyle(Color.Background.secondary)
                                 Image(systemName: "building.fill")
                                     .imageScale(.large)
-                                    .foregroundStyle(Color.foreground)
+                                    .foregroundStyle(Color.Foreground.default)
                             }
                             
                             if let org = session.orgs.first(where: { $0.id == organizer.organization?.id }) {
