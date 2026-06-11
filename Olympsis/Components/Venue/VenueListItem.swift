@@ -194,6 +194,7 @@ struct VenueListItem: View {
                 .presentationDetents([.large])
         }
         .padding(.horizontal, 10)
+        .contentShape(RoundedRectangle(cornerRadius: 10))
         .onTapGesture {
             if let onTap {
                 onTap()

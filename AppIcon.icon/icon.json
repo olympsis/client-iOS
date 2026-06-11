@@ -1,0 +1,180 @@
+{
+  "features" : [
+    "refractivity",
+    "specular-location"
+  ],
+  "fill" : {
+    "solid" : "display-p3:0.10196,0.12549,0.29412,1.00000"
+  },
+  "groups" : [
+    {
+      "blend-mode-specializations" : [
+        {
+          "appearance" : "tinted",
+          "value" : "normal"
+        }
+      ],
+      "blur-material" : null,
+      "layers" : [
+        {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "glass" : true,
+          "image-name" : "noun-baseball-bat-2745179.png",
+          "name" : "noun-baseball-bat-2745179",
+          "position" : {
+            "scale" : 0.65,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "image-name" : "golfclub.png",
+          "name" : "golfclub",
+          "position" : {
+            "scale" : 0.65,
+            "translation-in-points" : [
+              -12.2265625,
+              2.5078125
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "name" : "Top",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          -3.268367968871484,
+          -0.7195598958357561
+        ]
+      },
+      "refractivity" : {
+        "depth" : 0.17074218749999986,
+        "enabled" : true,
+        "strength" : -0.0119140625
+      },
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 0.5
+      },
+      "specular" : "outside",
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "image-name" : "basketball.png",
+          "name" : "basketball",
+          "position" : {
+            "scale" : 0.7,
+            "translation-in-points" : [
+              32.45526283648598,
+              290.5058715766578
+            ]
+          }
+        },
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "image-name" : "tennis-ball.png",
+          "name" : "tennis-ball",
+          "position" : {
+            "scale" : 0.7,
+            "translation-in-points" : [
+              -198.31813552310436,
+              39.55742939038644
+            ]
+          }
+        },
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "image-name" : "soccer-ball.png",
+          "name" : "soccer-ball",
+          "position" : {
+            "scale" : 0.7,
+            "translation-in-points" : [
+              39.20370299252228,
+              -208.2913953540684
+            ]
+          }
+        },
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "automatic"
+            }
+          ],
+          "image-name" : "volleyball.png",
+          "name" : "volleyball",
+          "position" : {
+            "scale" : 0.7,
+            "translation-in-points" : [
+              260.509660616652,
+              27.762555064563166
+            ]
+          }
+        }
+      ],
+      "name" : "Balls",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          -15.494930468871484,
+          1.788252604164244
+        ]
+      },
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

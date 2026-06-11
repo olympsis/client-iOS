@@ -275,6 +275,8 @@
 		5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */; };
 		5D7FB7B72D6FC5AA00E5C532 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */; };
 		5D8023522FDA784F00AACE12 /* TransitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8023512FDA784F00AACE12 /* TransitStack.swift */; };
+		5D8023542FDB031000AACE12 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5D8023532FDB031000AACE12 /* AppIcon.icon */; };
+		5D8023552FDB031000AACE12 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5D8023532FDB031000AACE12 /* AppIcon.icon */; };
 		5D8085F72B2B8B3A00EA01AC /* EventOrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */; };
 		5D860C4F2C0EC75F0046457E /* EventVenuePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */; };
 		5D860C512C0EC8BC0046457E /* VenueMediumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */; };
@@ -849,6 +851,7 @@
 		5D7E0CE22E2FF5BF004A512E /* RunRoutePolylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRoutePolylineView.swift; sourceTree = "<group>"; };
 		5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5D8023512FDA784F00AACE12 /* TransitStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitStack.swift; sourceTree = "<group>"; };
+		5D8023532FDB031000AACE12 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		5D8085F62B2B8B3A00EA01AC /* EventOrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOrganizerView.swift; sourceTree = "<group>"; };
 		5D860C4E2C0EC75F0046457E /* EventVenuePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventVenuePicker.swift; sourceTree = "<group>"; };
 		5D860C502C0EC8BC0046457E /* VenueMediumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueMediumListItem.swift; sourceTree = "<group>"; };
@@ -1866,6 +1869,7 @@
 		9A8FF0A428BB14BF00DE4CF8 = {
 			isa = PBXGroup;
 			children = (
+				5D8023532FDB031000AACE12 /* AppIcon.icon */,
 				5DC8B4402E05BF09008C9052 /* Shared */,
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DBF2B842E42E34C0025B0FE /* OlympsisTests */,
@@ -2485,6 +2489,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D8023552FDB031000AACE12 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2523,6 +2528,7 @@
 				5D1905402DA1C7F50051990F /* Archivo_SemiExpanded-BlackItalic.ttf in Resources */,
 				5D1905412DA1C7F50051990F /* Archivo_ExtraCondensed-SemiBold.ttf in Resources */,
 				5D1905422DA1C7F50051990F /* Archivo-ExtraLightItalic.ttf in Resources */,
+				5D8023542FDB031000AACE12 /* AppIcon.icon in Resources */,
 				5D1905432DA1C7F50051990F /* Archivo_Condensed-ExtraLight.ttf in Resources */,
 				5D1905442DA1C7F50051990F /* Archivo_ExtraCondensed-ExtraBold.ttf in Resources */,
 				5D1905452DA1C7F50051990F /* Archivo_Expanded-ExtraBold.ttf in Resources */,

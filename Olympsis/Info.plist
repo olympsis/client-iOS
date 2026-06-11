@@ -25,7 +25,7 @@
 	<key>CHAT</key>
 	<string>chat.olympsis.com</string>
 	<key>DEBUG_HOST</key>
-	<string>192.168.1.156</string>
+	<string>192.168.0.128</string>
 	<key>DEV_USER_ID</key>
 	<string>65cf1a2b3e4f5a6b7c8d9e0f</string>
 	<key>Enable Multiple Windows</key>
@@ -53,7 +53,7 @@
 		<string>INSendMessageIntent</string>
 	</array>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Olympsis requires the ability to send you notifications to remind you of events you've responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
+	<string>Olympsis requires the ability to send you notifications to remind you of events you&apos;ve responded to, potential events you might be intrested in and other statuses within the app such as post notifications.</string>
 	<key>STAGING_CHAT</key>
 	<string></string>
 	<key>STAGING_HOST</key>
