@@ -205,6 +205,7 @@ struct ListView: View {
                             if nextEvents.count > 0 && searchText.isEmpty {
                                 UpNextEvent(events: nextEvents, namespace: heroNamespace)
                                     .padding(.vertical, 10)
+                                    .environment(session)
                             }
                             
                             // MARK: - Events List

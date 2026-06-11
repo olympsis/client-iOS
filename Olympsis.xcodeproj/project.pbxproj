@@ -329,6 +329,7 @@
 		5DA15B412FB7A748008F5B90 /* VenueDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA15B402FB7A748008F5B90 /* VenueDetails.swift */; };
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
 		5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3DF412D9A180E00CEE236 /* SearchManager.swift */; };
+		5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */; };
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
 		5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */; };
 		5DB096162E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
@@ -905,6 +906,7 @@
 		5DA15B402FB7A748008F5B90 /* VenueDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetails.swift; sourceTree = "<group>"; };
 		5DA38B352BF39856008C5C74 /* VenueTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTips.swift; sourceTree = "<group>"; };
 		5DA3DF412D9A180E00CEE236 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsStack.swift; sourceTree = "<group>"; };
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
 		5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySportCard.swift; sourceTree = "<group>"; };
 		5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesFrequencySelector.swift; sourceTree = "<group>"; };
@@ -1762,6 +1764,7 @@
 				5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */,
 				5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */,
 				5D23BC4E2E5F752600077879 /* RSVPSheet.swift */,
+				5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -2951,6 +2954,7 @@
 				5D5CAF892E627D9E004E26D4 /* GroupsManager.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
 				5D92BA982C83692B00B19BD4 /* EventNotificationToast.swift in Sources */,
+				5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */,
 				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
 				5DB096382E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
 				5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */,

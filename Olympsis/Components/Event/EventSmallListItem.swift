@@ -23,22 +23,23 @@ struct EventSmallListItem: View {
         return generateImageURL(event.mediaURL)
     }
     
-    @ContentBuilder
-    var participantsView: some View {
-        HStack {
-            Spacer()
-            Image(systemName: "person.3.fill")
-            Text("\(event.participants.count)")
-                .font(.callout)
+    private var canShowParticipants: Bool {
+        guard let user = session.user,
+              let poster = event.poster else {
+            return false
         }
-        .padding(.trailing)
-        .foregroundStyle(.primary)
-        .allowsHitTesting(false)
-        .opacity(event.participants.count > 0 ? 1 : 0)
+        
+        if poster.userID == user.userID {
+            return true
+        } else {
+            return event.participants.contains(where: { $0.user?.userID ?? "" == user.userID })
+        }
     }
     
+    @Environment(SessionStore.self) private var session
+    
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             KFImage(imageURL)
                 .placeholder {
                     RoundedRectangle(cornerRadius: 10)
@@ -69,10 +70,11 @@ struct EventSmallListItem: View {
                 Text(event.timeToString() + " at " + event.getStartHourAndMinute())
                     .font(.caption)
                     .foregroundStyle(.gray)
-                
-                participantsView
-
-            }.padding(.leading, 5)
+            }
+            .padding(.top, 5)
+            .padding(.leading, 5)
+            
+            Spacer()
         }
         .clipShape(Rectangle())
         .background {
@@ -82,6 +84,11 @@ struct EventSmallListItem: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.border, lineWidth: 1)
                 }
+        }
+        .overlay(alignment: .bottomTrailing) {
+            ParticipantsStack(participants: event.participants, canShowParticipants: canShowParticipants, diameter: 25)
+                .opacity(event.participants.count > 0 ? 1 : 0)
+                .padding([.bottom, .trailing], 8)
         }
     }
 }

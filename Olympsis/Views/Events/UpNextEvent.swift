@@ -12,7 +12,8 @@ struct UpNextEvent: View {
     var events: [Event]
     var router: EventRouter? = nil
     var namespace: Namespace.ID? = nil
-
+    @Environment(SessionStore.self) private var session
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -32,6 +33,8 @@ struct UpNextEvent: View {
                     router?.navigate(to: .event(event: event))
                 } label: {
                     EventSmallListItem(event: event)
+                        .padding(.horizontal)
+                        .environment(session)
                         .contentShape(RoundedRectangle(cornerRadius: 10))
                 }
                 .buttonStyle(.plain)
@@ -44,5 +47,6 @@ struct UpNextEvent: View {
 #Preview {
     NavigationStack {
         UpNextEvent(events: EVENTS)
+            .environment(SessionStore())
     }
 }

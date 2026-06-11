@@ -461,6 +461,13 @@ let EVENTS = [
                 status: .Yes,
                 isAnonymous: true,
                 createdAt: Date()
+            ),
+            Participant(
+                id: UUID().uuidString,
+                user: USER_SNIPPETS[1],
+                status: .Yes,
+                isAnonymous: false,
+                createdAt: Date()
             )
         ],
         participantsWaitlist: [],

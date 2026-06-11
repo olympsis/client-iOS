@@ -109,6 +109,7 @@ struct Events: View {
                             .environment(session)
                     case .upNextEvents(let events):
                         UpNextEvents(events: events)
+                            .environment(session)
                     case .new:
                         NewEvent(manager: NewEventManager())
                     case .venue(let venue):
