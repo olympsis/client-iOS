@@ -38,6 +38,13 @@ struct EventListItem: View {
         category: "event_list_item"
     )
     
+    private var type: String {
+        guard let isTournament = event.formatConfig?.isCompetition else {
+            return "PICKUP"
+        }
+        return isTournament ? "TOURNAMENT" : "PICK UP"
+    }
+    
     /// Compute wether or not we can allow the users to see the locations
     /// If hide participants is set to true then we only show the locations when the user has RSVPed
     private var canShowLocation: Bool {
@@ -84,6 +91,7 @@ struct EventListItem: View {
         }
         return sport.prefix(1).capitalized + sport.dropFirst()
     }
+    
 
     // MARK: - Scale-derived sizing
     //
@@ -134,19 +142,7 @@ struct EventListItem: View {
         scale == .regular ? 7 : 12
     }
 
-    /// Pill showing the participant count. Pulled into its own
-    /// `@ViewBuilder` so both the regular layout (title + location
-    /// stacked on the left, capsule on the right) and the small
-    /// layout (title spanning the card, location + capsule sharing
-    /// a row below) can render the exact same chip without
-    /// duplicating its styling.
-    ///
-    /// The downward offset that the regular layout uses to dangle
-    /// this chip below the title/location pair is applied at the
-    /// call site — in the small layout the chip sits inline with the
-    /// location text, so the same offset would push it into the
-    /// date row underneath.
-    @ViewBuilder
+    @ContentBuilder
     private var participantsCapsule: some View {
         HStack {
             Image(systemName: "person.2.fill")
@@ -171,7 +167,7 @@ struct EventListItem: View {
         }
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private var cardContent: some View {
         KFImage(imageURL)
                 .placeholder {
@@ -191,22 +187,21 @@ struct EventListItem: View {
                 .frame(height: imageHeight)
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 5) {
-                        Spacer()
 
                         if scale == .small {
-                            // Small layout: title gets the full card
-                            // width on its own row, then location and
-                            // participants share the row below. Lets
-                            // long titles breathe in the narrower
-                            // small-card variant rather than being
-                            // truncated to half the width by the
-                            // participants chip sitting next to them.
-                            Text(event.title)
-                                .font(titleFont)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            VStack(alignment: .leading) {
+                                Text(type)
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(Color.Foreground.yellow)
+                                
+                                Text(event.title)
+                                    .font(titleFont)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
 
                             HStack {
                                 Text("\(String(localized: "event-at-location", table: "Events")) \(venueLocationName)")
@@ -218,13 +213,27 @@ struct EventListItem: View {
                                 
                                 Spacer()
                                 
-                                participantsCapsule
+                                // Date
+                                HStack {
+                                    Image(systemName: "calendar")
+                                        .imageScale(.small)
+                                        .foregroundStyle(.white)
+                                    Text(event.timeToString())
+                                        .font(dateFont)
+                                        .foregroundStyle(.white)
+                                        .lineLimit(1)
+                                }
                             }
                         } else {
-                            HStack {
+                            HStack(alignment: .bottom) {
 
                                 // MARK: - Title and Location
                                 VStack(alignment: .leading) {
+                                    Text(type)
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(Color.Foreground.yellow)
+                                    
                                     Text(event.title)
                                         .font(titleFont)
                                         .fontWeight(.bold)
@@ -241,31 +250,20 @@ struct EventListItem: View {
 
                                 Spacer()
 
-                                // MARK: - Participants
-                                participantsCapsule
-                                    // Regular layout dangles the
-                                    // chip below the title/location
-                                    // VStack — the small layout
-                                    // doesn't because the chip lives
-                                    // inline with the location text.
-                                    .offset(x: 2, y: 8)
+                                // Date
+                                HStack {
+                                    Image(systemName: "calendar")
+                                        .imageScale(.small)
+                                        .foregroundStyle(.white)
+                                    Text(event.timeToString())
+                                        .font(dateFont)
+                                        .foregroundStyle(.white)
+                                        .lineLimit(1)
+                                }
                             }
                         }
 
                         HStack(alignment: .center, spacing: 5) {
-
-                            // MARK: - Date
-                            HStack {
-                                Image(systemName: "calendar")
-                                    .imageScale(.small)
-                                    .foregroundStyle(.white)
-                                Text(event.timeToString())
-                                    .font(dateFont)
-                                    .foregroundStyle(.white)
-                                    .lineLimit(1)
-                            }
-
-                            Spacer()
 
                             // MARK: - Competition Tag
                             if event.isCompetition() {
@@ -305,6 +303,8 @@ struct EventListItem: View {
                                     .stroke(Color.black.opacity(0.15), lineWidth: 1)
                             }
 
+                            Spacer()
+                            
                             // MARK: - Start Time
                             HStack {
                                 Image(systemName: "clock")
@@ -337,7 +337,12 @@ struct EventListItem: View {
                             .opacity(0.95)
                             .mask(gradient)
                     }
-                }.clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .overlay(alignment: .topTrailing) {
+                    ParticipantsStack(participants: event.participants, maxVisible: 3)
+                        .padding([.top, .trailing], 8)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
     var body: some View {
@@ -355,86 +360,6 @@ struct EventListItem: View {
             }
         }
         .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
-    }
-}
-
-/// Trailing view for Event view.
-/// Contains the start date and time and participants view.
-struct _TrailingView: View {
-    
-    @Binding var event: Event
-    @State private var isBlinking: Bool = false
-    
-    var participantsCount: Int {
-        return event.participants.count
-    }
-    
-    var minParticipantsCount: Int {
-        guard let minParticipants = event.participantsConfig?.minParticipants else {
-            return 0
-        }
-        return Int(minParticipants)
-    }
-    
-    var iconColor: Color {
-        if (minParticipantsCount != 0) && (participantsCount != 0) && (participantsCount < minParticipantsCount) {
-            return .yellow
-        } else {
-            return .Foreground.default
-        }
-    }
-    
-    var body: some View {
-        VStack (alignment: .trailing){
-            switch event.getEventStatus() {
-            case .pending:
-                VStack (alignment: .trailing){
-                    Text(event.timeToString())
-                        .bold()
-                        .font(.callout)
-                        .foregroundColor(.primary)
-                    
-                    Text(event.getStartHourAndMinute())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            case .live:
-                VStack (alignment: .trailing){
-                    HStack {
-                        Circle()
-                            .frame(width: 10, height: 10)
-                            .opacity(isBlinking ? 0 : 1)
-                            .transaction { transaction in
-                                transaction.animation = .linear(duration: 0.5).repeatForever(autoreverses: true)
-                            }
-                            .onAppear { isBlinking.toggle() }
-                        Text(String(localized: "status-live", table: "Events"))
-                            .bold()
-                            .font(.callout)
-                    }.foregroundStyle(.red)
-                    
-                    Text(event.timeDifferenceToString())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            case .ended:
-                VStack (alignment: .trailing){
-                    HStack {
-                        Text(String(localized: "status-ended", table: "Events"))
-                            .bold()
-                            .font(.callout)
-                    }.foregroundStyle(.gray)
-                    
-                    Text(event.getStopHourAndMinute())
-                        .foregroundColor(.primary)
-                }.padding(.bottom, 5)
-            }
-            
-            HStack {
-                Image(systemName: "person.3.sequence.fill")
-                    .foregroundColor(iconColor)
-                Text("\(participantsCount)")
-                    .foregroundColor(.primary)
-            }
-        }
     }
 }
 

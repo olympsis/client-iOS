@@ -23,19 +23,6 @@ struct EventSmallListItem: View {
         return generateImageURL(event.mediaURL)
     }
     
-    private var canShowParticipants: Bool {
-        guard let user = session.user,
-              let poster = event.poster else {
-            return false
-        }
-        
-        if poster.userID == user.userID {
-            return true
-        } else {
-            return event.participants.contains(where: { $0.user?.userID ?? "" == user.userID })
-        }
-    }
-    
     @Environment(SessionStore.self) private var session
     
     var body: some View {
@@ -86,8 +73,7 @@ struct EventSmallListItem: View {
                 }
         }
         .overlay(alignment: .bottomTrailing) {
-            ParticipantsStack(participants: event.participants, canShowParticipants: canShowParticipants, diameter: 25)
-                .opacity(event.participants.count > 0 ? 1 : 0)
+            ParticipantsStack(participants: event.participants, diameter: 25)
                 .padding([.bottom, .trailing], 8)
         }
     }

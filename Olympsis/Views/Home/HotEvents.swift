@@ -23,7 +23,7 @@ struct HotEvents: View {
                     }
                     
                     ForEach(session.hotEvents) { event in
-                        EventSmallListItem(event: event)
+                        EventListItem(event: event)
                             .environment(session)
                     }
                 }
