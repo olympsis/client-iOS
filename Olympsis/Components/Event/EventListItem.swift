@@ -332,10 +332,26 @@ struct EventListItem: View {
                     .padding(.bottom, overlayBottomPadding)
                     .frame(height: overlayHeight)
                     .background {
+                        // Frosted base — fades in from the top so the upper
+                        // part of the image stays clear.
                         Rectangle()
                             .fill(.ultraThinMaterial)
                             .opacity(0.95)
                             .mask(gradient)
+                            .overlay {
+                                // The frosted material is translucent, so over
+                                // bright areas of the image (e.g. out-of-focus
+                                // grass) it stops reading as a shadow near the
+                                // bottom edge — making the shadow look like it
+                                // ends short of the card. This dark gradient
+                                // guarantees a continuous darkening all the way
+                                // to the bottom regardless of the image content.
+                                LinearGradient(
+                                    colors: [.clear, .black.opacity(0.35)],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
                     }
                 }
                 .overlay(alignment: .topTrailing) {
