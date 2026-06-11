@@ -16,6 +16,7 @@ struct RSVPSheet: View {
     @State private var isAnonymous: Bool = false
     @State private var inLoadingState: LOADING_STATE = .pending
     @State private var maybeLoadingState: LOADING_STATE = .pending
+    @State private var cantLoadingState: LOADING_STATE = .pending
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
@@ -125,6 +126,29 @@ struct RSVPSheet: View {
                                 ProgressView()
                             case .pending, .success:
                                 Text(String(localized: "rsvp-maybe", table: "Events"))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.white)
+                                    .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
+                            case .failure:
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .imageScale(.large)
+                                    .foregroundStyle(.yellow)
+                            }
+                        }
+                }
+                .frame(height: 80)
+                .disabled(inLoadingState == .loading)
+                .opacity(inLoadingState == .loading ? 0.5 : 1)
+                
+                Button(action: { dismiss() }) {
+                    Rectangle()
+                        .foregroundStyle(Color.Brand.tertiary)
+                        .overlay {
+                            switch cantLoadingState {
+                            case .loading:
+                                ProgressView()
+                            case .pending, .success:
+                                Text(String(localized: "rsvp-cant", table: "Events"))
                                     .textCase(.uppercase)
                                     .foregroundStyle(.white)
                                     .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))

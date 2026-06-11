@@ -2807,6 +2807,29 @@
         }
       }
     },
+    "rsvp-cant" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I Can’t"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puedo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas"
+          }
+        }
+      }
+    },
     "rsvp-hide" : {
       "extractionState" : "manual",
       "localizations" : {
