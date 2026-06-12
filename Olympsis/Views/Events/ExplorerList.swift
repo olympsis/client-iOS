@@ -393,21 +393,18 @@ struct ExplorerList: View {
                                     .multilineTextAlignment(.center)
                             }.padding(.top, 50)
                         } else {
-                            // `LazyVStack` so a long venues list only
-                            // realizes the cards currently on screen,
-                            // matching the events branch and avoiding
-                            // a wave of `KFImage` decodes on first show.
-                            LazyVStack {
-                                ForEach(session.venues) { venue in
-                                    VenueListItem(
-                                        venue: venue,
-                                        scale: listItemScale,
-                                        onTap: router.map { router in
-                                            { router.navigate(to: .venue(venue: venue)) }
-                                        }
-                                    )
+                            // Neighborhood-grouped index (chips + per-hood
+                            // sections). The shared component handles the
+                            // LazyVStack laziness and caches the grouping, so
+                            // this matches the Home "view all" sheet exactly.
+                            // Tapping a venue routes onto the shared nav stack.
+                            VenueNeighborhoodIndex(
+                                venues: session.venues,
+                                scale: listItemScale,
+                                onSelect: router.map { router in
+                                    { venue in router.navigate(to: .venue(venue: venue)) }
                                 }
-                            }
+                            )
                         }
                     case .loading:
                         ProgressView()
@@ -432,6 +429,9 @@ struct ExplorerList: View {
                     // Bottom padding to make sure we can scroll all the way up
                     Spacer(minLength: 150)
                 }
+                // Floating scroll-to-top button — only on the venues page so
+                // users can jump back up to pick another neighborhood.
+                .scrollToTopButton(isEnabled: vm.page == .venues)
             }
         }
     }

@@ -330,6 +330,8 @@
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
 		5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3DF412D9A180E00CEE236 /* SearchManager.swift */; };
 		5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */; };
+		5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */; };
+		5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */; };
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
 		5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */; };
 		5DB096162E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
@@ -907,6 +909,8 @@
 		5DA38B352BF39856008C5C74 /* VenueTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTips.swift; sourceTree = "<group>"; };
 		5DA3DF412D9A180E00CEE236 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsStack.swift; sourceTree = "<group>"; };
+		5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueNeighborhoodIndex.swift; sourceTree = "<group>"; };
+		5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToTopButton.swift; sourceTree = "<group>"; };
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
 		5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySportCard.swift; sourceTree = "<group>"; };
 		5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesFrequencySelector.swift; sourceTree = "<group>"; };
@@ -1731,6 +1735,7 @@
 				9AB02F60290265B4008C07F1 /* TabBar.swift */,
 				5D45B5B52D9CE36600AB24AC /* TagView.swift */,
 				5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */,
+				5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1783,6 +1788,7 @@
 				5DA15B3E2FB7A09A008F5B90 /* TransitLabel.swift */,
 				5DA15B402FB7A748008F5B90 /* VenueDetails.swift */,
 				5D8023512FDA784F00AACE12 /* TransitStack.swift */,
+				5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */,
 			);
 			path = Venue;
 			sourceTree = "<group>";
@@ -2717,6 +2723,7 @@
 				5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */,
 				5D1190602E39073E00574041 /* ClubWalletWithdraw.swift in Sources */,
 				5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */,
+				5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */,
 				9ADDD950296A807A00245CCE /* RoomDao.swift in Sources */,
 				5D666AA12BF8F58F001EE754 /* PostCreator.swift in Sources */,
 				5D2F19A72C14173A00D98222 /* ClubDefaultBadge.swift in Sources */,
@@ -2776,6 +2783,7 @@
 				5D95723A2C326D8B004D5318 /* EventSharingView.swift in Sources */,
 				5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */,
 				9A8FF0B128BB14BF00DE4CF8 /* OlympsisApp.swift in Sources */,
+				5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */,
 				5D2062602B14463400A9D408 /* OrgListItem.swift in Sources */,
 				5D78BDE42C0C11D100F170D6 /* EventManager.swift in Sources */,
 				5D38BD8E2C14C02B003EEF90 /* EventMediaViolation.swift in Sources */,

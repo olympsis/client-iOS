@@ -23,11 +23,11 @@ struct VenuesList: View {
         NavigationStack {
             ScrollView {
                 if (venues.count > 0) {
-                    LazyVStack {
-                        ForEach(venues, id: \.name){ field in
-                            VenueListItem(venue: field)
-                        }
-                    }
+                    // Neighborhood-grouped index with quick-jump chips. The
+                    // grouping/caching lives in the shared component so the
+                    // Home "view all" sheet and the Events explorer drawer
+                    // render venues identically.
+                    VenueNeighborhoodIndex(venues: venues)
                 } else {
                     if hasLocation {
                         VStack {
@@ -62,6 +62,7 @@ struct VenuesList: View {
                     }
                 }
             }
+            .scrollToTopButton()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){
