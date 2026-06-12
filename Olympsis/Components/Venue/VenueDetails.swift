@@ -212,6 +212,31 @@ struct VenueDetails: View {
         }
     }
 
+    // MARK: - Transit layout
+    //
+    // The transit section normally stacks one row per line. For MTA venues
+    // with more than three lines that gets tall, so we switch to a compact
+    // 2-column grid. The grid is gated on MTA only — other systems keep the
+    // vertical list regardless of count.
+
+    /// True when every transit line belongs to the MTA. Used so the grid
+    /// layout never kicks in for a non-MTA (or mixed-system) venue.
+    private var isMTATransit: Bool {
+        !venue.transitLines.isEmpty
+            && venue.transitLines.allSatisfy { $0.system == "MTA" }
+    }
+
+    /// Use the 2-column grid only for MTA venues with more than 3 lines.
+    private var useTransitGrid: Bool {
+        isMTATransit && venue.transitLines.count > 3
+    }
+
+    /// Two equal-width, leading-aligned columns for the transit grid.
+    private var transitGridColumns: [GridItem] {
+        [GridItem(.flexible(), alignment: .leading),
+         GridItem(.flexible(), alignment: .leading)]
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("Details")
@@ -296,17 +321,27 @@ struct VenueDetails: View {
             }
             .padding(.top, 16)
 
-            // Transit — vertical stack of `TransitLabel` rows, one per
-            // line that serves the venue. Hidden entirely when the venue
-            // has no transit metadata so we don't render an empty header.
+            // Transit — `TransitLabel` rows, one per line that serves the
+            // venue. Hidden entirely when the venue has no transit metadata
+            // so we don't render an empty header. MTA venues with more than
+            // three lines wrap into a 2-column grid to keep the section from
+            // running long; everything else stays a single vertical stack.
             if !venue.transitLines.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Transit")
                         .font(.callout)
                         .bold()
 
-                    ForEach(venue.transitLines) { line in
-                        TransitLabel(transit: line)
+                    if useTransitGrid {
+                        LazyVGrid(columns: transitGridColumns, alignment: .leading, spacing: 8) {
+                            ForEach(venue.transitLines) { line in
+                                TransitLabel(transit: line)
+                            }
+                        }
+                    } else {
+                        ForEach(venue.transitLines) { line in
+                            TransitLabel(transit: line)
+                        }
                     }
                 }
                 .padding(.top, 16)

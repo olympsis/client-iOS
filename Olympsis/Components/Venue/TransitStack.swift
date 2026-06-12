@@ -39,17 +39,22 @@ struct TransitStack: View {
     }
 
     var body: some View {
-        // Negative spacing pulls each badge under the previous one. We
-        // reverse the z-order (see `.zIndex`) so the leading badge sits on
-        // top — the conventional "stacked" look, with the "+n" tucked behind.
-        HStack(spacing: -overlap) {
-            ForEach(Array(visible.enumerated()), id: \.element.id) { index, transit in
-                badge(
-                    text: transit.name,
-                    fill: Color(hex: transit.color),
-                    foreground: foreground(for: transit.color)
-                )
-                .zIndex(Double(visible.count - index))
+        // Outer stack keeps the overlapping line badges and the "+n" badge
+        // as two separate groups so the overflow sits *beside* the stack
+        // rather than tucked under it. A small positive gap separates them.
+        HStack(spacing: 4) {
+            // Negative spacing pulls each badge under the previous one. We
+            // reverse the z-order (see `.zIndex`) so the leading badge sits
+            // on top — the conventional "stacked" look.
+            HStack(spacing: -overlap) {
+                ForEach(Array(visible.enumerated()), id: \.element.id) { index, transit in
+                    badge(
+                        text: transit.name,
+                        fill: Color(hex: transit.color),
+                        foreground: foreground(for: transit.color)
+                    )
+                    .zIndex(Double(visible.count - index))
+                }
             }
 
             if overflow > 0 {
