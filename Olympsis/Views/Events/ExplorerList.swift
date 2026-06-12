@@ -202,13 +202,17 @@ struct ExplorerList: View {
             // so the collapsed drawer header doesn't double up with
             // the `FloatingDrawerActions` chips outside the drawer.
             HStack(spacing: 8) {
-                Picker("Page", selection: $vm.page) {
-                    ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
-                        Text(page.localized).tag(page)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
+                // Custom segmented control rather than the system
+                // `Picker(.segmented)`. The native picker is a bridged
+                // `UISegmentedControl`; hosted inside the explorer's
+                // overlay drawer it swallowed its *first* tap after the
+                // drawer appeared (the tap only resolved the responder
+                // chain), which is why switching pages used to need a
+                // double tap. Building the control out of plain SwiftUI
+                // buttons sidesteps the UIKit bridge, so the first tap
+                // registers immediately.
+                ExplorerPagePicker(selection: $vm.page)
+                    .padding(.horizontal)
                 
                 if isFullyExpanded {
                     Spacer()
@@ -430,6 +434,63 @@ struct ExplorerList: View {
                 }
             }
         }
+    }
+}
+
+/// Two-segment control that drives the events/venues page selection.
+///
+/// Replaces `Picker(.segmented)` to avoid the bridged `UISegmentedControl`
+/// first-tap issue inside the overlay drawer (see call site). Pure SwiftUI
+/// buttons with a `matchedGeometryEffect` thumb that slides between the
+/// selected segment, styled to read like a system segmented control.
+private struct ExplorerPagePicker: View {
+
+    @Binding var selection: EVENT_EXPLORER_STATE
+
+    /// Drives the sliding-thumb animation between segments.
+    @Namespace private var thumb
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
+                segment(for: page)
+            }
+        }
+        .padding(2)
+        .background(
+            RoundedRectangle(cornerRadius: 9)
+                .fill(Color(uiColor: .tertiarySystemFill))
+        )
+        .fixedSize(horizontal: true, vertical: false)
+    }
+
+    @ViewBuilder
+    private func segment(for page: EVENT_EXPLORER_STATE) -> some View {
+        let isSelected = selection == page
+        Button {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                selection = page
+            }
+        } label: {
+            Text(page.localized)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(isSelected ? Color.primary : Color.secondary)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 16)
+                .background {
+                    // Only the selected segment paints the thumb; the
+                    // shared `matchedGeometryEffect` id makes it slide
+                    // across when the selection changes.
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: 7)
+                            .fill(Color.Background.primary)
+                            .shadow(color: .black.opacity(0.12), radius: 1, y: 1)
+                            .matchedGeometryEffect(id: "thumb", in: thumb)
+                    }
+                }
+        }
+        .buttonStyle(.plain)
     }
 }
 
