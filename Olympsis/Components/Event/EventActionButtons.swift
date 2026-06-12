@@ -142,7 +142,7 @@ struct EventActionButtons: View {
                             .foregroundColor(Color.Background.secondary)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                    .stroke(Color.border, lineWidth: 1)
                             }
                         
                         VStack {
@@ -172,7 +172,7 @@ struct EventActionButtons: View {
                             .foregroundColor(Color.Background.secondary)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                    .stroke(Color.border, lineWidth: 1)
                             }
                         
                         VStack {
@@ -205,7 +205,7 @@ struct EventActionButtons: View {
                     .foregroundColor(Color.Background.secondary)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                            .stroke(Color.border, lineWidth: 1)
                     }
                     
                 VStack {
@@ -359,7 +359,7 @@ struct EventActionButtons: View {
                         .foregroundColor(Color.Background.secondary)
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                                .stroke(Color.border, lineWidth: 1)
                         }
                     VStack {
                         VStack {

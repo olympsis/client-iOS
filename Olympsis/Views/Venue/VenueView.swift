@@ -83,7 +83,9 @@ struct VenueView: View {
                 VenueEventsView(venue: $venue)
                 
             }.navigationTitle(venue.name)
-        }.padding(.top, isFullScreen ? 0 : 10)
+        }
+        .padding(.top, isFullScreen ? 0 : 10)
+        .background(Color.Background.primary)
     }
 }
 
@@ -209,6 +211,10 @@ struct VenueActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(bookingURL != nil ? Color.Background.secondary : Color.Brand.primary)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.border, lineWidth: 1)
+                            }
                         
                         VStack(spacing: 6) {
                             VStack {
@@ -220,9 +226,10 @@ struct VenueActionButtons: View {
                             Text(estimatedTimeToField)
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }.foregroundColor(bookingURL != nil ? Color.Foreground.default : .white)
+                        }
+                        .foregroundColor(bookingURL != nil ? Color.Foreground.default : .white)
                     }
-                }
+                }.contentShape(RoundedRectangle(cornerRadius: 10))
                 
                 // MARK: - Visibility/Booking
                 if let url = bookingURL {
@@ -231,6 +238,11 @@ struct VenueActionButtons: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(maxWidth: .infinity, idealHeight: 60)
                                 .foregroundStyle(Color.Brand.primary)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.border, lineWidth: 1)
+                                }
+                            
                             VStack {
                                 Image(systemName: "calendar.badge.clock")
                                     .resizable()
@@ -240,12 +252,17 @@ struct VenueActionButtons: View {
                                     .fontWeight(.bold)
                             }.foregroundStyle(.white)
                         }
-                    }
+                    }.contentShape(RoundedRectangle(cornerRadius: 10))
                 } else {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color(Color.Background.secondary))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.border, lineWidth: 1)
+                            }
+                        
                         VStack {
                             if venue.isPublic() {
                                 VStack {
@@ -268,6 +285,7 @@ struct VenueActionButtons: View {
                             }
                         }
                     }
+                    .contentShape(RoundedRectangle(cornerRadius: 10))
                     .onTapGesture {
                         showVisibility.toggle()
                     }
@@ -302,6 +320,11 @@ struct VenueActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color(Color.Background.secondary))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.border, lineWidth: 1)
+                            }
+                        
                         VStack {
                             Image(systemName: "plus")
                                 .resizable()
@@ -312,6 +335,7 @@ struct VenueActionButtons: View {
                         }.foregroundStyle(canCreateEvent == false ? .gray : Color.Foreground.default)
                     }
                 }
+                .contentShape(RoundedRectangle(cornerRadius: 10))
                 .disabled(canCreateEvent == false ? true : false)
                 .popoverTip(joinGroupTip)
                 .fullScreenCover(isPresented: $showNewEvent) {
@@ -328,6 +352,10 @@ struct VenueActionButtons: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
                             .foregroundColor(Color(Color.Background.secondary))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.border, lineWidth: 1)
+                            }
                         VStack {
                             VStack {
                                 Image(systemName: "ellipsis")
