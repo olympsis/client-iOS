@@ -267,7 +267,7 @@ struct EventActionButtons: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(maxWidth: .infinity, idealHeight: 60)
-                                    .foregroundColor(Color.Brand.primary)
+                                    .foregroundColor(Color.Foreground.default)
 
                                 VStack {
                                     if state == .loading {
@@ -285,7 +285,7 @@ struct EventActionButtons: View {
                                             .fontWeight(.bold)
                                     }
                                 }
-                            }.foregroundStyle(.white)
+                            }.foregroundStyle(Color.Background.primary)
                         }
                         .disabled(state == .loading ? true : false)
                         .disabled(event.getEventStatus() == .ended ? true : false)

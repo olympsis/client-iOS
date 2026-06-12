@@ -210,7 +210,7 @@ struct VenueActionButtons: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(bookingURL != nil ? Color.Background.secondary : Color.Brand.primary)
+                            .foregroundColor(bookingURL != nil ? Color.Background.secondary : Color.Foreground.default)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color.border, lineWidth: 1)
@@ -226,8 +226,7 @@ struct VenueActionButtons: View {
                             Text(estimatedTimeToField)
                                 .font(.caption)
                                 .fontWeight(.bold)
-                        }
-                        .foregroundColor(bookingURL != nil ? Color.Foreground.default : .white)
+                        }.foregroundColor(bookingURL != nil ? Color.Foreground.default : Color.Background.primary)
                     }
                 }.contentShape(RoundedRectangle(cornerRadius: 10))
                 
@@ -237,7 +236,7 @@ struct VenueActionButtons: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(maxWidth: .infinity, idealHeight: 60)
-                                .foregroundStyle(Color.Brand.primary)
+                                .foregroundStyle(Color.Foreground.default)
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.border, lineWidth: 1)
@@ -250,7 +249,7 @@ struct VenueActionButtons: View {
                                 Text("Schedule")
                                     .font(.caption)
                                     .fontWeight(.bold)
-                            }.foregroundStyle(.white)
+                            }.foregroundStyle(Color.Text.headline)
                         }
                     }.contentShape(RoundedRectangle(cornerRadius: 10))
                 } else {
