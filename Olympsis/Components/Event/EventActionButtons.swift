@@ -385,7 +385,7 @@ struct EventActionButtons: View {
         .sheet(isPresented: $showRSVPSheet){
             RSVPSheet(event: event)
                 .environment(session)
-                .presentationDetents([.height(235)])
+                .presentationDetents([.height(325)])
         }
     }
 }

@@ -61,7 +61,7 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
     /// Approximate available height (screen − nav bar − tab bar). We
     /// don't need to be exact; the detents are coarse buckets.
     private var totalHeight: CGFloat {
-        UIScreen.main.bounds.height - 150
+        UIScreen.main.bounds.height - 100
     }
 
     var body: some View {
