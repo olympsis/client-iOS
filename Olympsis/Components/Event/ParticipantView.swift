@@ -29,11 +29,10 @@ struct ParticipantView: View {
         return generateImageURL(img)
     }
     
-    private var ringColor: Color {
-        guard participant.user != nil else {
-            return Color("color-prime")
-        }
-        
+    /// The color used for the trailing RSVP status text. Matches the brand
+    /// color that previously tinted the avatar ring so each response type
+    /// stays visually distinguishable.
+    private var statusColor: Color {
         switch participant.status {
         case .Yes:
             return Color.Brand.primary
@@ -41,6 +40,19 @@ struct ParticipantView: View {
             return Color.Brand.secondary
         case .Waitlist:
             return Color.Brand.tertiary
+        }
+    }
+    
+    /// The localized, all-caps RSVP status text shown on the trailing edge
+    /// (e.g. YES, MAYBE, WAITLISTED).
+    private var statusText: String {
+        switch participant.status {
+        case .Yes:
+            return String(localized: "participant-status-yes", defaultValue: "YES", table: "Events")
+        case .Maybe:
+            return String(localized: "participant-status-maybe", defaultValue: "MAYBE", table: "Events")
+        case .Waitlist:
+            return String(localized: "participant-status-waitlisted", defaultValue: "WAITLISTED", table: "Events")
         }
     }
     
@@ -66,10 +78,6 @@ struct ParticipantView: View {
     var body: some View {
         HStack {
             UserBadgeView(size: .small, imageURL: imageURL)
-                .overlay {
-                    Circle()
-                        .stroke(ringColor, lineWidth: 2)
-                }
             
             VStack(alignment: .leading) {
                 HStack {
@@ -88,6 +96,15 @@ struct ParticipantView: View {
                     .font(.caption)
                     .foregroundStyle(.gray)
             }
+            
+            Spacer()
+            
+            // RSVP response status, shown bold/italic/all-caps on the trailing edge.
+            Text(statusText)
+                .font(.caption)
+                .fontWeight(.bold)
+                .italic()
+                .foregroundStyle(statusColor)
         }
     }
 }

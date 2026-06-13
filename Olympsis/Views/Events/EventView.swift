@@ -257,7 +257,7 @@ struct EventView: View {
                     .padding(.top)
                     .id(8)
                     
-                    Spacer(minLength: 150)
+                    Spacer(minLength: 160)
                 }
                 .onChange(of: venuesTarget) { _, newValue in
                     proxy.scrollTo(newValue, anchor: .top)
