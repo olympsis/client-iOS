@@ -218,7 +218,6 @@
 		5D4B0A682D96F9F900475A0C /* EventQuickInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */; };
 		5D4B0A6A2D9704AE00475A0C /* EventCommentListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */; };
 		5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */; };
-		5D4B0A6F2D97446400475A0C /* PastEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A6E2D97446400475A0C /* PastEvents.swift */; };
 		5D4B0A712D9747A100475A0C /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A702D9747A100475A0C /* Awards.swift */; };
 		5D4B0A732D974B4200475A0C /* ClubListItemMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */; };
 		5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4B0A742D9757C700475A0C /* OrgListItemMedia.swift */; };
@@ -333,6 +332,7 @@
 		5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */; };
 		5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */; };
 		5DACA4C12C3351E7002E1655 /* GroupEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACA4C02C3351E7002E1655 /* GroupEditor.swift */; };
+		5DACBECB2FDCDD9200B3381C /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DACBECA2FDCDD9200B3381C /* ArchiveView.swift */; };
 		5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */; };
 		5DB096162E07415600BB924A /* ActivitiesTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */; };
 		5DB096192E07424700BB924A /* ActivitiesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB096182E07424700BB924A /* ActivitiesChart.swift */; };
@@ -791,7 +791,6 @@
 		5D4B0A672D96F9F900475A0C /* EventQuickInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventQuickInfo.swift; sourceTree = "<group>"; };
 		5D4B0A692D9704AE00475A0C /* EventCommentListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCommentListItem.swift; sourceTree = "<group>"; };
 		5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsEnrolled.swift; sourceTree = "<group>"; };
-		5D4B0A6E2D97446400475A0C /* PastEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastEvents.swift; sourceTree = "<group>"; };
 		5D4B0A702D9747A100475A0C /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
 		5D4B0A722D974B4200475A0C /* ClubListItemMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubListItemMedia.swift; sourceTree = "<group>"; };
 		5D4B0A742D9757C700475A0C /* OrgListItemMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgListItemMedia.swift; sourceTree = "<group>"; };
@@ -912,6 +911,7 @@
 		5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueNeighborhoodIndex.swift; sourceTree = "<group>"; };
 		5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToTopButton.swift; sourceTree = "<group>"; };
 		5DACA4C02C3351E7002E1655 /* GroupEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditor.swift; sourceTree = "<group>"; };
+		5DACBECA2FDCDD9200B3381C /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		5DB0960F2E064A0700BB924A /* ActivitySportCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySportCard.swift; sourceTree = "<group>"; };
 		5DB096122E07405A00BB924A /* ActivitiesFrequencySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesFrequencySelector.swift; sourceTree = "<group>"; };
 		5DB096152E07415600BB924A /* ActivitiesTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesTypePicker.swift; sourceTree = "<group>"; };
@@ -2285,8 +2285,8 @@
 				5D2F19A42C13F4E600D98222 /* AccountDeleteSignin.swift */,
 				5D38BD9E2C169B24003EEF90 /* LogViewer.swift */,
 				5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */,
-				5D4B0A6E2D97446400475A0C /* PastEvents.swift */,
 				5D4B0A702D9747A100475A0C /* Awards.swift */,
+				5DACBECA2FDCDD9200B3381C /* ArchiveView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -2923,6 +2923,7 @@
 				5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */,
 				5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */,
 				5F4E53F62A2918B900257350 /* Venues.swift in Sources */,
+				5DACBECB2FDCDD9200B3381C /* ArchiveView.swift in Sources */,
 				5D18BD282B3F8FB300F90777 /* GroupFeed.swift in Sources */,
 				5D2F19A52C13F4E600D98222 /* AccountDeleteSignin.swift in Sources */,
 				5DC8B4242E05BD7C008C9052 /* WorkoutListItemTemplate.swift in Sources */,
@@ -2939,7 +2940,6 @@
 				9AD2091329357D1B007A62C4 /* AddParticipantResponse.swift in Sources */,
 				5DBA3AF82B95531600B67CFB /* FieldReportView.swift in Sources */,
 				5D51E4232E46765900D159BC /* AsyncClubView.swift in Sources */,
-				5D4B0A6F2D97446400475A0C /* PastEvents.swift in Sources */,
 				5D90A9D92D53CD9100D7B168 /* EventTypePicker.swift in Sources */,
 				5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */,
 				5D18BD262B3BC1CF00F90777 /* Generic.swift in Sources */,

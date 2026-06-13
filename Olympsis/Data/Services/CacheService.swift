@@ -53,6 +53,33 @@ class CacheService: ObservableObject {
         }
         return nil
     }
+
+    /// Caches the user's generated event archive to disk.
+    ///
+    /// The full set of fetched past events is stored so that subsequent visits to the profile
+    /// can render the archive (and switch between month ranges) without hitting the network.
+    /// - Parameter events: the past events that make up the archive
+    func cacheArchivedEvents(_ events: [Event]) {
+        do {
+            let data = try encoder.encode(events)
+            self.defaults.set(data, forKey: "archived_events")
+        } catch {
+            log.error("failed to store archived events: \(error)")
+        }
+    }
+
+    /// Fetches the user's cached event archive from disk.
+    /// - Returns: the cached past events, or `nil` if no archive has been generated yet
+    func fetchArchivedEvents() -> [Event]? {
+        do {
+            if let data = self.defaults.data(forKey: "archived_events") {
+                return try decoder.decode([Event].self, from: data)
+            }
+        } catch {
+            log.error("failed to fetch archived events: \(error)")
+        }
+        return nil
+    }
     
     func cacheClubAdminToken(id: String, token: String) {
         self.defaults.set(token, forKey: id)
