@@ -61,6 +61,7 @@ struct EventCommentListItem: View {
             }
         }
         .padding(.vertical, 10)
+        .contentShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 

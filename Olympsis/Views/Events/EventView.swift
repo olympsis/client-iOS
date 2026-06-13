@@ -26,7 +26,8 @@ struct EventView: View {
     
     @State private var showToast: Bool = false
     @State private var showSharingMenu: Bool = false
-    
+    @State private var isComposing: Bool = false
+
     @State private var state: LOADING_STATE = .pending
     @State private var venueState: LOADING_STATE = .pending
     @State private var organizersState: LOADING_STATE = .pending
@@ -243,20 +244,20 @@ struct EventView: View {
                     }
                     
                     // MARK: - Comments
-                    // Hand the ScrollView proxy down so the comment
-                    // input can scroll itself flush above the keyboard
-                    // on focus — see `EventComments.scrollProxy` for
-                    // why the automatic SwiftUI avoidance isn't enough.
+                    // The compose field is no longer inline; tapping the
+                    // header button flips `isComposing`, which surfaces
+                    // the floating `EventCommentComposer` hosted as a
+                    // bottom overlay below so it rides over the keyboard.
                     EventComments(
                         clubs: $clubs,
                         organizations: $organizations,
-                        scrollProxy: proxy
+                        isComposing: $isComposing
                     )
                     .environment(event)
                     .padding(.top)
                     .id(8)
                     
-                    Spacer(minLength: 70)
+                    Spacer(minLength: 150)
                 }
                 .onChange(of: venuesTarget) { _, newValue in
                     proxy.scrollTo(newValue, anchor: .top)
@@ -264,6 +265,22 @@ struct EventView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        // Floating comment composer. Hosted here (not inside the
+        // scrolling content) and attached as a bottom overlay so that,
+        // because this layer participates in keyboard safe-area
+        // avoidance, SwiftUI lifts it above the keyboard — same trick
+        // as the events-explorer search bar.
+        .overlay(alignment: .bottom) {
+            if isComposing {
+                EventCommentComposer(isActive: $isComposing)
+                    .environment(event)
+                    .environment(session)
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(response: 0.35, dampingFraction: 0.86), value: isComposing)
         .background(.regularMaterial)
         .background {
             KFImage(generateImageURL(event.mediaURL))
@@ -351,7 +368,7 @@ struct EventView: View {
 }
 
 #Preview {
-    EventView(event: EVENTS[1], isFullScreen: true)
-        .environment(EVENTS[1])
+    EventView(event: EVENTS[0], isFullScreen: true)
+        .environment(EVENTS[0])
         .environment(SessionStore())
 }

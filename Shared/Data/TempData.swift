@@ -479,7 +479,9 @@ let EVENTS = [
         teams: [],
         teamsWaitlist: [],
         teamsConfig: nil,
-        comments: [],
+        comments: [
+            EventComment(id: UUID().uuidString, text: "test", createdAt: Date())
+        ],
         visibility: .Public,
         externalLinks: nil,
         isSensitive: false,
