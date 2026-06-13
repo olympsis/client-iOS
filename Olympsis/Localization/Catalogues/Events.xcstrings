@@ -645,6 +645,52 @@
         }
       }
     },
+    "empty-events-button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an Event"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear un evento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un événement"
+          }
+        }
+      }
+    },
+    "empty-venues-button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact Us"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contáctanos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactez-nous"
+          }
+        }
+      }
+    },
     "event-action-directions" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1818,6 +1864,75 @@
         }
       }
     },
+    "explorer-error-button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
+          }
+        }
+      }
+    },
+    "explorer-error-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't load this right now. Check your connection and try again."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No pudimos cargar esto ahora mismo. Revisa tu conexión e inténtalo de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous n'avons pas pu charger ceci pour le moment. Vérifiez votre connexion et réessayez."
+          }
+        }
+      }
+    },
+    "explorer-error-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong ⚠️"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo salió mal ⚠️"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur s'est produite ⚠️"
+          }
+        }
+      }
+    },
     "failed-events-sub-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2619,6 +2734,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Veuillez sélectionner un sport"
+          }
+        }
+      }
+    },
+    "no-venues-contact-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We're always adding new places to play. Know a great spot we're missing? Email us and we'll work on getting it added for you."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siempre agregamos nuevos lugares para jugar. ¿Conoces un buen lugar que nos falte? Escríbenos y trabajaremos para agregarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous ajoutons sans cesse de nouveaux lieux où jouer. Vous connaissez un super endroit qui manque ? Écrivez-nous et nous nous efforcerons de l'ajouter."
+          }
+        }
+      }
+    },
+    "no-venues-contact-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No venues nearby yet 📍"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay lugares cerca 📍"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore de lieux à proximité 📍"
           }
         }
       }

@@ -102,7 +102,7 @@ struct ExplorerList: View {
     @MainActor
     private func fetchEvents(isRefresh: Bool = false) async {
         if !isRefresh {
-            viewModel.state = .loading
+            viewModel.eventsState = .loading
         }
 
         var tags: String? = nil
@@ -123,7 +123,7 @@ struct ExplorerList: View {
             radius: manager.radius,
             tags: tags,
             sports: sports) else {
-            viewModel.state = .failure
+            viewModel.eventsState = .failure
             return
         }
 
@@ -131,7 +131,7 @@ struct ExplorerList: View {
             session.events.insert(event)
         }
 
-        viewModel.state = .success
+        viewModel.eventsState = .success
     }
     
     @MainActor
@@ -283,28 +283,18 @@ struct ExplorerList: View {
                 ScrollView {
                     switch vm.page {
                 case .events:
-                    switch vm.state {
+                    switch vm.eventsState {
                     case .pending, .success:
                         if events.isEmpty {
-                            VStack {
-                                Image("illustrations/search")
-                                    .resizable()
-                                    .padding(.top)
-                                    .frame(width: 150, height: 110)
-                                
-                                Text(String(localized: "no-events-title", table: "Events"))
-                                    .font(.body)
-                                    .padding(.top)
-                                    .fontWeight(.bold)
-                                    .padding(.bottom, 5)
-                                    .multilineTextAlignment(.center)
-                                
-                                Text(String(localized: "no-events-sub-title", table: "Events"))
-                                    .font(.callout)
-                                    .padding(.bottom)
-                                    .padding(.horizontal)
-                                    .multilineTextAlignment(.center)
-                            }.padding(.top, 50)
+                            // No events nearby (including a 204 response) —
+                            // show the encouraging empty state instead of the
+                            // failure view. The "create" CTA only appears when
+                            // we have a router to push the new-event flow onto.
+                            EventsEmptyState(
+                                onCreate: router.map { router in
+                                    { router.navigate(to: .new) }
+                                }
+                            )
                         } else {
                             LazyVStack(pinnedViews: [.sectionHeaders]) {
                                 
@@ -368,43 +358,21 @@ struct ExplorerList: View {
                         }
                         .padding(.top, 10)
                     case .failure:
-                        VStack {
-                            Image("illustrations/error")
-                                .resizable()
-                                .frame(width: 170, height: 150)
-                            Text(String(localized: "failed-events-title", table: "Events"))
-                                .padding(.top)
-                                .fontWeight(.bold)
-                                .padding(.bottom, 5)
-                            
-                            Text(String(localized: "failed-events-sub-title", table: "Events"))
-                                .padding(.horizontal)
-                                .multilineTextAlignment(.center)
-                        }.padding(.top, 50)
+                        // Generic network/error state. Retry re-fetches
+                        // whatever currently failed — both resources if both
+                        // failed, or just this one if it's the only failure.
+                        ExplorerErrorState {
+                            Task { await vm.retry(session) }
+                        }
                     }
                 case .venues:
-                    switch vm.state {
+                    switch vm.venuesState {
                     case .pending, .success:
                         if (session.venues.isEmpty) {
-                            VStack {
-                                Image("illustrations/search")
-                                    .resizable()
-                                    .padding(.top)
-                                    .frame(width: 150, height: 110)
-
-                                Text(String(localized: "no-venues-title", table: "Events"))
-                                    .font(.body)
-                                    .padding(.top)
-                                    .fontWeight(.bold)
-                                    .padding(.bottom, 5)
-                                    .multilineTextAlignment(.center)
-
-                                Text(String(localized: "no-venues-sub-title", table: "Events"))
-                                    .font(.callout)
-                                    .padding(.bottom)
-                                    .padding(.horizontal)
-                                    .multilineTextAlignment(.center)
-                            }.padding(.top, 50)
+                            // No venues nearby (including a 204 response) —
+                            // encourage the user to email us so we can add
+                            // venues in their area. Button opens the Mail app.
+                            VenuesEmptyState()
                         } else {
                             // Neighborhood-grouped index (chips + per-hood
                             // sections). The shared component handles the
@@ -432,19 +400,11 @@ struct ExplorerList: View {
                         }
                         .padding(.top, 10)
                     case .failure:
-                        VStack {
-                            Image("illustrations/error")
-                                .resizable()
-                                .frame(width: 170, height: 150)
-                            Text(String(localized: "failed-venues-title", table: "Events"))
-                                .padding(.top)
-                                .fontWeight(.bold)
-                                .padding(.bottom, 5)
-
-                            Text(String(localized: "failed-venues-sub-title", table: "Events"))
-                                .padding(.horizontal)
-                                .multilineTextAlignment(.center)
-                        }.padding(.top, 50)
+                        // Same generic error state as the events page; the
+                        // retry coordinates across both resources.
+                        ExplorerErrorState {
+                            Task { await vm.retry(session) }
+                        }
                     }
                     }
                     

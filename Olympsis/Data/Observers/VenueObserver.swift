@@ -24,6 +24,13 @@ class VenueObserver: ObservableObject{
         do {
             let (data, resp) = try await fieldService.getVenues(long: longitude, lat: latitude, radius: radius, sports: sports)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+                // A 204 means "no venues in this area" — that's a valid,
+                // empty result, not a failure. Return an empty array so the
+                // UI shows the empty state instead of the error view. Mirrors
+                // EventObserver.fetchEvents.
+                if (resp as? HTTPURLResponse)?.statusCode == 204 {
+                    return []
+                }
                 return nil
             }
             let object = try decoder.decode(VenuesResponse.self, from: data)

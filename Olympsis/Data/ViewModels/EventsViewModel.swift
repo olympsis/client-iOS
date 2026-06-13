@@ -35,7 +35,22 @@ class EventsViewModel {
         selectedTags.count + selectedSports.count
     }
     
-    var state: VIEW_STATE = .loading
+    // Per-resource load states. Tracking events and venues independently
+    // lets the explorer show one page's data while the other is still
+    // loading or has failed — and lets `retry` re-fetch only what failed.
+    var eventsState: VIEW_STATE = .loading
+    var venuesState: VIEW_STATE = .loading
+
+    /// Aggregate state for callers that don't care which resource is which
+    /// (e.g. disabling the page picker while anything is in flight). Loading
+    /// wins over failure wins over pending wins over success.
+    var state: VIEW_STATE {
+        if eventsState == .loading || venuesState == .loading { return .loading }
+        if eventsState == .failure || venuesState == .failure { return .failure }
+        if eventsState == .pending || venuesState == .pending { return .pending }
+        return .success
+    }
+
     var page: EVENT_EXPLORER_STATE = .events
     
     private var lastUpdate: Date?
@@ -75,7 +90,8 @@ class EventsViewModel {
         self.radius = radius
         self.selectedTags = selectedTags
         self.selectedSports = selectedSports
-        self.state = state
+        self.eventsState = state
+        self.venuesState = state
         self.page = page
         self.lastUpdate = lastUpdate
         
@@ -128,8 +144,8 @@ class EventsViewModel {
         if !force, let update = lastUpdate, Date().timeIntervalSince(update) < 300 {
             return
         }
-        state = .loading
-        state = await loadEvents(session) ? .success : .failure
+        eventsState = .loading
+        eventsState = await loadEvents(session) ? .success : .failure
     }
 
     /// Fetch both venues and events in parallel. Manages `state` itself so
@@ -143,13 +159,40 @@ class EventsViewModel {
         let venuesThrottled = !force && (lastVenuesUpdate.map { Date().timeIntervalSince($0) < 300 } ?? false)
         if eventsThrottled && venuesThrottled { return }
 
-        state = .loading
+        // Only flip a resource to `.loading` when we're actually about to
+        // fetch it — a throttled resource keeps its prior (cached) state.
+        if !eventsThrottled { eventsState = .loading }
+        if !venuesThrottled { venuesState = .loading }
 
         async let eventsResult: Bool = eventsThrottled ? true : loadEvents(session)
         async let venuesResult: Bool = venuesThrottled ? true : loadVenues(session)
         let (eOK, vOK) = await (eventsResult, venuesResult)
-        
-        state = (eOK && vOK) ? .success : .failure
+
+        if !eventsThrottled { eventsState = eOK ? .success : .failure }
+        if !venuesThrottled { venuesState = vOK ? .success : .failure }
+    }
+
+    /// Re-fetch whichever resource(s) are currently in a `.failure` state.
+    /// Driven by the explorer's error-state "Try Again" button: if both
+    /// events and venues failed, both are retried in parallel; if only one
+    /// failed, only that one is retried. Bypasses the throttle since the
+    /// user is explicitly asking for fresh data.
+    func retry(_ session: SessionStore) async {
+        let retryEvents = eventsState == .failure
+        let retryVenues = venuesState == .failure
+
+        // Nothing to do if neither resource is in a failed state.
+        guard retryEvents || retryVenues else { return }
+
+        if retryEvents { eventsState = .loading }
+        if retryVenues { venuesState = .loading }
+
+        async let eventsResult: Bool = retryEvents ? loadEvents(session) : true
+        async let venuesResult: Bool = retryVenues ? loadVenues(session) : true
+        let (eOK, vOK) = await (eventsResult, venuesResult)
+
+        if retryEvents { eventsState = eOK ? .success : .failure }
+        if retryVenues { venuesState = vOK ? .success : .failure }
     }
 
     /// Fetch venues near the current location, optionally filtered by the
@@ -161,8 +204,8 @@ class EventsViewModel {
         if !force, let update = lastVenuesUpdate, Date().timeIntervalSince(update) < 300 {
             return
         }
-        state = .loading
-        state = await loadVenues(session) ? .success : .failure
+        venuesState = .loading
+        venuesState = await loadVenues(session) ? .success : .failure
     }
 
     // MARK: - Internal loaders

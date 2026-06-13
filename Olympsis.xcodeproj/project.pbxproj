@@ -331,6 +331,7 @@
 		5DA4CBB02FDDC58A00B8CC37 /* Notifications.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */; };
 		5DA4CBB12FDDCB3600B8CC37 /* OlympsisNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DA4CBB52FDE0A0600B8CC37 /* EventListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */; };
+		5DA4CBB72FDE0D5100B8CC37 /* ExplorerEmptyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBB62FDE0D5100B8CC37 /* ExplorerEmptyStates.swift */; };
 		5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */; };
 		5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */; };
 		5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */; };
@@ -921,6 +922,7 @@
 		5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Notifications.xcstrings; sourceTree = "<group>"; };
 		5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OlympsisNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListItemTemplate.swift; sourceTree = "<group>"; };
+		5DA4CBB62FDE0D5100B8CC37 /* ExplorerEmptyStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerEmptyStates.swift; sourceTree = "<group>"; };
 		5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsStack.swift; sourceTree = "<group>"; };
 		5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueNeighborhoodIndex.swift; sourceTree = "<group>"; };
 		5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToTopButton.swift; sourceTree = "<group>"; };
@@ -2305,6 +2307,7 @@
 				5D86CD1F2F8D2C0C003C1857 /* UpNextEvents.swift */,
 				5D22D67E2FA6502B00CCF4C3 /* EventsExplorer.swift */,
 				5D22D6802FA6578300CCF4C3 /* ExplorerList.swift */,
+				5DA4CBB62FDE0D5100B8CC37 /* ExplorerEmptyStates.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -2790,6 +2793,7 @@
 				9AD208FE2934448D007A62C4 /* ClubApplications.swift in Sources */,
 				9A8FF0B328BB14BF00DE4CF8 /* ViewContainer.swift in Sources */,
 				3AC4A26EAE6B436E809F8879 /* AppEnvironment.swift in Sources */,
+				5DA4CBB72FDE0D5100B8CC37 /* ExplorerEmptyStates.swift in Sources */,
 				5D23BC4F2E5F752600077879 /* RSVPSheet.swift in Sources */,
 				5D86CD202F8D2C0C003C1857 /* UpNextEvents.swift in Sources */,
 				9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */,
