@@ -142,3 +142,43 @@ struct AppNotification {
         self.eventID = userInfo["event_id"] as? String
     }
 }
+
+/// Lean payload for the three simplified event push notifications.
+///
+/// The server now sends only a `type` and the IDs needed to deep-link into
+/// the event — the title/body are server-set and shown by the system
+/// banner, so there's no rich data to render in-app. This intentionally
+/// replaces the heavier `NotificationMetadata` for these notes; the rich
+/// struct is still used by the other (club/post/message/report) toasts.
+struct EventPushNote {
+
+    /// The three lean event note types. Raw values match the matching
+    /// `NotificationType` cases so they parse from the same `type` field.
+    enum Kind: String {
+        case participant = "event_participant_update"
+        case comment     = "event_comment"
+        case reminder    = "event_reminder"
+    }
+
+    let kind: Kind
+    let eventID: String
+    let participantID: String?
+    let commentID: String?
+
+    /// Parses a lean event note from a push payload. Returns `nil` when the
+    /// note isn't one of the three lean event types or is missing its
+    /// required `event_id`.
+    init?(from notification: UNNotification) {
+        let userInfo = notification.request.content.userInfo
+        guard let rawType = userInfo["type"] as? String,
+              let kind = Kind(rawValue: rawType),
+              let eventID = userInfo["event_id"] as? String else {
+            return nil
+        }
+
+        self.kind = kind
+        self.eventID = eventID
+        self.participantID = userInfo["participant_id"] as? String
+        self.commentID = userInfo["comment_id"] as? String
+    }
+}

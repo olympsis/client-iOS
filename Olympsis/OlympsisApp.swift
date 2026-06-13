@@ -57,6 +57,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         StripeAPI.defaultPublishableKey = AppEnvironment.current.stripePublishableKey
         QuickActionsManager.shared.setupShortcuts()
+
+        // Register the notification delegate at launch so a tap that
+        // cold-launches the app is delivered to `didReceive` (which builds
+        // the deep link). Without this the delegate is only set lazily when
+        // the UI first touches `NotificationManager.shared`, which can miss
+        // the launch tap.
+        UNUserNotificationCenter.current().delegate = NotificationManager.shared
+
         return true
     }
     

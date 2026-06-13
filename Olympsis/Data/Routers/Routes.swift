@@ -7,6 +7,29 @@
 
 import Foundation
 
+/// Parses an optional `EventFocus` from a deep-link's query items.
+///
+/// Supported forms (produced by `NotificationManager` when a push note
+/// is tapped):
+/// - `focus=participants`            → `.participants`
+/// - `focus=comment&commentID=<id>`  → `.comment(id:)`
+private func parseEventFocus(from components: URLComponents) -> EventFocus? {
+    guard let focus = components.queryItems?.first(where: { $0.name == "focus" })?.value else {
+        return nil
+    }
+    switch focus {
+    case "participants":
+        return .participants
+    case "comment":
+        guard let commentID = components.queryItems?.first(where: { $0.name == "commentID" })?.value else {
+            return nil
+        }
+        return .comment(id: commentID)
+    default:
+        return nil
+    }
+}
+
 /// Handle  internal urls within the application
 ///
 /// We want the internal urls triggering the app to open to have the right format.
@@ -41,7 +64,7 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
         guard let id = components.queryItems?.first(where: { $0.name == "ID" })?.value else {
             return ROUTES.events()
         }
-        return ROUTES.events(id: id)
+        return ROUTES.events(id: id, focus: parseEventFocus(from: components))
         
     case URL_ACTIONS.open_profile.rawValue:
         return ROUTES.profile
@@ -62,7 +85,7 @@ func handleInternalURL(_ url: URL) -> ROUTES? {
             #endif
             return ROUTES.events()
         }
-        return ROUTES.events(id: id)
+        return ROUTES.events(id: id, focus: parseEventFocus(from: components))
         
     case URL_ACTIONS.open_notifications.rawValue:
         return ROUTES.home(openNotifications: true)
@@ -152,11 +175,11 @@ func handleEventsURL(_ route: ROUTES, router: EventRouter) {
     switch route {
     case .home, .groups, .profile:
         return
-    case .events(let id, _):
+    case .events(let id, _, let focus):
         guard let id else {
             return router.navigateToRoot()
         }
-        return router.navigate(to: .events(ID: id))
+        return router.navigate(to: .events(ID: id, focus: focus))
     }
 }
 

@@ -97,9 +97,9 @@ struct Events: View {
                 })
                 .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                     switch route {
-                    case .events(let id, _):
+                    case .events(let id, _, let focus):
                         if let id {
-                            AsyncEventView(eventId: id)
+                            AsyncEventView(eventId: id, focus: focus)
                         } else {
                             EventsList(events: Array(session.events))
                         }

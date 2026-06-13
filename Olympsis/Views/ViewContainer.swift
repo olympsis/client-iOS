@@ -133,6 +133,10 @@ struct ViewContainer: View {
                 }
             }
 
+            // Flush any deep link captured from a notification tap that
+            // cold-launched the app before this handler existed.
+            NotificationManager.shared.flushPendingNavigation()
+
             // Fetch fresh user data and notifications from the server
             await initializeUpCheckInTasks()
 

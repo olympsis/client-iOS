@@ -24,17 +24,19 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     var queue: [NotificationMetadata] = []
     var currentNotification: NotificationMetadata?
     private var dismissTask: Task<Void, Never>?
-    
-    // Track processed notifications to prevent duplicates
-    private var processedNotifications = Set<String>()
-    private var lastCleanupTime = Date()
-    
+
     @ObservationIgnored
     @AppStorage("deviceToken") private var dToken: String?
     
     // Navigation handler closure
     var navigationHandler: ((URL) -> Void)?
-    
+
+    // A deep link produced by a background notification tap before the
+    // navigation handler was ready (e.g. a cold launch from the tap).
+    // Flushed by `flushPendingNavigation()` once `ViewContainer` wires
+    // up `navigationHandler`.
+    private var pendingNavigationURL: URL?
+
     private var userObserver = UserObserver()
     private var cacheService = CacheService()
     
@@ -125,19 +127,55 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         
         dismiss()
     }
-    
-    // Clean up old notification IDs to prevent memory leaks
-    private func cleanupOldNotifications() {
-        let now = Date()
-        let fiveMinutesAgo = now.timeIntervalSince(lastCleanupTime)
-        
-        // Only cleanup every 5 minutes to avoid excessive processing
-        if fiveMinutesAgo > 300 {
-            processedNotifications.removeAll()
-            lastCleanupTime = now
+
+    // MARK: - Background Tap Navigation
+
+    /// Builds an in-app deep link for a tapped lean event note. The `focus`
+    /// query tells `EventView` where to scroll once it opens.
+    ///
+    /// - New Participant → open the event and scroll to the participants
+    ///   section.
+    /// - New Comment → open the event and scroll to the specific comment
+    ///   (falls back to just the event if no comment id was sent).
+    /// - Event Reminder → just open the event.
+    private func deepLink(for note: EventPushNote) -> URL? {
+        switch note.kind {
+        case .participant:
+            return URL(string: "olympsis://events?ID=\(note.eventID)&focus=participants")
+
+        case .comment:
+            guard let commentID = note.commentID else {
+                return URL(string: "olympsis://events?ID=\(note.eventID)")
+            }
+            return URL(string: "olympsis://events?ID=\(note.eventID)&focus=comment&commentID=\(commentID)")
+
+        case .reminder:
+            return URL(string: "olympsis://events?ID=\(note.eventID)")
         }
     }
-    
+
+    /// Routes a deep link immediately if the app's navigation handler is
+    /// ready, otherwise stashes it to be flushed once the handler
+    /// registers. Dispatched to the main queue because navigation mutates
+    /// the routers/UI.
+    private func routeOrQueue(_ url: URL) {
+        DispatchQueue.main.async {
+            if let handler = self.navigationHandler {
+                handler(url)
+            } else {
+                self.pendingNavigationURL = url
+            }
+        }
+    }
+
+    /// Called by `ViewContainer` right after it assigns `navigationHandler`.
+    /// Flushes any deep link captured from a cold-launch notification tap.
+    func flushPendingNavigation() {
+        guard let url = pendingNavigationURL else { return }
+        pendingNavigationURL = nil
+        navigationHandler?(url)
+    }
+
     // Request alert sound and badge notifications
     func requestAuthorization() async {
         do {
@@ -160,7 +198,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // checks to see if we can show alert notifications
     func checkAlertSetting() async throws -> Bool {
         let status = await center.notificationSettings()
-        if status.alertSetting == .enabled{
+        if status.alertSetting == .enabled {
             // alert-only notification even when device is unlocked
             return true
         }else{
@@ -174,57 +212,33 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Handle the user's response to the notification.
-        // For example, you might want to open a specific screen in the app based on the notification's data.
-        // Call the completion handler when you're done processing the notification.
+        // The user tapped a system notification while the app was in the
+        // background (or it was launched by the tap). If it's one of the
+        // lean event notes, build a deep link and route to the right place
+        // — navigating now if the app is ready, or queuing it for a cold
+        // launch until `ViewContainer` registers the navigation handler.
+        if let note = EventPushNote(from: response.notification),
+           let url = deepLink(for: note) {
+            routeOrQueue(url)
+        }
+
         completionHandler()
     }
     
-    // This method is called for handling notiications when the app is opened
-    // We will have our own toast system to show notifications internally
+    // Called when a notification arrives while the app is in the
+    // foreground. The rich in-app toast path is currently disabled; only
+    // the lean event notes (participant / comment / reminder) opt into a
+    // system banner so the user still sees them while using the app —
+    // tapping that banner routes through `didReceive` to deep-link into the
+    // event. All other types present nothing in the foreground until the
+    // toast path is restored.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                    willPresent notification: UNNotification,
-                                    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let notificationId = notification.request.identifier
-        
-        // Check for duplicate notification
-        if processedNotifications.contains(notificationId) {
-            completionHandler([])
-            return
-        }
-        
-        // Clean up old notification IDs (older than 5 minutes)
-        cleanupOldNotifications()
-        
-        // Mark as processed
-        processedNotifications.insert(notificationId)
-        
-        if (UIApplication.shared.applicationState == .inactive || UIApplication.shared.applicationState == .background) {
-            completionHandler([[.banner, .badge, .sound]])
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if EventPushNote(from: notification) != nil {
+            completionHandler([.banner, .badge, .sound])
         } else {
-            do {
-                // Grab notification data
-                guard let data = try NotificationMetadata(from: notification) else {
-                    log.error("❌ Failed to create NotificationMetadata")
-                    return
-                }
-                
-                if data.type == .clubApplicationUpdate {
-                    var notificationData: [String: Any] = ["type": "club"]
-                    guard let groupID = data.groupID else {
-                        return
-                    }
-                    notificationData["group_id"] = groupID
-                    NotificationCenter.default.post(name: .groupAddedServerSide, object: nil, userInfo: notificationData)
-                }
-                
-                completionHandler([.sound])
-                show(data)
-            } catch {
-                log.error("Failed to parse notification data. Error: \(error.localizedDescription)")
-                completionHandler([])
-                return
-            }
+            completionHandler([])
         }
     }
 }

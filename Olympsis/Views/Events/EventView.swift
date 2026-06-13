@@ -17,10 +17,16 @@ struct EventView: View {
     var event: Event
     var isFullScreen: Bool = false
     var namespace: Namespace.ID? = nil
-    
+    /// Section to auto-scroll to when the view appears. Set when the
+    /// event is opened from a tapped push notification (new participant
+    /// or new comment). `nil` for normal navigation.
+    var focus: EventFocus? = nil
+
     @State private var venues = [Venue]()
     @State private var venuesTarget: Int = 0
-    
+    /// Guards `scrollToFocus` so the notification jump only fires once.
+    @State private var didApplyFocus: Bool = false
+
     @State private var clubs = [Club]()
     @State private var organizations = [Organization]()
     
@@ -90,6 +96,31 @@ struct EventView: View {
         return seriesEvents
             .filter { $0.startTime > now }
             .sorted { $0.startTime < $1.startTime }
+    }
+
+    /// When the event is opened from a tapped push notification, jump to
+    /// the relevant section. Runs once (guarded by `didApplyFocus`). The
+    /// short delay lets the scroll view finish its initial layout —
+    /// organizers/venues load asynchronously and shift content height, so
+    /// scrolling immediately would land on the wrong offset.
+    ///
+    /// Section ids mirror the `.id(...)` tags applied below:
+    /// `6` = participants. Comments are tagged with their own comment id
+    /// inside `EventComments`, so we scroll straight to the comment.
+    private func scrollToFocus(using proxy: ScrollViewProxy) {
+        guard let focus, !didApplyFocus else { return }
+        didApplyFocus = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation(.easeInOut) {
+                switch focus {
+                case .participants:
+                    proxy.scrollTo(6, anchor: .top)
+                case .comment(let id):
+                    proxy.scrollTo(id, anchor: .top)
+                }
+            }
+        }
     }
 
     /// Opens an external link URL in the browser.
@@ -261,6 +292,9 @@ struct EventView: View {
                 }
                 .onChange(of: venuesTarget) { _, newValue in
                     proxy.scrollTo(newValue, anchor: .top)
+                }
+                .onAppear {
+                    scrollToFocus(using: proxy)
                 }
             }
         }

@@ -98,6 +98,16 @@ enum URL_ACTIONS: String {
 
 }
 
+/// Where to scroll/focus inside an event detail view when it is opened
+/// from a deep link or a tapped push notification. Carried through the
+/// routing chain (`ROUTES` → `EVENT_ROUTES` → `EventView`).
+enum EventFocus: Codable, Hashable {
+    /// Scroll to the participants section (e.g. a "New Participant" note).
+    case participants
+    /// Scroll to a specific comment (e.g. a "New Comment" note).
+    case comment(id: String)
+}
+
 enum ROUTES: Codable, Hashable {
     case home(
         postId: String?=nil,
@@ -105,7 +115,7 @@ enum ROUTES: Codable, Hashable {
         openNotifications: Bool?=nil
     )
     case groups(id: String?=nil)
-    case events(id: String?=nil, venueId: String?=nil)
+    case events(id: String?=nil, venueId: String?=nil, focus: EventFocus?=nil)
     case profile
 }
 
@@ -136,7 +146,8 @@ enum GROUP_SETTINGS_ROUTES: Codable, Hashable {
 enum EVENT_ROUTES: Codable, Hashable {
     case events(
         ID: String?=nil,
-        openEvents: Bool?=nil
+        openEvents: Bool?=nil,
+        focus: EventFocus?=nil
     )
     case event(event: Event)
     case upNextEvents(events: [Event])

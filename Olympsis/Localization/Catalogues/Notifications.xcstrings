@@ -1,0 +1,84 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "event-new-comment" : {
+      "comment" : "Body for the \"New Comment\" push notification. No arguments.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New comment on your event"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Nouveau commentaire sur votre événement"
+          }
+        }
+      }
+    },
+    "event-new-participant" : {
+      "comment" : "Body for the \"New Participant\" push notification. No arguments.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Someone just RSVP'd to your event"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Quelqu’un vient de confirmer sa présence à votre événement"
+          }
+        }
+      }
+    },
+    "event-starting-soon" : {
+      "comment" : "Body for the \"Event Reminder\" push notification. Argument: minutes until start (Int, %lld).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Event starts in %lld min!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Event starts in %lld mins!"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "L’événement commence dans %lld min !"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "L’événement commence dans %lld min !"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}

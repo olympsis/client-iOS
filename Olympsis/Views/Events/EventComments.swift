@@ -119,6 +119,10 @@ struct EventComments: View {
                 eventA.createdAt > eventB.createdAt
             }), id: \.id) { comment in
                 EventCommentListItem(comment: comment)
+                    // Scroll anchor used by `EventView.scrollToFocus` so a
+                    // tapped "New Comment" notification can jump straight
+                    // to this comment.
+                    .id(comment.id)
                     .contextMenu {
                         if (isPosterOrAdmin) {
                             Button(role: .destructive) {

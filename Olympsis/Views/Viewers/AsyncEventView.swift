@@ -11,6 +11,9 @@ import SwiftUI
 struct AsyncEventView: View {
 
     @State public var eventId: String
+    /// Optional section to jump to once the event loads, set when the
+    /// view is opened from a tapped push notification.
+    var focus: EventFocus? = nil
     @State private var event: Event?
     @State private var state: VIEW_STATE = .pending
     
@@ -57,7 +60,7 @@ struct AsyncEventView: View {
                     .navigationBarTitleDisplayMode(.inline)
             case .success:
                 if let event {
-                    EventView(event: event)
+                    EventView(event: event, focus: focus)
                         .environment(event)
                 }
             case .failure:

@@ -29,9 +29,9 @@ struct NotificationMetadata {
     var eventImageURL: String?
     var eventStartTime: Date?
     var eventStopTime: Date?
-    
+
     var content: String?
-    
+
     init(
         type: NotificationType,
         
@@ -52,7 +52,7 @@ struct NotificationMetadata {
         eventImageURL: String?=nil,
         eventStartTime: Date?=nil,
         eventStopTime: Date?=nil,
-        
+
         content: String?=nil
     ){
         self.type = type
@@ -73,7 +73,7 @@ struct NotificationMetadata {
         self.eventImageURL = eventImageURL
         self.eventStartTime = eventStartTime
         self.eventStopTime = eventStopTime
-        
+
         self.content = content
     }
     
@@ -101,7 +101,7 @@ struct NotificationMetadata {
         self.eventID = userInfo["event_id"] as? String
         self.eventName = userInfo["event_name"] as? String
         self.eventImageURL = userInfo["event_image_url"] as? String
-        
+
         self.content = userInfo["content"] as? String
         
         if let startDate = userInfo["event_start_date"] as? String {

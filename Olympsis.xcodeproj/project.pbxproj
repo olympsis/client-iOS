@@ -255,7 +255,6 @@
 		5D6F11502E21AE93005F1BE5 /* WorkoutManager+Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F114E2E21AE93005F1BE5 /* WorkoutManager+Workout.swift */; };
 		5D6F322C2C7C324E007DB25D /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322B2C7C324E007DB25D /* ToastView.swift */; };
 		5D6F322E2C7C370A007DB25D /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6F322D2C7C370A007DB25D /* ToastModifier.swift */; };
-		5D76D36A2C79534800846382 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3692C79534800846382 /* ToastManager.swift */; };
 		5D76D36F2C79632D00846382 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D36E2C79632D00846382 /* HomeRouter.swift */; };
 		5D76D3712C79633700846382 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3702C79633700846382 /* GroupRouter.swift */; };
 		5D76D3732C79634B00846382 /* EventRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76D3722C79634B00846382 /* EventRouter.swift */; };
@@ -328,6 +327,9 @@
 		5DA15B412FB7A748008F5B90 /* VenueDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA15B402FB7A748008F5B90 /* VenueDetails.swift */; };
 		5DA38B362BF39856008C5C74 /* VenueTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA38B352BF39856008C5C74 /* VenueTips.swift */; };
 		5DA3DF422D9A180E00CEE236 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3DF412D9A180E00CEE236 /* SearchManager.swift */; };
+		5DA4CBA22FDDC4B800B8CC37 /* Notifications.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */; };
+		5DA4CBB02FDDC58A00B8CC37 /* Notifications.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */; };
+		5DA4CBB12FDDCB3600B8CC37 /* OlympsisNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */; };
 		5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */; };
 		5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */; };
@@ -556,6 +558,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5DA4CBB22FDDCB3600B8CC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DA4CBA62FDDC53200B8CC37;
+			remoteInfo = OlympsisNotificationService;
+		};
 		5DBF2B872E42E34C0025B0FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9A8FF0A528BB14BF00DE4CF8 /* Project object */;
@@ -582,6 +591,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				5DA4CBB12FDDCB3600B8CC37 /* OlympsisNotificationService.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -835,7 +845,6 @@
 		5D6F322B2C7C324E007DB25D /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		5D6F322D2C7C370A007DB25D /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
 		5D7668682BF95A2C003FAD7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5D76D3692C79534800846382 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		5D76D36E2C79632D00846382 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		5D76D3702C79633700846382 /* GroupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRouter.swift; sourceTree = "<group>"; };
 		5D76D3722C79634B00846382 /* EventRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRouter.swift; sourceTree = "<group>"; };
@@ -908,6 +917,8 @@
 		5DA15B402FB7A748008F5B90 /* VenueDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetails.swift; sourceTree = "<group>"; };
 		5DA38B352BF39856008C5C74 /* VenueTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTips.swift; sourceTree = "<group>"; };
 		5DA3DF412D9A180E00CEE236 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Notifications.xcstrings; sourceTree = "<group>"; };
+		5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OlympsisNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsStack.swift; sourceTree = "<group>"; };
 		5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueNeighborhoodIndex.swift; sourceTree = "<group>"; };
 		5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToTopButton.swift; sourceTree = "<group>"; };
@@ -1158,7 +1169,25 @@
 		BE9C460029E38936008EA591 /* GenerateImageURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateImageURL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5DA4CBAC2FDDC53200B8CC37 /* Exceptions for "OlympsisNotificationService" folder in "OlympsisNotificationService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5DA4CBA62FDDC53200B8CC37 /* OlympsisNotificationService */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		5DA4CBA82FDDC53200B8CC37 /* OlympsisNotificationService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5DA4CBAC2FDDC53200B8CC37 /* Exceptions for "OlympsisNotificationService" folder in "OlympsisNotificationService" target */,
+			);
+			path = OlympsisNotificationService;
+			sourceTree = "<group>";
+		};
 		5DBF2B842E42E34C0025B0FE /* OlympsisTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = OlympsisTests;
@@ -1167,6 +1196,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5DA4CBA42FDDC53200B8CC37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DBF2B802E42E34C0025B0FE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1324,6 +1360,7 @@
 				5DDD5E772C4109EC00793FEB /* Settings.xcstrings */,
 				5D9E745E2DFD0C9A0094C0D1 /* Onboarding.xcstrings */,
 				5DF8D1DF2DFDFA08008D2788 /* Time.xcstrings */,
+				5DA4CBA12FDDC4B800B8CC37 /* Notifications.xcstrings */,
 			);
 			path = Catalogues;
 			sourceTree = "<group>";
@@ -1886,6 +1923,7 @@
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DBF2B842E42E34C0025B0FE /* OlympsisTests */,
 				5DC8B4802E05CE6C008C9052 /* Olympsis-Watchkit */,
+				5DA4CBA82FDDC53200B8CC37 /* OlympsisNotificationService */,
 				9A8FF0AE28BB14BF00DE4CF8 /* Products */,
 				9A8AEED92964FBBB00D3BC5A /* Frameworks */,
 			);
@@ -1896,6 +1934,7 @@
 			children = (
 				9A8FF0AD28BB14BF00DE4CF8 /* Olympsis.app */,
 				5DBF2B832E42E34C0025B0FE /* OlympsisTests.xctest */,
+				5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2215,7 +2254,6 @@
 				5D860C522C0EDA860046457E /* VenueSearchViewModel.swift */,
 				5D38BD9C2C1699DF003EEF90 /* LoggingManagement.swift */,
 				5D8958F42C76D82400AAF374 /* ImageSaver.swift */,
-				5D76D3692C79534800846382 /* ToastManager.swift */,
 				5D26182F2D715AE300FE2923 /* CalendarManager.swift */,
 				5D2618312D72541200FE2923 /* QuickActionsManager.swift */,
 				5DA3DF412D9A180E00CEE236 /* SearchManager.swift */,
@@ -2396,6 +2434,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5DA4CBA62FDDC53200B8CC37 /* OlympsisNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DA4CBAD2FDDC53200B8CC37 /* Build configuration list for PBXNativeTarget "OlympsisNotificationService" */;
+			buildPhases = (
+				5DA4CBA32FDDC53200B8CC37 /* Sources */,
+				5DA4CBA42FDDC53200B8CC37 /* Frameworks */,
+				5DA4CBA52FDDC53200B8CC37 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5DA4CBA82FDDC53200B8CC37 /* OlympsisNotificationService */,
+			);
+			name = OlympsisNotificationService;
+			packageProductDependencies = (
+			);
+			productName = OlympsisNotificationService;
+			productReference = 5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		5DBF2B822E42E34C0025B0FE /* OlympsisTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5DBF2B892E42E34C0025B0FE /* Build configuration list for PBXNativeTarget "OlympsisTests" */;
@@ -2432,6 +2492,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5DA4CBB32FDDCB3600B8CC37 /* PBXTargetDependency */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
@@ -2457,9 +2518,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
+					5DA4CBA62FDDC53200B8CC37 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					5DBF2B822E42E34C0025B0FE = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 9A8FF0AC28BB14BF00DE4CF8;
@@ -2492,11 +2556,20 @@
 			targets = (
 				9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */,
 				5DBF2B822E42E34C0025B0FE /* OlympsisTests */,
+				5DA4CBA62FDDC53200B8CC37 /* OlympsisNotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5DA4CBA52FDDC53200B8CC37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DA4CBB02FDDC58A00B8CC37 /* Notifications.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DBF2B812E42E34C0025B0FE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2609,6 +2682,7 @@
 				5D1905832DA1C7F50051990F /* Archivo_SemiExpanded-Black.ttf in Resources */,
 				5D1905842DA1C7F50051990F /* Archivo_SemiCondensed-Light.ttf in Resources */,
 				5D1905852DA1C7F50051990F /* Archivo_Expanded-ExtraLight.ttf in Resources */,
+				5DA4CBA22FDDC4B800B8CC37 /* Notifications.xcstrings in Resources */,
 				5D1905862DA1C7F50051990F /* Archivo_Condensed-Bold.ttf in Resources */,
 				5DF8D1E02DFDFA08008D2788 /* Time.xcstrings in Resources */,
 				5D1905872DA1C7F50051990F /* Archivo_Expanded-BlackItalic.ttf in Resources */,
@@ -2638,6 +2712,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5DA4CBA32FDDC53200B8CC37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DBF2B7F2E42E34C0025B0FE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2870,7 +2951,6 @@
 				5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */,
 				9AC5BABF295E5461003E851B /* ScrollingHStackModifier.swift in Sources */,
 				5DEC47AC2BCB8C7A0095F606 /* TermsOfUse.swift in Sources */,
-				5D76D36A2C79534800846382 /* ToastManager.swift in Sources */,
 				5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */,
 				5D204B462DA1F73400B67F5D /* LocationUsage.swift in Sources */,
 				5D2DEFC62B27EF060082FE73 /* EventOrganizers.swift in Sources */,
@@ -3067,6 +3147,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5DA4CBB32FDDCB3600B8CC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5DA4CBA62FDDC53200B8CC37 /* OlympsisNotificationService */;
+			targetProxy = 5DA4CBB22FDDCB3600B8CC37 /* PBXContainerItemProxy */;
+		};
 		5DBF2B882E42E34C0025B0FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9A8FF0AC28BB14BF00DE4CF8 /* Olympsis */;
@@ -3075,6 +3160,75 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5DA4CBAE2FDDC53200B8CC37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OlympsisNotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OlympsisNotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.OlympsisNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5DA4CBAF2FDDC53200B8CC37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A6H49Q85D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OlympsisNotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OlympsisNotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.olympsis.client.OlympsisNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		5DBF2B8A2E42E34C0025B0FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3367,6 +3521,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5DA4CBAD2FDDC53200B8CC37 /* Build configuration list for PBXNativeTarget "OlympsisNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DA4CBAE2FDDC53200B8CC37 /* Debug */,
+				5DA4CBAF2FDDC53200B8CC37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5DBF2B892E42E34C0025B0FE /* Build configuration list for PBXNativeTarget "OlympsisTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
