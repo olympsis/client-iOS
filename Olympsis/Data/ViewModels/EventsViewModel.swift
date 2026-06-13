@@ -61,7 +61,10 @@ class EventsViewModel {
         radius: Double = 100,
         selectedTags: [String] = [String](),
         selectedSports: [String] = [String](),
-        state: VIEW_STATE = .pending,
+        // Default to `.loading` so the explorer shows skeleton templates
+        // on first launch instead of flashing the empty-state illustration
+        // before the initial fetch resolves.
+        state: VIEW_STATE = .loading,
         page: EVENT_EXPLORER_STATE = .events,
         lastUpdate: Date? = nil
     ) {

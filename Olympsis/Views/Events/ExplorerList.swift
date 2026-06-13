@@ -213,7 +213,12 @@ struct ExplorerList: View {
                 // registers immediately.
                 ExplorerPagePicker(selection: $vm.page)
                     .padding(.horizontal)
-                
+                    // Lock the events/venues toggle while a fetch is in
+                    // flight so the user can't flip pages mid-load (which
+                    // would show one page's skeletons against the other
+                    // page's data). `.disabled` also dims it as a cue.
+                    .disabled(vm.state == .loading)
+
                 if isFullyExpanded {
                     Spacer()
 
@@ -352,8 +357,16 @@ struct ExplorerList: View {
                             }
                         }
                     case .loading:
-                        ProgressView()
-                            .padding(.top, 50)
+                        // Skeleton placeholders instead of a bare spinner —
+                        // gives the list the same shape it'll have once the
+                        // events land, so the transition doesn't jump.
+                        LazyVStack(spacing: 12) {
+                            ForEach(0..<5, id: \.self) { _ in
+                                EventListItemTemplate(scale: listItemScale)
+                                    .padding(.horizontal)
+                            }
+                        }
+                        .padding(.top, 10)
                     case .failure:
                         VStack {
                             Image("illustrations/error")
@@ -407,8 +420,17 @@ struct ExplorerList: View {
                             )
                         }
                     case .loading:
-                        ProgressView()
-                            .padding(.top, 50)
+                        // Same skeleton treatment as the events page so
+                        // switching tabs (or landing here first) stays
+                        // visually consistent while venues load.
+                        LazyVStack(spacing: 12) {
+                            ForEach(0..<5, id: \.self) { _ in
+                                // `VenueListItemTemplate` manages its own
+                                // width, so no extra horizontal padding here.
+                                VenueListItemTemplate()
+                            }
+                        }
+                        .padding(.top, 10)
                     case .failure:
                         VStack {
                             Image("illustrations/error")
