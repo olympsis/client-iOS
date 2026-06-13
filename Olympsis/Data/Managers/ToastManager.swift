@@ -12,7 +12,7 @@ import NotificationCenter
 
 class ToastManager: ObservableObject {
     
-    @State private var timerWorkItem: DispatchWorkItem?
+    private var timerWorkItem: DispatchWorkItem?
     
     @Published var isPresented: Bool = false
     @Published var toastPosition: TOAST_POSITION = .top

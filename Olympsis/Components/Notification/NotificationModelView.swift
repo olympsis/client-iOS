@@ -13,7 +13,7 @@ struct NotificationModelView: View {
     @Environment(SessionStore.self) private var session
     
     func modifyNotification(action: String) {
-        Task {
+        _ = Task {
             guard try await session.notificationService.UpdateNotification(
                 request: NotificationUpdateRequest(
                     action: action,

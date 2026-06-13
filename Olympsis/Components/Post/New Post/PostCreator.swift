@@ -57,7 +57,7 @@ struct PostCreator: View {
     private func handlePostCreation() {
         guard viewModel.status != .loading else { return }
         
-        Task {
+        _ = Task {
             do {
                 try await createPost()
             } catch MediaUploadError.innapropriateContent {

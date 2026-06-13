@@ -89,7 +89,7 @@ struct NotificationSettings: View {
                             }
                             .padding(.horizontal)
                             .onChange(of: pushEnabled) { _, newValue in
-                                Task {
+                                _ = Task {
                                     if pushEnabled {
                                         await NotificationManager.shared.requestAuthorization()
                                         guard try await NotificationManager.shared.checkAuthorizationStatus() else {

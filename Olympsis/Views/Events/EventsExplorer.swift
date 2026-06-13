@@ -356,9 +356,6 @@ struct EventsExplorer: View {
     @MapContentBuilder
     private var eventsMapContent: some MapContent {
         ForEach(cachedEventClusters) { cluster in
-            // Single-event "cluster" → render the event's image directly.
-            // Same-series cluster → one image pin for the next occurrence.
-            // Otherwise → a "+N" count badge to tap-to-disambiguate.
             Annotation(
                 cluster.events.first?.title ?? "",
                 coordinate: cluster.coordinate,
@@ -366,9 +363,6 @@ struct EventsExplorer: View {
             ) {
                 if cluster.events.count == 1, let event = cluster.events.first {
                     EventAnnotation(event: event)
-                        // Tapping a single-event pin pushes the event
-                        // detail onto the parent `NavigationStack` via
-                        // the shared router.
                         .onTapGesture { router.navigate(to: .event(event: event)) }
                 } else if let representative = recurringRepresentative(for: cluster) {
                     // Same recurring event repeating at this spot — show one
@@ -378,12 +372,6 @@ struct EventsExplorer: View {
                         .onTapGesture { router.navigate(to: .event(event: representative)) }
                 } else {
                     EventClusterAnnotation(events: cluster.events)
-                        // Tapping a multi-event cluster pops the
-                        // disambiguation sheet listing every event
-                        // in the cluster grouped by day. Zooming
-                        // wasn't sufficient when several events
-                        // share a venue and can't be separated by
-                        // zoom alone.
                         .onTapGesture {
                             clusterSheet = ClusterEventsSheetData(events: cluster.events)
                         }
@@ -442,9 +430,6 @@ struct EventsExplorer: View {
         .onMapCameraChange(frequency: .onEnd) { context in
             cameraLatitudeSpan = context.region.span.latitudeDelta
         }
-        // Refresh the cluster caches when their inputs change.
-        // `initial: true` makes it fire once on first appear so the
-        // caches are populated before the user starts panning.
         .onChange(of: eventsClusterKey, initial: true) { _, _ in
             cachedEventClusters = computeEventClusters()
         }
@@ -650,9 +635,6 @@ private struct FloatingDrawerActions: View {
     @Binding var selectedDate: Date
     @Binding var showMenu: Bool
     let numFiltersActive: Int
-    /// Hides the calendar chip when the user is on the venues tab —
-    /// venues aren't date-bound, so the date picker is meaningless
-    /// there and would duplicate UI shown elsewhere.
     let showCalendar: Bool
     /// Layout direction of the chip stack. `.horizontal` (default)
     /// matches the floating bar above the compact drawer; `.vertical`
@@ -669,7 +651,6 @@ private struct FloatingDrawerActions: View {
             : AnyLayout(VStackLayout(spacing: 8))
 
         layout {
-            // Calendar — events tab only.
             if showCalendar {
                 CircularChip(systemImage: "calendar") {
                     showDatePicker = true
@@ -683,18 +664,11 @@ private struct FloatingDrawerActions: View {
                     )
                     .datePickerStyle(.graphical)
                     .padding()
-                    // The graphical picker needs ~320pt wide to lay out
-                    // its day grid without horizontal squish; without an
-                    // explicit frame the popover container collapses to
-                    // the source button's width on compact widths.
                     .frame(minWidth: 320)
                     .presentationCompactAdaptation(.popover)
                 }
             }
 
-            // Filters — just the slider glyph per spec; the
-            // active-count badge lives on the in-drawer `FilterButton`
-            // already, so no number here.
             CircularChip(systemImage: "slider.vertical.3") {
                 showMenu.toggle()
             }
@@ -721,11 +695,6 @@ private struct FloatingSearchBar: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        // Two separate glass surfaces — the search pill expands to fill
-        // remaining width, the cancel circle is fixed at 44×44. Matches
-        // the iOS 26 Photos layout where the input and the dismiss
-        // affordance read as independent controls (rather than living
-        // inside the same pill).
         HStack(spacing: 8) {
             searchPill
             cancelButton
@@ -813,20 +782,11 @@ private struct ClusterEventsSheetData: Identifiable {
 private struct ClusterEventsSheet: View {
 
     let events: [Event]
-    /// Class-typed router from the parent so an event tap inside the
-    /// sheet can dismiss and then push onto the existing
-    /// `NavigationStack` in `Events.swift` — `NavigationLink`
-    /// wouldn't see that stack from inside a presented sheet.
     let router: EventRouter
 
     @Environment(\.dismiss) private var dismiss
-    /// iPad sheets are wide enough to fit two cards per row; iPhone
-    /// stays single-column so each card keeps its full-width look.
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    /// Two flexible columns on iPad, one everywhere else. Drives both
-    /// the `LazyVGrid` column count and the per-card `scale` so cards
-    /// in the 2-col layout get the compact treatment.
     private var columns: [GridItem] {
         horizontalSizeClass == .regular
             ? [GridItem(.flexible(), spacing: 10),
@@ -839,30 +799,16 @@ private struct ClusterEventsSheet: View {
     }
 
     var body: some View {
-        // `pinnedViews: [.sectionHeaders]` keeps the day label
-        // visible as the user scrolls past it, matching the in-drawer
-        // list's behavior.
         ScrollView {
             LazyVStack(pinnedViews: [.sectionHeaders]) {
                 ForEach(events.eventsGroupedByDay(), id: \.id) { group in
                     Section {
-                        // Inner `LazyVGrid` flows cards into the
-                        // column count from `columns`. With one column
-                        // it collapses to the previous single-card-
-                        // per-row look; with two it gives iPad sheets
-                        // a denser layout.
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(group.events, id: \.id) { event in
                                 EventListItem(
                                     event: event,
                                     scale: cardScale,
                                     onTap: {
-                                        // Tear down the sheet first,
-                                        // then push the detail. Doing
-                                        // both in the same closure is
-                                        // the standard sheet → push
-                                        // handoff; the animations
-                                        // overlap cleanly.
                                         dismiss()
                                         router.navigate(to: .event(event: event))
                                     }
