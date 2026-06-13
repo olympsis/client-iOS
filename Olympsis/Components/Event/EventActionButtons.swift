@@ -17,9 +17,7 @@ struct EventActionButtons: View {
     @Binding var organizations: [Organization]
     
     @State private var showMenu: Bool = false
-    @State private var showRSVPSheet: Bool = false
-    @State private var state: LOADING_STATE = .pending
-    
+
     @Environment(\.openURL) private var openURL
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
@@ -37,14 +35,6 @@ struct EventActionButtons: View {
             return false
         }
         return true
-    }
-    
-    private var hasRSVP: Bool {
-        guard let user = session.user,
-              let userID = user.userID else {
-            return false
-        }
-        return event.participants.first(where: { $0.user?.userID == userID }) != nil
     }
     
 //    @MainActor
@@ -78,46 +68,6 @@ struct EventActionButtons: View {
 //            }
 //        }
 //    }
-    
-    @MainActor
-    func cancel() {
-        guard state != .loading else { return }
-        
-        Task {
-            state = .loading
-            
-            guard let user = session.user,
-                  let userID = user.userID else {
-                handleFailure()
-                return
-            }
-            
-            let resp = await session.eventObserver.removeParticipant(id: event.id)
-            guard resp == true else {
-                handleFailure()
-                return
-            }
-            
-            event.participants.removeAll(where: { $0.user?.userID == userID })
-            handleSuccess()
-        }
-    }
-    
-    @MainActor
-    func handleSuccess() {
-        state = .success
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            state = .pending
-        }
-    }
-    
-    @MainActor
-    func handleFailure() {
-        state = .failure
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            state = .pending
-        }
-    }
     
     private func leadToMaps(for venue: Venue){
         guard let url = URL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])") else { return }
@@ -231,126 +181,6 @@ struct EventActionButtons: View {
                 }
             }
             
-            // MARK: - RSVP/Cancel Buttons
-            switch event.getEventStatus() {
-            case .pending:
-                if !hasRSVP {
-                    if let maxPtp = event.participantsConfig?.maxParticipants,
-                       let hasWaitlist = event.participantsConfig?.hasWaitlist,
-                       hasWaitlist && (event.participants.count >= maxPtp) {
-                        Button(action: { showRSVPSheet.toggle() }) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(maxWidth: .infinity, idealHeight: 60)
-                                    .foregroundColor(Color.Brand.tertiary)
-
-                                VStack {
-                                    if state == .loading {
-                                        ProgressView()
-                                            .frame(width: 30)
-                                    } else {
-                                        VStack {
-                                            Image(systemName: "hourglass.bottomhalf.filled")
-                                                .resizable()
-                                                .frame(width: 23, height: 17)
-                                        }.frame(height: 20)
-                                        
-                                        Text(String(localized: "status-waitlist", table: "Events"))
-                                            .font(.caption)
-                                            .fontWeight(.bold)
-                                    }
-                                }
-                            }.foregroundStyle(.white)
-                        }
-                    } else {
-                        Button(action: { showRSVPSheet.toggle() }) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(maxWidth: .infinity, idealHeight: 60)
-                                    .foregroundColor(Color.Foreground.default)
-
-                                VStack {
-                                    if state == .loading {
-                                        ProgressView()
-                                            .frame(width: 30)
-                                    } else {
-                                        VStack {
-                                            Image(systemName: "envelope.fill")
-                                                .resizable()
-                                                .frame(width: 23, height: 17)
-                                        }.frame(height: 20)
-                                        
-                                        Text(String(localized: "status-rsvp", table: "Events"))
-                                            .font(.caption)
-                                            .fontWeight(.bold)
-                                    }
-                                }
-                            }.foregroundStyle(Color.Background.primary)
-                        }
-                        .disabled(state == .loading ? true : false)
-                        .disabled(event.getEventStatus() == .ended ? true : false)
-                    }
-                } else {
-                    Button(action: { cancel() }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(maxWidth: .infinity, idealHeight: 60)
-                                .foregroundColor(Color.red)
-
-                            VStack {
-                                if state == .loading {
-                                    ProgressView()
-                                        .frame(width: 23)
-                                } else {
-                                    VStack {
-                                        Image(systemName: "xmark")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                    }
-                                    Text(String(localized: "status-cancel", table: "Events"))
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                }
-                            }
-                        }.foregroundStyle(.white)
-                    }
-                }
-            case .live:
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color.red)
-                        .frame(maxWidth: .infinity, idealHeight: 60)
-                    
-                    VStack {
-                        VStack {
-                            Image(systemName: "circle.fill")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                        }
-                        Text(String(localized: "status-live", table: "Events"))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                    }
-                }.foregroundStyle(.white)
-            case .ended:
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(Color.gray)
-                        .frame(maxWidth: .infinity, idealHeight: 60)
-
-                    VStack {
-                        VStack {
-                            Image(systemName: "circle.slash")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                        }
-                        Text(String(localized: "status-ended", table: "Events"))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                    }
-                }.foregroundStyle(.white)
-            }
-            
             // MARK: - Menu Button
             Button(action:{ self.showMenu.toggle() }) {
                 ZStack {
@@ -382,11 +212,6 @@ struct EventActionButtons: View {
         }
         .frame(height: 60)
         .padding(.horizontal)
-        .sheet(isPresented: $showRSVPSheet){
-            RSVPSheet(event: event)
-                .environment(session)
-                .presentationDetents([.height(325)])
-        }
     }
 }
 

@@ -3151,6 +3151,29 @@
         }
       }
     },
+    "status-going" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "I'M IN"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "¡VOY!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "J'Y SERAI !"
+          }
+        }
+      }
+    },
     "status-live" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3170,6 +3193,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "En direct"
+          }
+        }
+      }
+    },
+    "status-maybe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "MAYBE"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "TAL VEZ"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "PEUT-ÊTRE"
           }
         }
       }
@@ -3428,5 +3474,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.3"
 }
