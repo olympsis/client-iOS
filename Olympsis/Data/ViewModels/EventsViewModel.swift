@@ -138,7 +138,63 @@ class EventsViewModel {
     func getTagsString() -> String {
         return selectedTags.joined(separator: ",")
     }
-    
+
+    /// Reconcile the filter selections after the filter sheet is
+    /// dismissed, for whichever page is currently active.
+    ///
+    /// The cache (`session.events` / `session.venues`) only ever grows —
+    /// loaders insert/merge, never evict — and filters narrow it to the
+    /// subset the user wants. So the decision is:
+    ///
+    /// - **A filter added** (a selection that wasn't applied before): the
+    ///   server may hold matching items we haven't cached yet, so we
+    ///   fetch and merge the difference into the cache.
+    /// - **All filters cleared** (going from some selections to none):
+    ///   the user now wants *everything*, but the cache may only hold the
+    ///   previously-filtered subsets — so re-fetch the full set.
+    /// - **Radius changed** (in either direction): the search area moved,
+    ///   so we re-fetch. There's no client-side distance filtering, so a
+    ///   smaller radius can't be honored locally — both grow and shrink
+    ///   go to the network for an authoritative result set.
+    /// - **A filter partially removed** (some still remain → the new
+    ///   selection is a subset of the old): no network needed. The data
+    ///   is already cached and the view's local `computeEvents` /
+    ///   `computeVenues` filters re-narrow it once we adopt the new
+    ///   selections below.
+    ///
+    /// Only the resource backing the active page is refetched, and only
+    /// for the filters that apply to it (venues filter by sports only —
+    /// the tags block is hidden on the venues page).
+    func applyFilterChanges(from manager: SearchManager, in session: SessionStore) async {
+        let oldTags = Set(selectedTags)
+        let oldSports = Set(selectedSports)
+        let newTags = Set(manager.selectedTags)
+        let newSports = Set(manager.selectedSports)
+        // Capture before adopting `manager.radius` below.
+        let radiusChanged = manager.radius != radius
+
+        // Adopt the new selections regardless of additions vs. removals —
+        // the local filters key off these, so a partial removal still
+        // re-narrows the visible list without a fetch.
+        selectedTags = manager.selectedTags
+        selectedSports = manager.selectedSports
+        radius = manager.radius
+
+        switch page {
+        case .events:
+            let added = !newTags.isSubset(of: oldTags) || !newSports.isSubset(of: oldSports)
+            let clearedAll = newTags.isEmpty && newSports.isEmpty
+                && (!oldTags.isEmpty || !oldSports.isEmpty)
+            guard added || clearedAll || radiusChanged else { return }
+            await fetchEvents(session, force: true)
+        case .venues:
+            let added = !newSports.isSubset(of: oldSports)
+            let clearedAll = newSports.isEmpty && !oldSports.isEmpty
+            guard added || clearedAll || radiusChanged else { return }
+            await fetchVenues(session, force: true)
+        }
+    }
+
     func fetchEvents(_ session: SessionStore, force: Bool = false) async {
         // Skip if the throttle hasn't elapsed; bypass with `force: true`.
         if !force, let update = lastUpdate, Date().timeIntervalSince(update) < 300 {
@@ -261,10 +317,15 @@ class EventsViewModel {
         // format consistent with the events filter.
         let sportsString = selectedSports.isEmpty ? "" : getSportsString()
 
+        // The venue service expects the radius in meters; the slider value
+        // (`radius`) is in miles, so convert (1 mi ≈ 1609.34 m) — matching
+        // the conversion `FilterView` uses to draw the radius circle.
+        let radiusInMeters = Int(radius * 1609.34)
+
         guard let resp = await session.fieldObserver.fetchVenues(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
-            radius: Int(16000),
+            radius: radiusInMeters,
             sports: sportsString
         ) else {
             return false

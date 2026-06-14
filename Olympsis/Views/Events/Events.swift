@@ -68,26 +68,13 @@ struct Events: View {
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
-                    // Decide whether the dismiss should trigger a network
-                    // fetch or just a local re-filter.
-                    let oldTags = Set(viewModel.selectedTags)
-                    let oldSports = Set(viewModel.selectedSports)
-                    let newTags = Set(manager.selectedTags)
-                    let newSports = Set(manager.selectedSports)
-
-                    let hasAdditions = !newTags.isSubset(of: oldTags)
-                        || !newSports.isSubset(of: oldSports)
-                    let clearedAllFilters = newTags.isEmpty && newSports.isEmpty
-                        && (!oldTags.isEmpty || !oldSports.isEmpty)
-                    let needsFetch = hasAdditions || clearedAllFilters
-
-                    viewModel.selectedTags = manager.selectedTags
-                    viewModel.selectedSports = manager.selectedSports
-
-                    if needsFetch {
-                        Task {
-                            await viewModel.fetchEvents(session, force: true)
-                        }
+                    // Reconcile the new filter selections against the
+                    // previously-applied ones. Adding a filter fetches the
+                    // difference from the server for the active page;
+                    // removing one just re-filters the cache locally.
+                    // See `EventsViewModel.applyFilterChanges`.
+                    Task {
+                        await viewModel.applyFilterChanges(from: manager, in: session)
                     }
                 }, content: {
                     FilterView(showTags: viewModel.page == .events)

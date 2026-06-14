@@ -80,6 +80,30 @@ struct ExplorerList: View {
         }
         return result
     }
+
+    /// Filtered venues for the current sports filter / search query.
+    /// Mirrors `computeEvents()` so the venues page honors the same
+    /// selections instead of always rendering the full `session.venues`
+    /// cache. Venues only carry a `sports` array (the filter sheet hides
+    /// the tags block on the venues page — see `FilterView(showTags:)`),
+    /// so sports are the only chip filter that applies; the search needle
+    /// is matched against the venue name, city, and neighborhood.
+    private func computeVenues() -> [Venue] {
+        var result = session.venues
+            .filter { venue in
+                manager.selectedSports.isEmpty ||
+                manager.selectedSports.contains { sport in venue.sports.contains(sport) }
+            }
+        if !searchText.isEmpty {
+            let needle = searchText.localizedLowercase
+            result = result.filter { venue in
+                venue.name.localizedLowercase.contains(needle) ||
+                venue.city.localizedLowercase.contains(needle) ||
+                (venue.subLocality?.localizedLowercase.contains(needle) ?? false)
+            }
+        }
+        return result
+    }
     
     private var fallbackLocation: CLLocation {
         guard let user = session.user, let hometown = user.hometown else {
@@ -187,6 +211,11 @@ struct ExplorerList: View {
             return events.rsvpedEvents(userID: userID)
         }()
         let eventsGrouped = events.eventsGroupedByDay()
+
+        // Same per-render snapshot for venues so the search field and
+        // sports filter actually narrow the venues list (previously it
+        // rendered the unfiltered `session.venues` cache).
+        let venues = computeVenues()
 
         return VStack(spacing: 8) {
 
@@ -368,10 +397,12 @@ struct ExplorerList: View {
                 case .venues:
                     switch vm.venuesState {
                     case .pending, .success:
-                        if (session.venues.isEmpty) {
-                            // No venues nearby (including a 204 response) —
-                            // encourage the user to email us so we can add
-                            // venues in their area. Button opens the Mail app.
+                        if (venues.isEmpty) {
+                            // No venues match the current search / sports
+                            // filter (or none nearby, including a 204
+                            // response) — encourage the user to email us so
+                            // we can add venues in their area. Button opens
+                            // the Mail app.
                             VenuesEmptyState()
                         } else {
                             // Neighborhood-grouped index (chips + per-hood
@@ -380,7 +411,7 @@ struct ExplorerList: View {
                             // this matches the Home "view all" sheet exactly.
                             // Tapping a venue routes onto the shared nav stack.
                             VenueNeighborhoodIndex(
-                                venues: session.venues,
+                                venues: venues,
                                 scale: listItemScale,
                                 onSelect: router.map { router in
                                     { venue in router.navigate(to: .venue(venue: venue)) }
