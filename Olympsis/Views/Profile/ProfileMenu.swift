@@ -64,6 +64,10 @@ struct ProfileMenu: View {
                     NavigationLink(destination: NotificationSettings().environment(session)) {
                         MenuLabel(icon: Image(systemName: "bell.fill"), text: String(localized: "setting-notifications", table: "Settings"))
                     }
+
+                    NavigationLink(destination: LocalitySettings()) {
+                        MenuLabel(icon: Image(systemName: "globe"), text: String(localized: "setting-locality", table: "Settings"))
+                    }
                     
                     NavigationLink(destination: BugReportView()) {
                         MenuLabel(icon: Image(systemName: "ladybug"), text: String(localized: "setting-bug-report", table: "Settings"))

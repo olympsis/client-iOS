@@ -332,6 +332,9 @@
 		5DA4CBB12FDDCB3600B8CC37 /* OlympsisNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DA4CBB52FDE0A0600B8CC37 /* EventListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */; };
 		5DA4CBB72FDE0D5100B8CC37 /* ExplorerEmptyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBB62FDE0D5100B8CC37 /* ExplorerEmptyStates.swift */; };
+		5DA4CBB92FDF4B1500B8CC37 /* DistanceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBB82FDF4B1500B8CC37 /* DistanceUnit.swift */; };
+		5DA4CBBB2FDF4B2600B8CC37 /* LocalitySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBBA2FDF4B2600B8CC37 /* LocalitySettings.swift */; };
+		5DA4CBBD2FDF841000B8CC37 /* ExplorerFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA4CBBC2FDF841000B8CC37 /* ExplorerFiltering.swift */; };
 		5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */; };
 		5DAAA91C2FDBA19200923B6F /* VenueNeighborhoodIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */; };
 		5DAAA91E2FDBA36200923B6F /* ScrollToTopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */; };
@@ -923,6 +926,9 @@
 		5DA4CBA72FDDC53200B8CC37 /* OlympsisNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OlympsisNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListItemTemplate.swift; sourceTree = "<group>"; };
 		5DA4CBB62FDE0D5100B8CC37 /* ExplorerEmptyStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerEmptyStates.swift; sourceTree = "<group>"; };
+		5DA4CBB82FDF4B1500B8CC37 /* DistanceUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceUnit.swift; sourceTree = "<group>"; };
+		5DA4CBBA2FDF4B2600B8CC37 /* LocalitySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalitySettings.swift; sourceTree = "<group>"; };
+		5DA4CBBC2FDF841000B8CC37 /* ExplorerFiltering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerFiltering.swift; sourceTree = "<group>"; };
 		5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantsStack.swift; sourceTree = "<group>"; };
 		5DAAA91B2FDBA19200923B6F /* VenueNeighborhoodIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueNeighborhoodIndex.swift; sourceTree = "<group>"; };
 		5DAAA91D2FDBA36200923B6F /* ScrollToTopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToTopButton.swift; sourceTree = "<group>"; };
@@ -2010,6 +2016,8 @@
 				9A8FF0D228BB336B00DE4CF8 /* Services */,
 				9A8FF0D128BB336600DE4CF8 /* Models */,
 				5D4942BA2B1299D800D19188 /* ViewModels */,
+				5DA4CBB82FDF4B1500B8CC37 /* DistanceUnit.swift */,
+				5DA4CBBC2FDF841000B8CC37 /* ExplorerFiltering.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -2334,6 +2342,7 @@
 				5D4B0A6B2D97445300475A0C /* GroupsEnrolled.swift */,
 				5D4B0A702D9747A100475A0C /* Awards.swift */,
 				5DACBECA2FDCDD9200B3381C /* ArchiveView.swift */,
+				5DA4CBBA2FDF4B2600B8CC37 /* LocalitySettings.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -2807,6 +2816,7 @@
 				9A8162A3296685D40042F0A6 /* RoomListItem.swift in Sources */,
 				5D0CCB3F2C2E26B300B424C0 /* RoomListItemTemplate.swift in Sources */,
 				5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */,
+				5DA4CBBD2FDF841000B8CC37 /* ExplorerFiltering.swift in Sources */,
 				5D18BD222B3A1A6000F90777 /* EditPickUpEvent.swift in Sources */,
 				5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */,
 				5D63AF722C3120BB005D431F /* HotEvents.swift in Sources */,
@@ -2900,6 +2910,7 @@
 				9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */,
 				5D1881842F7713A7000FDF9E /* SnapshotService.swift in Sources */,
 				9AD208F8293429E3007A62C4 /* ClubsList.swift in Sources */,
+				5DA4CBB92FDF4B1500B8CC37 /* DistanceUnit.swift in Sources */,
 				5F4E53F42A28EB5500257350 /* AnnouncementsView.swift in Sources */,
 				9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */,
 				5D2F19A92C14174400D98222 /* OrgDefaultBadge.swift in Sources */,
@@ -2930,6 +2941,7 @@
 				5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */,
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
 				5D5170E52C274A470035C1F1 /* EditorGroupViewModel.swift in Sources */,
+				5DA4CBBB2FDF4B2600B8CC37 /* LocalitySettings.swift in Sources */,
 				5D7E0CE32E2FF5BF004A512E /* RunRoutePolylineView.swift in Sources */,
 				5DC733FD2B2A7F050051BE21 /* EventVisibilityPickerView.swift in Sources */,
 				5D6F114C2E21A3E2005F1BE5 /* WorkoutManager+Zones.swift in Sources */,

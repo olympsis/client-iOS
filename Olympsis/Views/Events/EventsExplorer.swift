@@ -137,6 +137,25 @@ struct EventsExplorer: View {
             let locationHidden = event.config?.hideLocation == true
             return userIsParticipant || (!isPrivate && !locationHidden)
         }
+        // Apply the same tag/sport/search filter the drawer list uses, so
+        // the map pins narrow in lockstep with the list (they used to
+        // ignore the filters entirely). The visibility rule above is
+        // map-specific and stays.
+        .filteredForExplorer(
+            tags: manager.selectedTags,
+            sports: manager.selectedSports,
+            search: viewModel.searchText
+        )
+    }
+
+    /// Venues to drop pins for, narrowed by the active sport / search
+    /// filter — the venue equivalent of `visibleEvents`. Shared filter
+    /// logic keeps the map in sync with the drawer list.
+    private var visibleVenues: [Venue] {
+        session.venues.filteredForExplorer(
+            sports: manager.selectedSports,
+            search: viewModel.searchText
+        )
     }
 
     /// Unit footprints to render. Empty unless we're on the venues tab AND
@@ -146,7 +165,7 @@ struct EventsExplorer: View {
               cameraLatitudeSpan < kVenueUnitPolygonZoomThreshold else {
             return []
         }
-        return footprints(for: session.venues)
+        return footprints(for: visibleVenues)
     }
 
     /// Coordinate to drop a pin at for an event. Prefers the event's first
@@ -182,16 +201,27 @@ struct EventsExplorer: View {
         (cameraLatitudeSpan * 1000).rounded() / 1000
     }
 
+    /// Stable signature of the active tag/sport/search filters. Folded
+    /// into both cluster cache keys so the memoized grids recompute when
+    /// the user changes a filter — without this the map kept stale pins
+    /// even though the keys' counts hadn't changed (a local filter narrows
+    /// the *displayed* set, not `session.events.count`).
+    private var filterSignature: String {
+        let tags = manager.selectedTags.sorted().joined(separator: ",")
+        let sports = manager.selectedSports.sorted().joined(separator: ",")
+        return "\(tags)|\(sports)|\(viewModel.searchText)"
+    }
+
     /// Inputs that, when changed, force a recompute of the events
     /// cluster grid: events count + the user's id (they may not be
-    /// participating yet, then RSVP) + the zoom bucket.
+    /// participating yet, then RSVP) + the zoom bucket + active filters.
     private var eventsClusterKey: String {
-        "\(session.events.count)|\(session.user?.userID ?? "")|\(snappedClusterSpan)"
+        "\(session.events.count)|\(session.user?.userID ?? "")|\(snappedClusterSpan)|\(filterSignature)"
     }
 
     /// Same idea for venues, but no user-id dependency.
     private var venuesClusterKey: String {
-        "\(session.venues.count)|\(snappedClusterSpan)"
+        "\(session.venues.count)|\(snappedClusterSpan)|\(filterSignature)"
     }
 
     /// Build the events cluster grid from the current state. Called only
@@ -302,7 +332,7 @@ struct EventsExplorer: View {
         let cellSize = max(cameraLatitudeSpan / kClusterCellsPerScreen, 0.0005)
         var buckets: [CellKey: [(venue: Venue, coord: CLLocationCoordinate2D)]] = [:]
 
-        for venue in session.venues {
+        for venue in visibleVenues {
             guard let coord = venueCoordinate(for: venue) else { continue }
             let bucketLat = Int((coord.latitude / cellSize).rounded(.down))
             let bucketLng = Int((coord.longitude / cellSize).rounded(.down))

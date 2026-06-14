@@ -22,7 +22,7 @@ class VenueObserver: ObservableObject{
     /// - Returns: a `[Venue]` an optional venue array containing the venues in that location
     func fetchVenues(longitude: Double, latitude: Double, radius: Int, sports: String) async -> [Venue]? {
         do {
-            let (data, resp) = try await fieldService.getVenues(long: longitude, lat: latitude, radius: radius, sports: sports)
+            let (data, resp) = try await fieldService.getVenues(long: longitude, lat: latitude, radius: radius, sports: sports, limit: 200)
             guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
                 // A 204 means "no venues in this area" — that's a valid,
                 // empty result, not a failure. Return an empty array so the

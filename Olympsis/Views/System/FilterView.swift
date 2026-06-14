@@ -27,6 +27,13 @@ struct FilterView: View {
     @Environment(SessionStore.self) private var session
     @Environment(SearchManager.self) private var manager
     @AppStorage("searchRadius") private var searchRadius: Double?
+
+    // The user's chosen display unit (resolves to the device default until
+    // they pick one in Locality settings). The radius is still stored
+    // canonically in miles on `manager.radius`; this only changes how the
+    // slider and label present it.
+    @AppStorage(DistanceUnit.storageKey) private var distanceUnitRaw: String = ""
+    private var distanceUnit: DistanceUnit { DistanceUnit.resolved(from: distanceUnitRaw) }
     
     private func updateMapRegion() {
         // Get the current center
@@ -104,9 +111,19 @@ struct FilterView: View {
                         .font(.callout)
                         .foregroundStyle(.gray)
                     HStack {
-                        Slider(value: $manager.radius, in: 1...100, step: 1)
+                        // The slider operates in the user's chosen unit but
+                        // keeps `manager.radius` canonical in miles: the
+                        // getter converts miles → display unit, the setter
+                        // converts back and clamps to the 1...100 mile cap.
+                        let radiusBinding = Binding<Double>(
+                            get: { distanceUnit.value(fromMiles: manager.radius) },
+                            set: { manager.radius = min(max(distanceUnit.miles(fromValue: $0), 1), 100) }
+                        )
+                        let radiusMax = distanceUnit.value(fromMiles: 100).rounded()
+
+                        Slider(value: radiusBinding, in: 1...radiusMax, step: 1)
                             .tint(Color("color-prime"))
-                        Text("\(Int(manager.radius)) miles")
+                        Text("\(Int(distanceUnit.value(fromMiles: manager.radius))) \(distanceUnit.abbreviation)")
                             .padding(.trailing)
                             .onChange(of: manager.radius) { _, newValue in
                                 searchRadius = newValue

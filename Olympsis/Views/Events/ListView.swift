@@ -101,11 +101,12 @@ struct ListView: View {
             sports = manager.getSportsString()
         }
 
-        // Use fallback location
+        // Use fallback location. The server expects the radius in meters;
+        // `manager.radius` is in miles, so convert before sending.
         guard let resp = await session.eventObserver.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
-            radius: manager.radius,
+            radius: milesToMeters(radius: manager.radius),
             tags: tags,
             sports: sports) else {
             state = .failure

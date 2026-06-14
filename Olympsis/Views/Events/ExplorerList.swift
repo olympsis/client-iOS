@@ -65,44 +65,24 @@ struct ExplorerList: View {
     /// nextEvents) — avoids re-running `Array(session.events)` and three
     /// `.filter`s on every property access during a render pass.
     private func computeEvents() -> [Event] {
-        var result = Array(session.events)
-            .filter { event in
-                manager.selectedTags.isEmpty ||
-                manager.selectedTags.contains { tag in event.tags.contains(tag) }
-            }
-            .filter { event in
-                manager.selectedSports.isEmpty ||
-                manager.selectedSports.contains { sport in event.sports.contains(sport) }
-            }
-        if !searchText.isEmpty {
-            let needle = searchText.localizedLowercase
-            result = result.filter { $0.title.localizedLowercase.contains(needle) }
-        }
-        return result
+        // Shared with the map annotations via `filteredForExplorer` so the
+        // list and the map always agree on what the filters include.
+        Array(session.events).filteredForExplorer(
+            tags: manager.selectedTags,
+            sports: manager.selectedSports,
+            search: searchText
+        )
     }
 
     /// Filtered venues for the current sports filter / search query.
     /// Mirrors `computeEvents()` so the venues page honors the same
     /// selections instead of always rendering the full `session.venues`
-    /// cache. Venues only carry a `sports` array (the filter sheet hides
-    /// the tags block on the venues page — see `FilterView(showTags:)`),
-    /// so sports are the only chip filter that applies; the search needle
-    /// is matched against the venue name, city, and neighborhood.
+    /// cache.
     private func computeVenues() -> [Venue] {
-        var result = session.venues
-            .filter { venue in
-                manager.selectedSports.isEmpty ||
-                manager.selectedSports.contains { sport in venue.sports.contains(sport) }
-            }
-        if !searchText.isEmpty {
-            let needle = searchText.localizedLowercase
-            result = result.filter { venue in
-                venue.name.localizedLowercase.contains(needle) ||
-                venue.city.localizedLowercase.contains(needle) ||
-                (venue.subLocality?.localizedLowercase.contains(needle) ?? false)
-            }
-        }
-        return result
+        session.venues.filteredForExplorer(
+            sports: manager.selectedSports,
+            search: searchText
+        )
     }
     
     private var fallbackLocation: CLLocation {
@@ -141,10 +121,12 @@ struct ExplorerList: View {
         }
 
         // Use fallback location
+        // The server expects the radius in meters; `manager.radius` is in
+        // miles, so convert before sending — matching the venues fetch.
         guard let resp = await session.eventObserver.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
-            radius: manager.radius,
+            radius: milesToMeters(radius: manager.radius),
             tags: tags,
             sports: sports) else {
             viewModel.eventsState = .failure

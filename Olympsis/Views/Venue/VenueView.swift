@@ -249,7 +249,7 @@ struct VenueActionButtons: View {
                                 Text("Schedule")
                                     .font(.caption)
                                     .fontWeight(.bold)
-                            }.foregroundStyle(Color.Text.headline)
+                            }.foregroundStyle(Color.Background.primary)
                         }
                     }.contentShape(RoundedRectangle(cornerRadius: 10))
                 } else {

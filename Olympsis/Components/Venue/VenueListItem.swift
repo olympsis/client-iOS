@@ -19,6 +19,10 @@ struct VenueListItem: View {
     @State private var showReport = false
     @Environment(SessionStore.self) private var session
 
+    /// User's chosen distance unit (resolves to the device default until
+    /// they override it in Locality settings).
+    @AppStorage(DistanceUnit.storageKey) private var distanceUnitRaw: String = ""
+
     var fieldCityString: String {
         return venue.city + ", " + venue.state
     }
@@ -106,17 +110,19 @@ struct VenueListItem: View {
             .joined(separator: " ")
     }
 
-    /// Straight-line distance from the user to the venue, e.g. "1.2 mi".
-    /// Returns `nil` when we don't yet have a fix on the user's location so
-    /// the bottom row can omit it rather than show a bogus value.
+    /// Straight-line distance from the user to the venue, in the user's
+    /// chosen unit, e.g. "1.2 mi" or "1.9 km". Returns `nil` when we don't
+    /// yet have a fix on the user's location so the bottom row can omit it
+    /// rather than show a bogus value.
     private var distanceString: String? {
         guard let location = LocationManager.shared.location else { return nil }
 
+        let unit = DistanceUnit.resolved(from: distanceUnitRaw)
         let current = CLLocation(latitude: location.latitude, longitude: location.longitude)
         let target = CLLocation(latitude: venue.location.coordinates[1],
                                 longitude: venue.location.coordinates[0])
-        let miles = current.distance(from: target) / 1609.344
-        return String(format: "%.1f mi", miles)
+        let value = unit.value(fromMeters: current.distance(from: target))
+        return String(format: "%.1f %@", value, unit.abbreviation)
     }
 
     /// Bottom-row label: the primary sport, plus distance when available

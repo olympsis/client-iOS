@@ -274,10 +274,13 @@ class EventsViewModel {
         let tagsString: String? = selectedTags.isEmpty ? nil : getTagsString()
         let sportsString: String? = selectedSports.isEmpty ? nil : getSportsString()
 
+        // The server expects the radius in meters; `radius` is stored
+        // canonically in miles, so convert before sending — matching the
+        // venues fetch.
         guard let resp = await session.eventObserver.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
-            radius: radius,
+            radius: milesToMeters(radius: radius),
             tags: tagsString,
             sports: sportsString
         ) else {
@@ -318,9 +321,8 @@ class EventsViewModel {
         let sportsString = selectedSports.isEmpty ? "" : getSportsString()
 
         // The venue service expects the radius in meters; the slider value
-        // (`radius`) is in miles, so convert (1 mi ≈ 1609.34 m) — matching
-        // the conversion `FilterView` uses to draw the radius circle.
-        let radiusInMeters = Int(radius * 1609.34)
+        // (`radius`) is in miles, so convert — matching the events fetch.
+        let radiusInMeters = Int(milesToMeters(radius: radius))
 
         guard let resp = await session.fieldObserver.fetchVenues(
             longitude: currentLocation.coordinate.longitude,
