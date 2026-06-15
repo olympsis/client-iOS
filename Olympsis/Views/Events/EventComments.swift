@@ -72,7 +72,7 @@ struct EventComments: View {
         }
     }
     
-    @ContentBuilder
+    @ViewBuilder
     private var header: some View {
         HStack {
             switch event.getEventStatus() {
