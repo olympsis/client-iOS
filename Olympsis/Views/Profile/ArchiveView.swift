@@ -160,7 +160,7 @@ struct ArchiveView: View {
 
     // MARK: - Subviews
 
-    @ContentBuilder
+    @ViewBuilder
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
             Text(String(localized: "archive-title", defaultValue: "Archive", table: "Profile"))
@@ -200,7 +200,7 @@ struct ArchiveView: View {
         }
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private var statsRow: some View {
         HStack(spacing: 0) {
             statCell(value: totalPlayed,
@@ -218,7 +218,7 @@ struct ArchiveView: View {
         .padding(.vertical, 8)
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private func statCell(value: Int, label: String) -> some View {
         VStack(spacing: 4) {
             Text("\(value)")
@@ -233,14 +233,14 @@ struct ArchiveView: View {
         .frame(maxWidth: .infinity)
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private var divider: some View {
         Rectangle()
             .frame(width: 1, height: 30)
             .foregroundStyle(Color.border)
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private func monthSection(for group: MonthGroup) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -269,7 +269,7 @@ struct ArchiveView: View {
         }
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private var emptyState: some View {
         HStack {
             Spacer()
