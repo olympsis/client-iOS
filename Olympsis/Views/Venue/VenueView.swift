@@ -135,12 +135,42 @@ struct VenueActionButtons: View {
     @State private var showReport: Bool = false
     @State private var showNewEvent: Bool = false
     @State private var showVisibility: Bool = false
-    
+    /// The venue's owning organization, resolved from `venue.ownerID` when the
+    /// view appears. Used to determine public/private status; `nil` until the
+    /// (cached) fetch completes.
+    @State private var ownerOrg: Organization?
+
     @Environment(\.openURL) private var openURL
     @Environment(SessionStore.self) private var session
-    
+
     var joinGroupTip = JoinGroupTip()
-    
+
+    /// Whether this venue should be presented as public.
+    ///
+    /// Once the owner organization is resolved, verified organizations
+    /// (government / official bodies) are treated as public and everyone else
+    /// as private. Until the org loads — or when the venue has no owner — we
+    /// fall back to the venue's own legacy heuristic.
+    private var venueIsPublic: Bool {
+        if let org = ownerOrg {
+            return org.isVerified
+        }
+        return venue.isPublic()
+    }
+
+    /// Display name for the owning entity, preferring the resolved org's name
+    /// and falling back to any legacy embedded ownership name.
+    private var ownerName: String {
+        ownerOrg?.name ?? venue.owner.name
+    }
+
+    /// Resolves the venue's owner organization (using the shared org cache so
+    /// repeat opens of venues with the same owner don't hit the network).
+    private func loadOwnerOrg() async {
+        guard !venue.ownerID.isEmpty else { return }
+        ownerOrg = await session.orgObserver.getCachedOrganization(id: venue.ownerID)
+    }
+
     private var bookingURL: URL? {
         guard let string = venue.bookingURL,
               let url = URL(string: string) else {
@@ -263,7 +293,7 @@ struct VenueActionButtons: View {
                             }
                         
                         VStack {
-                            if venue.isPublic() {
+                            if venueIsPublic {
                                 VStack {
                                     Image(systemName: "globe")
                                         .resizable()
@@ -288,9 +318,9 @@ struct VenueActionButtons: View {
                     .onTapGesture {
                         showVisibility.toggle()
                     }
-                    .popover(isPresented: $showVisibility, attachmentAnchor: .point(.top), arrowEdge: .top, content: {
+                    .popover(isPresented: $showVisibility, attachmentAnchor: .point(.bottom), arrowEdge: .top, content: {
                         VStack {
-                            if venue.isPublic() {
+                            if venueIsPublic {
                                 Text("Public")
                                     .fontWeight(.bold)
                                 Text("This venue is owned by your state/local government.")
@@ -299,7 +329,7 @@ struct VenueActionButtons: View {
                             } else {
                                 Text("Private")
                                     .fontWeight(.bold)
-                                Text("This venue is privately owned by \(venue.owner.name)")
+                                Text("This venue is privately owned by \(ownerName)")
                                     .font(.callout)
                                     .multilineTextAlignment(.center)
                             }
@@ -377,6 +407,7 @@ struct VenueActionButtons: View {
                 .displayFrequency(.immediate),
                 .datastoreLocation(.applicationDefault)
             ])
+            await loadOwnerOrg()
         }
     }
 }

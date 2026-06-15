@@ -69,6 +69,8 @@ struct Profile: View {
                     ArchiveView()
                         .padding(.bottom)
                         .environment(session)
+                    
+                    Spacer(minLength: 150)
                 }
                 .fullScreenCover(isPresented: $showMenu, content: {
                     ProfileMenu()

@@ -64,6 +64,24 @@ class OrgObserver: ObservableObject{
         }
     }
 
+    /// Fetches an organization by ID, returning a cached copy when available.
+    ///
+    /// The first lookup for a given ID hits the network and stores the result
+    /// in a shared in-memory cache. Subsequent lookups for the same ID return
+    /// the cached organization without making another network call.
+    ///
+    /// Concurrent lookups for the *same* ID (e.g. many lazy-stack rows that
+    /// share an owner appearing on screen at once) are coalesced into a single
+    /// network request — later callers await the in-flight fetch rather than
+    /// starting their own. This prevents a cache stampede where every row fires
+    /// its own request before the first one has had a chance to populate the
+    /// cache.
+    func getCachedOrganization(id: String) async -> Organization? {
+        await OrgCache.shared.organization(for: id) { [self] in
+            await getOrganization(id: id)
+        }
+    }
+
     func updateOrganization(id: String, dto: OrganizationDao) async -> Bool {
         do {
             let res = try await orgService.updateOrganization(id: id, dto: dto)
@@ -175,5 +193,54 @@ class OrgObserver: ObservableObject{
             log.error("\(error)")
         }
         return false
+    }
+}
+
+/// Process-wide in-memory cache of fetched organizations keyed by ID.
+///
+/// Backed by an actor so concurrent reads/writes from different async contexts
+/// are serialized safely. The cache is shared (via `shared`) across every
+/// `OrgObserver` instance — both `session.orgObserver` and `OrgObserver.shared`
+/// — so a given organization is only fetched from the network once per app run.
+actor OrgCache {
+    static let shared = OrgCache()
+
+    /// Completed lookups, keyed by org ID.
+    private var storage: [String: Organization] = [:]
+    /// Lookups currently in flight, keyed by org ID. Lets concurrent callers
+    /// for the same ID join one request instead of each starting their own.
+    private var inFlight: [String: Task<Organization?, Never>] = [:]
+
+    /// Returns the organization for `id`, performing `fetch` only when it is
+    /// neither already cached nor currently being fetched.
+    ///
+    /// All of the read-cache / join-in-flight / start-new-fetch decision making
+    /// happens inside this single actor method, so it is atomic: two callers
+    /// racing on the same ID can never both kick off a network request.
+    func organization(
+        for id: String,
+        fetch: @Sendable @escaping () async -> Organization?
+    ) async -> Organization? {
+        // Already resolved — hand back the cached value.
+        if let cached = storage[id] {
+            return cached
+        }
+        // A fetch is already running for this ID — await its result.
+        if let task = inFlight[id] {
+            return await task.value
+        }
+
+        // First caller for this ID: start the fetch and register it so others
+        // can join. Note: awaiting `task.value` suspends this actor, allowing
+        // those other callers to observe `inFlight[id]` above.
+        let task = Task { await fetch() }
+        inFlight[id] = task
+        let org = await task.value
+        inFlight[id] = nil
+
+        if let org {
+            storage[id] = org
+        }
+        return org
     }
 }

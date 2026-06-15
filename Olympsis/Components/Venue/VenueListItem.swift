@@ -17,6 +17,10 @@ struct VenueListItem: View {
 
     @State private var showDetail = false
     @State private var showReport = false
+    /// The venue's owning organization, resolved from `venue.ownerID` when the
+    /// row appears. Drives the Public/Private label; `nil` until the (cached)
+    /// fetch completes.
+    @State private var ownerOrg: Organization?
     @Environment(SessionStore.self) private var session
 
     /// User's chosen distance unit (resolves to the device default until
@@ -25,6 +29,26 @@ struct VenueListItem: View {
 
     var fieldCityString: String {
         return venue.city + ", " + venue.state
+    }
+
+    /// Whether this venue should be labeled public.
+    ///
+    /// Once the owner organization resolves, verified organizations
+    /// (government / official bodies) are treated as public and everyone else
+    /// as private. Until it loads — or when the venue has no owner — we fall
+    /// back to the venue's own legacy heuristic.
+    private var venueIsPublic: Bool {
+        if let org = ownerOrg {
+            return org.isVerified
+        }
+        return venue.isPublic()
+    }
+
+    /// Resolves the venue's owner organization through the shared org cache, so
+    /// rows in the lazy stack that share an owner only trigger one network call.
+    private func loadOwnerOrg() async {
+        guard !venue.ownerID.isEmpty else { return }
+        ownerOrg = await session.orgObserver.getCachedOrganization(id: venue.ownerID)
     }
 
     // MARK: - Scale-derived sizing
@@ -70,7 +94,7 @@ struct VenueListItem: View {
     private var subheader: String {
         var parts: [String] = []
 
-        parts.append(venue.isPublic() ? "Public" : "Private")
+        parts.append(venueIsPublic ? "Public" : "Private")
 
         if !venue.units.isEmpty {
             if let surface = dominantSurface {
@@ -195,6 +219,9 @@ struct VenueListItem: View {
             }.padding(.leading, 10)
         }
         .padding(.vertical, 10)
+        .task {
+            await loadOwnerOrg()
+        }
         .sheet(isPresented: $showDetail) {
             VenueView(venue: venue)
                 .presentationDetents([.large])

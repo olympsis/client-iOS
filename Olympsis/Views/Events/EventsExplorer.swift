@@ -8,6 +8,22 @@
 import MapKit
 import SwiftUI
 
+// MARK: - ARCHIVED: Venue unit polygons
+//
+// The venue unit-footprint overlay (drawing each unit's Polygon/MultiPolygon
+// on top of its pin when zoomed in) is DISABLED. In the field it triggered a
+// high-memory termination: detailed multipolygons flatten into very large
+// `[CLLocationCoordinate2D]` arrays, and MapKit holds substantial backing
+// memory per `MapPolygon`. With many units on screen this blew past the memory
+// limit.
+//
+// The implementation is intentionally left in place (gated by the flag below)
+// so it can be revived later — likely after polygon simplification / decimation
+// and an on-screen cap. To re-enable, flip `kVenueUnitPolygonsEnabled` to true.
+// See `unitFootprintsVisible`, `computeUnitFootprints()`, `footprints(for:)`,
+// and the polygon `ForEach` in `venuesMapContent`.
+private let kVenueUnitPolygonsEnabled = false
+
 /// Threshold (in latitude degrees) below which we start rendering each venue's
 /// unit polygons on top of its pin. ~0.003° ≈ 300 m N–S, i.e. the user has
 /// zoomed in close enough that the unit footprints are large on screen.
@@ -101,6 +117,15 @@ struct EventsExplorer: View {
     @State private var cachedEventClusters: [EventCluster] = []
     @State private var cachedVenueClusters: [VenueClusterItem] = []
 
+    /// Memoized unit polygon footprints. Flattening each unit's
+    /// Polygon/MultiPolygon geometry into coordinate arrays is expensive, and
+    /// it previously ran on *every* body render (the property was computed
+    /// inline in `venuesMapContent`), which made panning/zooming the venues map
+    /// stutter. Now it's recomputed only when `unitFootprintsKey` changes —
+    /// i.e. when the polygons actually become visible/hidden or the venue set
+    /// changes — mirroring the cluster caches above.
+    @State private var cachedUnitFootprints: [VenueUnitFootprint] = []
+
     /// Set when the user taps a multi-event cluster pin on the map.
     /// Drives the disambiguation sheet that lists the events grouped
     /// by day (same headers `ExplorerList` uses). `nil` while the
@@ -158,13 +183,30 @@ struct EventsExplorer: View {
         )
     }
 
-    /// Unit footprints to render. Empty unless we're on the venues tab AND
-    /// the user has zoomed in past the threshold.
-    private var visibleUnitFootprints: [VenueUnitFootprint] {
-        guard viewModel.page == .venues,
-              cameraLatitudeSpan < kVenueUnitPolygonZoomThreshold else {
-            return []
-        }
+    /// Whether the unit polygons should currently be drawn: only on the
+    /// venues tab and only once zoomed in past the threshold.
+    ///
+    /// ARCHIVED: short-circuits to `false` while `kVenueUnitPolygonsEnabled` is
+    /// off, so the footprints are never flattened, cached, or rendered (the
+    /// fix for the high-memory crash). Re-enable via the flag.
+    private var unitFootprintsVisible: Bool {
+        guard kVenueUnitPolygonsEnabled else { return false }
+        return viewModel.page == .venues && cameraLatitudeSpan < kVenueUnitPolygonZoomThreshold
+    }
+
+    /// Invalidation key for `cachedUnitFootprints`. The geometry itself is
+    /// zoom-independent, so — unlike the cluster keys — this deliberately does
+    /// NOT fold in the exact zoom span. It only changes when the polygons
+    /// toggle visible/hidden or the visible venue set changes, so panning and
+    /// fine zooming never trigger a re-flatten.
+    private var unitFootprintsKey: String {
+        "\(unitFootprintsVisible)|\(session.venues.count)|\(filterSignature)"
+    }
+
+    /// Rebuilds `cachedUnitFootprints`. Returns empty when the polygons aren't
+    /// currently visible so we don't pay the flattening cost off the venues tab.
+    private func computeUnitFootprints() -> [VenueUnitFootprint] {
+        guard unitFootprintsVisible else { return [] }
         return footprints(for: visibleVenues)
     }
 
@@ -431,8 +473,10 @@ struct EventsExplorer: View {
             .annotationTitles(.hidden)
         }
 
-        // Unit polygons (only when zoomed in close).
-        ForEach(visibleUnitFootprints) { footprint in
+        // ARCHIVED: Unit polygons (only when zoomed in close). Disabled via
+        // `kVenueUnitPolygonsEnabled` — `cachedUnitFootprints` stays empty, so
+        // this renders nothing. See the archived note at the top of the file.
+        ForEach(cachedUnitFootprints) { footprint in
             MapPolygon(coordinates: footprint.coordinates)
                 .foregroundStyle(.colorPrime.opacity(0.25))
                 .stroke(.colorPrime, lineWidth: 1.5)
@@ -465,6 +509,9 @@ struct EventsExplorer: View {
         }
         .onChange(of: venuesClusterKey, initial: true) { _, _ in
             cachedVenueClusters = computeVenueClusters()
+        }
+        .onChange(of: unitFootprintsKey, initial: true) { _, _ in
+            cachedUnitFootprints = computeUnitFootprints()
         }
         .task {
             // Don't fight the user if they've already panned away.
