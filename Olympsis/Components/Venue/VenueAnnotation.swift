@@ -14,22 +14,17 @@ struct VenueAnnotation: View {
     @Environment(SessionStore.self) private var session
     
     var imageURL: URL? {
-        return generateImageURL(venue.images[0])
+        // Imported/scraped venues may have no media, so guard the subscript
+        // instead of indexing `[0]` directly (which would crash). `nil` here
+        // falls through to the SF Symbol placeholder in `body`.
+        guard let first = venue.images.first else { return nil }
+        return generateImageURL(first)
     }
     
     var hasEvents: Bool {
-        let events = session.events.filter { 
-            $0.venues.contains(where: { desc in
-                if desc.id == venue.id {
-                    return true
-                } else if desc.name == venue.name {
-                    return true
-                }
-                return false
-            })
-        }
-        
-        return events.count > 0
+        // Shares `Venue.hosts(_:)` with the venue detail list so the dot and the
+        // list always agree on what counts as an event at this venue.
+        return session.events.contains { venue.hosts($0) }
     }
     
     var body: some View {
@@ -52,9 +47,12 @@ struct VenueAnnotation: View {
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
             } else {
-                Circle()
+                // Fallback when a venue has no image (or the URL fails to
+                // build): show a neutral SF Symbol on the prime-colored pin.
+                Image(systemName: "mappin.and.ellipse")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
-                    .foregroundStyle(.gray)
             }
         }
         .overlay(alignment: .topTrailing) {

@@ -390,7 +390,10 @@ struct VenueEventsView: View {
     @Environment(SessionStore.self) private var session
     
     var fieldEvents: [Event] {
-        return session.events.filter({ $0.venues.contains(where: { $0.id == venue.id }) })
+        // Use the shared loose-match predicate so imported/scraped events that
+        // overlap this venue by name (and lack our internal venueID) still show
+        // up here — keeping this list in sync with the map's "has events" dot.
+        return session.events.filter { venue.hosts($0) }
     }
     
     func reloadEvents() async {

@@ -920,6 +920,27 @@ class Venue: Codable, Identifiable, Equatable, Hashable {
     }
 }
 
+extension Venue {
+    /// Whether `event` takes place at this venue.
+    ///
+    /// Matching is deliberately loose: events imported/scraped from other
+    /// platforms often arrive without our internal `venueID`, so an id match
+    /// alone would miss them. We fall back to a name match against the event's
+    /// venue descriptor, which lets an imported event "overlap" onto a venue we
+    /// actually have in our catalogue.
+    ///
+    /// This is the single source of truth for that overlap. Keep the map pin
+    /// (`VenueAnnotation.hasEvents`) and the venue detail list
+    /// (`VenueEventsView.fieldEvents`) both routed through here so they can't
+    /// disagree — i.e. so a venue never shows the "has events" dot without the
+    /// matching events appearing inside the venue view.
+    func hosts(_ event: Event) -> Bool {
+        event.venues.contains { descriptor in
+            descriptor.id == id || descriptor.name == name
+        }
+    }
+}
+
 // MARK: - VenueDescriptor
 
 /// Lightweight identity-and-location snapshot of a venue. Embedded on other
