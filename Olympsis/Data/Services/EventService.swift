@@ -70,9 +70,9 @@ class EventService {
         return try await http.Request(.GET, endpoint, headers: headers)
     }
 
-    func getEventsByField(id: String) async throws -> (Data, URLResponse) {
+    func getEventsByVenue(id: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Hermes.Endpoint("/v1/events/field/\(id)")
+        let endpoint = Hermes.Endpoint("/v1/events/venue/\(id)")
 
         return try await http.Request(.GET, endpoint, headers: headers)
     }

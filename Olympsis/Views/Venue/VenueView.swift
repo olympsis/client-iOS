@@ -429,7 +429,7 @@ struct VenueEventsView: View {
     
     func reloadEvents() async {
         status = .loading
-        let resp = await session.eventObserver.fetchEventsByFieldID(venue.id)
+        let resp = await session.eventObserver.fetchEventsByVenueID(venue.id)
         guard let events = resp else {
             handleReloadFailure()
             return
