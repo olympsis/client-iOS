@@ -376,6 +376,7 @@ struct EventListItem: View {
             }
         }
         .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
+        .accessibilityIdentifier("event-list-item-\(event.id)")
     }
 }
 

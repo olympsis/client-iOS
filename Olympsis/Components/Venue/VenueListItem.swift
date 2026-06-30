@@ -235,6 +235,7 @@ struct VenueListItem: View {
                 self.showDetail.toggle()
             }
         }
+        .accessibilityIdentifier("venue-list-item-\(venue.id)")
     }
 }
 
