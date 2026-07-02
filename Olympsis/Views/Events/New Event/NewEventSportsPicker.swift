@@ -13,30 +13,47 @@ struct NewEventSportsPicker: View {
     @Binding var selectedSports: [Sport]
     @State private var showSports: Bool = false
     
-    private var sportName: String {
-        var text = String(localized: "new-event-sport-action-text", table: "Events")
-        guard let firstSport = selectedSports.first else { return text }
-        text = firstSport.name
-        guard let firstIndex = text.firstIndex(where: { $0.isLetter }) else { return text }
-        text.replaceSubrange(firstIndex...firstIndex, with: text[firstIndex].uppercased())
-        return text
-    }
-    
     var body: some View {
         VStack(alignment: .leading) {
-            Text(String(localized: "new-event-sports-title", table: "Events"))
-                .font(.headline)
+            Text(String(localized: "new-event-sports-title", table: "Events").uppercased())
+                .font(.caption)
                 .bold()
-            Text(String(localized: "new-event-sport-sub-title", table: "Events"))
-                .foregroundColor(.gray)
-                .font(.subheadline)
             
-            Button(action: { showSports.toggle() }) {
-                Text(sportName)
+            HStack {
+                ScrollView(.horizontal) {
+                    ForEach(selectedSports, id: \.name) { sport in
+                        Text(sport.name.prefix(1).uppercased() + sport.name.dropFirst())
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 26)
+                                    .foregroundStyle(Color.Background.tertiary)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 26)
+                                            .stroke(Color.border)
+                                    }
+                            }
+                    }
+                }
+                Button(action: { showSports.toggle() }) {
+                    Image(systemName: "plus")
+                        .foregroundStyle(.primary)
+                }.background {
+                    RoundedRectangle(cornerRadius: 26)
+                        .frame(width: 50, height: 50)
+                        .foregroundStyle(Color.Background.tertiary)
+                }
+                .padding(.trailing, 10)
             }
-            .modifier(InputFieldModifier())
-            .scrollIndicators(.hidden)
-                
+            .padding(10)
+            .frame(minHeight: 60)
+            .background {
+                RoundedRectangle(cornerRadius: 26)
+                    .foregroundStyle(Color.Background.secondary)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 26)
+                            .stroke(Color.border)
+                    }
+            }
         }
         .sheet(isPresented: $showSports) {
             ScrollView(.vertical) {
@@ -59,5 +76,5 @@ struct NewEventSportsPicker: View {
 }
 
 #Preview {
-    NewEventSportsPicker(sports: SPORTS_TEMP, selectedSports: .constant([]))
+    NewEventSportsPicker(sports: SPORTS_TEMP, selectedSports: .constant([SPORTS_TEMP[0]]))
 }
