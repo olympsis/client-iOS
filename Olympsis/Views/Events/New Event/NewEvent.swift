@@ -120,9 +120,9 @@ struct NewEvent: View {
                     
                     Spacer()
                     
-                    CircularButton(systemImage: "plus", tint: Color.Brand.primary, size: 44, state: manager.status) {
-                        handleEventCreation(value)
-                    }
+                    Rectangle()
+                        .opacity(0)
+                        .frame(width: 44, height: 0)
                 }.padding([.top, .horizontal])
                 
                 ScrollView {
@@ -266,22 +266,34 @@ struct NewEvent: View {
                     NewEventImagePicker()
                         .environment(manager)
                         .padding(.horizontal)
+                        .padding(.bottom, 10)
                     
                     // MARK: - Tags and advanced settings
-                    Section {
-                        NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
+                    NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)
+                        .padding(.horizontal)
+                        .padding(.bottom, 10)
+                    
+                    HStack {
+                        Spacer()
                         
-                        HStack {
-                            Spacer()
-                            
-                            Button(action: { self.showAdvancedSettings.toggle() }) {
-                                HStack {
-                                    Text(String(localized: "advanced-settings-title", table: "Events"))
-                                        .fontWeight(.bold)
-                                    Image(systemName: "gearshape.fill")
-                                }
+                        Button(action: { self.showAdvancedSettings.toggle() }) {
+                            HStack {
+                                Text(String(localized: "advanced-settings-title", table: "Events"))
+                                    .fontWeight(.bold)
+                                Image(systemName: "gearshape.fill")
                             }
                         }
+                        .padding()
+                        .background {
+                                RoundedRectangle(cornerRadius: 26)
+                                    .foregroundStyle(Color.Background.secondary)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 26)
+                                            .stroke(Color.border)
+                                    }
+                            }
+                        .padding(.trailing)
+                        .padding(.bottom, 10)
                     }
                     
                     // MARK: - Action Button
@@ -291,6 +303,7 @@ struct NewEvent: View {
                         Button(action: { handleEventCreation(value) }) {
                             LoadingButton(text: String(localized: "new-event-create-text", table: "Events"), width: 150, height: 50, status: $manager.status)
                         }
+  
                         
                         Spacer()
                     }.listRowBackground(Color.clear)

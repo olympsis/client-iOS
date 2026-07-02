@@ -71,6 +71,9 @@ struct NewEventAdvancedSettings: View {
                 showRecurringEventSettings.toggle()
             }
         }
+        .background {
+            Color.Background.primary.ignoresSafeArea()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(String(localized: "advanced-settings-title", table: "Events")))
         .onAppear {
