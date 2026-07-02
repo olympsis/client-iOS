@@ -26,8 +26,10 @@ struct NewEvent: View {
     @State private var showPostViolation: Bool = false
     @State private var showCompletedToast: Bool = false
     
-    @State private var showStartTimePicker: Bool = false
-    @State private var showStopTimePicker: Bool = false
+    /// The date/time picker currently being presented, if any. Using an
+    /// item-based sheet lets each pill open the picker scoped to just the
+    /// component it represents (date-only or time-only).
+    @State private var activeDatePicker: DatePickerTarget?
     
     @State private var showAdvancedSettings: Bool = false
     @State private var showOrganizersPicker: Bool = false
@@ -42,6 +44,13 @@ struct NewEvent: View {
     
     private let log = Logger(subsystem: "com.olympsis.client", category: "new_event_view")
     
+    /// Dismisses the keyboard and presents the picker scoped to the given target.
+    private func openPicker(_ target: DatePickerTarget) {
+        titleFocus = false
+        descriptionFocus = false
+        activeDatePicker = target
+    }
+
     private func handleFailure() {
         manager.status = .failure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -94,23 +103,23 @@ struct NewEvent: View {
     
     var body: some View {
         VStack {
-            HStack {
-                CircularButton(systemImage: "xmark") { dismiss() }
-                
-                Spacer()
-                
-                Text("New Event")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                Spacer()
-                
-                CircularButton(systemImage: "plus", tint: Color.Brand.primary) {
-                    
-                }
-            }.padding([.top, .horizontal])
-            
             ScrollViewReader { value in
+                HStack {
+                    CircularButton(systemImage: "xmark") { dismiss() }
+                    
+                    Spacer()
+                    
+                    Text(String(localized: "new-event-view-title", table: "Events"))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                    
+                    CircularButton(systemImage: "plus", tint: Color.Brand.primary) {
+                        handleEventCreation(value)
+                    }
+                }.padding([.top, .horizontal])
+                
                 ScrollView {
                     NewEventTopView(
                         showTypePicker: $showTypePicker,
@@ -134,6 +143,7 @@ struct NewEvent: View {
                     // MARK: - Organizers Picker
                     NewEventOrganizers(manager: manager)
                         .padding(.horizontal)
+                        .padding(.bottom, 10)
                         .sheet(isPresented: $showOrganizersPicker) {
                             EventOrganizersPickerView(
                                 selectedOrganizers: $manager.organizers
@@ -142,79 +152,101 @@ struct NewEvent: View {
                     
                     // MARK: - Sports Picker
                     NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
+                        .padding(.horizontal)
                     
                     // MARK: - Event start/stop dates
-                    Section {
-                        VStack(alignment: .leading){
-                            Text(String(localized: "new-event-start-time-title", table: "Events"))
-                                .font(.headline)
-                                .bold()
-                            
-                            Button(action: {
-                                titleFocus = false
-                                descriptionFocus = false
-                                self.showStartTimePicker.toggle()
-                            }) {
-                                Text(manager.startDateString)
-                                    .modifier(InputFieldModifier())
+                    VStack(alignment: .leading) {
+                        Text(String(localized: "new-event-time-title", table: "Events").uppercased())
+                            .font(.caption)
+                            .bold()
+
+                        // Card containing the "Starts" and "Ends" rows, each with a
+                        // date pill and a time pill that open the date picker sheet.
+                        VStack(spacing: 0) {
+                            // MARK: Starts row
+                            HStack {
+                                Text(String(localized: "new-event-starts-title", table: "Events"))
+                                    .bold()
+
+                                Spacer()
+
+                                TimePill(text: manager.startDayString) { openPicker(.startDate) }
+                                TimePill(text: manager.startTimeString) { openPicker(.startTime) }
+                            }
+                            .padding(.vertical, 12)
+                            .id(2)
+
+                            Divider()
+
+                            // MARK: Ends row
+                            HStack {
+                                Text(String(localized: "new-event-ends-title", table: "Events"))
+                                    .bold()
+
+                                Spacer()
+
+                                TimePill(text: manager.endDayString) { openPicker(.endDate) }
+                                TimePill(text: manager.endTimeString) { openPicker(.endTime) }
+                            }
+                            .padding(.vertical, 12)
+                            .id(3)
+                        }
+                        .padding(.horizontal)
+                        // A single item-based sheet presents the picker scoped to
+                        // whichever pill was tapped (date-only or time-only).
+                        .sheet(item: $activeDatePicker) { target in
+                            switch target {
+                            case .startDate:
+                                EventDatePickerView(eventTime: $manager.startDate, displayedComponents: .date)
+                                    .presentationDetents([.medium])
+                            case .startTime:
+                                EventDatePickerView(eventTime: $manager.startDate, displayedComponents: .hourAndMinute)
+                                    .presentationDetents([.medium])
+                            case .endDate:
+                                EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate, displayedComponents: .date)
+                                    .presentationDetents([.medium])
+                            case .endTime:
+                                EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate, displayedComponents: .hourAndMinute)
+                                    .presentationDetents([.medium])
                             }
                         }
-                        .sheet(isPresented: $showStartTimePicker, content: {
-                            EventDatePickerView(eventTime: $manager.startDate)
-                                .presentationDetents([.medium])
-                        })
-                        .id(2)
-                        
-                        
-                        VStack(alignment: .leading){
-                            Text(String(localized: "new-event-stop-time-title", table: "Events"))
-                                .font(.headline)
-                                .bold()
-                            
-                            Button(action: {
-                                titleFocus = false
-                                descriptionFocus = false
-                                self.showStopTimePicker.toggle()
-                            }) {
-                                Text(manager.endDateString)
-                                    .modifier(InputFieldModifier())
-                            }
+                        .background {
+                            RoundedRectangle(cornerRadius: 26)
+                                .foregroundStyle(manager.validationStatus == .unexpected ? Color.red.opacity(0.5) : Color.Background.secondary)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 26)
+                                        .stroke(Color.border)
+                                }
                         }
-                        .sheet(isPresented: $showStopTimePicker, content: {
-                            EventDatePickerView(eventTime: $manager.endDate, startingPoint: manager.startDate)
-                                .presentationDetents([.medium])
-                        })
-                        .listRowBackground(manager.validationStatus == .unexpected ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
-                        .id(3)
                     }
-                    
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+
                     // MARK: - Description
-                    Section {
-                        VStack(alignment: .leading){
-                            Text(String(localized: "new-event-description-title", table: "Events"))
-                                .font(.headline)
-                                .bold()
-                            Text(String(localized: "new-event-description-sub-title", table: "Events"))
-                                .foregroundColor(manager.validationStatus == .noDescription ? .red : .gray)
-                                .font(.subheadline)
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color.Background.secondary)
-                                    .frame(height: 150)
-                                    .overlay {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                                    }
-                                TextEditor(text: $manager.body)
-                                    .focused($descriptionFocus)
-                                    .frame(height: 145)
-                                    .scrollContentBackground(.hidden)
-                                    .padding(.horizontal, 5)
-                            }
+                    VStack(alignment: .leading) {
+                        Text(String(localized: "new-event-description-title", table: "Events").uppercased())
+                            .font(.caption)
+                            .bold()
+                            .foregroundStyle(manager.validationStatus == .noDescription ? Color.red : Color.primary)
+
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 26)
+                                .foregroundStyle(Color.Background.secondary)
+                                .frame(height: 250)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 26)
+                                        .stroke(manager.validationStatus == .noDescription ? Color.red : Color.border)
+                                }
+                            TextEditor(text: $manager.body)
+                                .focused($descriptionFocus)
+                                .frame(height: 230)
+                                .scrollContentBackground(.hidden)
+                                .padding(.horizontal, 12)
                         }
-                        .listRowBackground(manager.validationStatus == .noDescription ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                         .id(4)
                     }
+                    .padding(.horizontal)
+                    .padding(.top, 10)
                     
                     // MARK: - Venue picker
                     Section {
@@ -281,12 +313,12 @@ struct NewEvent: View {
                 }
                 .onChange(of: manager.startDate) { _, v in
                     if v > manager.endDate {
-                        manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
+                        manager.endDate = manager.startDate.addingTimeInterval(60 * 60)
                     }
                 }
                 .onChange(of: manager.endDate) { _, v in
                     if v < manager.startDate {
-                        manager.endDate = manager.startDate.addingTimeInterval(30 * 60)
+                        manager.endDate = manager.startDate.addingTimeInterval(60 * 60)
                     } else {
                         manager.endDate = v
                     }
@@ -310,6 +342,35 @@ struct NewEvent: View {
         .background(Color.Background.primary.ignoresSafeArea())
         .onDisappear {
             manager.clearGeocodeCache()
+        }
+    }
+}
+
+/// Identifies which pill's picker is being presented so a single item-based
+/// sheet can show the correct binding and scope (date-only vs time-only).
+private enum DatePickerTarget: Identifiable {
+    case startDate, startTime, endDate, endTime
+    var id: Self { self }
+}
+
+/// A tappable, capsule-shaped pill used to display the event's date or time
+/// inside the time card. Tapping it opens the associated date picker sheet.
+private struct TimePill: View {
+    let text: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(text)
+                .font(.body)
+                .fontWeight(.medium)
+                .foregroundStyle(.primary)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 14)
+                .background {
+                    Capsule()
+                        .foregroundStyle(Color.Background.tertiary)
+                }
         }
     }
 }

@@ -44,6 +44,26 @@ class NewEventManager {
         dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
         return dateFormatter.string(from: endDate)
     }
+
+    // Date-only string for the time card pills (e.g. "Jun 30, 2026")
+    var startDayString: String { NewEventManager.dayFormatter.string(from: startDate) }
+    var endDayString: String { NewEventManager.dayFormatter.string(from: endDate) }
+
+    // Time-only string for the time card pills (e.g. "7:00 PM")
+    var startTimeString: String { NewEventManager.timeFormatter.string(from: startDate) }
+    var endTimeString: String { NewEventManager.timeFormatter.string(from: endDate) }
+
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter
+    }()
+
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        return formatter
+    }()
     
     // Location(s)
     var selectedVenues = [Venue]()
