@@ -413,10 +413,58 @@ enum SkillLevel: String, CaseIterable {
 }
 
 enum EVENT_TYPES: String, CaseIterable, Codable {
-    case Regular = "REGULAR"
-    case League = "LEAGUE"
-    case Tournament = "TOURNAMENT"
-    case Class = "CLASS"
+    case Regular = "Regular"
+    case Class = "Class"
+    case Match = "Match"
+    case League = "League"
+    case Tournament = "Tournament"
+    
+    func image() -> Image {
+        switch self {
+        case .Regular:
+            return .init(systemName: "sun.min.fill")
+        case .Class:
+            return .init(systemName: "book.closed.fill")
+        case .Match:
+            return .init(systemName: "calendar.day.timeline.left")
+        case .League:
+            return .init(systemName: "person.3.fill")
+        case .Tournament:
+            return .init(systemName: "trophy.fill")
+        }
+    }
+    
+    func description() -> String {
+        switch self {
+        case .Regular:
+            return String(localized: "event-type-regular-desc", table: "Events")
+        case .Class:
+            return String(localized: "event-type-class-desc", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match-desc", table: "Events")
+        case .League:
+            return String(localized: "event-type-league-desc", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament-desc", table: "Events")
+        }
+    }
+
+    /// Optional supporting tip shown beneath the description in the type picker.
+    /// `Regular` has no tip; the others map to `event-type-<type>-tip` keys in `Events.xcstrings`.
+    func tip() -> String? {
+        switch self {
+        case .Regular:
+            return nil
+        case .Class:
+            return String(localized: "event-type-class-tip", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match-tip", table: "Events")
+        case .League:
+            return String(localized: "event-type-league-tip", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament-tip", table: "Events")
+        }
+    }
 }
 
 

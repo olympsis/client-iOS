@@ -1709,19 +1709,42 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A structured training session or instructional event led by a coach or instructor."
+            "value" : "A structured session focused on skill development, drills, or coaching. No scorekeeping or team rosters needed."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una sesión de entrenamiento estructurada o evento instructivo dirigido por un entrenador o instructor."
+            "value" : "Una sesión estructurada enfocada en el desarrollo de habilidades, ejercicios o entrenamiento. No requiere marcador ni listas de equipos."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une séance d'entraînement structurée ou un événement pédagogique dirigé par un entraîneur ou un instructeur."
+            "value" : "Une session structurée axée sur le développement des compétences, les exercices ou le coaching. Aucun score ni composition d'équipe requis."
+          }
+        }
+      }
+    },
+    "event-type-class-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best for training groups, clinics, or beginner programs."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal para grupos de entrenamiento, clínicas o programas para principiantes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idéal pour les groupes d'entraînement, les stages ou les programmes pour débutants."
           }
         }
       }
@@ -1732,19 +1755,88 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A recurring competitive season where teams or individuals play a series of matches over time."
+            "value" : "A recurring competitive format where teams play against each other over a set season or series of scheduled matches. Standings are tracked throughout."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una temporada competitiva recurrente donde equipos o individuos juegan una serie de partidos a lo largo del tiempo."
+            "value" : "Un formato competitivo recurrente donde los equipos juegan entre sí durante una temporada establecida o una serie de partidos programados. La clasificación se registra durante todo el proceso."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une saison compétitive récurrente où des équipes ou des individus jouent une série de matchs au fil du temps."
+            "value" : "Un format compétitif récurrent où les équipes s'affrontent au cours d'une saison définie ou d'une série de matchs programmés. Le classement est suivi tout au long."
+          }
+        }
+      }
+    },
+    "event-type-league-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires an existing Tournament event. Create a Tournament first before adding a League."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requiere un evento de Torneo existente. Crea un Torneo primero antes de agregar una Liga."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessite un événement Tournoi existant. Créez d'abord un Tournoi avant d'ajouter une Ligue."
+          }
+        }
+      }
+    },
+    "event-type-match-desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A single game between two teams, played as part of a larger tournament."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un solo partido entre dos equipos, jugado como parte de un torneo más grande."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un seul match entre deux équipes, disputé dans le cadre d'un tournoi plus large."
+          }
+        }
+      }
+    },
+    "event-type-match-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires an existing Tournament event. Create a Tournament first before adding a Match."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requiere un evento de Torneo existente. Crea un Torneo primero antes de agregar un Partido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessite un événement Tournoi existant. Créez d'abord un Tournoi avant d'ajouter un Match."
           }
         }
       }
@@ -1755,19 +1847,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "An informal game, for people to come play without any prior registration required. Can be set to Public or Invite Only."
+            "value" : "A casual, open sports session — no teams, leagues, or registration required. Anyone can join and play."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un juego informal, para que la gente venga a jugar sin necesidad de registro previo. Puede ser público o solo por invitación."
+            "value" : "Una sesión deportiva informal y abierta: sin equipos, ligas ni registro. Cualquiera puede unirse y jugar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un jeu informel, où les gens peuvent venir jouer sans inscription préalable. Peut être défini comme public ou sur invitation uniquement."
+            "value" : "Une session sportive décontractée et ouverte — sans équipes, ligues ni inscription. Tout le monde peut participer et jouer."
           }
         }
       }
@@ -1801,19 +1893,42 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A competitive event where individuals or teams compete in a structured format to determine a winner."
+            "value" : "A structured competitive event made up of multiple matches and teams. Individual matches can be created and linked once the tournament is set up."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un evento competitivo donde individuos o equipos compiten en un formato estructurado para determinar un ganador."
+            "value" : "Un evento competitivo estructurado compuesto por varios partidos y equipos. Los partidos individuales se pueden crear y vincular una vez configurado el torneo."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un événement compétitif où des individus ou des équipes s'affrontent dans un format structuré pour déterminer un gagnant."
+            "value" : "Un événement compétitif structuré composé de plusieurs matchs et équipes. Les matchs individuels peuvent être créés et liés une fois le tournoi configuré."
+          }
+        }
+      }
+    },
+    "event-type-tournament-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create this first before adding any matches."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea esto primero antes de agregar cualquier partido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créez ceci en premier avant d'ajouter des matchs."
           }
         }
       }
@@ -3617,19 +3732,42 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Only you, the participants and those whom you have shared the event with can interact with this event."
+            "value" : "Only visible to people you invite or those with a direct link. Won't appear in search or browse results."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sólo usted, los participantes y aquellos con quienes ha compartido el evento pueden interactuar con este evento."
+            "value" : "Solo visible para las personas que invites o quienes tengan un enlace directo. No aparecerá en los resultados de búsqueda ni de exploración."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seuls vous, les participants et ceux avec qui vous avez partagé l'événement pouvez interagir avec cet événement."
+            "value" : "Visible uniquement par les personnes que vous invitez ou celles disposant d'un lien direct. N'apparaîtra pas dans les résultats de recherche ou de navigation."
+          }
+        }
+      }
+    },
+    "visibility-private-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal for closed leagues, team-only sessions, or invite-only tournaments."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal para ligas cerradas, sesiones solo para equipos o torneos exclusivos por invitación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idéal pour les ligues fermées, les sessions réservées aux équipes ou les tournois sur invitation uniquement."
           }
         }
       }
@@ -3663,19 +3801,42 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anyone on olympsis can see this event and interact with it."
+            "value" : "Visible to everyone on the platform. Anyone can discover and view this event without an invitation."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cualquiera en Olympsis puede ver este evento e interactuar con él."
+            "value" : "Visible para todos en la plataforma. Cualquiera puede descubrir y ver este evento sin una invitación."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toute personne sur Olympsis peut voir cet événement et interagir avec lui."
+            "value" : "Visible par tout le monde sur la plateforme. N'importe qui peut découvrir et consulter cet événement sans invitation."
+          }
+        }
+      }
+    },
+    "visibility-public-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best for open pick-up games, community tournaments, or events you want maximum turnout for."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal para juegos abiertos, torneos comunitarios o eventos en los que quieres la máxima participación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idéal pour les matchs improvisés ouverts, les tournois communautaires ou les événements pour lesquels vous souhaitez une participation maximale."
           }
         }
       }
