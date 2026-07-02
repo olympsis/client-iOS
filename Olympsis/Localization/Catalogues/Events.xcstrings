@@ -3686,19 +3686,42 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Any members associated to any of the hosting groups for this event will be able to interact with this event."
+            "value" : "Only visible to members of your club or organization. Anyone outside the group won't be able to see or discover this event."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cualquier miembro asociado a cualquiera de los grupos anfitriones de este evento podrá interactuar con este evento."
+            "value" : "Solo visible para los miembros de tu club u organización. Cualquier persona fuera del grupo no podrá ver ni descubrir este evento."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les membres associés à l'un des groupes d'hébergement de cet événement pourront interagir avec cet événement."
+            "value" : "Visible uniquement par les membres de votre club ou organisation. Toute personne extérieure au groupe ne pourra pas voir ni découvrir cet événement."
+          }
+        }
+      }
+    },
+    "visibility-group-tip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal for internal club sessions, organization-wide events, or anything meant for your members only."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ideal para sesiones internas del club, eventos de toda la organización o cualquier cosa destinada solo a tus miembros."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idéal pour les sessions internes du club, les événements à l'échelle de l'organisation ou tout ce qui est destiné uniquement à vos membres."
           }
         }
       }

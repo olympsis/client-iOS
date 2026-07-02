@@ -363,6 +363,54 @@ enum EVENT_VISIBILITY_TYPES: String, CaseIterable, Codable {
     case Public = "PUBLIC"
     case Group = "GROUP"
     case Private = "PRIVATE"
+
+    /// SF Symbol shown beside the visibility name in the picker. Uses the filled variants.
+    func image() -> Image {
+        switch self {
+        case .Public:
+            return .init(systemName: "sun.max.fill")
+        case .Private:
+            return .init(systemName: "moon.fill")
+        case .Group:
+            return .init(systemName: "person.3.fill")
+        }
+    }
+
+    /// Localized display name for the visibility option.
+    func name() -> String {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group", table: "Events")
+        }
+    }
+
+    /// Localized explanation of what the visibility option means.
+    func description() -> String {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public-details", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private-details", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group-details", table: "Events")
+        }
+    }
+
+    /// Optional supporting tip shown beneath the description in the visibility picker.
+    func tip() -> String? {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public-tip", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private-tip", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group-tip", table: "Events")
+        }
+    }
 }
 
 enum EVENT_SKILL_LEVELS: String, CaseIterable {
