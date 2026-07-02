@@ -432,6 +432,7 @@
 		5DF5CFC22C0450D5008F5374 /* ClubLogoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */; };
 		5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */; };
 		5DF5ECB52FF6D74A0032C63B /* CircularButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5ECB42FF6D74A0032C63B /* CircularButton.swift */; };
+		5DF5ECB72FF70E410032C63B /* RecentLocationsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5ECB62FF70E410032C63B /* RecentLocationsStore.swift */; };
 		5DF8C8782BF18EB8002FE392 /* LocationRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */; };
 		5DF8C87E2BF1B2AA002FE392 /* EventSmallListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */; };
 		5DF8C8802BF2F985002FE392 /* EndUserLicenseAgreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */; };
@@ -1057,6 +1058,7 @@
 		5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgLogo.swift; sourceTree = "<group>"; };
 		5DF5ECAB2FF43BF80032C63B /* OlympsisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DF5ECB42FF6D74A0032C63B /* CircularButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularButton.swift; sourceTree = "<group>"; };
+		5DF5ECB62FF70E410032C63B /* RecentLocationsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentLocationsStore.swift; sourceTree = "<group>"; };
 		5DF8C8772BF18EB8002FE392 /* LocationRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRequestView.swift; sourceTree = "<group>"; };
 		5DF8C87D2BF1B2AA002FE392 /* EventSmallListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSmallListItem.swift; sourceTree = "<group>"; };
 		5DF8C87F2BF2F985002FE392 /* EndUserLicenseAgreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndUserLicenseAgreement.swift; sourceTree = "<group>"; };
@@ -2295,6 +2297,7 @@
 				5D26182F2D715AE300FE2923 /* CalendarManager.swift */,
 				5D2618312D72541200FE2923 /* QuickActionsManager.swift */,
 				5DA3DF412D9A180E00CEE236 /* SearchManager.swift */,
+				5DF5ECB62FF70E410032C63B /* RecentLocationsStore.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3053,6 +3056,7 @@
 				9A353708292A04B0005EC806 /* NewEvent.swift in Sources */,
 				5D78BDE62C0D37BC00F170D6 /* NewEventSportsPicker.swift in Sources */,
 				5F4E53F22A28E91800257350 /* WelcomeCard.swift in Sources */,
+				5DF5ECB72FF70E410032C63B /* RecentLocationsStore.swift in Sources */,
 				5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */,
 				5D6C01432C07BB77006A264C /* Onboard-AboutEvents.swift in Sources */,
 				5D9E745D2DFCE72B0094C0D1 /* EventFormatView.swift in Sources */,

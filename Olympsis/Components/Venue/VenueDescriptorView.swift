@@ -106,14 +106,25 @@ struct VenueDescriptorView: View {
     }
     
     var body: some View {
-        Group {
-            Map(position: $camera, interactionModes: .pan) {
-                Marker(name ?? "Venue", coordinate: location)
-            }
-            .frame(height: 100)
-            .mapStyle(.standard(elevation: .realistic))
-            .cornerRadius(radius: 10, corners: .allCorners)
+        Map(position: $camera, interactionModes: .pan) {
+            Marker(name ?? "Venue", coordinate: location)
         }
+        .frame(height: 130)
+        .mapStyle(.standard(elevation: .realistic))
+        // Venue name shown as a translucent band across the bottom of the card.
+        .overlay(alignment: .bottomLeading) {
+            Text(name ?? String(localized: "selected-location-text", table: "General"))
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.ultraThinMaterial)
+        }
+        // Clip the map + name band together so the band respects the rounded corners.
+        .cornerRadius(radius: 12, corners: .allCorners)
         .task {
             guard let v = await fetchVenue() else {
                 return

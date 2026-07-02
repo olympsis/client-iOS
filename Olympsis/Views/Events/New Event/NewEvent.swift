@@ -72,8 +72,10 @@ struct NewEvent: View {
             do {
                 try await createEvent(value: value)
             } catch MediaUploadError.innapropriateContent {
+                handleFailure()
                 self.showPostViolation.toggle()
             } catch {
+                handleFailure()
                 showToast.toggle()
             }
         }
@@ -95,17 +97,20 @@ struct NewEvent: View {
         guard let id = try await manager.createEvent(user: user),
             let url = URL(string: "olympsis://events?id=\(id)") else {
             log.error("Failed to create event. No ID or failed to construct URL.")
+            handleFailure()
             return
         }
+        // Open the newly created event, then flip the button to its success state
+        // (checkmark) and dismiss after a brief beat.
         openURL(url)
-        dismiss()
+        handleSuccess()
     }
     
     var body: some View {
         VStack {
             ScrollViewReader { value in
                 HStack {
-                    CircularButton(systemImage: "xmark") { dismiss() }
+                    CircularButton(systemImage: "xmark", size: 44) { dismiss() }
                     
                     Spacer()
                     
@@ -115,7 +120,7 @@ struct NewEvent: View {
                     
                     Spacer()
                     
-                    CircularButton(systemImage: "plus", tint: Color.Brand.primary) {
+                    CircularButton(systemImage: "plus", tint: Color.Brand.primary, size: 44, state: manager.status) {
                         handleEventCreation(value)
                     }
                 }.padding([.top, .horizontal])
@@ -153,6 +158,7 @@ struct NewEvent: View {
                     // MARK: - Sports Picker
                     NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
                         .padding(.horizontal)
+                        .padding(.bottom, 10)
                     
                     // MARK: - Event start/stop dates
                     VStack(alignment: .leading) {
@@ -220,7 +226,7 @@ struct NewEvent: View {
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.top, 10)
+                    .padding(.bottom, 10)
 
                     // MARK: - Description
                     VStack(alignment: .leading) {
@@ -246,22 +252,20 @@ struct NewEvent: View {
                         .id(4)
                     }
                     .padding(.horizontal)
-                    .padding(.top, 10)
+                    .padding(.bottom, 10)
                     
                     // MARK: - Venue picker
-                    Section {
-                        VenuePickerButton(validationStatus: $manager.validationStatus)
-                            .environment(session)
-                            .environment(manager)
-                            .listRowBackground(manager.validationStatus == .noSelectedField ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
-                            .id(5)
-                    }
+                    VenuePickerButton(validationStatus: $manager.validationStatus)
+                        .environment(session)
+                        .environment(manager)
+                        .listRowBackground(manager.validationStatus == .noSelectedField ? Color.red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                        .id(5)
+                        .padding(.bottom, 10)
                     
                     // MARK: - Image picker
-                    Section {
-                        NewEventImagePicker()
-                            .environment(manager)
-                    }
+                    NewEventImagePicker()
+                        .environment(manager)
+                        .padding(.horizontal)
                     
                     // MARK: - Tags and advanced settings
                     Section {

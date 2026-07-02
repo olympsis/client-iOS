@@ -22,18 +22,6 @@ import SwiftUI
 /// New Event header); leave it `nil` for a clear/frosted variant (like the "X" close button).
 struct CircularButton: View {
 
-    /// The visual + interaction state that drives which glyph the button shows.
-    enum ButtonState: Equatable {
-        /// Default state: shows the passed-in `systemImage`.
-        case idle
-        /// In-flight: shows a spinner and ignores taps.
-        case loading
-        /// Operation succeeded: shows a checkmark.
-        case success
-        /// Operation failed: shows an exclamation mark.
-        case failure
-    }
-
     /// SF Symbol shown while the button is idle.
     let systemImage: String
 
@@ -44,8 +32,13 @@ struct CircularButton: View {
     /// Diameter of the button in points.
     var size: CGFloat = 60
 
-    /// Current state. Drive this from the parent's `@State` while an async task runs.
-    var state: ButtonState = .idle
+    /// Current state, using the app-wide `LOADING_STATE`. Drive this from the parent's
+    /// `@State` while an async task runs:
+    /// - `.pending` shows the passed-in `systemImage` (the resting/idle look).
+    /// - `.loading` shows a spinner and ignores taps.
+    /// - `.success` shows a checkmark.
+    /// - `.failure` shows an exclamation mark.
+    var state: LOADING_STATE = .pending
 
     /// Action performed on tap. Ignored while the button is in the `.loading` state.
     var action: () -> Void
@@ -74,7 +67,7 @@ struct CircularButton: View {
     @ViewBuilder
     private var iconContent: some View {
         switch state {
-        case .idle:
+        case .pending:
             Image(systemName: systemImage)
                 .transition(.scale.combined(with: .opacity))
         case .loading:
@@ -150,7 +143,7 @@ private struct CircularGlassBackground: ViewModifier {
     // Interactive preview that cycles a button through its states on tap so you can
     // see the loading -> success/failure transitions.
     struct PreviewHost: View {
-        @State private var state: CircularButton.ButtonState = .idle
+        @State private var state: LOADING_STATE = .pending
 
         var body: some View {
             VStack(spacing: 40) {
@@ -179,7 +172,7 @@ private struct CircularGlassBackground: ViewModifier {
                 try? await Task.sleep(for: .seconds(1.2))
                 state = .success
                 try? await Task.sleep(for: .seconds(1))
-                state = .idle
+                state = .pending
             }
         }
     }

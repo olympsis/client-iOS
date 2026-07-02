@@ -14,85 +14,67 @@ struct VenuePickerButton: View {
     // Controls programmatic navigation to the venue picker
     @State private var showVenuePicker: Bool = false
     
-    private var hasSelectedVenue: Bool {
-        return !manager.selectedVenues.isEmpty || !manager.selectedVenueDescriptors.isEmpty
-    }
-    
     @Environment(SessionStore.self) private var session
     @Environment(NewEventManager.self) private var manager
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(String(localized: "new-event-location-title", table: "Events"))
-                        .font(.headline)
-                        .bold()
-                    Text(String(localized: "new-event-location-sub-title", table: "Events"))
-                        .font(.subheadline)
-                        .foregroundColor(validationStatus == .noSelectedField ? .red : .gray)
-                }
-                
-                Spacer()
-                
-                if hasSelectedVenue {
-                    // Use a plain Button instead of NavigationLink to avoid the Form/List
-                    // row treating the entire section as a navigation target
-                    Button(action: { showVenuePicker = true }) {
-                        Text("Add")
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 5)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color.Background.secondary)
-                            }
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                            }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
+            // Section title, styled to match the sport / date / organizer sections.
+            Text(String(localized: "new-event-location-title", table: "Events").uppercased())
+                .font(.caption)
+                .bold()
+                .foregroundStyle(validationStatus == .noSelectedField ? Color.red : Color.primary)
             
-            if hasSelectedVenue {
-                ForEach(manager.selectedVenueDescriptors, id: \.self) { descriptor in
-                    HStack {
-                        VenueDescriptorView(item: descriptor)
+            // MARK: - Selected locations
+            // Each selected venue renders as a map card with a red "x" to remove it.
+            ForEach(manager.selectedVenueDescriptors, id: \.self) { descriptor in
+                VenueDescriptorView(item: descriptor)
+                    .overlay(alignment: .topTrailing) {
                         Button(action: { manager.removeVenueDescriptor(descriptor) }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.red)
-                                .frame(width: 50, height: 100)
-                                .overlay {
-                                    Image(systemName: "xmark")
-                                        .fontWeight(.bold)
-                                        .imageScale(.large)
-                                        .foregroundStyle(.white)
+                            Image(systemName: "xmark")
+                                .font(.footnote)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                                .padding(8)
+                                .background {
+                                    Circle()
+                                        .foregroundStyle(.red)
                                 }
                         }
                         .buttonStyle(.plain)
+                        .padding(8)
                     }
-                }
-            } else {
-                Button(action: { showVenuePicker = true }) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.Background.secondary)
-                        .frame(height: 100)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-                        }
-                        .overlay {
-                            Text(String(localized: "pick-a-location-text", table: "Events"))
-                        }
-                }
-                .buttonStyle(.plain)
             }
+            
+            // MARK: - Add a location
+            // Always available so users can add one or more locations to the event.
+            Button(action: { showVenuePicker = true }) {
+                HStack {
+                    Image(systemName: "plus")
+                    Text(String(localized: "add-a-location-text", table: "Events"))
+                }
+                .fontWeight(.medium)
+                .foregroundStyle(.primary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background {
+                    RoundedRectangle(cornerRadius: 26)
+                        .foregroundStyle(Color.Background.secondary)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 26)
+                                .stroke(Color.border)
+                        }
+                }
+            }
+            .buttonStyle(.plain)
         }
-        .fullScreenCover(isPresented: $showVenuePicker, content: {
+        .padding(.horizontal)
+        // The location picker is presented as a sheet with a drag indicator.
+        .sheet(isPresented: $showVenuePicker) {
             EventVenuePicker(manager: manager)
                 .environment(session)
-        })
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
