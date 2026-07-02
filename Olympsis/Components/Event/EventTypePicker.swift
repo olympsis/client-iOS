@@ -90,7 +90,7 @@ struct EventTypePicker: View {
         }
         .ignoresSafeArea(.all)
         .presentationDragIndicator(.visible)
-        .background { Color.Background.primary }
+        .background(Color.Background.primary.ignoresSafeArea())
     }
 }
 

@@ -17,52 +17,84 @@ struct NewEventTopView: View {
     
     var body: some View {
         ScrollView(.horizontal) {
-            HStack {                
-                Button(action: { self.showVisibilityPicker.toggle() }){
-                    HStack {
-                        switch eventVisibility {
-                        case .Public:
-                            Image(systemName: "globe.americas.fill")
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("TYPE")
+                        .font(.caption)
+                    
+                    Button(action: {self.showTypePicker.toggle() }) {
+                        HStack {
+                            // Icon comes straight from the picker's EVENT_TYPES.image() so the
+                            // button and the picker always show the same symbol for a given type.
+                            eventType.image()
                                 .foregroundStyle(.white)
-                            Text(String(localized: "visibility-public", table: "Events"))
-                                .foregroundStyle(.white)
-                            Image(systemName: "chevron.down")
-                                .imageScale(.small)
-                                .foregroundStyle(.white)
-                        case .Private:
-                            Image(systemName: "lock.fill")
-                                .foregroundStyle(.white)
-                            Text(String(localized: "visibility-private", table: "Events"))
-                                .foregroundStyle(.white)
-                            Image(systemName: "chevron.down")
-                                .imageScale(.small)
-                                .foregroundStyle(.white)
-                        case .Group:
-                            Image(systemName: "person.3.fill")
-                                .foregroundStyle(.white)
-                            Text(String(localized: "visibility-group", table: "Events"))
+                            Text(eventType.rawValue)
                                 .foregroundStyle(.white)
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
                                 .foregroundStyle(.white)
                         }
-                        
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 5)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(Color("color-prime"))
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color("color-prime"))
+                        }
                     }
                 }
                 
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("VISIBILITY")
+                        .font(.caption)
+                    
+                    Button(action: { self.showVisibilityPicker.toggle() }){
+                        HStack {
+                            switch eventVisibility {
+                            case .Public:
+                                Image(systemName: "globe.americas.fill")
+                                    .foregroundStyle(.white)
+                                Text(String(localized: "visibility-public", table: "Events"))
+                                    .foregroundStyle(.white)
+                                Image(systemName: "chevron.down")
+                                    .imageScale(.small)
+                                    .foregroundStyle(.white)
+                            case .Private:
+                                Image(systemName: "lock.fill")
+                                    .foregroundStyle(.white)
+                                Text(String(localized: "visibility-private", table: "Events"))
+                                    .foregroundStyle(.white)
+                                Image(systemName: "chevron.down")
+                                    .imageScale(.small)
+                                    .foregroundStyle(.white)
+                            case .Group:
+                                Image(systemName: "person.3.fill")
+                                    .foregroundStyle(.white)
+                                Text(String(localized: "visibility-group", table: "Events"))
+                                    .foregroundStyle(.white)
+                                Image(systemName: "chevron.down")
+                                    .imageScale(.small)
+                                    .foregroundStyle(.white)
+                            }
+                            
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color("color-prime"))
+                        }
+                    }
+                }
+
                 Spacer()
             }
-            .fullScreenCover(isPresented: $showTypePicker) {
+            .sheet(isPresented: $showTypePicker) {
                 EventTypePicker(type: $eventType)
+                    .presentationDetents([.medium])
             }
-            .fullScreenCover(isPresented: $showVisibilityPicker) {
+            .sheet(isPresented: $showVisibilityPicker) {
                 EventVisibilityPickerView(visibility: $eventVisibility)
+                    .presentationDetents([.medium])
             }
         }
     }

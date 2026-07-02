@@ -89,7 +89,9 @@ struct EventVisibilityPickerView: View {
         }
         .ignoresSafeArea(.all)
         .presentationDragIndicator(.visible)
-        .background { Color.Background.primary }
+        // Let the background color bleed into the safe areas so it fills the full
+        // height of the sheet, including the bottom home-indicator region.
+        .background(Color.Background.primary.ignoresSafeArea())
     }
 }
 
