@@ -151,7 +151,6 @@ enum EVENT_ROUTES: Codable, Hashable {
     )
     case event(event: Event)
     case upNextEvents(events: [Event])
-    case new
     case venue(venue: Venue)
 }
 

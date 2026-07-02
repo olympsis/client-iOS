@@ -306,7 +306,9 @@ struct NewEvent: View {
   
                         
                         Spacer()
-                    }.listRowBackground(Color.clear)
+                    }
+                    .padding(.horizontal)
+                    .listRowBackground(Color.clear)
                     
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -340,7 +342,7 @@ struct NewEvent: View {
                         manager.endDate = v
                     }
                 }
-                .fullScreenCover(isPresented: $showAdvancedSettings, content: {
+                .sheet(isPresented: $showAdvancedSettings, content: {
                     NewEventAdvancedSettings()
                         .environment(manager)
                 })

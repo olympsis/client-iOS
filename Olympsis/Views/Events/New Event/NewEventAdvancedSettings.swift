@@ -22,24 +22,6 @@ struct NewEventAdvancedSettings: View {
     
     var body: some View {
         ScrollView {
-            HStack {
-                if #available(iOS 26.0, *) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .imageScale(.large)
-                            .frame(width: 50, height: 50)
-                            .glassEffect()
-                    }
-                } else {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .imageScale(.large)
-                    }
-                }
-                
-                Spacer()
-            }.padding()
-            
             // MARK: - Hide Poster
             if (!manager.organizers.isEmpty) {
                 VStack(alignment: .leading){
@@ -74,6 +56,7 @@ struct NewEventAdvancedSettings: View {
         .background {
             Color.Background.primary.ignoresSafeArea()
         }
+        .presentationDragIndicator(.visible)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(String(localized: "advanced-settings-title", table: "Events")))
         .onAppear {

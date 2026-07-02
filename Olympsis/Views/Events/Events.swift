@@ -52,11 +52,11 @@ struct Events: View {
                     
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         if #available(iOS 26.0, *) {
-                            Button(action: { router.navigate(to: .new) }) {
+                            Button(action: { showNewEvent.toggle() }) {
                                 Image(systemName: "plus")
                             }
                         } else {
-                            CircularChip(systemImage: "plus", action: { router.navigate(to: .new) })
+                            CircularChip(systemImage: "plus", action: { showNewEvent.toggle() })
                         }
                         if #available(iOS 26.0, *) {
                             Button(action: { viewModel.isSearchActive.toggle() }) {
@@ -68,11 +68,6 @@ struct Events: View {
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
-                    // Reconcile the new filter selections against the
-                    // previously-applied ones. Adding a filter fetches the
-                    // difference from the server for the active page;
-                    // removing one just re-filters the cache locally.
-                    // See `EventsViewModel.applyFilterChanges`.
                     Task {
                         await viewModel.applyFilterChanges(from: manager, in: session)
                     }
@@ -81,6 +76,9 @@ struct Events: View {
                         .environment(session)
                         .environment(manager)
                         .presentationDragIndicator(.visible)
+                })
+                .sheet(isPresented: $showNewEvent, content: {
+                    NewEvent(manager: NewEventManager())
                 })
                 .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                     switch route {
@@ -97,8 +95,6 @@ struct Events: View {
                     case .upNextEvents(let events):
                         UpNextEvents(events: events)
                             .environment(session)
-                    case .new:
-                        NewEvent(manager: NewEventManager())
                     case .venue(let venue):
                         VenueView(venue: venue, isFullScreen: true)
                             .environment(session)

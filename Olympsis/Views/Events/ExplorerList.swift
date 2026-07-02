@@ -19,6 +19,10 @@ struct ExplorerList: View {
     /// `EventsExplorer` so the in-drawer filter button toggles the
     /// existing `FilterView` sheet that lives on `Events`.
     var showMenu: Binding<Bool>? = nil
+    /// Bound to the parent's new-event sheet state. The new-event flow
+    /// is presented as a sheet by the host (`Events`), not a nav route,
+    /// so the empty-state "create" CTA flips this instead of routing.
+    var showNewEvent: Binding<Bool>? = nil
     /// Lifted to the parent so the floating drawer-actions overlay
     /// and the in-drawer calendar share the same picked date — both
     /// pickers should scroll the list to the same place.
@@ -300,10 +304,11 @@ struct ExplorerList: View {
                             // No events nearby (including a 204 response) —
                             // show the encouraging empty state instead of the
                             // failure view. The "create" CTA only appears when
-                            // we have a router to push the new-event flow onto.
+                            // we have a `showNewEvent` binding to present the
+                            // new-event sheet with.
                             EventsEmptyState(
-                                onCreate: router.map { router in
-                                    { router.navigate(to: .new) }
+                                onCreate: showNewEvent.map { showNewEvent in
+                                    { showNewEvent.wrappedValue = true }
                                 }
                             )
                         } else {
