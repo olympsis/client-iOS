@@ -154,7 +154,7 @@ struct NewEvent: View {
                                 selectedOrganizers: $manager.organizers
                             ).environment(session)
                         }
-                    
+
                     // MARK: - Sports Picker
                     NewEventSportsPicker(sports: session.sports, selectedSports: $manager.selectedSports)
                         .padding(.horizontal)
@@ -267,6 +267,14 @@ struct NewEvent: View {
                         .environment(manager)
                         .padding(.horizontal)
                         .padding(.bottom, 10)
+                    
+                    // MARK: - Invitees Picker
+                    if manager.type == .Regular || manager.type == .Class {
+                        NewEventInvitees(manager: manager)
+                            .environment(session)
+                            .padding(.horizontal)
+                            .padding(.bottom, 10)
+                    }
                     
                     // MARK: - Tags and advanced settings
                     NewEventTagsPicker(tags: session.tags, selectedTags: $manager.selectedTags)

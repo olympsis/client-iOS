@@ -28,7 +28,12 @@ class NewEventManager {
     var poster: UserSnippet?
     var organizers: [GroupSelection]
     var sponsors: [Sponsor]
-    
+
+    // Invitees — users selected to be invited to the event. We hold full
+    // `UserSnippet`s here so the UI can render names/avatars; on submission we
+    // map these down to their user IDs for `NewEventDao.invitees`.
+    var invitees: [UserSnippet]
+
     // Timestamps
     var startDate: Date
     var endDate: Date
@@ -137,6 +142,7 @@ class NewEventManager {
         self.selectedVenues = venues
         self.organizers = organizers
         self.sponsors = []
+        self.invitees = []
         
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(60 * 60 * 24)
@@ -335,7 +341,10 @@ class NewEventManager {
             externalLinks: self.externalLinks.isEmpty ? nil : self.externalLinks
         )
         
-        return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)
+        // Map selected invitee snippets down to their user IDs for the DTO.
+        let inviteeIDs = self.invitees.compactMap { $0.userID }
+
+        return NewEventDao(event: event, includeHost: true, invitees: inviteeIDs, recurrence: recurrenceOptions)
     }
     
     /// Handles uploading an image to a bucket

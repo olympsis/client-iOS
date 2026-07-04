@@ -66,6 +66,20 @@ class UserService {
         return try await http.Request(.GET, endpoint, headers: headers)
     }
     
+    /// Searches for users whose username matches (or is prefixed by) `username`.
+    ///
+    /// Template endpoint — `GET /v1/users?username=john_doe` — used by the event
+    /// invitee picker. The server is expected to return the top-k users that best
+    /// match the given username as a `UsersDataResponse` payload. Wire this up on
+    /// the backend to power the invitee search.
+    func SearchUsers(username: String) async throws -> (Data, URLResponse) {
+        let headers = try await AppEnvironment.authHeaders()
+        let endpoint = Endpoint("/v1/users", queryItems: [
+            URLQueryItem(name: "username", value: username)
+        ])
+        return try await http.Request(.GET, endpoint, headers: headers)
+    }
+
     func getUserByUserID(userID: String) async throws -> (Data, URLResponse) {
         let headers = try await AppEnvironment.authHeaders()
         let endpoint = Endpoint("/v1/users/search/user_id", queryItems: [

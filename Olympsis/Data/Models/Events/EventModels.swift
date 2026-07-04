@@ -533,12 +533,14 @@ struct EventsResponse: Decodable {
 struct NewEventDao: Codable {
     var event: EventDao
     var includeHost: Bool
+    var invitees: [String]
     var recurrence: EventRecurrenceOptions?
     
     enum CodingKeys: String, CodingKey {
         case event
-        case includeHost = "include_host"
+        case invitees
         case recurrence
+        case includeHost = "include_host"
     }
 }
 

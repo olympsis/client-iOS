@@ -200,6 +200,9 @@
 		5D38BDC32C174372003EEF90 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5D38BDC22C174372003EEF90 /* FirebaseAuth */; };
 		5D3C7FD42E4CA942005C42D7 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C7FD32E4CA942005C42D7 /* NotificationView.swift */; };
 		5D3C7FD62E4D67FB005C42D7 /* ReportNotificationToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3C7FD52E4D67FB005C42D7 /* ReportNotificationToast.swift */; };
+		5D3CB8522FF8C71C009D9CF2 /* RecentInviteesCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CB8512FF8C71C009D9CF2 /* RecentInviteesCache.swift */; };
+		5D3CB8542FF8C764009D9CF2 /* EventInviteePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CB8532FF8C764009D9CF2 /* EventInviteePickerView.swift */; };
+		5D3CB8562FF8C78F009D9CF2 /* NewEventInvitees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CB8552FF8C78F009D9CF2 /* NewEventInvitees.swift */; };
 		5D3E6F652E0DD0CC005225FE /* WorkoutHeatmapMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E6F642E0DD0CC005225FE /* WorkoutHeatmapMapView.swift */; };
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
@@ -799,6 +802,9 @@
 		5D38BDA32C16A036003EEF90 /* SystemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemModels.swift; sourceTree = "<group>"; };
 		5D3C7FD32E4CA942005C42D7 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		5D3C7FD52E4D67FB005C42D7 /* ReportNotificationToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportNotificationToast.swift; sourceTree = "<group>"; };
+		5D3CB8512FF8C71C009D9CF2 /* RecentInviteesCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentInviteesCache.swift; sourceTree = "<group>"; };
+		5D3CB8532FF8C764009D9CF2 /* EventInviteePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInviteePickerView.swift; sourceTree = "<group>"; };
+		5D3CB8552FF8C78F009D9CF2 /* NewEventInvitees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventInvitees.swift; sourceTree = "<group>"; };
 		5D3E6F642E0DD0CC005225FE /* WorkoutHeatmapMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeatmapMapView.swift; sourceTree = "<group>"; };
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
@@ -1527,6 +1533,7 @@
 				5D45B5B32D9CE26300AB24AC /* NewEventTagsPicker.swift */,
 				5D78BDE92C0D48C000F170D6 /* NewEventImagePicker.swift */,
 				5DDE415E2F7437DE00D7E1EA /* NewEventOrganizers.swift */,
+				5D3CB8552FF8C78F009D9CF2 /* NewEventInvitees.swift */,
 			);
 			path = "New Event";
 			sourceTree = "<group>";
@@ -1846,6 +1853,7 @@
 				5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */,
 				5DB5EC542FDD150C00E48690 /* EventRSVPButton.swift */,
 				5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */,
+				5D3CB8532FF8C764009D9CF2 /* EventInviteePickerView.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -2102,6 +2110,7 @@
 				5D7FB7B62D6FC5AA00E5C532 /* NotificationService.swift */,
 				5DC468C52B9FCE7D0023353D /* ManagementService.swift */,
 				5D1881832F7713A7000FDF9E /* SnapshotService.swift */,
+				5D3CB8512FF8C71C009D9CF2 /* RecentInviteesCache.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2851,6 +2860,7 @@
 				5DEAEC032E11000000000001 /* ExplorerDrawer.swift in Sources */,
 				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
+				5D3CB8522FF8C71C009D9CF2 /* RecentInviteesCache.swift in Sources */,
 				5D666A992BF7C84A001EE754 /* MediaPicker.swift in Sources */,
 				5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
@@ -3080,6 +3090,7 @@
 				5D18BD1A2B3944C900F90777 /* NotificationModelView.swift in Sources */,
 				5D7DF3C82E6E1B210090761E /* VenuePickerButton.swift in Sources */,
 				9AA5F617294DB0F900219B95 /* LoadingButton.swift in Sources */,
+				5D3CB8542FF8C764009D9CF2 /* EventInviteePickerView.swift in Sources */,
 				9A81B63E2925DE1A009CA6ED /* LocationManager.swift in Sources */,
 				5D666AA32BF91B5A001EE754 /* ImageModels.swift in Sources */,
 				5DFDBE1A2D63210A00735F51 /* QuickActions.swift in Sources */,
@@ -3152,6 +3163,7 @@
 				5D1190622E39074F00574041 /* ClubWalletAutoWithdrawl.swift in Sources */,
 				5D7DF3C42E6B5D350090761E /* MLAlgorithms.swift in Sources */,
 				9ABB1EBF2905F9B90050C0F0 /* AnnouncementView.swift in Sources */,
+				5D3CB8562FF8C78F009D9CF2 /* NewEventInvitees.swift in Sources */,
 				5D204B4C2DA2C8F900B67F5D /* EventParticipant.swift in Sources */,
 				5D8023522FDA784F00AACE12 /* TransitStack.swift in Sources */,
 				5D314CA02C33A3F000F99676 /* ClubView.swift in Sources */,

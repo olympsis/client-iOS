@@ -79,6 +79,17 @@ class UserObserver: ObservableObject {
         return object.users
     }
     
+    /// Returns the top-k users matching `username`, powering the event invitee search.
+    /// Hits the template `GET /v1/users?username=` endpoint and decodes a `UsersDataResponse`.
+    func searchUsers(username: String) async throws -> [User] {
+        let (data, resp) = try await userService.SearchUsers(username: username)
+        guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
+            return [User]()
+        }
+        let object = try decoder.decode(UsersDataResponse.self, from: data)
+        return object.users
+    }
+
     func getUserByUserID(userID: String) async throws -> User? {
         let (data, resp) = try await userService.getUserByUserID(userID: userID)
         guard (resp as? HTTPURLResponse)?.statusCode == 200 else {
