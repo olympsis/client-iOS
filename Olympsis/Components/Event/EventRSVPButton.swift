@@ -46,6 +46,13 @@ struct EventRSVPButton: View {
                 case .Yes:
                     return (String(localized: "status-going", defaultValue: "I'M IN", table: "Events"),
                             "square.and.pencil", Color.Brand.primary, true)
+                case .Cant:
+                    // No dedicated decline color exists here, so reuse the same
+                    // tertiary tint as .Waitlist (per the fallback) with an
+                    // xmark to read as a decline. Still actionable so the user
+                    // can re-open the sheet and switch their answer.
+                    return (String(localized: "status-cant", defaultValue: "CAN'T", table: "Events"),
+                            "xmark.circle", Color.Brand.tertiary, true)
                 }
             } else {
                 return (String(localized: "status-rsvp", table: "Events"),

@@ -335,6 +335,7 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
     case Yes = "yes"
     case Maybe = "maybe"
     case Waitlist = "waitlist"
+    case Cant = "cant"
 
     func toInt() -> Int {
         switch self {
@@ -344,17 +345,42 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
             0
         case .Waitlist:
             2
+        case .Cant:
+            3
         }
     }
 }
 
+/// Maps the server's legacy integer status (0=MAYBE, 1=YES, 2=WAITLIST, 3=CAN'T)
+/// to the enum. Written as a total switch so an unexpected value falls back to
+/// `.Maybe` instead of being silently misclassified.
 func numberToEventRSVPStatus(_ number: Int) -> EVENT_RSVP_STATUS {
-    if (number == 1) {
-        return .Yes
-    } else if (number == 0) {
+    switch number {
+    case 0:
         return .Maybe
-    } else {
+    case 1:
+        return .Yes
+    case 2:
         return .Waitlist
+    case 3:
+        return .Cant
+    default:
+        return .Maybe
+    }
+}
+
+// Accepts the server's string form ("YES", "CAN'T", ...) in any case and maps
+// it to a status. The apostrophe in "CAN'T" is stripped so it matches the
+// "cant" raw value. Unknown values fall back to .Maybe so a new server value
+// can't break decoding.
+func stringToEventRSVPStatus(_ raw: String) -> EVENT_RSVP_STATUS {
+    let normalized = raw.trimmingCharacters(in: .whitespaces).uppercased().replacingOccurrences(of: "'", with: "")
+    switch normalized {
+    case "YES": return .Yes
+    case "MAYBE": return .Maybe
+    case "WAITLIST": return .Waitlist
+    case "CANT": return .Cant
+    default: return .Maybe
     }
 }
 

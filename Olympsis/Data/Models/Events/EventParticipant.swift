@@ -46,8 +46,16 @@ class Participant: Codable, Hashable {
         id = try container.decode(String.self, forKey: .id)
         user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
         
-        let rawStatus = try container.decode(Int.self, forKey: .status)
-        status = numberToEventRSVPStatus(rawStatus)
+        // RSVP status arrives as a legacy integer (0/1/2/3) from current server builds
+        // and as a string ("YES"/...) once the server flips formats. Accept either so a
+        // format change can't break Event decoding; default to .Maybe on anything else.
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = .Maybe
+        }
         
         isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous) ?? false
         
@@ -116,8 +124,17 @@ class ParticipantDao: Codable {
         id = try container.decodeIfPresent(String.self, forKey: .id)
         userID = try container.decodeIfPresent(String.self, forKey: .userID)
         
-        let statusInt = try container.decodeIfPresent(Int.self, forKey: .status) ?? 0
-        status = numberToEventRSVPStatus(statusInt)
+        // RSVP status arrives as a legacy integer (0/1/2/3) from current server builds
+        // and as a string ("YES"/...) once the server flips formats. Accept either so a
+        // format change can't break Event decoding; a missing/unknown status becomes
+        // .Maybe (safer than the old `?? 0`) rather than nil.
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = .Maybe
+        }
         
         eventID = try container.decodeIfPresent(String.self, forKey: .eventID)
         isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)

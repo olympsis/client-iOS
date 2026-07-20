@@ -40,6 +40,10 @@ struct ParticipantView: View {
             return Color.Brand.secondary
         case .Waitlist:
             return Color.Brand.tertiary
+        case .Cant:
+            // No red/error brand color is used in this file, so reuse the
+            // existing tertiary tint to keep CAN'T visually distinct.
+            return Color.Brand.tertiary
         }
     }
     
@@ -53,6 +57,8 @@ struct ParticipantView: View {
             return String(localized: "participant-status-maybe", defaultValue: "MAYBE", table: "Events")
         case .Waitlist:
             return String(localized: "participant-status-waitlisted", defaultValue: "WAITLISTED", table: "Events")
+        case .Cant:
+            return String(localized: "participant-status-cant", defaultValue: "CAN'T", table: "Events")
         }
     }
     
