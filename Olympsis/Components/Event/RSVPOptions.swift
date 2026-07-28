@@ -29,8 +29,8 @@ struct RSVPOption: View {
     var onClick: (() -> Void)
     var onCancel: (() -> Void)
 
-    /// The bar shrinks slightly once selected so the inset padding and the
-    /// cancel bar have a little room to breathe.
+    /// The bar shrinks slightly once selected so the cancel bar has a little
+    /// room to breathe.
     private var size: CGFloat {
         isSelected ? 75 : 80
     }
@@ -135,7 +135,6 @@ struct RSVPOption: View {
             }
         }
         .frame(maxHeight: size)
-        .padding(.all, isSelected ? 5 : 0)
         .animation(.spring(response: 0.25, dampingFraction: 0.72), value: loadingState)
         .animation(.spring(response: 0.25, dampingFraction: 0.72), value: isSelected)
     }
@@ -211,8 +210,7 @@ private struct RSVPOptionsPreviewHarness: View {
 
             Toggle(isOn: $simulateFailure) {
                 Text(verbatim: "Simulate failure")
-            }
-            .padding([.top, .horizontal])
+            }.padding([.top, .horizontal])
         }
     }
 

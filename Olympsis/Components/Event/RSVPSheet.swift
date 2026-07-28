@@ -11,22 +11,24 @@ import SwiftUI
 struct RSVPSheet: View {
 
     var event: Event
-    
+
     private let observer = EventObserver()
     @State private var isAnonymous: Bool = false
-    @State private var inLoadingState: LOADING_STATE = .pending
-    @State private var maybeLoadingState: LOADING_STATE = .pending
-    @State private var cantLoadingState: LOADING_STATE = .pending
-    
+
+    /// Per-option loading state, defaulting to `.pending` for any option that
+    /// isn't mid-request. Drives the spinner / success / failure feedback in
+    /// each `RSVPOption` bar.
+    @State private var states: [EVENT_RSVP_STATUS: LOADING_STATE] = [:]
+
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
-    
+
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "RSPV_sheet")
 
-    enum Response {
-        case yes
-        case maybe
-    }
+    /// The options offered in the sheet. "Can't" isn't an option here — declining
+    /// simply means no participation, which is expressed by cancelling an existing
+    /// RSVP via each bar's cancel affordance.
+    private let options: [EVENT_RSVP_STATUS] = [.Yes, .Maybe]
 
     /// The current user's existing RSVP for this event, if any. When present,
     /// selecting a new option cancels this participation first so the new
@@ -39,28 +41,31 @@ struct RSVPSheet: View {
         return event.participants.first(where: { $0.user?.userID == userID })
     }
 
-    private func handleResponse(_ response: Response) {
-        guard inLoadingState != .loading,
-              maybeLoadingState != .loading,
-              let user = session.user else { return }
-        
+    /// The option the user has actively RSVP'd to, derived from the event's
+    /// participant list. Because it's computed from `event.participants`, the
+    /// selected bar's cancel affordance appears/disappears automatically as we
+    /// add or remove the participation below.
+    private var selected: EVENT_RSVP_STATUS? {
+        existingRSVP?.status
+    }
+
+    /// True while any option is mid-request. Used to block a second concurrent
+    /// tap while one is in flight.
+    private var isBusy: Bool {
+        states.values.contains(.loading)
+    }
+
+    /// Registers (or replaces) the user's RSVP with the given status.
+    private func select(_ option: EVENT_RSVP_STATUS) {
+        guard !isBusy, let user = session.user else { return }
+
         Task { @MainActor in
+            states[option] = .loading
+
             let dao = ParticipantDao()
             dao.isAnonymous = isAnonymous
-            
-            switch response {
-            case .yes:
-                withAnimation(.easeInOut) {
-                    inLoadingState = .loading
-                    dao.status = .Yes
-                }
-            case .maybe:
-                withAnimation(.easeInOut) {
-                    maybeLoadingState = .loading
-                    dao.status = .Maybe
-                }
-            }
-            
+            dao.status = option
+
             do {
                 // If the user already RSVP'd, cancel that participation before
                 // registering the new selection. The backend keys participants
@@ -70,9 +75,7 @@ struct RSVPSheet: View {
                     guard await observer.removeParticipant(id: event.id) else {
                         throw EventError.failedToRemoveParticipant
                     }
-                    withAnimation {
-                        event.participants.removeAll(where: { $0.id == existing.id })
-                    }
+                    event.participants.removeAll(where: { $0.id == existing.id })
                 }
 
                 let id = try await observer.addParticipant(id: event.id, dao: dao)
@@ -83,147 +86,60 @@ struct RSVPSheet: View {
                     lastName: user.lastName,
                     imageURL: user.imageURL
                 )
-                let participant = Participant(id: id, user: snippet, status: response == .yes ? .Yes : .Maybe, isAnonymous: isAnonymous, createdAt: Date())
-                
-                withAnimation {
-                    event.participants.append(participant)
-                }
-                
+                let participant = Participant(id: id, user: snippet, status: option, isAnonymous: isAnonymous, createdAt: Date())
+                event.participants.append(participant)
+
                 await NotificationManager.shared.requestAuthorization()
                 await session.updateNotifications()
-                
-                dismiss()
+
+                // Flash the success state, then settle back to idle. `selected`
+                // now reflects this option, so the bar keeps its cancel affordance.
+                states[option] = .success
+                try? await Task.sleep(for: .seconds(0.8))
+                states[option] = .pending
             } catch {
                 log.error("Failed to add participant to event. EventID: \(event.id, privacy: .public), Error: \(error)")
-                switch response {
-                case .yes:
-                    withAnimation(.easeInOut) {
-                        inLoadingState = .failure
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            inLoadingState = .pending
-                        }
-                    }
-                case .maybe:
-                    withAnimation(.easeInOut) {
-                        maybeLoadingState = .failure
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            maybeLoadingState = .pending
-                        }
-                    }
-                }
+                states[option] = .failure
+                try? await Task.sleep(for: .seconds(2))
+                states[option] = .pending
             }
         }
     }
-    
-    private func cancel() {
-        guard cantLoadingState != .loading else { return }
-        
-        Task {
-            cantLoadingState = .loading
-            
-            guard let user = session.user,
-                  let userID = user.userID else {
-                withAnimation(.easeInOut) {
-                    cantLoadingState = .failure
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        cantLoadingState = .pending
-                    }
-                }
+
+    /// Retracts the user's RSVP for the given option.
+    private func cancel(_ option: EVENT_RSVP_STATUS) {
+        guard !isBusy,
+              let user = session.user,
+              let userID = user.userID else { return }
+
+        Task { @MainActor in
+            states[option] = .loading
+
+            guard await observer.removeParticipant(id: event.id) else {
+                states[option] = .failure
+                try? await Task.sleep(for: .seconds(2))
+                states[option] = .pending
                 return
             }
-            
-            let resp = await session.eventObserver.removeParticipant(id: event.id)
-            guard resp == true else {
-                withAnimation(.easeInOut) {
-                    cantLoadingState = .failure
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        cantLoadingState = .pending
-                    }
-                }
-                return
-            }
-            cantLoadingState = .success
+
+            // Dropping the participation clears `selected`, so the cancel bar
+            // slides away on its own.
             event.participants.removeAll(where: { $0.user?.userID == userID })
-            dismiss()
+            await session.updateNotifications()
+            states[option] = .pending
         }
     }
-    
+
     var body: some View {
         VStack(spacing: 15) {
-            VStack(spacing: 0) {
-                
-                Button(action: { handleResponse(.yes) }) {
-                    Rectangle()
-                        .foregroundStyle(Color.Brand.primary)
-                        .overlay {
-                            switch inLoadingState {
-                            case .loading:
-                                ProgressView()
-                            case .pending, .success:
-                                Text(String(localized: "rsvp-yes", table: "Events"))
-                                    .textCase(.uppercase)
-                                    .foregroundStyle(.white)
-                                    .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
-                            case .failure:
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .imageScale(.large)
-                                    .foregroundStyle(.yellow)
-                            }
-                        }
-                }
-                .frame(height: 80)
-                .disabled(maybeLoadingState == .loading)
-                .opacity(maybeLoadingState == .loading ? 0.5 : 1)
-//                .overlay(alignment: .topTrailing) {
-////                    if existingRSVP?.status == .Yes {
-//                    if true {
-//                        Button(action: { cancel() }) {
-//                            Rectangle()
-//                                .foregroundStyle(.white)
-//                                .opacity(0.5)
-//                                .frame(width: 80, height: 35)
-//                                .overlay {
-//                                    Text("Cancel")
-//                                        .foregroundStyle(.red)
-//                                }
-//                        }
-//                    }
-//                }
+            RSVPOptions(
+                options: options,
+                selected: selected,
+                loadingStates: $states,
+                onSelect: select,
+                onCancel: cancel
+            )
 
-                Button(action: { handleResponse(.maybe) }) {
-                    Rectangle()
-                        .foregroundStyle(Color.Brand.secondary)
-                        .overlay {
-                            switch maybeLoadingState {
-                            case .loading:
-                                ProgressView()
-                            case .pending, .success:
-                                Text(String(localized: "rsvp-maybe", table: "Events"))
-                                    .textCase(.uppercase)
-                                    .foregroundStyle(.white)
-                                    .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
-                            case .failure:
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .imageScale(.large)
-                                    .foregroundStyle(.yellow)
-                            }
-                        }
-                }
-                .frame(height: 80)
-                .disabled(inLoadingState == .loading)
-                .opacity(inLoadingState == .loading ? 0.5 : 1)
-                .overlay(alignment: .topTrailing) {
-                    if existingRSVP?.status == .Maybe {
-
-                    }
-                }
-                
-
-                if existingRSVP != nil {
-                    
-                }
-            }
-            
             HStack {
                 Toggle(isOn: $isAnonymous) {
                     VStack(alignment: .leading) {
@@ -236,7 +152,7 @@ struct RSVPSheet: View {
                     }
                 }
             }.padding(.horizontal)
-            
+
             Spacer()
         }
     }
