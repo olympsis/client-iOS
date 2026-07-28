@@ -3575,6 +3575,30 @@
         }
       }
     },
+    "rsvp-cancel" : {
+      "comment" : "Accessibility label for the button that removes the user's existing RSVP.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel RSVP"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar confirmación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler la réponse"
+          }
+        }
+      }
+    },
     "rsvp-cant" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3663,6 +3687,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Peut-être"
+          }
+        }
+      }
+    },
+    "rsvp-waitlist" : {
+      "comment" : "RSVP option that puts the user on the event's waitlist.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waitlist"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de espera"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste d'attente"
           }
         }
       }

@@ -248,6 +248,7 @@
 		5D67494A2A73339E00AEC868 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventView.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
 		5D67E03630131BA9003F6B7C /* NewEventTeamSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E03530131BA9003F6B7C /* NewEventTeamSettings.swift */; };
+		5D67E04C3018467D003F6B7C /* RSVPOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E04B3018467D003F6B7C /* RSVPOptions.swift */; };
 		5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01352C04EA75006A264C /* OrgBanner.swift */; };
 		5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* NewGroupManager.swift */; };
 		5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */; };
@@ -852,6 +853,7 @@
 		5D6749492A73339E00AEC868 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		5D67E03530131BA9003F6B7C /* NewEventTeamSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventTeamSettings.swift; sourceTree = "<group>"; };
+		5D67E04B3018467D003F6B7C /* RSVPOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSVPOptions.swift; sourceTree = "<group>"; };
 		5D6C01352C04EA75006A264C /* OrgBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgBanner.swift; sourceTree = "<group>"; };
 		5D6C01372C054D6A006A264C /* NewGroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupManager.swift; sourceTree = "<group>"; };
 		5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMediaViolation.swift; sourceTree = "<group>"; };
@@ -1857,6 +1859,7 @@
 				5DB5EC542FDD150C00E48690 /* EventRSVPButton.swift */,
 				5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */,
 				5D3CB8532FF8C764009D9CF2 /* EventInviteePickerView.swift */,
+				5D67E04B3018467D003F6B7C /* RSVPOptions.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -2835,6 +2838,7 @@
 				9AAAA6AF2903AF360003D501 /* Badge.swift in Sources */,
 				5D11905E2E39072B00574041 /* ClubWalletChangeAccount.swift in Sources */,
 				5D9E745B2DFB961C0094C0D1 /* CompetitionFormatView.swift in Sources */,
+				5D67E04C3018467D003F6B7C /* RSVPOptions.swift in Sources */,
 				9AB02F432901F0E6008C07F1 /* CreateUserDataRequest.swift in Sources */,
 				5DA15B412FB7A748008F5B90 /* VenueDetails.swift in Sources */,
 				5D8B4A932C1CEDC40030FF3E /* ImageProcessors.swift in Sources */,
