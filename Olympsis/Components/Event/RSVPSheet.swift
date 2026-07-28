@@ -151,67 +151,54 @@ struct RSVPSheet: View {
     var body: some View {
         VStack(spacing: 15) {
             VStack(spacing: 0) {
-                // Hide the option the user has already selected — when editing
-                // an RSVP they should only see the alternatives they can switch to.
-                if existingRSVP?.status != .Yes {
-                    Button(action: { handleResponse(.yes) }) {
-                        Rectangle()
-                            .foregroundStyle(Color.Brand.primary)
-                            .overlay {
-                                switch inLoadingState {
-                                case .loading:
-                                    ProgressView()
-                                case .pending, .success:
-                                    Text(String(localized: "rsvp-yes", table: "Events"))
-                                        .textCase(.uppercase)
-                                        .foregroundStyle(.white)
-                                        .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
-                                case .failure:
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .imageScale(.large)
-                                        .foregroundStyle(.yellow)
-                                }
-                            }
-                    }
-                    .frame(height: 80)
-                    .disabled(maybeLoadingState == .loading)
-                    .opacity(maybeLoadingState == .loading ? 0.5 : 1)
-                }
-
-                if existingRSVP?.status != .Maybe {
-                    Button(action: { handleResponse(.maybe) }) {
-                        Rectangle()
-                            .foregroundStyle(Color.Brand.secondary)
-                            .overlay {
-                                switch maybeLoadingState {
-                                case .loading:
-                                    ProgressView()
-                                case .pending, .success:
-                                    Text(String(localized: "rsvp-maybe", table: "Events"))
-                                        .textCase(.uppercase)
-                                        .foregroundStyle(.white)
-                                        .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
-                                case .failure:
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .imageScale(.large)
-                                        .foregroundStyle(.yellow)
-                                }
-                            }
-                    }
-                    .frame(height: 80)
-                    .disabled(inLoadingState == .loading)
-                    .opacity(inLoadingState == .loading ? 0.5 : 1)
-                }
-
-                Button(action: { cancel() }) {
+                
+                Button(action: { handleResponse(.yes) }) {
                     Rectangle()
-                        .foregroundStyle(Color.gray)
+                        .foregroundStyle(Color.Brand.primary)
                         .overlay {
-                            switch cantLoadingState {
+                            switch inLoadingState {
                             case .loading:
                                 ProgressView()
                             case .pending, .success:
-                                Text(String(localized: "rsvp-cant", table: "Events"))
+                                Text(String(localized: "rsvp-yes", table: "Events"))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.white)
+                                    .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
+                            case .failure:
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .imageScale(.large)
+                                    .foregroundStyle(.yellow)
+                            }
+                        }
+                }
+                .frame(height: 80)
+                .disabled(maybeLoadingState == .loading)
+                .opacity(maybeLoadingState == .loading ? 0.5 : 1)
+//                .overlay(alignment: .topTrailing) {
+////                    if existingRSVP?.status == .Yes {
+//                    if true {
+//                        Button(action: { cancel() }) {
+//                            Rectangle()
+//                                .foregroundStyle(.white)
+//                                .opacity(0.5)
+//                                .frame(width: 80, height: 35)
+//                                .overlay {
+//                                    Text("Cancel")
+//                                        .foregroundStyle(.red)
+//                                }
+//                        }
+//                    }
+//                }
+
+                Button(action: { handleResponse(.maybe) }) {
+                    Rectangle()
+                        .foregroundStyle(Color.Brand.secondary)
+                        .overlay {
+                            switch maybeLoadingState {
+                            case .loading:
+                                ProgressView()
+                            case .pending, .success:
+                                Text(String(localized: "rsvp-maybe", table: "Events"))
                                     .textCase(.uppercase)
                                     .foregroundStyle(.white)
                                     .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .largeTitle))
@@ -225,6 +212,16 @@ struct RSVPSheet: View {
                 .frame(height: 80)
                 .disabled(inLoadingState == .loading)
                 .opacity(inLoadingState == .loading ? 0.5 : 1)
+                .overlay(alignment: .topTrailing) {
+                    if existingRSVP?.status == .Maybe {
+
+                    }
+                }
+                
+
+                if existingRSVP != nil {
+                    
+                }
             }
             
             HStack {

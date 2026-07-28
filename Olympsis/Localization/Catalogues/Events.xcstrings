@@ -248,6 +248,98 @@
         }
       }
     },
+    "advanced-settings-max-team-size-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximum number of players per team"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Número máximo de jugadores por equipo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre maximal de joueurs par équipe"
+          }
+        }
+      }
+    },
+    "advanced-settings-max-team-size-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max team size"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño máximo de equipo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille maximale d’équipe"
+          }
+        }
+      }
+    },
+    "advanced-settings-max-teams-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set the event’s team capacity"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer la capacidad de equipos del evento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir la capacité d’équipes de l’événement"
+          }
+        }
+      }
+    },
+    "advanced-settings-max-teams-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max teams"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máximo de equipos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre maximal d’équipes"
+          }
+        }
+      }
+    },
     "advanced-settings-min-participants-sub-title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -290,6 +382,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre minimum de participants"
+          }
+        }
+      }
+    },
+    "advanced-settings-min-teams-sub-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Least number of teams required"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere el menor número de equipos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre minimum d’équipes requis"
+          }
+        }
+      }
+    },
+    "advanced-settings-min-teams-title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min teams"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mínimo de equipos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre minimum d’équipes"
           }
         }
       }
@@ -497,6 +635,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Événement récurrent"
+          }
+        }
+      }
+    },
+    "advanced-settings-requires-teams-sub-title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Does this event require teams to participate?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Cet événement nécessite-t-il des équipes pour participer ?"
+          }
+        }
+      }
+    },
+    "advanced-settings-requires-teams-title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Requires Teams?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Nécessite des équipes ?"
           }
         }
       }

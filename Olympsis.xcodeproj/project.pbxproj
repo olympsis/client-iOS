@@ -247,6 +247,7 @@
 		5D666AA32BF91B5A001EE754 /* ImageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D666AA22BF91B5A001EE754 /* ImageModels.swift */; };
 		5D67494A2A73339E00AEC868 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6749492A73339E00AEC868 /* EventView.swift */; };
 		5D67494C2A74A35A00AEC868 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */; };
+		5D67E03630131BA9003F6B7C /* NewEventTeamSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E03530131BA9003F6B7C /* NewEventTeamSettings.swift */; };
 		5D6C01362C04EA75006A264C /* OrgBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01352C04EA75006A264C /* OrgBanner.swift */; };
 		5D6C01382C054D6A006A264C /* NewGroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C01372C054D6A006A264C /* NewGroupManager.swift */; };
 		5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */; };
@@ -850,6 +851,7 @@
 		5D666AA22BF91B5A001EE754 /* ImageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModels.swift; sourceTree = "<group>"; };
 		5D6749492A73339E00AEC868 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		5D67E03530131BA9003F6B7C /* NewEventTeamSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventTeamSettings.swift; sourceTree = "<group>"; };
 		5D6C01352C04EA75006A264C /* OrgBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgBanner.swift; sourceTree = "<group>"; };
 		5D6C01372C054D6A006A264C /* NewGroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupManager.swift; sourceTree = "<group>"; };
 		5D6C013B2C06795B006A264C /* GroupMediaViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMediaViolation.swift; sourceTree = "<group>"; };
@@ -1527,6 +1529,7 @@
 				5DD751BF2D601946000B0640 /* NewEventAdvancedSettings.swift */,
 				5DD751C32D602275000B0640 /* NewEventExternalLink.swift */,
 				5DD751C12D60217A000B0640 /* NewEventParticipantsSettings.swift */,
+				5D67E03530131BA9003F6B7C /* NewEventTeamSettings.swift */,
 				5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */,
 				5D4A77A12D9CBD400017194D /* NewEventFormatting.swift */,
 				5D9E74582DFB769F0094C0D1 /* NewEventCompetitionFromatSelector.swift */,
@@ -3175,6 +3178,7 @@
 				5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */,
 				5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */,
 				5DC8B4592E05CB14008C9052 /* WorkoutsList.swift in Sources */,
+				5D67E03630131BA9003F6B7C /* NewEventTeamSettings.swift in Sources */,
 				9AD208ED2931EF2D007A62C4 /* UpdateUserDataDao.swift in Sources */,
 				5D3E6F652E0DD0CC005225FE /* WorkoutHeatmapMapView.swift in Sources */,
 				5D666A9B2BF7CBA2001EE754 /* MediaPickerEnums.swift in Sources */,

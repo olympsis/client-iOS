@@ -43,7 +43,7 @@ struct NewEventCompetitionFromatSelector: View {
                         .padding(.top)
                 }
             }
-            .padding(.horizontal)
+            .padding([.horizontal, .top])
             .onDisappear {
                 guard !Array(selectedFormats).isEmpty else { return }
                 guard manager.formatConfig != nil else {
@@ -54,6 +54,8 @@ struct NewEventCompetitionFromatSelector: View {
             }
             
             Spacer()
+        }.background {
+            Color.Background.primary.ignoresSafeArea()
         }
     }
 }

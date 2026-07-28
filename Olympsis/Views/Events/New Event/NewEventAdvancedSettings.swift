@@ -20,6 +20,13 @@ struct NewEventAdvancedSettings: View {
     @Environment(SessionStore.self) private var session
     @Environment(NewEventManager.self) private var manager
     
+    private var showTeamSettings: Bool {
+        guard manager.teamsConfig != nil else {
+            return false
+        }
+        return true
+    }
+    
     var body: some View {
         ScrollView {
             // MARK: - Hide Poster
@@ -35,7 +42,6 @@ struct NewEventAdvancedSettings: View {
                         .font(.subheadline)
                 }.padding([.top, .horizontal])
             }
-            
             
             MenuButton(icon: Image(systemName: "slider.vertical.3"), text: String(localized: "advanced-settings-formatting", table: "Events")) {
                 showEventFormat.toggle()
@@ -78,10 +84,17 @@ struct NewEventAdvancedSettings: View {
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showLimitParticipants) {
-            NewEventParticipantsSettings()
-                .environment(manager)
-                .presentationDetents([.height(450)])
-                .presentationDragIndicator(.visible)
+            if showTeamSettings {
+                NewEventTeamSettings()
+                    .environment(manager)
+                    .presentationDetents([.height(450)])
+                    .presentationDragIndicator(.visible)
+            } else {
+                NewEventParticipantsSettings()
+                    .environment(manager)
+                    .presentationDetents([.height(450)])
+                    .presentationDragIndicator(.visible)
+            }
         }
         .sheet(isPresented: $showExternalLinkField) {
             NewEventExternalLink()
@@ -99,7 +112,10 @@ struct NewEventAdvancedSettings: View {
 }
 
 #Preview {
-    NewEventAdvancedSettings()
-        .environment(SessionStore())
-        .environment(NewEventManager())
+    VStack {}.sheet(isPresented: .constant(true)) {
+        NewEventAdvancedSettings()
+            .environment(SessionStore())
+            .environment(NewEventManager())
+            .presentationDetents([.medium])
+    }
 }
