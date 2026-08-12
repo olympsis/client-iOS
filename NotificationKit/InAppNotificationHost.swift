@@ -85,6 +85,10 @@ public struct InAppNotificationHostModifier: ViewModifier {
             .opacity(cardOpacity)
             .onTapGesture { presenter.handleTap() }
             .gesture(dragGesture(for: notification))
+            // A dismissing card must not swallow taps. Matters most with
+            // Reduce Motion, where the exit is a fade-in-place: an
+            // opacity-0 view still hit-tests until it leaves the hierarchy.
+            .allowsHitTesting(presenter.phase == .presenting)
             .zIndex(999)
     }
 
