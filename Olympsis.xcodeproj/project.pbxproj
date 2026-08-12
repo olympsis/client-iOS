@@ -1225,6 +1225,11 @@
 			path = OlympsisTests;
 			sourceTree = "<group>";
 		};
+		5DC0FFEE2F0000010000C0DE /* NotificationKit */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NotificationKit;
+			sourceTree = "<group>";
+		};
 		5DF5ECAC2FF43BF80032C63B /* OlympsisUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = OlympsisUITests;
@@ -1970,6 +1975,7 @@
 			children = (
 				5D8023532FDB031000AACE12 /* AppIcon.icon */,
 				5DC8B4402E05BF09008C9052 /* Shared */,
+				5DC0FFEE2F0000010000C0DE /* NotificationKit */,
 				9A8FF0AF28BB14BF00DE4CF8 /* Olympsis */,
 				5DBF2B842E42E34C0025B0FE /* OlympsisTests */,
 				5DF5ECAC2FF43BF80032C63B /* OlympsisUITests */,
@@ -2574,6 +2580,9 @@
 			);
 			dependencies = (
 				5DA4CBB32FDDCB3600B8CC37 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5DC0FFEE2F0000010000C0DE /* NotificationKit */,
 			);
 			name = Olympsis;
 			packageProductDependencies = (
