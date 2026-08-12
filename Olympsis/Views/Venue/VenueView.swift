@@ -234,86 +234,38 @@ struct VenueActionButtons: View {
             }
             
             HStack {
-                
+
                 // MARK: - Directions Button
-                Button(action:{ leadToMaps() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(bookingURL != nil ? Color.Background.secondary : Color.Foreground.default)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        
-                        VStack(spacing: 6) {
-                            VStack {
-                                Image(systemName: "car.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 15)
-                            }
-                            
-                            Text(estimatedTimeToField)
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundColor(bookingURL != nil ? Color.Foreground.default : Color.Background.primary)
-                    }
-                }.contentShape(RoundedRectangle(cornerRadius: 10))
-                
+                // When a booking URL exists the Schedule button becomes the
+                // "primary" (filled) button, so Directions steps down to the
+                // secondary style; otherwise Directions itself is primary.
+                FlatButton(
+                    title: estimatedTimeToField,
+                    systemImage: "car.fill",
+                    iconSize: CGSize(width: 20, height: 15),
+                    background: bookingURL != nil ? Color.Background.secondary : Color.Foreground.default,
+                    foreground: bookingURL != nil ? Color.Foreground.default : Color.Background.primary,
+                    action: { leadToMaps() }
+                )
+
                 // MARK: - Visibility/Booking
                 if let url = bookingURL {
-                    Button(action: { openURL(url) }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(maxWidth: .infinity, idealHeight: 60)
-                                .foregroundStyle(Color.Foreground.default)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.border, lineWidth: 1)
-                                }
-                            
-                            VStack {
-                                Image(systemName: "calendar.badge.clock")
-                                    .resizable()
-                                    .frame(width: 20, height: 17)
-                                Text("Schedule")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                            }.foregroundStyle(Color.Background.primary)
-                        }
-                    }.contentShape(RoundedRectangle(cornerRadius: 10))
+                    FlatButton(
+                        title: "Schedule",
+                        systemImage: "calendar.badge.clock",
+                        iconSize: CGSize(width: 20, height: 17),
+                        background: Color.Foreground.default,
+                        foreground: Color.Background.primary,
+                        action: { openURL(url) }
+                    )
                 } else {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(Color(Color.Background.secondary))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        
-                        VStack {
-                            if venueIsPublic {
-                                VStack {
-                                    Image(systemName: "globe")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                    Text("Public")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                }.foregroundColor(Color.Foreground.default)
-                            } else {
-                                VStack {
-                                    Image(systemName: "lock.fill")
-                                        .resizable()
-                                        .frame(width: 15, height: 20)
-                                    Text("Private")
-                                        .font(.caption)
-                                        .fontWeight(.bold)
-                                }.foregroundColor(Color.Foreground.default)
-                            }
-                        }
-                    }
+                    // No action: this pill toggles a popover via its own gesture
+                    // rather than acting as a button.
+                    FlatButton(
+                        title: venueIsPublic ? "Public" : "Private",
+                        systemImage: venueIsPublic ? "globe" : "lock.fill",
+                        iconSize: venueIsPublic ? CGSize(width: 20, height: 20) : CGSize(width: 15, height: 20)
+                    )
                     .contentShape(RoundedRectangle(cornerRadius: 10))
                     .onTapGesture {
                         showVisibility.toggle()
@@ -342,60 +294,32 @@ struct VenueActionButtons: View {
                         .padding(.vertical)
                     })
                 }
-                
+
                 // MARK: - New Event
-                Button(action: { self.showNewEvent.toggle() }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(Color(Color.Background.secondary))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        
-                        VStack {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .frame(width: 15, height: 15)
-                            Text("Event")
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundStyle(canCreateEvent == false ? .gray : Color.Foreground.default)
-                    }
-                }
-                .contentShape(RoundedRectangle(cornerRadius: 10))
+                FlatButton(
+                    title: "Event",
+                    systemImage: "plus",
+                    iconSize: CGSize(width: 15, height: 15),
+                    foreground: canCreateEvent == false ? .gray : Color.Foreground.default,
+                    action: { self.showNewEvent.toggle() }
+                )
                 .disabled(canCreateEvent == false ? true : false)
                 .popoverTip(joinGroupTip)
                 .fullScreenCover(isPresented: $showNewEvent) {
                     NewEvent(manager: NewEventManager(venues: [venue]))
                 }
-                
+
                 // MARK: - More
                 Menu{
                     Button(action:{ showReport.toggle() }){
                         Label("Report an Issue", systemImage: "exclamationmark.shield")
                     }
                 }label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(Color(Color.Background.secondary))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        VStack {
-                            VStack {
-                                Image(systemName: "ellipsis")
-                                    .resizable()
-                                    .frame(width: 20, height: 5)
-                            }.frame(height: 15)
-                            Text("More")
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundColor(Color.Foreground.default)
-                    }
+                    FlatButton(
+                        title: "More",
+                        systemImage: "ellipsis",
+                        iconSize: CGSize(width: 20, height: 5)
+                    )
                 }.fullScreenCover(isPresented: $showReport, content: {
                     FieldReportView(field: venue)
                 })

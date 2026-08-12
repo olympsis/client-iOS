@@ -7,25 +7,33 @@
 
 import SwiftUI
 
-/// A view that contains many of the primary actions that can be taken while viewing an event
+/// A view that contains many of the primary actions that can be taken while
+/// viewing an event. Laid out as a three-button row — Directions, RSVP, More —
+/// each rendered with the shared `FlatButton` pill style.
+///
+/// The RSVP button (previously a floating call-to-action) lives inline here
+/// again. It mirrors the event's current state — RSVP, Going, Maybe, Waitlist,
+/// Can't, Live, or Ended — and presents `RSVPSheet` for the interactive states.
+/// Informational states (Live / Ended) render as a non-tappable pill.
 struct EventActionButtons: View {
-    
+
     @Binding var venues: [Venue]
     @Binding var venueState: LOADING_STATE
-    
+
     @Binding var clubs: [Club]
     @Binding var organizations: [Organization]
-    
+
     @State private var showMenu: Bool = false
+    @State private var showRSVPSheet: Bool = false
 
     @Environment(\.openURL) private var openURL
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
-    
+
     private var fieldLocation: [Double] {
         return venues[0].location.coordinates
     }
-    
+
     private var canCreateEvent: Bool {
         guard let user = session.user,
               let clubs = user.clubs,
@@ -36,48 +44,71 @@ struct EventActionButtons: View {
         }
         return true
     }
-    
-//    @MainActor
-//    private func rsvp(status: String) {
-//        guard state != .loading else { return }
-//        
-//        Task {
-//            guard let user = session.user,
-//                  let _ = user.uuid else {
-//                handleFailure()
-//                return
-//            }
-//            
-//            do {
-//                state = .loading
-//                let stat = EVENT_RSVP_STATUS(rawValue: status) ?? .Yes
-//                let id = try await session.eventObserver.addParticipant(id: event.id, dao: ParticipantDao(status: stat))
-//                
-//                let snippet = UserSnippet(uuid: user.uuid, username: user.username, firstName: user.firstName, lastName: user.lastName, imageURL: user.imageURL)
-//                let participant = Participant(id: id, user: snippet, status: stat, createdAt: Date())
-//                event.participants.append(participant)
-//                
-//                handleSuccess()
-//                guard let extLink = event.externalLink,
-//                      let url = URL(string: extLink), UIApplication.shared.canOpenURL(url) else {
-//                    return
-//                }
-//                openURL(url)
-//            } catch {
-//                handleFailure()
-//            }
-//        }
-//    }
-    
+
+    /// The current user's RSVP for this event, if any. Derived from the event's
+    /// participant list so the button restyles automatically as the user joins
+    /// or cancels via the sheet.
+    private var rsvp: Participant? {
+        guard let user = session.user,
+              let userID = user.userID else {
+            return nil
+        }
+        return event.participants.first(where: { $0.user?.userID == userID })
+    }
+
+    /// The visual configuration for the RSVP button given the event's current
+    /// state.
+    ///
+    /// - `isActionable` gates whether tapping opens the RSVP sheet; Live / Ended
+    ///   are informational only.
+    /// - `emphasized` switches the label to the bold-italic face for committed
+    ///   states (Going / Maybe / Waitlist / Can't), matching the Figma spec.
+    /// - `iconPlacement` floats the icon to the corner for the interactive
+    ///   states, but the informational Live / Ended states center their
+    ///   indicator above the label instead.
+    private var rsvpContent: (title: String, icon: String, tint: Color, isActionable: Bool, emphasized: Bool, iconPlacement: FlatButton.IconPlacement) {
+        switch event.getEventStatus() {
+        case .pending:
+            if let rsvp {
+                switch rsvp.status {
+                case .Yes:
+                    return (String(localized: "status-going", defaultValue: "I'M IN", table: "Events"),
+                            "checkmark.circle.fill", Color.Brand.primary, true, true, .topTrailing)
+                case .Maybe:
+                    return (String(localized: "status-maybe", defaultValue: "MAYBE", table: "Events"),
+                            "questionmark.circle.fill", Color.Brand.secondary, true, true, .topTrailing)
+                case .Waitlist:
+                    return (String(localized: "status-waitlist", table: "Events"),
+                            "hourglass.bottomhalf.filled", Color.Brand.tertiary, true, true, .topTrailing)
+                case .Cant:
+                    return (String(localized: "status-cant", defaultValue: "CAN'T", table: "Events"),
+                            "xmark.circle", .gray, true, true, .topTrailing)
+                }
+            } else {
+                return (String(localized: "status-rsvp", table: "Events"),
+                        "envelope.fill", Color.Brand.primary, true, false, .topTrailing)
+            }
+        case .live:
+            return (String(localized: "status-live", table: "Events"),
+                    "circle.fill", .red, false, true, .stacked)
+        case .ended:
+            return (String(localized: "status-ended", table: "Events"),
+                    "circle.slash", .gray, false, false, .stacked)
+        }
+    }
+
     private func leadToMaps(for venue: Venue){
         guard let url = URL(string: "http://maps.apple.com/?daddr=\(venue.location.coordinates[1]),\(venue.location.coordinates[0])") else { return }
         UIApplication.shared.open(url)
     }
-    
+
     var body: some View {
         HStack {
-            
-            // MARK: - Map Button
+
+            // MARK: - Directions Button
+            // With multiple venues the button becomes a menu so the user can
+            // pick which one to navigate to; otherwise it routes to the only
+            // venue directly. Both share the `FlatButton` pill.
             if venues.count > 1 {
                 Menu {
                     ForEach(venues) { v in
@@ -86,129 +117,64 @@ struct EventActionButtons: View {
                         }
                     }
                 } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(Color.Background.secondary)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        
-                        VStack {
-                            VStack {
-                                Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                            }
-                            
-                            Text(String(localized: "event-action-directions", table: "Events"))
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundStyle(Color.Foreground.default)
-                    }.redacted(reason: venueState != .success ? .placeholder : [])
-                        .modifier(BackgroundPillModifier())
-                }.disabled(venueState != .success ? true : false)
-
+                    FlatButton(
+                        title: String(localized: "event-action-directions", table: "Events"),
+                        systemImage: "arrow.trianglehead.turn.up.right.circle.fill",
+                        isRedacted: venueState != .success
+                    )
+                    .modifier(BackgroundPillModifier())
+                }
+                .disabled(venueState != .success)
             } else {
-                Button(action:{
-                    if let venue = venues.first {
-                        leadToMaps(for: venue)
-                    }
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(maxWidth: .infinity, idealHeight: 60)
-                            .foregroundColor(Color.Background.secondary)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                        
-                        VStack {
-                            VStack {
-                                Image(systemName: "arrow.trianglehead.turn.up.right.circle.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                .imageScale(.large)
-                            }
-                            
-                            if let venue = venues.first {
-                                Text(event.estimatedTimeToVenue(venue: venue, LocationManager.shared.location))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .redacted(reason: venueState != .success ? .placeholder : [])
-                            } else {
-                                Text(String(localized: "event-action-directions", table: "Events"))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                            }
-                        }.foregroundStyle(Color.Foreground.default)
-                    }
-                }.disabled(venueState != .success ? true : false)
-            }
-            
-            // MARK: - Event Visibility
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(maxWidth: .infinity, idealHeight: 60)
-                    .foregroundColor(Color.Background.secondary)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.border, lineWidth: 1)
-                    }
-                    
-                VStack {
-                    if event.visibility == EVENT_VISIBILITY_TYPES.Private {
-                        VStack {
-                            Image(systemName: "lock.fill")
-                                .resizable()
-                                .frame(width: 15, height: 20)
-                            Text(String(localized: "visibility-private", table: "Events"))
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundColor(.white)
-                    } else {
-                        VStack {
-                            Image(systemName: "globe")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                            Text(String(localized: "visibility-public", table: "Events"))
-                                .font(.caption)
-                                .fontWeight(.bold)
-                        }.foregroundStyle(Color.Foreground.default)
-                    }
-                }
-            }
-            
-            // MARK: - Menu Button
-            Button(action:{ self.showMenu.toggle() }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity, idealHeight: 60)
-                        .foregroundColor(Color.Background.secondary)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.border, lineWidth: 1)
+                FlatButton(
+                    // Show the estimated travel time once venues resolve, else
+                    // fall back to a generic "Directions" label.
+                    title: venues.first.map { event.estimatedTimeToVenue(venue: $0, LocationManager.shared.location) }
+                        ?? String(localized: "event-action-directions", table: "Events"),
+                    systemImage: "arrow.trianglehead.turn.up.right.circle.fill",
+                    isRedacted: venueState != .success,
+                    action: {
+                        if let venue = venues.first {
+                            leadToMaps(for: venue)
                         }
-                    VStack {
-                        VStack {
-                            Image(systemName: "ellipsis")
-                                .resizable()
-                            .frame(width: 23, height: 5)
-                        }.frame(height: 20)
-                        Text(String(localized: "more", table: "General"))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                    }.foregroundStyle(Color.Foreground.default)
-                }
+                    }
+                )
+                .disabled(venueState != .success)
             }
+
+            // MARK: - RSVP Button
+            // A single pill whose look and behavior track `rsvpContent`.
+            // Interactive states open `RSVPSheet`; Live / Ended pass no action
+            // and therefore render as a plain, non-tappable label.
+            let rsvp = rsvpContent
+            FlatButton(
+                title: rsvp.title,
+                systemImage: rsvp.icon,
+                background: rsvp.tint,
+                foreground: .white,
+                emphasized: rsvp.emphasized,
+                iconPlacement: rsvp.iconPlacement,
+                action: rsvp.isActionable ? { showRSVPSheet.toggle() } : nil
+            )
+            .sheet(isPresented: $showRSVPSheet) {
+                RSVPSheet(event: event)
+                    .environment(session)
+                    .presentationDetents([.height(325)])
+            }
+
+            // MARK: - Menu Button
+            FlatButton(
+                title: String(localized: "more", table: "General"),
+                systemImage: "ellipsis",
+                iconSize: CGSize(width: 23, height: 5),
+                action: { self.showMenu.toggle() }
+            )
             .sheet(isPresented: $showMenu) {
                 EventMenu(clubs: $clubs, organizations: $organizations)
                     .environment(event)
                     .presentationDetents([.medium])
             }
-            
+
         }
         .frame(height: 60)
         .padding(.horizontal)

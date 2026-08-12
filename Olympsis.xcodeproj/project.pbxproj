@@ -207,6 +207,7 @@
 		5D3FFA9C2BACD9D200B54E02 /* PostReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */; };
 		5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */; };
 		5D3FFAA02BACD9E700B54E02 /* EventReportListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */; };
+		5D43E7B3302CABDB0016AF6F /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D43E7B2302CABDB0016AF6F /* FlatButton.swift */; };
 		5D4499D32BAB7F4100F54D10 /* Hermes in Frameworks */ = {isa = PBXBuildFile; productRef = 5D4499D22BAB7F4100F54D10 /* Hermes */; };
 		5D4499D52BABDAAA00F54D10 /* GroupReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4499D42BABDAAA00F54D10 /* GroupReports.swift */; };
 		5D45B5B22D9CE15C00AB24AC /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D45B5B12D9CE15C00AB24AC /* WrappingHStack.swift */; };
@@ -356,7 +357,6 @@
 		5DB0963E2E0DCBA600BB924A /* WorkoutHeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0963D2E0DCBA600BB924A /* WorkoutHeatmapView.swift */; };
 		5DB2C1872C338128007CE0B8 /* ClubEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2C1862C338128007CE0B8 /* ClubEditor.swift */; };
 		5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */; };
-		5DB5EC552FDD150C00E48690 /* EventRSVPButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB5EC542FDD150C00E48690 /* EventRSVPButton.swift */; };
 		5DB681832BFEF4420084B5E8 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681822BFEF4420084B5E8 /* MenuLabel.swift */; };
 		5DB681852BFFCACA0084B5E8 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */; };
 		5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBA3AF02B94058400B67CFB /* MemberReportView.swift */; };
@@ -811,6 +811,7 @@
 		5D3FFA9B2BACD9D200B54E02 /* PostReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9D2BACD9DC00B54E02 /* MemberReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportListItem.swift; sourceTree = "<group>"; };
 		5D3FFA9F2BACD9E700B54E02 /* EventReportListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventReportListItem.swift; sourceTree = "<group>"; };
+		5D43E7B2302CABDB0016AF6F /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		5D4499D42BABDAAA00F54D10 /* GroupReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupReports.swift; sourceTree = "<group>"; };
 		5D45B5B12D9CE15C00AB24AC /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		5D45B5B32D9CE26300AB24AC /* NewEventTagsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventTagsPicker.swift; sourceTree = "<group>"; };
@@ -965,7 +966,6 @@
 		5DB0963D2E0DCBA600BB924A /* WorkoutHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHeatmapView.swift; sourceTree = "<group>"; };
 		5DB2C1862C338128007CE0B8 /* ClubEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEditor.swift; sourceTree = "<group>"; };
 		5DB36BFF2C351CCE00DB2912 /* ClubLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLoadingView.swift; sourceTree = "<group>"; };
-		5DB5EC542FDD150C00E48690 /* EventRSVPButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRSVPButton.swift; sourceTree = "<group>"; };
 		5DB681822BFEF4420084B5E8 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
 		5DB681842BFFCACA0084B5E8 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		5DBA3AF02B94058400B67CFB /* MemberReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberReportView.swift; sourceTree = "<group>"; };
@@ -1856,7 +1856,6 @@
 				5D9E745A2DFB961C0094C0D1 /* CompetitionFormatView.swift */,
 				5D23BC4E2E5F752600077879 /* RSVPSheet.swift */,
 				5DAAA9172FDB17D000923B6F /* ParticipantsStack.swift */,
-				5DB5EC542FDD150C00E48690 /* EventRSVPButton.swift */,
 				5DA4CBB42FDE0A0600B8CC37 /* EventListItemTemplate.swift */,
 				5D3CB8532FF8C764009D9CF2 /* EventInviteePickerView.swift */,
 				5D67E04B3018467D003F6B7C /* RSVPOptions.swift */,
@@ -1943,6 +1942,7 @@
 				5D4B0A5F2D96DA0300475A0C /* GroupBadgeView.swift */,
 				5D86CD1B2F8C6917003C1857 /* HTMLTextView.swift */,
 				5D22D6962FB2B8ED00CCF4C3 /* CircularChip.swift */,
+				5D43E7B2302CABDB0016AF6F /* FlatButton.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -2868,6 +2868,7 @@
 				5DCAEA312B01A67800B9C22A /* EventActionButtons.swift in Sources */,
 				9ADDD94C296A78CF00245CCE /* NewRoom.swift in Sources */,
 				5D3CB8522FF8C71C009D9CF2 /* RecentInviteesCache.swift in Sources */,
+				5D43E7B3302CABDB0016AF6F /* FlatButton.swift in Sources */,
 				5D666A992BF7C84A001EE754 /* MediaPicker.swift in Sources */,
 				5D6C013C2C06795B006A264C /* GroupMediaViolation.swift in Sources */,
 				9A69FE5529724C9200EBC5F9 /* EventsList.swift in Sources */,
@@ -2965,7 +2966,6 @@
 				5D92BA912C82D0D600B19BD4 /* PostNotificationToast.swift in Sources */,
 				5D97CB652E2F485000DE12B4 /* ActivityPointsData.swift in Sources */,
 				5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
-				5DB5EC552FDD150C00E48690 /* EventRSVPButton.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
 				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				5DC902492E3BFB3300B61718 /* FinanceService.swift in Sources */,

@@ -392,11 +392,6 @@ struct EventView: View {
                     }
                 }.padding(.horizontal)
             }
-        }.overlay(alignment: .bottomTrailing) {
-            EventRSVPButton(event: event)
-                .environment(session)
-                .padding(.bottom, 75)
-                .padding(.trailing, 5)
         }
     }
 }
