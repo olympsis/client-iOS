@@ -97,6 +97,12 @@ struct ProfileMenu: View {
                         NavigationLink(destination: LogViewer()) {
                             MenuLabel(icon: Image(systemName: "text.word.spacing"), text: "Logs")
                         }
+
+                        #if DEBUG
+                        NavigationLink(destination: InAppNotificationDemoView()) {
+                            MenuLabel(icon: Image(systemName: "bell.badge.fill"), text: "Notification Toasts")
+                        }
+                        #endif
                     }
                     
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: String(localized: "setting-logout", table: "Settings"), action: {

@@ -17,13 +17,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     let center = UNUserNotificationCenter.current()
     
-    var isShowing: Bool = false
     var inMessageView: Bool = false
-    
-    // Notification Queue
-    var queue: [NotificationMetadata] = []
-    var currentNotification: NotificationMetadata?
-    private var dismissTask: Task<Void, Never>?
 
     @ObservationIgnored
     @AppStorage("deviceToken") private var dToken: String?
@@ -47,87 +41,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         center.delegate = self
     }
     
-    // Handles inserting new note and triggering queue processing
-    func show(_ notification: NotificationMetadata) {
-        queue.append(notification)
-        
-        if currentNotification == nil {
-            processQueue()
-        }
-    }
-    
-    // Process our notiication queue
-    private func processQueue() {
-        guard !queue.isEmpty else {
-            currentNotification = nil
-            isShowing = false
-            return
-        }
-        
-        let notification = queue.removeFirst()
-        currentNotification = notification
-        
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-            isShowing = true
-        }
-        
-        // Auto-dismiss after 3 seconds (adjustable)
-        dismissTask?.cancel()
-        dismissTask = Task {
-            try? await Task.sleep(for: .seconds(3))
-            
-            if !Task.isCancelled {
-                dismiss()
-            }
-        }
-    }
-    
-    // Handle in-app notification dismissal
-    func dismiss() {
-        dismissTask?.cancel()
-        
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-            isShowing = false
-        }
-        
-        // Process next in queue after animation
-        Task {
-            try? await Task.sleep(for: .milliseconds(350))
-            processQueue()
-        }
-    }
-    
-    // Handle in-app notification interaction here
-    func handleTap() {
-        
-        // Event Navigation
-        if let eventID = currentNotification?.eventID,
-            let url = URL(string: "olympsis://events?ID=\(eventID)") {
-            dismiss()
-            navigationHandler?(url)
-            return
-        }
-        
-        // Groups Navigation
-        if let groupID = currentNotification?.groupID,
-           let url = URL(string: "olympsis://groups?ID=\(groupID)") {
-            dismiss()
-            navigationHandler?(url)
-            return
-        }
-        
-        // Post Navigation
-        if let groupID = currentNotification?.groupID,
-           let postID = currentNotification?.postID,
-           let url = URL(string: "olympsis://posts?ID=\(postID)&groupID=\(groupID)") {
-            dismiss()
-            navigationHandler?(url)
-            return
-        }
-        
-        dismiss()
-    }
-
     // MARK: - Background Tap Navigation
 
     /// Builds an in-app deep link for a tapped lean event note. The `focus`

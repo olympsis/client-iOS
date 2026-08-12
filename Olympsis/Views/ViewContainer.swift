@@ -9,6 +9,7 @@ import MapKit
 import SwiftUI
 import Firebase
 import Security
+import Kingfisher
 import AuthenticationServices
 
 struct ViewContainer: View {
@@ -122,7 +123,12 @@ struct ViewContainer: View {
             
             handleRoute(route)
         })
-        .notificationSystem(manager: NotificationManager.shared)
+        .inAppNotifications(.shared, style: .olympsis)
+        // Route the kit's remote images through Kingfisher so toast
+        // avatars/thumbnails share the app's existing image cache.
+        .inAppNotificationImageLoader(.init { url in
+            AnyView(KFImage(url).cacheOriginalImage().resizable())
+        })
         .task {
             session.state = .loading
 
