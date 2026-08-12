@@ -66,34 +66,37 @@ struct EventActionButtons: View {
     /// - `iconPlacement` floats the icon to the corner for the interactive
     ///   states, but the informational Live / Ended states center their
     ///   indicator above the label instead.
-    private var rsvpContent: (title: String, icon: String, tint: Color, isActionable: Bool, emphasized: Bool, iconPlacement: FlatButton.IconPlacement) {
+    /// - `iconSize` is per-state because these symbols have different natural
+    ///   aspect ratios — e.g. the envelope is wider than tall, so a square
+    ///   frame would squish it.
+    private var rsvpContent: (title: String, icon: String, iconSize: CGSize, tint: Color, isActionable: Bool, emphasized: Bool, iconPlacement: FlatButton.IconPlacement) {
         switch event.getEventStatus() {
         case .pending:
             if let rsvp {
                 switch rsvp.status {
                 case .Yes:
                     return (String(localized: "status-going", defaultValue: "I'M IN", table: "Events"),
-                            "checkmark.circle.fill", Color.Brand.primary, true, true, .topTrailing)
+                            "checkmark.circle.fill", CGSize(width: 20, height: 20), Color.Brand.primary, true, true, .topTrailing)
                 case .Maybe:
                     return (String(localized: "status-maybe", defaultValue: "MAYBE", table: "Events"),
-                            "questionmark.circle.fill", Color.Brand.secondary, true, true, .topTrailing)
+                            "questionmark.circle.fill", CGSize(width: 20, height: 20), Color.Brand.secondary, true, true, .topTrailing)
                 case .Waitlist:
                     return (String(localized: "status-waitlist", table: "Events"),
-                            "hourglass.bottomhalf.filled", Color.Brand.tertiary, true, true, .topTrailing)
+                            "hourglass.bottomhalf.filled", CGSize(width: 20, height: 20), Color.Brand.tertiary, true, true, .topTrailing)
                 case .Cant:
                     return (String(localized: "status-cant", defaultValue: "CAN'T", table: "Events"),
-                            "xmark.circle", .gray, true, true, .topTrailing)
+                            "xmark.circle", CGSize(width: 20, height: 20), .gray, true, true, .topTrailing)
                 }
             } else {
                 return (String(localized: "status-rsvp", table: "Events"),
-                        "envelope.fill", Color.Brand.primary, true, false, .topTrailing)
+                        "envelope.fill", CGSize(width: 24, height: 18), Color.Brand.primary, true, false, .stacked)
             }
         case .live:
             return (String(localized: "status-live", table: "Events"),
-                    "circle.fill", .red, false, true, .stacked)
+                    "circle.fill", CGSize(width: 20, height: 20), .red, false, true, .stacked)
         case .ended:
             return (String(localized: "status-ended", table: "Events"),
-                    "circle.slash", .gray, false, false, .stacked)
+                    "circle.slash", CGSize(width: 20, height: 20), .gray, false, false, .stacked)
         }
     }
 
@@ -150,6 +153,7 @@ struct EventActionButtons: View {
             FlatButton(
                 title: rsvp.title,
                 systemImage: rsvp.icon,
+                iconSize: rsvp.iconSize,
                 background: rsvp.tint,
                 foreground: .white,
                 emphasized: rsvp.emphasized,
