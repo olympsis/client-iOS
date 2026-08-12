@@ -73,6 +73,14 @@ public struct InAppNotificationHostModifier: ViewModifier {
                         }
                 }
             }
+            // Async images (AsyncImage/KFImage) deliver their content
+            // mid-animation, and SwiftUI hands newly-appearing children
+            // their FINAL geometry — so without this, an avatar that loads
+            // during the slide renders at the resting position while the
+            // card is still moving. geometryGroup() isolates the card's
+            // geometry so all children ride the animated offset as one
+            // rigid unit.
+            .geometryGroup()
             .offset(y: baseOffset + dragTranslation)
             .opacity(cardOpacity)
             .onTapGesture { presenter.handleTap() }
