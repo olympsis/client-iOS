@@ -39,14 +39,14 @@ struct Events: View {
                             Text("Olympsis")
                                 .fixedSize()
                                 .italic()
-                                .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                                .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                         }.sharedBackgroundVisibility(.hidden)
                     } else {
                         ToolbarItem(placement: .topBarLeading) {
                             Text("Olympsis")
                                 .fixedSize()
                                 .italic()
-                                .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                                .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                         }
                     }
                     

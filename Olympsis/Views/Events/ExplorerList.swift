@@ -459,7 +459,7 @@ private struct ExplorerPagePicker: View {
         .padding(2)
         .background(
             RoundedRectangle(cornerRadius: 9)
-                .fill(Color(uiColor: .tertiarySystemFill))
+                .fill(Color.Background.tertiary)
         )
         .fixedSize(horizontal: true, vertical: false)
     }
@@ -484,7 +484,7 @@ private struct ExplorerPagePicker: View {
                     // across when the selection changes.
                     if isSelected {
                         RoundedRectangle(cornerRadius: 7)
-                            .fill(Color.Background.primary)
+                            .fill(Color.Background.secondary)
                             .shadow(color: .black.opacity(0.12), radius: 1, y: 1)
                             .matchedGeometryEffect(id: "thumb", in: thumb)
                     }

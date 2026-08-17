@@ -112,7 +112,7 @@ struct VenueNeighborhoodIndex: View {
             .foregroundStyle(.primary)
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
-            .background(Color.Background.primary, in: Capsule())
+            .background(Color.Background.secondary, in: Capsule())
             .overlay {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(Color.border, lineWidth: 1)
