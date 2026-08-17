@@ -410,6 +410,7 @@
 		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
 		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
 		5DD7A4C32F7CC08700A8C48C /* FatalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */; };
+		5DD9A212302E3F4C00E39D8D /* DevAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD9A211302E3F4C00E39D8D /* DevAuth.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
 		5DDD5E702C41095600793FEB /* Events.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6F2C41095600793FEB /* Events.xcstrings */; };
@@ -1032,6 +1033,7 @@
 		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalScreen.swift; sourceTree = "<group>"; };
+		5DD9A211302E3F4C00E39D8D /* DevAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAuth.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
 		5DDD5E6D2C41094400793FEB /* Activities.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Activities.xcstrings; sourceTree = "<group>"; };
@@ -2047,6 +2049,7 @@
 				9A8FF0C728BB1A1D00DE4CF8 /* AuthView.swift */,
 				5D1905992DA1C9BB0051990F /* AuthUserInfo.swift */,
 				5D19059B2DA1C9CA0051990F /* AuthUserSports.swift */,
+				5DD9A211302E3F4C00E39D8D /* DevAuth.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -3132,6 +3135,7 @@
 				5D5CAF892E627D9E004E26D4 /* GroupsManager.swift in Sources */,
 				5D9557A82A6CA7ED006A1EF8 /* ManageEvents.swift in Sources */,
 				5DAAA9182FDB17D000923B6F /* ParticipantsStack.swift in Sources */,
+				5DD9A212302E3F4C00E39D8D /* DevAuth.swift in Sources */,
 				5DBB94C92B03252B0031876D /* NewOrganization.swift in Sources */,
 				5DB096382E0B4C4C00BB924A /* WorkoutUtils.swift in Sources */,
 				5D0CC93F2BAD035000E16B95 /* PostViewer.swift in Sources */,

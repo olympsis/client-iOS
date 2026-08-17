@@ -130,11 +130,12 @@ class SessionStore {
     
     func listenToAuthStateChanges() {
         #if DEV
-        // In local development we skip Firebase auth entirely and treat the
-        // hardcoded dev user as already authenticated. The actual user ID is
-        // supplied via the DEV_USER_ID key in Info.plist (see AppEnvironment).
+        // In local development we skip Firebase auth entirely. The user is picked in
+        // DevAuth and stored in DevUserStore; that ID is what gets sent as the UserID
+        // header (see AppEnvironment). Until something has been picked we stay
+        // unauthenticated so DevAuth gets a chance to show.
         // Check-in and notifications are handled by ViewContainer's .task block.
-        self.authStatus = .authenticated
+        self.authStatus = DevUserStore.selectedUserID != nil ? .authenticated : .unauthenticated
         #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
             guard let self = self else { return }
@@ -501,14 +502,26 @@ class SessionStore {
     /// - Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
-        
+
+        #if DEV
+        // There is no Firebase session in local development — the "session" is just
+        // whichever dev user ID we put in the UserID header. Drop the selection so the
+        // app lands back on DevAuth. Without this we'd fall through to the DEV_USER_ID
+        // baked into Info.plist and silently sign straight back in as that user.
+        DevUserStore.signOut()
+
+        // clearCache() only wipes the on-disk copy; the in-memory one would otherwise
+        // survive and briefly render the previous user's data on the next sign in.
+        user = nil
+        #else
         do {
             try Auth.auth().signOut()
         } catch {
             log.error("Failed to sign user out: \(error.localizedDescription)")
             return
         }
-        
+        #endif
+
         // go back to login page
         authStatus = .unauthenticated
         return

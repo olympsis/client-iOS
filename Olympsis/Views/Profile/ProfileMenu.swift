@@ -105,6 +105,18 @@ struct ProfileMenu: View {
                         #endif
                     }
                     
+                    #if DEV
+                    // Local dev only: drop straight back to DevAuth to sign in as a
+                    // different seeded user. Deliberately skips the logout confirmation —
+                    // swapping users is the normal loop when you have several simulators
+                    // running side by side, and nothing is lost by doing it.
+                    MenuButton(icon: Image(systemName: "person.2.fill"), text: "Switch Dev User (\(session.user?.username ?? "unknown"))", action: {
+                        Task {
+                            await session.logout()
+                        }
+                    })
+                    #endif
+
                     MenuButton(icon: Image(systemName: "door.left.hand.open"), text: String(localized: "setting-logout", table: "Settings"), action: {
                         alertType = .logout
                         self.showAlert.toggle()
