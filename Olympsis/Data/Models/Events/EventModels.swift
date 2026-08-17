@@ -750,44 +750,25 @@ extension [Event] {
     }
     
     /// Returns an array of Day Group structs that groups events by their start dates
+    ///
+    /// Buckets each event by `calendar.startOfDay(for:)` — one calendar
+    /// call per event — instead of the previous approach of scanning the
+    /// existing groups with `areDatesOnSameDay` per event (two
+    /// `dateComponents` calls per comparison, O(events × days) total).
+    /// `dateComponents` routes through ICU and is slow enough that the old
+    /// version showed up as render-time lag in the events explorer.
+    ///
+    /// Note: `DayGroup.date` is now the *midnight* of the group's day
+    /// rather than the first event's exact start time. Consumers already
+    /// treat it as a day-identity (scroll-target ids, `findClosestDate`
+    /// normalizes via `startOfDay`), so this is a safe — arguably more
+    /// correct — anchor.
     func eventsGroupedByDay() -> [DayGroup] {
-        var groups: [DayGroup] = [DayGroup]();
-        self
-            .sorted { $0.startTime < $1.startTime }
-            .forEach { e in
-                let index = groups.firstIndex(where: {
-                    areDatesOnSameDay(
-                        date1: $0.date,
-                        date2: e.startTime
-                    )}
-                )
-                
-                if index != nil {
-                    groups[index!].events.append(e)
-                    return
-                } else {
-                    let newGroup = DayGroup(date: e.startTime, events: [e])
-                    groups.append(newGroup)
-                    return
-                }
+        let calendar = Calendar.current
+        return Dictionary(grouping: self) { calendar.startOfDay(for: $0.startTime) }
+            .map { day, events in
+                DayGroup(date: day, events: events.sorted { $0.startTime < $1.startTime })
             }
-        
-        var sorted = groups
-            .sorted { (group1: DayGroup, group2: DayGroup) in
-                if areDatesOnSameDay(date1: group1.date, date2: group2.date) {
-                    // If dates are on the same day, prioritize item1
-                    return true
-                } else {
-                    // If dates are not on the same day, sort by timestamp
-                    return group1.date < group2.date
-                }
-            }
-        for i in 0..<sorted.count {
-            sorted[i].events = sorted[i].events.sorted { event1, event2 in
-                return event1.startTime < event2.startTime
-            }
-        }
-        
-        return sorted
+            .sorted { $0.date < $1.date }
     }
 }

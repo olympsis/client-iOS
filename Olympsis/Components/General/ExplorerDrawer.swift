@@ -53,8 +53,29 @@ enum DrawerDetent: String, CaseIterable, Hashable {
 struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
 
     @Binding var detent: DrawerDetent
-    @ViewBuilder var topAccessory: () -> TopAccessory
-    @ViewBuilder var content: () -> Content
+
+    // The accessory/content builders are resolved ONCE here in `init`
+    // and stored as built view *values*, not closures. This matters for
+    // drag performance: every `dragOffset` change re-runs this view's
+    // `body`, and if `body` called a `content()` closure it would
+    // construct a fresh child value each tick — one whose `Binding`
+    // fields hold brand-new closures, which defeats SwiftUI's
+    // "unchanged child" diff and forces the entire list to re-render
+    // at up to 120 Hz during the drag. Storing the value means the
+    // child compares identical across drag ticks, so SwiftUI skips its
+    // subtree entirely and the drag only pays for the offset transform.
+    private let topAccessory: TopAccessory
+    private let content: Content
+
+    init(
+        detent: Binding<DrawerDetent>,
+        @ViewBuilder topAccessory: () -> TopAccessory,
+        @ViewBuilder content: () -> Content
+    ) {
+        self._detent = detent
+        self.topAccessory = topAccessory()
+        self.content = content()
+    }
 
     @State private var dragOffset: CGFloat = 0
 
@@ -88,7 +109,7 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
             // Shares the slide transform below so it rides with the
             // drawer; not painted into the drawer's background, so
             // it floats over the underlying view (e.g. the map).
-            topAccessory()
+            topAccessory
 
             VStack(spacing: 0) {
                 // Grabber — the only area that owns the drag gesture.
@@ -120,7 +141,7 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
                             }
                     )
 
-                content()
+                content
             }
             .frame(maxWidth: .infinity)
             .frame(height: largeHeight)
@@ -173,7 +194,7 @@ struct ExplorerDrawer<TopAccessory: View, Content: View>: View {
 extension ExplorerDrawer where TopAccessory == EmptyView {
     init(
         detent: Binding<DrawerDetent>,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: () -> Content
     ) {
         self.init(
             detent: detent,
