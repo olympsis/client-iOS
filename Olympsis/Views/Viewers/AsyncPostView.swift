@@ -54,6 +54,7 @@ struct AsyncPostView: View {
                 }.padding(.vertical, 100)
             }
         }
+        .background(Color.Background.primary.ignoresSafeArea())
         .task {
             await fetchPost()
         }

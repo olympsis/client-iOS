@@ -14,7 +14,7 @@ import AuthenticationServices
 
 struct ViewContainer: View {
     
-    @State var currentTab: ViewTab = .events
+    @State var currentTab: ViewTab = .home
     @State private var showOnboarding: Bool = false
     
     @State private var homeRouter = HomeRouter()
@@ -80,6 +80,11 @@ struct ViewContainer: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
+                Home(router: $homeRouter)
+                    .tag(ViewTab.home)
+                    .toolbar(.hidden, for: .tabBar)
+                    .environment(session)
+                
                 Events(router: $eventRouter)
                     .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
@@ -95,6 +100,7 @@ struct ViewContainer: View {
                 Spacer()
                 TabBar(
                     currentTab: $currentTab,
+                    homeRouter: homeRouter,
                     eventRouter: eventRouter,
                     profileRouter: profileRouter
                 )
@@ -145,6 +151,11 @@ struct ViewContainer: View {
 
             // Fetch fresh user data and notifications from the server
             await initializeUpCheckInTasks()
+
+            // Nothing ever flipped this back after start-up (the old reset was
+            // deleted in the fatal-error pruning pass), which left Home
+            // permanently redacted/disabled. Mark the session ready here.
+            session.state = .success
 
             // Onboarding
             handleOnboardingSheet()

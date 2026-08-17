@@ -35,6 +35,7 @@ struct NotificationsView: View {
                 }.padding(.top, 50)
             }
         }
+        .background(Color.Background.primary.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

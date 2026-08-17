@@ -62,20 +62,21 @@ struct Home: View {
             }
             .disabled(session.state == .loading)
             .redacted(reason: session.state == .loading ? .placeholder : [])
+            .background(Color.Background.primary.ignoresSafeArea())
             .toolbar {
                 if #available(iOS 26.0, *) {
                     ToolbarItem(placement: .topBarLeading) {
                         Text("Olympsis")
                             .fixedSize()
-                            .textCase(.uppercase)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                     }.sharedBackgroundVisibility(.hidden)
                 } else {
                     ToolbarItem(placement: .topBarLeading) {
                         Text("Olympsis")
                             .fixedSize()
-                            .textCase(.uppercase)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                     }
                 }
                 
