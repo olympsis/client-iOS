@@ -145,18 +145,25 @@ struct ProfileMenu: View {
                         }
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action:{ dismiss() }){
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.primary)
-                        }
+            }
+            // The background belongs on the ScrollView, not the inner VStack:
+            // the VStack is only as tall as its content, so a background there
+            // leaves the empty area below it — and the navigation bar's
+            // scroll-edge area — showing the system colour instead of ours.
+            // `ignoresSafeArea` lets the colour bleed under the bar so the
+            // toolbar reads as part of the same surface.
+            .background(Color.Background.primary.ignoresSafeArea())
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action:{ dismiss() }){
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.primary)
                     }
                 }
-                .navigationTitle(String(localized: "settings-title", table: "Settings"))
-                .navigationBarBackButtonHidden()
-                .navigationBarTitleDisplayMode(.inline)
             }
+            .navigationTitle(String(localized: "settings-title", table: "Settings"))
+            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 if let activity = hideActivities {
                     toggleActivity = activity
