@@ -21,6 +21,8 @@ struct ViewContainer: View {
     @State private var groupRouter = GroupRouter()
     @State private var eventRouter = EventRouter()
     @State private var profileRouter = ProfileRouter()
+    @State private var eventSearchManager = SearchManager()
+    @State private var eventsViewModel = EventsViewModel()
 
     @Environment(SessionStore.self) private var session
 
@@ -67,6 +69,34 @@ struct ViewContainer: View {
         }
     }
     
+    /// Prepares the shared event-search state from the completed check-in,
+    /// then fetches both resources around the best available location. This
+    /// never requests location permission; Events owns that user-facing prompt.
+    private func loadEventsAndVenues() async {
+        eventSearchManager.tags = session.tags
+        eventSearchManager.sports = session.sports
+        eventsViewModel.tags = session.tags
+        eventsViewModel.sports = session.sports
+
+        // First-launch seed: preserve saved filters when present, otherwise
+        // start with the person's preferred sports from their check-in data.
+        if !eventSearchManager.hasPersistedSelections,
+           let sports = session.user?.sports {
+            eventSearchManager.selectedSports = sports
+            eventSearchManager.persistSelections()
+        }
+
+        eventsViewModel.selectedSports = eventSearchManager.selectedSports
+        eventsViewModel.selectedTags = eventSearchManager.selectedTags
+
+        // Existing authorization can yield a fresh fix without a prompt. If
+        // no fix arrives within a second, EventsViewModel uses hometown (or
+        // its built-in default) for this initial fetch.
+        LocationManager.shared.startUpdatingLocationIfAuthorized()
+        _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
+        await eventsViewModel.fetchData(session)
+    }
+
     /// If the user hasn't onboarded this will trigger the onboarding sheet to show.
     private func handleOnboardingSheet() {
         guard let hasOnboarded = session.user?.hasOnboarded else {
@@ -89,6 +119,8 @@ struct ViewContainer: View {
                     .tag(ViewTab.events)
                     .toolbar(.hidden, for: .tabBar)
                     .environment(session)
+                    .environment(eventSearchManager)
+                    .environment(eventsViewModel)
 
                 Profile()
                     .tag(ViewTab.profile)
@@ -149,8 +181,12 @@ struct ViewContainer: View {
             // cold-launched the app before this handler existed.
             NotificationManager.shared.flushPendingNavigation()
 
-            // Fetch fresh user data and notifications from the server
+            // Fetch fresh user data and notifications from the server.
             await initializeUpCheckInTasks()
+
+            // Once check-in has supplied the user's filters and fallback
+            // hometown, fetch events and venues together.
+            await loadEventsAndVenues()
 
             // Nothing ever flipped this back after start-up (the old reset was
             // deleted in the fatal-error pruning pass), which left Home

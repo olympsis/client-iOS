@@ -35,6 +35,7 @@ struct NearbyVenues: View {
             
             Venues(venues: session.venues, status: session.state)
         }
+        .padding(.top, 10)
         .fullScreenCover(isPresented: $showMoreFields) {
             VenuesList(venues: session.venues)
         }

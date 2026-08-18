@@ -47,13 +47,21 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func requestLocation() {
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         manager.requestWhenInUseAuthorization()
+        startUpdatingLocationIfAuthorized()
+    }
+
+    /// Starts a location update only when access was already granted. This is
+    /// safe for background initialization because it never presents the system
+    /// location permission prompt.
+    func startUpdatingLocationIfAuthorized() {
+        guard isAuthorized else { return }
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         // Use continuous updates (not significant-change monitoring): the
         // latter never delivers a fix for a static Simulator location, which
         // left `location` nil and forced the map/search to fall back to the
         // hometown. `startUpdatingLocation` fires `didUpdateLocations` for the
-        // current (incl. simulated) position.
+        // current (including simulated) position.
         manager.startUpdatingLocation()
     }
 

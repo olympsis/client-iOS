@@ -17,11 +17,9 @@ struct Events: View {
     @State private var showMenu: Bool = false
     @State private var showNewEvent: Bool = false
     
-    // `SearchManager` hydrates `selectedTags` / `selectedSports` from
-    // UserDefaults in its init, so the user's filter choices survive
-    // across app launches without any work here.
-    @State private var manager = SearchManager()
-    @State private var viewModel = EventsViewModel()
+    @State private var locationManager = LocationManager.shared
+    @Environment(SearchManager.self) private var manager
+    @Environment(EventsViewModel.self) private var viewModel
     @Environment(SessionStore.self) private var session
     
     @Namespace private var namespace
@@ -101,42 +99,19 @@ struct Events: View {
                     }
                 })
                 .task {
-                    LocationManager.shared.requestLocation()
+                    // Permission is intentionally requested only after the
+                    // person visits Events, not while ViewContainer launches.
+                    locationManager.requestLocation()
+                }
+                .onChange(of: locationManager.isLocationAuthorized) { wasAuthorized, isAuthorized in
+                    guard !wasAuthorized, isAuthorized else { return }
 
-                    // Grab sports and tags from session
-                    manager.tags = session.tags
-                    manager.sports = session.sports
-                    viewModel.tags = session.tags
-                    viewModel.sports = session.sports
-
-                    // First-launch seed: only apply the user's preferred
-                    // sports when nothing has ever been persisted. If the
-                    // user has touched the filter sheet before — even to
-                    // clear it — we respect that and skip the seed.
-                    // `manager` already hydrated `selectedSports` /
-                    // `selectedTags` from `UserDefaults` in its init, so
-                    // this branch is the only place defaults are applied.
-                    if !manager.hasPersistedSelections,
-                       let sports = session.user?.sports {
-                        manager.selectedSports = sports
-                        manager.persistSelections()
+                    Task {
+                        // Give the newly-authorized location manager a moment
+                        // to deliver a fix before replacing the fallback data.
+                        _ = await locationManager.waitForLocation(timeout: 1.0)
+                        await viewModel.fetchData(session, force: true)
                     }
-
-                    // Mirror the (persisted or seeded) selection onto the
-                    // viewModel so the very first fetch uses it and the
-                    // dismiss-diff in the filter sheet has the right
-                    // "previous" baseline.
-                    viewModel.selectedSports = manager.selectedSports
-                    viewModel.selectedTags = manager.selectedTags
-
-                    // Give Core Location up to 1 s to deliver a fresh fix
-                    // before we kick off the network call. If nothing comes
-                    // through in time, `viewModel.currentLocation` falls back
-                    // to its built-in default — same query, just with the
-                    // fallback coords.
-                    _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
-
-                    await viewModel.fetchData(session)
                 }
         }
     }
@@ -145,4 +120,6 @@ struct Events: View {
 #Preview {
     Events(router: .constant(EventRouter()))
         .environment(SessionStore())
+        .environment(SearchManager())
+        .environment(EventsViewModel())
 }
