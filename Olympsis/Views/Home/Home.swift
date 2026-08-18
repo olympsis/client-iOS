@@ -57,7 +57,7 @@ struct Home: View {
                 NearbyVenues()
                     .environment(session)
                 
-                Spacer(minLength: 100)
+                Spacer(minLength: 120)
                 
             }
             .disabled(session.state == .loading)
