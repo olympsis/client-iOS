@@ -304,6 +304,7 @@
 		5D98EB1E2C59E2B3000A87BD /* TabBarProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */; };
 		5D98EB202C59EAA9000A87BD /* UserBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */; };
 		5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
+		5D9AA2CB3034D7A70029E2BC /* ExplorerPagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9AA2CA3034D7A70029E2BC /* ExplorerPagePicker.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F32D5E628800438FA7 /* Events.swift */; };
 		5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */; };
@@ -907,6 +908,7 @@
 		5D98EB1D2C59E2B3000A87BD /* TabBarProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarProfileLabel.swift; sourceTree = "<group>"; };
 		5D98EB1F2C59EAA9000A87BD /* UserBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBadgeView.swift; sourceTree = "<group>"; };
 		5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateButtons.swift; sourceTree = "<group>"; };
+		5D9AA2CA3034D7A70029E2BC /* ExplorerPagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerPagePicker.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		5D9DB7F32D5E628800438FA7 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -1921,6 +1923,7 @@
 				5D86CD1B2F8C6917003C1857 /* HTMLTextView.swift */,
 				5D22D6962FB2B8ED00CCF4C3 /* CircularChip.swift */,
 				5D43E7B2302CABDB0016AF6F /* FlatButton.swift */,
+				5D9AA2CA3034D7A70029E2BC /* ExplorerPagePicker.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -3194,6 +3197,7 @@
 				5DF945B42BFC736200BE3C63 /* BlockedUsersList.swift in Sources */,
 				5D2618322D72541200FE2923 /* QuickActionsManager.swift in Sources */,
 				BE9C45FD29E279C9008EA591 /* EncodeToData.swift in Sources */,
+				5D9AA2CB3034D7A70029E2BC /* ExplorerPagePicker.swift in Sources */,
 				5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */,
 				9ABB1EC3290604060050C0F0 /* HomeObserver.swift in Sources */,
 				9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */,
