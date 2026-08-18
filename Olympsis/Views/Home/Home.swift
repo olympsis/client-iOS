@@ -47,7 +47,7 @@ struct Home: View {
                 
                 // MARK: - Announcements
                 AnnouncementsView()
-                    .environment(session)
+                    .environment(session.homeObserver)
                 
                 // MARK: - Hot Events
                 HotEvents()

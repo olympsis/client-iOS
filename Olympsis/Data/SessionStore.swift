@@ -42,7 +42,7 @@ class SessionStore {
     
     // Observers
     var authObserver = AuthObserver()
-    var feedObserver = FeedObserver()
+    var homeObserver = HomeObserver()
     var cacheService = CacheService()
     var userObserver = UserObserver()
     var clubObserver = ClubObserver()
