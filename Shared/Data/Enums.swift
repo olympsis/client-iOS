@@ -895,3 +895,22 @@ enum TRANSIT_SCALE {
     case small
     case regular
 }
+
+// MARK: - Invites
+
+/// The kind of resource an invite is for. Raw values match the server's
+/// `InviteType` constants exactly.
+enum InviteType: String, Codable, CaseIterable {
+    case event = "EVENT"
+    case team = "TEAM"
+    case club = "CLUB"
+    case org = "ORG"
+}
+
+/// Where an invite stands in its lifecycle. Raw values match the server's
+/// `InviteStatus` constants exactly.
+enum InviteStatus: String, Codable, CaseIterable {
+    case pending = "PENDING"
+    case accepted = "ACCEPTED"
+    case declined = "DECLINED"
+}
