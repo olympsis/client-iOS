@@ -17,13 +17,13 @@ class RoomViewModel {
     var connectionState: CONNECTION_STATE = .disconnected
     
     let room: Room
-    let observer: ChatObserver
-    
+    let observer: ChatService
+
     private var isConnected = false
-    
+
     private let log = Logger(subsystem: "com.olympsis.client", category: "room_view_model")
-    
-    init(room: Room, observer: ChatObserver) {
+
+    init(room: Room, observer: ChatService) {
         self.room = room
         self.observer = observer
     }

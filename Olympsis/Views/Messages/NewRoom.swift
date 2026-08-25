@@ -14,7 +14,7 @@ struct NewRoom: View {
     @State private var text = ""
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var chatObserver = ChatObserver()
+    private let chatService = ChatService()
     @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
@@ -27,7 +27,7 @@ struct NewRoom: View {
                   let userID = user.userID else {
                 return
             }
-            let res = await chatObserver.CreateRoom(group: club.id, groupType: "club", name: text, type: "group", userID: userID)
+            let res = await chatService.CreateRoom(group: club.id, groupType: "club", name: text, type: "group", userID: userID)
             if let r = res {
                 rooms.append(r)
             }

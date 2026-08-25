@@ -13,7 +13,7 @@ struct GroupNewRoom: View {
     @State private var text = ""
     @State private var state: LOADING_STATE = .pending
     
-    @StateObject private var chatObserver = ChatObserver()
+    private let chatService = ChatService()
     @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
@@ -32,7 +32,7 @@ struct GroupNewRoom: View {
                 guard let id = selectedGroup.club?.id else {
                     return
                 }
-                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
+                let res = await chatService.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
                 if let r = res {
                     rooms.append(r)
                 }
@@ -44,7 +44,7 @@ struct GroupNewRoom: View {
                 guard let id = selectedGroup.organization?.id else {
                     return
                 }
-                let res = await chatObserver.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
+                let res = await chatService.CreateRoom(group: id, groupType: "organization", name: text, type: "group", userID: userID)
                 if let r = res {
                     rooms.append(r)
                 }

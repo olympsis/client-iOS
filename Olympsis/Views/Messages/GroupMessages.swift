@@ -19,7 +19,7 @@ struct GroupMessages: View {
     @State private var showNewRoom = false
     @State private var state: LOADING_STATE = .success
 
-    @StateObject private var chatObserver = ChatObserver()
+    private let chatService = ChatService()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
@@ -54,7 +54,7 @@ struct GroupMessages: View {
         
         if selectedGroup.type == .Club {
             guard let id = selectedGroup.club?.id,
-                let resp = await chatObserver.GetRooms(id: id) else {
+                let resp = await chatService.GetRooms(id: id) else {
                 log.info("No chat rooms found")
                 state = .success
                 return
@@ -63,7 +63,7 @@ struct GroupMessages: View {
             state = .success
         } else {
             guard let id = selectedGroup.organization?.id,
-                let resp = await chatObserver.GetRooms(id: id) else {
+                let resp = await chatService.GetRooms(id: id) else {
                 log.info("No chat rooms found")
                 state = .success
                 return
@@ -157,7 +157,7 @@ struct GroupMessages: View {
                             } else {
                                 ForEach(joinedRooms) { room in
                                     Button(action:{ self.showDetail.toggle() }){
-                                        RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
+                                        RoomListItem(room: room, rooms: $rooms, observer: chatService)
                                             .padding(.bottom)
                                             .onTapGesture {
                                                 selectedRoom = room
@@ -196,7 +196,7 @@ struct GroupMessages: View {
                             } else {
                                 ForEach(notJoinedRooms) { room in
                                     Button(action:{ self.showDetail.toggle() }){
-                                        RoomListItem(room: room, rooms: $rooms, observer: chatObserver)
+                                        RoomListItem(room: room, rooms: $rooms, observer: chatService)
                                             .padding(.bottom)
                                     }
                                     .fullScreenCover(isPresented: $showDetail) {

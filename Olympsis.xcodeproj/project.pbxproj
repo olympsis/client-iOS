@@ -460,7 +460,6 @@
 		5FF2A0272A380534009234AD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF2A0262A380534009234AD /* ChatModels.swift */; };
 		5FF49CBA2A2BE92100FAA4DA /* PostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CB92A2BE92100FAA4DA /* PostModels.swift */; };
 		5FF49CBC2A2C1B9A00FAA4DA /* TimeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */; };
-		9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A204755295FD28200CDF3A3 /* ChatObserver.swift */; };
 		9A3536FE29282CDA005EC806 /* EventTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3536FD29282CDA005EC806 /* EventTemplateView.swift */; };
 		9A35370429289396005EC806 /* ParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A35370329289396005EC806 /* ParticipantView.swift */; };
 		9A353708292A04B0005EC806 /* NewEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A353707292A04B0005EC806 /* NewEvent.swift */; };
@@ -1082,7 +1081,6 @@
 		5FF2A0262A380534009234AD /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		5FF49CB92A2BE92100FAA4DA /* PostModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModels.swift; sourceTree = "<group>"; };
 		5FF49CBB2A2C1B9A00FAA4DA /* TimeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFunctions.swift; sourceTree = "<group>"; };
-		9A204755295FD28200CDF3A3 /* ChatObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatObserver.swift; sourceTree = "<group>"; };
 		9A3536FD29282CDA005EC806 /* EventTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTemplateView.swift; sourceTree = "<group>"; };
 		9A35370329289396005EC806 /* ParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantView.swift; sourceTree = "<group>"; };
 		9A353707292A04B0005EC806 /* NewEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEvent.swift; sourceTree = "<group>"; };
@@ -2108,7 +2106,6 @@
 			isa = PBXGroup;
 			children = (
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
-				9A204755295FD28200CDF3A3 /* ChatObserver.swift */,
 			);
 			path = Observers;
 			sourceTree = "<group>";
@@ -2940,7 +2937,6 @@
 				5D97CB652E2F485000DE12B4 /* ActivityPointsData.swift in Sources */,
 				5DB096132E07405A00BB924A /* ActivitiesFrequencySelector.swift in Sources */,
 				9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */,
-				9A204756295FD28200CDF3A3 /* ChatObserver.swift in Sources */,
 				5DC902492E3BFB3300B61718 /* FinanceService.swift in Sources */,
 				9AB02F5929024D24008C07F1 /* MapView.swift in Sources */,
 				5D11905C2E384CD000574041 /* ClubWalletView.swift in Sources */,

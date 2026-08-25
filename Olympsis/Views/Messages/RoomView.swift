@@ -30,7 +30,7 @@ struct RoomView: View {
         _rooms = rooms
         self.club = club
         self.room = room
-        let observer = ChatObserver()
+        let observer = ChatService()
         self._viewModel = State(initialValue: RoomViewModel(room: room, observer: observer))
     }
 

@@ -11,7 +11,7 @@ struct RoomsSearch: View {
     
     @Binding var club: Club
     @Binding var rooms: [Room]
-    @State var observer: ChatObserver
+    let observer: ChatService
     @State private var state: LOADING_STATE = .success
     @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
@@ -74,7 +74,7 @@ struct RoomsSearch: View {
 struct RoomsSearch_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
-        RoomsSearch(club: .constant(CLUBS[0]), rooms:.constant([room]), observer: ChatObserver())
+        RoomsSearch(club: .constant(CLUBS[0]), rooms:.constant([room]), observer: ChatService())
             .environment(SessionStore())
     }
 }
