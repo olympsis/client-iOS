@@ -472,7 +472,6 @@
 		9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */; };
 		9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A48D83029561A01008C97BD /* UpdateFriendRequestDao.swift */; };
 		9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FF8982974886F008F1613 /* ChangeRankDao.swift */; };
-		9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A550846293D9C3C00B924B1 /* UploadObserver.swift */; };
 		9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084A293FC80100B924B1 /* ProfileModel.swift */; };
 		9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */; };
 		9A5CA4D9296F6AE600C63A32 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */; };
@@ -1102,7 +1101,6 @@
 		9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
 		9A48D83029561A01008C97BD /* UpdateFriendRequestDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendRequestDao.swift; sourceTree = "<group>"; };
 		9A4FF8982974886F008F1613 /* ChangeRankDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeRankDao.swift; sourceTree = "<group>"; };
-		9A550846293D9C3C00B924B1 /* UploadObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadObserver.swift; sourceTree = "<group>"; };
 		9A55084A293FC80100B924B1 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		9A55084C293FCEDB00B924B1 /* ProfileMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMenu.swift; sourceTree = "<group>"; };
 		9A5CA4D8296F6AE600C63A32 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -2129,7 +2127,6 @@
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9AF0A1BA29313E350055D1F6 /* PostObserver.swift */,
-				9A550846293D9C3C00B924B1 /* UploadObserver.swift */,
 				9A204755295FD28200CDF3A3 /* ChatObserver.swift */,
 				5D2062512B141E5000A9D408 /* OrgObserver.swift */,
 				5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */,
@@ -2988,7 +2985,6 @@
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,
 				5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */,
-				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
 				5D63AF702C311E1A005D431F /* NearbyVenues.swift in Sources */,
 				5DC24B752DF7392D00DAF87F /* ExpandableTextView.swift in Sources */,

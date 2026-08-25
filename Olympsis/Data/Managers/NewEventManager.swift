@@ -128,7 +128,7 @@ class NewEventManager {
     }
 
     private var eventObserver = EventObserver()
-    private var uploadObserver = UploadObserver()
+    private var uploadService = UploadService()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
     init(
@@ -364,7 +364,7 @@ class NewEventManager {
             return nil
         }
         
-        guard let response = await uploadObserver.UploadImage(location: "/olympsis-event-images", fileName: imageId, data: d) else {
+        guard let response = await uploadService.UploadImage(location: "/olympsis-event-images", fileName: imageId, data: d) else {
             log.error("Failed to upload image: \(imageId)")
             return nil
         }
@@ -374,7 +374,7 @@ class NewEventManager {
     /// Handles deleting an image from a bucket
     /// - Parameters image: The string of the image's url
     func deleteImage(image: String) async {
-        let resp = await uploadObserver.DeleteObject(path: "/olympsis-event-images", name: GrabImageIdFromURL(image))
+        let resp = await uploadService.DeleteObject(path: "/olympsis-event-images", name: GrabImageIdFromURL(image))
         if !resp {
             log.error("Failed to delete image: \(image)")
         }

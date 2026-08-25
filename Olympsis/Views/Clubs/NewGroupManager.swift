@@ -63,7 +63,7 @@ class NewGroupManager {
     var showLogoMediaPicker: Bool = false
     var showBannerMediaPicker: Bool = false
     
-    var uploadObserver = UploadObserver()
+    var uploadService = UploadService()
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_group_view_model")
     
     func handleFailure() {
@@ -77,7 +77,7 @@ class NewGroupManager {
     func uploadLogo(_ location: String) async throws {
         if let data = logoPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -92,7 +92,7 @@ class NewGroupManager {
     func uploadBanner(_ location: String) async throws {
         if let data = bannerPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -105,12 +105,12 @@ class NewGroupManager {
     
     @MainActor
     func deleteLogo(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
     func deletebanner(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor

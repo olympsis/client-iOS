@@ -15,7 +15,7 @@ struct PostMenu: View {
     @State private var showReport: Bool = false
     @State private var showBlocking: Bool = false
     
-    @StateObject private var uploadObserver = UploadObserver()
+    private let uploadService = UploadService()
     
     @EnvironmentObject private var post: Post
     @Environment(SessionStore.self) private var session
@@ -141,7 +141,7 @@ struct PostMenu: View {
             if let images = post.images {
                 // delete images
                 for image in images {
-                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                    let _ = await uploadService.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
 
@@ -157,7 +157,7 @@ struct PostMenu: View {
             if let images = post.images {
                 // delete images
                 for image in images {
-                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                    let _ = await uploadService.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
             

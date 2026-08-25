@@ -46,7 +46,7 @@ struct EditProfile: View {
     
     private var cacheService: CacheService = CacheService()
     private var userObserver: UserObserver = UserObserver()
-    private var uploadObserver: UploadObserver = UploadObserver()
+    private var uploadService: UploadService = UploadService()
     
     @Environment(SessionStore.self) private var session
     
@@ -97,7 +97,7 @@ struct EditProfile: View {
             return
         }
         
-        guard (await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
+        guard (await uploadService.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
             handleFailure()
             return
         }
@@ -111,7 +111,7 @@ struct EditProfile: View {
         
         if let img = user.imageURL {
             // delete old picture
-            _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
+            _ = await uploadService.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
         }
         
         var coords: GeoJSON?
