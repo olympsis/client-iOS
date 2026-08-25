@@ -133,7 +133,7 @@ struct AuthUserInfo: View {
                 if needsEmail {
                     authDao.email = email.trimmingCharacters(in: .whitespacesAndNewlines)
                 }
-                _ = try? await session.authObserver.updateUser(authDao)
+                _ = try? await session.authService.updateUser(authDao)
             }
             
             // Update user data

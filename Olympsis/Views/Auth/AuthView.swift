@@ -25,7 +25,7 @@ struct AuthView: View {
     @State private var state: LOADING_STATE = .pending
     @State private var nonce: String = randomNonceString()
     
-    private let observer = AuthObserver()
+    private let observer = AuthService()
     private let cacheService = CacheService()
     private let managementService = ManagementService()
     

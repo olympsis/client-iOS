@@ -513,7 +513,6 @@
 		9A8FF0D028BB209E00DE4CF8 /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */; };
 		9A8FF0DB28BB33FF00DE4CF8 /* Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */; };
 		9A8FF0E228BB44E400DE4CF8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */; };
-		9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */; };
 		9A9AD8922954E2370096D65B /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9AD8912954E2370096D65B /* FriendRequest.swift */; };
 		9A9AD8942955FB900096D65B /* FriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9AD8932955FB900096D65B /* FriendRequestView.swift */; };
 		9AA5F615294D9AC200219B95 /* ProfileModelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */; };
@@ -1143,7 +1142,6 @@
 		9A8FF0CF28BB209E00DE4CF8 /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
 		9A8FF0DA28BB33FF00DE4CF8 /* Dao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dao.swift; sourceTree = "<group>"; };
 		9A8FF0E128BB44E400DE4CF8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthObserver.swift; sourceTree = "<group>"; };
 		9A9AD8912954E2370096D65B /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		9A9AD8932955FB900096D65B /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
 		9AA5F614294D9AC200219B95 /* ProfileModelTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelTemplate.swift; sourceTree = "<group>"; };
@@ -2119,7 +2117,6 @@
 		9A8FF0D428BB337C00DE4CF8 /* Observers */ = {
 			isa = PBXGroup;
 			children = (
-				9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */,
 				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
@@ -2927,7 +2924,6 @@
 				5D6C01412C07BB6C006A264C /* Onboard-AboutClubs.swift in Sources */,
 				9A69FE5729725A1300EBC5F9 /* VenuesList.swift in Sources */,
 				5D4B0A772D99E28700475A0C /* FilterButton.swift in Sources */,
-				9A8FF0E428BB453900DE4CF8 /* AuthObserver.swift in Sources */,
 				5D4A77A22D9CBD400017194D /* NewEventFormatting.swift in Sources */,
 				5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */,
 				9AECDA4A2954528A007956FB /* FriendRequestsView.swift in Sources */,

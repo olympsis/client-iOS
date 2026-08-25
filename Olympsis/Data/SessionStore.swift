@@ -41,7 +41,7 @@ class SessionStore {
     var notifications = [NotificationItem]()
     
     // Observers
-    var authObserver = AuthObserver()
+    var authService = AuthService()
     var homeObserver = HomeObserver()
     var cacheService = CacheService()
     var userObserver = UserObserver()
@@ -555,7 +555,7 @@ class SessionStore {
             guard let authorizationCode = appleIDCredential.authorizationCode else { return false }
             guard let authCodeString = String(data: authorizationCode, encoding: .utf8) else { return false }
 
-            guard try await authObserver.deleteAccount() else { return false }
+            guard try await authService.deleteAccount() else { return false }
             
             try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
             
