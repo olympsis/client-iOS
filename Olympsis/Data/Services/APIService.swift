@@ -109,6 +109,20 @@ extension APIService {
         return try decoder.decode(T.self, from: data)
     }
 
+    /// Variant for endpoints where more than one status is meaningful to the
+    /// caller (e.g. 204 = "no results" alongside 200 = decode the body).
+    /// Returns the raw data + status code; only the >500 range Hermes throws
+    /// itself is folded into `serviceError`. The caller interprets the rest.
+    func requestRaw(_ method: Hermes.Method, _ endpoint: Hermes.Endpoint, body: Data? = nil) async throws -> (Data, Int) {
+        let headers = try await AppEnvironment.authHeaders()
+        do {
+            let (data, resp) = try await http.Request(method, endpoint, body: body, headers: headers)
+            return (data, (resp as? HTTPURLResponse)?.statusCode ?? -1)
+        } catch NetworkError.serverError(let statusCode) {
+            throw serviceError(statusCode: statusCode, message: "")
+        }
+    }
+
     /// Pulls the `msg` field out of an error body, empty when there is none.
     func serverMessage(from data: Data) -> String {
         (try? decoder.decode(ServerMessage.self, from: data))?.msg ?? ""
