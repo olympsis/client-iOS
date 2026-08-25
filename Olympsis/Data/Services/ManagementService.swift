@@ -9,15 +9,18 @@ import Hermes
 import Foundation
 
 /// This service is in charge of handling requests that the user may want to create that has to do with bug reporting, reporting bad actors and giving feedback.
-class ManagementService {
+class ManagementService: APIService {
 
-    private var http: Courrier
+    let http: Courrier
+    let decoder = JSONDecoder()
 
     init() {
         let env = AppEnvironment.current
         self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
     }
 
+    /// GET /v1/health/wsg — used pre-login to decide whether sign in should be enabled, so it
+    /// deliberately skips auth headers and swallows every failure to `false`.
     func wsg() async -> Bool {
         do {
             let endpoint = Endpoint("/v1/health/wsg")
@@ -32,11 +35,12 @@ class ManagementService {
         return true
     }
 
-    func config() async throws -> (Data, URLResponse) {
-        let endpoint = Endpoint("/v1/system/config")
-        return try await http.Request(.GET, endpoint)
+    /// GET /v1/system/config — the tags/sports config SessionStore seeds itself with at launch.
+    func config() async throws -> ApplicationConfiguration {
+        return try await request(.GET, Endpoint("/v1/system/config"))
     }
 
+    /// GET /v1/locales/countries — swallows every failure to `[]`.
     func getCountries() async throws -> [Country] {
         do {
             let endpoint = Endpoint("/v1/locales/countries")
@@ -51,6 +55,7 @@ class ManagementService {
         }
     }
 
+    /// GET /v1/locales/countries/{id}/administrativeAreas — swallows every failure to `[]`.
     func getAdministrativeAreas(_ country: Country) async throws -> [AdministrativeArea] {
         do {
             let endpoint = Endpoint("/v1/locales/countries/\(country.id)/administrativeAreas")
@@ -65,6 +70,7 @@ class ManagementService {
         }
     }
 
+    /// GET /v1/locales/administrativeAreas/{id}/subAdministrativeAreas — swallows every failure to `[]`.
     func getSubAdministrativeAreas(_ admin: AdministrativeArea) async throws -> [SubAdministrativeArea] {
         do {
             let endpoint = Endpoint("/v1/locales/administrativeAreas/\(admin.id)/subAdministrativeAreas")
@@ -79,146 +85,81 @@ class ManagementService {
         }
     }
 
-    /// HTTP request to create a bug report
-    ///
-    /// The dao object is the data needed to create the report
-    ///
-    /// - Returns: the http body and headers
-    func createBugReport(dao: BugReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/bugs")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+    /// POST /v1/report/bugs — true once the report is recorded (201).
+    func createBugReport(report: BugReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.POST, Endpoint("/v1/report/bugs"), body: EncodeToData(report))
+        return statusCode == 201
     }
 
-    /// HTTP request to get bug reports
-    ///
-    /// Filter through reports by the user_id of the user who created the request.
-    ///
-    /// - Returns: the http body and the headers
-    func getBugReports(userID: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/bugs", queryItems: [URLQueryItem(name: "user_id", value: userID)])
-        return try await http.Request(.GET, endpoint, headers: headers)
+    /// POST /v1/report/fields — true once the report is recorded (201).
+    func createFieldReport(report: FieldReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.POST, Endpoint("/v1/report/fields"), body: EncodeToData(report))
+        return statusCode == 201
     }
 
-    /// HTTP request to create a field report
-    ///
-    /// The dao object is the data needed to create the report
-    ///
-    /// - Returns: the http body and headers
-    func createFieldReport(dao: FieldReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/fields")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+    /// POST /v1/report/events — true once the report is recorded (201).
+    func createEventReport(report: EventReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.POST, Endpoint("/v1/report/events"), body: EncodeToData(report))
+        return statusCode == 201
     }
 
-    /// HTTP request to get field reports
-    ///
-    /// Filter through reports by the user_id of the user who created the request.
-    ///
-    /// - Returns: the http body and headers
-    func getFieldReports(userID: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/fields", queryItems: [URLQueryItem(name: "user_id", value: userID)])
-        return try await http.Request(.GET, endpoint, headers: headers)
-    }
-
-    /// HTTP request to create an event report
-    ///
-    /// The dao object is the data needed to create the report
-    ///
-    /// - Returns: the http body and headers
-    func createEventReport(dao: EventReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/events")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
-    }
-
-    /// HTTP request to get event reports
-    ///
-    /// Filter through reports by the id of the group and the status of the reports
-    ///
-    /// - Returns: the http body and the headers
-    func getEventReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    /// GET /v1/report/events?groupID=&status= — nil on a non-200, otherwise the decoded page.
+    func getEventReports(id: String, status: String) async throws -> [EventReport]? {
         let endpoint = Endpoint("/v1/report/events", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: headers)
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else {
+            return nil
+        }
+        return try decoder.decode([EventReport].self, from: data)
     }
 
-    /// HTTP request to update an event report
-    ///
-    /// The dao object is the data needed to update the report
-    ///
-    /// - Returns: the http body and headers
-    func updateEventReport(id: String, dao: EventReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/events/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: headers)
+    /// PUT /v1/report/events/{id} — true once the report is updated (200).
+    func updateEventReport(id: String, report: EventReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.PUT, Endpoint("/v1/report/events/\(id)"), body: EncodeToData(report))
+        return statusCode == 200
     }
 
-    /// HTTP request to create a post report
-    ///
-    /// The dao object is the data needed to create the report
-    ///
-    /// - Returns: the http body and headers
-    func createPostReport(dao: PostReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/posts")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+    /// POST /v1/report/posts — true once the report is recorded (201).
+    func createPostReport(report: PostReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.POST, Endpoint("/v1/report/posts"), body: EncodeToData(report))
+        return statusCode == 201
     }
 
-    /// HTTP request to get post reports
-    ///
-    /// Filter through reports by the id of the group and the status of the reports
-    ///
-    /// - Returns: the http body and the headers
-    func getPostReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    /// GET /v1/report/posts?groupID=&status= — nil on a non-200, otherwise the decoded page.
+    func getPostReports(id: String, status: String) async throws -> [PostReport]? {
         let endpoint = Endpoint("/v1/report/posts", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: headers)
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else {
+            return nil
+        }
+        return try decoder.decode([PostReport].self, from: data)
     }
 
-    /// HTTP request to update a post report
-    ///
-    /// The dao object is the data needed to update the report
-    ///
-    /// - Returns: the http body and headers
-    func updatePostReport(id: String, dao: PostReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/posts/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: headers)
+    /// PUT /v1/report/posts/{id} — true once the report is updated (200).
+    func updatePostReport(id: String, report: PostReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.PUT, Endpoint("/v1/report/posts/\(id)"), body: EncodeToData(report))
+        return statusCode == 200
     }
 
-    /// HTTP request to create a member report
-    ///
-    /// The dao object is the data needed to create the report
-    ///
-    /// - Returns: the http body and headers
-    func createMemberReport(dao: MemberReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/members")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+    /// POST /v1/report/members — true once the report is recorded (201).
+    func createMemberReport(report: MemberReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.POST, Endpoint("/v1/report/members"), body: EncodeToData(report))
+        return statusCode == 201
     }
 
-    /// HTTP request to get member reports
-    ///
-    /// Filter through reports by the id of the group and the status of the reports
-    ///
-    /// - Returns: the http body and the headers
-    func getMemberReports(id: String, status: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    /// GET /v1/report/members?groupID=&status= — nil on a non-200, otherwise the decoded page.
+    func getMemberReports(id: String, status: String) async throws -> [MemberReport]? {
         let endpoint = Endpoint("/v1/report/members", queryItems: [URLQueryItem(name: "groupID", value: id), URLQueryItem(name: "status", value: status)])
-        return try await http.Request(.GET, endpoint, headers: headers)
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else {
+            return nil
+        }
+        return try decoder.decode([MemberReport].self, from: data)
     }
 
-    /// HTTP request to update a member report
-    ///
-    /// The dao object is the data needed to update the report
-    ///
-    /// - Returns: the http body and headers
-    func updateMemberReport(id: String, dao: MemberReportDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/report/members/\(id)")
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: headers)
+    /// PUT /v1/report/members/{id} — true once the report is updated (200).
+    func updateMemberReport(id: String, report: MemberReportDao) async throws -> Bool {
+        let (_, statusCode) = try await requestRaw(.PUT, Endpoint("/v1/report/members/\(id)"), body: EncodeToData(report))
+        return statusCode == 200
     }
 }

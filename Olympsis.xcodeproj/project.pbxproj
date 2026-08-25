@@ -431,7 +431,6 @@
 		5DEC47AE2BCB8CA80095F606 /* TermsOfUsePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */; };
 		5DEEB3DA2DC828C0006DDD32 /* CustomLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */; };
 		5DEEB3DC2DC82909006DDD32 /* CustomLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */; };
-		5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */; };
 		5DF5CFC22C0450D5008F5374 /* ClubLogoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */; };
 		5DF5CFC62C04CDE3008F5374 /* OrgLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */; };
 		5DF5ECB52FF6D74A0032C63B /* CircularButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF5ECB42FF6D74A0032C63B /* CircularButton.swift */; };
@@ -1057,7 +1056,6 @@
 		5DEC47AD2BCB8CA80095F606 /* TermsOfUsePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUsePopUp.swift; sourceTree = "<group>"; };
 		5DEEB3D92DC828C0006DDD32 /* CustomLocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationPicker.swift; sourceTree = "<group>"; };
 		5DEEB3DB2DC82909006DDD32 /* CustomLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLocationViewModel.swift; sourceTree = "<group>"; };
-		5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementObserver.swift; sourceTree = "<group>"; };
 		5DF5CFC12C0450D5008F5374 /* ClubLogoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubLogoBanner.swift; sourceTree = "<group>"; };
 		5DF5CFC52C04CDE3008F5374 /* OrgLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgLogo.swift; sourceTree = "<group>"; };
 		5DF5ECAB2FF43BF80032C63B /* OlympsisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2120,7 +2118,6 @@
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9A204755295FD28200CDF3A3 /* ChatObserver.swift */,
 				5D2062512B141E5000A9D408 /* OrgObserver.swift */,
-				5DF3CA142BAA7DB700400EB0 /* ManagementObserver.swift */,
 			);
 			path = Observers;
 			sourceTree = "<group>";
@@ -3070,7 +3067,6 @@
 				9A81B627292485A3009CA6ED /* ClubDetailView.swift in Sources */,
 				9A55084B293FC80100B924B1 /* ProfileModel.swift in Sources */,
 				9A55084D293FCEDB00B924B1 /* ProfileMenu.swift in Sources */,
-				5DF3CA152BAA7DB700400EB0 /* ManagementObserver.swift in Sources */,
 				5F8D13AD2A213C150054F631 /* VenueModels.swift in Sources */,
 				9A5D3369292AC610008CF61D /* PostComments.swift in Sources */,
 				5DBA3AF12B94058400B67CFB /* MemberReportView.swift in Sources */,

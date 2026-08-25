@@ -51,7 +51,7 @@ class SessionStore {
     var venueService = VenueService()
     var eventObserver = EventObserver()
     var workoutManager = WorkoutManager()
-    var managementObserver = ManagementObserver()
+    var managementService = ManagementService()
     var notificationService = NotificationService()
     
     var groupsManager = GroupsManager()
@@ -119,7 +119,7 @@ class SessionStore {
         
         Task {
             do {
-                let config = try await managementObserver.config()
+                let config = try await managementService.config()
                 tags = config.tags
                 sports = config.sports
             } catch {

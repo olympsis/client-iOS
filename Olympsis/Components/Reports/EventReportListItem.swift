@@ -12,7 +12,7 @@ struct EventReportListItem: View {
     
     @State var report: EventReport
     @State private var showEvent: Bool = false
-    @StateObject private var observer = ManagementObserver()
+    private let observer = ManagementService()
     
     var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "event_report_list_item")
     
