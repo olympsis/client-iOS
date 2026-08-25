@@ -35,7 +35,7 @@ final class NewPostManager: ObservableObject {
     
     @Published var status: LOADING_STATE = .pending
     
-    var postObserver = PostObserver()
+    var postService = PostService()
     var uploadService = UploadService()
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_post_view_model")
@@ -98,7 +98,7 @@ final class NewPostManager: ObservableObject {
             dto.images = images
             
             // make the http call to create post
-            guard let postId = await postObserver.createPost(dto: dto) else {
+            guard let postId = await postService.createPost(dto: dto) else {
                 log.error("Deleting post images..")
                 if let images = dto.images {
                     await deleteImages(images: images)
@@ -120,7 +120,7 @@ final class NewPostManager: ObservableObject {
         } else {
             
             // make the http call to create post
-            guard let postId = await postObserver.createPost(dto: dto) else {
+            guard let postId = await postService.createPost(dto: dto) else {
                 handleFailure()
                 return nil
             }

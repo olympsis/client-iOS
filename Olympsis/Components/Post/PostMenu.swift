@@ -134,7 +134,7 @@ struct PostMenu: View {
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
+                  await session.postService.deletePost(postID: post.id) else {
                 return
             }
 
@@ -150,7 +150,7 @@ struct PostMenu: View {
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
+                  await session.postService.deletePost(postID: post.id) else {
                 return
             }
             

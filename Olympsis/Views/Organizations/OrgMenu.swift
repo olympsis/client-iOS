@@ -26,7 +26,6 @@ struct OrgMenu: View {
     @State private var alertType = Alerts.LeaveClub
     
     @StateObject private var clubObserver = ClubObserver()
-    @StateObject private var postObserver = PostObserver()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
