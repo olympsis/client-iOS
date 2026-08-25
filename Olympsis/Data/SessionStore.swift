@@ -49,7 +49,7 @@ class SessionStore {
     var orgService = OrgService()
     var postService = PostService()
     var venueService = VenueService()
-    var eventObserver = EventObserver()
+    var eventService = EventService()
     var workoutManager = WorkoutManager()
     var managementService = ManagementService()
     var notificationService = NotificationService()

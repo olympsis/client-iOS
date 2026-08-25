@@ -21,7 +21,7 @@ struct EventComments: View {
     @Binding var isComposing: Bool
     @State private var state: LOADING_STATE = .pending
 
-    private let service = EventObserver()
+    private let service = EventService()
 
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
@@ -161,7 +161,7 @@ struct EventCommentComposer: View {
     /// when set back to `false`, what dismisses it.
     @FocusState private var isFocused: Bool
 
-    private let service = EventObserver()
+    private let service = EventService()
 
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session

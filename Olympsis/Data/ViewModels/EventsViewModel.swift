@@ -296,7 +296,7 @@ class EventsViewModel {
         // canonically in miles, so convert before sending — matching the
         // venues fetch.
         let center = searchCenter(session)
-        guard let resp = await session.eventObserver.fetchEvents(
+        guard let resp = await session.eventService.fetchEvents(
             longitude: center.longitude,
             latitude: center.latitude,
             radius: milesToMeters(radius: radius),

@@ -22,7 +22,7 @@ struct EventNotification: View {
             content != "" else {
             return
         }
-        let resp = await session.eventObserver.notifyParticipants(id: event.id, title: title, body: content)
+        let resp = await session.eventService.notifyParticipants(id: event.id, title: title, body: content)
         if resp {
             status = .success
             self.presentationMode.wrappedValue.dismiss()

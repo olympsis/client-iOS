@@ -158,7 +158,7 @@ struct NotificationEventInvite: View {
             loadingStates["note"] = .pending
             guard let e = session.events.first(where: { $0.id == model.eventID }) else {
                 guard let id = model.eventID,
-                    let remoteE = await session.eventObserver.fetchEvent(id: id) else {
+                    let remoteE = await session.eventService.fetchEvent(id: id) else {
                     loadingStates["note"] = .failure
                     return
                 }

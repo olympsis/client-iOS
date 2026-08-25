@@ -127,7 +127,7 @@ class NewEventManager {
         geocodeCache.removeAll()
     }
 
-    private var eventObserver = EventObserver()
+    private var eventService = EventService()
     private var uploadService = UploadService()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
@@ -260,7 +260,7 @@ class NewEventManager {
             }
             dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
-            guard let id = await eventObserver.createEvent(dao: dto) else {
+            guard let id = await eventService.createEvent(dao: dto) else {
                 if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
@@ -269,7 +269,7 @@ class NewEventManager {
             
             return id
         } else {
-            guard let id = await eventObserver.createEvent(dao: dto) else {
+            guard let id = await eventService.createEvent(dao: dto) else {
                 throw NewEventError.unknown(message: "Failed to create event.")
             }
             

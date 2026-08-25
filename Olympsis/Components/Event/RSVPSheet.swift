@@ -12,7 +12,7 @@ struct RSVPSheet: View {
 
     var event: Event
 
-    private let observer = EventObserver()
+    private let observer = EventService()
     @State private var isAnonymous: Bool = false
 
     /// Per-option loading state, defaulting to `.pending` for any option that

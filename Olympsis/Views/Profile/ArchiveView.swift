@@ -328,7 +328,7 @@ struct ArchiveView: View {
         isLoading = true
         defer { isLoading = false }
 
-        let pastEvents = await session.eventObserver.fetchPastEvents()
+        let pastEvents = await session.eventService.fetchPastEvents()
         allEvents = pastEvents
         session.cacheService.cacheArchivedEvents(pastEvents)
     }

@@ -24,7 +24,7 @@ struct EventMenu: View {
     @Environment(SessionStore.self) private var session
     
     func deleteEvent(deleteAll: Bool = false) async {
-        let res = await session.eventObserver.deleteEvent(id: event.id, deleteAll: deleteAll)
+        let res = await session.eventService.deleteEvent(id: event.id, deleteAll: deleteAll)
         if res {
             await MainActor.run {
                 session.events.remove(event)

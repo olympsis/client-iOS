@@ -103,7 +103,7 @@ struct ListView: View {
 
         // Use fallback location. The server expects the radius in meters;
         // `manager.radius` is in miles, so convert before sending.
-        guard let resp = await session.eventObserver.fetchEvents(
+        guard let resp = await session.eventService.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
             radius: milesToMeters(radius: manager.radius),
