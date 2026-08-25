@@ -488,7 +488,6 @@
 		9A8162A3296685D40042F0A6 /* RoomListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A2296685D40042F0A6 /* RoomListItem.swift */; };
 		9A8162A529668CC90042F0A6 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A429668CC90042F0A6 /* RoomView.swift */; };
 		9A8162A729669A370042F0A6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8162A629669A370042F0A6 /* MessageView.swift */; };
-		9A81B60B2924254D009CA6ED /* VenueObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60A2924254D009CA6ED /* VenueObserver.swift */; };
 		9A81B60D292425B8009CA6ED /* VenueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B60C292425B8009CA6ED /* VenueService.swift */; };
 		9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* VenueListItem.swift */; };
 		9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */; };
@@ -533,6 +532,8 @@
 		9AB02F61290265B4008C07F1 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB02F60290265B4008C07F1 /* TabBar.swift */; };
 		9AB470E22935A5A000EE81CF /* UpdateApplicationDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */; };
 		9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC32961537E00C7E427 /* ChatService.swift */; };
+		5D61A3E2303D460100BD10CC /* InviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D61A3E1303D460100BD10CC /* InviteService.swift */; };
+		5D61A3E4303D460100BD10CC /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D61A3E3303D460100BD10CC /* APIService.swift */; };
 		9AB6DDC6296154D500C7E427 /* ChatTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC5296154D500C7E427 /* ChatTokenRequest.swift */; };
 		9AB6DDC8296155E800C7E427 /* ChatTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB6DDC7296155E800C7E427 /* ChatTokenResponse.swift */; };
 		9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABB1EBA290505440050C0F0 /* AuthContainer.swift */; };
@@ -1117,7 +1118,6 @@
 		9A8162A2296685D40042F0A6 /* RoomListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListItem.swift; sourceTree = "<group>"; };
 		9A8162A429668CC90042F0A6 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		9A8162A629669A370042F0A6 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
-		9A81B60A2924254D009CA6ED /* VenueObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueObserver.swift; sourceTree = "<group>"; };
 		9A81B60C292425B8009CA6ED /* VenueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueService.swift; sourceTree = "<group>"; };
 		9A81B61129242EBA009CA6ED /* VenueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItem.swift; sourceTree = "<group>"; };
 		9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItemTemplate.swift; sourceTree = "<group>"; };
@@ -1164,6 +1164,8 @@
 		9AB02F60290265B4008C07F1 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		9AB470E12935A5A000EE81CF /* UpdateApplicationDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateApplicationDao.swift; sourceTree = "<group>"; };
 		9AB6DDC32961537E00C7E427 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
+		5D61A3E1303D460100BD10CC /* InviteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteService.swift; sourceTree = "<group>"; };
+		5D61A3E3303D460100BD10CC /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		9AB6DDC5296154D500C7E427 /* ChatTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTokenRequest.swift; sourceTree = "<group>"; };
 		9AB6DDC7296155E800C7E427 /* ChatTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTokenResponse.swift; sourceTree = "<group>"; };
 		9ABB1EBA290505440050C0F0 /* AuthContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthContainer.swift; sourceTree = "<group>"; };
@@ -2112,6 +2114,8 @@
 				5DC468C52B9FCE7D0023353D /* ManagementService.swift */,
 				5D1881832F7713A7000FDF9E /* SnapshotService.swift */,
 				5D3CB8512FF8C71C009D9CF2 /* RecentInviteesCache.swift */,
+				5D61A3E1303D460100BD10CC /* InviteService.swift */,
+				5D61A3E3303D460100BD10CC /* APIService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2122,7 +2126,6 @@
 				9A8FF0E328BB453900DE4CF8 /* AuthObserver.swift */,
 				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
-				9A81B60A2924254D009CA6ED /* VenueObserver.swift */,
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9AF0A1BA29313E350055D1F6 /* PostObserver.swift */,
@@ -2984,7 +2987,6 @@
 				5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */,
 				5DCB01B72ADE28E700450F69 /* WorkoutModels.swift in Sources */,
 				5D18BD1D2B3948A800F90777 /* InvitationView.swift in Sources */,
-				9A81B60B2924254D009CA6ED /* VenueObserver.swift in Sources */,
 				5D8958F52C76D82400AAF374 /* ImageSaver.swift in Sources */,
 				9A550847293D9C3C00B924B1 /* UploadObserver.swift in Sources */,
 				9AB02F5F29024D44008C07F1 /* Tournaments.swift in Sources */,
@@ -3050,6 +3052,8 @@
 				9A81B64B2925EC79009CA6ED /* EventService.swift in Sources */,
 				5DFB8A062A720B560002A560 /* VenueView.swift in Sources */,
 				9AB6DDC42961537E00C7E427 /* ChatService.swift in Sources */,
+				5D61A3E2303D460100BD10CC /* InviteService.swift in Sources */,
+				5D61A3E4303D460100BD10CC /* APIService.swift in Sources */,
 				5D2AF5E32CEED1FB0026A526 /* RoomViewModel.swift in Sources */,
 				5D76D3712C79633700846382 /* GroupRouter.swift in Sources */,
 				5D2DEFC82B280E850082FE73 /* VenueInfo.swift in Sources */,

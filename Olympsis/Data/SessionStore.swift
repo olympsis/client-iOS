@@ -48,7 +48,7 @@ class SessionStore {
     var clubObserver = ClubObserver()
     var orgObserver = OrgObserver()
     var postObserver: PostObserver?
-    var fieldObserver = VenueObserver()
+    var venueService = VenueService()
     var eventObserver = EventObserver()
     var workoutManager = WorkoutManager()
     var managementObserver = ManagementObserver()
@@ -405,7 +405,7 @@ class SessionStore {
     /// - Parameter id: unique identifier for the venue
     /// - Returns: a `Venue` optinal object in case the server fails to find venue
     func fetchVenueRemote(id: String) async -> Venue? {
-        guard let venue = await fieldObserver.fetchVenue(id: id) else {
+        guard let venue = await venueService.fetchVenue(id: id) else {
             log.error("Failed to fetch venue data remotely")
             return nil
         }

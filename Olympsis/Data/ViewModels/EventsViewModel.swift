@@ -344,7 +344,7 @@ class EventsViewModel {
         let radiusInMeters = Int(milesToMeters(radius: radius))
 
         let center = searchCenter(session)
-        guard let resp = await session.fieldObserver.fetchVenues(
+        guard let resp = await session.venueService.fetchVenues(
             longitude: center.longitude,
             latitude: center.latitude,
             radius: radiusInMeters,

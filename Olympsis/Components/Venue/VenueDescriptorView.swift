@@ -97,7 +97,7 @@ struct VenueDescriptorView: View {
     /// - Returns: a `Venue` optinal object in case the server fails to find venue
     func fetchVenueRemote() async -> Venue? {
         guard let id = item.id,
-              let venue = await session.fieldObserver.fetchVenue(id: id) else {
+              let venue = await session.venueService.fetchVenue(id: id) else {
             log.error("Failed to verify venue data to fetch remotely")
             return nil
         }
