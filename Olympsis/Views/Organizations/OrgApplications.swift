@@ -34,7 +34,7 @@ struct OrgApplications: View {
                     }
                     
                 }.refreshable {
-                    let res = await session.orgObserver.getApplications(id: organizationID)
+                    let res = await session.orgService.getApplications(id: organizationID)
                     await MainActor.run {
                         applications = res
                     }
@@ -50,7 +50,7 @@ struct OrgApplications: View {
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                let res = await session.orgObserver.getApplications(id: organizationID)
+                let res = await session.orgService.getApplications(id: organizationID)
                 await MainActor.run {
                     applications = res
                 }

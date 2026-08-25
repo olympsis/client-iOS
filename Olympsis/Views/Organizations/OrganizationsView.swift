@@ -84,7 +84,7 @@ struct OrganizationsView: View {
                         let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
                         guard let country = pk.first?.country,
                               let state = pk.first?.administrativeArea,
-                              let res = await session.orgObserver.getOrganizations(country: country, state: state) else {
+                              let res = await session.orgService.getOrganizations(country: country, state: state) else {
                             return
                         }
                         await MainActor.run {
@@ -117,7 +117,7 @@ struct OrganizationsView: View {
                     let pk = try await geoCoder.reverseGeocodeLocation(l, preferredLocale: locale)
                     guard let country = pk.first?.country,
                           let state = pk.first?.administrativeArea,
-                          let res = await session.orgObserver.getOrganizations(country: country, state: state) else {
+                          let res = await session.orgService.getOrganizations(country: country, state: state) else {
 //                        status = .failure
                         return
                     }

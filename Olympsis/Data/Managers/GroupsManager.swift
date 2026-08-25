@@ -107,7 +107,7 @@ class GroupsManager {
                 self.add(group)
                 self.selected = group
             case .Organization:
-                guard let org = await OrgObserver.shared.getOrganization(id: groupID) else {
+                guard let org = await OrgService.shared.getOrganization(id: groupID) else {
                     return
                 }
                 let group = GroupSelection(type: .Organization, organization: org)

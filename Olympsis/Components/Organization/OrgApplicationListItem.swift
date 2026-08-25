@@ -56,7 +56,7 @@ struct OrgApplicationListItem: View {
             return
         }
         let dto = OrganizationApplicationDao(organizationID: org.id, clubID: "\(club.id)", status: "accepted")
-        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
+        let res = await session.orgService.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})
@@ -70,7 +70,7 @@ struct OrgApplicationListItem: View {
             return
         }
         let dto = OrganizationApplicationDao(organizationID: org.id, clubID: "\(club.id)", status: "denied")
-        let res = await session.orgObserver.updateApplication(id: application.id, app: dto)
+        let res = await session.orgService.updateApplication(id: application.id, app: dto)
         if res {
             withAnimation(.easeOut){
                 self.applications.removeAll(where: {$0.id == application.id})

@@ -186,7 +186,7 @@ struct OrgMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                let res = await session.orgObserver.deleteOrganization(id: organization.id)
+                                let res = await session.orgService.deleteOrganization(id: organization.id)
                                 if res {
                                     guard let selection = session.groupsManager.selected else { return }
                                     session.groupsManager.remove(selection)

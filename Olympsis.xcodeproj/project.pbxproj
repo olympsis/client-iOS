@@ -162,7 +162,6 @@
 		5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B592DA2D16800B67F5D /* EventSharing.swift */; };
 		5D204B5C2DA2D19000B67F5D /* EventError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D204B5B2DA2D19000B67F5D /* EventError.swift */; };
 		5D2062502B141C7E00A9D408 /* OrgService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D20624F2B141C7E00A9D408 /* OrgService.swift */; };
-		5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062512B141E5000A9D408 /* OrgObserver.swift */; };
 		5D2062542B14297000A9D408 /* OrgMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062532B14297000A9D408 /* OrgMenu.swift */; };
 		5D2062562B142CB600A9D408 /* OrgApplications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062552B142CB600A9D408 /* OrgApplications.swift */; };
 		5D2062582B142CCF00A9D408 /* OrgManagersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2062572B142CCF00A9D408 /* OrgManagersView.swift */; };
@@ -761,7 +760,6 @@
 		5D204B592DA2D16800B67F5D /* EventSharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharing.swift; sourceTree = "<group>"; };
 		5D204B5B2DA2D19000B67F5D /* EventError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventError.swift; sourceTree = "<group>"; };
 		5D20624F2B141C7E00A9D408 /* OrgService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgService.swift; sourceTree = "<group>"; };
-		5D2062512B141E5000A9D408 /* OrgObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgObserver.swift; sourceTree = "<group>"; };
 		5D2062532B14297000A9D408 /* OrgMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgMenu.swift; sourceTree = "<group>"; };
 		5D2062552B142CB600A9D408 /* OrgApplications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgApplications.swift; sourceTree = "<group>"; };
 		5D2062572B142CCF00A9D408 /* OrgManagersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgManagersView.swift; sourceTree = "<group>"; };
@@ -2114,7 +2112,6 @@
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9A204755295FD28200CDF3A3 /* ChatObserver.swift */,
-				5D2062512B141E5000A9D408 /* OrgObserver.swift */,
 			);
 			path = Observers;
 			sourceTree = "<group>";
@@ -3094,7 +3091,6 @@
 				5D204B582DA2CB8900B67F5D /* EventModels.swift in Sources */,
 				9A81B619292472B3009CA6ED /* ClubService.swift in Sources */,
 				5DCAEA2F2B01A30A00B9C22A /* EventMiddleView.swift in Sources */,
-				5D2062522B141E5000A9D408 /* OrgObserver.swift in Sources */,
 				5F4E53F62A2918B900257350 /* Venues.swift in Sources */,
 				5DACBECB2FDCDD9200B3381C /* ArchiveView.swift in Sources */,
 				5D18BD282B3F8FB300F90777 /* GroupFeed.swift in Sources */,

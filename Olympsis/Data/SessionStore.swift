@@ -46,7 +46,7 @@ class SessionStore {
     var cacheService = CacheService()
     var userService = UserService()
     var clubService = ClubService()
-    var orgObserver = OrgObserver()
+    var orgService = OrgService()
     var postService = PostService()
     var venueService = VenueService()
     var eventObserver = EventObserver()
@@ -489,7 +489,7 @@ class SessionStore {
     /// - Parameter id: unique identifier for the organization
     /// - Returns: an`Organization` optinal object in case the server fails to find the org
     func fetchOrgRemote(id: String) async -> Organization? {
-        guard let org = await orgObserver.getOrganization(id: id) else {
+        guard let org = await orgService.getOrganization(id: id) else {
             log.error("Failed to find organization data remotely")
             return nil
         }

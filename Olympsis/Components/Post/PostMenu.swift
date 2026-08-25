@@ -92,7 +92,7 @@ struct PostMenu: View {
             guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.pinPost(id: org.id, postId: post.id)
+            let resp = await session.orgService.pinPost(id: org.id, postId: post.id)
             if resp {
                 org.pinnedPosts.append(post.id)
                 pinned = true
@@ -119,7 +119,7 @@ struct PostMenu: View {
             guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.unPinPost(id: org.id)
+            let resp = await session.orgService.unPinPost(id: org.id)
             if resp {
                 org.pinnedPosts.removeAll(where: { $0 == org.id })
                 pinned = false

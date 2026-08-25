@@ -48,7 +48,7 @@ struct VenueListItem: View {
     /// rows in the lazy stack that share an owner only trigger one network call.
     private func loadOwnerOrg() async {
         guard !venue.ownerID.isEmpty else { return }
-        ownerOrg = await session.orgObserver.getCachedOrganization(id: venue.ownerID)
+        ownerOrg = await session.orgService.getCachedOrganization(id: venue.ownerID)
     }
 
     // MARK: - Scale-derived sizing

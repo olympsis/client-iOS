@@ -168,7 +168,7 @@ struct VenueActionButtons: View {
     /// repeat opens of venues with the same owner don't hit the network).
     private func loadOwnerOrg() async {
         guard !venue.ownerID.isEmpty else { return }
-        ownerOrg = await session.orgObserver.getCachedOrganization(id: venue.ownerID)
+        ownerOrg = await session.orgService.getCachedOrganization(id: venue.ownerID)
     }
 
     private var bookingURL: URL? {

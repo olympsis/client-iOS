@@ -44,12 +44,12 @@ struct InvitationView: View {
     
     func acceptInvite() async {
         let dto = InvitationDTO(id: nil, type: "", sender: "", recipient: "", subjectID: "", status: "accepted", createdAt: nil)
-        let resp = await session.orgObserver.updateInvitation(data: dto)
+        let resp = await session.orgService.updateInvitation(data: dto)
         guard resp else {
             handleAcceptFailure()
             return
         }
-        guard let org = await session.orgObserver.getOrganization(id: invitation.subjectID) else {
+        guard let org = await session.orgService.getOrganization(id: invitation.subjectID) else {
             handleAcceptSuccess()
             return
         }
@@ -62,7 +62,7 @@ struct InvitationView: View {
     
     func denyInvite() async {
         let dto = InvitationDTO(id: nil, type: "", sender: "", recipient: "", subjectID: "", status: "denied", createdAt: nil)
-        let resp = await session.orgObserver.updateInvitation(data: dto)
+        let resp = await session.orgService.updateInvitation(data: dto)
         guard resp else {
             handleDenyFailure()
             return

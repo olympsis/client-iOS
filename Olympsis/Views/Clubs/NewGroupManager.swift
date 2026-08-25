@@ -390,7 +390,7 @@ class NewGroupManager {
             return false
         }
         
-        guard await OrgObserver.shared.updateOrganization(id: org.id, dto: dto) else {
+        guard await OrgService.shared.updateOrganization(id: org.id, dto: dto) else {
             handleFailure()
             log.error("Failed to update club")
             return false

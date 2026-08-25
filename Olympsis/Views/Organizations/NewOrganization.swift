@@ -29,7 +29,7 @@ struct NewOrganization: View {
         do {
             // create new organization
             guard let user = session.user,
-                let id = try await session.orgObserver.createOrganization(organization: dto) else {
+                let id = try await session.orgService.createOrganization(organization: dto) else {
                 viewModel.status = .failure
                 log.error("Failed to create club")
                 return
