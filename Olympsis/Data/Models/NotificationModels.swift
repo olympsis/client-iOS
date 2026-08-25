@@ -15,13 +15,29 @@ struct OlympsisNotification: Codable {
 
 struct NotificationModel: Decodable {
     var id: String
-    var type: String
-    var club: Club?
-    var event: Event?
-    var organization: Organization?
-    var invite: Invitation?
-    var user: User?
-    var body: String
+    var type: NotificationType
+    
+    var orgID: String?
+    var clubID: String?
+    
+    var eventID: String?
+    var inviteID: String?
+    var teamID: String?
+    
+    var userID: String?
+    var body: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case orgID = "org_id"
+        case clubID = "club_id"
+        case eventID = "event_id"
+        case inviteID = "invite_id"
+        case teamID = "team_id"
+        case userID = "user_id"
+        case body
+    }
 }
 
 struct NotificationItem: Decodable {
@@ -68,7 +84,7 @@ struct NotificationItemListResponse: Decodable {
     }
 }
 
-enum NotificationType: String, CaseIterable {
+enum NotificationType: String, Codable, CaseIterable {
     case newClubApplication = "new_club_application"
     case clubApplicationUpdate = "club_application_update"
     case clubRankingChange = "club_ranking_change"
@@ -86,9 +102,13 @@ enum NotificationType: String, CaseIterable {
     case postCommentReport = "post_comment_report"
     
     case newEvent = "new_event"
+    case eventInvite = "event_invite"
+    case eventCoHost = "event_co_host"
     case eventComment = "event_comment"
     case eventParticipantUpdate = "event_participant_update"
     case eventReminder = "event_reminder"
+    
+    case teamInvite = "team_invite"
     
     case dailyEventSummary = "daily_event_summary"
     case weeklyEventSummary = "weekly_event_summary"

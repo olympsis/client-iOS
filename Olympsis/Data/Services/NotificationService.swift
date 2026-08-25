@@ -35,4 +35,6 @@ class NotificationService {
 
         return true
     }
+    
+    func declineInvite(for ID: String) async throws -> Bool { return true }
 }

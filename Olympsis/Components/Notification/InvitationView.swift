@@ -110,12 +110,12 @@ struct InvitationView: View {
                         + Text("\(name)").bold()
                     }
                     HStack {
-                        Button(action: { Task { await acceptInvite() }}) {
-                            LoadingButton(text: "Accept", height: 40, status: $acceptState)
-                        }
-                        Spacer()
                         Button(action: { Task { await denyInvite()} }) {
                             LoadingButton(text: "Deny", height: 40, color: .red, status: $denyState)
+                        }
+                        Spacer()
+                        Button(action: { Task { await acceptInvite() }}) {
+                            LoadingButton(text: "Accept", height: 40, status: $acceptState)
                         }
                     }.padding(.vertical)
                 }.padding(.leading, 5)
