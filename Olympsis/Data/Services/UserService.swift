@@ -10,93 +10,90 @@ import Hermes
 import SwiftUI
 import Foundation
 
-class UserService {
+/// Network calls for the user endpoints — profile lookup/update, username
+/// search/availability, and check-in. The shared `APIService` plumbing
+/// handles auth headers, status codes, and decoding.
+class UserService: APIService {
 
-    private var http: Courrier
+    let http: Courrier
+    let decoder: JSONDecoder
 
     init() {
         let env = AppEnvironment.current
         self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
-    }
-    
-    func UserNameAvailability(name: String) async throws -> Data {
-        let endpoint = Endpoint("/v1/users/username", queryItems: [URLQueryItem(name: "username", value: name)])
-        let (data, _) = try await http.Request(.GET, endpoint)
-        return data
-    }
-    
-    func GetFriendRequests() async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/friends/requests", queryItems: [URLQueryItem]())
-        let (data, res) = try await http.Request(.GET, endpoint, headers: headers)
-        return (data, res)
-    }
-    
-    func UpdateFriendRequest(id: String, dao: UpdateFriendRequestDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/friends/requests/\(id)", queryItems: [URLQueryItem]())
-        let (data, res) = try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: headers)
-        return (data, res)
-    }
-    
-    func createUserData(userName: String, sports:[String]) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let req = UserDao(username: userName, sports: sports, visibility: "public", hasOnboarded: false)
-        let endpoint = Endpoint("/v1/users", queryItems: [URLQueryItem]())
-        return try await http.Request(.POST, endpoint, body: EncodeToData(req), headers: headers)
-    }
-    
-    func GetUserData() async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/user", queryItems: [URLQueryItem]())
-        return try await http.Request(.GET, endpoint, headers: headers)
-    }
-    
-    func UpdateUserData(update: UserDao) async throws -> (Data,URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/user", queryItems: [URLQueryItem]())
-        return try await http.Request(.PUT, endpoint, body: EncodeToData(update), headers: headers)
-    }
-    
-    func SearchUsersByUsername(username: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/search/username", queryItems: [
-            URLQueryItem(name: "username", value: username)
-        ])
-        return try await http.Request(.GET, endpoint, headers: headers)
-    }
-    
-    /// Searches for users whose username matches (or is prefixed by) `username`.
-    ///
-    /// Template endpoint — `GET /v1/users?username=john_doe` — used by the event
-    /// invitee picker. The server is expected to return the top-k users that best
-    /// match the given username as a `UsersDataResponse` payload. Wire this up on
-    /// the backend to power the invitee search.
-    func SearchUsers(username: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users", queryItems: [
-            URLQueryItem(name: "username", value: username)
-        ])
-        return try await http.Request(.GET, endpoint, headers: headers)
+        decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
     }
 
-    func getUserByUserID(userID: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/search/user_id", queryItems: [
-            URLQueryItem(name: "user_id", value: userID)
-        ])
-        return try await http.Request(.GET, endpoint, headers: headers)
+    /// GET /v1/users/username?username=
+    ///
+    /// No status-code check — mirrors the endpoint's pre-migration behavior
+    /// of decoding whatever comes back; a malformed body throws from the
+    /// decode itself.
+    func usernameAvailability(name: String) async throws -> Bool {
+        let endpoint = Endpoint("/v1/users/username", queryItems: [URLQueryItem(name: "username", value: name)])
+        let (data, _) = try await requestRaw(.GET, endpoint)
+        let object = try decoder.decode(UsernameAvailabilityResponse.self, from: data)
+        return object.isAvailable
     }
-    
-    func GetOrganizationInvitations() async throws -> (Data, URLResponse){
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/invitations/organizations")
-        return try await http.Request(.GET, endpoint, headers: headers)
+
+    /// PUT /v1/users/user
+    ///
+    /// Returns nil on any failure — a non-200 status or a decode error —
+    /// callers cannot distinguish the two.
+    func updateUserData(update: UserDao) async -> User? {
+        do {
+            return try await request(.PUT, Endpoint("/v1/users/user"), body: EncodeToData(update))
+        } catch {
+            return nil
+        }
     }
-    
-    func CheckIn() async throws -> (Data, URLResponse){
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Endpoint("/v1/users/check-in")
-        return try await http.Request(.GET, endpoint, headers: headers)
+
+    /// GET /v1/users/search/username?username=
+    ///
+    /// Empty array on any non-200 status.
+    func searchUsersByUsername(username: String) async throws -> [User] {
+        let endpoint = Endpoint("/v1/users/search/username", queryItems: [URLQueryItem(name: "username", value: username)])
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else { return [User]() }
+        let object = try decoder.decode(UsersDataResponse.self, from: data)
+        return object.users
+    }
+
+    /// Returns the top-k users matching `username`, powering the event invitee search.
+    /// Hits the template `GET /v1/users?username=` endpoint and decodes a `UsersDataResponse`.
+    /// Empty array on any non-200 status.
+    func searchUsers(username: String) async throws -> [User] {
+        let endpoint = Endpoint("/v1/users", queryItems: [URLQueryItem(name: "username", value: username)])
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else { return [User]() }
+        let object = try decoder.decode(UsersDataResponse.self, from: data)
+        return object.users
+    }
+
+    /// GET /v1/users/search/user_id?user_id=
+    ///
+    /// nil on any non-200 status.
+    func getUserByUserID(userID: String) async throws -> User? {
+        let endpoint = Endpoint("/v1/users/search/user_id", queryItems: [URLQueryItem(name: "user_id", value: userID)])
+        let (data, statusCode) = try await requestRaw(.GET, endpoint)
+        guard statusCode == 200 else { return nil }
+        return try decoder.decode(User.self, from: data)
+    }
+
+    /// GET /v1/users/check-in
+    ///
+    /// nil on any non-200 status. The 401 branch is split out but behaves
+    /// identically to the default case today — needs something smarter in
+    /// the future.
+    func checkIn() async throws -> CheckIn? {
+        let (data, statusCode) = try await requestRaw(.GET, Endpoint("/v1/users/check-in"))
+        guard statusCode == 200 else {
+            if statusCode == 401 {
+                return nil // needs something smarter in the future
+            }
+            return nil
+        }
+        return try decoder.decode(CheckIn.self, from: data)
     }
 }

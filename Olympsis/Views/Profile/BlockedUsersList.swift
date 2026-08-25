@@ -29,7 +29,7 @@ struct BlockedUsersList: View {
             blockedList.removeAll(where: { $0 == targetUserID })
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.updateUserData(update: dto) else {
+            guard let resp = await session.userService.updateUserData(update: dto) else {
                 return
             }
             session.user = resp
@@ -46,7 +46,7 @@ struct BlockedUsersList: View {
         }
         do {
             for id in list {
-                guard let data = try await session.userObserver.getUserByUserID(userID: id) else {
+                guard let data = try await session.userService.getUserByUserID(userID: id) else {
                     return
                 }
                 blockedUsers.append(data)

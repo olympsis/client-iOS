@@ -468,7 +468,6 @@
 		9A353708292A04B0005EC806 /* NewEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A353707292A04B0005EC806 /* NewEvent.swift */; };
 		9A39ED3A28BDD4BA00ACB20A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3928BDD4BA00ACB20A /* UserService.swift */; };
 		9A39ED3D28BDD5A700ACB20A /* UserNameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */; };
-		9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */; };
 		9A39ED4128BDD6CC00ACB20A /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */; };
 		9A48D83129561A01008C97BD /* UpdateFriendRequestDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A48D83029561A01008C97BD /* UpdateFriendRequestDao.swift */; };
 		9A4FF8992974886F008F1613 /* ChangeRankDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FF8982974886F008F1613 /* ChangeRankDao.swift */; };
@@ -1095,7 +1094,6 @@
 		9A353707292A04B0005EC806 /* NewEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEvent.swift; sourceTree = "<group>"; };
 		9A39ED3928BDD4BA00ACB20A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		9A39ED3C28BDD5A700ACB20A /* UserNameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameRequest.swift; sourceTree = "<group>"; };
-		9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObserver.swift; sourceTree = "<group>"; };
 		9A39ED4028BDD6CC00ACB20A /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
 		9A48D83029561A01008C97BD /* UpdateFriendRequestDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendRequestDao.swift; sourceTree = "<group>"; };
 		9A4FF8982974886F008F1613 /* ChangeRankDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeRankDao.swift; sourceTree = "<group>"; };
@@ -2117,7 +2115,6 @@
 		9A8FF0D428BB337C00DE4CF8 /* Observers */ = {
 			isa = PBXGroup;
 			children = (
-				9A39ED3E28BDD6AE00ACB20A /* UserObserver.swift */,
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
 				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
@@ -3193,7 +3190,6 @@
 				5D2F19A32C13E39700D98222 /* ImageLoadingFailedView.swift in Sources */,
 				5D18DE9B2DB14A44005CD3E4 /* LocalesPicker.swift in Sources */,
 				5DB36C002C351CCE00DB2912 /* ClubLoadingView.swift in Sources */,
-				9A39ED3F28BDD6AE00ACB20A /* UserObserver.swift in Sources */,
 				5D63AF742C31212A005D431F /* NextEvent.swift in Sources */,
 				5D9F69412BB7653F0057D205 /* MapFunctions.swift in Sources */,
 				5D4B0A642D96F41600475A0C /* EventLocation.swift in Sources */,

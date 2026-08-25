@@ -44,7 +44,7 @@ class SessionStore {
     var authService = AuthService()
     var homeObserver = HomeObserver()
     var cacheService = CacheService()
-    var userObserver = UserObserver()
+    var userService = UserService()
     var clubObserver = ClubObserver()
     var orgObserver = OrgObserver()
     var postService = PostService()
@@ -192,7 +192,7 @@ class SessionStore {
             guard let user = cacheService.fetchUser(),
                   var devices = user.notificationDevices else {
                 let dao = UserDao(notificationDevices: [device])
-                guard let user = await userObserver.updateUserData(update: dao) else {
+                guard let user = await userService.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -205,7 +205,7 @@ class SessionStore {
             guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
                 devices.append(device)
                 let dao = UserDao(notificationDevices: devices)
-                guard let user = await userObserver.updateUserData(update: dao) else {
+                guard let user = await userService.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -226,7 +226,7 @@ class SessionStore {
             devices[idx].deviceInfo = device.deviceInfo
             devices[idx].updatedAt = Date()
             let dao = UserDao(notificationDevices: devices)
-            guard let user = await userObserver.updateUserData(update: dao) else {
+            guard let user = await userService.updateUserData(update: dao) else {
                 log.error("Failed to update user with new device token.")
                 return
             }
@@ -244,7 +244,7 @@ class SessionStore {
         orgs = []
         
         do {
-            guard let resp = try await userObserver.checkIn() else {
+            guard let resp = try await userService.checkIn() else {
                 return
             }
             if let usr = resp.user {

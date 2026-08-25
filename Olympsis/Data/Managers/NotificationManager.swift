@@ -31,7 +31,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // up `navigationHandler`.
     private var pendingNavigationURL: URL?
 
-    private var userObserver = UserObserver()
     private var cacheService = CacheService()
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notification_manager")

@@ -209,7 +209,7 @@ struct EventInviteePickerView: View {
         if Task.isCancelled { return }
 
         do {
-            let users = try await session.userObserver.searchUsers(username: query)
+            let users = try await session.userService.searchUsers(username: query)
             // Guard against a late response landing after the query moved on.
             if Task.isCancelled { return }
             results = users.map { $0.toSnippet() }

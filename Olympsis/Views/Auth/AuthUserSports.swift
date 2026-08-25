@@ -14,7 +14,6 @@ struct AuthUserSports: View {
     @State private var selectedSports: [Sport] = []
     @State private var state: LOADING_STATE = .pending
     
-    private let userObserver = UserObserver()
     private let cacheService = CacheService()
     
     @AppStorage("auth_type") private var authType: USER_STATUS?
@@ -50,7 +49,7 @@ struct AuthUserSports: View {
             }
             let dao = UserDao(sports: parts)
             
-            guard let updates = await session.userObserver.updateUserData(update: dao) else {
+            guard let updates = await session.userService.updateUserData(update: dao) else {
                 state = .failure
                 return
             }
