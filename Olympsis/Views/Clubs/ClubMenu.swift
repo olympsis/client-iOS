@@ -23,8 +23,6 @@ struct ClubMenu: View {
     @State private var showDeleteClubAlert = false
     @State private var alertType = Alerts.LeaveClub
     
-    @StateObject private var clubObserver = ClubObserver()
-    
     @Environment(\.dismiss) private var dismiss
     
     @Environment(Club.self) private var club
@@ -183,7 +181,7 @@ struct ClubMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text(String(localized: "option-leave", table: "Groups")), action: {
                             Task { // Perform delete operation
-                                _ = await session.clubObserver.leaveClub(id: club.id)
+                                _ = await session.clubService.leaveClub(id: club.id)
                                 guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
                                 session.groupsManager.remove(selected)
@@ -202,7 +200,7 @@ struct ClubMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text(String(localized: "option-delete", table: "Groups")), action: {
                             Task { // Perform delete operation
-                                _ = await session.clubObserver.deleteClub(id: club.id)
+                                _ = await session.clubService.deleteClub(id: club.id)
                                 guard let selected = session.groupsManager.selected else { return }
                                 session.clubsState = .loading
                                 session.groupsManager.remove(selected)

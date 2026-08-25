@@ -25,8 +25,6 @@ struct OrgMenu: View {
     
     @State private var alertType = Alerts.LeaveClub
     
-    @StateObject private var clubObserver = ClubObserver()
-    
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     @EnvironmentObject private var organization: Organization
@@ -164,7 +162,7 @@ struct OrgMenu: View {
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        _ = await session.clubObserver.leaveClub(id: organization.id)
+                                        _ = await session.clubService.leaveClub(id: organization.id)
                                     }
                                 })
                             );
@@ -176,7 +174,7 @@ struct OrgMenu: View {
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    _ = await session.clubObserver.leaveClub(id: organization.id)
+                                    _ = await session.clubService.leaveClub(id: organization.id)
                                 }
                             })
                         );

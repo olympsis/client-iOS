@@ -23,15 +23,15 @@ struct ClubMemberMenu: View {
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "club_member_menu_view")
     
     func promote(_ role: String) async {
-        _ = await session.clubObserver.changeMemberRank(id: club.id, memberId: member.id!, role: role)
+        _ = await session.clubService.changeMemberRank(id: club.id, memberId: member.id!, role: role)
     }
     
     func demote(_ role: String) async {
-        _ = await session.clubObserver.changeMemberRank(id: club.id, memberId: member.id!, role: role)
+        _ = await session.clubService.changeMemberRank(id: club.id, memberId: member.id!, role: role)
     }
     
     func kick() async {
-        _ = await session.clubObserver.kickMember(id: club.id, memberId: member.id!)
+        _ = await session.clubService.kickMember(id: club.id, memberId: member.id!)
 
     }
     

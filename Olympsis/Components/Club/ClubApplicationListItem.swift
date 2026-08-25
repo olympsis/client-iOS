@@ -60,7 +60,7 @@ struct ClubApplicationListItem: View {
         Task { @MainActor in
             acceptState = .loading
             let req = ApplicationUpdateRequest(status: "accepted")
-            let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
+            let res = await session.clubService.updateApplication(id: club.id, appID: application.id, req: req)
             if res {
                 acceptState = .success
                 withAnimation(.easeOut){
@@ -78,7 +78,7 @@ struct ClubApplicationListItem: View {
         Task { @MainActor in
             denyState = .loading
             let req = ApplicationUpdateRequest(status: "denied")
-            let res = await session.clubObserver.updateApplication(id: club.id, appID: application.id, req: req)
+            let res = await session.clubService.updateApplication(id: club.id, appID: application.id, req: req)
             if res {
                 withAnimation(.easeOut){
                     self.applications.removeAll(where: {$0.id == application.id})

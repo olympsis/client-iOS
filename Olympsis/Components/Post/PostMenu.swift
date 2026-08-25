@@ -82,7 +82,7 @@ struct PostMenu: View {
             guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: club.id, postId: post.id)
+            let resp = await session.clubService.pinPost(id: club.id, postId: post.id)
             if resp {
                 club.pinnedPosts.append(post.id)
                 pinned = true
@@ -109,7 +109,7 @@ struct PostMenu: View {
             guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.unPinPost(id: club.id)
+            let resp = await session.clubService.unPinPost(id: club.id)
             if resp {
                 club.pinnedPosts.removeAll(where: { $0 == club.id})
                 pinned = false

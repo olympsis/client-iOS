@@ -43,7 +43,6 @@ class EditorGroupViewModel: ObservableObject {
     private var type: GROUP_TYPE
     
     private var orgObserver = OrgObserver()
-    private var clubObserver = ClubObserver()
     private var uploadService = UploadService()
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "editor_group_view_model")

@@ -23,7 +23,7 @@ struct AsyncClubView: View {
     @MainActor
     private func fetchClub() async {
         state = .loading
-        guard let club = await session.clubObserver.getClub(id: clubID) else {
+        guard let club = await session.clubService.getClub(id: clubID) else {
             state = .failure
             log.error("Failed to fetch club:\(clubID, privacy: .public)")
             return

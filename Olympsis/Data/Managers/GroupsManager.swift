@@ -100,7 +100,7 @@ class GroupsManager {
         Task {
             switch type {
             case .Club:
-                guard let club = await ClubObserver.shared.getClub(id: groupID) else {
+                guard let club = await ClubService.shared.getClub(id: groupID) else {
                     return
                 }
                 let group = GroupSelection(type: .Club, club: club)

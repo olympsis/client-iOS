@@ -359,7 +359,7 @@ class NewGroupManager {
         }
         
         dto.visibility = nil
-        guard await ClubObserver.shared.updateClub(id: club.id, dto: dto) else {
+        guard await ClubService.shared.updateClub(id: club.id, dto: dto) else {
             handleFailure()
             log.error("Failed to update club")
             return false

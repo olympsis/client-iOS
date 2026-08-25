@@ -47,7 +47,7 @@ struct NewClub: View {
         do {
             // create new club
             guard let user = session.user,
-                let id = try await session.clubObserver.createClub(club: dto) else {
+                let id = try await session.clubService.createClub(club: dto) else {
                 viewModel.status = .failure
                 log.error("Failed to create club")
                 return

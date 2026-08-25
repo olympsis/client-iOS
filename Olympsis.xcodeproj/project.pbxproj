@@ -489,7 +489,6 @@
 		9A81B61229242EBA009CA6ED /* VenueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61129242EBA009CA6ED /* VenueListItem.swift */; };
 		9A81B61729246AF9009CA6ED /* VenueListItemTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */; };
 		9A81B619292472B3009CA6ED /* ClubService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B618292472B3009CA6ED /* ClubService.swift */; };
-		9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B61F292475B1009CA6ED /* ClubObserver.swift */; };
 		9A81B6232924771A009CA6ED /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B6222924771A009CA6ED /* SearchBar.swift */; };
 		9A81B62529247F87009CA6ED /* ClubListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B62429247F87009CA6ED /* ClubListItem.swift */; };
 		9A81B627292485A3009CA6ED /* ClubDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A81B626292485A3009CA6ED /* ClubDetailView.swift */; };
@@ -1114,7 +1113,6 @@
 		9A81B61129242EBA009CA6ED /* VenueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItem.swift; sourceTree = "<group>"; };
 		9A81B61629246AF9009CA6ED /* VenueListItemTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListItemTemplate.swift; sourceTree = "<group>"; };
 		9A81B618292472B3009CA6ED /* ClubService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubService.swift; sourceTree = "<group>"; };
-		9A81B61F292475B1009CA6ED /* ClubObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubObserver.swift; sourceTree = "<group>"; };
 		9A81B6222924771A009CA6ED /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		9A81B62429247F87009CA6ED /* ClubListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubListItem.swift; sourceTree = "<group>"; };
 		9A81B626292485A3009CA6ED /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
@@ -2114,7 +2112,6 @@
 			isa = PBXGroup;
 			children = (
 				9ABB1EC2290604060050C0F0 /* HomeObserver.swift */,
-				9A81B61F292475B1009CA6ED /* ClubObserver.swift */,
 				9A81B6452925EAE6009CA6ED /* EventObserver.swift */,
 				9A204755295FD28200CDF3A3 /* ChatObserver.swift */,
 				5D2062512B141E5000A9D408 /* OrgObserver.swift */,
@@ -3005,7 +3002,6 @@
 				5D9F693F2BB665700057D205 /* ProfileHometownPicker.swift in Sources */,
 				9ABB1EBB290505440050C0F0 /* AuthContainer.swift in Sources */,
 				9AD20902293444A4007A62C4 /* MemberListItem.swift in Sources */,
-				9A81B620292475B1009CA6ED /* ClubObserver.swift in Sources */,
 				5D18BD102B35F85800F90777 /* EventDatePickerView.swift in Sources */,
 				5D4B0A6C2D97445300475A0C /* GroupsEnrolled.swift in Sources */,
 				5D204B5A2DA2D16800B67F5D /* EventSharing.swift in Sources */,
