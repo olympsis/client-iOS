@@ -47,7 +47,7 @@ struct Home: View {
                 
                 // MARK: - Announcements
                 AnnouncementsView()
-                    .environment(session.homeObserver)
+                    .environment(session)
                 
                 // MARK: - Hot Events
                 HotEvents()
@@ -107,8 +107,8 @@ struct Home: View {
                             Image(systemName: "bell")
                                 .foregroundStyle(Color.Foreground.default)
                                 
-                            if session.notifications.contains(where: { !$0.isRead }) {
-                                NotificationCountView(value: session.notifications.count(where: { !$0.isRead }))
+                            if session.notifications.contains(where: { $0.readAt == nil }) {
+                                NotificationCountView(value: session.notifications.count(where: { $0.readAt == nil }))
                             }
                         }
                     }

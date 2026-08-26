@@ -10,10 +10,10 @@ import SwiftUI
 struct AnnouncementsView: View {
     
     @State var index = "0"
-    @Environment(HomeObserver.self) private var observer
+    @Environment(SessionStore.self) private var session
     
     var body: some View {
-        if observer.announcements.count > 0 {
+        if session.announcements.count > 0 {
             VStack(alignment: .leading){
                 Text(String(localized: "Announcements", table: "General"))
                     .font(.custom("Helvetica Neue", size: 17))
@@ -22,7 +22,7 @@ struct AnnouncementsView: View {
                 
                 VStack {
                     TabView(selection: $index){
-                        ForEach(observer.announcements){ announcement in
+                        ForEach(session.announcements){ announcement in
                             AnnouncementView(announcement: announcement).tag(announcement.id)
                         }
                     }
@@ -30,16 +30,16 @@ struct AnnouncementsView: View {
                     .frame(width: SCREEN_WIDTH, height: SCREEN_WIDTH*(1350.0 / 1080.0), alignment: .center)
                     
                     HStack(spacing: 2) {
-                        ForEach(observer.announcements, id: \.id) { index in
+                        ForEach(session.announcements, id: \.id) { index in
                             Rectangle()
                                 .fill(index.id == self.index ? Color("color-prime") : Color("color-prime").opacity(0.5))
                                 .frame(width: 30, height: 5)
                         }
                     }.padding()
                 }
-                .onChange(of: observer.announcements) { _, _ in
-                    if !observer.announcements.isEmpty {
-                        self.index = observer.announcements[0].id
+                .onChange(of: session.announcements) { _, _ in
+                    if !session.announcements.isEmpty {
+                        self.index = session.announcements[0].id
                     }
                 }
             }.padding(.top)
@@ -49,5 +49,5 @@ struct AnnouncementsView: View {
 
 #Preview {
     AnnouncementsView()
-        .environment(HomeObserver())
+        .environment(SessionStore())
 }

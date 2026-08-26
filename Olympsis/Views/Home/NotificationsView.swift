@@ -22,13 +22,13 @@ struct NotificationsView: View {
             if session.notifications.count > 0 {
                 ForEach(session.notifications, id: \.id){ note in
                     LazyVStack {
-                        NotificationModelView(notification: note)
+                        NotificationView()
                             .environment(session)
                     }
                 }
             } else {
                 VStack {
-                    Text("Olympsis Notifications will live here.")
+                    Text("Your Notifications will live here!")
                     HStack {
                         Spacer()
                     }
@@ -66,6 +66,7 @@ struct NotificationsView: View {
                 }
                 await NotificationManager.shared.requestAuthorization()
                 await session.updateNotifications()
+                
             } catch {
                 log.error("Failed to determine or request notifications authorization. Error: \(error.localizedDescription)")
             }

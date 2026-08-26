@@ -140,7 +140,7 @@ public final class InAppNotificationPresenter {
 
     private func advance() {
         guard !queue.isEmpty else { return }
-        var next = queue.removeFirst()
+        let next = queue.removeFirst()
         _ = next // (kept mutable in case future policy rewrites fields on show)
         current = next
         phase = .presenting

@@ -35,14 +35,15 @@ class SessionStore {
     var tags: [Tag] = []
     var sports: [Sport] = []
     
-    var venues = [Venue]()           // Venues Cache
-    var hotEvents = [Event]()        // Hot Events Cache
-    var invitations = [Invitation]() // Invitations Cache
-    var notifications = [NotificationItem]()
+    var venues = [Venue]()
+    var hotEvents = [Event]()
+    var invitations = [Invitation]()
+    var announcements = [Announcement]()
+    var notifications = [NotificationModel]()
+    
     
     // Observers
     var authService = AuthService()
-    var homeObserver = HomeObserver()
     var cacheService = CacheService()
     var userService = UserService()
     var clubService = ClubService()
@@ -300,7 +301,12 @@ class SessionStore {
     }
     
     func getNotifications() async {
-        self.notifications = []
+        do {
+            let notes = try await self.notificationService.GetNotifications()
+            self.notifications = notes.notifications
+        } catch {
+            log.error("Failed to get notifications! Error: \(error.localizedDescription)")
+        }
     }
     
     /// We want to dynamically fetch the clubs and organizations for each event

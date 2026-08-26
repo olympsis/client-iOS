@@ -10,7 +10,7 @@ import SwiftUI
 struct NotificationEventInvite: View {
     
     var model: NotificationModel
-    private var user: UserData?
+    private var actor: UserData?
 
     @State private var event: Event?
     @State private var showSheet: Bool = false
@@ -31,9 +31,21 @@ struct NotificationEventInvite: View {
         )
     }
 
+    /// `Payload` is an enum, so the invite data has to be pattern matched out
+    /// of it rather than cast. Invites all share one shape now, so the event id
+    /// arrives as the generic `contextID` — which is only an event id because
+    /// this view is only used for the event-shaped invite types. Returns `nil`
+    /// when this note carries a non-invite payload.
+    private var eventID: String? {
+        guard case .invite(let data) = model.payload else {
+            return nil
+        }
+        return data.contextID
+    }
+    
     // The image of the sender of this note
     private var userImage: some View {
-        guard let user, let imageURL = user.imageURL,
+        guard let actor, let imageURL = actor.imageURL,
               let url = URL(string: imageURL) else {
             return UserBadgeView(size: .small)
         }
@@ -42,10 +54,10 @@ struct NotificationEventInvite: View {
     
     // The username of the sender of this note
     private var username: Text {
-        guard let user else {
+        guard let actor else {
             return Text("olympsis_user ")
         }
-        return Text(user.username + " ")
+        return Text(actor.username + " ")
     }
     
     // The title of the notifcation
@@ -76,6 +88,54 @@ struct NotificationEventInvite: View {
         }
     }
     
+    @ViewBuilder
+    private var noteBody: some View {
+        if let event {
+            switch loadingStates["note"] {
+            case .loading:
+                EventSmallListItemPlaceholder()
+            case .success:
+                EventSmallListItem(event: event)
+            case .failure:
+                HStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(height: 100)
+                        .foregroundStyle(Color.Background.secondary)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.border, lineWidth: 1)
+                        }
+                        .overlay {
+                            HStack {
+                                Spacer()
+                                VStack {
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .imageScale(.large)
+                                        .foregroundColor(.red)
+                                    Text("Error loading event")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                                Spacer()
+                            }
+                        }
+                }
+            case .pending, .none:
+                EmptyView()
+            }
+        } else {
+            EmptyView()
+        }
+    }
+    
+    private func declineInvite() {
+        
+    }
+    
+    private func acceptInvite() {
+        showSheet.toggle()
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -94,40 +154,7 @@ struct NotificationEventInvite: View {
             }
             
             // Event body
-            if let event {
-                switch loadingStates["note"] {
-                case .loading:
-                    EventSmallListItemPlaceholder()
-                case .success:
-                    EventSmallListItem(event: event)
-                case .failure:
-                    HStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 100)
-                            .foregroundStyle(Color.Background.secondary)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.border, lineWidth: 1)
-                            }
-                            .overlay {
-                                HStack {
-                                    Spacer()
-                                    VStack {
-                                        Image(systemName: "exclamationmark.triangle.fill")
-                                            .imageScale(.large)
-                                            .foregroundColor(.red)
-                                        Text("Error loading event")
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                    }
-                                    Spacer()
-                                }
-                            }
-                    }
-                case .pending, .none:
-                    EmptyView()
-                }
-            }
+            noteBody
             
             // Actions
             HStack {
@@ -136,16 +163,16 @@ struct NotificationEventInvite: View {
                     background: Color.Background.secondary,
                     foreground: Color.Foreground.default,
                     state: loadingState(for: "decline")
-                ) {}
-                    .disabled(loadingStates["note"] == .loading)
-                    .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
+                ) { declineInvite() }
+                .disabled(loadingStates["note"] == .loading)
+                .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
 
                 BaseLoadingButton(
                     title: primaryActionText,
                     state: loadingState(for: "accept")
-                ) {}
-                    .disabled(loadingStates["note"] == .loading)
-                    .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
+                ) { acceptInvite() }
+                .disabled(loadingStates["note"] == .loading)
+                .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
             }
         }
         .padding(.horizontal)
@@ -155,10 +182,15 @@ struct NotificationEventInvite: View {
             }
         })
         .task {
+            // Validate event id from the model first
+            guard let eventID else {
+                loadingStates["note"] = .failure
+                return
+            }
+            
             loadingStates["note"] = .pending
-            guard let e = session.events.first(where: { $0.id == model.eventID }) else {
-                guard let id = model.eventID,
-                    let remoteE = await session.eventService.fetchEvent(id: id) else {
+            guard let e = session.events.first(where: { $0.id == eventID }) else {
+                guard let remoteE = await session.eventService.fetchEvent(id: eventID) else {
                     loadingStates["note"] = .failure
                     return
                 }
@@ -178,13 +210,14 @@ struct NotificationEventInvite: View {
             NotificationModel(
                 id: UUID().uuidString,
                 type: .eventInvite,
-                orgID: nil,
-                clubID: nil,
-                eventID: "",
-                inviteID: "",
-                teamID: nil,
-                userID: "",
-                body: nil
+                payload: .invite(
+                    .init(
+                        contextID: "",
+                        requestorID: "",
+                        status: .pending
+                    )
+                ),
+                createdAt: Date()
             )
     )
     .environment(SessionStore())

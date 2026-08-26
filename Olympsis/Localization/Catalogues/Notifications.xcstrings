@@ -1,84 +1,756 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "event-new-comment" : {
-      "comment" : "Body for the \"New Comment\" push notification. No arguments.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New comment on your event"
+  "sourceLanguage": "en",
+  "strings": {
+    "event-new-comment": {
+      "comment": "Body for the \"New Comment\" push notification. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New comment on your event"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Nouveau commentaire sur votre événement"
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nouveau commentaire sur votre événement"
           }
         }
       }
     },
-    "event-new-participant" : {
-      "comment" : "Body for the \"New Participant\" push notification. No arguments.",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Someone just RSVP'd to your event"
+    "event-new-participant": {
+      "comment": "Body for the \"New Participant\" push notification. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Someone just RSVP'd to your event"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Quelqu’un vient de confirmer sa présence à votre événement"
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Quelqu’un vient de confirmer sa présence à votre événement"
           }
         }
       }
     },
-    "event-starting-soon" : {
-      "comment" : "Body for the \"Event Reminder\" push notification. Argument: minutes until start (Int, %lld).",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Event starts in %lld min!"
+    "event-starting-soon": {
+      "comment": "Body for the \"Event Reminder\" push notification. Argument: minutes until start (Int, %lld).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Event starts in %lld min!"
                 }
               },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Event starts in %lld mins!"
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Event starts in %lld mins!"
                 }
               }
             }
           }
         },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "machine_translated",
-                  "value" : "L’événement commence dans %lld min !"
+        "fr": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "machine_translated",
+                  "value": "L’événement commence dans %lld min !"
                 }
               },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "machine_translated",
-                  "value" : "L’événement commence dans %lld min !"
+              "other": {
+                "stringUnit": {
+                  "state": "machine_translated",
+                  "value": "L’événement commence dans %lld min !"
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "notification-title-club-application-update": {
+      "comment": "Short headline shown for the club application update notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Application update"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualización de la solicitud"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mise à jour de la demande"
+          }
+        }
+      }
+    },
+    "notification-title-club-expulsion": {
+      "comment": "Short headline shown for the club expulsion notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removed from club"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expulsado del club"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retiré du club"
+          }
+        }
+      }
+    },
+    "notification-title-club-invite": {
+      "comment": "Short headline shown for the club invite notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Club invitation"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitación al club"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitation au club"
+          }
+        }
+      }
+    },
+    "notification-title-club-ranking-change": {
+      "comment": "Short headline shown for the club ranking change notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ranking changed"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambió la clasificación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classement modifié"
+          }
+        }
+      }
+    },
+    "notification-title-club-suspension": {
+      "comment": "Short headline shown for the club suspension notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Club suspended"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Club suspendido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Club suspendu"
+          }
+        }
+      }
+    },
+    "notification-title-daily-event-summary": {
+      "comment": "Short headline shown for the daily event summary notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your day"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre journée"
+          }
+        }
+      }
+    },
+    "notification-title-direct-message": {
+      "comment": "Short headline shown for the direct message notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New message"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo mensaje"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau message"
+          }
+        }
+      }
+    },
+    "notification-title-event-co-host": {
+      "comment": "Short headline shown for the event co host notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Co-host invitation"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitación de coanfitrión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitation en tant que co-organisateur"
+          }
+        }
+      }
+    },
+    "notification-title-event-comment": {
+      "comment": "Short headline shown for the event comment notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New event comment"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo comentario en el evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau commentaire sur l’événement"
+          }
+        }
+      }
+    },
+    "notification-title-event-invite": {
+      "comment": "Short headline shown for the event invite notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event invitation"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitación al evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitation à l’événement"
+          }
+        }
+      }
+    },
+    "notification-title-event-participant-update": {
+      "comment": "Short headline shown for the event participant update notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Participants updated"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Participantes actualizados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Participants mis à jour"
+          }
+        }
+      }
+    },
+    "notification-title-event-reminder": {
+      "comment": "Short headline shown for the event reminder notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event reminder"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recordatorio de evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rappel d’événement"
+          }
+        }
+      }
+    },
+    "notification-title-group-message": {
+      "comment": "Short headline shown for the group message notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New group message"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo mensaje de grupo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau message de groupe"
+          }
+        }
+      }
+    },
+    "notification-title-member-report": {
+      "comment": "Short headline shown for the member report notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Member reported"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miembro reportado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membre signalé"
+          }
+        }
+      }
+    },
+    "notification-title-new-announcement": {
+      "comment": "Short headline shown for the new announcement notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Announcement"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anuncio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annonce"
+          }
+        }
+      }
+    },
+    "notification-title-new-club-application": {
+      "comment": "Short headline shown for the new club application notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New club application"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva solicitud de club"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle demande d’adhésion"
+          }
+        }
+      }
+    },
+    "notification-title-new-event": {
+      "comment": "Short headline shown for the new event notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New event"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvel événement"
+          }
+        }
+      }
+    },
+    "notification-title-new-post": {
+      "comment": "Short headline shown for the new post notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New post"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva publicación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle publication"
+          }
+        }
+      }
+    },
+    "notification-title-post-approval-request": {
+      "comment": "Short headline shown for the post approval request notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post awaiting approval"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publicación pendiente de aprobación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publication en attente d’approbation"
+          }
+        }
+      }
+    },
+    "notification-title-post-approval-request-update": {
+      "comment": "Short headline shown for the post approval request update notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post approval update"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualización de la aprobación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mise à jour de l’approbation"
+          }
+        }
+      }
+    },
+    "notification-title-post-comment": {
+      "comment": "Short headline shown for the post comment notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New comment"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo comentario"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau commentaire"
+          }
+        }
+      }
+    },
+    "notification-title-post-comment-report": {
+      "comment": "Short headline shown for the post comment report notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment reported"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comentario reportado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commentaire signalé"
+          }
+        }
+      }
+    },
+    "notification-title-post-like": {
+      "comment": "Short headline shown for the post like notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New like"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo me gusta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau j’aime"
+          }
+        }
+      }
+    },
+    "notification-title-post-report": {
+      "comment": "Short headline shown for the post report notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post reported"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publicación reportada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Publication signalée"
+          }
+        }
+      }
+    },
+    "notification-title-removed-from-group": {
+      "comment": "Short headline shown for the removed from group notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removed from group"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminado del grupo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retiré du groupe"
+          }
+        }
+      }
+    },
+    "notification-title-team-invite": {
+      "comment": "Short headline shown for the team invite notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Team invitation"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitación al equipo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitation à l’équipe"
+          }
+        }
+      }
+    },
+    "notification-title-unknown": {
+      "comment": "Short headline shown for the unknown notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notificación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification"
+          }
+        }
+      }
+    },
+    "notification-title-weekly-event-summary": {
+      "comment": "Short headline shown for the weekly event summary notification type. No arguments.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your week"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu semana"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre semaine"
           }
         }
       }
     }
   },
-  "version" : "1.3"
+  "version": "1.3"
 }
