@@ -8,135 +8,99 @@
 import Foundation
 import NotificationCenter
 
+/// Wire values MUST match `models.NotificationType` in the shared models repo
+/// (`models/variables.go`) verbatim — that constant block is the source of
+/// truth, and it's what both the inbox `type` field and the push `type` custom
+/// field carry.
 enum NotificationType: String, Codable, CaseIterable {
-    case clubInvite = "CLUB_INVITE"
     case newClubApplication = "NEW_CLUB_APPLICATION"
     case clubApplicationUpdate = "CLUB_APPLICATION_UPDATE"
-    case clubRankingChange = "CLUB_RANKING_CHANGE"
-    case clubSuspension = "CLUB_SUSPENSION"
-    case clubExpulsion = "CLUB_EXPULSION"
+    case rankingChange = "RANKING_CHANGE"
+    case suspension = "SUSPENSION"
+    case expulsion = "EXPULSION"
     case memberReport = "MEMBER_REPORT"
 
-    case postApprovalRequest = "POST_APPROVAL_REQUEST"
-    case postApprovalRequestUpdate = "POST_APPROVAL_REQUEST_UPDATE"
+    case postingApprovalRequest = "POSTING_APPROVAL_REQUEST"
+    case postingApprovalRequestUpdate = "POSTING_APPROVAL_REQUEST_UPDATE"
 
     case newPost = "NEW_POST"
-    case postLike = "POST_LIKE"
-    case postComment = "POST_COMMENT"
     case postReport = "POST_REPORT"
-    case postCommentReport = "POST_COMMENT_REPORT"
+    case commentReport = "COMMENT_REPORT"
 
     case newEvent = "NEW_EVENT"
     case eventInvite = "EVENT_INVITE"
     case eventCoHost = "EVENT_CO_HOST"
     case eventComment = "EVENT_COMMENT"
     case eventParticipantUpdate = "EVENT_PARTICIPANT_UPDATE"
+    case eventParticipantKick = "EVENT_PARTICIPANT_KICK"
+    case eventParticipantWaitlistUpgrade = "EVENT_PARTICIPANT_WAITLIST_UPGRADE"
+    case eventCancellation = "EVENT_CANCELLATION"
     case eventReminder = "EVENT_REMINDER"
 
     case teamInvite = "TEAM_INVITE"
+    case teamApplication = "TEAM_APPLICATION"
+    case teamApplicationUpdate = "TEAM_APPLICATION_UPDATE"
+    case teamKick = "TEAM_KICK"
+    case teamMemberRoleChange = "TEAM_MEMBER_ROLE_CHANGE"
+    case teamDeleted = "TEAM_DELETED"
 
     case dailyEventSummary = "DAILY_EVENT_SUMMARY"
     case weeklyEventSummary = "WEEKLY_EVENT_SUMMARY"
 
     case newAnnouncement = "NEW_ANNOUNCEMENT"
 
-    case directMessage = "DIRECT_MESSAGE"
-    case groupMessage = "GROUP_MESSAGE"
-    case removedFromGroup = "REMOVED_FROM_GROUP"
-    
     /// Server sent a type this build doesn't know about. Not a wire value —
     /// produced by the lenient initializer below so one new server type can't
     /// fail the decode of an entire notification list.
     case unknown = "UNKNOWN"
+
+    /// Never fails: an unrecognized wire value becomes `.unknown` rather than
+    /// throwing, so one new server-side type can't break the whole inbox decode.
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = NotificationType(rawValue: raw) ?? .unknown
+    }
+
+    /// True for the types that render as an actionable invite card.
+    var isInvite: Bool {
+        switch self {
+        case .eventInvite, .teamInvite, .eventCoHost:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension NotificationType {
-    /// The one mapping from wire type to payload shape.
-    ///
-    /// Adding a case to `NotificationType` breaks this switch until you handle
-    /// it — that compile error is the whole point. Don't add a `default:` here.
-    var payloadKind: PayloadKind {
-        switch self {
-        case .clubInvite,
-             .teamInvite,
-             .eventInvite,
-             .eventCoHost,
-             .newClubApplication,
-             .clubApplicationUpdate,
-             .postApprovalRequest,
-             .postApprovalRequestUpdate:
-            return .invite
- 
-        case .newPost,
-             .postLike,
-             .postComment,
-             .newEvent,
-             .eventComment:
-            return .engagement
- 
-        case .memberReport,
-             .postReport,
-             .postCommentReport:
-            return .report
- 
-        case .directMessage,
-             .groupMessage,
-             .removedFromGroup:
-            return .message
- 
-        case .dailyEventSummary,
-             .weeklyEventSummary:
-            return .digest
- 
-        case .clubRankingChange,
-             .clubSuspension,
-             .clubExpulsion,
-             .eventParticipantUpdate:
-            return .statusChange
- 
-        case .newAnnouncement,
-             .eventReminder:
-            return .simple
-            
-        case .unknown:
-            return .unknown
-        }
-    }
-    
-    /// Short headline. Body text should come from the payload.
+    /// Short headline, used when the server didn't send a `title`.
     ///
     /// Keys live in the `Notifications` string catalogue and are spelled out in
     /// full at each call site — a key built by interpolation would be extracted
     /// as a format string (`notification-title-%@`) and never resolve.
     var title: String {
         switch self {
-        case .clubInvite:
-            return String(localized: "notification-title-club-invite", table: "Notifications")
         case .newClubApplication:
             return String(localized: "notification-title-new-club-application", table: "Notifications")
         case .clubApplicationUpdate:
             return String(localized: "notification-title-club-application-update", table: "Notifications")
-        case .clubRankingChange:
+        case .rankingChange:
             return String(localized: "notification-title-club-ranking-change", table: "Notifications")
-        case .clubSuspension:
+        case .suspension:
             return String(localized: "notification-title-club-suspension", table: "Notifications")
-        case .clubExpulsion:
+        case .expulsion:
             return String(localized: "notification-title-club-expulsion", table: "Notifications")
         case .memberReport:
             return String(localized: "notification-title-member-report", table: "Notifications")
-        case .postApprovalRequest:
+        case .postingApprovalRequest:
             return String(localized: "notification-title-post-approval-request", table: "Notifications")
-        case .postApprovalRequestUpdate:
+        case .postingApprovalRequestUpdate:
             return String(localized: "notification-title-post-approval-request-update", table: "Notifications")
         case .newPost:
             return String(localized: "notification-title-new-post", table: "Notifications")
-        case .postLike:
-            return String(localized: "notification-title-post-like", table: "Notifications")
-        case .postComment:
-            return String(localized: "notification-title-post-comment", table: "Notifications")
         case .postReport:
             return String(localized: "notification-title-post-report", table: "Notifications")
-        case .postCommentReport:
+        case .commentReport:
             return String(localized: "notification-title-post-comment-report", table: "Notifications")
         case .newEvent:
             return String(localized: "notification-title-new-event", table: "Notifications")
@@ -146,7 +110,9 @@ extension NotificationType {
             return String(localized: "notification-title-event-co-host", table: "Notifications")
         case .eventComment:
             return String(localized: "notification-title-event-comment", table: "Notifications")
-        case .eventParticipantUpdate:
+        // Kick and waitlist-upgrade are both participant-status changes, so they
+        // share that headline until they earn their own catalogue keys.
+        case .eventParticipantUpdate, .eventParticipantKick, .eventParticipantWaitlistUpgrade:
             return String(localized: "notification-title-event-participant-update", table: "Notifications")
         case .eventReminder:
             return String(localized: "notification-title-event-reminder", table: "Notifications")
@@ -158,263 +124,210 @@ extension NotificationType {
             return String(localized: "notification-title-weekly-event-summary", table: "Notifications")
         case .newAnnouncement:
             return String(localized: "notification-title-new-announcement", table: "Notifications")
-        case .directMessage:
-            return String(localized: "notification-title-direct-message", table: "Notifications")
-        case .groupMessage:
-            return String(localized: "notification-title-group-message", table: "Notifications")
-        case .removedFromGroup:
-            return String(localized: "notification-title-removed-from-group", table: "Notifications")
-        case .unknown:
+
+        // TODO: these types exist server-side but have no catalogue key yet.
+        // They fall back to the generic headline rather than rendering a raw key
+        // string. Add `notification-title-{event-cancellation,team-application,
+        // team-application-update,team-kick,team-member-role-change,team-deleted}`
+        // to Notifications.xcstrings and split these out.
+        case .eventCancellation,
+             .teamApplication,
+             .teamApplicationUpdate,
+             .teamKick,
+             .teamMemberRoleChange,
+             .teamDeleted,
+             .unknown:
             return String(localized: "notification-title-unknown", table: "Notifications")
         }
     }
 }
 
-// MARK: - Payload shape
- 
-/// The *structure* of a payload, independent of which type produced it.
-enum PayloadKind {
-    case invite
-    case engagement
-    case report
-    case message
-    case digest
-    case statusChange
-    case simple
-    case unknown
-}
+// MARK: - Notification
 
+/// One entry in the user's notification inbox.
+///
+/// Mirrors `inboxItem` in `notif-service/internal/service.go` exactly — that is
+/// the only thing that serves this list, so this struct follows it rather than
+/// the other way around. The server joins a `PushNotification` content record
+/// with the recipient's read state; `id` is the *content* id, which is what a
+/// PATCH marks read.
+///
+/// Note the server intentionally sends an empty `body`: bodies are localized
+/// on-device from `data.locKey` + `data.locArgs`, the same way the notification
+/// service extension localizes pushes. Use `localizedBody` rather than `body`.
 struct NotificationModel: Decodable, Identifiable {
     var id: String
+    var title: String
+    var body: String
     var type: NotificationType
-    var payload: Payload
-    
-    var readAt: Date?
+    var category: String
+    var data: NotificationData
+    var isRead: Bool
     var createdAt: Date
-    var archivedAt: Date?
-    
-    var isRead: Bool { readAt != nil }
-    var isArchived: Bool { archivedAt != nil }
-    
+
     private enum CodingKeys: String, CodingKey {
-        case id, type, payload
-        case readAt = "read_at"
+        case id, title, body, type, category, data
+        case isRead = "is_read"
         case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case archivedAt = "archived_at"
     }
-    
-    /// Builds a note in memory rather than from the wire.
-    ///
-    /// Declaring `init(from:)` inside the struct suppresses the compiler's
-    /// memberwise initializer, so it's re-declared here in an extension for
-    /// previews and locally synthesized notes.
+
+    /// In-memory construction, for previews and synthesized rows. Declaring
+    /// `init(from:)` suppresses the memberwise initializer, so it's spelled out.
     init(
         id: String,
+        title: String = "",
+        body: String = "",
         type: NotificationType,
-        payload: Payload,
-        readAt: Date? = nil,
-        createdAt: Date,
-        archivedAt: Date? = nil
+        category: String = "",
+        data: NotificationData = NotificationData(),
+        isRead: Bool = false,
+        createdAt: Date
     ) {
         self.id = id
+        self.title = title
+        self.body = body
         self.type = type
-        self.payload = payload
-        self.readAt = readAt
+        self.category = category
+        self.data = data
+        self.isRead = isRead
         self.createdAt = createdAt
-        self.archivedAt = archivedAt
     }
-    
+
+    /// Every field except `id` and `type` is decoded leniently: the inbox is a
+    /// heterogeneous list, and one row with a missing `category` or an
+    /// unparseable date shouldn't cost the user the entire screen.
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        id         = try c.decode(String.self, forKey: .id)
-        type       = try c.decode(NotificationType.self, forKey: .type)
-        readAt     = try c.decodeIfPresent(Date.self, forKey: .readAt)
-        createdAt  = try c.decode(Date.self, forKey: .createdAt)
-        archivedAt = try c.decodeIfPresent(Date.self, forKey: .archivedAt)
 
-        // Tolerate a missing or null payload rather than failing the row.
-        guard c.contains(.payload), try !c.decodeNil(forKey: .payload) else {
-            payload = .unknown
-            return
+        id       = try c.decode(String.self, forKey: .id)
+        type     = try c.decode(NotificationType.self, forKey: .type)
+        // `try?` on decodeIfPresent yields a double optional — flatten, then default.
+        title    = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil) ?? ""
+        body     = ((try? c.decodeIfPresent(String.self, forKey: .body)) ?? nil) ?? ""
+        category = ((try? c.decodeIfPresent(String.self, forKey: .category)) ?? nil) ?? ""
+        isRead   = ((try? c.decodeIfPresent(Bool.self, forKey: .isRead)) ?? nil) ?? false
+        data     = ((try? c.decodeIfPresent(NotificationData.self, forKey: .data)) ?? nil) ?? NotificationData()
+
+        if let date = try? c.decode(Date.self, forKey: .createdAt) {
+            createdAt = date
+        } else if let raw = try? c.decode(String.self, forKey: .createdAt) {
+            createdAt = (try? parseDate(from: raw)) ?? Date()
+        } else {
+            createdAt = Date()
         }
- 
-        switch type.payloadKind {
-        case .invite:
-            payload = .invite(try c.decode(Payload.Invite.self, forKey: .payload))
-            readAt = try c.decodeIfPresent(Date.self, forKey: .updatedAt)
-        case .engagement:
-            payload = .engagement(try c.decode(Payload.Engagement.self, forKey: .payload))
-        case .report:
-            payload = .report(try c.decode(Payload.Report.self, forKey: .payload))
-        case .message:
-            payload = .message(try c.decode(Payload.Message.self, forKey: .payload))
-        case .digest:
-            payload = .digest(try c.decode(Payload.Digest.self, forKey: .payload))
-        case .statusChange:
-            payload = .statusChange(try c.decode(Payload.StatusChange.self, forKey: .payload))
-        case .simple:
-            payload = .simple(try c.decode(Payload.Simple.self, forKey: .payload))
-        case .unknown:
-            payload = .unknown
-        }
+    }
+
+    /// What to show as the headline: the server's title when it sent one,
+    /// otherwise the type's generic localized headline.
+    var displayTitle: String {
+        title.isEmpty ? type.title : title
+    }
+
+    /// The body, localized on-device from `loc_key` + `loc_args`.
+    ///
+    /// The server ships a key and arguments rather than a built string so the
+    /// text renders in the reader's language. Falls back to the literal `body`
+    /// when there's no key, or when the key isn't in this build's catalogue —
+    /// which is the case for newer keys the app hasn't shipped strings for yet.
+    var localizedBody: String {
+        guard let key = data.locKey else { return body }
+
+        // NSLocalizedString echoes the key when it's missing, so a sentinel
+        // `value` is the only way to detect that. Mirrors the approach in
+        // OlympsisNotificationService/NotificationService.swift.
+        let missing = "\u{0}"
+        let format = NSLocalizedString(key, tableName: "Notifications", bundle: .main, value: missing, comment: "")
+        guard format != missing else { return body }
+
+        let args = data.locArgs
+        guard !args.isEmpty else { return format }
+
+        // Numeric args go through as Int so %lld and plural rules resolve;
+        // everything else as String for %@.
+        let arguments: [CVarArg] = args.map { Int($0) ?? $0 as CVarArg }
+        return String(format: format, arguments: arguments)
     }
 }
 
-// MARK: - Payload
-extension NotificationModel {
-    enum Payload {
-        case invite(Invite)
-        case engagement(Engagement)
-        case report(Report)
-        case message(Message)
-        case digest(Digest)
-        case statusChange(StatusChange)
-        case simple(Simple)
-        case unknown
- 
-        // MARK: Shapes
- 
-        /// Someone is asking the recipient to join / approve something.
-        struct Invite: Decodable {
-            let contextID: String
-            let requestorID: String
-            let status: InviteStatus
- 
-            private enum CodingKeys: String, CodingKey {
-                case contextID = "context_id"
-                case requestorID = "requestor_id"
-                case status
+// MARK: - Notification data bag
+
+/// The server's flat `data` map, with typed accessors for the keys we use.
+///
+/// `data` is `map[string]any` on the wire (built by `Note.auditData()` in
+/// notif-service, which flattens the loc key/args and every routing id into one
+/// level), so this decodes opportunistically: strings and string arrays are
+/// kept, numbers and bools are stringified, anything else is skipped. Nothing
+/// in here is required — an unknown or absent key just reads as nil.
+struct NotificationData: Decodable {
+    private var values: [String: String] = [:]
+    private var lists: [String: [String]] = [:]
+
+    init() {}
+
+    init(_ values: [String: String] = [:], lists: [String: [String]] = [:]) {
+        self.values = values
+        self.lists = lists
+    }
+
+    /// Keys aren't known ahead of time, so decoding needs a dynamic key type.
+    private struct DynamicKey: CodingKey {
+        var stringValue: String
+        var intValue: Int? { nil }
+        init?(stringValue: String) { self.stringValue = stringValue }
+        init?(intValue: Int) { nil }
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: DynamicKey.self)
+        for key in c.allKeys {
+            if let s = try? c.decode(String.self, forKey: key) {
+                values[key.stringValue] = s
+            } else if let a = try? c.decode([String].self, forKey: key) {
+                lists[key.stringValue] = a
+            } else if let i = try? c.decode(Int.self, forKey: key) {
+                values[key.stringValue] = String(i)
+            } else if let d = try? c.decode(Double.self, forKey: key) {
+                values[key.stringValue] = String(d)
+            } else if let b = try? c.decode(Bool.self, forKey: key) {
+                values[key.stringValue] = String(b)
             }
-        }
- 
-        /// Someone acted on the recipient's content, or new content appeared.
-        struct Engagement: Decodable {  // TODO: verify against backend
-            let contextID: String
-            let actorID: String
-            let actorName: String?
-            let preview: String?
-            /// e.g. "and 4 others" — server-aggregated count, if you aggregate.
-            let count: Int?
- 
-            private enum CodingKeys: String, CodingKey {
-                case contextID = "context_id"
-                case actorID = "actor_id"
-                case actorName = "actor_name"
-                case preview
-                case count
-            }
-        }
- 
-        /// Moderation: content or a member was reported.
-        struct Report: Decodable {  // TODO: verify against backend
-            let contextID: String
-            let reportID: String
-            let reporterID: String
-            let reason: String?
- 
-            private enum CodingKeys: String, CodingKey {
-                case contextID = "context_id"
-                case reportID = "report_id"
-                case reporterID = "reporter_id"
-                case reason
-            }
-        }
- 
-        /// Direct / group messaging.
-        struct Message: Decodable {  // TODO: verify against backend
-            let conversationID: String
-            let senderID: String?
-            let senderName: String?
-            let preview: String?
- 
-            private enum CodingKeys: String, CodingKey {
-                case conversationID = "conversation_id"
-                case senderID = "sender_id"
-                case senderName = "sender_name"
-                case preview
-            }
-        }
- 
-        /// Periodic roll-up.
-        struct Digest: Decodable {  // TODO: verify against backend
-            let periodStart: Date
-            let periodEnd: Date
-            let eventCount: Int
-            let eventIDs: [String]
- 
-            private enum CodingKeys: String, CodingKey {
-                case periodStart = "period_start"
-                case periodEnd = "period_end"
-                case eventCount = "event_count"
-                case eventIDs = "event_ids"
-            }
-        }
- 
-        /// Something the recipient belongs to changed state.
-        struct StatusChange: Decodable {  // TODO: verify against backend
-            let contextID: String
-            let previousValue: String?
-            let newValue: String?
-            let reason: String?
- 
-            private enum CodingKeys: String, CodingKey {
-                case contextID = "context_id"
-                case previousValue = "previous_value"
-                case newValue = "new_value"
-                case reason
-            }
-        }
- 
-        /// Server-authored text with somewhere to navigate.
-        struct Simple: Decodable {  // TODO: verify against backend
-            let contextID: String?
-            let title: String?
-            let body: String?
- 
-            private enum CodingKeys: String, CodingKey {
-                case contextID = "context_id"
-                case title, body
-            }
+            // Nested objects and mixed arrays are dropped: nothing sends them,
+            // and silently ignoring beats failing the row.
         }
     }
-}
 
-// MARK: - Payload conveniences
- 
-extension NotificationModel.Payload {
-    /// The thing this notification points at, when there is one.
-    /// Use for navigation without switching on every shape.
+    /// Raw access for keys without a named accessor below.
+    subscript(key: String) -> String? { values[key] }
+
+    /// Raw access to a string-array value.
+    func list(_ key: String) -> [String] { lists[key] ?? [] }
+
+    // Localization
+    var locKey: String? { values["loc_key"] }
+    var locArgs: [String] { lists["loc_args"] ?? [] }
+
+    /// The user who triggered this notification — the inviter, the commenter,
+    /// the organizer who removed you. Absent (not empty) for system-triggered
+    /// notes like reminders and waitlist promotions, so presence means "there is
+    /// someone to show".
+    var actorID: String? { values["actor_id"] }
+
+    // Routing ids, as written by notif-service's per-type Note constructors.
+    var inviteID: String? { values["invite_id"] }
+    var eventID: String? { values["event_id"] }
+    var teamID: String? { values["team_id"] }
+    var clubID: String? { values["club_id"] }
+    var postID: String? { values["post_id"] }
+    var commentID: String? { values["comment_id"] }
+    var participantID: String? { values["participant_id"] }
+
+    var eventImageURL: String? { values["event_image_url"] }
+
+    /// The thing this notification points at, for navigation, without having to
+    /// know which routing key the type happens to use.
     var contextID: String? {
-        switch self {
-        case .invite(let p):       return p.contextID
-        case .engagement(let p):   return p.contextID
-        case .report(let p):       return p.contextID
-        case .message(let p):      return p.conversationID
-        case .statusChange(let p): return p.contextID
-        case .simple(let p):       return p.contextID
-        case .digest, .unknown:    return nil
-        }
+        eventID ?? teamID ?? clubID ?? postID
     }
- 
-    /// Whoever caused the notification, when there is a single person.
-    var actorID: String? {
-        switch self {
-        case .invite(let p):     return p.requestorID
-        case .engagement(let p): return p.actorID
-        case .report(let p):     return p.reporterID
-        case .message(let p):    return p.senderID
-        case .digest, .statusChange, .simple, .unknown: return nil
-        }
-    }
- 
-    /// Non-nil only for invite-shaped payloads, so action buttons can be
-    /// driven off `if let status = payload.inviteStatus`.
-    var inviteStatus: InviteStatus? {
-        guard case .invite(let p) = self else { return nil }
-        return p.status
-    }
-    
 }
 
 struct NotificationUpdateRequest: Codable {
@@ -427,16 +340,43 @@ struct NotificationUpdateRequest: Codable {
     }
 }
 
+/// One page of the inbox. Mirrors `inboxResponse` in notif-service.
+///
+/// There is deliberately no unread count on the wire — the service's v1 doesn't
+/// compute one, so callers derive it from the rows they have.
+/// `nextCursor` is empty when there are no more pages.
 struct NotificationItemListResponse: Decodable {
-    var unreadCount: Int
-    var totalNotifications: Int
     var notifications: [NotificationModel]
-    
+    var nextCursor: String?
+
     enum CodingKeys: String, CodingKey {
-        case unreadCount = "unread_count"
-        case totalNotifications = "total_notifications"
         case notifications
+        case nextCursor = "next_cursor"
     }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // Decode rows individually so one malformed entry drops itself rather
+        // than emptying the whole inbox.
+        var rows = [NotificationModel]()
+        if var list = try? c.nestedUnkeyedContainer(forKey: .notifications) {
+            while !list.isAtEnd {
+                if let note = try? list.decode(NotificationModel.self) {
+                    rows.append(note)
+                } else {
+                    _ = try? list.decode(AnyDecodableSkip.self)
+                }
+            }
+        }
+        notifications = rows
+        nextCursor = try? c.decodeIfPresent(String.self, forKey: .nextCursor)
+    }
+}
+
+/// Consumes and discards one element of an unkeyed container, so a failed decode
+/// can advance past the bad entry instead of spinning on it.
+private struct AnyDecodableSkip: Decodable {
+    init(from decoder: Decoder) throws {}
 }
 
 

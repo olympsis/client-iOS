@@ -421,11 +421,41 @@ struct UsersDataResponse: Codable {
     }
 }
 
+/// The aggregate payload `GET /v1/users/check-in` returns on launch.
+///
+/// `invitations` carries the user's pending invites in the invite-service shape
+/// (`InviteResponse`) — the same elements `GET /v1/invites/user/{id}` returns.
+/// The JSON key kept its old name for wire compatibility, but it is no longer
+/// the legacy `Invitation` type.
 struct CheckIn: Decodable {
     let user: User?
     let clubs: [Club]?
     let organizations: [Organization]?
-    let invitations: [Invitation]?
+    let invitations: [InviteResponse]?
+
+    /// Decoded field-by-field so one bad element can't sink the whole response.
+    ///
+    /// `InviteResponse` parses its timestamps with `parseDate(from:)`, which
+    /// throws when it meets a format it doesn't know. Since check-in is what
+    /// authenticates the session, letting that error propagate would cost the
+    /// user their whole check-in over a single malformed invite. Invites are
+    /// decoded with `try?` so an unparseable batch degrades to "no invites"
+    /// instead.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.user = try container.decodeIfPresent(User.self, forKey: .user)
+        self.clubs = try container.decodeIfPresent([Club].self, forKey: .clubs)
+        self.organizations = try container.decodeIfPresent([Organization].self, forKey: .organizations)
+        self.invitations = try? container.decodeIfPresent([InviteResponse].self, forKey: .invitations)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case user
+        case clubs
+        case organizations
+        case invitations
+    }
 }
 
 struct LocationResponse: Decodable {

@@ -37,7 +37,16 @@ class SessionStore {
     
     var venues = [Venue]()
     var hotEvents = [Event]()
-    var invitations = [Invitation]()
+
+    /// Pending invites from invite-service, seeded by check-in and refreshed by
+    /// `refreshInvites()`.
+    var invitations = [InviteResponse]()
+
+    /// Organization invitations the user has *sent*, in the legacy `Invitation`
+    /// shape. Separate from `invitations` above: different model, different
+    /// direction, different backing service.
+    var orgInvitations = [Invitation]()
+
     var announcements = [Announcement]()
     var notifications = [NotificationModel]()
     
@@ -51,6 +60,7 @@ class SessionStore {
     var postService = PostService()
     var venueService = VenueService()
     var eventService = EventService()
+    var inviteService = InviteService()
     var workoutManager = WorkoutManager()
     var managementService = ManagementService()
     var notificationService = NotificationService()
@@ -69,6 +79,11 @@ class SessionStore {
             return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+    }
+    
+    /// Number of unread notifications, for the bell badge.
+    var unreadNotificationCount: Int {
+        notifications.count { !$0.isRead }
     }
     
     /**
@@ -306,6 +321,137 @@ class SessionStore {
             self.notifications = notes.notifications
         } catch {
             log.error("Failed to get notifications! Error: \(error.localizedDescription)")
+        }
+    }
+
+    /// Marks notifications read server-side and locally.
+    ///
+    /// The local update is applied only after the server confirms, so a failed
+    /// call leaves the badge honest rather than silently clearing it.
+    @discardableResult
+    func markNotificationsRead(_ ids: [String]) async -> Bool {
+        guard !ids.isEmpty else {
+            return false
+        }
+        do {
+            let ok = try await notificationService.UpdateNotification(
+                request: NotificationUpdateRequest(action: "read", notificationIDs: ids)
+            )
+            guard ok else { return false }
+            for index in notifications.indices where ids.contains(notifications[index].id) {
+                notifications[index].isRead = true
+            }
+            return true
+        } catch {
+            log.error("Failed to mark notifications read! Error: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Re-fetches the user's pending invites.
+    ///
+    /// Check-in already embeds these on launch, so this is for refreshing
+    /// afterwards — a pull-to-refresh, or after answering one elsewhere.
+    func refreshInvites() async {
+        guard let userID = user?.userID else {
+            return
+        }
+        do {
+            let resp = try await inviteService.getUserInvites(userID: userID, status: .pending)
+            self.invitations = resp.invites
+        } catch {
+            log.error("Failed to refresh invites! Error: \(error.localizedDescription)")
+        }
+    }
+
+    /// Resolves the user who triggered a notification, from its `actor_id`.
+    ///
+    /// Cosmetic — it only fills in the avatar and username on a notification row
+    /// — so every failure path returns nil and lets the caller fall back to a
+    /// generic sender rather than surfacing an error.
+    func actor(id: String?) async -> User? {
+        guard let id, !id.isEmpty else {
+            return nil
+        }
+        do {
+            return try await userService.getUserByUserID(userID: id)
+        } catch {
+            log.error("Failed to fetch notification actor \(id)! Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    /// Resolves the invite a notification refers to.
+    ///
+    /// notif-service stamps `invite_id` into a note's routing data, so the id is
+    /// the fast path — one lookup, no list scan. `fallbackContextID` covers notes
+    /// written before that key existed, where all we have is the event/team id.
+    ///
+    /// - Returns: the invite, or nil if neither route finds a pending one.
+    func invite(id: String?, fallbackContextID: String?) async -> InviteResponse? {
+        if let id, !id.isEmpty {
+            do {
+                let invite = try await inviteService.getInvite(id: id)
+                // An already-answered invite isn't actionable; treat it as absent
+                // so the caller disables its buttons.
+                return invite.status == .pending ? invite : nil
+            } catch {
+                log.error("Failed to fetch invite \(id)! Error: \(error.localizedDescription)")
+            }
+        }
+        guard let fallbackContextID else {
+            return nil
+        }
+        return await pendingInvite(forContext: fallbackContextID)
+    }
+
+    /// Finds the caller's pending invite for a given context (an event, team,
+    /// club or org id).
+    ///
+    /// The fallback for notes that don't carry an `invite_id`. Hits the network
+    /// rather than reading `invitations`: that array is check-in's snapshot from
+    /// app launch and is used elsewhere, so a note rendered later shouldn't
+    /// depend on how stale it is.
+    ///
+    /// - Returns: the matching PENDING invite, or nil if there isn't one.
+    func pendingInvite(forContext contextID: String) async -> InviteResponse? {
+        guard let userID = user?.userID else {
+            return nil
+        }
+        do {
+            let resp = try await inviteService.getUserInvites(userID: userID, status: .pending)
+            return resp.invites.first { $0.contextID == contextID }
+        } catch {
+            log.error("Failed to fetch pending invite! Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    /// Accepts or declines an invite and drops it from the pending list.
+    ///
+    /// `response` is the RSVP the user picked when accepting an event invite. The
+    /// server currently decodes but ignores it — RSVP is still a separate call to
+    /// the events endpoint — so it's passed for forward compatibility only.
+    ///
+    /// A 409 (`.alreadyHandled`) means another device already answered this
+    /// invite. That's not a failure from the user's point of view, so we treat it
+    /// as success and still remove the row rather than leaving it stuck.
+    ///
+    /// - Returns: whether the invite was resolved.
+    func answerInvite(_ invite: InviteResponse, status: InviteStatus, response: RSVPStatus? = nil) async -> Bool {
+        do {
+            _ = try await inviteService.updateInvite(
+                id: invite.id,
+                request: UpdateInviteRequest(status: status, response: response)
+            )
+            invitations.removeAll { $0.id == invite.id }
+            return true
+        } catch InviteServiceError.alreadyHandled {
+            invitations.removeAll { $0.id == invite.id }
+            return true
+        } catch {
+            log.error("Failed to answer invite! Error: \(error.localizedDescription)")
+            return false
         }
     }
     

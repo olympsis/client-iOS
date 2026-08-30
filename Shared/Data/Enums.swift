@@ -349,6 +349,27 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
             3
         }
     }
+
+    /// The equivalent invite-service RSVP value, for `UpdateInviteRequest.response`.
+    ///
+    /// The two enums exist because they belong to different services: this one is
+    /// the events API's, `RSVPStatus` is invite-service's. Note the invite
+    /// endpoint currently decodes `response` and then ignores it — accepting an
+    /// event invite always registers the user as going — so this mapping is only
+    /// used to carry the user's pick forward for when the server starts honoring
+    /// it. Setting the actual RSVP is still a separate call to the events API.
+    var asRSVPStatus: RSVPStatus {
+        switch self {
+        case .Yes:
+            return .going
+        case .Maybe:
+            return .maybe
+        case .Waitlist:
+            return .waitlist
+        case .Cant:
+            return .notGoing
+        }
+    }
 }
 
 /// Maps the server's legacy integer status (0=MAYBE, 1=YES, 2=WAITLIST, 3=CAN'T)

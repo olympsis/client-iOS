@@ -58,7 +58,7 @@ struct UserDataListView: View {
             return
         }
         
-        session.invitations.append(resp)
+        session.orgInvitations.append(resp)
         status = .success
     }
     

@@ -71,11 +71,22 @@ class UserService: APIService {
         return object.users
     }
 
-    /// GET /v1/users/search/user_id?user_id=
+    /// GET /v1/users?user_id=
     ///
-    /// nil on any non-200 status.
+    /// Replaces `/v1/users/search/user_id`, a path that existed on neither the
+    /// server nor the gateway — the old route was `/v1/users/search/uuid` — so
+    /// every call 404'd and this silently returned nil. Single-user lookups now
+    /// hang off the `user_id` query param on `/v1/users`, which returns the same
+    /// user object, making this a URL change only.
+    ///
+    /// The server withholds account-private fields (notification devices and
+    /// preference, blocked users, last location) when the caller isn't the user
+    /// being looked up, and trims clubs/sports/organizations for a private
+    /// profile. All of those are already optional on `User`.
+    ///
+    /// nil on any non-200 status — 404 when no such user exists.
     func getUserByUserID(userID: String) async throws -> User? {
-        let endpoint = Endpoint("/v1/users/search/user_id", queryItems: [URLQueryItem(name: "user_id", value: userID)])
+        let endpoint = Endpoint("/v1/users", queryItems: [URLQueryItem(name: "user_id", value: userID)])
         let (data, statusCode) = try await requestRaw(.GET, endpoint)
         guard statusCode == 200 else { return nil }
         return try decoder.decode(User.self, from: data)

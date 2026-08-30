@@ -10,9 +10,24 @@ import SwiftUI
 struct NotificationEventInvite: View {
     
     var model: NotificationModel
-    private var actor: UserData?
+
+    /// Whoever sent the invite, resolved in `.task` from the note's `actor_id`.
+    ///
+    /// This used to be a stored property that nothing ever assigned, so the row
+    /// always fell back to the generic avatar and "olympsis_user". The server now
+    /// stamps the actor onto every notification, so it can be looked up.
+    @State private var actor: User?
 
     @State private var event: Event?
+
+    /// The invite this note is about, fetched in `.task`.
+    ///
+    /// notif-service stamps the invite's own id into the note's routing data, so
+    /// this is a direct lookup by id. `nil` means there's nothing actionable —
+    /// the note predates that routing key, the invite is gone, or it has just
+    /// been answered — and both buttons disable.
+    @State private var invite: InviteResponse?
+
     @State private var showSheet: Bool = false
     @State private var loadingStates: [String: LOADING_STATE] = [
         "note": .failure,
@@ -31,16 +46,11 @@ struct NotificationEventInvite: View {
         )
     }
 
-    /// `Payload` is an enum, so the invite data has to be pattern matched out
-    /// of it rather than cast. Invites all share one shape now, so the event id
-    /// arrives as the generic `contextID` — which is only an event id because
-    /// this view is only used for the event-shaped invite types. Returns `nil`
-    /// when this note carries a non-invite payload.
+    /// The event this invite points at. Invite notes route by `event_id`; this
+    /// view is only used for the event-shaped invite types, so that is the id
+    /// that matters here.
     private var eventID: String? {
-        guard case .invite(let data) = model.payload else {
-            return nil
-        }
-        return data.contextID
+        model.data.eventID
     }
     
     // The image of the sender of this note
@@ -54,10 +64,10 @@ struct NotificationEventInvite: View {
     
     // The username of the sender of this note
     private var username: Text {
-        guard let actor else {
+        guard let name = actor?.username else {
             return Text("olympsis_user ")
         }
-        return Text(actor.username + " ")
+        return Text(name + " ")
     }
     
     // The title of the notifcation
@@ -128,19 +138,49 @@ struct NotificationEventInvite: View {
         }
     }
     
+    /// Declines the invite. On success `invite` is cleared, which disables both
+    /// buttons — the note stays on screen but is no longer actionable.
     private func declineInvite() {
-        
+        guard let invite else {
+            loadingStates["decline"] = .failure
+            return
+        }
+        Task {
+            loadingStates["decline"] = .loading
+            let ok = await session.answerInvite(invite, status: .declined)
+            loadingStates["decline"] = ok ? .success : .failure
+            if ok { self.invite = nil }
+        }
     }
-    
+
+    /// Accepts the invite, then opens the RSVP sheet.
+    ///
+    /// Two calls on purpose: accepting flips the invite to ACCEPTED (which
+    /// server-side already registers the user as going), and the sheet then makes
+    /// the separate events-API call if they want a different status. The sheet
+    /// only opens if the accept succeeded — otherwise they'd be picking an RSVP
+    /// for an invite that never got answered.
     private func acceptInvite() {
-        showSheet.toggle()
+        guard let invite else {
+            loadingStates["accept"] = .failure
+            return
+        }
+        Task {
+            loadingStates["accept"] = .loading
+            let ok = await session.answerInvite(invite, status: .accepted)
+            loadingStates["accept"] = ok ? .success : .failure
+            if ok {
+                self.invite = nil
+                if event != nil { showSheet = true }
+            }
+        }
     }
     
     var body: some View {
         VStack(alignment: .leading) {
             
             // Header
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 userImage
                 
                 HStack {
@@ -164,19 +204,21 @@ struct NotificationEventInvite: View {
                     foreground: Color.Foreground.default,
                     state: loadingState(for: "decline")
                 ) { declineInvite() }
-                .disabled(loadingStates["note"] == .loading)
+                .disabled(loadingStates["note"] == .loading || invite == nil)
                 .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
 
                 BaseLoadingButton(
                     title: primaryActionText,
                     state: loadingState(for: "accept")
                 ) { acceptInvite() }
-                .disabled(loadingStates["note"] == .loading)
+                .disabled(loadingStates["note"] == .loading || invite == nil)
                 .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
             }
         }
         .padding(.horizontal)
-        .sheet(isPresented: $showSheet, content: {
+        .sheet(isPresented: $showSheet, onDismiss: {
+            <#code#>
+        }, content: {
             if let event {
                 RSVPSheet(event: event)
             }
@@ -187,38 +229,54 @@ struct NotificationEventInvite: View {
                 loadingStates["note"] = .failure
                 return
             }
-            
+
+            // Resolve the invite alongside the event. Kept independent of the
+            // event lookup: a failed event fetch should still leave the note
+            // actionable, and vice versa.
+            //
+            // Prefer the invite id the note carries; fall back to matching the
+            // user's pending invites by event for notes written before
+            // notif-service started stamping invite_id.
+            async let fetchedInvite = session.invite(
+                id: model.data.inviteID,
+                fallbackContextID: eventID
+            )
+
+            // Who sent it, so the header can say "<name> invited you…". Purely
+            // cosmetic, so a failure just leaves the generic fallback.
+            async let fetchedActor = session.actor(id: model.data.actorID)
+
             loadingStates["note"] = .pending
-            guard let e = session.events.first(where: { $0.id == eventID }) else {
-                guard let remoteE = await session.eventService.fetchEvent(id: eventID) else {
-                    loadingStates["note"] = .failure
-                    return
-                }
+            if let e = session.events.first(where: { $0.id == eventID }) {
+                self.event = e
+                loadingStates["note"] = .success
+            } else if let remoteE = await session.eventService.fetchEvent(id: eventID) {
                 self.event = remoteE
                 loadingStates["note"] = .success
-                return
+            } else {
+                loadingStates["note"] = .failure
             }
-            self.event = e
-            loadingStates["note"] = .success
+
+            self.invite = await fetchedInvite
+            self.actor = await fetchedActor
         }
     }
 }
 
 #Preview {
     NotificationEventInvite(
-        model:
-            NotificationModel(
-                id: UUID().uuidString,
-                type: .eventInvite,
-                payload: .invite(
-                    .init(
-                        contextID: "",
-                        requestorID: "",
-                        status: .pending
-                    )
-                ),
-                createdAt: Date()
-            )
+        model: NotificationModel(
+            id: UUID().uuidString,
+            title: "Sunday Run",
+            type: .eventInvite,
+            category: "invites",
+            data: NotificationData([
+                "event_id": "",
+                "invite_id": "",
+                "loc_key": "invite-event"
+            ]),
+            createdAt: Date()
+        )
     )
     .environment(SessionStore())
 }

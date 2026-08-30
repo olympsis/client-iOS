@@ -107,8 +107,8 @@ struct Home: View {
                             Image(systemName: "bell")
                                 .foregroundStyle(Color.Foreground.default)
                                 
-                            if session.notifications.contains(where: { $0.readAt == nil }) {
-                                NotificationCountView(value: session.notifications.count(where: { $0.readAt == nil }))
+                            if session.unreadNotificationCount > 0 {
+                                NotificationCountView(value: session.unreadNotificationCount)
                             }
                         }
                     }
