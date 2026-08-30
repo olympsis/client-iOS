@@ -12,6 +12,10 @@ struct RSVPSheet: View {
 
     var event: Event
 
+    /// Optional hook fired after the sheet successfully changes the user's RSVP:
+    /// the newly selected status, or `nil` when the RSVP is retracted.
+    var onStatusChange: ((EVENT_RSVP_STATUS?) -> Void)? = nil
+
     private let observer = EventService()
     @State private var isAnonymous: Bool = false
 
@@ -25,9 +29,7 @@ struct RSVPSheet: View {
 
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "RSPV_sheet")
 
-    /// The options offered in the sheet. "Can't" isn't an option here — declining
-    /// simply means no participation, which is expressed by cancelling an existing
-    /// RSVP via each bar's cancel affordance.
+    /// The options offered in the sheet.
     private let options: [EVENT_RSVP_STATUS] = [.Yes, .Maybe]
 
     /// The current user's existing RSVP for this event, if any. When present,
@@ -92,6 +94,10 @@ struct RSVPSheet: View {
                 await NotificationManager.shared.requestAuthorization()
                 await session.updateNotifications()
 
+                // Report the committed choice before the success flash so the
+                // caller isn't waiting on the animation to settle.
+                onStatusChange?(option)
+
                 // Flash the success state, then settle back to idle. `selected`
                 // now reflects this option, so the bar keeps its cancel affordance.
                 states[option] = .success
@@ -126,6 +132,7 @@ struct RSVPSheet: View {
             // slides away on its own.
             event.participants.removeAll(where: { $0.user?.userID == userID })
             await session.updateNotifications()
+            onStatusChange?(nil)
             states[option] = .pending
         }
     }
