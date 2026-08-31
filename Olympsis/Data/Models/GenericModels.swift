@@ -526,6 +526,42 @@ struct DayGroup: Identifiable {
     }
 }
 
+/// The buckets the "Up Next" events list is broken into.
+///
+/// Ordered by `rawValue` so the sections always render in chronological
+/// order (today first, anything past next week last).
+enum UpNextSection: Int, Identifiable, CaseIterable {
+    case today
+    case thisWeek
+    case nextWeek
+    case later
+
+    var id: Int { rawValue }
+
+    /// Localized header text for the section. "Today" reuses the existing
+    /// `day-today` key from the General catalogue so we only translate it once.
+    var title: String {
+        switch self {
+        case .today:
+            return String(localized: "day-today", table: "General")
+        case .thisWeek:
+            return String(localized: "section-this-week", table: "Events")
+        case .nextWeek:
+            return String(localized: "section-next-week", table: "Events")
+        case .later:
+            return String(localized: "section-later", table: "Events")
+        }
+    }
+}
+
+/// A single section of the "Up Next" events list.
+struct UpNextSectionGroup: Identifiable {
+    /// The section itself is the identity — there is exactly one group per section.
+    var id: Int { section.rawValue }
+    let section: UpNextSection
+    var events: [Event]
+}
+
 struct Country: Codable, Identifiable, Hashable {
     
     let id: String

@@ -771,4 +771,50 @@ extension [Event] {
             }
             .sorted { $0.date < $1.date }
     }
+
+    /// Returns the events bucketed into the "Up Next" sections: today, the rest
+    /// of the current week, next week, and anything beyond that.
+    ///
+    /// Week boundaries come from `Calendar.current`, so the first day of the
+    /// week follows the user's locale (Sunday in the US, Monday across most of
+    /// Europe) instead of being hard-coded. Empty sections are dropped, so the
+    /// caller can render the result directly without checking for gaps.
+    ///
+    /// Note: this only buckets, it never filters. Anything that already started
+    /// earlier in the current week lands in `.today`/`.thisWeek` alongside the
+    /// upcoming events — callers are expected to hand in forward-looking events.
+    /// - Parameter referenceDate: "now"; injectable so previews/tests can pin it.
+    func eventsGroupedForUpNext(relativeTo referenceDate: Date = Date()) -> [UpNextSectionGroup] {
+        let calendar = Calendar.current
+
+        // `thisWeek.end` is the midnight that starts the following week, so
+        // feeding it back in gives us next week's interval. Both `.end` values
+        // are exclusive upper bounds for their bucket.
+        guard let thisWeek = calendar.dateInterval(of: .weekOfYear, for: referenceDate),
+              let nextWeek = calendar.dateInterval(of: .weekOfYear, for: thisWeek.end) else {
+            // Calendar could not resolve week boundaries — fall back to a single
+            // section rather than dropping events on the floor.
+            return [UpNextSectionGroup(section: .later, events: self.sorted { $0.startTime < $1.startTime })]
+        }
+
+        var buckets = [UpNextSection: [Event]]()
+        for event in self {
+            let section: UpNextSection
+            if calendar.isDate(event.startTime, inSameDayAs: referenceDate) {
+                section = .today
+            } else if event.startTime < thisWeek.end {
+                section = .thisWeek
+            } else if event.startTime < nextWeek.end {
+                section = .nextWeek
+            } else {
+                section = .later
+            }
+            buckets[section, default: []].append(event)
+        }
+
+        return UpNextSection.allCases.compactMap { section in
+            guard let events = buckets[section], !events.isEmpty else { return nil }
+            return UpNextSectionGroup(section: section, events: events.sorted { $0.startTime < $1.startTime })
+        }
+    }
 }

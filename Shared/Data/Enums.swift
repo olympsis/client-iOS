@@ -124,6 +124,7 @@ enum HOME_ROUTES: Codable, Hashable {
     case archivedNotifications
     case messages
     case full_post_view(_ postId: String)
+    case upNextEvents(_ events: [Event])
 }
 
 enum GROUP_ROUTES: Codable, Hashable {

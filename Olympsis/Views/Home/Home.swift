@@ -24,6 +24,14 @@ struct Home: View {
         return LocationManager.shared.isAuthorized
     }
     
+    private var nextEvents: [Event] {
+        guard let user = session.user,
+              let userID = user.userID else {
+            return []
+        }
+        return Array(session.events).rsvpedEvents(userID: userID)
+    }
+    
     private let log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     var body: some View {
@@ -80,12 +88,18 @@ struct Home: View {
                     }
                 }
                 
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    if !hasLocation {
+                if !hasLocation {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { self.showRequestLocation.toggle() }) {
                             Image(systemName: "location.slash")
                                 .foregroundStyle(.gray)
                         }
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action: { router.navigate(to: .upNextEvents(nextEvents))}) {
+                        Image(systemName: "calendar")
                     }
 // DISABLED FOR NOW
 //                    Button(action: { router.navigate(to: .messages) }) {
@@ -148,6 +162,10 @@ struct Home: View {
                         .id(HOME_ROUTES.full_post_view(id))
                         .environment(session)
                         .navigationBarBackButtonHidden()
+                case .upNextEvents(let events):
+                    UpNextEvents(events: events)
+                        .id(HOME_ROUTES.upNextEvents(events))
+                        .environment(session)
                 }
             })
             .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {
