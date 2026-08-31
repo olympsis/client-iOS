@@ -8,6 +8,30 @@
 import Hermes
 import Foundation
 
+/// Which slice of the inbox a listing covers.
+///
+/// Mirrors notif-service's `ArchiveScope`, and the raw values are the exact
+/// `?archived=` strings its handler parses. `.active` deliberately sends no
+/// parameter at all — that's already the server's default, and omitting it
+/// keeps the common request identical to what this client has always sent.
+enum NotificationScope {
+    /// Unarchived rows only — the bell view.
+    case active
+    /// Archived rows only — the archive screen.
+    case archived
+    /// Archived and active together.
+    case all
+
+    /// The `?archived=` value to send, or nil to omit the parameter.
+    var queryValue: String? {
+        switch self {
+        case .active:   return nil
+        case .archived: return "only"
+        case .all:      return "true"
+        }
+    }
+}
+
 /// Network calls for the notification inbox, served by the standalone
 /// notif-service and reached through the API gateway on the main host.
 ///
@@ -31,8 +55,9 @@ class NotificationService {
     ///
     /// The caller's own inbox, newest first. Pass the previous page's
     /// `nextCursor` to page; an empty `nextCursor` means there are no more.
-    /// Archived rows are excluded unless `archived` is true.
-    func GetNotifications(limit: Int? = nil, cursor: String? = nil, archived: Bool = false) async throws -> NotificationItemListResponse {
+    /// `scope` selects which rows are covered and defaults to the unarchived
+    /// inbox.
+    func GetNotifications(limit: Int? = nil, cursor: String? = nil, scope: NotificationScope = .active) async throws -> NotificationItemListResponse {
         let headers = try await AppEnvironment.authHeaders()
 
         var queryItems = [URLQueryItem]()
@@ -42,8 +67,8 @@ class NotificationService {
         if let cursor, !cursor.isEmpty {
             queryItems.append(URLQueryItem(name: "cursor", value: cursor))
         }
-        if archived {
-            queryItems.append(URLQueryItem(name: "archived", value: "true"))
+        if let archived = scope.queryValue {
+            queryItems.append(URLQueryItem(name: "archived", value: archived))
         }
 
         let endpoint = Endpoint("/v1/notifications", queryItems: queryItems)

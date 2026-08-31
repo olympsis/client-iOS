@@ -129,6 +129,13 @@ struct Home: View {
                         .environment(session)
                         .navigationBarBackButtonHidden()
                     
+                case .archivedNotifications:
+                    ArchivedNotificationsView()
+                        .id(HOME_ROUTES.archivedNotifications)
+                        .environment(router)
+                        .environment(session)
+                        .navigationBarBackButtonHidden()
+
                 case .messages:
                     HomeMessagesView()
                         .id(HOME_ROUTES.messages)

@@ -48,6 +48,31 @@ struct NotificationEventInvite: View {
     private var eventID: String? {
         model.data.eventID
     }
+
+    /// The current user's participant row on this event, if they hold one.
+    ///
+    /// Mirrors `RSVPSheet.existingRSVP` so both views agree on what "already
+    /// RSVP'd" means. Returns the row rather than a flag because the silent
+    /// accept below needs the status the user actually picked.
+    private var existingRSVP: Participant? {
+        guard let event, let userID = session.user?.userID else { return nil }
+        return event.participants.first(where: { $0.user?.userID == userID })
+    }
+
+    /// True once the current user holds an RSVP on this event. `Event` is
+    /// `@Observable` and `RSVPSheet` appends to `participants` in place, so this
+    /// flips the moment they pick a status — no extra state to keep in sync.
+    private var hasRSVPd: Bool {
+        existingRSVP != nil
+    }
+
+    /// Whether both actions are dead: the note is still loading, there is no
+    /// actionable invite (missing, or already answered), or the user is already
+    /// on the participant list — answering an invite to an event you've RSVP'd
+    /// to has nothing left to do.
+    private var actionsDisabled: Bool {
+        loadingStates["note"] == .loading || invite == nil || hasRSVPd
+    }
     
     // The image of the sender of this note
     private var userImage: some View {
@@ -171,6 +196,37 @@ struct NotificationEventInvite: View {
             }
         }
     }
+
+    /// Answers an invite the user has effectively already accepted elsewhere.
+    ///
+    /// If they RSVP'd from the event page instead of this note, the buttons come
+    /// up disabled by `hasRSVPd` and nothing would ever answer the invite — it
+    /// would sit PENDING forever. This clears it on their behalf.
+    ///
+    /// The status they actually picked is sent along, and that matters: the
+    /// server compares it against the participant row they already hold and,
+    /// when the two match, does nothing at all — no duplicate row, no "new
+    /// participant" push to the host. Sending no status would instead resolve to
+    /// YES on the server and quietly upgrade a Maybe, so `existingRSVP` is a
+    /// hard requirement here rather than an optional extra.
+    ///
+    /// Scoped to `.eventInvite` notes on purpose. `InviteType` has no co-host
+    /// case, so a co-host note carries an `.event` invite too — auto-accepting
+    /// that would make the user a co-host because they RSVP'd, which is a
+    /// different decision and stays a deliberate tap.
+    ///
+    /// Deliberately silent: the buttons are already dead, so there's no loading
+    /// state worth flashing. A failure leaves the invite PENDING to be retried
+    /// the next time the note is shown.
+    private func acceptAlreadyRSVPdInvite() async {
+        guard model.type == .eventInvite,
+              let invite, invite.type == .event,
+              let status = existingRSVP?.status else { return }
+
+        if await session.answerInvite(invite, status: .accepted, response: status.asRSVPStatus) {
+            self.invite = nil
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -200,7 +256,7 @@ struct NotificationEventInvite: View {
                     foreground: Color.Foreground.default,
                     state: loadingState(for: "decline")
                 ) { declineInvite() }
-                .disabled(loadingStates["note"] == .loading || invite == nil)
+                .disabled(actionsDisabled)
                 .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
 
                 BaseLoadingButton(
@@ -218,7 +274,7 @@ struct NotificationEventInvite: View {
                         acceptInvite()
                     }
                 }
-                .disabled(loadingStates["note"] == .loading || invite == nil)
+                .disabled(actionsDisabled)
                 .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
             }
         }
@@ -270,6 +326,11 @@ struct NotificationEventInvite: View {
 
             self.invite = await fetchedInvite
             self.actor = await fetchedActor
+
+            // The user may have RSVP'd from the event page before ever opening
+            // this note. In that case both buttons are already disabled, so
+            // answer the invite for them instead of leaving it PENDING.
+            await acceptAlreadyRSVPdInvite()
         }
     }
 }

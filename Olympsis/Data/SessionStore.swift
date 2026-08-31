@@ -348,6 +348,53 @@ class SessionStore {
         }
     }
 
+    /// Archives notifications server-side and drops them from the inbox.
+    ///
+    /// Follows `markNotificationsRead` above: the local mutation only lands once
+    /// the server confirms, so a failed archive leaves the row on screen rather
+    /// than making it vanish and then reappear on the next fetch.
+    ///
+    /// The rows are removed outright instead of being flagged because
+    /// `getNotifications()` requests the unarchived inbox — an archived row is
+    /// never coming back in that list, so there's no local state to carry. The
+    /// server keeps them (`is_archived = true`) and supports `unarchive`, so
+    /// this stays recoverable even though the client currently offers no way
+    /// back.
+    @discardableResult
+    func archiveNotifications(_ ids: [String]) async -> Bool {
+        guard !ids.isEmpty else {
+            return false
+        }
+        do {
+            let ok = try await notificationService.UpdateNotification(
+                request: NotificationUpdateRequest(action: "archive", notificationIDs: ids)
+            )
+            guard ok else { return false }
+            notifications.removeAll { ids.contains($0.id) }
+            return true
+        } catch {
+            log.error("Failed to archive notifications! Error: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Fetches the caller's archived notifications.
+    ///
+    /// Returns the page instead of storing it. `notifications` is the live bell
+    /// inbox, which `getNotifications()` deliberately fetches unarchived — so
+    /// archived rows must not land in that array or they'd show up in the inbox
+    /// and inflate the unread badge. The archive screen owns them for as long as
+    /// it's on screen.
+    func archivedNotifications() async -> [NotificationModel] {
+        do {
+            let notes = try await notificationService.GetNotifications(scope: .archived)
+            return notes.notifications
+        } catch {
+            log.error("Failed to get archived notifications! Error: \(error.localizedDescription)")
+            return []
+        }
+    }
+
     /// Re-fetches the user's pending invites.
     ///
     /// Check-in already embeds these on launch, so this is for refreshing

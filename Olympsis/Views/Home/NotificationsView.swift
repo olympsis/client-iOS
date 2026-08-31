@@ -16,21 +16,35 @@ struct NotificationsView: View {
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notifications_view")
 
     var body: some View {
-        ScrollView {
+        Group {
             if session.notifications.count > 0 {
-                LazyVStack(spacing: 0) {
+                List {
                     ForEach(session.notifications, id: \.id) { note in
                         NotificationView(model: note)
                             .environment(session)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.Background.primary)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    Task { await session.archiveNotifications([note.id]) }
+                                } label: {
+                                    Label("Archive", systemImage: "archivebox.fill")
+                                }
+                            }
                     }
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             } else {
-                VStack {
-                    Text("Your Notifications will live here!")
-                    HStack {
-                        Spacer()
-                    }
-                }.padding(.top, 50)
+                ScrollView {
+                    VStack {
+                        Text("Your Notifications will live here!")
+                        HStack {
+                            Spacer()
+                        }
+                    }.padding(.top, 50)
+                }
             }
         }
         .background(Color.Background.primary.ignoresSafeArea())
@@ -47,12 +61,19 @@ struct NotificationsView: View {
             ToolbarItem(placement: .principal) {
                 Text("Notifications")
             }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { router.navigate(to: .archivedNotifications) }) {
+                    Image(systemName: "archivebox")
+                        .foregroundStyle(Color.Foreground.default)
+                }
+            }
         }
         .toolbarRole(.navigationStack)
         .gesture(
             DragGesture()
                 .onEnded { gesture in
-                    if gesture.translation.width > 100 {
+                    if gesture.startLocation.x < 40, gesture.translation.width > 100 {
                         router.navigateBack()
                     }
                 }
@@ -61,9 +82,6 @@ struct NotificationsView: View {
             await session.getNotifications()
         }
         .task {
-            // Fetch the inbox first — it doesn't depend on push permission, and
-            // this screen previously only ever showed whatever check-in had
-            // loaded at launch.
             await session.getNotifications()
 
             // Marking read is fire-and-forget: a failure just leaves the badge

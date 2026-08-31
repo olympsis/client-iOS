@@ -121,6 +121,7 @@ enum ROUTES: Codable, Hashable {
 
 enum HOME_ROUTES: Codable, Hashable {
     case notifications
+    case archivedNotifications
     case messages
     case full_post_view(_ postId: String)
 }
