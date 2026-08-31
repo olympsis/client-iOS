@@ -353,21 +353,21 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
     /// The equivalent invite-service RSVP value, for `UpdateInviteRequest.response`.
     ///
     /// The two enums exist because they belong to different services: this one is
-    /// the events API's, `RSVPStatus` is invite-service's. Note the invite
-    /// endpoint currently decodes `response` and then ignores it — accepting an
-    /// event invite always registers the user as going — so this mapping is only
-    /// used to carry the user's pick forward for when the server starts honoring
-    /// it. Setting the actual RSVP is still a separate call to the events API.
+    /// the events API's, `RSVPStatus` is invite-service's. The invite endpoint
+    /// now honors `response` — it becomes the status of the participant row the
+    /// server writes when the invite is accepted (omitted means YES). Registering
+    /// the RSVP up front is still a separate call to the events API; sending it
+    /// here is what stops the acceptance from overwriting it with YES.
     var asRSVPStatus: RSVPStatus {
         switch self {
         case .Yes:
-            return .going
+            return .yes
         case .Maybe:
             return .maybe
         case .Waitlist:
             return .waitlist
         case .Cant:
-            return .notGoing
+            return .cant
         }
     }
 }
@@ -794,13 +794,17 @@ enum CompetitionFormats: String, Codable, CaseIterable {
     case speedClimbing = "speed_climbing"           // Race to the top
 }
 
+/// invite-service's RSVP vocabulary, used only for `UpdateInviteRequest.response`.
+///
+/// The raw values are exactly the strings the server's `models.RSVPStatus`
+/// parses — including the apostrophe in `CAN'T`. Anything else is rejected with
+/// a 400, so don't "tidy" these; map from `EVENT_RSVP_STATUS.asRSVPStatus`
+/// instead of writing values by hand.
 enum RSVPStatus: String, Codable {
-    case going = "going"
-    case notGoing = "not_going"
-    case maybe = "maybe"
-    case waitlist = "waitlist"
-    case invited = "invited"
-    case pending = "pending"
+    case yes = "YES"
+    case maybe = "MAYBE"
+    case cant = "CAN'T"
+    case waitlist = "WAITLIST"
 }
 
 enum DevicePlatform: String, Codable {

@@ -23,9 +23,7 @@ struct NotificationEventInvite: View {
     /// The invite this note is about, fetched in `.task`.
     ///
     /// notif-service stamps the invite's own id into the note's routing data, so
-    /// this is a direct lookup by id. `nil` means there's nothing actionable —
-    /// the note predates that routing key, the invite is gone, or it has just
-    /// been answered — and both buttons disable.
+    /// this is a direct lookup by id. `nil` means there's nothing actionable — and both buttons disable.
     @State private var invite: InviteResponse?
 
     @State private var showSheet: Bool = false
@@ -46,9 +44,7 @@ struct NotificationEventInvite: View {
         )
     }
 
-    /// The event this invite points at. Invite notes route by `event_id`; this
-    /// view is only used for the event-shaped invite types, so that is the id
-    /// that matters here.
+    /// The event this invite points at. Invite notes route by `event_id`
     private var eventID: String? {
         model.data.eventID
     }
@@ -153,25 +149,25 @@ struct NotificationEventInvite: View {
         }
     }
 
-    /// Accepts the invite, then opens the RSVP sheet.
+    /// Accepts the invite, optionally carrying the RSVP picked in the sheet.
     ///
-    /// Two calls on purpose: accepting flips the invite to ACCEPTED (which
-    /// server-side already registers the user as going), and the sheet then makes
-    /// the separate events-API call if they want a different status. The sheet
-    /// only opens if the accept succeeded — otherwise they'd be picking an RSVP
-    /// for an invite that never got answered.
-    private func acceptInvite() {
+    /// Two calls on purpose: the sheet registers the RSVP with the events API,
+    /// and this flips the invite to ACCEPTED. The server does its own participant
+    /// write when an EVENT invite is accepted, so `response` matters — it tells
+    /// the server which status that write should hold. Omit it (team invites, or
+    /// an accept with no pick) and the server records a confirmed YES, which is
+    /// what this path always did.
+    private func acceptInvite(response: EVENT_RSVP_STATUS? = nil) {
         guard let invite else {
             loadingStates["accept"] = .failure
             return
         }
         Task {
             loadingStates["accept"] = .loading
-            let ok = await session.answerInvite(invite, status: .accepted)
+            let ok = await session.answerInvite(invite, status: .accepted, response: response?.asRSVPStatus)
             loadingStates["accept"] = ok ? .success : .failure
             if ok {
                 self.invite = nil
-                if event != nil { showSheet = true }
             }
         }
     }
@@ -210,17 +206,38 @@ struct NotificationEventInvite: View {
                 BaseLoadingButton(
                     title: primaryActionText,
                     state: loadingState(for: "accept")
-                ) { acceptInvite() }
+                ) {
+                    // Event invites collect the RSVP first — the sheet's callback
+                    // accepts the invite with whatever the user picks. There is no
+                    // RSVP to collect for the other invite types (team membership
+                    // IS the RSVP), and no sheet to show if the event failed to
+                    // load, so those accept straight away.
+                    if invite?.type == .event, event != nil {
+                        self.showSheet = true
+                    } else {
+                        acceptInvite()
+                    }
+                }
                 .disabled(loadingStates["note"] == .loading || invite == nil)
                 .redacted(reason: loadingStates["note"] == .loading ? [.placeholder] : [])
             }
         }
         .padding(.horizontal)
-        .sheet(isPresented: $showSheet, onDismiss: {
-            <#code#>
-        }, content: {
+        .sheet(isPresented: $showSheet, content: {
             if let event {
-                RSVPSheet(event: event)
+                RSVPSheet(event: event) { status in
+
+                    // Only accept invite on Yes and Maybe callbacks. A retraction
+                    // (nil) leaves the invite PENDING, and once it has been
+                    // answered there is nothing left to accept — changing the pick
+                    // again only updates the RSVP the sheet already wrote.
+                    guard let status, status == .Yes || status == .Maybe, invite != nil else { return }
+
+                    // Hand the pick to the invite too: the server uses it as the
+                    // status of the participant row the acceptance writes, instead
+                    // of defaulting the user to YES.
+                    acceptInvite(response: status)
+                }
             }
         })
         .task {
@@ -230,13 +247,7 @@ struct NotificationEventInvite: View {
                 return
             }
 
-            // Resolve the invite alongside the event. Kept independent of the
-            // event lookup: a failed event fetch should still leave the note
-            // actionable, and vice versa.
-            //
-            // Prefer the invite id the note carries; fall back to matching the
-            // user's pending invites by event for notes written before
-            // notif-service started stamping invite_id.
+            // Resolve the invite alongside the event.*9
             async let fetchedInvite = session.invite(
                 id: model.data.inviteID,
                 fallbackContextID: eventID
