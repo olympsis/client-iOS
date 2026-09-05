@@ -137,20 +137,95 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         completionHandler()
     }
     
-    // Called when a notification arrives while the app is in the
-    // foreground. The rich in-app toast path is currently disabled; only
-    // the lean event notes (participant / comment / reminder) opt into a
-    // system banner so the user still sees them while using the app —
-    // tapping that banner routes through `didReceive` to deep-link into the
-    // event. All other types present nothing in the foreground until the
-    // toast path is restored.
+    // MARK: - Foreground Toast
+
+    /// Leading glyph for a lean event note.
+    ///
+    /// Mirrors the inbox rows on purpose — a reminder shows the same yellow
+    /// clock whether it arrives as a toast now or is read on the notifications
+    /// page later. These are symbols rather than the actor's avatar because
+    /// resolving `actor_id` to a user would mean an async lookup, and this
+    /// manager is a singleton with no session to do it through.
+    private func glyph(for kind: EventPushNote.Kind) -> InAppNotificationImage {
+        switch kind {
+        case .participant:
+            return .system("person.fill.badge.plus", tint: .accentColor)
+        case .comment:
+            return .system("bubble.left.fill", tint: .accentColor)
+        case .reminder:
+            return .system("clock.fill", tint: Color.Foreground.yellow)
+        }
+    }
+
+    /// Builds the in-app card for a lean event note.
+    ///
+    /// Everything is read off the payload as it stands at `willPresent`, which
+    /// is AFTER the notification service extension has run:
+    ///
+    /// - `content.title` is the event name. The server guarantees it is
+    ///   non-empty (iOS drops a notification whose title is empty).
+    /// - `content.body` is the string the extension localized from
+    ///   `loc_key`/`loc_args`. The server deliberately sends no body of its own,
+    ///   so if the extension was killed (30s budget / low memory) this is empty
+    ///   — hence the `nil`, which renders a title-only card rather than a card
+    ///   with a blank second line.
+    /// - `event_image_url` is a RELATIVE storage path, as everywhere else in the
+    ///   app, so it goes through `generateImageURL`. The card renders it with
+    ///   the Kingfisher loader `ViewContainer` injects, sharing the app's cache.
+    private func toast(for note: EventPushNote, from notification: UNNotification) -> InAppNotification {
+        let content = notification.request.content
+
+        var trailing: InAppNotificationImage = .none
+        if let path = content.userInfo["event_image_url"] as? String,
+           let url = generateImageURL(path) {
+            trailing = .remote(url)
+        }
+
+        return InAppNotification(
+            title: content.title,
+            subtitle: content.body.isEmpty ? nil : content.body,
+            leadingImage: glyph(for: note.kind),
+            trailingImage: trailing,
+            // Collapse a burst of the same kind for the same event into one
+            // card, while still letting a comment and a reminder for that event
+            // queue up separately.
+            coalesceID: "\(note.kind.rawValue):\(note.eventID)",
+            onTap: { [weak self] in
+                guard let self, let url = self.deepLink(for: note) else { return }
+                self.routeOrQueue(url)
+            }
+        )
+    }
+
+    // Called when a notification arrives while the app is in the foreground.
+    //
+    // The lean event notes (participant / comment / reminder) are presented as
+    // an in-app toast through NotificationKit, whose host is mounted on
+    // `ViewContainer`. Tapping the card deep-links into the event — the same
+    // destination `didReceive` sends a tapped system notification to, so the
+    // foreground and background paths agree.
+    //
+    // `.banner` is deliberately NOT requested: the toast already shows the
+    // notification, and asking for both would stack Apple's banner on top of
+    // it. Badge and sound still come from the system.
+    //
+    // Every other type presents nothing in the foreground — they have no in-app
+    // representation yet.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        if EventPushNote(from: notification) != nil {
-            completionHandler([.banner, .badge, .sound])
-        } else {
+        guard let note = EventPushNote(from: notification) else {
             completionHandler([])
+            return
         }
+
+        let card = toast(for: note, from: notification)
+        // The presenter is main-actor isolated; this callback carries no such
+        // guarantee, so hop explicitly rather than relying on it.
+        Task { @MainActor in
+            InAppNotificationPresenter.shared.present(card)
+        }
+
+        completionHandler([.badge, .sound])
     }
 }
