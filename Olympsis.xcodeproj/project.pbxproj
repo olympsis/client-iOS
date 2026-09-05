@@ -308,6 +308,7 @@
 		5D9A75002E27290D0072606D /* ActivityStateButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */; };
 		5D9AA2CB3034D7A70029E2BC /* ExplorerPagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9AA2CA3034D7A70029E2BC /* ExplorerPagePicker.swift */; };
 		5D9AA2CE3036CDC80029E2BC /* NotificationEventInvite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9AA2CD3036CDC80029E2BC /* NotificationEventInvite.swift */; };
+		5D9AA2D13036CDC80029E2BD /* NotificationEventReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9AA2D03036CDC80029E2BD /* NotificationEventReminder.swift */; };
 		5D9CF3002BBA0E5F00ACDC8B /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */; };
 		5D9DB7F42D5E628800438FA7 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F32D5E628800438FA7 /* Events.swift */; };
 		5D9DB7F62D5E6C7D00438FA7 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */; };
@@ -907,6 +908,7 @@
 		5D9A74FE2E27290D0072606D /* ActivityStateButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateButtons.swift; sourceTree = "<group>"; };
 		5D9AA2CA3034D7A70029E2BC /* ExplorerPagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerPagePicker.swift; sourceTree = "<group>"; };
 		5D9AA2CD3036CDC80029E2BC /* NotificationEventInvite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEventInvite.swift; sourceTree = "<group>"; };
+		5D9AA2D03036CDC80029E2BD /* NotificationEventReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEventReminder.swift; sourceTree = "<group>"; };
 		5D9CF2FF2BBA0E5F00ACDC8B /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		5D9DB7F32D5E628800438FA7 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5D9DB7F52D5E6C7D00438FA7 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -1275,6 +1277,7 @@
 				5D18BD1E2B3954C300F90777 /* NotificationCountView.swift */,
 				5DC0FFEE2F0000020000C0DE /* OlympsisInAppNotificationStyle.swift */,
 				5D9AA2CD3036CDC80029E2BC /* NotificationEventInvite.swift */,
+				5D9AA2D03036CDC80029E2BD /* NotificationEventReminder.swift */,
 				5D6105F8303E24B200BD10CC /* NotificationView.swift */,
 			);
 			path = Notification;
@@ -3060,6 +3063,7 @@
 				9A81B6362925C23D009CA6ED /* EditProfileButton.swift in Sources */,
 				9A8162A729669A370042F0A6 /* MessageView.swift in Sources */,
 				5D9AA2CE3036CDC80029E2BC /* NotificationEventInvite.swift in Sources */,
+				5D9AA2D13036CDC80029E2BD /* NotificationEventReminder.swift in Sources */,
 				5D3FFA9E2BACD9DC00B54E02 /* MemberReportListItem.swift in Sources */,
 				5D97CB632E2F483300DE12B4 /* RunningPointsData.swift in Sources */,
 				9AAAA6AD2903AF2F0003D501 /* Trophy.swift in Sources */,

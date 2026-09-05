@@ -10,9 +10,10 @@ import SwiftUI
 /// One row in the notification inbox.
 ///
 /// Picks a renderer from the note's type: the invite types get the actionable
-/// invite card, everything else gets the generic title/body row. Adding a new
-/// server type therefore costs nothing here — it decodes to `.unknown` and
-/// renders generically until it earns a dedicated view.
+/// invite card, reminders get the tappable event card, everything else gets the
+/// generic title/body row. Adding a new server type therefore costs nothing
+/// here — it decodes to `.unknown` and renders generically until it earns a
+/// dedicated view.
 struct NotificationView: View {
 
     var model: NotificationModel
@@ -20,6 +21,8 @@ struct NotificationView: View {
     var body: some View {
         if model.type.isInvite {
             NotificationEventInvite(model: model)
+        } else if model.type == .eventReminder {
+            NotificationEventReminder(model: model)
         } else {
             NotificationGenericRow(model: model)
         }

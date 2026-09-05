@@ -79,6 +79,30 @@
         }
       }
     },
+    "notification-event-starting-soon-header": {
+      "comment": "Header for the event reminder row in the notification inbox. Argument: the event's name (String, %@).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is starting soon"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ comienza pronto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ commence bientôt"
+          }
+        }
+      }
+    },
     "notification-title-club-application-update": {
       "comment": "Short headline shown for the club application update notification type. No arguments.",
       "extractionState": "manual",
