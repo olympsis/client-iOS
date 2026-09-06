@@ -349,6 +349,45 @@ struct NewEventDaoTests {
     }
     
     @Test
+    func testEventTypeIsSentAsTheServerString() {
+        manager.type = .Class
+        let dto = manager.generateEventDTO()
+
+        guard let data = EncodeToData(dto) else {
+            Issue.record("Failed to encode event dto to data")
+            return
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let event = json?["event"] as? [String: Any]
+
+            #expect(event?["type"] as? String == "CLASS")
+        } catch {
+            Issue.record("Failed to parse json")
+        }
+    }
+
+    @Test
+    func testDefaultEventTypeIsRegular() {
+        let dto = manager.generateEventDTO()
+
+        guard let data = EncodeToData(dto) else {
+            Issue.record("Failed to encode event dto to data")
+            return
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let event = json?["event"] as? [String: Any]
+
+            #expect(event?["type"] as? String == "REGULAR")
+        } catch {
+            Issue.record("Failed to parse json")
+        }
+    }
+
+    @Test
     func testIncludeHostOption() {
         var dto = manager.generateEventDTO()
         dto?.includeHost = false

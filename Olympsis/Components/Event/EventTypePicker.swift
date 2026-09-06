@@ -30,7 +30,7 @@ struct EventTypePicker: View {
                 HStack {
                     eventType.image()
                         .foregroundStyle(Color.Foreground.yellow)
-                    Text(eventType.rawValue)
+                    Text(eventType.displayName())
                         .fontWeight(.bold)
                         .foregroundStyle(Color.Foreground.default)
                 }.padding(.bottom, 5)

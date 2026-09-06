@@ -28,7 +28,7 @@ struct NewEventTopView: View {
                             // button and the picker always show the same symbol for a given type.
                             eventType.image()
                                 .foregroundStyle(.white)
-                            Text(eventType.rawValue)
+                            Text(eventType.displayName())
                                 .foregroundStyle(.white)
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)

@@ -17,7 +17,8 @@ class Event: Codable, Identifiable, Hashable {
     
     var mediaURL: String
     var mediaType: MEDIA_TYPES
-    
+
+    var type: EVENT_TYPES
     var title: String
     var body: String
     var tags: [String]
@@ -57,15 +58,16 @@ class Event: Codable, Identifiable, Hashable {
         
         case mediaURL = "media_url"
         case mediaType = "media_type"
-        
+
+        case type
         case title
         case body
         case tags
         case sports
-        
+
         case config
         case formatConfig = "format_config"
-        
+
         case startTime = "start_time"
         case stopTime = "stop_time"
         
@@ -96,6 +98,7 @@ class Event: Codable, Identifiable, Hashable {
          venues: [VenueDescriptor] = [],
          mediaURL: String,
          mediaType: MEDIA_TYPES,
+         type: EVENT_TYPES = .Regular,
          title: String,
          body: String,
          tags: [String] = [],
@@ -126,7 +129,8 @@ class Event: Codable, Identifiable, Hashable {
         
         self.mediaURL = mediaURL
         self.mediaType = mediaType
-        
+
+        self.type = type
         self.title = title
         self.body = body
         self.tags = tags
@@ -175,7 +179,15 @@ class Event: Codable, Identifiable, Hashable {
         // but events archived by older builds were cached lowercase.
         let mediaTypeRawValue = try container.decode(String.self, forKey: .mediaType)
         mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.uppercased()) ?? .image
-        
+
+        // `type` only started being sent recently, so events created before it
+        // arrive with an empty/absent value — those are regular events.
+        if let typeRawValue = try container.decodeIfPresent(String.self, forKey: .type) {
+            type = EVENT_TYPES(rawValue: typeRawValue.uppercased()) ?? .Regular
+        } else {
+            type = .Regular
+        }
+
         title = try container.decode(String.self, forKey: .title)
         body = try container.decode(String.self, forKey: .body)
         tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
@@ -238,6 +250,7 @@ class Event: Codable, Identifiable, Hashable {
         // The raw value is already the server's string form ("IMAGE"/"VIDEO")
         try container.encode(mediaType.rawValue, forKey: .mediaType)
 
+        try container.encode(type.rawValue, forKey: .type)
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
         try container.encode(tags, forKey: .tags)
@@ -272,6 +285,7 @@ class Event: Codable, Identifiable, Hashable {
     }
 
     func update(from event: Event) {
+        self.type = event.type
         self.title = event.title
         self.body = event.body
         self.venues = event.venues
@@ -327,6 +341,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var venues: [VenueDescriptor]?
     var mediaURL: String?
     var mediaType: MEDIA_TYPES?
+    var type: EVENT_TYPES?
     var title: String?
     var body: String?
     var tags: [String]?
@@ -353,6 +368,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case venues
         case mediaURL = "media_url"
         case mediaType = "media_type"
+        case type
         case title
         case body
         case sports
@@ -380,6 +396,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         venues: [VenueDescriptor]? = nil,
         mediaURL: String? = nil,
         mediaType: MEDIA_TYPES? = nil,
+        type: EVENT_TYPES? = nil,
         title: String? = nil,
         body: String? = nil,
         tags: [String]? = nil,
@@ -405,6 +422,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = venues
         self.mediaURL = mediaURL
         self.mediaType = mediaType
+        self.type = type
         self.title = title
         self.body = body
         self.sports = sports
@@ -442,6 +460,14 @@ class EventDao: Codable, Identifiable, ObservableObject {
             self.mediaType = nil
         }
         
+        // Same tolerance as `Event`: an older event has no type, and the raw
+        // value may arrive in any casing.
+        if let typeRaw = try container.decodeIfPresent(String.self, forKey: .type) {
+            self.type = EVENT_TYPES(rawValue: typeRaw.uppercased()) ?? .Regular
+        } else {
+            self.type = nil
+        }
+
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
@@ -501,6 +527,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(venues, forKey: .venues)
         try container.encodeIfPresent(mediaURL, forKey: .mediaURL)
         try container.encodeIfPresent(mediaType?.rawValue, forKey: .mediaType)
+        try container.encodeIfPresent(type?.rawValue, forKey: .type)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(sports, forKey: .sports)

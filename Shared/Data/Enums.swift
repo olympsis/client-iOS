@@ -511,13 +511,32 @@ enum SkillLevel: String, CaseIterable {
     case expert     = "Expert"
 }
 
+/// Raw values are the server's `type` strings. Never show `rawValue` in the UI —
+/// use `displayName()`, which is localized.
 enum EVENT_TYPES: String, CaseIterable, Codable {
-    case Regular = "Regular"
-    case Class = "Class"
-    case Match = "Match"
-    case League = "League"
-    case Tournament = "Tournament"
-    
+    case Regular = "REGULAR"
+    case Class = "CLASS"
+    case Match = "MATCH"
+    case League = "LEAGUE"
+    case Tournament = "TOURNAMENT"
+
+    /// Localized display name for the type, shown in the picker and on the
+    /// new-event type button.
+    func displayName() -> String {
+        switch self {
+        case .Regular:
+            return String(localized: "event-type-regular", defaultValue: "Regular", table: "Events")
+        case .Class:
+            return String(localized: "event-type-class", defaultValue: "Class", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match", defaultValue: "Match", table: "Events")
+        case .League:
+            return String(localized: "event-type-league", defaultValue: "League", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament", defaultValue: "Tournament", table: "Events")
+        }
+    }
+
     func image() -> Image {
         switch self {
         case .Regular:

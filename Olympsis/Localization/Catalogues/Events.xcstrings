@@ -1892,6 +1892,29 @@
         }
       }
     },
+    "event-type-class": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Class"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clase"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cours"
+          }
+        }
+      }
+    },
     "event-type-class-desc": {
       "extractionState": "manual",
       "localizations": {
@@ -1934,6 +1957,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Idéal pour les groupes d'entraînement, les stages ou les programmes pour débutants."
+          }
+        }
+      }
+    },
+    "event-type-league": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "League"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liga"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ligue"
           }
         }
       }
@@ -1984,6 +2030,29 @@
         }
       }
     },
+    "event-type-match": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Match"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Match"
+          }
+        }
+      }
+    },
     "event-type-match-desc": {
       "extractionState": "manual",
       "localizations": {
@@ -2030,6 +2099,29 @@
         }
       }
     },
+    "event-type-regular": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordinaire"
+          }
+        }
+      }
+    },
     "event-type-regular-desc": {
       "extractionState": "manual",
       "localizations": {
@@ -2072,6 +2164,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Type"
+          }
+        }
+      }
+    },
+    "event-type-tournament": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tournament"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torneo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tournoi"
           }
         }
       }

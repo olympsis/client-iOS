@@ -331,6 +331,7 @@ class NewEventManager {
             venues: self.selectedVenueDescriptors,
             mediaURL: self.image,
             mediaType: .image,
+            type: self.type,
             title: self.title,
             body: self.body,
             tags: self.selectedTags.map { $0.name },
