@@ -270,20 +270,19 @@ class NewEventManager {
             }
             dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
-            guard let id = await eventService.createEvent(dao: dto) else {
+            do {
+                return try await eventService.createEvent(dao: dto)
+            } catch {
+                // The upload succeeded but the event did not, so the image is
+                // orphaned in the bucket — clean it up, then let the original
+                // error through so the view can say what actually went wrong.
                 if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
-                throw NewEventError.serverError(message: "Failed to create event.")
+                throw error
             }
-            
-            return id
         } else {
-            guard let id = await eventService.createEvent(dao: dto) else {
-                throw NewEventError.unknown(message: "Failed to create event.")
-            }
-            
-            return id
+            return try await eventService.createEvent(dao: dto)
         }
     }
     

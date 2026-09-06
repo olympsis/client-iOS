@@ -134,15 +134,28 @@ class EventService: APIService {
         }
     }
 
-    func createEvent(dao: NewEventDao) async -> String? {
+    /// POST /v1/events — returns the new event's id.
+    ///
+    /// Propagates rather than collapsing to nil like the older calls around it.
+    /// The server validates the body and answers 400 with a `{"msg": ...}`
+    /// saying which field is wrong, and `APIService.request` already decodes
+    /// that into `APIServiceError.badRequest(message:)` — swallowing it here
+    /// meant every failure, from a rejected title to an unreachable network,
+    /// reached the user as the same "Something went wrong."
+    func createEvent(dao: NewEventDao) async throws -> String {
         let endpoint = Endpoint("/v1/events")
         do {
             let object: CreateResponse = try await request(.POST, endpoint, body: EncodeToData(dao), expecting: 201)
-            return object.id
+            // A 201 with no id would otherwise read as success and then fail
+            // further along with nothing to point at.
+            guard let id = object.id else {
+                throw APIServiceError.unexpected(statusCode: 201, message: "create response carried no id")
+            }
+            return id
         } catch {
             log.error("\(error)")
+            throw error
         }
-        return nil
     }
 
     func updateEvent(id: String, dao: EventDao) async -> Bool {

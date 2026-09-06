@@ -95,6 +95,25 @@ struct NewEvent: View {
             } catch let error as NewEventError {
                 log.error("Event creation failed: \(error)")
                 handleFailure(error.message)
+            } catch let error as APIServiceError {
+                // The server explains a 400 (`{"msg": ...}`), and it is worth
+                // repeating: reaching one means this build's validation and the
+                // server's have drifted, so the generic copy would leave the
+                // user with no idea which field to touch.
+                log.error("Event creation rejected: \(error)")
+                switch error {
+                case .badRequest(let message), .unprocessable(let message):
+                    handleFailure(message)
+                case .unauthorized, .forbidden:
+                    handleFailure(String(localized: "new-event-error-signed-out", table: "Events"))
+                default:
+                    handleFailure(String(localized: "new-event-error-generic", table: "Events"))
+                }
+            } catch let error as URLError {
+                // Offline is by far the likeliest failure here, and "check your
+                // connection" is the only advice that actually helps.
+                log.error("Event creation failed to reach the server: \(error)")
+                handleFailure(String(localized: "new-event-error-offline", table: "Events"))
             } catch {
                 log.error("Event creation failed: \(error)")
                 handleFailure(String(localized: "new-event-error-generic", table: "Events"))

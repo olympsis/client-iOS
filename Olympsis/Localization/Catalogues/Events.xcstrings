@@ -2888,6 +2888,54 @@
         }
       }
     },
+    "new-event-error-offline": {
+      "comment": "Shown when the device cannot reach the server while creating an event.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You appear to be offline. Check your connection and try again."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parece que no tienes conexión. Revísala e inténtalo de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous semblez hors ligne. Vérifiez votre connexion et réessayez."
+          }
+        }
+      }
+    },
+    "new-event-error-signed-out": {
+      "comment": "Shown when the server rejects event creation as unauthenticated.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your session expired. Sign in again and retry."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu sesión expiró. Inicia sesión de nuevo e inténtalo otra vez."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre session a expiré. Reconnectez-vous et réessayez."
+          }
+        }
+      }
+    },
     "new-event-error-title": {
       "comment": "Title of the alert shown when creating an event fails. No arguments.",
       "extractionState": "manual",
