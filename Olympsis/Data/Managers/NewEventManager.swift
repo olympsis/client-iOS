@@ -232,7 +232,13 @@ class NewEventManager {
             }
             return .noSelectedField
         }
-        
+
+        // Everything passed, so drop any tint left over from an earlier attempt.
+        // Nothing else ever cleared this, so a field that went red once stayed
+        // red for the life of the sheet.
+        Task { @MainActor in
+            validationStatus = nil
+        }
         return nil
     }
     
@@ -243,8 +249,12 @@ class NewEventManager {
         }
         
         if let data = selectedImageData {
+            // Throws rather than returning nil: a nil return is indistinguishable
+            // from every other nil at the call site, so an upload failure used to
+            // reach the user as a one-second red button and nothing else.
             guard let resp = await uploadImage(data: data) else {
-                return nil
+                status = .pending
+                throw MediaUploadError.unexpected("failed to upload image")
             }
             if resp.score > 4 {
                 status = .pending

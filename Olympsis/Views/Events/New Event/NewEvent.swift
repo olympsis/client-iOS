@@ -12,7 +12,16 @@ struct NewEvent: View {
     
     @State var manager: NewEventManager
     
-    @State private var showToast: Bool = false
+    /// Message for the failure alert. Non-nil presents it.
+    ///
+    /// This replaces a `showToast` flag that was toggled on every failure and
+    /// bound to nothing — there was no toast in the view, so every error except
+    /// a media violation reached the user as a one-second red button.
+    ///
+    /// An alert rather than the NotificationKit toast because this screen is
+    /// presented with `.sheet`/`.fullScreenCover`, which sits above the toast
+    /// host mounted on `ViewContainer` — a toast would render behind it.
+    @State private var errorMessage: String?
     
     @State private var showTypePicker: Bool = false
     @State private var showVisibilityPicker: Bool = false
@@ -24,7 +33,6 @@ struct NewEvent: View {
     @State private var showSportsPicker: Bool = false
     
     @State private var showPostViolation: Bool = false
-    @State private var showCompletedToast: Bool = false
     
     /// The date/time picker currently being presented, if any. Using an
     /// item-based sheet lets each pill open the picker scoped to just the
@@ -51,8 +59,14 @@ struct NewEvent: View {
         activeDatePicker = target
     }
 
-    private func handleFailure() {
+    /// Flips the button to its failure state and, when there is something
+    /// useful to say, raises the alert. `message` is nil only where the user has
+    /// already been told another way (the media-violation sheet).
+    private func handleFailure(_ message: String? = nil) {
         manager.status = .failure
+        if let message {
+            errorMessage = message
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             manager.status = .pending
         }
@@ -72,32 +86,41 @@ struct NewEvent: View {
             do {
                 try await createEvent(value: value)
             } catch MediaUploadError.innapropriateContent {
+                // The sheet explains this one far better than an alert line.
                 handleFailure()
                 self.showPostViolation.toggle()
+            } catch let error as MediaUploadError {
+                log.error("Event creation failed: \(error)")
+                handleFailure(error.message)
+            } catch let error as NewEventError {
+                log.error("Event creation failed: \(error)")
+                handleFailure(error.message)
             } catch {
-                handleFailure()
-                showToast.toggle()
+                log.error("Event creation failed: \(error)")
+                handleFailure(String(localized: "new-event-error-generic", table: "Events"))
             }
         }
     }
     
     @MainActor
     private func createEvent(value: ScrollViewProxy) async throws {
-        guard manager.validateEvent(value: value) == nil  else {
-            handleFailure()
+        if let invalid = manager.validateEvent(value: value) {
+            // validateEvent has already scrolled to the offending field and
+            // tinted it; the alert says what to actually do about it.
+            handleFailure(invalid.message)
             return
         }
         manager.status = .loading
 
         guard let user = session.user else {
-            handleFailure()
+            handleFailure(String(localized: "new-event-error-no-session", table: "Events"))
             return
         }
         
         guard let id = try await manager.createEvent(user: user),
             let url = URL(string: "olympsis://events?ID=\(id)") else {
             log.error("Failed to create event. No ID or failed to construct URL.")
-            handleFailure()
+            handleFailure(String(localized: "new-event-error-generic", table: "Events"))
             return
         }
         // Open the newly created event, then flip the button to its success state
@@ -139,6 +162,10 @@ struct NewEvent: View {
                             .focused($titleFocus)
                             .padding(.leading)
                             .font(.custom("Archivo-BlackItalic", size: 30, relativeTo: .title))
+                            // .noTitle was the one validation case with no
+                            // visual treatment at all, so an empty title just
+                            // scrolled here and marked nothing.
+                            .foregroundStyle(manager.validationStatus == .noTitle ? Color.red : Color.primary)
                     }
                     .padding(.top, 10)
                     .padding(.bottom, 10)
@@ -357,6 +384,20 @@ struct NewEvent: View {
                 .sheet(isPresented: $showPostViolation, content: {
                     PostMediaViolation()
                 })
+                .alert(
+                    String(localized: "new-event-error-title", table: "Events"),
+                    isPresented: Binding(
+                        get: { errorMessage != nil },
+                        set: { if !$0 { errorMessage = nil } }
+                    ),
+                    presenting: errorMessage
+                ) { _ in
+                    Button(String(localized: "new-event-error-dismiss", table: "Events"), role: .cancel) {
+                        errorMessage = nil
+                    }
+                } message: { message in
+                    Text(message)
+                }
                 .task {
                     if let user = session.user {
                         manager.poster = user.toSnippet()
