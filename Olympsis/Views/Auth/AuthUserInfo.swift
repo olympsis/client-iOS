@@ -73,6 +73,9 @@ struct AuthUserInfo: View {
      */
     private func handleFailure() {
         state = .failure
+        // The red button alone says something broke but not what to do about
+        // it, and it's gone in a second either way.
+        Toast.error(String(localized: "auth-save-failed", defaultValue: "Couldn't save your info. Check your connection and try again.", table: "Onboarding"))
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.state = .pending
         }

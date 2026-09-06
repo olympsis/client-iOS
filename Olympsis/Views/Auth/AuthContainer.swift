@@ -38,6 +38,11 @@ struct AuthContainer: View {
                 .tag(AuthTab.sports)
                 .toolbar(.hidden, for: .tabBar)
         }
+        // Signup lives outside ViewContainer, which is where the toast host is
+        // normally mounted, so these screens need their own. Only one of the two
+        // roots is ever in the tree (OlympsisApp switches on auth status), so
+        // they can't both render the same card.
+        .inAppNotifications(.shared, style: .olympsis)
         #endif
     }
 }

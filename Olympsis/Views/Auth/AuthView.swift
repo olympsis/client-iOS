@@ -19,7 +19,6 @@ struct AuthView: View {
     @Binding var appleLastName: String?
     @Binding var appleEmail: String?
     
-    @State private var showToast: Bool = false
     @State private var enableLogin: Bool = false
     
     @State private var state: LOADING_STATE = .pending
@@ -101,14 +100,20 @@ struct AuthView: View {
                                     } else if resp == USER_STATUS.unknown {
                                         withAnimation {
                                             state = .pending
-                                            log.error("Failed gracefully. Unknown user status returned.")
                                         }
+                                        log.error("Failed gracefully. Unknown user status returned.")
+                                        Toast.error(String(localized: "auth-sign-in-failed", defaultValue: "Sign in didn't go through. Please try again.", table: "Onboarding"))
                                     }
                                 } catch {
                                     withAnimation {
                                         state = .pending
                                     }
                                     log.error("Failed to sign user in: \(error)")
+                                    // Backing out of the Apple sheet isn't a
+                                    // failure worth interrupting anyone about.
+                                    if (error as? ASAuthorizationError)?.code != .canceled {
+                                        Toast.error(String(localized: "auth-sign-in-failed", defaultValue: "Sign in didn't go through. Please try again.", table: "Onboarding"))
+                                    }
                                 }
                             }
                         }
@@ -154,9 +159,10 @@ struct AuthView: View {
                 .blur(radius: 2, opaque: true)
         }
         .task {
-            // If server is down we don't want people signing up
+            // If server is down we don't want people signing up. Say so —
+            // the button just greys out otherwise, with nothing explaining why.
             guard await managementService.wsg() else {
-                showToast = true
+                Toast.error(String(localized: "auth-server-unavailable", defaultValue: "Olympsis is unavailable right now. Try again in a few minutes.", table: "Onboarding"))
                 return
             }
             enableLogin = true
