@@ -39,6 +39,8 @@ extension NEW_EVENT_ERROR {
             return String(localized: "new-event-error-no-description", table: "Events")
         case .noSelectedField:
             return String(localized: "new-event-error-no-venue", table: "Events")
+        case .badRecurrence:
+            return String(localized: "new-event-error-recurrence-end", defaultValue: "The repeat end date must be after the event starts.", table: "Events")
         case .unexpected:
             // The only guard that raises `.unexpected` is end-date <= start-date.
             return String(localized: "new-event-error-bad-dates", table: "Events")

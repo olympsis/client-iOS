@@ -524,6 +524,29 @@
         }
       }
     },
+    "advanced-settings-recurrence-frequency-daily": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diario"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quotidien"
+          }
+        }
+      }
+    },
     "advanced-settings-recurrence-frequency-monthly": {
       "extractionState": "manual",
       "localizations": {
@@ -612,6 +635,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "par semaine"
+          }
+        }
+      }
+    },
+    "advanced-settings-recurrence-toggle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat this event"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repetir este evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Répéter cet événement"
+          }
+        }
+      }
+    },
+    "advanced-settings-recurrence-toggle-desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create the same event again on a schedule."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea el mismo evento nuevamente según un calendario."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recréez le même événement selon un calendrier."
           }
         }
       }
@@ -1267,6 +1336,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Limite"
+          }
+        }
+      }
+    },
+    "event-link-copied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link copied"
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enlace copiado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lien copié"
           }
         }
       }

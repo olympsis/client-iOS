@@ -189,57 +189,72 @@ class NewEventManager {
     ///
     /// - Returns an optional `NEW_EVENT_ERROR` to let us know what went wrong
     func validateEvent(value: ScrollViewProxy) -> NEW_EVENT_ERROR? {
+        let failure = validationError()
+
+        Task { @MainActor in
+            // Everything passed, so drop any tint left over from an earlier
+            // attempt. Nothing else ever cleared this, so a field that went red
+            // once stayed red for the life of the sheet.
+            validationStatus = failure
+            guard let failure, let target = NewEventManager.scrollTarget(for: failure) else { return }
+            withAnimation {
+                value.scrollTo(target)
+            }
+        }
+
+        return failure
+    }
+
+    /// The first validation problem with the event, or `nil` when it's ready to
+    /// submit. Split out of `validateEvent` so the rules can be exercised
+    /// without a `ScrollViewProxy`, which only exists inside a rendered
+    /// `ScrollViewReader`.
+    func validationError() -> NEW_EVENT_ERROR? {
         // make sure we have a title
         guard !title.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noTitle
-                withAnimation {
-                    value.scrollTo(1)
-                }
-            }
             return .noTitle
         }
-        
+
         // make sure end date is greater than start
         guard endDate > startDate else {
-            Task { @MainActor in
-                validationStatus = .unexpected
-                withAnimation {
-                    value.scrollTo(3)
-                }
-            }
             return .unexpected
         }
-        
+
         // make sure we have a description
         guard !body.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noDescription
-                withAnimation {
-                    value.scrollTo(4)
-                }
-            }
             return .noDescription
         }
-        
+
         // make sure we have selected venues
         guard !selectedVenueDescriptors.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noSelectedField
-                withAnimation {
-                    value.scrollTo(5)
-                }
-            }
             return .noSelectedField
         }
 
-        // Everything passed, so drop any tint left over from an earlier attempt.
-        // Nothing else ever cleared this, so a field that went red once stayed
-        // red for the life of the sheet.
-        Task { @MainActor in
-            validationStatus = nil
+        // A repeat that ends before the event starts produces no occurrences at
+        // all, and the server would accept it silently.
+        if let recurrence = recurrenceOptions, recurrence.endTime <= startDate {
+            return .badRecurrence
         }
+
         return nil
+    }
+
+    /// The `.id(...)` of the field to scroll to for a given failure. Kept beside
+    /// the rules so the two can't drift; the ids live in `NewEvent`'s body.
+    private static func scrollTarget(for failure: NEW_EVENT_ERROR) -> Int? {
+        switch failure {
+        case .noTitle:
+            return 1
+        case .unexpected:
+            return 3
+        case .noDescription:
+            return 4
+        case .noSelectedField:
+            return 5
+        case .badRecurrence:
+            // The repeat settings live behind the advanced-settings button.
+            return 6
+        }
     }
     
     /// Triggers the create event action

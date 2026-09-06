@@ -62,9 +62,24 @@ enum EVENTS_PAGE_STATE: String, CaseIterable {
     case map
 }
 
+/// Raw values are the recurrence patterns the server accepts. `allCases` drives
+/// the picker, so the declaration order here is the order shown on screen.
 enum EVENT_RECURRENCE_FREQUENCY: String, CaseIterable {
+    case daily = "DAILY"
     case weekly = "WEEKLY"
     case monthly = "MONTHLY"
+
+    /// Localized label for the frequency button.
+    func displayName() -> String {
+        switch self {
+        case .daily:
+            return String(localized: "advanced-settings-recurrence-frequency-daily", defaultValue: "Daily", table: "Events")
+        case .weekly:
+            return String(localized: "advanced-settings-recurrence-frequency-weekly", defaultValue: "Weekly", table: "Events")
+        case .monthly:
+            return String(localized: "advanced-settings-recurrence-frequency-monthly", defaultValue: "Monthly", table: "Events")
+        }
+    }
 }
 
 enum NavigationType: String, Hashable {
@@ -502,6 +517,7 @@ enum NEW_EVENT_ERROR: Error {
     case noTitle
     case noDescription
     case noSelectedField
+    case badRecurrence
 }
 
 enum SkillLevel: String, CaseIterable {

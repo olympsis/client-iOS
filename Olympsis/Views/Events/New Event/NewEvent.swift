@@ -349,7 +349,10 @@ struct NewEvent: View {
                         .padding(.trailing)
                         .padding(.bottom, 10)
                     }
-                    
+                    // Scroll target for `.badRecurrence` — the repeat settings
+                    // live inside this sheet, so this is as close as we can get.
+                    .id(6)
+
                     // MARK: - Action Button
                     HStack {
                         Spacer()
