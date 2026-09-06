@@ -303,12 +303,15 @@ enum GROUP_TYPE: String, CaseIterable {
     case Club = "club"
     case Organization = "organization"
 
-    func toInt() -> Int {
+    /// The value the API expects for an organizer's `type`. The raw values above
+    /// are the app's own vocabulary ("club"), while the server speaks "GROUP" —
+    /// `stringToGroupType` is the inverse of this.
+    var apiValue: String {
         switch self {
         case .Club:
-            0
+            return "GROUP"
         case .Organization:
-            1
+            return "ORGANIZATION"
         }
     }
 }

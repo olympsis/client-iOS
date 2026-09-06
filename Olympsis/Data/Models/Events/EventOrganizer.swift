@@ -39,8 +39,10 @@ struct Organizer: Codable, Identifiable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        // Encode the type by converting enum to Int
-        try container.encode(type.toInt(), forKey: .type)
+        // Send the server's string form ("GROUP"/"ORGANIZATION"). The legacy
+        // int is still accepted on decode, but writing it back made the server
+        // fall through to its default type.
+        try container.encode(type.apiValue, forKey: .type)
         
         // Encode the id
         try container.encode(id, forKey: .id)
