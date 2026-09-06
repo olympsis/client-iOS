@@ -95,7 +95,7 @@ struct NewEvent: View {
         }
         
         guard let id = try await manager.createEvent(user: user),
-            let url = URL(string: "olympsis://events?id=\(id)") else {
+            let url = URL(string: "olympsis://events?ID=\(id)") else {
             log.error("Failed to create event. No ID or failed to construct URL.")
             handleFailure()
             return
