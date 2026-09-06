@@ -123,7 +123,14 @@ struct User: Codable, Hashable {
             gender = nil
         }
 
-        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        // Parsed by hand rather than through the decoder's .iso8601 strategy,
+        // which rejects the millisecond precision the server can send. A
+        // birthdate that won't parse must not cost the user their check-in.
+        if let rawBirthdate = try container.decodeIfPresent(String.self, forKey: .birthdate) {
+            birthdate = try? parseDate(from: rawBirthdate)
+        } else {
+            birthdate = nil
+        }
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         sports = try container.decodeIfPresent([String].self, forKey: .sports)
@@ -171,6 +178,12 @@ struct User: Codable, Hashable {
 }
 
 extension User {
+    /// True while the username is still the placeholder `/v1/auth/register`
+    /// assigns (`olympsis-user-<uuid>`), i.e. the user never picked one.
+    var hasPlaceholderUsername: Bool {
+        username?.hasPrefix("olympsis-user-") == true
+    }
+
     /// Project the full `User` down to the `UserSnippet` shape used
     /// by embedded references (post authors, comment authors, RSVP
     /// rows, etc.). Centralizes the field mapping so call sites stop
@@ -281,7 +294,12 @@ struct UserDao: Codable {
             gender = nil
         }
         
-        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        // Same tolerance as `User` above.
+        if let rawBirthdate = try container.decodeIfPresent(String.self, forKey: .birthdate) {
+            birthdate = try? parseDate(from: rawBirthdate)
+        } else {
+            birthdate = nil
+        }
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         sports = try container.decodeIfPresent([String].self, forKey: .sports)
         visibility = try container.decodeIfPresent(String.self, forKey: .visibility)

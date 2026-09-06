@@ -17,6 +17,35 @@ import AuthenticationServices
 /// session; `updateUser`/`deleteAccount` run after — the shared
 /// `request`/`requestRaw` helpers add auth headers uniformly either way (see
 /// `AppEnvironment.authHeaders`).
+extension USER_STATUS {
+
+    /// Where a returning Apple credential should land.
+    ///
+    /// Someone who quit halfway through signup used to be sent back to the
+    /// first step every time, which asks again for details the server already
+    /// has. Deciding from the cached profile lets them resume where they
+    /// stopped. Birthdate and gender are deliberately not required for
+    /// `.returning`: accounts created before those were stored server-side
+    /// must not be pushed back into signup.
+    static func resumeStatus(for user: User?) -> USER_STATUS {
+        guard let user else {
+            return .not_finished
+        }
+
+        let hasUsername = !(user.username ?? "").isEmpty && !user.hasPlaceholderUsername
+        let hasSports = !(user.sports ?? []).isEmpty
+        let hasVisibility = !(user.visibility ?? "").isEmpty
+
+        if hasUsername && hasSports && hasVisibility {
+            return .returning
+        }
+        if hasUsername && user.gender != nil {
+            return .needs_sports
+        }
+        return .not_finished
+    }
+}
+
 class AuthService: APIService {
 
     let http: Courrier
@@ -161,15 +190,7 @@ class AuthService: APIService {
                             return USER_STATUS.not_finished
                         }
 
-                        let user = cacheService.fetchUser()
-                        guard user?.firstName != "",
-                            user?.username != "",
-                              user?.sports != nil,
-                              user?.visibility != "" else {
-                            return USER_STATUS.not_finished
-                        }
-
-                        return USER_STATUS.returning
+                        return USER_STATUS.resumeStatus(for: cacheService.fetchUser())
                     } catch {
                         log.error("Authentication Failed: \(error.localizedDescription)")
                         return USER_STATUS.unknown

@@ -93,7 +93,17 @@ struct AuthView: View {
                                         withAnimation {
                                             authStatus = .authenticated
                                         }
+                                    } else if resp == USER_STATUS.needs_sports {
+                                        // Everything but the sports step is
+                                        // already saved — don't ask for it again.
+                                        session.user = cacheService.fetchUser()
+                                        withAnimation {
+                                            currentView = .sports
+                                        }
                                     } else if resp == USER_STATUS.not_finished {
+                                        // Load whatever the server does have so
+                                        // the form can prefill from it.
+                                        session.user = cacheService.fetchUser()
                                         withAnimation {
                                             currentView = .info
                                         }

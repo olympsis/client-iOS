@@ -51,6 +51,9 @@ enum USER_STATUS: String, CaseIterable {
     case new
     case unknown
     case returning
+    /// Profile details are saved but no sports are picked yet, so signup can
+    /// resume at the last step instead of asking for everything again.
+    case needs_sports
     case not_finished
 }
 
