@@ -4116,6 +4116,75 @@
         }
       }
     },
+    "rsvp-error-full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This event is full — you're still on the waitlist."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este evento está lleno; sigues en la lista de espera."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet événement est complet — vous restez sur la liste d'attente."
+          }
+        }
+      }
+    },
+    "rsvp-error-generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't update your RSVP. Try again."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo actualizar tu confirmación. Inténtalo de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de mettre à jour votre réponse. Réessayez."
+          }
+        }
+      }
+    },
+    "rsvp-error-team": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This event takes team RSVPs."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este evento acepta confirmaciones por equipo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet événement accepte les réponses par équipe."
+          }
+        }
+      }
+    },
     "rsvp-hide": {
       "extractionState": "manual",
       "localizations": {
@@ -4685,19 +4754,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Waitlist"
+            "value": "LISTED"
           }
         },
         "es-419": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lista de espera"
+            "value": "EN LISTA"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Liste d'attente"
+            "value": "SUR LA LISTE"
           }
         }
       }

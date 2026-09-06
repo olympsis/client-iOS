@@ -49,7 +49,7 @@ struct EventActionButtons: View {
               let userID = user.userID else {
             return nil
         }
-        return event.participants.first(where: { $0.user?.userID == userID })
+        return event.rsvp(for: userID)
     }
 
     /// The visual configuration for the RSVP button given the event's current
@@ -77,7 +77,9 @@ struct EventActionButtons: View {
                     return (String(localized: "status-maybe", defaultValue: "MAYBE", table: "Events"),
                             "questionmark.circle.fill", CGSize(width: 20, height: 20), Color.Brand.secondary, true, true, .topTrailing)
                 case .Waitlist:
-                    return (String(localized: "status-waitlist", table: "Events"),
+                    // "LISTED", not "Waitlist": the pill sits beside I'M IN /
+                    // MAYBE and reads as the user's own state, not the feature's.
+                    return (String(localized: "status-waitlist", defaultValue: "LISTED", table: "Events"),
                             "hourglass.bottomhalf.filled", CGSize(width: 20, height: 20), Color.Brand.tertiary, true, true, .topTrailing)
                 case .Cant:
                     return (String(localized: "status-cant", defaultValue: "CAN'T", table: "Events"),

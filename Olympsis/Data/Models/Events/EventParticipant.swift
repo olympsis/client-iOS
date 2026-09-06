@@ -88,6 +88,43 @@ class Participant: Codable, Hashable {
     }
 }
 
+/// What the server answers with when a participant row is created or changed.
+///
+/// The status matters as much as the id: the server may not have given the
+/// caller what they asked for — an RSVP to a full event comes back WAITLIST —
+/// and the client has no other way to know that happened.
+struct ParticipantResponse: Decodable {
+    let id: String
+    let status: EVENT_RSVP_STATUS?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case status
+    }
+
+    init(id: String, status: EVENT_RSVP_STATUS?) {
+        self.id = id
+        self.status = status
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+
+        // Int-or-string, same as `Participant`. Left nil rather than defaulted
+        // when absent so the caller can fall back to the status it requested —
+        // a server build from before this field existed must not be read as
+        // "you were downgraded to Maybe".
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = nil
+        }
+    }
+}
+
 class ParticipantDao: Codable {
     var id: String?
     var userID: String?

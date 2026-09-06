@@ -182,22 +182,62 @@ class EventService: APIService {
 
     // MARK: - Participants
 
-    func addParticipant(id: String, dao: ParticipantDao) async throws -> String {
+    /// POST /v1/events/{id}/participants — registers an RSVP.
+    ///
+    /// Returns the row the server actually wrote, not the one we asked for: an
+    /// RSVP to a full event is stored as WAITLIST, and the pill has to say so.
+    /// A server build that predates the `status` field falls back to the
+    /// requested status, which is what it would have written anyway.
+    func addParticipant(id: String, dao: ParticipantDao) async throws -> ParticipantResponse {
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         do {
             let (data, statusCode) = try await requestRaw(.POST, endpoint, body: EncodeToData(dao))
             guard statusCode == 200 else {
+                // A 409 here means the event takes team RSVPs, which is worth
+                // telling the user rather than collapsing into "try again".
+                if [400, 409].contains(statusCode) {
+                    throw EventError.rejected(message: serverMessage(from: data))
+                }
                 throw EventError.failedToAddParticipant
             }
 
-            let object = try decoder.decode(CreateResponse.self, from: data)
-            guard let id = object.id else {
-                throw EventError.failedToAddParticipant
-            }
-
-            return id
+            let object = try decoder.decode(ParticipantResponse.self, from: data)
+            return ParticipantResponse(id: object.id, status: object.status ?? dao.status)
+        } catch let error as EventError {
+            log.error("Failed to add participant: \(error)")
+            throw error
         } catch {
             log.error("Failed to add participant: \(error)")
+            throw EventError.failedToAddParticipant
+        }
+    }
+
+    /// PATCH /v1/events/{id}/participants — changes the caller's existing RSVP.
+    ///
+    /// Separate from delete-then-add because that pair loses the user's slot:
+    /// dropping the row promotes someone off the waitlist, and the re-add lands
+    /// the user behind them. A patch keeps the slot for downgrades and answers
+    /// 409 when a waitlisted user asks for a place that isn't free.
+    func updateParticipant(id: String, dao: ParticipantDao) async throws -> ParticipantResponse {
+        let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+        do {
+            let (data, statusCode) = try await requestRaw(.PATCH, endpoint, body: EncodeToData(dao))
+            guard statusCode == 200 else {
+                // 400/404/409 all carry a `msg` explaining the refusal; anything
+                // else is a plain failure with nothing to tell the user.
+                if [400, 404, 409].contains(statusCode) {
+                    throw EventError.rejected(message: serverMessage(from: data))
+                }
+                throw EventError.failedToAddParticipant
+            }
+
+            let object = try decoder.decode(ParticipantResponse.self, from: data)
+            return ParticipantResponse(id: object.id, status: object.status ?? dao.status)
+        } catch let error as EventError {
+            log.error("Failed to update participant: \(error)")
+            throw error
+        } catch {
+            log.error("Failed to update participant: \(error)")
             throw EventError.failedToAddParticipant
         }
     }

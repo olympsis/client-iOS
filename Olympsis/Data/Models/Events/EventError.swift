@@ -9,6 +9,10 @@ import Foundation
 
 enum EventError: Error {
     case unknown
+    /// The server refused the change and said why (400/404/409). The message is
+    /// the server's own text, which the caller maps onto user-facing copy —
+    /// don't show it raw.
+    case rejected(message: String)
     case failedToAddParticipant
     case failedToRemoveParticipant
     case failedToAddTeam

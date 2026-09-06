@@ -32,7 +32,8 @@ struct EventParticipants: View {
         
         // Reveal after user has RSVPed
         guard let user = session.user,
-              event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+              let userID = user.userID,
+              event.rsvp(for: userID) != nil else {
             return !hideParticipants
         }
         return true

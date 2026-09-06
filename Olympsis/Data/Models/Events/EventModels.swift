@@ -574,9 +574,49 @@ struct NewEventDao: Codable {
     }
 }
 
+// MARK: - RSVP helpers
+//
+// The server splits waitlisted rows out of `participants` into
+// `participants_waitlist` when it aggregates an event, so a user who was
+// waitlisted is absent from `participants` entirely. Every "has this user
+// RSVP'd?" check has to look in both arrays — these helpers exist so that rule
+// lives in one place instead of being re-derived at each call site.
+extension Event {
+
+    /// The user's participant row, wherever it currently sits.
+    func rsvp(for userID: String) -> Participant? {
+        participants.first(where: { $0.user?.userID == userID })
+            ?? participantsWaitlist.first(where: { $0.user?.userID == userID })
+    }
+
+    /// Files a newly created row into the array its status belongs to.
+    func insertRSVP(_ participant: Participant) {
+        if participant.status == .Waitlist {
+            participantsWaitlist.append(participant)
+        } else {
+            participants.append(participant)
+        }
+    }
+
+    /// Drops the user's row from both arrays.
+    func removeRSVP(for userID: String) {
+        participants.removeAll(where: { $0.user?.userID == userID })
+        participantsWaitlist.removeAll(where: { $0.user?.userID == userID })
+    }
+
+    /// Applies a new status to the user's existing row, moving it between the
+    /// two arrays when the status crosses the waitlist boundary.
+    func setRSVPStatus(_ status: EVENT_RSVP_STATUS, for userID: String) {
+        guard let participant = rsvp(for: userID) else { return }
+        participant.status = status
+        removeRSVP(for: userID)
+        insertRSVP(participant)
+    }
+}
+
 // MARK: - Extensions
 extension Event {
-    
+
     func isCompetition() -> Bool {
         guard let config = self.formatConfig,
               let isCompetition = config.isCompetition else { return false }
@@ -760,7 +800,7 @@ extension [Event] {
     /// Returns the most recent event for the user
     func mostRecentForUser(userID: String) -> Event? {
         return self
-            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .filter { $0.rsvp(for: userID) != nil }
             .sorted { $0.startTime < $1.startTime }
             .first
     }
@@ -768,7 +808,7 @@ extension [Event] {
     /// Returns all of the events that the user has RSVPed to
     func rsvpedEvents(userID: String) -> [Event] {
         return self
-            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .filter { $0.rsvp(for: userID) != nil }
             .sorted { $0.startTime < $1.startTime }
     }
     
