@@ -736,9 +736,11 @@ enum MESSAGE_TOAST_TYPES: String {
     case removedFromGroup = "removed_from_group"
 }
 
+/// Raw values are the server's `media_type` strings. Decode sites uppercase the
+/// incoming value first, so events cached by older builds (lowercase) still read.
 enum MEDIA_TYPES: String {
-    case image = "image"
-    case video = "video"
+    case image = "IMAGE"
+    case video = "VIDEO"
 }
 
 // MARK: - Competition Formats

@@ -171,8 +171,10 @@ class Event: Codable, Identifiable, Hashable {
         
         // Decode media properties with conversion
         mediaURL = try container.decode(String.self, forKey: .mediaURL)
+        // Normalized because the raw values are the server's uppercase strings,
+        // but events archived by older builds were cached lowercase.
         let mediaTypeRawValue = try container.decode(String.self, forKey: .mediaType)
-        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.lowercased()) ?? .image
+        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.uppercased()) ?? .image
         
         title = try container.decode(String.self, forKey: .title)
         body = try container.decode(String.self, forKey: .body)
@@ -233,7 +235,7 @@ class Event: Codable, Identifiable, Hashable {
         try container.encode(venues, forKey: .venues)
 
         try container.encode(mediaURL, forKey: .mediaURL)
-        // Encode as lowercase string to match what the API expects
+        // The raw value is already the server's string form ("IMAGE"/"VIDEO")
         try container.encode(mediaType.rawValue, forKey: .mediaType)
 
         try container.encode(title, forKey: .title)
@@ -432,9 +434,10 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
         self.mediaURL = try container.decodeIfPresent(String.self, forKey: .mediaURL)
         
-        // Decode mediaType — API sends uppercase (e.g. "IMAGE")
+        // Decode mediaType — API sends uppercase (e.g. "IMAGE"); older cached
+        // payloads are lowercase, so normalize before matching the raw value.
         if let mediaTypeRaw = try container.decodeIfPresent(String.self, forKey: .mediaType) {
-            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.lowercased())
+            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.uppercased())
         } else {
             self.mediaType = nil
         }
