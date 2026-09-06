@@ -371,6 +371,7 @@
 		5DBEFB542B5DD60C00FFCADA /* NewEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB532B5DD60C00FFCADA /* NewEventManager.swift */; };
 		5DBEFB5F2B65830000FFCADA /* NewPostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */; };
 		5DC0FFEE2F0000030000C0DE /* OlympsisInAppNotificationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0FFEE2F0000020000C0DE /* OlympsisInAppNotificationStyle.swift */; };
+		37070A9B717F4E23B69EDB34 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9681FE2AA58A40578F1392D3 /* Toast.swift */; };
 		5DC24B752DF7392D00DAF87F /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */; };
 		5DC468C42B9E1A4C0023353D /* BugReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C32B9E1A4C0023353D /* BugReportView.swift */; };
 		5DC468C62B9FCE7D0023353D /* ManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC468C52B9FCE7D0023353D /* ManagementService.swift */; };
@@ -972,6 +973,7 @@
 		5DBEFB5E2B65830000FFCADA /* NewPostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostManager.swift; sourceTree = "<group>"; };
 		5DBF2B832E42E34C0025B0FE /* OlympsisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlympsisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DC0FFEE2F0000020000C0DE /* OlympsisInAppNotificationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlympsisInAppNotificationStyle.swift; sourceTree = "<group>"; };
+		9681FE2AA58A40578F1392D3 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		5DC24B742DF7392D00DAF87F /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		5DC468C32B9E1A4C0023353D /* BugReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5DC468C52B9FCE7D0023353D /* ManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementService.swift; sourceTree = "<group>"; };
@@ -1276,6 +1278,7 @@
 			children = (
 				5D18BD1E2B3954C300F90777 /* NotificationCountView.swift */,
 				5DC0FFEE2F0000020000C0DE /* OlympsisInAppNotificationStyle.swift */,
+				9681FE2AA58A40578F1392D3 /* Toast.swift */,
 				5D9AA2CD3036CDC80029E2BC /* NotificationEventInvite.swift */,
 				5D9AA2D03036CDC80029E2BD /* NotificationEventReminder.swift */,
 				5D6105F8303E24B200BD10CC /* NotificationView.swift */,
@@ -2947,6 +2950,7 @@
 				5D8958F72C76DE5000AAF374 /* SquareIconButton.swift in Sources */,
 				5D18BD1F2B3954C300F90777 /* NotificationCountView.swift in Sources */,
 				5DC0FFEE2F0000030000C0DE /* OlympsisInAppNotificationStyle.swift in Sources */,
+				37070A9B717F4E23B69EDB34 /* Toast.swift in Sources */,
 				5DC733FF2B2A8B050051BE21 /* EventSkillLevelPickerView.swift in Sources */,
 				5D1D51212E298A730047B838 /* WorkoutHeartStatisticsView.swift in Sources */,
 				5D4B0A752D9757C700475A0C /* OrgListItemMedia.swift in Sources */,

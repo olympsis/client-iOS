@@ -3119,6 +3119,29 @@
         }
       }
     },
+    "new-event-error-recurrence-end": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The repeat end date must be after the event starts."
+          }
+        },
+        "es-419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La fecha de fin de la repetición debe ser posterior al inicio del evento."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La date de fin de répétition doit être postérieure au début de l'événement."
+          }
+        }
+      }
+    },
     "new-event-error-signed-out": {
       "comment": "Shown when the server rejects event creation as unauthenticated.",
       "extractionState": "manual",
