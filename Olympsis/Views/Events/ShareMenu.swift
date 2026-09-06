@@ -10,7 +10,10 @@ import SwiftUI
 struct ShareMenu: View {
     
     var event: Event
-    var venue: Venue
+    /// Optional because the event screen presents this sheet before the venue
+    /// lookup finishes — and that lookup can fail outright. Reading `venues[0]`
+    /// here is what used to crash the share button on a slow network.
+    var venue: Venue?
     
     @Binding var showToast: Bool
     @State private var showShareView: Bool = false
@@ -60,7 +63,11 @@ struct ShareMenu: View {
         }
         .presentationDragIndicator(.visible)
         .fullScreenCover(isPresented: $showShareView) {
-            EventSharingView(event: event, venue: venue, method: sharingMethod)
+            // The image templates need a venue to draw; without one there is
+            // nothing to export, so the cover simply doesn't open.
+            if let venue {
+                EventSharingView(event: event, venue: venue, method: sharingMethod)
+            }
         }
     }
 }

@@ -30,10 +30,6 @@ struct EventActionButtons: View {
     @Environment(Event.self) private var event: Event
     @Environment(SessionStore.self) private var session
 
-    private var fieldLocation: [Double] {
-        return venues[0].location.coordinates
-    }
-
     private var canCreateEvent: Bool {
         guard let user = session.user,
               let clubs = user.clubs,

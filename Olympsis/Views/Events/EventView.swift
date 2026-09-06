@@ -335,7 +335,7 @@ struct EventView: View {
             }
         }
         .sheet(isPresented: $showSharingMenu, content: {
-            ShareMenu(event: event, venue: venues[0], showToast: $showToast)
+            ShareMenu(event: event, venue: venues.first, showToast: $showToast)
                 .presentationDetents([.height(170)])
         })
         .task {
