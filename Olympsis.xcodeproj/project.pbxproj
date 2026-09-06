@@ -416,6 +416,7 @@
 		5DD751C42D602275000B0640 /* NewEventExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C32D602275000B0640 /* NewEventExternalLink.swift */; };
 		5DD751C72D603153000B0640 /* NewEventRecurringSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */; };
 		5DD7A4C32F7CC08700A8C48C /* FatalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */; };
+		0A866C581AC5436EA938ED19 /* OutageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41CE98E2D7E46568A65B98D /* OutageScreen.swift */; };
 		5DD9A212302E3F4C00E39D8D /* DevAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD9A211302E3F4C00E39D8D /* DevAuth.swift */; };
 		5DDD5E682C3E467600793FEB /* EventSharingTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */; };
 		5DDD5E6E2C41094400793FEB /* Activities.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD5E6D2C41094400793FEB /* Activities.xcstrings */; };
@@ -1037,6 +1038,7 @@
 		5DD751C32D602275000B0640 /* NewEventExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventExternalLink.swift; sourceTree = "<group>"; };
 		5DD751C62D603153000B0640 /* NewEventRecurringSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventRecurringSettings.swift; sourceTree = "<group>"; };
 		5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalScreen.swift; sourceTree = "<group>"; };
+		B41CE98E2D7E46568A65B98D /* OutageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutageScreen.swift; sourceTree = "<group>"; };
 		5DD9A211302E3F4C00E39D8D /* DevAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevAuth.swift; sourceTree = "<group>"; };
 		5DDCB96F2C4C063F00AE6C7A /* EventsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAnnotation.swift; sourceTree = "<group>"; };
 		5DDD5E672C3E467600793FEB /* EventSharingTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSharingTemplateView.swift; sourceTree = "<group>"; };
@@ -2020,6 +2022,7 @@
 				9A8FF0B228BB14BF00DE4CF8 /* ViewContainer.swift */,
 				5D67494B2A74A35A00AEC868 /* LaunchScreen.swift */,
 				5DD7A4C22F7CC08700A8C48C /* FatalScreen.swift */,
+				B41CE98E2D7E46568A65B98D /* OutageScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2927,6 +2930,7 @@
 				9AE36B1D2927390500C0C334 /* Friend.swift in Sources */,
 				9ABB1EBD29053D020050C0F0 /* SessionStore.swift in Sources */,
 				5DD7A4C32F7CC08700A8C48C /* FatalScreen.swift in Sources */,
+				0A866C581AC5436EA938ED19 /* OutageScreen.swift in Sources */,
 				9A8162A1296678890042F0A6 /* RoomTemplateView.swift in Sources */,
 				5D86CD1A2F8C6503003C1857 /* BasicButtonLabel.swift in Sources */,
 				5DF5ECB52FF6D74A0032C63B /* CircularButton.swift in Sources */,

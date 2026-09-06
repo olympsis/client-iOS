@@ -55,7 +55,10 @@ struct ViewContainer: View {
             // Check-In Task
             group.addTask {
                 await session.checkIn()
-                guard await session.user != nil else {
+                // An outage already explains itself on its own screen; signing
+                // the user out on top of that would lose their session for what
+                // is usually a dropped connection.
+                guard await session.user != nil || session.outage != nil else {
                     await session.logout()
                     return
                 }
@@ -183,6 +186,11 @@ struct ViewContainer: View {
 
             // Fetch fresh user data and notifications from the server.
             await initializeUpCheckInTasks()
+
+            // Nothing below is worth doing while an outage screen is taking
+            // over — the calls would fail the same way. Clearing the outage
+            // remounts this view and runs the task again from the top.
+            guard session.outage == nil else { return }
 
             // Once check-in has supplied the user's filters and fallback
             // hometown, fetch events and venues together.

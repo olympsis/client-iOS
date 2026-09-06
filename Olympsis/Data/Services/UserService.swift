@@ -94,17 +94,11 @@ class UserService: APIService {
 
     /// GET /v1/users/check-in
     ///
-    /// nil on any non-200 status. The 401 branch is split out but behaves
-    /// identically to the default case today — needs something smarter in
-    /// the future.
-    func checkIn() async throws -> CheckIn? {
-        let (data, statusCode) = try await requestRaw(.GET, Endpoint("/v1/users/check-in"))
-        guard statusCode == 200 else {
-            if statusCode == 401 {
-                return nil // needs something smarter in the future
-            }
-            return nil
-        }
-        return try decoder.decode(CheckIn.self, from: data)
+    /// Throws rather than returning nil so the caller can tell the failures
+    /// apart: a 401 means the session is genuinely gone, while a 5xx or a
+    /// transport error means the app should say so and offer a retry instead
+    /// of signing the user out.
+    func checkIn() async throws -> CheckIn {
+        return try await request(.GET, Endpoint("/v1/users/check-in"))
     }
 }

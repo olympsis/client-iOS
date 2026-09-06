@@ -8,6 +8,7 @@
 import os
 import OSLog
 import MapKit
+import Hermes
 import SwiftUI
 import Foundation
 import FirebaseAuth
@@ -21,7 +22,14 @@ class SessionStore {
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
     var state: LOADING_STATE = .loading
-    
+
+    /// Set when a launch-critical call fails in a way the user can retry.
+    /// `OlympsisApp` shows `OutageScreen` for as long as this is non-nil.
+    var outage: LAUNCH_OUTAGE?
+
+    /// Drives the retry button on that screen.
+    var outageRetryState: LOADING_STATE = .pending
+
     var clubsState: LOADING_STATE = .pending
     
     var user: User?              // User data Cache
@@ -116,6 +124,7 @@ class SessionStore {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
 
     
+    private var hasAuthListener = false
     private let secureStore = SecureStore()
     private var isRegisterComplete: Bool {
         
@@ -132,19 +141,68 @@ class SessionStore {
     init() {
         authStatus = .unknown
         user = cacheService.fetchUser()
-        
+
         Task {
-            do {
-                let config = try await managementService.config()
-                tags = config.tags
-                sports = config.sports
-            } catch {
+            await bootstrapConfig()
+        }
+    }
+
+    /// Fetches the tags/sports the whole app is configured from.
+    /// Throws so both the launch path and the retry button can react.
+    private func loadConfig() async throws {
+        let config = try await managementService.config()
+        tags = config.tags
+        sports = config.sports
+    }
+
+    /// Launch-time config fetch.
+    ///
+    /// A failure we can name (offline, server down) becomes an outage the user
+    /// can retry. Anything else — a payload that won't decode, say — is still
+    /// the dead end `FatalScreen` exists for, because retrying won't fix it.
+    private func bootstrapConfig() async {
+        do {
+            try await loadConfig()
+        } catch {
+            if let outage = LAUNCH_OUTAGE.classify(error) {
+                self.outage = outage
+            } else {
                 self.authStatus = .fatal_error
             }
         }
     }
+
+    /// Retries whatever failed at launch, from `OutageScreen`.
+    ///
+    /// The outage is only cleared once the work actually succeeds, so the app
+    /// doesn't flash the main UI and bounce straight back to this screen.
+    func retryAfterOutage() async {
+        guard outageRetryState != .loading else { return }
+        outageRetryState = .loading
+
+        do {
+            if tags.isEmpty || sports.isEmpty {
+                try await loadConfig()
+            }
+            if authStatus == .authenticated {
+                try await performCheckIn()
+            }
+            outageRetryState = .pending
+            outage = nil
+        } catch {
+            outage = LAUNCH_OUTAGE.classify(error) ?? outage
+            outageRetryState = .failure
+            try? await Task.sleep(for: .seconds(1))
+            outageRetryState = .pending
+        }
+    }
     
     func listenToAuthStateChanges() {
+        // LaunchScreen can be mounted more than once (a retry sends the app back
+        // through it), and each registration would fire on every future change.
+        guard !hasAuthListener else { return }
+        hasAuthListener = true
+
         #if DEV
         // In local development we skip Firebase auth entirely. The user is picked in
         // DevAuth and stored in DevUserStore; that ID is what gets sent as the UserID
@@ -255,14 +313,49 @@ class SessionStore {
     }
     
     func checkIn() async {
-        
+        do {
+            try await performCheckIn()
+        } catch let DecodingError.dataCorrupted(context) {
+            #if DEBUG
+            print(context)
+            #endif
+        } catch let DecodingError.keyNotFound(key, context) {
+            #if DEBUG
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch let DecodingError.valueNotFound(value, context) {
+            #if DEBUG
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch let DecodingError.typeMismatch(type, context) {
+            #if DEBUG
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch APIServiceError.unauthorized {
+            // The token itself was rejected, so this really is a signed-out user.
+            authStatus = .unauthenticated
+        } catch {
+            // Everything else — no network, a 5xx — is an outage, not a sign-out.
+            // Dropping the session here is what used to strand an offline user on
+            // the sign-in screen with the Apple button disabled.
+            if let outage = LAUNCH_OUTAGE.classify(error) {
+                self.outage = outage
+            }
+            log.error("Failed to check user in: \(error.localizedDescription)")
+        }
+    }
+
+    /// The check-in itself. Throws so the caller decides what a failure means.
+    private func performCheckIn() async throws {
+
         clubs = []
         orgs = []
-        
+
         do {
-            guard let resp = try await userService.checkIn() else {
-                return
-            }
+            let resp = try await userService.checkIn()
             if let usr = resp.user {
                 _ = cacheService.fetchUser()
                 user = usr
@@ -290,28 +383,6 @@ class SessionStore {
             
             groupsManager.restore()
             authStatus = .authenticated
-        } catch let DecodingError.dataCorrupted(context) {
-            #if DEBUG
-            print(context)
-            #endif
-        } catch let DecodingError.keyNotFound(key, context) {
-            #if DEBUG
-            print("Key '\(key)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch let DecodingError.valueNotFound(value, context) {
-            #if DEBUG
-            print("Value '\(value)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch let DecodingError.typeMismatch(type, context)  {
-            #if DEBUG
-            print("Type '\(type)' mismatch:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch {
-            authStatus = .unauthenticated
-            log.error("Failed to check user in: \(error.localizedDescription)")
         }
     }
     
@@ -771,5 +842,52 @@ class SessionStore {
             log.error("Failed to delete user account: \(error)")
         }
         return false
+    }
+}
+
+// MARK: - Outage classification
+
+extension LAUNCH_OUTAGE {
+
+    /// Decides whether a thrown error is something the user can retry, and which
+    /// page describes it.
+    ///
+    /// Returning nil means "not an outage" — the caller keeps its existing
+    /// handling, so a decoding bug or a rejected token behaves as it always did.
+    ///
+    /// The split is by cause, not by layer: anything that means the request
+    /// never reached a server is `.offline`, and anything that means a server
+    /// answered badly (or refused the connection outright) is `.serverDown`.
+    static func classify(_ error: Error) -> LAUNCH_OUTAGE? {
+        switch error {
+        case NetworkError.notConnectedToInternet, NetworkError.timedOut:
+            return .offline
+        case NetworkError.cannotConnectToHost:
+            // The host resolved and nothing answered — that's the server, not us.
+            return .serverDown
+        case NetworkError.unknown(let underlying):
+            return classify(underlying)
+        case APIServiceError.serverError:
+            // 500 from the status check, anything above it from Hermes.
+            return .serverDown
+        case let urlError as URLError:
+            switch urlError.code {
+            case .notConnectedToInternet, .timedOut, .networkConnectionLost, .dataNotAllowed:
+                return .offline
+            case .cannotConnectToHost, .cannotFindHost, .badServerResponse:
+                return .serverDown
+            default:
+                return nil
+            }
+        default:
+            // Firebase raises this when refreshing an expired token offline,
+            // which is how an offline launch fails before it ever makes a
+            // request of ours. 17020 is AuthErrorCode.networkError.
+            let nsError = error as NSError
+            if nsError.domain == AuthErrorDomain && nsError.code == 17020 {
+                return .offline
+            }
+            return nil
+        }
     }
 }

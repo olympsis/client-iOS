@@ -27,6 +27,19 @@ enum AUTH_STATUS: String, CaseIterable {
     case fatal_error
 }
 
+/// A launch-critical call (the system config, or check-in) failed for a reason
+/// the user can act on, so the app shows a page about it instead of continuing.
+///
+/// This is deliberately separate from `AUTH_STATUS.fatal_error`: an outage is
+/// retryable and says something specific, while a fatal error is the dead end we
+/// can't explain. Nothing persists it — a relaunch should try again.
+enum LAUNCH_OUTAGE: String {
+    /// The device has no usable network.
+    case offline
+    /// The network is fine; Olympsis isn't answering (5xx, or nothing listening).
+    case serverDown
+}
+
 enum CONNECTION_STATE {
     case disconnected
     case connecting
