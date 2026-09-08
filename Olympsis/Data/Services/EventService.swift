@@ -182,7 +182,12 @@ class EventService: APIService {
 
     // MARK: - Participants
 
-    /// POST /v1/events/{id}/participants — registers an RSVP.
+    /// PUT /v1/events/{id}/participants — registers an RSVP.
+    ///
+    /// PUT, not POST: the call is idempotent — a user who already has a row
+    /// gets that row back rather than a duplicate — so a retry after a dropped
+    /// response is safe. The server still serves the same handler on POST, but
+    /// that method is deprecated; don't reintroduce it here.
     ///
     /// Returns the row the server actually wrote, not the one we asked for: an
     /// RSVP to a full event is stored as WAITLIST, and the pill has to say so.
@@ -191,7 +196,7 @@ class EventService: APIService {
     func addParticipant(id: String, dao: ParticipantDao) async throws -> ParticipantResponse {
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
         do {
-            let (data, statusCode) = try await requestRaw(.POST, endpoint, body: EncodeToData(dao))
+            let (data, statusCode) = try await requestRaw(.PUT, endpoint, body: EncodeToData(dao))
             guard statusCode == 200 else {
                 // A 409 here means the event takes team RSVPs, which is worth
                 // telling the user rather than collapsing into "try again".

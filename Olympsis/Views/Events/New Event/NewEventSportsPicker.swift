@@ -25,32 +25,37 @@ struct NewEventSportsPicker: View {
                         Text(sport.name.prefix(1).uppercased() + sport.name.dropFirst())
                             .padding()
                             .background {
-                                RoundedRectangle(cornerRadius: 26)
+                                Capsule()
                                     .foregroundStyle(Color.Background.tertiary)
                                     .overlay {
-                                        RoundedRectangle(cornerRadius: 26)
+                                        Capsule()
                                             .stroke(Color.border)
                                     }
                             }
+                            .clipShape(Capsule())
                     }
                 }
                 Button(action: { showSports.toggle() }) {
                     Image(systemName: "plus")
                         .foregroundStyle(.primary)
                 }.background {
-                    RoundedRectangle(cornerRadius: 26)
+                    Circle()
                         .frame(width: 50, height: 50)
                         .foregroundStyle(Color.Background.tertiary)
+                        .overlay {
+                            Circle()
+                                .stroke(Color.border)
+                        }
                 }
-                .padding(.trailing, 10)
+                .padding(.trailing, 15)
             }
             .padding(10)
-            .frame(minHeight: 60)
+            .frame(height: 67)
             .background {
-                RoundedRectangle(cornerRadius: 26)
+                Capsule()
                     .foregroundStyle(Color.Background.secondary)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 26)
+                        Capsule()
                             .stroke(Color.border)
                     }
             }
@@ -77,4 +82,5 @@ struct NewEventSportsPicker: View {
 
 #Preview {
     NewEventSportsPicker(sports: SPORTS_TEMP, selectedSports: .constant([SPORTS_TEMP[0]]))
+        .padding(.horizontal)
 }
