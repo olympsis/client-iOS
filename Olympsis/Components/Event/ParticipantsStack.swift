@@ -47,6 +47,11 @@ struct ParticipantsStack: View {
     /// values tighten the stack.
     var overlap: CGFloat = 12
 
+    /// Gap between the last avatar and the "+n" badge. Fixed rather than a
+    /// `Spacer`, so the stack hugs its content instead of stretching to fill
+    /// its container (both call sites place it in a full-width `.overlay`).
+    var badgeSpacing: CGFloat = 4
+
     /// The participants actually drawn as avatars.
     private var visible: [Participant] {
         Array(participants.prefix(maxVisible))
@@ -58,11 +63,11 @@ struct ParticipantsStack: View {
     }
 
     var body: some View {
-        // Outer HStack: the overlapping avatar stack on the leading side,
-        // a Spacer, then the "+n" badge pinned to the trailing edge. The
-        // Spacer is what keeps the overflow badge "aligned to the right and
-        // not overlapped" — it never tucks under the avatars.
-        HStack(spacing: 0) {
+        // Outer HStack: the overlapping avatar stack, then the "+n" badge
+        // separated by a fixed `badgeSpacing`. The fixed gap is what keeps
+        // the badge clear of the avatars (it never tucks under them) while
+        // letting the whole row size to its content.
+        HStack(spacing: badgeSpacing) {
             // Negative spacing pulls each avatar under the previous one. We
             // reverse the z-order so the leading avatar sits on top — the
             // conventional "stacked" look.
@@ -86,8 +91,6 @@ struct ParticipantsStack: View {
             // Only the real, visible stack gets a trailing overflow count —
             // when participants are hidden there's nothing to count up to.
             if canShowParticipants && overflow > 0 {
-                Spacer(minLength: overlap)
-
                 overflowBadge
             }
         }
