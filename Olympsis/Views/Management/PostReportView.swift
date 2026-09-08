@@ -14,7 +14,7 @@ struct PostReportView: View {
     @State private var notes: String = ""
     @State private var showProblems: Bool = false
     @State private var state: LOADING_STATE = .pending
-    @StateObject private var managementObserver = ManagementObserver()
+    private let managementObserver = ManagementService()
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var post: Post

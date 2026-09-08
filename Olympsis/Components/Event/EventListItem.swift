@@ -142,7 +142,7 @@ struct EventListItem: View {
         scale == .regular ? 7 : 12
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private var participantsCapsule: some View {
         HStack {
             Image(systemName: "person.2.fill")
@@ -167,7 +167,7 @@ struct EventListItem: View {
         }
     }
 
-    @ContentBuilder
+    @ViewBuilder
     private var cardContent: some View {
         KFImage(imageURL)
                 .placeholder {
@@ -376,6 +376,7 @@ struct EventListItem: View {
             }
         }
         .modifier(ZoomTransitionSourceModifier(id: event.id, namespace: namespace))
+        .accessibilityIdentifier("event-list-item-\(event.id)")
     }
 }
 

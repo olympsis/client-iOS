@@ -28,7 +28,12 @@ class NewEventManager {
     var poster: UserSnippet?
     var organizers: [GroupSelection]
     var sponsors: [Sponsor]
-    
+
+    // Invitees — users selected to be invited to the event. We hold full
+    // `UserSnippet`s here so the UI can render names/avatars; on submission we
+    // map these down to their user IDs for `NewEventDao.invitees`.
+    var invitees: [UserSnippet]
+
     // Timestamps
     var startDate: Date
     var endDate: Date
@@ -44,6 +49,26 @@ class NewEventManager {
         dateFormatter.dateFormat = "MMMM dd, yyyy - hh:mm a"
         return dateFormatter.string(from: endDate)
     }
+
+    // Date-only string for the time card pills (e.g. "Jun 30, 2026")
+    var startDayString: String { NewEventManager.dayFormatter.string(from: startDate) }
+    var endDayString: String { NewEventManager.dayFormatter.string(from: endDate) }
+
+    // Time-only string for the time card pills (e.g. "7:00 PM")
+    var startTimeString: String { NewEventManager.timeFormatter.string(from: startDate) }
+    var endTimeString: String { NewEventManager.timeFormatter.string(from: endDate) }
+
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter
+    }()
+
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        return formatter
+    }()
     
     // Location(s)
     var selectedVenues = [Venue]()
@@ -102,8 +127,8 @@ class NewEventManager {
         geocodeCache.removeAll()
     }
 
-    private var eventObserver = EventObserver()
-    private var uploadObserver = UploadObserver()
+    private var eventService = EventService()
+    private var uploadService = UploadService()
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_event_manager")
     
     init(
@@ -117,6 +142,7 @@ class NewEventManager {
         self.selectedVenues = venues
         self.organizers = organizers
         self.sponsors = []
+        self.invitees = []
         
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(60 * 60 * 24)
@@ -163,51 +189,72 @@ class NewEventManager {
     ///
     /// - Returns an optional `NEW_EVENT_ERROR` to let us know what went wrong
     func validateEvent(value: ScrollViewProxy) -> NEW_EVENT_ERROR? {
+        let failure = validationError()
+
+        Task { @MainActor in
+            // Everything passed, so drop any tint left over from an earlier
+            // attempt. Nothing else ever cleared this, so a field that went red
+            // once stayed red for the life of the sheet.
+            validationStatus = failure
+            guard let failure, let target = NewEventManager.scrollTarget(for: failure) else { return }
+            withAnimation {
+                value.scrollTo(target)
+            }
+        }
+
+        return failure
+    }
+
+    /// The first validation problem with the event, or `nil` when it's ready to
+    /// submit. Split out of `validateEvent` so the rules can be exercised
+    /// without a `ScrollViewProxy`, which only exists inside a rendered
+    /// `ScrollViewReader`.
+    func validationError() -> NEW_EVENT_ERROR? {
         // make sure we have a title
         guard !title.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noTitle
-                withAnimation {
-                    value.scrollTo(1)
-                }
-            }
             return .noTitle
         }
-        
+
         // make sure end date is greater than start
         guard endDate > startDate else {
-            Task { @MainActor in
-                validationStatus = .unexpected
-                withAnimation {
-                    value.scrollTo(3)
-                }
-            }
             return .unexpected
         }
-        
+
         // make sure we have a description
         guard !body.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noDescription
-                withAnimation {
-                    value.scrollTo(4)
-                }
-            }
             return .noDescription
         }
-        
+
         // make sure we have selected venues
         guard !selectedVenueDescriptors.isEmpty else {
-            Task { @MainActor in
-                validationStatus = .noSelectedField
-                withAnimation {
-                    value.scrollTo(5)
-                }
-            }
             return .noSelectedField
         }
-        
+
+        // A repeat that ends before the event starts produces no occurrences at
+        // all, and the server would accept it silently.
+        if let recurrence = recurrenceOptions, recurrence.endTime <= startDate {
+            return .badRecurrence
+        }
+
         return nil
+    }
+
+    /// The `.id(...)` of the field to scroll to for a given failure. Kept beside
+    /// the rules so the two can't drift; the ids live in `NewEvent`'s body.
+    private static func scrollTarget(for failure: NEW_EVENT_ERROR) -> Int? {
+        switch failure {
+        case .noTitle:
+            return 1
+        case .unexpected:
+            return 3
+        case .noDescription:
+            return 4
+        case .noSelectedField:
+            return 5
+        case .badRecurrence:
+            // The repeat settings live behind the advanced-settings button.
+            return 6
+        }
     }
     
     /// Triggers the create event action
@@ -217,8 +264,12 @@ class NewEventManager {
         }
         
         if let data = selectedImageData {
+            // Throws rather than returning nil: a nil return is indistinguishable
+            // from every other nil at the call site, so an upload failure used to
+            // reach the user as a one-second red button and nothing else.
             guard let resp = await uploadImage(data: data) else {
-                return nil
+                status = .pending
+                throw MediaUploadError.unexpected("failed to upload image")
             }
             if resp.score > 4 {
                 status = .pending
@@ -234,20 +285,19 @@ class NewEventManager {
             }
             dto.event.mediaURL = url.replacingOccurrences(of: "olympsis-", with: "")
             
-            guard let id = await eventObserver.createEvent(dao: dto) else {
+            do {
+                return try await eventService.createEvent(dao: dto)
+            } catch {
+                // The upload succeeded but the event did not, so the image is
+                // orphaned in the bucket — clean it up, then let the original
+                // error through so the view can say what actually went wrong.
                 if let img = dto.event.mediaURL {
                     await deleteImage(image: img)
                 }
-                throw NewEventError.serverError(message: "Failed to create event.")
+                throw error
             }
-            
-            return id
         } else {
-            guard let id = await eventObserver.createEvent(dao: dto) else {
-                throw NewEventError.unknown(message: "Failed to create event.")
-            }
-            
-            return id
+            return try await eventService.createEvent(dao: dto)
         }
     }
     
@@ -296,6 +346,7 @@ class NewEventManager {
             venues: self.selectedVenueDescriptors,
             mediaURL: self.image,
             mediaType: .image,
+            type: self.type,
             title: self.title,
             body: self.body,
             tags: self.selectedTags.map { $0.name },
@@ -315,7 +366,10 @@ class NewEventManager {
             externalLinks: self.externalLinks.isEmpty ? nil : self.externalLinks
         )
         
-        return NewEventDao(event: event, includeHost: true, recurrence: recurrenceOptions)
+        // Map selected invitee snippets down to their user IDs for the DTO.
+        let inviteeIDs = self.invitees.compactMap { $0.userID }
+
+        return NewEventDao(event: event, includeHost: true, invitees: inviteeIDs, recurrence: recurrenceOptions)
     }
     
     /// Handles uploading an image to a bucket
@@ -335,7 +389,7 @@ class NewEventManager {
             return nil
         }
         
-        guard let response = await uploadObserver.UploadImage(location: "/olympsis-event-images", fileName: imageId, data: d) else {
+        guard let response = await uploadService.UploadImage(location: "/olympsis-event-images", fileName: imageId, data: d) else {
             log.error("Failed to upload image: \(imageId)")
             return nil
         }
@@ -345,7 +399,7 @@ class NewEventManager {
     /// Handles deleting an image from a bucket
     /// - Parameters image: The string of the image's url
     func deleteImage(image: String) async {
-        let resp = await uploadObserver.DeleteObject(path: "/olympsis-event-images", name: GrabImageIdFromURL(image))
+        let resp = await uploadService.DeleteObject(path: "/olympsis-event-images", name: GrabImageIdFromURL(image))
         if !resp {
             log.error("Failed to delete image: \(image)")
         }

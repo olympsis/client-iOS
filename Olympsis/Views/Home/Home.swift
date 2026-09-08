@@ -24,6 +24,14 @@ struct Home: View {
         return LocationManager.shared.isAuthorized
     }
     
+    private var nextEvents: [Event] {
+        guard let user = session.user,
+              let userID = user.userID else {
+            return []
+        }
+        return Array(session.events).rsvpedEvents(userID: userID)
+    }
+    
     private let log = Logger(subsystem: "com.olympsis.client", category: "home_view")
     
     var body: some View {
@@ -57,34 +65,41 @@ struct Home: View {
                 NearbyVenues()
                     .environment(session)
                 
-                Spacer(minLength: 100)
+                Spacer(minLength: 120)
                 
             }
             .disabled(session.state == .loading)
             .redacted(reason: session.state == .loading ? .placeholder : [])
+            .background(Color.Background.primary.ignoresSafeArea())
             .toolbar {
                 if #available(iOS 26.0, *) {
                     ToolbarItem(placement: .topBarLeading) {
                         Text("Olympsis")
                             .fixedSize()
-                            .textCase(.uppercase)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                     }.sharedBackgroundVisibility(.hidden)
                 } else {
                     ToolbarItem(placement: .topBarLeading) {
                         Text("Olympsis")
                             .fixedSize()
-                            .textCase(.uppercase)
-                            .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
+                            .italic()
+                            .font(.custom("Archivo-Black", size: 25, relativeTo: .largeTitle))
                     }
                 }
                 
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    if !hasLocation {
+                if !hasLocation {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { self.showRequestLocation.toggle() }) {
                             Image(systemName: "location.slash")
                                 .foregroundStyle(.gray)
                         }
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action: { router.navigate(to: .upNextEvents(nextEvents))}) {
+                        Image(systemName: "calendar")
                     }
 // DISABLED FOR NOW
 //                    Button(action: { router.navigate(to: .messages) }) {
@@ -106,8 +121,8 @@ struct Home: View {
                             Image(systemName: "bell")
                                 .foregroundStyle(Color.Foreground.default)
                                 
-                            if session.notifications.contains(where: { !$0.isRead }) {
-                                NotificationCountView(value: session.notifications.count(where: { !$0.isRead }))
+                            if session.unreadNotificationCount > 0 {
+                                NotificationCountView(value: session.unreadNotificationCount)
                             }
                         }
                     }
@@ -128,6 +143,13 @@ struct Home: View {
                         .environment(session)
                         .navigationBarBackButtonHidden()
                     
+                case .archivedNotifications:
+                    ArchivedNotificationsView()
+                        .id(HOME_ROUTES.archivedNotifications)
+                        .environment(router)
+                        .environment(session)
+                        .navigationBarBackButtonHidden()
+
                 case .messages:
                     HomeMessagesView()
                         .id(HOME_ROUTES.messages)
@@ -140,6 +162,10 @@ struct Home: View {
                         .id(HOME_ROUTES.full_post_view(id))
                         .environment(session)
                         .navigationBarBackButtonHidden()
+                case .upNextEvents(let events):
+                    UpNextEvents(events: events)
+                        .id(HOME_ROUTES.upNextEvents(events))
+                        .environment(session)
                 }
             })
             .fullScreenCover(isPresented: $showRequestLocation, onDismiss: {

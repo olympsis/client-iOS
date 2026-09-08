@@ -73,6 +73,9 @@ struct AuthUserInfo: View {
      */
     private func handleFailure() {
         state = .failure
+        // The red button alone says something broke but not what to do about
+        // it, and it's gone in a second either way.
+        Toast.error(String(localized: "auth-save-failed", defaultValue: "Couldn't save your info. Check your connection and try again.", table: "Onboarding"))
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.state = .pending
         }
@@ -133,7 +136,7 @@ struct AuthUserInfo: View {
                 if needsEmail {
                     authDao.email = email.trimmingCharacters(in: .whitespacesAndNewlines)
                 }
-                _ = try? await session.authObserver.updateUser(authDao)
+                _ = try? await session.authService.updateUser(authDao)
             }
             
             // Update user data
@@ -146,7 +149,7 @@ struct AuthUserInfo: View {
                 .trimmingCharacters(in: .illegalCharacters)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             
-            guard let user = await session.userObserver.updateUserData(update: dao) else {
+            guard let user = await session.userService.updateUserData(update: dao) else {
                 handleFailure()
                 return
             }
@@ -161,6 +164,40 @@ struct AuthUserInfo: View {
         }
     }
     
+    /// Fills the form from the profile the server already returned at login.
+    ///
+    /// Only reached when signup was interrupted: `AuthService.login` caches the
+    /// user, so asking again for a name or username it already holds is just a
+    /// worse version of showing it. Email is the exception — it lives on the
+    /// auth record and isn't part of the login payload, so it stays typed.
+    @MainActor
+    private func prefillFromCachedUser() {
+        guard let cached = session.user ?? cacheService.fetchUser() else {
+            return
+        }
+
+        if firstName.isEmpty, let value = cached.firstName, !value.isEmpty {
+            firstName = value
+        }
+        if lastName.isEmpty, let value = cached.lastName, !value.isEmpty {
+            lastName = value
+        }
+        if selectedGender == nil, let gender = cached.gender {
+            selectedGender = gender
+        }
+        if let date = cached.birthdate {
+            birthdate = date
+        }
+        // Seeding the field runs the usual availability check, which now
+        // reports the user's own name as free (the server excludes the caller).
+        if viewModel.searchText.isEmpty,
+           let username = cached.username,
+           !username.isEmpty,
+           !cached.hasPlaceholderUsername {
+            viewModel.searchText = username
+        }
+    }
+
     @MainActor
     func validateInput(_ input: String) -> Bool {
         let regex = "^[a-zA-Z0-9]{5,15}$"
@@ -193,7 +230,7 @@ struct AuthUserInfo: View {
                 return false
             }
             
-            let available = try await self.session.userObserver.usernameAvailability(name: viewModel.debouncedSearchText)
+            let available = try await self.session.userService.usernameAvailability(name: viewModel.debouncedSearchText)
             guard available == true else {
                 handleUsernameStatus(.unavailable)
                 return false
@@ -394,6 +431,9 @@ struct AuthUserInfo: View {
                 
                 Spacer()
             }
+        }
+        .onAppear {
+            prefillFromCachedUser()
         }
     }
 }

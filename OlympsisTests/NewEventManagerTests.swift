@@ -334,6 +334,55 @@ struct NewEventTeamsConfigTest {
     }
 }
 
+// MARK: - Validation
+struct NewEventValidationTests {
+    let manager = NewEventManager()
+
+    // Set up an event that passes every rule, so each test only has to break
+    // the one thing it is about.
+    init() {
+        manager.title = "Test event title"
+        manager.body = "Test event body"
+        manager.image = "test-image-url"
+        manager.sports = [Sport(name: "soccer", images: [])]
+        manager.organizers = [GroupSelection(type: .Club)]
+        manager.selectedVenueDescriptors = [VenueDescriptor(name: "test-venue", city: "test-city", state: "test-state", country: "test-country")]
+        manager.startDate = Date()
+        manager.endDate = Date().addingTimeInterval(60 * 60)
+    }
+
+    @Test
+    func testValidEventHasNoError() {
+        #expect(manager.validationError() == nil)
+    }
+
+    @Test
+    func testRecurrenceEndingBeforeStartIsRejected() {
+        manager.recurrenceOptions = .init(
+            pattern: .weekly,
+            endTime: manager.startDate.addingTimeInterval(-60),
+            interval: 1
+        )
+        #expect(manager.validationError() == .badRecurrence)
+    }
+
+    @Test
+    func testRecurrenceEndingAfterStartIsAccepted() {
+        manager.recurrenceOptions = .init(
+            pattern: .weekly,
+            endTime: manager.startDate.addingTimeInterval(60 * 60 * 24 * 7),
+            interval: 1
+        )
+        #expect(manager.validationError() == nil)
+    }
+
+    @Test
+    func testNoRecurrenceIsAccepted() {
+        manager.recurrenceOptions = nil
+        #expect(manager.validationError() == nil)
+    }
+}
+
 // MARK: - NewEvent Dao
 struct NewEventDaoTests {
     let manager = NewEventManager()
@@ -348,6 +397,45 @@ struct NewEventDaoTests {
         manager.selectedVenueDescriptors = [VenueDescriptor(name: "test-venue", city: "test-city", state: "test-state", country: "test-country")]
     }
     
+    @Test
+    func testEventTypeIsSentAsTheServerString() {
+        manager.type = .Class
+        let dto = manager.generateEventDTO()
+
+        guard let data = EncodeToData(dto) else {
+            Issue.record("Failed to encode event dto to data")
+            return
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let event = json?["event"] as? [String: Any]
+
+            #expect(event?["type"] as? String == "CLASS")
+        } catch {
+            Issue.record("Failed to parse json")
+        }
+    }
+
+    @Test
+    func testDefaultEventTypeIsRegular() {
+        let dto = manager.generateEventDTO()
+
+        guard let data = EncodeToData(dto) else {
+            Issue.record("Failed to encode event dto to data")
+            return
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let event = json?["event"] as? [String: Any]
+
+            #expect(event?["type"] as? String == "REGULAR")
+        } catch {
+            Issue.record("Failed to parse json")
+        }
+    }
+
     @Test
     func testIncludeHostOption() {
         var dto = manager.generateEventDTO()
@@ -366,6 +454,28 @@ struct NewEventDaoTests {
         }
     }
     
+    @Test
+    func testDailyRecurrenceOption() {
+        let timestamp = Date()
+        manager.recurrenceOptions = .init(pattern: .daily, endTime: timestamp, interval: 3)
+        let dto = manager.generateEventDTO()
+
+        guard let data = EncodeToData(dto) else {
+            Issue.record("Failed to encode event dto to data")
+            return
+        }
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let config = json?["recurrence"] as? [String: Any]
+
+            #expect(config?["pattern"] as! String == "DAILY")
+            #expect(config?["interval"] as! Int == 3)
+        } catch {
+            Issue.record("Failed to parse json")
+        }
+    }
+
     @Test
     func testMonthlyRecurrenceOption() {
         let timestamp = Date()

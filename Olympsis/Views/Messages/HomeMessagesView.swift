@@ -21,6 +21,7 @@ struct HomeMessagesView: View {
                 }
             }
         }
+        .background(Color.Background.primary.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

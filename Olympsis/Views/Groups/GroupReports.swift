@@ -16,7 +16,7 @@ struct GroupReports: View {
     @State private var postReports: [PostReport] = []
     @State private var eventReports: [EventReport] = []
     @State private var memberReports: [MemberReport] = []
-    @StateObject private var manager: ManagementObserver = ManagementObserver()
+    private let manager: ManagementService = ManagementService()
     @Environment(SessionStore.self) private var session
     @Environment(\.dismiss) private var dismiss
     

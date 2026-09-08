@@ -15,7 +15,7 @@ struct PostMenu: View {
     @State private var showReport: Bool = false
     @State private var showBlocking: Bool = false
     
-    @StateObject private var uploadObserver = UploadObserver()
+    private let uploadService = UploadService()
     
     @EnvironmentObject private var post: Post
     @Environment(SessionStore.self) private var session
@@ -82,7 +82,7 @@ struct PostMenu: View {
             guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.pinPost(id: club.id, postId: post.id)
+            let resp = await session.clubService.pinPost(id: club.id, postId: post.id)
             if resp {
                 club.pinnedPosts.append(post.id)
                 pinned = true
@@ -92,7 +92,7 @@ struct PostMenu: View {
             guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.pinPost(id: org.id, postId: post.id)
+            let resp = await session.orgService.pinPost(id: org.id, postId: post.id)
             if resp {
                 org.pinnedPosts.append(post.id)
                 pinned = true
@@ -109,7 +109,7 @@ struct PostMenu: View {
             guard let club = selectedGroup.club else {
                 return
             }
-            let resp = await session.clubObserver.unPinPost(id: club.id)
+            let resp = await session.clubService.unPinPost(id: club.id)
             if resp {
                 club.pinnedPosts.removeAll(where: { $0 == club.id})
                 pinned = false
@@ -119,7 +119,7 @@ struct PostMenu: View {
             guard let org = selectedGroup.organization else {
                 return
             }
-            let resp = await session.orgObserver.unPinPost(id: org.id)
+            let resp = await session.orgService.unPinPost(id: org.id)
             if resp {
                 org.pinnedPosts.removeAll(where: { $0 == org.id })
                 pinned = false
@@ -134,14 +134,14 @@ struct PostMenu: View {
         
         if selectedGroup.type == .Club {
             guard let clubID = selectedGroup.club?.id,
-                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
+                  await session.postService.deletePost(postID: post.id) else {
                 return
             }
 
             if let images = post.images {
                 // delete images
                 for image in images {
-                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                    let _ = await uploadService.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
 
@@ -150,14 +150,14 @@ struct PostMenu: View {
             dismiss()
         } else {
             guard let orgID = selectedGroup.organization?.id,
-                  await session.postObserver?.deletePost(postID: post.id) ?? false else {
+                  await session.postService.deletePost(postID: post.id) else {
                 return
             }
             
             if let images = post.images {
                 // delete images
                 for image in images {
-                    let _ = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+                    let _ = await uploadService.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
                 }
             }
             

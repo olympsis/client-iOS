@@ -8,6 +8,7 @@
 import os
 import OSLog
 import MapKit
+import Hermes
 import SwiftUI
 import Foundation
 import FirebaseAuth
@@ -21,7 +22,14 @@ class SessionStore {
     /// A global state variable for the whole app.
     /// If the user data isn't loaded in or we haven't completed the data loading, the whole app should be on a loading state together
     var state: LOADING_STATE = .loading
-    
+
+    /// Set when a launch-critical call fails in a way the user can retry.
+    /// `OlympsisApp` shows `OutageScreen` for as long as this is non-nil.
+    var outage: LAUNCH_OUTAGE?
+
+    /// Drives the retry button on that screen.
+    var outageRetryState: LOADING_STATE = .pending
+
     var clubsState: LOADING_STATE = .pending
     
     var user: User?              // User data Cache
@@ -35,23 +43,34 @@ class SessionStore {
     var tags: [Tag] = []
     var sports: [Sport] = []
     
-    var venues = [Venue]()           // Venues Cache
-    var hotEvents = [Event]()        // Hot Events Cache
-    var invitations = [Invitation]() // Invitations Cache
-    var notifications = [NotificationItem]()
+    var venues = [Venue]()
+    var hotEvents = [Event]()
+
+    /// Pending invites from invite-service, seeded by check-in and refreshed by
+    /// `refreshInvites()`.
+    var invitations = [InviteResponse]()
+
+    /// Organization invitations the user has *sent*, in the legacy `Invitation`
+    /// shape. Separate from `invitations` above: different model, different
+    /// direction, different backing service.
+    var orgInvitations = [Invitation]()
+
+    var announcements = [Announcement]()
+    var notifications = [NotificationModel]()
+    
     
     // Observers
-    var authObserver = AuthObserver()
-    var feedObserver = FeedObserver()
+    var authService = AuthService()
     var cacheService = CacheService()
-    var userObserver = UserObserver()
-    var clubObserver = ClubObserver()
-    var orgObserver = OrgObserver()
-    var postObserver: PostObserver?
-    var fieldObserver = VenueObserver()
-    var eventObserver = EventObserver()
+    var userService = UserService()
+    var clubService = ClubService()
+    var orgService = OrgService()
+    var postService = PostService()
+    var venueService = VenueService()
+    var eventService = EventService()
+    var inviteService = InviteService()
     var workoutManager = WorkoutManager()
-    var managementObserver = ManagementObserver()
+    var managementService = ManagementService()
     var notificationService = NotificationService()
     
     var groupsManager = GroupsManager()
@@ -68,6 +87,11 @@ class SessionStore {
             return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hometown.coordinates[1], longitude: hometown.coordinates[0]), latitudinalMeters: 5000, longitudinalMeters: 5000)
         }
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+    }
+    
+    /// Number of unread notifications, for the bell badge.
+    var unreadNotificationCount: Int {
+        notifications.count { !$0.isRead }
     }
     
     /**
@@ -100,6 +124,7 @@ class SessionStore {
     @AppStorage("auth_status") private var authStatus: AUTH_STATUS?
 
     
+    private var hasAuthListener = false
     private let secureStore = SecureStore()
     private var isRegisterComplete: Bool {
         
@@ -116,25 +141,75 @@ class SessionStore {
     init() {
         authStatus = .unknown
         user = cacheService.fetchUser()
-        
+
         Task {
-            do {
-                let config = try await managementObserver.config()
-                tags = config.tags
-                sports = config.sports
-            } catch {
+            await bootstrapConfig()
+        }
+    }
+
+    /// Fetches the tags/sports the whole app is configured from.
+    /// Throws so both the launch path and the retry button can react.
+    private func loadConfig() async throws {
+        let config = try await managementService.config()
+        tags = config.tags
+        sports = config.sports
+    }
+
+    /// Launch-time config fetch.
+    ///
+    /// A failure we can name (offline, server down) becomes an outage the user
+    /// can retry. Anything else — a payload that won't decode, say — is still
+    /// the dead end `FatalScreen` exists for, because retrying won't fix it.
+    private func bootstrapConfig() async {
+        do {
+            try await loadConfig()
+        } catch {
+            if let outage = LAUNCH_OUTAGE.classify(error) {
+                self.outage = outage
+            } else {
                 self.authStatus = .fatal_error
             }
         }
     }
+
+    /// Retries whatever failed at launch, from `OutageScreen`.
+    ///
+    /// The outage is only cleared once the work actually succeeds, so the app
+    /// doesn't flash the main UI and bounce straight back to this screen.
+    func retryAfterOutage() async {
+        guard outageRetryState != .loading else { return }
+        outageRetryState = .loading
+
+        do {
+            if tags.isEmpty || sports.isEmpty {
+                try await loadConfig()
+            }
+            if authStatus == .authenticated {
+                try await performCheckIn()
+            }
+            outageRetryState = .pending
+            outage = nil
+        } catch {
+            outage = LAUNCH_OUTAGE.classify(error) ?? outage
+            outageRetryState = .failure
+            try? await Task.sleep(for: .seconds(1))
+            outageRetryState = .pending
+        }
+    }
     
     func listenToAuthStateChanges() {
+        // LaunchScreen can be mounted more than once (a retry sends the app back
+        // through it), and each registration would fire on every future change.
+        guard !hasAuthListener else { return }
+        hasAuthListener = true
+
         #if DEV
-        // In local development we skip Firebase auth entirely and treat the
-        // hardcoded dev user as already authenticated. The actual user ID is
-        // supplied via the DEV_USER_ID key in Info.plist (see AppEnvironment).
+        // In local development we skip Firebase auth entirely. The user is picked in
+        // DevAuth and stored in DevUserStore; that ID is what gets sent as the UserID
+        // header (see AppEnvironment). Until something has been picked we stay
+        // unauthenticated so DevAuth gets a chance to show.
         // Check-in and notifications are handled by ViewContainer's .task block.
-        self.authStatus = .authenticated
+        self.authStatus = DevUserStore.selectedUserID != nil ? .authenticated : .unauthenticated
         #else
         Auth.auth().addStateDidChangeListener { [weak self] auth, usr in
             guard let self = self else { return }
@@ -191,7 +266,7 @@ class SessionStore {
             guard let user = cacheService.fetchUser(),
                   var devices = user.notificationDevices else {
                 let dao = UserDao(notificationDevices: [device])
-                guard let user = await userObserver.updateUserData(update: dao) else {
+                guard let user = await userService.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -204,7 +279,7 @@ class SessionStore {
             guard let idx = devices.firstIndex(where: { $0.deviceID == uuid }) else {
                 devices.append(device)
                 let dao = UserDao(notificationDevices: devices)
-                guard let user = await userObserver.updateUserData(update: dao) else {
+                guard let user = await userService.updateUserData(update: dao) else {
                     log.error("Failed to update user with new device token.")
                     return
                 }
@@ -225,7 +300,7 @@ class SessionStore {
             devices[idx].deviceInfo = device.deviceInfo
             devices[idx].updatedAt = Date()
             let dao = UserDao(notificationDevices: devices)
-            guard let user = await userObserver.updateUserData(update: dao) else {
+            guard let user = await userService.updateUserData(update: dao) else {
                 log.error("Failed to update user with new device token.")
                 return
             }
@@ -238,14 +313,49 @@ class SessionStore {
     }
     
     func checkIn() async {
-        
+        do {
+            try await performCheckIn()
+        } catch let DecodingError.dataCorrupted(context) {
+            #if DEBUG
+            print(context)
+            #endif
+        } catch let DecodingError.keyNotFound(key, context) {
+            #if DEBUG
+            print("Key '\(key)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch let DecodingError.valueNotFound(value, context) {
+            #if DEBUG
+            print("Value '\(value)' not found:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch let DecodingError.typeMismatch(type, context) {
+            #if DEBUG
+            print("Type '\(type)' mismatch:", context.debugDescription)
+            print("codingPath:", context.codingPath)
+            #endif
+        } catch APIServiceError.unauthorized {
+            // The token itself was rejected, so this really is a signed-out user.
+            authStatus = .unauthenticated
+        } catch {
+            // Everything else — no network, a 5xx — is an outage, not a sign-out.
+            // Dropping the session here is what used to strand an offline user on
+            // the sign-in screen with the Apple button disabled.
+            if let outage = LAUNCH_OUTAGE.classify(error) {
+                self.outage = outage
+            }
+            log.error("Failed to check user in: \(error.localizedDescription)")
+        }
+    }
+
+    /// The check-in itself. Throws so the caller decides what a failure means.
+    private func performCheckIn() async throws {
+
         clubs = []
         orgs = []
-        
+
         do {
-            guard let resp = try await userObserver.checkIn() else {
-                return
-            }
+            let resp = try await userService.checkIn()
             if let usr = resp.user {
                 _ = cacheService.fetchUser()
                 user = usr
@@ -273,33 +383,194 @@ class SessionStore {
             
             groupsManager.restore()
             authStatus = .authenticated
-        } catch let DecodingError.dataCorrupted(context) {
-            #if DEBUG
-            print(context)
-            #endif
-        } catch let DecodingError.keyNotFound(key, context) {
-            #if DEBUG
-            print("Key '\(key)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch let DecodingError.valueNotFound(value, context) {
-            #if DEBUG
-            print("Value '\(value)' not found:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch let DecodingError.typeMismatch(type, context)  {
-            #if DEBUG
-            print("Type '\(type)' mismatch:", context.debugDescription)
-            print("codingPath:", context.codingPath)
-            #endif
-        } catch {
-            authStatus = .unauthenticated
-            log.error("Failed to check user in: \(error.localizedDescription)")
         }
     }
     
     func getNotifications() async {
-        self.notifications = []
+        do {
+            let notes = try await self.notificationService.GetNotifications()
+            self.notifications = notes.notifications
+        } catch {
+            log.error("Failed to get notifications! Error: \(error.localizedDescription)")
+        }
+    }
+
+    /// Marks notifications read server-side and locally.
+    ///
+    /// The local update is applied only after the server confirms, so a failed
+    /// call leaves the badge honest rather than silently clearing it.
+    @discardableResult
+    func markNotificationsRead(_ ids: [String]) async -> Bool {
+        guard !ids.isEmpty else {
+            return false
+        }
+        do {
+            let ok = try await notificationService.UpdateNotification(
+                request: NotificationUpdateRequest(action: "read", notificationIDs: ids)
+            )
+            guard ok else { return false }
+            for index in notifications.indices where ids.contains(notifications[index].id) {
+                notifications[index].isRead = true
+            }
+            return true
+        } catch {
+            log.error("Failed to mark notifications read! Error: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Archives notifications server-side and drops them from the inbox.
+    ///
+    /// Follows `markNotificationsRead` above: the local mutation only lands once
+    /// the server confirms, so a failed archive leaves the row on screen rather
+    /// than making it vanish and then reappear on the next fetch.
+    ///
+    /// The rows are removed outright instead of being flagged because
+    /// `getNotifications()` requests the unarchived inbox — an archived row is
+    /// never coming back in that list, so there's no local state to carry. The
+    /// server keeps them (`is_archived = true`) and supports `unarchive`, so
+    /// this stays recoverable even though the client currently offers no way
+    /// back.
+    @discardableResult
+    func archiveNotifications(_ ids: [String]) async -> Bool {
+        guard !ids.isEmpty else {
+            return false
+        }
+        do {
+            let ok = try await notificationService.UpdateNotification(
+                request: NotificationUpdateRequest(action: "archive", notificationIDs: ids)
+            )
+            guard ok else { return false }
+            notifications.removeAll { ids.contains($0.id) }
+            return true
+        } catch {
+            log.error("Failed to archive notifications! Error: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Fetches the caller's archived notifications.
+    ///
+    /// Returns the page instead of storing it. `notifications` is the live bell
+    /// inbox, which `getNotifications()` deliberately fetches unarchived — so
+    /// archived rows must not land in that array or they'd show up in the inbox
+    /// and inflate the unread badge. The archive screen owns them for as long as
+    /// it's on screen.
+    func archivedNotifications() async -> [NotificationModel] {
+        do {
+            let notes = try await notificationService.GetNotifications(scope: .archived)
+            return notes.notifications
+        } catch {
+            log.error("Failed to get archived notifications! Error: \(error.localizedDescription)")
+            return []
+        }
+    }
+
+    /// Re-fetches the user's pending invites.
+    ///
+    /// Check-in already embeds these on launch, so this is for refreshing
+    /// afterwards — a pull-to-refresh, or after answering one elsewhere.
+    func refreshInvites() async {
+        guard let userID = user?.userID else {
+            return
+        }
+        do {
+            let resp = try await inviteService.getUserInvites(userID: userID, status: .pending)
+            self.invitations = resp.invites
+        } catch {
+            log.error("Failed to refresh invites! Error: \(error.localizedDescription)")
+        }
+    }
+
+    /// Resolves the user who triggered a notification, from its `actor_id`.
+    ///
+    /// Cosmetic — it only fills in the avatar and username on a notification row
+    /// — so every failure path returns nil and lets the caller fall back to a
+    /// generic sender rather than surfacing an error.
+    func actor(id: String?) async -> User? {
+        guard let id, !id.isEmpty else {
+            return nil
+        }
+        do {
+            return try await userService.getUserByUserID(userID: id)
+        } catch {
+            log.error("Failed to fetch notification actor \(id)! Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    /// Resolves the invite a notification refers to.
+    ///
+    /// notif-service stamps `invite_id` into a note's routing data, so the id is
+    /// the fast path — one lookup, no list scan. `fallbackContextID` covers notes
+    /// written before that key existed, where all we have is the event/team id.
+    ///
+    /// - Returns: the invite, or nil if neither route finds a pending one.
+    func invite(id: String?, fallbackContextID: String?) async -> InviteResponse? {
+        if let id, !id.isEmpty {
+            do {
+                let invite = try await inviteService.getInvite(id: id)
+                // An already-answered invite isn't actionable; treat it as absent
+                // so the caller disables its buttons.
+                return invite.status == .pending ? invite : nil
+            } catch {
+                log.error("Failed to fetch invite \(id)! Error: \(error.localizedDescription)")
+            }
+        }
+        guard let fallbackContextID else {
+            return nil
+        }
+        return await pendingInvite(forContext: fallbackContextID)
+    }
+
+    /// Finds the caller's pending invite for a given context (an event, team,
+    /// club or org id).
+    ///
+    /// The fallback for notes that don't carry an `invite_id`. Hits the network
+    /// rather than reading `invitations`: that array is check-in's snapshot from
+    /// app launch and is used elsewhere, so a note rendered later shouldn't
+    /// depend on how stale it is.
+    ///
+    /// - Returns: the matching PENDING invite, or nil if there isn't one.
+    func pendingInvite(forContext contextID: String) async -> InviteResponse? {
+        guard let userID = user?.userID else {
+            return nil
+        }
+        do {
+            let resp = try await inviteService.getUserInvites(userID: userID, status: .pending)
+            return resp.invites.first { $0.contextID == contextID }
+        } catch {
+            log.error("Failed to fetch pending invite! Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    /// Accepts or declines an invite and drops it from the pending list.
+    ///
+    /// `response` is the RSVP the user picked when accepting an event invite. The
+    /// server currently decodes but ignores it — RSVP is still a separate call to
+    /// the events endpoint — so it's passed for forward compatibility only.
+    ///
+    /// A 409 (`.alreadyHandled`) means another device already answered this
+    /// invite. That's not a failure from the user's point of view, so we treat it
+    /// as success and still remove the row rather than leaving it stuck.
+    ///
+    /// - Returns: whether the invite was resolved.
+    func answerInvite(_ invite: InviteResponse, status: InviteStatus, response: RSVPStatus? = nil) async -> Bool {
+        do {
+            _ = try await inviteService.updateInvite(
+                id: invite.id,
+                request: UpdateInviteRequest(status: status, response: response)
+            )
+            invitations.removeAll { $0.id == invite.id }
+            return true
+        } catch InviteServiceError.alreadyHandled {
+            invitations.removeAll { $0.id == invite.id }
+            return true
+        } catch {
+            log.error("Failed to answer invite! Error: \(error.localizedDescription)")
+            return false
+        }
     }
     
     /// We want to dynamically fetch the clubs and organizations for each event
@@ -404,7 +675,7 @@ class SessionStore {
     /// - Parameter id: unique identifier for the venue
     /// - Returns: a `Venue` optinal object in case the server fails to find venue
     func fetchVenueRemote(id: String) async -> Venue? {
-        guard let venue = await fieldObserver.fetchVenue(id: id) else {
+        guard let venue = await venueService.fetchVenue(id: id) else {
             log.error("Failed to fetch venue data remotely")
             return nil
         }
@@ -446,7 +717,7 @@ class SessionStore {
     /// - Parameter id: unique identifier for the club
     /// - Returns: a `Club` optinal object in case the server fails to find the org
     func fetchClubRemote(id: String) async -> Club? {
-        guard let club = await clubObserver.getClub(id: id) else {
+        guard let club = await clubService.getClub(id: id) else {
             log.error("Failed to find club data remotely")
             return nil
         }
@@ -488,7 +759,7 @@ class SessionStore {
     /// - Parameter id: unique identifier for the organization
     /// - Returns: an`Organization` optinal object in case the server fails to find the org
     func fetchOrgRemote(id: String) async -> Organization? {
-        guard let org = await orgObserver.getOrganization(id: id) else {
+        guard let org = await orgService.getOrganization(id: id) else {
             log.error("Failed to find organization data remotely")
             return nil
         }
@@ -501,14 +772,26 @@ class SessionStore {
     /// - Calls firebase API to sign out user
     func logout() async {
         cacheService.clearCache()
-        
+
+        #if DEV
+        // There is no Firebase session in local development — the "session" is just
+        // whichever dev user ID we put in the UserID header. Drop the selection so the
+        // app lands back on DevAuth. Without this we'd fall through to the DEV_USER_ID
+        // baked into Info.plist and silently sign straight back in as that user.
+        DevUserStore.signOut()
+
+        // clearCache() only wipes the on-disk copy; the in-memory one would otherwise
+        // survive and briefly render the previous user's data on the next sign in.
+        user = nil
+        #else
         do {
             try Auth.auth().signOut()
         } catch {
             log.error("Failed to sign user out: \(error.localizedDescription)")
             return
         }
-        
+        #endif
+
         // go back to login page
         authStatus = .unauthenticated
         return
@@ -542,7 +825,7 @@ class SessionStore {
             guard let authorizationCode = appleIDCredential.authorizationCode else { return false }
             guard let authCodeString = String(data: authorizationCode, encoding: .utf8) else { return false }
 
-            guard try await authObserver.deleteAccount() else { return false }
+            guard try await authService.deleteAccount() else { return false }
             
             try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
             
@@ -559,5 +842,52 @@ class SessionStore {
             log.error("Failed to delete user account: \(error)")
         }
         return false
+    }
+}
+
+// MARK: - Outage classification
+
+extension LAUNCH_OUTAGE {
+
+    /// Decides whether a thrown error is something the user can retry, and which
+    /// page describes it.
+    ///
+    /// Returning nil means "not an outage" — the caller keeps its existing
+    /// handling, so a decoding bug or a rejected token behaves as it always did.
+    ///
+    /// The split is by cause, not by layer: anything that means the request
+    /// never reached a server is `.offline`, and anything that means a server
+    /// answered badly (or refused the connection outright) is `.serverDown`.
+    static func classify(_ error: Error) -> LAUNCH_OUTAGE? {
+        switch error {
+        case NetworkError.notConnectedToInternet, NetworkError.timedOut:
+            return .offline
+        case NetworkError.cannotConnectToHost:
+            // The host resolved and nothing answered — that's the server, not us.
+            return .serverDown
+        case NetworkError.unknown(let underlying):
+            return classify(underlying)
+        case APIServiceError.serverError:
+            // 500 from the status check, anything above it from Hermes.
+            return .serverDown
+        case let urlError as URLError:
+            switch urlError.code {
+            case .notConnectedToInternet, .timedOut, .networkConnectionLost, .dataNotAllowed:
+                return .offline
+            case .cannotConnectToHost, .cannotFindHost, .badServerResponse:
+                return .serverDown
+            default:
+                return nil
+            }
+        default:
+            // Firebase raises this when refreshing an expired token offline,
+            // which is how an offline launch fails before it ever makes a
+            // request of ours. 17020 is AuthErrorCode.networkError.
+            let nsError = error as NSError
+            if nsError.domain == AuthErrorDomain && nsError.code == 17020 {
+                return .offline
+            }
+            return nil
+        }
     }
 }

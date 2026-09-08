@@ -23,8 +23,6 @@ struct EventSmallListItem: View {
         return generateImageURL(event.mediaURL)
     }
     
-    @Environment(SessionStore.self) private var session
-    
     var body: some View {
         HStack(alignment: .top) {
             KFImage(imageURL)
@@ -81,6 +79,5 @@ struct EventSmallListItem: View {
 
 #Preview {
     EventSmallListItem(event: EVENTS[0])
-        .environment(SessionStore())
         .padding(.horizontal)
 }

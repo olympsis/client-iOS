@@ -1,5 +1,5 @@
 //
-//  FieldsView.swift
+//  Venues.swift
 //  Olympsis
 //
 //  Created by Joel Joseph on 6/1/23.
@@ -64,13 +64,24 @@ struct Venues: View {
                     .frame(height: 200)
                     .padding(.horizontal)
                 } else {
+                    // Two stacked rows that scroll horizontally as full-width
+                    // "pages". LazyHGrid fills top-to-bottom then moves to the
+                    // next column, so each screen-width column holds two venues.
                     ScrollView(.horizontal, showsIndicators: false){
-                        HStack{
-                            ForEach(venues.prefix(3), id: \.name){ field in
+                        LazyHGrid(rows: [GridItem(.flexible()), GridItem(.flexible())]) {
+                            ForEach(venues.prefix(6), id: \.name){ field in
                                 VenueListItem(venue: field)
+                                    .frame(width: SCREEN_WIDTH - 20)
                             }
                         }
-                    }.frame(width: SCREEN_WIDTH, height: 365, alignment: .center)
+                        // Marks the grid as the snapping unit for viewAligned below
+                        .scrollTargetLayout()
+                    }
+                    // Snap so a column always lands aligned instead of stopping mid-scroll,
+                    // and inset the content 10pt each side to center the narrower cards
+                    .scrollTargetBehavior(.viewAligned)
+                    .contentMargins(.horizontal, 10, for: .scrollContent)
+                    .frame(height: 260)
                 }
             } else {
                 VenueListItemTemplate()

@@ -46,7 +46,7 @@ struct PostComments: View {
             return
         }
         let dao = CommentDao(id: nil, text: text, userID: userID, createdAt: nil)
-        let resp = await session.postObserver?.addComment(id: post.id, comment: dao)
+        let resp = await session.postService.addComment(id: post.id, comment: dao)
         guard resp != nil else {
             handleFailure()
             return
@@ -63,7 +63,7 @@ struct PostComments: View {
     
     func deleteComment(_ comment: Comment) {
         Task {
-            let res = await session.postObserver?.deleteComment(id: post.id, cid: comment.id) ?? false
+            let res = await session.postService.deleteComment(id: post.id, cid: comment.id)
             if res {
                 post.comments.removeAll(where: { $0.id == comment.id })
             }
@@ -127,7 +127,7 @@ struct PostComments: View {
                 .padding(.bottom, 50)
                 .listStyle(.plain)
                 .refreshable {
-                    guard let resp = await session.postObserver?.getPost(id: post.id) else {
+                    guard let resp = await session.postService.getPost(id: post.id) else {
                         return
                     }
                     post.comments = resp.comments

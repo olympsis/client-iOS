@@ -13,6 +13,7 @@ struct NewEventTagsPicker: View {
     @Binding var selectedTags: [Tag]
     @State private var showTags: Bool = false
     
+    /// Toggles a tag in/out of the selection (tags are multi-select).
     func addTag(_ tag: Tag) {
         if !selectedTags.contains(where: { $0.name == tag.name }) {
             selectedTags.append(tag)
@@ -23,35 +24,44 @@ struct NewEventTagsPicker: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(String(localized: "new-event-tags-title", table: "Events"))
-                .font(.headline)
+            Text(String(localized: "new-event-tags-title", table: "Events").uppercased())
+                .font(.caption)
                 .bold()
-            Text(String(localized: "new-event-tags-sub-title", table: "Events"))
-                .foregroundColor(.gray)
-                .font(.subheadline)
             
             HStack {
                 ScrollView(.horizontal) {
                     HStack(spacing: 10) {
                         ForEach(selectedTags, id: \.name) { tag in
-                            TagView(tag: tag)
+                            TagView(tag: tag, backgroundColor: Color.Background.tertiary)
                         }
                     }
-                    .padding(.leading, 10)
                 }
                 .scrollIndicators(.hidden)
                 
-                Spacer()
                 Button(action: { showTags.toggle() }) {
                     Image(systemName: "plus")
-                        .padding(10)
+                        .foregroundStyle(.primary)
+                }.background {
+                    Circle()
+                        .frame(width: 50, height: 50)
+                        .foregroundStyle(Color.Background.tertiary)
                         .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primary.opacity(0.1), lineWidth: 1)
+                            Circle()
+                                .stroke(Color.border)
                         }
                 }
-                .padding(.trailing, 5)
-            }.modifier(InputFieldModifier())
+                .padding(.trailing, 15)
+            }
+            .padding(10)
+            .frame(height: 67)
+            .background {
+                Capsule()
+                    .foregroundStyle(Color.Background.secondary)
+                    .overlay {
+                        Capsule()
+                            .stroke(Color.border)
+                    }
+            }
         }
         .sheet(isPresented: $showTags) {
             ScrollView(.vertical) {
@@ -64,7 +74,7 @@ struct NewEventTagsPicker: View {
                             TagView(tag: tag)
                                 .overlay {
                                     if selectedTags.contains(where: { $0.name == tag.name }) {
-                                        RoundedRectangle(cornerRadius: 14)
+                                        Capsule()
                                             .stroke(Color.Brand.secondary, lineWidth: 1)
                                     }
                                 }

@@ -12,6 +12,7 @@ import SwiftUI
 struct TagView: View {
     
     var tag: Tag
+    var backgroundColor: Color = Color.Background.secondary
     
     private var name: String {
         return tag.name.replacingOccurrences(of: "-", with: " ").capitalized
@@ -20,9 +21,9 @@ struct TagView: View {
     var body: some View {
         VStack {
             Text(name)
-                .padding(5)
+                .padding()
                 .padding(.horizontal, 5)
-                .background(Color.Background.secondary)
+                .background(backgroundColor)
                 .overlay(
                     Capsule()
                         .stroke(style: StrokeStyle(lineWidth: 1.5, lineCap: .round))

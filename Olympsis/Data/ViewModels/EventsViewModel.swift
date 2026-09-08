@@ -64,8 +64,26 @@ class EventsViewModel {
               let location = LocationManager.shared.location else {
             return CLLocation(latitude: 37.334886, longitude: -122.008988)
         }
-        
+
         return CLLocation(latitude: location.latitude, longitude: location.longitude)
+    }
+
+    /// Center used for explorer queries. Prefers the live device location;
+    /// when that's unavailable it falls back to the user's saved hometown —
+    /// the same source `FilterView` uses for its map center — so the radius
+    /// circle on the filter map and the `/v1/venues` query always describe
+    /// the same area (previously this fell back to a hardcoded Cupertino
+    /// point while the map fell back to the hometown, so they disagreed).
+    func searchCenter(_ session: SessionStore) -> CLLocationCoordinate2D {
+        if LocationManager.shared.isLocationAuthorized,
+           let loc = LocationManager.shared.location {
+            return loc
+        }
+        let coords = session.user?.hometown?.coordinates ?? []
+        if coords.count == 2 {
+            return CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
+        }
+        return CLLocationCoordinate2D(latitude: 37.334886, longitude: -122.008988)
     }
     
     init(
@@ -277,9 +295,10 @@ class EventsViewModel {
         // The server expects the radius in meters; `radius` is stored
         // canonically in miles, so convert before sending — matching the
         // venues fetch.
-        guard let resp = await session.eventObserver.fetchEvents(
-            longitude: currentLocation.coordinate.longitude,
-            latitude: currentLocation.coordinate.latitude,
+        let center = searchCenter(session)
+        guard let resp = await session.eventService.fetchEvents(
+            longitude: center.longitude,
+            latitude: center.latitude,
             radius: milesToMeters(radius: radius),
             tags: tagsString,
             sports: sportsString
@@ -324,9 +343,10 @@ class EventsViewModel {
         // (`radius`) is in miles, so convert — matching the events fetch.
         let radiusInMeters = Int(milesToMeters(radius: radius))
 
-        guard let resp = await session.fieldObserver.fetchVenues(
-            longitude: currentLocation.coordinate.longitude,
-            latitude: currentLocation.coordinate.latitude,
+        let center = searchCenter(session)
+        guard let resp = await session.venueService.fetchVenues(
+            longitude: center.longitude,
+            latitude: center.latitude,
             radius: radiusInMeters,
             sports: sportsString
         ) else {

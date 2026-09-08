@@ -14,7 +14,6 @@ struct AuthUserSports: View {
     @State private var selectedSports: [Sport] = []
     @State private var state: LOADING_STATE = .pending
     
-    private let userObserver = UserObserver()
     private let cacheService = CacheService()
     
     @AppStorage("auth_type") private var authType: USER_STATUS?
@@ -36,6 +35,18 @@ struct AuthUserSports: View {
         return selectedSports.contains(where: { $0.name == sport.name })
     }
     
+    /// Mirrors `AuthUserInfo.handleFailure`: without the reset the button kept
+    /// its red X for the life of the screen, so a second attempt looked like it
+    /// had failed before it started.
+    @MainActor
+    private func handleFailure() {
+        state = .failure
+        Toast.error(String(localized: "auth-save-failed", defaultValue: "Couldn't save your info. Check your connection and try again.", table: "Onboarding"))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.state = .pending
+        }
+    }
+
     @MainActor
     private func updateUser() {
         guard !selectedSports.isEmpty,
@@ -50,8 +61,8 @@ struct AuthUserSports: View {
             }
             let dao = UserDao(sports: parts)
             
-            guard let updates = await session.userObserver.updateUserData(update: dao) else {
-                state = .failure
+            guard let updates = await session.userService.updateUserData(update: dao) else {
+                handleFailure()
                 return
             }
             

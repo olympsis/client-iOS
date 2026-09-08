@@ -123,7 +123,14 @@ struct User: Codable, Hashable {
             gender = nil
         }
 
-        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        // Parsed by hand rather than through the decoder's .iso8601 strategy,
+        // which rejects the millisecond precision the server can send. A
+        // birthdate that won't parse must not cost the user their check-in.
+        if let rawBirthdate = try container.decodeIfPresent(String.self, forKey: .birthdate) {
+            birthdate = try? parseDate(from: rawBirthdate)
+        } else {
+            birthdate = nil
+        }
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         sports = try container.decodeIfPresent([String].self, forKey: .sports)
@@ -171,6 +178,12 @@ struct User: Codable, Hashable {
 }
 
 extension User {
+    /// True while the username is still the placeholder `/v1/auth/register`
+    /// assigns (`olympsis-user-<uuid>`), i.e. the user never picked one.
+    var hasPlaceholderUsername: Bool {
+        username?.hasPrefix("olympsis-user-") == true
+    }
+
     /// Project the full `User` down to the `UserSnippet` shape used
     /// by embedded references (post authors, comment authors, RSVP
     /// rows, etc.). Centralizes the field mapping so call sites stop
@@ -281,7 +294,12 @@ struct UserDao: Codable {
             gender = nil
         }
         
-        birthdate = try container.decodeIfPresent(Date.self, forKey: .birthdate)
+        // Same tolerance as `User` above.
+        if let rawBirthdate = try container.decodeIfPresent(String.self, forKey: .birthdate) {
+            birthdate = try? parseDate(from: rawBirthdate)
+        } else {
+            birthdate = nil
+        }
         imageURL = try container.decodeIfPresent(String.self, forKey: .imageURL)
         sports = try container.decodeIfPresent([String].self, forKey: .sports)
         visibility = try container.decodeIfPresent(String.self, forKey: .visibility)
@@ -421,11 +439,41 @@ struct UsersDataResponse: Codable {
     }
 }
 
+/// The aggregate payload `GET /v1/users/check-in` returns on launch.
+///
+/// `invitations` carries the user's pending invites in the invite-service shape
+/// (`InviteResponse`) — the same elements `GET /v1/invites/user/{id}` returns.
+/// The JSON key kept its old name for wire compatibility, but it is no longer
+/// the legacy `Invitation` type.
 struct CheckIn: Decodable {
     let user: User?
     let clubs: [Club]?
     let organizations: [Organization]?
-    let invitations: [Invitation]?
+    let invitations: [InviteResponse]?
+
+    /// Decoded field-by-field so one bad element can't sink the whole response.
+    ///
+    /// `InviteResponse` parses its timestamps with `parseDate(from:)`, which
+    /// throws when it meets a format it doesn't know. Since check-in is what
+    /// authenticates the session, letting that error propagate would cost the
+    /// user their whole check-in over a single malformed invite. Invites are
+    /// decoded with `try?` so an unparseable batch degrades to "no invites"
+    /// instead.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.user = try container.decodeIfPresent(User.self, forKey: .user)
+        self.clubs = try container.decodeIfPresent([Club].self, forKey: .clubs)
+        self.organizations = try container.decodeIfPresent([Organization].self, forKey: .organizations)
+        self.invitations = try? container.decodeIfPresent([InviteResponse].self, forKey: .invitations)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case user
+        case clubs
+        case organizations
+        case invitations
+    }
 }
 
 struct LocationResponse: Decodable {

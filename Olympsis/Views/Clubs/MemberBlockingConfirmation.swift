@@ -50,7 +50,7 @@ struct MemberBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.updateUserData(update: dto) else {
+            guard let resp = await session.userService.updateUserData(update: dto) else {
                 return
             }
             member.isBlocked = true
@@ -60,7 +60,7 @@ struct MemberBlockingConfirmation: View {
             blockedList.append(memberUID)
             let dto = UserDao(blockedUsers: blockedList)
             
-            guard let resp = await session.userObserver.updateUserData(update: dto) else {
+            guard let resp = await session.userService.updateUserData(update: dto) else {
                 return
             }
             member.isBlocked = true

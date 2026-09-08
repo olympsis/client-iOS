@@ -23,7 +23,7 @@ struct OrgManagerInvite: View {
                 SearchBar(text: $text, onCommit: {
                     Task {
                         do {
-                            users = try await session.userObserver.searchUsersByUsername(username: text)
+                            users = try await session.userService.searchUsersByUsername(username: text)
                         } catch {
                             log.error("Failed to search for users: \(error.localizedDescription)")
                         }

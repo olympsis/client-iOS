@@ -5,38 +5,53 @@
 //  Created by Joel Joseph on 11/16/22.
 //
 
+import os
 import Hermes
 import SwiftUI
 import Foundation
 
-class EventService {
+class EventService: APIService {
 
-    private var http: Courrier
+    let http: Courrier
+    let decoder: JSONDecoder
+    private let log = Logger(subsystem: "com.olympsis.client", category: "event_service")
 
     init() {
         let env = AppEnvironment.current
         self.http = Courrier(env.useHTTPS ? .HTTPS : .HTTP, host: env.apiHost)
+        // Server encodes event timestamps as ISO8601 — must match across every decode below.
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        self.decoder = d
     }
 
-    func location(long: Double, lat: Double, radius: Int, sports: String, status: String, limit: Int) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Hermes.Endpoint("/v1/events/location", queryItems: [
-            URLQueryItem(name: "longitude", value: String(long)),
-            URLQueryItem(name: "latitude", value: String(lat)),
+    /// Calls the field service to get fields based on certain params
+    /// - Parameter location: `[String]` latitude, longitude
+    /// - Parameter descritiveLocation: `[String]` city, state, country
+    func location(longitude: Double, latitude: Double, radius: Int, sports: String, status: String = "live") async -> LocationResponse? {
+        let endpoint = Endpoint("/v1/events/location", queryItems: [
+            URLQueryItem(name: "longitude", value: String(longitude)),
+            URLQueryItem(name: "latitude", value: String(latitude)),
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sports", value: sports),
             URLQueryItem(name: "status", value: status),
-            URLQueryItem(name: "limit", value: String(limit)),
+            URLQueryItem(name: "limit", value: String(100)),
         ])
 
-        return try await http.Request(.GET, endpoint, headers: headers)
+        do {
+            return try await request(.GET, endpoint)
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
     }
 
-    func getEvents(long: Double, lat: Double, radius: Double, tags: String? = nil, sports: String? = nil, status: String, skip: Int, limit: Int) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-
+    /// Calls the field service to get fields based on certain params
+    /// - Parameter location: `[String]` latitude, longitude
+    /// - Parameter descritiveLocation: `[String]` city, state, country
+    func fetchEvents(longitude: Double, latitude: Double, radius: Double, tags: String? = nil, sports: String? = nil, status: String = "live", skip: Int = 0, limit: Int = 100) async -> [Event]? {
         var queries = [
-            URLQueryItem(name: "location", value: "\(long),\(lat)"),
+            URLQueryItem(name: "location", value: "\(longitude),\(latitude)"),
             URLQueryItem(name: "radius", value: String(radius)),
         ]
 
@@ -52,123 +67,259 @@ class EventService {
         queries.append(URLQueryItem(name: "skip", value: String(0)))
         queries.append(URLQueryItem(name: "limit", value: String(limit)))
 
-        let endpoint = Hermes.Endpoint("/v1/events", queryItems: queries)
-        return try await http.Request(.GET, endpoint, headers: headers)
+        let endpoint = Endpoint("/v1/events", queryItems: queries)
+        do {
+            // 204 means no results in range — an empty list, not a failure.
+            let (data, statusCode) = try await requestRaw(.GET, endpoint)
+            guard statusCode == 200 else {
+                return statusCode == 204 ? [] : nil
+            }
+            let object = try decoder.decode(EventsResponse.self, from: data)
+            return object.events
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
     }
-    
-    func getPastEvents(skip: Int, limit: Int) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
 
-        var queries = [
+    func fetchPastEvents(skip: Int = 0, limit: Int = 100) async -> [Event] {
+        let queries = [
             URLQueryItem(name: "status", value: "ended"),
+            URLQueryItem(name: "skip", value: String(skip)),
+            URLQueryItem(name: "limit", value: String(limit)),
         ]
 
-        queries.append(URLQueryItem(name: "skip", value: String(skip)))
-        queries.append(URLQueryItem(name: "limit", value: String(limit)))
-
-        let endpoint = Hermes.Endpoint("/v1/events", queryItems: queries)
-        return try await http.Request(.GET, endpoint, headers: headers)
+        let endpoint = Endpoint("/v1/events", queryItems: queries)
+        do {
+            let (data, statusCode) = try await requestRaw(.GET, endpoint)
+            guard statusCode == 200 else {
+                return []
+            }
+            let object = try decoder.decode(EventsResponse.self, from: data)
+            return object.events
+        } catch {
+            log.error("\(error)")
+        }
+        return []
     }
 
-    func getEventsByField(id: String) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
-        let endpoint = Hermes.Endpoint("/v1/events/field/\(id)")
-
-        return try await http.Request(.GET, endpoint, headers: headers)
+    func fetchEventsByVenueID(_ id: String) async -> [Event]? {
+        let endpoint = Endpoint("/v1/events/venue/\(id)")
+        do {
+            let object: EventsResponse = try await request(.GET, endpoint)
+            return object.events
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
     }
 
-    func getEvent(id: String) async throws -> (Data, URLResponse){
-        let headers = try await AppEnvironment.authHeaders()
+    func fetchEvent(id: String) async -> Event? {
         let endpoint = Endpoint("/v1/events/\(id)", queryItems: [URLQueryItem]())
-
-        return try await http.Request(.GET, endpoint, headers: headers)
+        do {
+            return try await request(.GET, endpoint)
+        } catch {
+            log.error("\(error)")
+        }
+        return nil
     }
 
-    func getUserPastEvents(userID: String) async throws -> (Data, URLResponse){
-        let headers = try await AppEnvironment.authHeaders()
+    func getUserPastEvents(userID: String) async -> [Event] {
         let endpoint = Endpoint("/v1/events/past/user/\(userID)", queryItems: [URLQueryItem]())
-
-        return try await http.Request(.GET, endpoint, headers: headers)
+        do {
+            return try await request(.GET, endpoint)
+        } catch {
+            log.error("\(error)")
+            return []
+        }
     }
 
-    func createEvent(dao: NewEventDao) async throws -> (Data,URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    /// POST /v1/events — returns the new event's id.
+    ///
+    /// Propagates rather than collapsing to nil like the older calls around it.
+    /// The server validates the body and answers 400 with a `{"msg": ...}`
+    /// saying which field is wrong, and `APIService.request` already decodes
+    /// that into `APIServiceError.badRequest(message:)` — swallowing it here
+    /// meant every failure, from a rejected title to an unreachable network,
+    /// reached the user as the same "Something went wrong."
+    func createEvent(dao: NewEventDao) async throws -> String {
         let endpoint = Endpoint("/v1/events")
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+        do {
+            let object: CreateResponse = try await request(.POST, endpoint, body: EncodeToData(dao), expecting: 201)
+            // A 201 with no id would otherwise read as success and then fail
+            // further along with nothing to point at.
+            guard let id = object.id else {
+                throw APIServiceError.unexpected(statusCode: 201, message: "create response carried no id")
+            }
+            return id
+        } catch {
+            log.error("\(error)")
+            throw error
+        }
     }
 
-    func updateEvent(id: String, dao: EventDao) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
+    func updateEvent(id: String, dao: EventDao) async -> Bool {
         let endpoint = Endpoint("/v1/events/\(id)", queryItems: [URLQueryItem]())
-
-        let (_, resp) = try await http.Request(.PUT, endpoint, body: EncodeToData(dao), headers: headers)
-        return resp
+        do {
+            let (_, statusCode) = try await requestRaw(.PUT, endpoint, body: EncodeToData(dao))
+            return statusCode == 200
+        } catch {
+            log.error("\(error)")
+        }
+        return false
     }
 
-    func deleteEvent(id: String, deleteAll: Bool = false) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
+    func deleteEvent(id: String, deleteAll: Bool = false) async -> Bool {
         let endpoint = Endpoint("/v1/events/\(id)", queryItems: deleteAll ? [URLQueryItem(name: "deleteAll", value: "true")] : [])
-
-        let (_, resp) = try await http.Request(.DELETE, endpoint, headers: headers)
-        return resp
+        do {
+            let (_, statusCode) = try await requestRaw(.DELETE, endpoint)
+            return statusCode == 200
+        } catch {
+            log.error("\(error)")
+        }
+        return false
     }
 
     // MARK: - Participants
 
-    func addParticipant(id: String, dao: ParticipantDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    /// PUT /v1/events/{id}/participants — registers an RSVP.
+    ///
+    /// PUT, not POST: the call is idempotent — a user who already has a row
+    /// gets that row back rather than a duplicate — so a retry after a dropped
+    /// response is safe. The server still serves the same handler on POST, but
+    /// that method is deprecated; don't reintroduce it here.
+    ///
+    /// Returns the row the server actually wrote, not the one we asked for: an
+    /// RSVP to a full event is stored as WAITLIST, and the pill has to say so.
+    /// A server build that predates the `status` field falls back to the
+    /// requested status, which is what it would have written anyway.
+    func addParticipant(id: String, dao: ParticipantDao) async throws -> ParticipantResponse {
         let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+        do {
+            let (data, statusCode) = try await requestRaw(.PUT, endpoint, body: EncodeToData(dao))
+            guard statusCode == 200 else {
+                // A 409 here means the event takes team RSVPs, which is worth
+                // telling the user rather than collapsing into "try again".
+                if [400, 409].contains(statusCode) {
+                    throw EventError.rejected(message: serverMessage(from: data))
+                }
+                throw EventError.failedToAddParticipant
+            }
 
-        return try await http.Request(.POST, endpoint, body: EncodeToData(dao), headers: headers)
+            let object = try decoder.decode(ParticipantResponse.self, from: data)
+            return ParticipantResponse(id: object.id, status: object.status ?? dao.status)
+        } catch let error as EventError {
+            log.error("Failed to add participant: \(error)")
+            throw error
+        } catch {
+            log.error("Failed to add participant: \(error)")
+            throw EventError.failedToAddParticipant
+        }
     }
 
-    func removeParticipant(id: String, pid: String?=nil) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
-        if ((pid) != nil && pid != "") {
-            let endpoint = Endpoint("/v1/events/\(id)/participants/\(pid!)", queryItems: [URLQueryItem]())
+    /// PATCH /v1/events/{id}/participants — changes the caller's existing RSVP.
+    ///
+    /// Separate from delete-then-add because that pair loses the user's slot:
+    /// dropping the row promotes someone off the waitlist, and the re-add lands
+    /// the user behind them. A patch keeps the slot for downgrades and answers
+    /// 409 when a waitlisted user asks for a place that isn't free.
+    func updateParticipant(id: String, dao: ParticipantDao) async throws -> ParticipantResponse {
+        let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+        do {
+            let (data, statusCode) = try await requestRaw(.PATCH, endpoint, body: EncodeToData(dao))
+            guard statusCode == 200 else {
+                // 400/404/409 all carry a `msg` explaining the refusal; anything
+                // else is a plain failure with nothing to tell the user.
+                if [400, 404, 409].contains(statusCode) {
+                    throw EventError.rejected(message: serverMessage(from: data))
+                }
+                throw EventError.failedToAddParticipant
+            }
 
-            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: headers)
-            return resp
-        } else {
-            let endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
-
-            let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: headers)
-            return resp
+            let object = try decoder.decode(ParticipantResponse.self, from: data)
+            return ParticipantResponse(id: object.id, status: object.status ?? dao.status)
+        } catch let error as EventError {
+            log.error("Failed to update participant: \(error)")
+            throw error
+        } catch {
+            log.error("Failed to update participant: \(error)")
+            throw EventError.failedToAddParticipant
         }
+    }
+
+    func removeParticipant(id: String, pid: String? = nil) async -> Bool {
+        let endpoint: Endpoint
+        if (pid != nil && pid != "") {
+            endpoint = Endpoint("/v1/events/\(id)/participants/\(pid!)", queryItems: [URLQueryItem]())
+        } else {
+            endpoint = Endpoint("/v1/events/\(id)/participants", queryItems: [URLQueryItem]())
+        }
+
+        do {
+            let (_, statusCode) = try await requestRaw(.DELETE, endpoint)
+            return statusCode == 200
+        } catch {
+            log.error("Failed to remove participant: \(error)")
+        }
+        return false
     }
 
     // MARK: - Comments
 
-    func addComment(id: String, _ comment: EventCommentDao) async throws -> (Data, URLResponse) {
-        let headers = try await AppEnvironment.authHeaders()
+    func addComment(id: String, _ comment: EventCommentDao) async throws -> String {
         let endpoint = Endpoint("/v1/events/\(id)/comments", queryItems: [URLQueryItem]())
+        do {
+            let (data, statusCode) = try await requestRaw(.POST, endpoint, body: EncodeToData(comment))
+            guard statusCode == 201 else {
+                throw EventError.failedToAddComment
+            }
 
-        return try await http.Request(.POST, endpoint, body: EncodeToData(comment), headers: headers)
+            let object = try decoder.decode(CreateResponse.self, from: data)
+            guard let id = object.id else {
+                throw EventError.failedToAddComment
+            }
+
+            return id
+        } catch {
+            log.error("Failed to add comment: \(error)")
+            throw EventError.failedToAddComment
+        }
     }
 
-    func removeComment(id: String, cid: String) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
+    func removeComment(id: String, cid: String) async -> Bool {
         let endpoint = Endpoint("/v1/events/\(id)/comments/\(cid)", queryItems: [URLQueryItem]())
-
-        let (_, resp) = try await http.Request(.DELETE, endpoint,  headers: headers)
-        return resp
+        do {
+            let (_, statusCode) = try await requestRaw(.DELETE, endpoint)
+            return statusCode == 200
+        } catch {
+            log.error("Failed to remove comment: \(error)")
+        }
+        return false
     }
 
     // MARK: - Notifications
 
-    func notifyParticipants(id: String, notif: OlympsisNotification) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
+    func notifyParticipants(id: String, title: String, body: String) async -> Bool {
+        let notif = OlympsisNotification(title: title, body: body)
         let endpoint = Endpoint("/v1/events/\(id)/notify/participants", queryItems: [URLQueryItem]())
-
-        let (_, resp) = try await http.Request(.POST, endpoint, body: EncodeToData(notif), headers: headers)
-        return resp
+        do {
+            let (_, statusCode) = try await requestRaw(.POST, endpoint, body: EncodeToData(notif))
+            return statusCode == 200
+        } catch {
+            log.error("Failed to notify participants: \(error)")
+        }
+        return false
     }
 
-    func notifyClubMembers(id: String, notif: OlympsisNotification) async throws -> URLResponse {
-        let headers = try await AppEnvironment.authHeaders()
+    func notifyClubMembers(id: String, title: String, body: String) async -> Bool {
+        let notif = OlympsisNotification(title: title, body: body)
         let endpoint = Endpoint("/v1/events/\(id)/notify/club", queryItems: [URLQueryItem]())
-
-        let (_, resp) = try await http.Request(.POST, endpoint, body: EncodeToData(notif), headers: headers)
-        return resp
+        do {
+            let (_, statusCode) = try await requestRaw(.POST, endpoint, body: EncodeToData(notif))
+            return statusCode == 200
+        } catch {
+            log.error("Failed to notify club members: \(error)")
+        }
+        return false
     }
 }

@@ -9,32 +9,45 @@ import os
 import SwiftUI
 
 struct NotificationsView: View {
-    
-    @State private var notifications: [NotificationModel] = []
-    
+
     @Environment(HomeRouter.self) private var router
     @Environment(SessionStore.self) private var session
-    
+
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "notifications_view")
-    
+
     var body: some View {
-        ScrollView {
+        Group {
             if session.notifications.count > 0 {
-                ForEach(session.notifications, id: \.id){ note in
-                    LazyVStack {
-                        NotificationModelView(notification: note)
+                List {
+                    ForEach(session.notifications, id: \.id) { note in
+                        NotificationView(model: note)
                             .environment(session)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.Background.primary)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    Task { await session.archiveNotifications([note.id]) }
+                                } label: {
+                                    Label("Archive", systemImage: "archivebox.fill")
+                                }
+                            }
                     }
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             } else {
-                VStack {
-                    Text("Olympsis Notifications will live here.")
-                    HStack {
-                        Spacer()
-                    }
-                }.padding(.top, 50)
+                ScrollView {
+                    VStack {
+                        Text("Your Notifications will live here!")
+                        HStack {
+                            Spacer()
+                        }
+                    }.padding(.top, 50)
+                }
             }
         }
+        .background(Color.Background.primary.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -48,17 +61,36 @@ struct NotificationsView: View {
             ToolbarItem(placement: .principal) {
                 Text("Notifications")
             }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { router.navigate(to: .archivedNotifications) }) {
+                    Image(systemName: "archivebox")
+                        .foregroundStyle(Color.Foreground.default)
+                }
+            }
         }
         .toolbarRole(.navigationStack)
         .gesture(
             DragGesture()
                 .onEnded { gesture in
-                    if gesture.translation.width > 100 {
+                    if gesture.startLocation.x < 40, gesture.translation.width > 100 {
                         router.navigateBack()
                     }
                 }
         )
+        .refreshable {
+            await session.getNotifications()
+        }
         .task {
+            await session.getNotifications()
+
+            // Marking read is fire-and-forget: a failure just leaves the badge
+            // up, which is better than clearing it optimistically.
+            let unread = session.notifications.filter { !$0.isRead }.map(\.id)
+            if !unread.isEmpty {
+                await session.markNotificationsRead(unread)
+            }
+
             do {
                 guard try await !NotificationManager.shared.checkAuthorizationStatus() else {
                     return

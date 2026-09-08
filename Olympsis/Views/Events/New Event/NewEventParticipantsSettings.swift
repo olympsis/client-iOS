@@ -91,6 +91,9 @@ struct NewEventParticipantsSettings: View {
             
             Spacer()
         }
+        .background {
+            Color.Background.primary.ignoresSafeArea()
+        }
         .onAppear {
             // Setup with data from the manager if we already have set them.
             guard let config = manager.participantsConfig else { return }

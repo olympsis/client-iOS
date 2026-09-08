@@ -79,13 +79,15 @@ enum AppEnvironment {
 
     /// Returns the appropriate auth headers for the current environment.
     ///
-    /// - Development: `["UserID": <DEV_USER_ID from Info.plist>]` — skips Firebase entirely
+    /// - Development: `["UserID": <user picked in DevAuth>]` — skips Firebase entirely
     /// - Staging / Production: `["Authorization": <Firebase ID token>]`
     static func authHeaders() async throws -> [String: String] {
         switch current {
         case .development:
-            let userID = Bundle.main.object(forInfoDictionaryKey: "DEV_USER_ID") as? String ?? ""
-            return ["UserID": userID]
+            // Whichever dev user this install picked in `DevAuth`, falling back to the
+            // `DEV_USER_ID` baked into Info.plist. The selection lives in UserDefaults so
+            // several simulators on the same build can each act as a different user.
+            return ["UserID": DevUserStore.currentUserID]
         case .staging, .production:
             let token = try await Auth.auth().currentUser?.getIDToken()
             return ["Authorization": token ?? ""]

@@ -32,7 +32,8 @@ struct EventParticipants: View {
         
         // Reveal after user has RSVPed
         guard let user = session.user,
-              event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+              let userID = user.userID,
+              event.rsvp(for: userID) != nil else {
             return !hideParticipants
         }
         return true
@@ -201,7 +202,7 @@ struct EventParticipantsViewExt: View {
     }
     
     func removeParticipant(_ participant: Participant) async {
-        guard await session.eventObserver.removeParticipant(id: event.id, pid: participant.id) else {
+        guard await session.eventService.removeParticipant(id: event.id, pid: participant.id) else {
             return
         }
         event.participants.removeAll { $0.id == participant.id }

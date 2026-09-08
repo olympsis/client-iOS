@@ -24,6 +24,11 @@ struct NextEvent: View {
         if let e = event {
             if session.state == .success {
                 VStack (alignment: .center){
+                    Text(String(localized: "your-next-event", table: "General"))
+                        .font(.custom("Helvetica Neue", size: 17))
+                        .bold()
+                        .padding(.horizontal)
+                    
                     EventListItem(event: e)
                         .padding(.horizontal)
                         .padding(.bottom, -10)

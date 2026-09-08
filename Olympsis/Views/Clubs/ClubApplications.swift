@@ -12,7 +12,7 @@ struct ClubApplications: View {
     @State var club: Club
     @State var applications = [ClubApplication]()
     
-    @StateObject var clubObserver = ClubObserver()
+    private let clubService = ClubService()
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -32,7 +32,7 @@ struct ClubApplications: View {
                     }
                     
                 }.refreshable {
-                    let res = await clubObserver.getApplications(id: club.id)
+                    let res = await clubService.getApplications(id: club.id)
                     await MainActor.run {
                         applications = res
                     }
@@ -41,7 +41,7 @@ struct ClubApplications: View {
             .navigationTitle("Applications")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                let res = await clubObserver.getApplications(id: club.id)
+                let res = await clubService.getApplications(id: club.id)
                 await MainActor.run {
                     applications = res
                 }

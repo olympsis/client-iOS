@@ -17,47 +17,77 @@ struct Events: View {
     @State private var showMenu: Bool = false
     @State private var showNewEvent: Bool = false
     
-    // `SearchManager` hydrates `selectedTags` / `selectedSports` from
-    // UserDefaults in its init, so the user's filter choices survive
-    // across app launches without any work here.
-    @State private var manager = SearchManager()
-    @State private var viewModel = EventsViewModel()
+    @State private var locationManager = LocationManager.shared
+    @Environment(SearchManager.self) private var manager
+    @Environment(EventsViewModel.self) private var viewModel
     @Environment(SessionStore.self) private var session
     
     @Namespace private var namespace
-    
+
+    /// Events/venues control that occupies the navigation bar's principal
+    /// (center) slot. `ExplorerPagePicker` is a hand-rolled segmented control
+    /// — see its doc comment for why the system `Picker(.segmented)` can't be
+    /// sized down without shrinking its labels into illegibility.
+    ///
+    /// Locked while a fetch is in flight so the user can't flip pages
+    /// mid-load (which would show one page's skeletons against the other
+    /// page's data). `.disabled` also dims it as a cue.
+    @ViewBuilder
+    private func pagePicker(selection: Binding<EVENT_EXPLORER_STATE>) -> some View {
+        ExplorerPagePicker(selection: selection)
+            .disabled(viewModel.state == .loading)
+    }
+
     var body: some View {
-        NavigationStack(path: $router.navPath) {
+        // `@Bindable` re-derives a `Binding` from the environment-injected
+        // `@Observable` view model so the toolbar's page picker can write
+        // back to `viewModel.page`.
+        @Bindable var viewModel = viewModel
+
+        return NavigationStack(path: $router.navPath) {
             EventsExplorer(router: $router, showMenu: $showMenu, showNewEvent: $showNewEvent)
                 .environment(session)
                 .environment(manager)
                 .environment(viewModel)
                 .toolbarBackground(.hidden, for: .navigationBar)
+                // There's no navigation title here (the picker occupies the
+                // principal slot), but SwiftUI still reserves the *large*
+                // title area — which made the bar 106pt tall and pushed its
+                // touch-absorbing bounds down over the explorer drawer's
+                // grabber at the `.large` detent. The bar ate the drag, so
+                // the drawer could be pulled up but never back down.
+                // Inline mode collapses that dead space and frees the grabber.
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    if #available(iOS 26.0, *) {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Text("Olympsis")
-                                .fixedSize()
-                                .italic()
-                                .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
-                        }.sharedBackgroundVisibility(.hidden)
-                    } else {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Text("Olympsis")
-                                .fixedSize()
-                                .italic()
-                                .font(.custom("Archivo-Black", size: 30, relativeTo: .largeTitle))
-                        }
-                    }
-                    
-                    ToolbarItemGroup(placement: .topBarTrailing) {
+                    // MARK: - New event (leading)
+                    ToolbarItem(placement: .topBarLeading) {
                         if #available(iOS 26.0, *) {
-                            Button(action: { router.navigate(to: .new) }) {
+                            Button(action: { showNewEvent.toggle() }) {
                                 Image(systemName: "plus")
                             }
                         } else {
-                            CircularChip(systemImage: "plus", action: { router.navigate(to: .new) })
+                            CircularChip(systemImage: "plus", action: { showNewEvent.toggle() })
                         }
+                    }
+
+                    // MARK: - Events / Venues picker (center)
+                    //
+                    // Takes the place of the old "Olympsis" title.
+                    if #available(iOS 26.0, *) {
+                        ToolbarItem(placement: .principal) {
+                            pagePicker(selection: $viewModel.page)
+                        }
+                        // Hide the toolbar's own glass capsule — the picker
+                        // paints its own track, so the chrome would double up.
+                        .sharedBackgroundVisibility(.hidden)
+                    } else {
+                        ToolbarItem(placement: .principal) {
+                            pagePicker(selection: $viewModel.page)
+                        }
+                    }
+
+                    // MARK: - Search (trailing)
+                    ToolbarItem(placement: .topBarTrailing) {
                         if #available(iOS 26.0, *) {
                             Button(action: { viewModel.isSearchActive.toggle() }) {
                                 Image(systemName: "magnifyingglass")
@@ -68,11 +98,6 @@ struct Events: View {
                     }
                 }
                 .sheet(isPresented: $showMenu, onDismiss: {
-                    // Reconcile the new filter selections against the
-                    // previously-applied ones. Adding a filter fetches the
-                    // difference from the server for the active page;
-                    // removing one just re-filters the cache locally.
-                    // See `EventsViewModel.applyFilterChanges`.
                     Task {
                         await viewModel.applyFilterChanges(from: manager, in: session)
                     }
@@ -81,6 +106,9 @@ struct Events: View {
                         .environment(session)
                         .environment(manager)
                         .presentationDragIndicator(.visible)
+                })
+                .sheet(isPresented: $showNewEvent, content: {
+                    NewEvent(manager: NewEventManager())
                 })
                 .navigationDestination(for: EVENT_ROUTES.self, destination: { route in
                     switch route {
@@ -97,50 +125,25 @@ struct Events: View {
                     case .upNextEvents(let events):
                         UpNextEvents(events: events)
                             .environment(session)
-                    case .new:
-                        NewEvent(manager: NewEventManager())
                     case .venue(let venue):
                         VenueView(venue: venue, isFullScreen: true)
                             .environment(session)
                     }
                 })
                 .task {
-                    LocationManager.shared.requestLocation()
+                    // Permission is intentionally requested only after the
+                    // person visits Events, not while ViewContainer launches.
+                    locationManager.requestLocation()
+                }
+                .onChange(of: locationManager.isLocationAuthorized) { wasAuthorized, isAuthorized in
+                    guard !wasAuthorized, isAuthorized else { return }
 
-                    // Grab sports and tags from session
-                    manager.tags = session.tags
-                    manager.sports = session.sports
-                    viewModel.tags = session.tags
-                    viewModel.sports = session.sports
-
-                    // First-launch seed: only apply the user's preferred
-                    // sports when nothing has ever been persisted. If the
-                    // user has touched the filter sheet before — even to
-                    // clear it — we respect that and skip the seed.
-                    // `manager` already hydrated `selectedSports` /
-                    // `selectedTags` from `UserDefaults` in its init, so
-                    // this branch is the only place defaults are applied.
-                    if !manager.hasPersistedSelections,
-                       let sports = session.user?.sports {
-                        manager.selectedSports = sports
-                        manager.persistSelections()
+                    Task {
+                        // Give the newly-authorized location manager a moment
+                        // to deliver a fix before replacing the fallback data.
+                        _ = await locationManager.waitForLocation(timeout: 1.0)
+                        await viewModel.fetchData(session, force: true)
                     }
-
-                    // Mirror the (persisted or seeded) selection onto the
-                    // viewModel so the very first fetch uses it and the
-                    // dismiss-diff in the filter sheet has the right
-                    // "previous" baseline.
-                    viewModel.selectedSports = manager.selectedSports
-                    viewModel.selectedTags = manager.selectedTags
-
-                    // Give Core Location up to 1 s to deliver a fresh fix
-                    // before we kick off the network call. If nothing comes
-                    // through in time, `viewModel.currentLocation` falls back
-                    // to its built-in default — same query, just with the
-                    // fallback coords.
-                    _ = await LocationManager.shared.waitForLocation(timeout: 1.0)
-
-                    await viewModel.fetchData(session)
                 }
         }
     }
@@ -149,4 +152,6 @@ struct Events: View {
 #Preview {
     Events(router: .constant(EventRouter()))
         .environment(SessionStore())
+        .environment(SearchManager())
+        .environment(EventsViewModel())
 }

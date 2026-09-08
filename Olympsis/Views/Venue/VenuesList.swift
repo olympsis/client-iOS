@@ -63,6 +63,7 @@ struct VenuesList: View {
                 }
             }
             .scrollToTopButton()
+            .background(Color.Background.primary.ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action:{ dismiss() }){

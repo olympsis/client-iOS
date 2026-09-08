@@ -18,7 +18,7 @@ struct EndUserLicenseAgreement: View {
     func AcceptEULA() async {
         status = .loading
         let update = UserDao(acceptedEULA: true)
-        guard let user = await session.userObserver.updateUserData(update: update) else {
+        guard let user = await session.userService.updateUserData(update: update) else {
             status = .pending
             showAlert.toggle()
             return

@@ -25,7 +25,7 @@ struct AsyncEventView: View {
     @MainActor
     func fetchEvent() async {
         state = .loading
-        guard let event = await session.eventObserver.fetchEvent(id: eventId) else {
+        guard let event = await session.eventService.fetchEvent(id: eventId) else {
             state = .failure
             log.error("Failed to fetch event:\(eventId, privacy: .public)")
             return

@@ -26,7 +26,7 @@ struct GroupRoomView: View {
     init(room: Room, rooms: Binding<[Room]>) {
         _rooms = rooms
         self.room = room
-        let observer = ChatObserver()
+        let observer = ChatService()
         self._viewModel = State(initialValue: RoomViewModel(room: room, observer: observer))
     }
     

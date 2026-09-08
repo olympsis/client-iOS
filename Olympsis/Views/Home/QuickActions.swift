@@ -16,9 +16,10 @@ struct QuickActions: View {
     }
     
     private var showGroups: Bool {
-        guard let user = session.user,
-              let clubs = user.clubs else { return true }
-        return clubs.isEmpty
+        return false
+//        guard let user = session.user,
+//              let clubs = user.clubs else { return true }
+//        return clubs.isEmpty
     }
     
     @Environment(\.openURL) private var openURL

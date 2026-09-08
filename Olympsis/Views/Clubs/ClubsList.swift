@@ -157,7 +157,7 @@ struct ClubsList: View {
                 
                 guard let country = pk.first?.country,
                       let state = pk.first?.administrativeArea,
-                      let resp = await session.clubObserver.getClubs(
+                      let resp = await session.clubService.getClubs(
                         country: country,
                         state: stateAbbreviationToFullName[state] ?? state,
                         location: GeoJSON(

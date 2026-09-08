@@ -37,8 +37,8 @@ struct NewEventOrganizers: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(String(localized: "hosted-title", table: "Events"))
-                .font(.headline)
+            Text(String(localized: "hosted-title", table: "Events").uppercased())
+                .font(.caption)
                 .bold()
             
             //MARK: - Poster
@@ -53,6 +53,16 @@ struct NewEventOrganizers: View {
                         .font(.caption)
                         .foregroundStyle(.gray)
                 }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 26)
+                    .foregroundStyle(Color.Background.secondary)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 26)
+                            .stroke(Color.border)
+                    }
             }
             
             //MARK: - Organizers

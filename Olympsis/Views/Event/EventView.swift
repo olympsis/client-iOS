@@ -72,7 +72,7 @@ struct EventView: View {
     /// Update event data
     func reloadEvent() async {
         guard let id = event.id,
-              let resp = await session.eventObserver.fetchEvent(id: id) else {
+              let resp = await session.eventService.fetchEvent(id: id) else {
             handleFailure()
             return
         }

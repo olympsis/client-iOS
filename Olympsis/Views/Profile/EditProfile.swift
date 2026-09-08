@@ -45,8 +45,8 @@ struct EditProfile: View {
     @StateObject private var photoViewModel = PhotoPickerViewModel()
     
     private var cacheService: CacheService = CacheService()
-    private var userObserver: UserObserver = UserObserver()
-    private var uploadObserver: UploadObserver = UploadObserver()
+    private var userService: UserService = UserService()
+    private var uploadService: UploadService = UploadService()
     
     @Environment(SessionStore.self) private var session
     
@@ -83,7 +83,7 @@ struct EditProfile: View {
             }
 
             let update = UserDao(username: user.username, bio: bio, sports: Array(selectedSports), hometown: coords)
-            guard let res = await userObserver.updateUserData(update: update) else {
+            guard let res = await userService.updateUserData(update: update) else {
                 handleFailure()
                 return
             }
@@ -97,7 +97,7 @@ struct EditProfile: View {
             return
         }
         
-        guard (await uploadObserver.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
+        guard (await uploadService.UploadImage(location: "/olympsis-profile-images", fileName: imageId, data: data)) != nil else {
             handleFailure()
             return
         }
@@ -111,7 +111,7 @@ struct EditProfile: View {
         
         if let img = user.imageURL {
             // delete old picture
-            _ = await uploadObserver.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
+            _ = await uploadService.DeleteObject(path: "/olympsis-profile-images", name: GrabImageIdFromURL(img))
         }
         
         var coords: GeoJSON?
@@ -121,7 +121,7 @@ struct EditProfile: View {
 
         // update user data
         let update = UserDao(username: user.username, bio: bio, imageURL: imageURL, sports: Array(selectedSports), hometown: coords)
-        guard let resp = await userObserver.updateUserData(update: update) else {
+        guard let resp = await userService.updateUserData(update: update) else {
             handleFailure()
             return
         }

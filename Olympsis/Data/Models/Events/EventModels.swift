@@ -17,7 +17,8 @@ class Event: Codable, Identifiable, Hashable {
     
     var mediaURL: String
     var mediaType: MEDIA_TYPES
-    
+
+    var type: EVENT_TYPES
     var title: String
     var body: String
     var tags: [String]
@@ -57,15 +58,16 @@ class Event: Codable, Identifiable, Hashable {
         
         case mediaURL = "media_url"
         case mediaType = "media_type"
-        
+
+        case type
         case title
         case body
         case tags
         case sports
-        
+
         case config
         case formatConfig = "format_config"
-        
+
         case startTime = "start_time"
         case stopTime = "stop_time"
         
@@ -96,6 +98,7 @@ class Event: Codable, Identifiable, Hashable {
          venues: [VenueDescriptor] = [],
          mediaURL: String,
          mediaType: MEDIA_TYPES,
+         type: EVENT_TYPES = .Regular,
          title: String,
          body: String,
          tags: [String] = [],
@@ -126,7 +129,8 @@ class Event: Codable, Identifiable, Hashable {
         
         self.mediaURL = mediaURL
         self.mediaType = mediaType
-        
+
+        self.type = type
         self.title = title
         self.body = body
         self.tags = tags
@@ -171,9 +175,19 @@ class Event: Codable, Identifiable, Hashable {
         
         // Decode media properties with conversion
         mediaURL = try container.decode(String.self, forKey: .mediaURL)
+        // Normalized because the raw values are the server's uppercase strings,
+        // but events archived by older builds were cached lowercase.
         let mediaTypeRawValue = try container.decode(String.self, forKey: .mediaType)
-        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.lowercased()) ?? .image
-        
+        mediaType = MEDIA_TYPES(rawValue: mediaTypeRawValue.uppercased()) ?? .image
+
+        // `type` only started being sent recently, so events created before it
+        // arrive with an empty/absent value — those are regular events.
+        if let typeRawValue = try container.decodeIfPresent(String.self, forKey: .type) {
+            type = EVENT_TYPES(rawValue: typeRawValue.uppercased()) ?? .Regular
+        } else {
+            type = .Regular
+        }
+
         title = try container.decode(String.self, forKey: .title)
         body = try container.decode(String.self, forKey: .body)
         tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
@@ -233,9 +247,10 @@ class Event: Codable, Identifiable, Hashable {
         try container.encode(venues, forKey: .venues)
 
         try container.encode(mediaURL, forKey: .mediaURL)
-        // Encode as lowercase string to match what the API expects
+        // The raw value is already the server's string form ("IMAGE"/"VIDEO")
         try container.encode(mediaType.rawValue, forKey: .mediaType)
 
+        try container.encode(type.rawValue, forKey: .type)
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
         try container.encode(tags, forKey: .tags)
@@ -270,6 +285,7 @@ class Event: Codable, Identifiable, Hashable {
     }
 
     func update(from event: Event) {
+        self.type = event.type
         self.title = event.title
         self.body = event.body
         self.venues = event.venues
@@ -325,6 +341,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
     var venues: [VenueDescriptor]?
     var mediaURL: String?
     var mediaType: MEDIA_TYPES?
+    var type: EVENT_TYPES?
     var title: String?
     var body: String?
     var tags: [String]?
@@ -351,6 +368,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         case venues
         case mediaURL = "media_url"
         case mediaType = "media_type"
+        case type
         case title
         case body
         case sports
@@ -378,6 +396,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         venues: [VenueDescriptor]? = nil,
         mediaURL: String? = nil,
         mediaType: MEDIA_TYPES? = nil,
+        type: EVENT_TYPES? = nil,
         title: String? = nil,
         body: String? = nil,
         tags: [String]? = nil,
@@ -403,6 +422,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = venues
         self.mediaURL = mediaURL
         self.mediaType = mediaType
+        self.type = type
         self.title = title
         self.body = body
         self.sports = sports
@@ -432,13 +452,22 @@ class EventDao: Codable, Identifiable, ObservableObject {
         self.venues = try container.decodeIfPresent([VenueDescriptor].self, forKey: .venues)
         self.mediaURL = try container.decodeIfPresent(String.self, forKey: .mediaURL)
         
-        // Decode mediaType — API sends uppercase (e.g. "IMAGE")
+        // Decode mediaType — API sends uppercase (e.g. "IMAGE"); older cached
+        // payloads are lowercase, so normalize before matching the raw value.
         if let mediaTypeRaw = try container.decodeIfPresent(String.self, forKey: .mediaType) {
-            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.lowercased())
+            self.mediaType = MEDIA_TYPES(rawValue: mediaTypeRaw.uppercased())
         } else {
             self.mediaType = nil
         }
         
+        // Same tolerance as `Event`: an older event has no type, and the raw
+        // value may arrive in any casing.
+        if let typeRaw = try container.decodeIfPresent(String.self, forKey: .type) {
+            self.type = EVENT_TYPES(rawValue: typeRaw.uppercased()) ?? .Regular
+        } else {
+            self.type = nil
+        }
+
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.body = try container.decodeIfPresent(String.self, forKey: .body)
         self.sports = try container.decodeIfPresent([String].self, forKey: .sports)
@@ -498,6 +527,7 @@ class EventDao: Codable, Identifiable, ObservableObject {
         try container.encodeIfPresent(venues, forKey: .venues)
         try container.encodeIfPresent(mediaURL, forKey: .mediaURL)
         try container.encodeIfPresent(mediaType?.rawValue, forKey: .mediaType)
+        try container.encodeIfPresent(type?.rawValue, forKey: .type)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(sports, forKey: .sports)
@@ -533,18 +563,60 @@ struct EventsResponse: Decodable {
 struct NewEventDao: Codable {
     var event: EventDao
     var includeHost: Bool
+    var invitees: [String]
     var recurrence: EventRecurrenceOptions?
     
     enum CodingKeys: String, CodingKey {
         case event
-        case includeHost = "include_host"
+        case invitees
         case recurrence
+        case includeHost = "include_host"
+    }
+}
+
+// MARK: - RSVP helpers
+//
+// The server splits waitlisted rows out of `participants` into
+// `participants_waitlist` when it aggregates an event, so a user who was
+// waitlisted is absent from `participants` entirely. Every "has this user
+// RSVP'd?" check has to look in both arrays — these helpers exist so that rule
+// lives in one place instead of being re-derived at each call site.
+extension Event {
+
+    /// The user's participant row, wherever it currently sits.
+    func rsvp(for userID: String) -> Participant? {
+        participants.first(where: { $0.user?.userID == userID })
+            ?? participantsWaitlist.first(where: { $0.user?.userID == userID })
+    }
+
+    /// Files a newly created row into the array its status belongs to.
+    func insertRSVP(_ participant: Participant) {
+        if participant.status == .Waitlist {
+            participantsWaitlist.append(participant)
+        } else {
+            participants.append(participant)
+        }
+    }
+
+    /// Drops the user's row from both arrays.
+    func removeRSVP(for userID: String) {
+        participants.removeAll(where: { $0.user?.userID == userID })
+        participantsWaitlist.removeAll(where: { $0.user?.userID == userID })
+    }
+
+    /// Applies a new status to the user's existing row, moving it between the
+    /// two arrays when the status crosses the waitlist boundary.
+    func setRSVPStatus(_ status: EVENT_RSVP_STATUS, for userID: String) {
+        guard let participant = rsvp(for: userID) else { return }
+        participant.status = status
+        removeRSVP(for: userID)
+        insertRSVP(participant)
     }
 }
 
 // MARK: - Extensions
 extension Event {
-    
+
     func isCompetition() -> Bool {
         guard let config = self.formatConfig,
               let isCompetition = config.isCompetition else { return false }
@@ -728,7 +800,7 @@ extension [Event] {
     /// Returns the most recent event for the user
     func mostRecentForUser(userID: String) -> Event? {
         return self
-            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .filter { $0.rsvp(for: userID) != nil }
             .sorted { $0.startTime < $1.startTime }
             .first
     }
@@ -736,7 +808,7 @@ extension [Event] {
     /// Returns all of the events that the user has RSVPed to
     func rsvpedEvents(userID: String) -> [Event] {
         return self
-            .filter { $0.participants.first(where: { $0.user?.userID == userID }) != nil }
+            .filter { $0.rsvp(for: userID) != nil }
             .sorted { $0.startTime < $1.startTime }
     }
     
@@ -748,44 +820,71 @@ extension [Event] {
     }
     
     /// Returns an array of Day Group structs that groups events by their start dates
+    ///
+    /// Buckets each event by `calendar.startOfDay(for:)` — one calendar
+    /// call per event — instead of the previous approach of scanning the
+    /// existing groups with `areDatesOnSameDay` per event (two
+    /// `dateComponents` calls per comparison, O(events × days) total).
+    /// `dateComponents` routes through ICU and is slow enough that the old
+    /// version showed up as render-time lag in the events explorer.
+    ///
+    /// Note: `DayGroup.date` is now the *midnight* of the group's day
+    /// rather than the first event's exact start time. Consumers already
+    /// treat it as a day-identity (scroll-target ids, `findClosestDate`
+    /// normalizes via `startOfDay`), so this is a safe — arguably more
+    /// correct — anchor.
     func eventsGroupedByDay() -> [DayGroup] {
-        var groups: [DayGroup] = [DayGroup]();
-        self
-            .sorted { $0.startTime < $1.startTime }
-            .forEach { e in
-                let index = groups.firstIndex(where: {
-                    areDatesOnSameDay(
-                        date1: $0.date,
-                        date2: e.startTime
-                    )}
-                )
-                
-                if index != nil {
-                    groups[index!].events.append(e)
-                    return
-                } else {
-                    let newGroup = DayGroup(date: e.startTime, events: [e])
-                    groups.append(newGroup)
-                    return
-                }
+        let calendar = Calendar.current
+        return Dictionary(grouping: self) { calendar.startOfDay(for: $0.startTime) }
+            .map { day, events in
+                DayGroup(date: day, events: events.sorted { $0.startTime < $1.startTime })
             }
-        
-        var sorted = groups
-            .sorted { (group1: DayGroup, group2: DayGroup) in
-                if areDatesOnSameDay(date1: group1.date, date2: group2.date) {
-                    // If dates are on the same day, prioritize item1
-                    return true
-                } else {
-                    // If dates are not on the same day, sort by timestamp
-                    return group1.date < group2.date
-                }
-            }
-        for i in 0..<sorted.count {
-            sorted[i].events = sorted[i].events.sorted { event1, event2 in
-                return event1.startTime < event2.startTime
-            }
+            .sorted { $0.date < $1.date }
+    }
+
+    /// Returns the events bucketed into the "Up Next" sections: today, the rest
+    /// of the current week, next week, and anything beyond that.
+    ///
+    /// Week boundaries come from `Calendar.current`, so the first day of the
+    /// week follows the user's locale (Sunday in the US, Monday across most of
+    /// Europe) instead of being hard-coded. Empty sections are dropped, so the
+    /// caller can render the result directly without checking for gaps.
+    ///
+    /// Note: this only buckets, it never filters. Anything that already started
+    /// earlier in the current week lands in `.today`/`.thisWeek` alongside the
+    /// upcoming events — callers are expected to hand in forward-looking events.
+    /// - Parameter referenceDate: "now"; injectable so previews/tests can pin it.
+    func eventsGroupedForUpNext(relativeTo referenceDate: Date = Date()) -> [UpNextSectionGroup] {
+        let calendar = Calendar.current
+
+        // `thisWeek.end` is the midnight that starts the following week, so
+        // feeding it back in gives us next week's interval. Both `.end` values
+        // are exclusive upper bounds for their bucket.
+        guard let thisWeek = calendar.dateInterval(of: .weekOfYear, for: referenceDate),
+              let nextWeek = calendar.dateInterval(of: .weekOfYear, for: thisWeek.end) else {
+            // Calendar could not resolve week boundaries — fall back to a single
+            // section rather than dropping events on the floor.
+            return [UpNextSectionGroup(section: .later, events: self.sorted { $0.startTime < $1.startTime })]
         }
-        
-        return sorted
+
+        var buckets = [UpNextSection: [Event]]()
+        for event in self {
+            let section: UpNextSection
+            if calendar.isDate(event.startTime, inSameDayAs: referenceDate) {
+                section = .today
+            } else if event.startTime < thisWeek.end {
+                section = .thisWeek
+            } else if event.startTime < nextWeek.end {
+                section = .nextWeek
+            } else {
+                section = .later
+            }
+            buckets[section, default: []].append(event)
+        }
+
+        return UpNextSection.allCases.compactMap { section in
+            guard let events = buckets[section], !events.isEmpty else { return nil }
+            return UpNextSectionGroup(section: section, events: events.sorted { $0.startTime < $1.startTime })
+        }
     }
 }

@@ -21,11 +21,19 @@ struct EventVenuePicker: View {
     
     @State private var customLocationName: String = ""
     
+    /// How many recents to show before the "Show more" button is tapped.
+    @State private var showAllRecents: Bool = false
+    /// Persisted history of recently-used locations (shared across pickers).
+    @State private var recentsStore = RecentLocationsStore.shared
+    
     @State private var mapViewModel = CustomLocationViewModel()
     @StateObject private var searchModel = VenueSearchViewModel()
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
+    
+    /// Number of recent locations shown before the "Show more" button appears.
+    private let recentsPreviewCount = 5
     
     private var location: MKCoordinateRegion {
         guard let user = session.user, let hometown = user.hometown else {
@@ -35,6 +43,27 @@ struct EventVenuePicker: View {
     }
     
     private let log: Logger = Logger(subsystem: "com.olympsis.client", category: "event_venue_picker")
+    
+    /// The trimmed search query. Empty means the user hasn't typed anything yet,
+    /// which is when we surface recent locations instead of search results.
+    private var trimmedQuery: String {
+        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    /// Names already selected for this event, lower-cased for comparison.
+    private var selectedNames: Set<String> {
+        Set(manager.selectedVenueDescriptors.compactMap { $0.name?.localizedLowercase })
+    }
+    
+    /// Recent locations minus anything already added to the event.
+    private var filteredRecents: [Venue] {
+        recentsStore.recents.filter { !selectedNames.contains($0.name.localizedLowercase) }
+    }
+    
+    /// The slice of recents currently visible (first few, or all once expanded).
+    private var visibleRecents: [Venue] {
+        showAllRecents ? filteredRecents : Array(filteredRecents.prefix(recentsPreviewCount))
+    }
     
     private func search() {
         guard state != .loading else { return }
@@ -197,6 +226,20 @@ struct EventVenuePicker: View {
         return Array(sorted.prefix(20))
     }
     
+    /// Removes a single suggestion from the visible results without selecting it.
+    /// Backs the trailing "x" on each search-result row.
+    private func removeFromResults(_ venue: Venue) {
+        venues.remove(venue)
+        venuesList.removeAll { $0.id == venue.id }
+    }
+    
+    /// Selects a venue: records it in recents, adds it to the event, and closes.
+    private func select(_ venue: Venue) {
+        recentsStore.record(venue)
+        manager.addVenueDescriptor(venue)
+        dismiss()
+    }
+    
     private func saveCustomLocation() {
         guard let locationInfo = mapViewModel.locationInfo,
               !locationInfo.name.isEmpty && locationInfo.name.count > 1 else {
@@ -219,82 +262,190 @@ struct EventVenuePicker: View {
             country: locationInfo.country
         )
         
+        // Custom (map-dropped) locations are remembered too so they resurface next time.
+        recentsStore.record(venue)
         manager.addVenueDescriptor(venue)
         dismiss()
     }
     
+    // MARK: - Header
+    /// Custom sheet header: a frosted "x" to dismiss, the centered title, and a
+    /// prominent blue button that opens the map-based custom location picker.
+    private var header: some View {
+        HStack {
+            CircularButton(systemImage: "xmark", size: 44) { dismiss() }
+            
+            Spacer()
+            
+            Text(String(localized: "new-location-title", table: "Events"))
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            Spacer()
+            
+            Button(action: { showCustom.toggle() }) {
+                Image("icons/custom.map.badge.plus")
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background {
+                        Circle()
+                            .foregroundStyle(Color.Brand.primary)
+                    }
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    // MARK: - Search field
+    /// A rounded search field styled to match the system search bar in the design.
+    private var searchField: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+            
+            TextField(String(localized: "location-search-placeholder", table: "Events"), text: $searchText)
+                .autocorrectionDisabled()
+                .submitLabel(.search)
+                .onSubmit { search() }
+            
+            // Cosmetic microphone to mirror the system search field styling. It is
+            // intentionally non-interactive (dictation is available via the keyboard).
+            Image(systemName: "mic.fill")
+                .foregroundStyle(.secondary)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+        .background {
+            Capsule()
+                .foregroundStyle(Color.Background.secondary)
+                .overlay {
+                    Capsule().stroke(Color.border)
+                }
+        }
+    }
+    
+    // MARK: - Row
+    /// A single tappable venue row. Tapping selects it; the trailing "x" runs the
+    /// supplied `onRemove` (drop-from-results for search, clear-from-history for recents).
+    @ViewBuilder
+    private func venueRow(_ venue: Venue, onRemove: @escaping () -> Void) -> some View {
+        HStack {
+            VenuePickerListItem(venue: venue, isExternal: venue.description != "external")
+                .contentShape(Rectangle())
+                .onTapGesture { select(venue) }
+            
+            Button(action: onRemove) {
+                Image(systemName: "xmark")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+    }
+    
+    // MARK: - Recents
+    /// Shown when the user hasn't typed anything: recent locations (capped) with a
+    /// "Show more" button, or the empty-state prompt when there's no history.
+    @ViewBuilder
+    private var recentsSection: some View {
+        if filteredRecents.isEmpty {
+            emptyState
+        } else {
+            HStack {
+                Text(String(localized: "recent-locations-title", table: "Events"))
+                    .font(.caption)
+                    .bold()
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.top, 4)
+            
+            ForEach(visibleRecents, id: \.id) { venue in
+                venueRow(venue) { recentsStore.remove(venue) }
+                Divider().padding(.horizontal)
+            }
+            
+            // Only offer "Show more" while collapsed and there's more to reveal.
+            if !showAllRecents && filteredRecents.count > recentsPreviewCount {
+                Button(action: { withAnimation { showAllRecents = true } }) {
+                    Text(String(localized: "show-more-locations-text", table: "Events"))
+                        .font(.callout)
+                        .fontWeight(.medium)
+                }
+                .padding(.vertical, 10)
+            }
+        }
+    }
+    
+    // MARK: - Empty state
+    /// Prompt shown when there are no results / no recents: invites the user to
+    /// search or drop a custom pin.
+    private var emptyState: some View {
+        VStack {
+            Text(String(localized: "event-search-locations-or", table: "Events"))
+            Button(action: { showCustom.toggle() }) {
+                Text(String(localized: "set-custom-location-text", table: "Events"))
+                    .font(.callout)
+                    .fontWeight(.medium)
+            }
+        }
+        .padding(.top, 50)
+    }
+    
     var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            header
+                .padding(.horizontal)
+                .padding(.top)
+            
+            searchField
+                .padding(.horizontal)
+                .padding(.top, 12)
+            
             ScrollView {
-                switch state {
-                case .pending, .success:
-                    if venuesList.count > 0 {
-                        ForEach(venuesList, id: \.id) { venue in
-                            VenuePickerListItem(venue: venue, isExternal: venue.description != "external")
-                                .padding([.horizontal, .bottom])
-                                .onTapGesture {
-                                    manager.addVenueDescriptor(venue)
-                                    dismiss()
-                                }
-                        }
-                    } else {
-                        VStack {
-                            Text(String(localized: "event-search-locations-or", table: "Events"))
-                            Button(action: { showCustom.toggle() }) {
-                                Text(String(localized: "set-custom-location-text", table: "Events"))
-                                    .font(.callout)
-                                    .fontWeight(.medium)
+                if trimmedQuery.isEmpty {
+                    // Nothing typed yet → surface recently-used locations.
+                    recentsSection
+                } else {
+                    // The user is searching → show matching results.
+                    switch state {
+                    case .pending, .success:
+                        if venuesList.count > 0 {
+                            ForEach(venuesList, id: \.id) { venue in
+                                venueRow(venue) { removeFromResults(venue) }
+                                Divider()
+                                    .padding(.horizontal)
                             }
-                        }.padding(.top, 50)
-                    }
-                case .loading:
-                    ProgressView()
-                        .padding(.top, 50)
-                case .failure:
-                    VStack {
-                        Text(String(localized: "event-search-locations-or", table: "Events"))
-                        Button(action: { showCustom.toggle() }) {
-                            Text(String(localized: "set-custom-location-text", table: "Events"))
-                                .font(.callout)
-                                .fontWeight(.medium)
+                        } else {
+                            emptyState
                         }
-                    }.padding(.top, 50)
-                }
-            }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .onSubmit(of: .search, {
-                search()
-            })
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if #available(iOS 26.0, *) {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .imageScale(.large)
-                        }
-                    } else {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .imageScale(.large)
-                        }
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { showCustom.toggle() }) {
-                        Image("icons/custom.map.badge.plus")
+                    case .loading:
+                        ProgressView()
+                            .padding(.top, 50)
+                    case .failure:
+                        emptyState
                     }
                 }
             }
-            .sheet(isPresented: $showCustom) {
-                saveCustomLocation()
-            } content: {
-                NewEventCustomLocation()
-                    .environment(mapViewModel)
-            }
-            .onAppear {
-                venues.formUnion(session.venues)
-                venuesList = filterResults()
-            }
+            .padding(.top, 8)
+        }
+        .background(Color.Background.primary.ignoresSafeArea())
+        .sheet(isPresented: $showCustom) {
+            saveCustomLocation()
+        } content: {
+            NewEventCustomLocation()
+                .environment(mapViewModel)
+        }
+        // Live-filter local/session venues as the user types; a submit additionally
+        // kicks off a remote MKLocalSearch for places not already in memory.
+        .onChange(of: searchText) { _, _ in
+            venuesList = filterResults()
+        }
+        .onAppear {
+            venues.formUnion(session.venues)
+            venuesList = filterResults()
         }
     }
 }

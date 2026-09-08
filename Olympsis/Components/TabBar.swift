@@ -31,6 +31,7 @@ struct TabBar: View {
 
     @Binding var currentTab: ViewTab
 
+    let homeRouter: HomeRouter
     let eventRouter: EventRouter
     let profileRouter: ProfileRouter
 
@@ -48,7 +49,7 @@ struct TabBar: View {
     /// they were cut for the MVP resubmission. Re-adding a tab is a
     /// one-line change here plus a corresponding entry in
     /// `iconView(for:)` / `navigateToRoot(for:)`.
-    private let tabs: [ViewTab] = [.events, .profile]
+    private let tabs: [ViewTab] = [.home, .events, .profile]
 
     var body: some View {
         HStack(spacing: 6) {
@@ -105,6 +106,11 @@ struct TabBar: View {
     @ViewBuilder
     private func iconView(for tab: ViewTab, isSelected: Bool) -> some View {
         switch tab {
+        case .home:
+            Image(systemName: isSelected ? "house.fill" :  "house")
+                .imageScale(.medium)
+                .fontWeight(.semibold)
+                .foregroundStyle(isSelected ? Color.white : Color.Foreground.default)
         case .events:
             Image(systemName: "calendar")
                 .imageScale(.medium)
@@ -115,7 +121,7 @@ struct TabBar: View {
             TabBarProfileLabel(currentTab: $currentTab)
                 .environment(session)
 
-        case .home, .club, .activity:
+        case .club, .activity:
             EmptyView()
         }
     }
@@ -139,11 +145,13 @@ struct TabBar: View {
 
     private func navigateToRoot(for tab: ViewTab) {
         switch tab {
+        case .home:
+            homeRouter.navigateToRoot()
         case .events:
             eventRouter.navigateToRoot()
         case .profile:
             profileRouter.navigateToRoot()
-        case .home, .club, .activity:
+        case .club, .activity:
             break
         }
     }
@@ -192,6 +200,7 @@ private struct GlassPillBackground: ViewModifier {
             Spacer()
             TabBar(
                 currentTab: .constant(.events),
+                homeRouter: HomeRouter(),
                 eventRouter: EventRouter(),
                 profileRouter: ProfileRouter()
             )

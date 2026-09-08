@@ -25,9 +25,6 @@ struct OrgMenu: View {
     
     @State private var alertType = Alerts.LeaveClub
     
-    @StateObject private var clubObserver = ClubObserver()
-    @StateObject private var postObserver = PostObserver()
-    
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionStore.self) private var session
     @EnvironmentObject private var organization: Organization
@@ -165,7 +162,7 @@ struct OrgMenu: View {
                                 primaryButton: .cancel(),
                                 secondaryButton: .destructive(Text("Leave"), action: {
                                     Task { // Perform delete operation
-                                        _ = await session.clubObserver.leaveClub(id: organization.id)
+                                        _ = await session.clubService.leaveClub(id: organization.id)
                                     }
                                 })
                             );
@@ -177,7 +174,7 @@ struct OrgMenu: View {
                             primaryButton: .cancel(),
                             secondaryButton: .destructive(Text("Leave"), action: {
                                 Task { // Perform delete operation
-                                    _ = await session.clubObserver.leaveClub(id: organization.id)
+                                    _ = await session.clubService.leaveClub(id: organization.id)
                                 }
                             })
                         );
@@ -189,7 +186,7 @@ struct OrgMenu: View {
                         primaryButton: .cancel(),
                         secondaryButton: .destructive(Text("Delete"), action: {
                             Task { // Perform delete operation
-                                let res = await session.orgObserver.deleteOrganization(id: organization.id)
+                                let res = await session.orgService.deleteOrganization(id: organization.id)
                                 if res {
                                     guard let selection = session.groupsManager.selected else { return }
                                     session.groupsManager.remove(selection)

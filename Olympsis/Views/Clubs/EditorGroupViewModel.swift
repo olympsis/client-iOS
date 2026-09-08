@@ -42,9 +42,7 @@ class EditorGroupViewModel: ObservableObject {
     
     private var type: GROUP_TYPE
     
-    private var orgObserver = OrgObserver()
-    private var clubObserver = ClubObserver()
-    private var uploadObserver = UploadObserver()
+    private var uploadService = UploadService()
     
     private var log: Logger = Logger(subsystem: "com.olympsis.client", category: "editor_group_view_model")
     
@@ -56,7 +54,7 @@ class EditorGroupViewModel: ObservableObject {
     func uploadClubLogo(_ location: String) async throws {
         if let data = logoPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -71,7 +69,7 @@ class EditorGroupViewModel: ObservableObject {
     func uploadClubBanner(_ location: String) async throws {
         if let data = bannerPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -84,19 +82,19 @@ class EditorGroupViewModel: ObservableObject {
     
     @MainActor
     func deleteClubLogo(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
     func deleteClubBanner(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-club-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
     func uploadOrgLogo(_ location: String) async throws {
         if let data = logoPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -111,7 +109,7 @@ class EditorGroupViewModel: ObservableObject {
     func uploadOrgBanner(_ location: String) async throws {
         if let data = bannerPhotoData {
             let id = UUID().uuidString.lowercased()
-            guard let resp = await uploadObserver.UploadImage(location: location, fileName: id, data: data) else {
+            guard let resp = await uploadService.UploadImage(location: location, fileName: id, data: data) else {
                 return
             }
             if resp.score > 4 {
@@ -124,12 +122,12 @@ class EditorGroupViewModel: ObservableObject {
     
     @MainActor
     func deleteOrgLogo(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-org-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-org-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor
     func deleteOrgBanner(_ location: String, image: String) async {
-        _ = await uploadObserver.DeleteObject(path: "/olympsis-org-images", name: GrabImageIdFromURL(image))
+        _ = await uploadService.DeleteObject(path: "/olympsis-org-images", name: GrabImageIdFromURL(image))
     }
     
     @MainActor

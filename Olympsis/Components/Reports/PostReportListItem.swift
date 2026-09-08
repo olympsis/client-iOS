@@ -12,7 +12,7 @@ struct PostReportListItem: View {
     
     @State var report: PostReport
     @State private var showPost: Bool = false
-    @StateObject private var observer = ManagementObserver()
+    private let observer = ManagementService()
     
     var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "post_report_list_item")
     

@@ -27,6 +27,19 @@ enum AUTH_STATUS: String, CaseIterable {
     case fatal_error
 }
 
+/// A launch-critical call (the system config, or check-in) failed for a reason
+/// the user can act on, so the app shows a page about it instead of continuing.
+///
+/// This is deliberately separate from `AUTH_STATUS.fatal_error`: an outage is
+/// retryable and says something specific, while a fatal error is the dead end we
+/// can't explain. Nothing persists it — a relaunch should try again.
+enum LAUNCH_OUTAGE: String {
+    /// The device has no usable network.
+    case offline
+    /// The network is fine; Olympsis isn't answering (5xx, or nothing listening).
+    case serverDown
+}
+
 enum CONNECTION_STATE {
     case disconnected
     case connecting
@@ -38,6 +51,9 @@ enum USER_STATUS: String, CaseIterable {
     case new
     case unknown
     case returning
+    /// Profile details are saved but no sports are picked yet, so signup can
+    /// resume at the last step instead of asking for everything again.
+    case needs_sports
     case not_finished
 }
 
@@ -62,9 +78,24 @@ enum EVENTS_PAGE_STATE: String, CaseIterable {
     case map
 }
 
+/// Raw values are the recurrence patterns the server accepts. `allCases` drives
+/// the picker, so the declaration order here is the order shown on screen.
 enum EVENT_RECURRENCE_FREQUENCY: String, CaseIterable {
+    case daily = "DAILY"
     case weekly = "WEEKLY"
     case monthly = "MONTHLY"
+
+    /// Localized label for the frequency button.
+    func displayName() -> String {
+        switch self {
+        case .daily:
+            return String(localized: "advanced-settings-recurrence-frequency-daily", defaultValue: "Daily", table: "Events")
+        case .weekly:
+            return String(localized: "advanced-settings-recurrence-frequency-weekly", defaultValue: "Weekly", table: "Events")
+        case .monthly:
+            return String(localized: "advanced-settings-recurrence-frequency-monthly", defaultValue: "Monthly", table: "Events")
+        }
+    }
 }
 
 enum NavigationType: String, Hashable {
@@ -121,8 +152,10 @@ enum ROUTES: Codable, Hashable {
 
 enum HOME_ROUTES: Codable, Hashable {
     case notifications
+    case archivedNotifications
     case messages
     case full_post_view(_ postId: String)
+    case upNextEvents(_ events: [Event])
 }
 
 enum GROUP_ROUTES: Codable, Hashable {
@@ -151,7 +184,6 @@ enum EVENT_ROUTES: Codable, Hashable {
     )
     case event(event: Event)
     case upNextEvents(events: [Event])
-    case new
     case venue(venue: Venue)
 }
 
@@ -302,12 +334,15 @@ enum GROUP_TYPE: String, CaseIterable {
     case Club = "club"
     case Organization = "organization"
 
-    func toInt() -> Int {
+    /// The value the API expects for an organizer's `type`. The raw values above
+    /// are the app's own vocabulary ("club"), while the server speaks "GROUP" —
+    /// `stringToGroupType` is the inverse of this.
+    var apiValue: String {
         switch self {
         case .Club:
-            0
+            return "GROUP"
         case .Organization:
-            1
+            return "ORGANIZATION"
         }
     }
 }
@@ -336,6 +371,7 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
     case Yes = "yes"
     case Maybe = "maybe"
     case Waitlist = "waitlist"
+    case Cant = "cant"
 
     func toInt() -> Int {
         switch self {
@@ -345,17 +381,63 @@ enum EVENT_RSVP_STATUS: String, CaseIterable {
             0
         case .Waitlist:
             2
+        case .Cant:
+            3
+        }
+    }
+
+    /// The equivalent invite-service RSVP value, for `UpdateInviteRequest.response`.
+    ///
+    /// The two enums exist because they belong to different services: this one is
+    /// the events API's, `RSVPStatus` is invite-service's. The invite endpoint
+    /// now honors `response` — it becomes the status of the participant row the
+    /// server writes when the invite is accepted (omitted means YES). Registering
+    /// the RSVP up front is still a separate call to the events API; sending it
+    /// here is what stops the acceptance from overwriting it with YES.
+    var asRSVPStatus: RSVPStatus {
+        switch self {
+        case .Yes:
+            return .yes
+        case .Maybe:
+            return .maybe
+        case .Waitlist:
+            return .waitlist
+        case .Cant:
+            return .cant
         }
     }
 }
 
+/// Maps the server's legacy integer status (0=MAYBE, 1=YES, 2=WAITLIST, 3=CAN'T)
+/// to the enum. Written as a total switch so an unexpected value falls back to
+/// `.Maybe` instead of being silently misclassified.
 func numberToEventRSVPStatus(_ number: Int) -> EVENT_RSVP_STATUS {
-    if (number == 1) {
-        return .Yes
-    } else if (number == 0) {
+    switch number {
+    case 0:
         return .Maybe
-    } else {
+    case 1:
+        return .Yes
+    case 2:
         return .Waitlist
+    case 3:
+        return .Cant
+    default:
+        return .Maybe
+    }
+}
+
+// Accepts the server's string form ("YES", "CAN'T", ...) in any case and maps
+// it to a status. The apostrophe in "CAN'T" is stripped so it matches the
+// "cant" raw value. Unknown values fall back to .Maybe so a new server value
+// can't break decoding.
+func stringToEventRSVPStatus(_ raw: String) -> EVENT_RSVP_STATUS {
+    let normalized = raw.trimmingCharacters(in: .whitespaces).uppercased().replacingOccurrences(of: "'", with: "")
+    switch normalized {
+    case "YES": return .Yes
+    case "MAYBE": return .Maybe
+    case "WAITLIST": return .Waitlist
+    case "CANT": return .Cant
+    default: return .Maybe
     }
 }
 
@@ -363,6 +445,54 @@ enum EVENT_VISIBILITY_TYPES: String, CaseIterable, Codable {
     case Public = "PUBLIC"
     case Group = "GROUP"
     case Private = "PRIVATE"
+
+    /// SF Symbol shown beside the visibility name in the picker. Uses the filled variants.
+    func image() -> Image {
+        switch self {
+        case .Public:
+            return .init(systemName: "sun.max.fill")
+        case .Private:
+            return .init(systemName: "moon.fill")
+        case .Group:
+            return .init(systemName: "person.3.fill")
+        }
+    }
+
+    /// Localized display name for the visibility option.
+    func name() -> String {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group", table: "Events")
+        }
+    }
+
+    /// Localized explanation of what the visibility option means.
+    func description() -> String {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public-details", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private-details", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group-details", table: "Events")
+        }
+    }
+
+    /// Optional supporting tip shown beneath the description in the visibility picker.
+    func tip() -> String? {
+        switch self {
+        case .Public:
+            return String(localized: "visibility-public-tip", table: "Events")
+        case .Private:
+            return String(localized: "visibility-private-tip", table: "Events")
+        case .Group:
+            return String(localized: "visibility-group-tip", table: "Events")
+        }
+    }
 }
 
 enum EVENT_SKILL_LEVELS: String, CaseIterable {
@@ -403,6 +533,7 @@ enum NEW_EVENT_ERROR: Error {
     case noTitle
     case noDescription
     case noSelectedField
+    case badRecurrence
 }
 
 enum SkillLevel: String, CaseIterable {
@@ -412,11 +543,78 @@ enum SkillLevel: String, CaseIterable {
     case expert     = "Expert"
 }
 
+/// Raw values are the server's `type` strings. Never show `rawValue` in the UI —
+/// use `displayName()`, which is localized.
 enum EVENT_TYPES: String, CaseIterable, Codable {
     case Regular = "REGULAR"
+    case Class = "CLASS"
+    case Match = "MATCH"
     case League = "LEAGUE"
     case Tournament = "TOURNAMENT"
-    case Class = "CLASS"
+
+    /// Localized display name for the type, shown in the picker and on the
+    /// new-event type button.
+    func displayName() -> String {
+        switch self {
+        case .Regular:
+            return String(localized: "event-type-regular", defaultValue: "Regular", table: "Events")
+        case .Class:
+            return String(localized: "event-type-class", defaultValue: "Class", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match", defaultValue: "Match", table: "Events")
+        case .League:
+            return String(localized: "event-type-league", defaultValue: "League", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament", defaultValue: "Tournament", table: "Events")
+        }
+    }
+
+    func image() -> Image {
+        switch self {
+        case .Regular:
+            return .init(systemName: "sun.min.fill")
+        case .Class:
+            return .init(systemName: "book.closed.fill")
+        case .Match:
+            return .init(systemName: "calendar.day.timeline.left")
+        case .League:
+            return .init(systemName: "person.3.fill")
+        case .Tournament:
+            return .init(systemName: "trophy.fill")
+        }
+    }
+    
+    func description() -> String {
+        switch self {
+        case .Regular:
+            return String(localized: "event-type-regular-desc", table: "Events")
+        case .Class:
+            return String(localized: "event-type-class-desc", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match-desc", table: "Events")
+        case .League:
+            return String(localized: "event-type-league-desc", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament-desc", table: "Events")
+        }
+    }
+
+    /// Optional supporting tip shown beneath the description in the type picker.
+    /// `Regular` has no tip; the others map to `event-type-<type>-tip` keys in `Events.xcstrings`.
+    func tip() -> String? {
+        switch self {
+        case .Regular:
+            return nil
+        case .Class:
+            return String(localized: "event-type-class-tip", table: "Events")
+        case .Match:
+            return String(localized: "event-type-match-tip", table: "Events")
+        case .League:
+            return String(localized: "event-type-league-tip", table: "Events")
+        case .Tournament:
+            return String(localized: "event-type-tournament-tip", table: "Events")
+        }
+    }
 }
 
 
@@ -592,9 +790,11 @@ enum MESSAGE_TOAST_TYPES: String {
     case removedFromGroup = "removed_from_group"
 }
 
+/// Raw values are the server's `media_type` strings. Decode sites uppercase the
+/// incoming value first, so events cached by older builds (lowercase) still read.
 enum MEDIA_TYPES: String {
-    case image = "image"
-    case video = "video"
+    case image = "IMAGE"
+    case video = "VIDEO"
 }
 
 // MARK: - Competition Formats
@@ -652,13 +852,17 @@ enum CompetitionFormats: String, Codable, CaseIterable {
     case speedClimbing = "speed_climbing"           // Race to the top
 }
 
+/// invite-service's RSVP vocabulary, used only for `UpdateInviteRequest.response`.
+///
+/// The raw values are exactly the strings the server's `models.RSVPStatus`
+/// parses — including the apostrophe in `CAN'T`. Anything else is rejected with
+/// a 400, so don't "tidy" these; map from `EVENT_RSVP_STATUS.asRSVPStatus`
+/// instead of writing values by hand.
 enum RSVPStatus: String, Codable {
-    case going = "going"
-    case notGoing = "not_going"
-    case maybe = "maybe"
-    case waitlist = "waitlist"
-    case invited = "invited"
-    case pending = "pending"
+    case yes = "YES"
+    case maybe = "MAYBE"
+    case cant = "CAN'T"
+    case waitlist = "WAITLIST"
 }
 
 enum DevicePlatform: String, Codable {
@@ -773,4 +977,23 @@ enum LIST_ITEM_SCALE {
 enum TRANSIT_SCALE {
     case small
     case regular
+}
+
+// MARK: - Invites
+
+/// The kind of resource an invite is for. Raw values match the server's
+/// `InviteType` constants exactly.
+enum InviteType: String, Codable, CaseIterable {
+    case event = "EVENT"
+    case team = "TEAM"
+    case club = "CLUB"
+    case org = "ORG"
+}
+
+/// Where an invite stands in its lifecycle. Raw values match the server's
+/// `InviteStatus` constants exactly.
+enum InviteStatus: String, Codable, CaseIterable {
+    case pending = "PENDING"
+    case accepted = "ACCEPTED"
+    case declined = "DECLINED"
 }

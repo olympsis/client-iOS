@@ -45,7 +45,7 @@ class FeedViewModel: ObservableObject {
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver?.getPosts(clubId: club.id, parentId: club.parent?.id) else {
+            guard let response: [Post] = await session.postService.getPosts(clubId: club.id, parentId: club.parent?.id) else {
                 if !refresh {
                     status = .failure
                 }
@@ -85,7 +85,7 @@ class FeedViewModel: ObservableObject {
                 log.error("Failed to get selected group")
                 return
             }
-            guard let response: [Post] = await session.postObserver?.getPosts(clubId: org.id, parentId: nil) else {
+            guard let response: [Post] = await session.postService.getPosts(clubId: org.id, parentId: nil) else {
                 if !refresh {
                     status = .failure
                 }

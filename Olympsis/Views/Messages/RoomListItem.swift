@@ -11,7 +11,7 @@ struct RoomListItem: View {
     
     @State var room: Room
     @Binding var rooms: [Room]
-    @State var observer: ChatObserver
+    let observer: ChatService
     @State private var joined = false
     @State private var state: LOADING_STATE = .pending
     @Environment(SessionStore.self) private var session
@@ -77,6 +77,6 @@ struct RoomListItem: View {
 }
 
 #Preview {
-    RoomListItem(room: ROOMS[0], rooms: .constant([Room]()), observer: ChatObserver())
+    RoomListItem(room: ROOMS[0], rooms: .constant([Room]()), observer: ChatService())
         .environment(SessionStore())
 }

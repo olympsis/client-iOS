@@ -35,8 +35,8 @@ final class NewPostManager: ObservableObject {
     
     @Published var status: LOADING_STATE = .pending
     
-    var postObserver = PostObserver()
-    var uploadObserver = UploadObserver()
+    var postService = PostService()
+    var uploadService = UploadService()
     
     var log: Logger = Logger(subsystem: "com.olympsis.client", category: "new_post_view_model")
     
@@ -98,7 +98,7 @@ final class NewPostManager: ObservableObject {
             dto.images = images
             
             // make the http call to create post
-            guard let postId = await postObserver.createPost(dto: dto) else {
+            guard let postId = await postService.createPost(dto: dto) else {
                 log.error("Deleting post images..")
                 if let images = dto.images {
                     await deleteImages(images: images)
@@ -120,7 +120,7 @@ final class NewPostManager: ObservableObject {
         } else {
             
             // make the http call to create post
-            guard let postId = await postObserver.createPost(dto: dto) else {
+            guard let postId = await postService.createPost(dto: dto) else {
                 handleFailure()
                 return nil
             }
@@ -220,7 +220,7 @@ final class NewPostManager: ObservableObject {
             return nil
         }
         
-        guard let response = await uploadObserver.UploadImage(location: "/olympsis-feed-images", fileName: imageId, data: d) else {
+        guard let response = await uploadService.UploadImage(location: "/olympsis-feed-images", fileName: imageId, data: d) else {
             log.error("Failed to upload image: \(imageId)")
             return nil
         }
@@ -234,7 +234,7 @@ final class NewPostManager: ObservableObject {
      */
     func deleteImages(images: [String]) async {
         for image in images {
-            let resp = await uploadObserver.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
+            let resp = await uploadService.DeleteObject(path: "/olympsis-feed-images", name: GrabImageIdFromURL(image))
             if !resp {
                 log.error("Failed to delete image: \(image)")
             }

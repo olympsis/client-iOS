@@ -46,8 +46,16 @@ class Participant: Codable, Hashable {
         id = try container.decode(String.self, forKey: .id)
         user = try container.decodeIfPresent(UserSnippet.self, forKey: .user)
         
-        let rawStatus = try container.decode(Int.self, forKey: .status)
-        status = numberToEventRSVPStatus(rawStatus)
+        // RSVP status arrives as a legacy integer (0/1/2/3) from current server builds
+        // and as a string ("YES"/...) once the server flips formats. Accept either so a
+        // format change can't break Event decoding; default to .Maybe on anything else.
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = .Maybe
+        }
         
         isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous) ?? false
         
@@ -77,6 +85,43 @@ class Participant: Codable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+}
+
+/// What the server answers with when a participant row is created or changed.
+///
+/// The status matters as much as the id: the server may not have given the
+/// caller what they asked for — an RSVP to a full event comes back WAITLIST —
+/// and the client has no other way to know that happened.
+struct ParticipantResponse: Decodable {
+    let id: String
+    let status: EVENT_RSVP_STATUS?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case status
+    }
+
+    init(id: String, status: EVENT_RSVP_STATUS?) {
+        self.id = id
+        self.status = status
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+
+        // Int-or-string, same as `Participant`. Left nil rather than defaulted
+        // when absent so the caller can fall back to the status it requested —
+        // a server build from before this field existed must not be read as
+        // "you were downgraded to Maybe".
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = nil
+        }
     }
 }
 
@@ -116,8 +161,17 @@ class ParticipantDao: Codable {
         id = try container.decodeIfPresent(String.self, forKey: .id)
         userID = try container.decodeIfPresent(String.self, forKey: .userID)
         
-        let statusInt = try container.decodeIfPresent(Int.self, forKey: .status) ?? 0
-        status = numberToEventRSVPStatus(statusInt)
+        // RSVP status arrives as a legacy integer (0/1/2/3) from current server builds
+        // and as a string ("YES"/...) once the server flips formats. Accept either so a
+        // format change can't break Event decoding; a missing/unknown status becomes
+        // .Maybe (safer than the old `?? 0`) rather than nil.
+        if let rawInt = try? container.decode(Int.self, forKey: .status) {
+            status = numberToEventRSVPStatus(rawInt)
+        } else if let rawString = try? container.decode(String.self, forKey: .status) {
+            status = stringToEventRSVPStatus(rawString)
+        } else {
+            status = .Maybe
+        }
         
         eventID = try container.decodeIfPresent(String.self, forKey: .eventID)
         isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)

@@ -19,6 +19,10 @@ struct ExplorerList: View {
     /// `EventsExplorer` so the in-drawer filter button toggles the
     /// existing `FilterView` sheet that lives on `Events`.
     var showMenu: Binding<Bool>? = nil
+    /// Bound to the parent's new-event sheet state. The new-event flow
+    /// is presented as a sheet by the host (`Events`), not a nav route,
+    /// so the empty-state "create" CTA flips this instead of routing.
+    var showNewEvent: Binding<Bool>? = nil
     /// Lifted to the parent so the floating drawer-actions overlay
     /// and the in-drawer calendar share the same picked date — both
     /// pickers should scroll the list to the same place.
@@ -123,7 +127,7 @@ struct ExplorerList: View {
         // Use fallback location
         // The server expects the radius in meters; `manager.radius` is in
         // miles, so convert before sending — matching the venues fetch.
-        guard let resp = await session.eventObserver.fetchEvents(
+        guard let resp = await session.eventService.fetchEvents(
             longitude: currentLocation.coordinate.longitude,
             latitude: currentLocation.coordinate.latitude,
             radius: milesToMeters(radius: manager.radius),
@@ -201,36 +205,18 @@ struct ExplorerList: View {
 
         return VStack(spacing: 8) {
 
-            // MARK: - Picker + actions row
+            // MARK: - Actions row
             //
-            // Picker on the leading edge, calendar + filter buttons on
-            // the trailing edge, with a `Spacer` in between so the
-            // buttons hug the right and the picker hugs the left.
-            // Floating search bar in `EventsExplorer` replaces the
-            // old in-drawer search field, so this row no longer has a
-            // text input — just the segmented control and the two
-            // action buttons. Buttons are gated on `isFullyExpanded`
-            // so the collapsed drawer header doesn't double up with
-            // the `FloatingDrawerActions` chips outside the drawer.
-            HStack(spacing: 8) {
-                // Custom segmented control rather than the system
-                // `Picker(.segmented)`. The native picker is a bridged
-                // `UISegmentedControl`; hosted inside the explorer's
-                // overlay drawer it swallowed its *first* tap after the
-                // drawer appeared (the tap only resolved the responder
-                // chain), which is why switching pages used to need a
-                // double tap. Building the control out of plain SwiftUI
-                // buttons sidesteps the UIKit bridge, so the first tap
-                // registers immediately.
-                ExplorerPagePicker(selection: $vm.page)
-                    .padding(.horizontal)
-                    // Lock the events/venues toggle while a fetch is in
-                    // flight so the user can't flip pages mid-load (which
-                    // would show one page's skeletons against the other
-                    // page's data). `.disabled` also dims it as a cue.
-                    .disabled(vm.state == .loading)
-
-                if isFullyExpanded {
+            // Calendar + filter buttons on the trailing edge. The
+            // events/venues picker moved up to the navigation bar's
+            // principal slot (see `Events`), and the floating search bar
+            // in `EventsExplorer` replaced the old in-drawer search
+            // field — so this row is now just the two action buttons.
+            // The whole row is gated on `isFullyExpanded` so the
+            // collapsed drawer header doesn't double up with the
+            // `FloatingDrawerActions` chips outside the drawer.
+            if isFullyExpanded {
+                HStack(spacing: 8) {
                     Spacer()
 
                     if vm.page == .events {
@@ -285,10 +271,10 @@ struct ExplorerList: View {
                         )
                     }
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .transition(.opacity)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 8)
-            .animation(.spring(response: 0.3, dampingFraction: 0.86), value: isFullyExpanded)
 
             ScrollViewReader { proxy in
                 ScrollView {
@@ -300,10 +286,11 @@ struct ExplorerList: View {
                             // No events nearby (including a 204 response) —
                             // show the encouraging empty state instead of the
                             // failure view. The "create" CTA only appears when
-                            // we have a router to push the new-event flow onto.
+                            // we have a `showNewEvent` binding to present the
+                            // new-event sheet with.
                             EventsEmptyState(
-                                onCreate: router.map { router in
-                                    { router.navigate(to: .new) }
+                                onCreate: showNewEvent.map { showNewEvent in
+                                    { showNewEvent.wrappedValue = true }
                                 }
                             )
                         } else {
@@ -429,63 +416,6 @@ struct ExplorerList: View {
                 .scrollToTopButton(isEnabled: vm.page == .venues)
             }
         }
-    }
-}
-
-/// Two-segment control that drives the events/venues page selection.
-///
-/// Replaces `Picker(.segmented)` to avoid the bridged `UISegmentedControl`
-/// first-tap issue inside the overlay drawer (see call site). Pure SwiftUI
-/// buttons with a `matchedGeometryEffect` thumb that slides between the
-/// selected segment, styled to read like a system segmented control.
-private struct ExplorerPagePicker: View {
-
-    @Binding var selection: EVENT_EXPLORER_STATE
-
-    /// Drives the sliding-thumb animation between segments.
-    @Namespace private var thumb
-
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(EVENT_EXPLORER_STATE.allCases, id: \.self) { page in
-                segment(for: page)
-            }
-        }
-        .padding(2)
-        .background(
-            RoundedRectangle(cornerRadius: 9)
-                .fill(Color(uiColor: .tertiarySystemFill))
-        )
-        .fixedSize(horizontal: true, vertical: false)
-    }
-
-    @ViewBuilder
-    private func segment(for page: EVENT_EXPLORER_STATE) -> some View {
-        let isSelected = selection == page
-        Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                selection = page
-            }
-        } label: {
-            Text(page.localized)
-                .font(.subheadline)
-                .fontWeight(.medium)
-                .foregroundStyle(isSelected ? Color.primary : Color.secondary)
-                .padding(.vertical, 6)
-                .padding(.horizontal, 16)
-                .background {
-                    // Only the selected segment paints the thumb; the
-                    // shared `matchedGeometryEffect` id makes it slide
-                    // across when the selection changes.
-                    if isSelected {
-                        RoundedRectangle(cornerRadius: 7)
-                            .fill(Color.Background.primary)
-                            .shadow(color: .black.opacity(0.12), radius: 1, y: 1)
-                            .matchedGeometryEffect(id: "thumb", in: thumb)
-                    }
-                }
-        }
-        .buttonStyle(.plain)
     }
 }
 

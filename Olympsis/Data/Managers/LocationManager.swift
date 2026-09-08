@@ -48,7 +48,21 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func requestLocation() {
         manager.requestWhenInUseAuthorization()
-        manager.startMonitoringSignificantLocationChanges()
+        startUpdatingLocationIfAuthorized()
+    }
+
+    /// Starts a location update only when access was already granted. This is
+    /// safe for background initialization because it never presents the system
+    /// location permission prompt.
+    func startUpdatingLocationIfAuthorized() {
+        guard isAuthorized else { return }
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        // Use continuous updates (not significant-change monitoring): the
+        // latter never delivers a fix for a static Simulator location, which
+        // left `location` nil and forced the map/search to fall back to the
+        // hometown. `startUpdatingLocation` fires `didUpdateLocations` for the
+        // current (including simulated) position.
+        manager.startUpdatingLocation()
     }
 
     /// Wait up to `timeout` seconds for the first location fix to land in
@@ -82,10 +96,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
-            case .authorizedWhenInUse:  // Location services are available.
+            case .authorizedWhenInUse, .authorizedAlways:  // Location services are available.
                 isLocationAuthorized = true
                 isLocationServicesEnabled = true
-                manager.startMonitoringSignificantLocationChanges()
+                manager.startUpdatingLocation()
                 break
                 
             case .restricted, .denied:  // Location services currently unavailable.

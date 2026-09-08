@@ -100,7 +100,7 @@ struct EventLocation: View {
                     .placeholder {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.quaternary)
-                            .frame(height: 100)
+                            .frame(height: 250)
                             .overlay {
                                 ProgressView()
                             }
@@ -113,7 +113,7 @@ struct EventLocation: View {
             } else {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.quaternary)
-                    .frame(height: 100)
+                    .frame(height: 250)
                     .overlay {
                         ProgressView()
                     }

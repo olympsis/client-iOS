@@ -28,8 +28,8 @@ struct NewEventImagePicker: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text(String(localized: "new-event-image", table: "Events"))
-                .font(.headline)
+            Text(String(localized: "new-event-image", table: "Events").uppercased())
+                .font(.caption)
                 .bold()
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {

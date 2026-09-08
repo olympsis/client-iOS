@@ -567,6 +567,7 @@ struct EventsExplorer: View {
                         searchText: $viewModel.searchText,
                         router: router,
                         showMenu: $showMenu,
+                        showNewEvent: $showNewEvent,
                         selectedDate: $selectedDate,
                         isFullyExpanded: false,
                         scale: 2
@@ -637,6 +638,7 @@ struct EventsExplorer: View {
                                 searchText: $viewModel.searchText,
                                 router: router,
                                 showMenu: $showMenu,
+                                showNewEvent: $showNewEvent,
                                 selectedDate: $selectedDate,
                                 isFullyExpanded: sheetDetent == .large
                             )

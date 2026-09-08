@@ -55,7 +55,8 @@ struct EventView: View {
         }
         
         // Reveal after user has RSVPed
-        guard event.participants.first(where: { $0.user?.userID == user.userID }) != nil else {
+        guard let userID = user.userID,
+              event.rsvp(for: userID) != nil else {
             return !hideLocation
         }
         return true
@@ -334,8 +335,15 @@ struct EventView: View {
                 }
             }
         }
-        .sheet(isPresented: $showSharingMenu, content: {
-            ShareMenu(event: event, venue: venues[0], showToast: $showToast)
+        // The confirmation is raised here, once the sheet has gone, rather than
+        // from inside ShareMenu: the notification host is an overlay on this
+        // screen, so anything presented while a sheet is up renders behind it.
+        .sheet(isPresented: $showSharingMenu, onDismiss: {
+            guard showToast else { return }
+            showToast = false
+            Toast.success(String(localized: "event-link-copied", defaultValue: "Link copied", table: "Events"), systemImage: "link")
+        }, content: {
+            ShareMenu(event: event, venue: venues.first, showToast: $showToast)
                 .presentationDetents([.height(170)])
         })
         .task {
@@ -392,11 +400,6 @@ struct EventView: View {
                     }
                 }.padding(.horizontal)
             }
-        }.overlay(alignment: .bottomTrailing) {
-            EventRSVPButton(event: event)
-                .environment(session)
-                .padding(.bottom, 75)
-                .padding(.trailing, 5)
         }
     }
 }

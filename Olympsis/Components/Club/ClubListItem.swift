@@ -51,7 +51,7 @@ struct ClubListItem: View {
         }
         
         status = .loading
-        let res = await session.clubObserver.createClubApplication(clubId: club.id)
+        let res = await session.clubService.createClubApplication(clubId: club.id)
         if res {
             status = .success
         } else {

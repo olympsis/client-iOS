@@ -12,7 +12,7 @@ struct MemberReportListItem: View {
     
     var club: Club
     @State var report: MemberReport
-    @StateObject private var observer = ManagementObserver()
+    private let observer = ManagementService()
     
     var logger: Logger = Logger(subsystem: "com.olympsis.client", category: "post_report_list_item")
     

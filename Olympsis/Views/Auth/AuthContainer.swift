@@ -19,6 +19,12 @@ struct AuthContainer: View {
     @Environment(SessionStore.self) private var session
     
     var body: some View {
+        #if DEV
+        // Local development skips Sign in with Apple entirely — we pick which of the
+        // seeded dev users to impersonate instead, so several simulators can each run
+        // as a different user against the same server. See DevAuth.
+        DevAuth()
+        #else
         TabView(selection: $currentView){
             AuthView(currentView: $currentView, appleFirstName: $appleFirstName, appleLastName: $appleLastName, appleEmail: $appleEmail)
                 .tag(AuthTab.auth)
@@ -32,6 +38,12 @@ struct AuthContainer: View {
                 .tag(AuthTab.sports)
                 .toolbar(.hidden, for: .tabBar)
         }
+        // Signup lives outside ViewContainer, which is where the toast host is
+        // normally mounted, so these screens need their own. Only one of the two
+        // roots is ever in the tree (OlympsisApp switches on auth status), so
+        // they can't both render the same card.
+        .inAppNotifications(.shared, style: .olympsis)
+        #endif
     }
 }
 

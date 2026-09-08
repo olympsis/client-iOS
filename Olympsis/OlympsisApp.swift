@@ -29,19 +29,27 @@ struct OlympsisApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch authStatus {
-            case .unknown, .none:
-                LaunchScreen()
+            // An outage outranks the auth state: being offline says nothing
+            // about whether the user is signed in, and the sign-in screen is
+            // useless without a network anyway.
+            if let outage = sessionStore.outage {
+                OutageScreen(kind: outage)
                     .environment(sessionStore)
-            case .fatal_error:
-                FatalScreen()
-                    .environment(sessionStore)
-            case .authenticated:
-                ViewContainer()
-                    .environment(sessionStore)
-            case .unauthenticated, .not_finished:
-                AuthContainer()
-                    .environment(sessionStore)
+            } else {
+                switch authStatus {
+                case .unknown, .none:
+                    LaunchScreen()
+                        .environment(sessionStore)
+                case .fatal_error:
+                    FatalScreen()
+                        .environment(sessionStore)
+                case .authenticated:
+                    ViewContainer()
+                        .environment(sessionStore)
+                case .unauthenticated, .not_finished:
+                    AuthContainer()
+                        .environment(sessionStore)
+                }
             }
         }
     }

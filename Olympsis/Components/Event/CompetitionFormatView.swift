@@ -23,10 +23,10 @@ struct CompetitionFormatView: View {
             .background {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.Background.secondary)
+                        .foregroundStyle(selected ? Color.colorTert.opacity(0.7) : Color.Background.secondary )
                     
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(selected ? Color.colorTert.opacity(0.7) : Color.primary.opacity(0.2), lineWidth: 1.5)
+                        .stroke(Color.primary.opacity(0.2), lineWidth: 1.5)
                 }
             }
     }

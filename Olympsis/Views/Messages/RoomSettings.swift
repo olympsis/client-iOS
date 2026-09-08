@@ -11,7 +11,7 @@ struct RoomSettingsView: View {
     
     @State var room: Room
     @Binding var hasDeleted: Bool
-    @State var observer: ChatObserver
+    let observer: ChatService
     @Environment(SessionStore.self) private var session
     @Environment(\.presentationMode) var presentationMode
     
@@ -83,7 +83,7 @@ struct RoomSettingsView: View {
 struct RoomSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         let room = Room(id: "", name: "Admin's Chat", type: "Group", group: GroupModel(id: UUID().uuidString, type: "club"), members: [ChatMember](), history: [Message]())
-        RoomSettingsView(room: room, hasDeleted: .constant(false), observer: ChatObserver())
+        RoomSettingsView(room: room, hasDeleted: .constant(false), observer: ChatService())
             .environment(SessionStore())
     }
 }

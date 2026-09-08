@@ -22,7 +22,7 @@ struct AsyncPostView: View {
     @MainActor
     private func fetchPost() async {
         state = .loading
-        guard let post = await session.postObserver?.getPost(id: postId) else {
+        guard let post = await session.postService.getPost(id: postId) else {
             state = .failure
             log.error("Failed to fetch post:\(postId, privacy: .public)")
             return
@@ -54,6 +54,7 @@ struct AsyncPostView: View {
                 }.padding(.vertical, 100)
             }
         }
+        .background(Color.Background.primary.ignoresSafeArea())
         .task {
             await fetchPost()
         }

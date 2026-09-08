@@ -13,108 +13,90 @@ struct EventTypePicker: View {
 
     @Binding var type: EVENT_TYPES
     @Environment(\.dismiss) private var dismiss
-
-    /// Converts an uppercase raw value like "REGULAR" to title case "Regular"
-    private func displayName(_ eventType: EVENT_TYPES) -> String {
-        eventType.rawValue.capitalized
-    }
-
-    var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading) {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: { type = .Regular }) {
-                            type == .Regular ? Image(systemName: "circle.fill") : Image(systemName: "circle")
-                        }
-                        Text(displayName(.Regular))
-                            .bold()
-                    }
-                    Text(String(localized: "event-type-regular-desc", table: "Events"))
-                        .font(.callout)
-                        .padding(.horizontal)
-                }.padding(.horizontal)
-
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: { type = .League }) {
-                            type == .League ? Image(systemName: "circle.fill") : Image(systemName: "circle")
-                        }
-                        Text(displayName(.League))
-                            .bold()
-                    }
-                    Text(String(localized: "event-type-league-desc", table: "Events"))
-                        .font(.callout)
-                        .padding(.horizontal)
-                }.padding(.vertical)
-                    .padding(.horizontal)
-
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: { type = .Tournament }) {
-                            type == .Tournament ? Image(systemName: "circle.fill") : Image(systemName: "circle")
-                        }
-                        Text(displayName(.Tournament))
-                            .bold()
-                    }
-                    Text(String(localized: "event-type-tournament-desc", table: "Events"))
-                        .font(.callout)
-                        .padding(.horizontal)
-                }.padding(.vertical)
-                    .padding(.horizontal)
-
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: { type = .Class }) {
-                            type == .Class ? Image(systemName: "circle.fill") : Image(systemName: "circle")
-                        }
-                        Text(displayName(.Class))
-                            .bold()
-                    }
-                    Text(String(localized: "event-type-class-desc", table: "Events"))
-                        .font(.callout)
-                        .padding(.horizontal)
-                }.padding(.vertical)
-                    .padding(.horizontal)
-
-                Spacer()
-
-            }
-            .padding(.top)
-            .navigationTitle(String(localized: "event-type-title", table: "Events"))
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    if #available(iOS 26.0, *) {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: { dismiss() }) {
-                                Text(String(localized: "done", table: "General"))
-                                    .font(.caption)
-                                    .foregroundStyle(.white)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                            }
-                            .glassEffect(.regular.tint(Color.Brand.primary).interactive())
-                        }.sharedBackgroundVisibility(.hidden)
-                    } else {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: { dismiss() }) {
-                                Text(String(localized: "done", table: "General"))
-                                    .font(.caption)
-                                    .foregroundStyle(.white)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .foregroundStyle(Color.Brand.primary)
-                                    }
-                            }
-                        }
-                    }
-                }
+    
+    func pickEventType(_ eventType: EVENT_TYPES) {
+        withAnimation(.easeIn) {
+            type = eventType
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            dismiss();
+        }
+    }
+    
+    @ViewBuilder
+    func pickerItem(_ eventType: EVENT_TYPES) -> some View {
+        Button(action: { pickEventType(eventType) }) {
+            VStack(alignment: .leading) {
+                HStack {
+                    eventType.image()
+                        .foregroundStyle(Color.Foreground.yellow)
+                    Text(eventType.displayName())
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.Foreground.default)
+                }.padding(.bottom, 5)
+                
+                Text(eventType.description())
+                    .multilineTextAlignment(.leading)
+                
+                if let tip = eventType.tip() {
+                    Text(tip)
+                        .italic()
+                        .font(.caption)
+                        .fontWeight(.light)
+                        .padding(.top, 5)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 26)
+                    .foregroundStyle(Color.Background.secondary)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 26)
+                            .stroke(type == eventType ? Color.Foreground.default : Color.border, lineWidth: type == eventType  ? 2 : 1)
+                    }
+            }
+        }
+        .padding(.horizontal)
+    }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text(String(localized: "event-type-title", table: "Events"))
+                        .font(.title3)
+                        .fontWeight(.bold)
+                    Spacer()
+                }
+                
+                Rectangle()
+                    .frame(height: 1)
+                    .padding(.top, 15)
+                    .foregroundStyle(Color.border)
+            }
+            .padding(.top, 20)
+            .padding(.bottom, 5)
+            
+            ScrollView {
+                pickerItem(.Regular)
+                pickerItem(.Class)
+//                pickerItem(.Tournament)
+//                pickerItem(.Match)
+//                pickerItem(.League)
+                
+                Spacer(minLength: 50)
+            }.contentMargins(.top, 5)
+        }
+        .ignoresSafeArea(.all)
+        .presentationDragIndicator(.visible)
+        .background(Color.Background.primary.ignoresSafeArea())
     }
 }
 
 #Preview {
-    EventTypePicker(type: .constant(.Regular))
+    VStack {}
+        .sheet(isPresented: .constant(true)) {
+            EventTypePicker(type: .constant(.Regular))
+        }
 }
